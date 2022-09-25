@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	$basetexture			"models\weapons\tfa_ins2\upgrades\ayykyu_sights\leupold_mark4\SCOPE_MSO"
+	$bumpmap 			"models\weapons\tfa_ins2\upgrades\ayykyu_sights\leupold_mark4\SCOPE_MSO_N"
+        "$color"			"[1 1 1]"
+
+	"$phong"                        "1"
+	"$phongalbedotint"              "1"
+	"$phongtint"                    "[.6 .8 1]"
+
+	"$phongboost"                   ".75"
+	"$phongexponent"                "37"
+	"$phongfresnelranges"           "[1 2.5 7]"
+
+//	"$phongexponenttexture"         "models\weapons\aks74u\weapon_aks74u_exp"
+
+	"$envmap"                       "env_cubemap"
+	"$normalmapalphaenvmapmask"	"1"
+	"$envmaptint"                   "[0.04 0.04 0.04]"
+}

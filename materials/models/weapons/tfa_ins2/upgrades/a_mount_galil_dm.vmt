@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 	"models/weapons/tfa_ins2/upgrades/a_mount_galil_dm"
+	"$bumpmap" 		"models/weapons/tfa_ins2/upgrades/a_mount_galil_nm"
+
+	"$phong"  					"1"
+	"$phongtint"				"[0.65 0.9 1]"
+	"$phongboost"				"1"
+	"$phongexponent" 			"48"
+	"$phongfresnelranges" 		"[1 2 4]"
+
+	"$envmap"						"env_cubemap"
+	"$normalmapalphaenvmapmask"		"1"
+	"$envmaptint"					"[0.08 0.08 0.08]"
+}

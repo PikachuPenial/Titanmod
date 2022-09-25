@@ -1,0 +1,6 @@
+"UnlitGeneric"
+
+{
+	"$basetexture"	"models/weapons/tfa_ins2/optics/po4x_reticule"
+	"$translucent" 	"1"
+}

@@ -1,0 +1,19 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\weapons\tfa_ins2\upgrades\ayykyu_sights\pkas\pk-as_diffuse"
+	"$bumpmap" "models\weapons\tfa_ins2\upgrades\ayykyu_sights\pkas\pk-as_normal"
+	"$nocull" "0"
+
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" "1"
+	"$envmaptint" "[0.08 0.08 0.08]"
+
+	"$phong"                        "1"
+	"$phongtint"                    "[1 1 1]"
+	"$phongalbedotint"              "1"
+
+	"$phongboost"                   "48"
+	"$phongexponent"                "32"
+	//"$phongexponenttexture"		"models\weapons\tfa_ins2\upgrades\ayykyu_sights\pkas\pk-as_exp"
+	"$phongfresnelranges"           "[0.01 0.4 0.8]"
+}

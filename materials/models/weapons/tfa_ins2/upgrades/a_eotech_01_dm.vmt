@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	$basetexture			"models/weapons/tfa_ins2/upgrades/a_eotech_01_dm"
+	$bumpmap 			"models/weapons/tfa_ins2/upgrades/a_eotech_01_nm"
+        $color			        "[1 1 1]"
+
+	$phong                          "1"
+	$phongalbedotint                "1"
+	$phongtint                      "[.6 .8 1]"
+
+	$phongboost                     "2"
+	$phongexponent                  "40"
+	$phongfresnelranges             "[.5 4 6]"
+
+//	$phongexponenttexture         "models\weapons\ak74\weapon_ak74_exp"
+
+	$envmap                         "env_cubemap"
+	$normalmapalphaenvmapmask       "1"
+	$envmaptint                     "[0.02 0.02 0.02]"
+}
+

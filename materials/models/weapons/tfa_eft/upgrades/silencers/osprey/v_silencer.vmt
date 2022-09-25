@@ -1,0 +1,31 @@
+"VertexLitGeneric"
+{
+	"$basetexture" 			"models\weapons\tfa_eft\upgrades\silencers\osprey\v_silencer_d"
+	"$bumpmap" 			"models\weapons\tfa_eft\upgrades\silencers\osprey\v_silencer_n"
+	"$phongexponenttexture" 		"models\weapons\tfa_eft\upgrades\silencers\osprey\v_silencer_e"
+	"$color2"                   		"[0.5 0.5 0.5]"
+//  	"$blendTintByBaseAlpha"     		"1"
+ 
+    	"$detail"				"detail\metal_detail_01"
+    	"$detailscale"			"2"
+    	"$detailblendfactor"          		"0.5"
+    	"$detailblendmode"          		"0"
+ 
+ 
+    	"$envmap"                   		"env_cubemap"
+    	"$envmaptint"              		"[ .03 .03 .03 ]"
+ 
+   	"$phong"                    		"1"
+   	"$phongexponent"            		"30"
+   	"$phongboost"               		"50"
+   	"$phongfresnelranges"       		"[0.25 0.5 1]"
+    	"$phongalbedotint"          		"1"
+    	"$phongalbedoboost"         		"48"
+ 
+   	"$rimlight"                 		"1"
+   	"$rimlightexponent"         		"80"   
+   	"$rimlightboost"            		"1"
+   	"$rimmask"                 		"1"
+}
+//Material setup by ShadowRUN ???.
+//You are NOT allowed to edit/modify/redistribute these materials without my explicit permission.

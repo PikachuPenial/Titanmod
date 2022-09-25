@@ -1,0 +1,8 @@
+"escapefromgarrysmod"
+{
+	"base"		"base"
+	"title"		"Titanmod"
+	"maps"		"^tm_"
+	"category"	"pvp"
+	"menusystem"	"1"
+}

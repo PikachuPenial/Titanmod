@@ -1,0 +1,15 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"models/weapons/tfa_ins2/optics/ayykyu_sights/hunter/mk4_crosshair"
+	"$translucent" 	"1"
+
+	$color2 "[1 0 0]"
+
+	Proxies
+	{
+		TFAReticuleColor
+		{
+			resultVar $color2
+		}
+	}
+}

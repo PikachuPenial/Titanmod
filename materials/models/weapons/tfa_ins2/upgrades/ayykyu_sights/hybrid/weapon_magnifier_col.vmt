@@ -1,0 +1,13 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models\weapons\tfa_ins2\upgrades\ayykyu_sights\hybrid\weapon_magnifier_col"
+                  "$bumpmap"    "models\weapons\tfa_ins2\upgrades\ayykyu_sights\hybrid\weapon_magnifier_n"
+
+                  $color		  "[1 1 1]"
+	$phong                           "1"
+	$phongalbedotint            "1"
+	$phongtint                      "[.6 .8 1]"
+	$phongboost                  "1"
+	$phongexponent             "45"
+	$phongfresnelranges       "[1 2.5 7]"
+}

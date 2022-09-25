@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture"					"models/weapons/tfa_ins2/upgrades/weapon_sterling_attach_dm"
+	"$bumpmap" 						"models/weapons/tfa_ins2/upgrades/weapon_sterling_attach_nm"
+    "$color"						"[1 1 1]"
+
+	"$phong"                        "1"
+	"$phongalbedotint"              "1"
+	"$phongtint"                    "[.67 .9 1]"
+	"$phongboost"                   "1.0"
+//	"$phongexponent"                "70"
+//	"$phongfresnelranges"           "[1 1 1]"
+	"$phongexponenttexture"         "models/weapons/tfa_ins2/upgrades/weapon_sterling_attach_exp"
+
+	"$envmap"                       "env_cubemap"
+	"$normalmapalphaenvmapmask"		"1"
+	"$envmaptint"                   "[0.06 0.06 0.06]"
+}

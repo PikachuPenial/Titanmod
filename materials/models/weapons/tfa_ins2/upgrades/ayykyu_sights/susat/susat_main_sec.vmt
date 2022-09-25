@@ -1,0 +1,31 @@
+"VertexLitGeneric"
+{
+	"$basetexture"			"models\weapons\tfa_ins2\upgrades\ayykyu_sights\susat\susat_col_sec"
+	"$bumpmap" 			"models\weapons\tfa_ins2\upgrades\ayykyu_sights\susat\susat_nor"
+	"$nocull" "1"
+   "$color" 			"[1 1 1] "
+	"$halflambert" 			"1"
+	
+	"$normalmapalphaenvmapmask" 	"1"
+	"$normalmapalphaphongmask"    	"1"
+	
+	
+
+	"$phong"  				"1"
+	"$phongexponent" 		"40"
+	
+	"$phongboost" 			"0.92"
+	"$phongfresnelranges" 	"[.6 1.2 3.2]"
+	"$phongtint"            "[.8 .9 .9]"
+	"$phongalbedotint" 		"1"	
+	
+ 	"$envmap" 					 	"env_cubemap"
+    "$envmaptint"				 	"[0.005 0.005 0.005]"  
+	
+	
+	$rimlight               1
+	$rimlightexponent       250
+	$rimlightboost          .02	
+	$rimmask 				1
+
+}

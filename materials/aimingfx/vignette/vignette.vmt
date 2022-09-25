@@ -1,0 +1,8 @@
+"Modulate"
+{
+	"$znearer" 1
+	"$basetexture" "aimingfx/vignette/vignette"
+	"$translucent" "1"
+	"$additive" "1"
+	"$mod2x" "1"
+}
