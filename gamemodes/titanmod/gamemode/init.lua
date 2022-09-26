@@ -103,7 +103,7 @@ hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 	end
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
-	local distance = math.Round(rawDistance * 0.01905 * 10) / 10
+	local distance = math.Round(tonumber( rawDistance ) * 0.1905)
 
 	if (victim ~= attacker) and (inflictor ~= nil) then
 		net.Start("NotifyKill")
