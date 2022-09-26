@@ -8,6 +8,7 @@ include("shared.lua")
 include("sv_hitsound.lua")
 include("cl_hud.lua")
 include("cl_killhud.lua")
+include("concommands.lua")
 
 function GM:Initialize()
 	print("Gamemode Initialized")
@@ -28,18 +29,21 @@ function GM:PlayerSpawn(ply)
 	ply:SetDuckSpeed(0.65)
 	ply:SetUnDuckSpeed(0.65)
 
-	local playerModels = {"models/player/barney.mdl", "models/player/Group03/female_02.mdl", "models/player/Group03/male_02.mdl", "models/player/Group03/male_03.mdl", "models/player/Group03/male_08.mdl", "models/player/arctic.mdl", "models/player/gasmask.mdl", "models/player/swat.mdl", "models/player/urban.mdl"}
-	local randomPrimary = {"tfa_nam_ppsh41", "tfa_eft_svd", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_m1a1_thompson", "tfa_ins2_eftm4a1", "tfa_ins2_mk14ebr", "tfa_ins2_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_ins2_sterling", "tfa_ins2_ump45", "tfa_ins2_imi_uzi", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_ww1_fedorov_avtomat", "tfa_ww2_volkssturmgewehr", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_l4d2_rocky_mp40", "tfa_ins2_rfb", "tfa_at_shak_12"}
-	local randomSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "tfa_nam_mac10", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_inss_m3_new"}
+	local playerModels = {"models/player/barney.mdl", "models/player/Group03/female_02.mdl", "models/player/Group03/male_02.mdl", "models/player/Group03/male_03.mdl", "models/player/Group03/male_08.mdl"}
+	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_eftm4a1", "tfa_ins2_mk14ebr", "tfa_ins2_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_ins2_sterling", "tfa_ins2_ump45", "tfa_ins2_imi_uzi", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield"}
+	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23"}
+	local randMelee = {"tfa_japanese_exclusive_tanto"}
 
-	debugPrim = (randomPrimary[math.random(#randomPrimary)])
-	debugSec = (randomSecondary[math.random(#randomSecondary)])
+	debugPrim = (randPrimary[math.random(#randPrimary)])
+	debugSec = (randSecondary[math.random(#randSecondary)])
+	debugMelee = (randMelee[math.random(#randMelee)])
 
 	ply:SetModel(playerModels[math.random(#playerModels)])
 	ply:Give(debugPrim)
 	print(debugPrim)
 	ply:Give(debugSec)
 	print(debugSec)
+	ply:Give(debugMelee)
 	ply:SetupHands()
 
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
@@ -89,6 +93,52 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("killStreak", 0)
 	end
 end
+
+util.AddNetworkString("NotifyKill")
+util.AddNetworkString("DeathHud")
+
+hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker)
+	local weaponInfo
+	if (attacker:GetActiveWeapon():IsValid()) then
+		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
+	end
+	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
+	local distance = math.Round(rawDistance * 0.01905 * 10) / 10
+
+	if (victim ~= attacker) and (inflictor ~= nil) then
+		net.Start("NotifyKill")
+		net.WriteEntity(victim)
+		net.Send(attacker)
+
+		net.Start("DeathHud")
+		net.WriteBool(false)
+		net.WriteEntity(attacker)
+		if (attacker:GetActiveWeapon():IsValid()) then
+			net.WriteString(weaponInfo["PrintName"])
+		end
+		net.WriteFloat(distance)
+		net.Send(victim)
+
+		timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
+			victim:Spawn()
+		end)
+	end
+end)
+
+hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
+	if not timer.Exists(ply:SteamID() .. "respawnTime") then
+		return
+	else
+		return false
+	end
+end)
+
+hook.Add("PlayerSpawn", "RemoveDeathHud", function(ply)
+	net.Start("DeathHud")
+	net.WriteBool(true)
+	net.WriteEntity(ply)
+	net.Send(ply)
+end)
 
 function GM:PlayerDisconnected(ply)
 	--Statistics

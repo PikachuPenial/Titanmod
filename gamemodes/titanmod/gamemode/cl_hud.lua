@@ -13,6 +13,11 @@ function HUD()
         --Gun Hud
         if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 60, white, TEXT_ALIGN_RIGHT, 0)
+        end
+
+        if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
+            draw.SimpleText("0", "AmmoCount", ScrW() - 15, ScrH() - 170, red, TEXT_ALIGN_RIGHT, 0)
+        elseif (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() >= 0) then
             draw.SimpleText(client:GetActiveWeapon():Clip1(), "AmmoCount", ScrW() - 15, ScrH() - 170, white, TEXT_ALIGN_RIGHT, 0)
         end
 
@@ -63,8 +68,8 @@ end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
 function HideHud(name)
-	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus"}) do
-		if name == v then
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus"}) do
+        if name == v then
 			return false
 		end
 	end
