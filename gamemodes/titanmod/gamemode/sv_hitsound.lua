@@ -8,7 +8,7 @@ local function isvalidtarget(target)
 	return IsValid(target) and (target:IsPlayer() or target:IsNPC() or target:IsNextBot())
 end
 
-local function xd_hit_sound(target, hitgroup, dmginfo )
+local function xd_hit_sound(target, hitgroup, dmginfo)
 	if (isplayer(dmginfo:GetAttacker()) and isvalidtarget(target) and dmginfo:GetDamage() > 0.9) then
 		net.Start("hitsound_msg", true)
 			net.WriteUInt(hitgroup, 4)

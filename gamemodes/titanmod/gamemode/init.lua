@@ -91,13 +91,13 @@ hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker
 		weaponName = weaponInfo["PrintName"]
 	end
 
-	if (victim ~= attacker) and (inflictor ~= nil) then
+	if (victim ~= attacker) and (inflictor ~= nil) and attacker:GetConVar("tm_hidekillpopup"):GetInt() == 0 then
 		net.Start("NotifyKill")
 		net.WriteEntity(victim)
 		net.Send(attacker)
 	end
 
-	if (victim ~= attacker) and (inflictor ~= nil) then
+	if (victim ~= attacker) and (inflictor ~= nil) and victim:GetConVar("tm_hidedeathpopup"):GetInt() == 0 then
 		net.Start("DeathHud")
 		net.WriteEntity(attacker)
 		net.WriteString(weaponName)

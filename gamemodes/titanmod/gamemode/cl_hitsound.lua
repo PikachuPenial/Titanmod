@@ -7,5 +7,6 @@ net.Receive("hitsound_msg", function(len, pl)
 	if hitgroup == HITGROUP_HEAD then
 		soundfile = hit_reg_head
 	end
+	
 	surface.PlaySound(soundfile)
 end )

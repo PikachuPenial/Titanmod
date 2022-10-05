@@ -1,6 +1,6 @@
 GM.Name = "Titanmod"
 GM.Author = "Penial"
-GM.Email = "N/A"
+GM.Email = "pissoff"
 GM.Website = "https://github.com/PikachuPenial"
 
 function GM:Initialize()
@@ -10,7 +10,9 @@ end
 --DeriveGamemode("sandbox")
 
 --Player Convars
-if !ConVarExists("tm_hideui") then CreateConVar("tm_hideui", "0", FCVAR_ARCHIVE, "Completely hide any custom UI elements created by the gamemode",0,1) end
+if !ConVarExists("tm_hideui") then CreateConVar("tm_hidehud", "0", FCVAR_ARCHIVE, "Completely hide any custom UI elements created by the gamemode",0,1) end
+if !ConVarExists("tm_hidekillpopup") then CreateConVar("tm_hidekillpopup", "0", FCVAR_ARCHIVE, "Completely hide the kill popup",0,1) end
+if !ConVarExists("tm_hidedeathpopup") then CreateConVar("tm_hidedeathpopup", "0", FCVAR_ARCHIVE, "Completely hide the death popup",0,1) end
 if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,1) end
 
 --Disabling NoClip/Tinnitus
