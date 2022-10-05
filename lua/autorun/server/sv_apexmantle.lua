@@ -219,9 +219,9 @@ hook.Add("PlayerPostThink", "HorizontalWallrunME", function(ply)
           --local trleft = nil
           --local trright = nil
           local hitleft = false
-    if (not apex_hwallrun:GetBool() or ply:GetMoveType() ~= MOVETYPE_WALK or not ply:KeyDown(IN_FORWARD)) and not ply.InHWallrun then return end
+    if (not apex_hwallrun:GetBool() or ply:GetMoveType() ~= MOVETYPE_WALK) and not ply.InHWallrun then return end
 
-    if not ply:KeyPressed(IN_JUMP) and not ply.InHWallrun then
+    if not ply:KeyPressed(IN_JUMP) and not ply:KeyPressed(IN_FORWARD) and not ply.InHWallrun then
           mantlewallruntrleft = util.TraceLine({
                     start = ply:EyePos() - Vector(0, 0, 25),
                     endpos = ply:EyePos() + ply:EyeAngles():Right() * -35 - Vector(0, 0, 25),

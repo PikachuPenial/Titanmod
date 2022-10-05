@@ -103,26 +103,27 @@ hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 	end
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
-	local distance = math.Round(tonumber( rawDistance ) * 0.1905)
+	local distance = math.Round(rawDistance * 0.01905)
 
 	if (victim ~= attacker) and (inflictor ~= nil) then
 		net.Start("NotifyKill")
 		net.WriteEntity(victim)
 		net.Send(attacker)
+	end
 
+	if (victim ~= attacker) and (inflictor ~= nil) then
 		net.Start("DeathHud")
-		net.WriteBool(false)
 		net.WriteEntity(attacker)
 		if (attacker:GetActiveWeapon():IsValid()) then
 			net.WriteString(weaponInfo["PrintName"])
 		end
 		net.WriteFloat(distance)
 		net.Send(victim)
-
-		timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
-			victim:Spawn()
-		end)
 	end
+
+	timer.Create(victim:SteamID() .. "respawnTime", 5, 1, function()
+		victim:Spawn()
+	end)
 end)
 
 hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
@@ -131,13 +132,6 @@ hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 	else
 		return false
 	end
-end)
-
-hook.Add("PlayerSpawn", "RemoveDeathHud", function(ply)
-	net.Start("DeathHud")
-	net.WriteBool(true)
-	net.WriteEntity(ply)
-	net.Send(ply)
 end)
 
 function GM:PlayerDisconnected(ply)
