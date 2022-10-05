@@ -1,4 +1,4 @@
---color array, saving space
+--Color array, saving space
 local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 

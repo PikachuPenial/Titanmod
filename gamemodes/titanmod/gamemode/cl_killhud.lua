@@ -45,7 +45,7 @@ net.Receive("NotifyKill", function(len, ply)
         KillNotif:SetMouseInputEnabled(false)
         KillNotif:SetKeyboardInputEnabled(false)
 
-        surface.PlaySound("hitsound/hit_reg_head.wav")
+        surface.PlaySound("hitsound/killsound.wav")
 
         timer.Create("killNotification", 3, 1, function()
             KillNotif:Hide()

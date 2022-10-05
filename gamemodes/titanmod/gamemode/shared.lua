@@ -237,5 +237,5 @@ RunConsoleCommand("sv_qslide_speedmult", "1.55")
 RunConsoleCommand("cl_ae_manualjumpmantle", "1")
 RunConsoleCommand("cl_ae_slowmantle", "0")
 
---Acceleration
+--Player Acceleration
 RunConsoleCommand("sv_airaccelerate", "1000")

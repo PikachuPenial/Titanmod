@@ -1,4 +1,4 @@
-local hit_reg      = "hitsound/hit_reg.wav"
+local hit_reg = "hitsound/hit_reg.wav"
 local hit_reg_head = "hitsound/hit_reg_head.wav"
 
 net.Receive("hitsound_msg", function(len, pl)
