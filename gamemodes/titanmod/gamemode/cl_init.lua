@@ -2,6 +2,7 @@ include("shared.lua")
 include("cl_hitsound.lua")
 include("cl_hud.lua")
 include("cl_killhud.lua")
+include("cl_scoreboard.lua")
 
 surface.CreateFont("GunPrintName", {
 	font = "Arial",
@@ -40,7 +41,7 @@ surface.CreateFont("AmmoCount", {
 } )
 
 surface.CreateFont("Health", {
-	font = "ComicSansMS",
+	font = "Tahoma",
 	extended = false,
 	size = 30,
 	weight = 500,

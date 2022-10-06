@@ -11,6 +11,7 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
 	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
 	ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
+	ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
 	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
 end
 concommand.Add("tm_forcesave", ForceSave)

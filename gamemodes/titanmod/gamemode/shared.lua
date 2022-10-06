@@ -7,13 +7,27 @@ function GM:Initialize()
 
 end
 
---DeriveGamemode("sandbox")
+DeriveGamemode("sandbox")
+
+--function GM:Initialize()
+	--local accoladeArray = {}
+
+	--Array Formatting (Accolade Name, Score)
+	--accoladeArray[1] = {"Headshot", 50}
+	--accoladeArray[2] = {"Marksman Bonus", 25}
+	--accoladeArray[3] = {"Kingslayer", 30}
+
+	--table.sort(accoladeArray, function(a, b) return a[4] > b[4] end)
+	--accoladeArr = accoladeArray
+--end
 
 --Player Convars
-if !ConVarExists("tm_hideui") then CreateConVar("tm_hidehud", "0", FCVAR_ARCHIVE, "Completely hide any custom UI elements created by the gamemode",0,1) end
+if !ConVarExists("tm_hideui") then CreateConVar("tm_hideui", "0", FCVAR_ARCHIVE, "Completely hide any custom UI elements created by the gamemode",0,1) end
 if !ConVarExists("tm_hidekillpopup") then CreateConVar("tm_hidekillpopup", "0", FCVAR_ARCHIVE, "Completely hide the kill popup",0,1) end
 if !ConVarExists("tm_hidedeathpopup") then CreateConVar("tm_hidedeathpopup", "0", FCVAR_ARCHIVE, "Completely hide the death popup",0,1) end
 if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,1) end
+if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,1) end
+if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "0", FCVAR_ARCHIVE, "Enable or disable the hitsounds",1,1) end
 
 --Disabling NoClip/Tinnitus
 RunConsoleCommand("sbox_noclip", "0")
@@ -56,12 +70,12 @@ RunConsoleCommand("sv_tfa_crosshair_showplayer", "0")
 RunConsoleCommand("sv_tfa_crosshair_showplayerteam", "0")
 RunConsoleCommand("sv_tfa_damage_mult_max", "1.05")
 RunConsoleCommand("sv_tfa_damage_mult_min", "0.95")
-RunConsoleCommand("sv_tfa_damage_multiplier", "1.00")
+RunConsoleCommand("sv_tfa_damage_multiplier", "1.20")
 RunConsoleCommand("sv_tfa_damage_multiplier_npc", "1.00")
 RunConsoleCommand("sv_tfa_default_clip", "1000")
 RunConsoleCommand("sv_tfa_door_respawn", "-1")
 RunConsoleCommand("sv_tfa_dynamicaccuracy", "1")
-RunConsoleCommand("sv_tfa_fixed_crosshair", "1")
+RunConsoleCommand("sv_tfa_fixed_crosshair", "0")
 RunConsoleCommand("sv_tfa_force_multiplier", "1.00")
 RunConsoleCommand("sv_tfa_fx_penetration_decal", "0")
 RunConsoleCommand("sv_tfa_holdtype_dynamic", "1")
@@ -97,7 +111,7 @@ RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1")
 
 --Client Side TFA Configuration
 RunConsoleCommand("cl_tfa_3dscope", "1")
-RunConsoleCommand("cl_tfa_3dscope_overlay", "0")
+RunConsoleCommand("cl_tfa_3dscope_overlay", "1")
 RunConsoleCommand("cl_tfa_3dscope_quality", "0")
 RunConsoleCommand("cl_tfa_attachments_persist_enabled", "1")
 RunConsoleCommand("cl_tfa_ballistics_fx_bullet", "1")
@@ -190,7 +204,7 @@ RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "1")
 RunConsoleCommand("cl_tfa_rms_smoke_shock", "1")
 RunConsoleCommand("cl_tfa_scope_sensitivity_3d", "2")
 RunConsoleCommand("cl_tfa_scope_sensitivity_autoscale", "1")
-RunConsoleCommand("cl_tfa_viewbob_animated", "0")
+RunConsoleCommand("cl_tfa_viewbob_animated", "1")
 RunConsoleCommand("cl_tfa_viewbob_intensity", "1.00")
 RunConsoleCommand("cl_tfa_viewmodel_centered", "0")
 RunConsoleCommand("cl_tfa_viewmodel_flip", "0")
