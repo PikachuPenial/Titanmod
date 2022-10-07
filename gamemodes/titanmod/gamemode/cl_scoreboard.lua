@@ -48,8 +48,8 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:Frags(), "Health", 275, 30, Color(0, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:Deaths(), "Health", 320, 30, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(math.Round(ratio, 2), "Health", 370, 30, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(v:GetNWInt("playerKills"), "Health", 440, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-				--draw.SimpleText(v:Ping() .. "ms", "Health", 255, 65, Color(255, 255, 255))
+				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 440, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+				draw.SimpleText(v:Ping() .. "ms", "Health", 460, 5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 			end
 
 			--Used to display icons near certain values on the player portion of the scoreboard.

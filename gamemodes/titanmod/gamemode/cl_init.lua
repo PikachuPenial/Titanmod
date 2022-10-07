@@ -3,6 +3,7 @@ include("cl_hitsound.lua")
 include("cl_hud.lua")
 include("cl_killhud.lua")
 include("cl_scoreboard.lua")
+include("cl_mainmenu.lua")
 
 surface.CreateFont("GunPrintName", {
 	font = "Arial",
@@ -59,6 +60,24 @@ surface.CreateFont("Health", {
 } )
 
 surface.CreateFont("PlayerNotiName", {
+	font = "Arial",
+	extended = false,
+	size = 52,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("PlayerDeathName", {
 	font = "Arial",
 	extended = false,
 	size = 36,

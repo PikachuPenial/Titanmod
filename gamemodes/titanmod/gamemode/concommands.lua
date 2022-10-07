@@ -6,6 +6,16 @@ function TestKillNoti(ply, cmd, args)
 end
 concommand.Add("testkill", TestKillNoti)
 
+--This is only here to help me test deaths easier, will be removed when no-longer needed.
+function TestDeathNoti(ply, cmd, args)
+	net.Start("DeathHud")
+	net.WriteEntity(ply)
+	net.WriteString("MAC-10")
+	net.WriteFloat(10)
+	net.Send(ply)
+end
+concommand.Add("testdeath", TestDeathNoti)
+
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
