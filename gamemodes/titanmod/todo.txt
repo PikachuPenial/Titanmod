@@ -1,0 +1,18 @@
+Show killers HP on death screen.
+Show the kills that you and your victim have on your death screen.
+
+Main Menu:
+    Buttons:
+        Spawn
+        Customize
+        Options
+        Exit
+    
+    Stats Button:
+        Kills
+        Death
+        Score
+        K/D%
+        Compare stats between yourself and another player.
+
+    Social Media buttons to Steam Workshop, YouTube, Discord, GitHub, etc.

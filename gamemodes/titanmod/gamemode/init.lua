@@ -40,9 +40,7 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetModel(playerModels[math.random(#playerModels)])
 	ply:Give(debugPrim)
-	--print(debugPrim)
 	ply:Give(debugSec)
-	--print(debugSec)
 	ply:Give(debugMelee)
 	ply:SetupHands()
 
@@ -116,7 +114,7 @@ hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker
 		victim:Spawn()
 	end)
 
-	--Score calculations will go here
+	--Accolades will go here
 	if distance >= 25 then
 
 	end

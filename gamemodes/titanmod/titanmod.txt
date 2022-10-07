@@ -1,4 +1,4 @@
-"escapefromgarrysmod"
+"titanmod"
 {
 	"base"		"base"
 	"title"		"Titanmod"

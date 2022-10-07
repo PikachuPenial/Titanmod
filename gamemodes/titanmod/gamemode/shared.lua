@@ -3,23 +3,7 @@ GM.Author = "Penial"
 GM.Email = "pissoff"
 GM.Website = "https://github.com/PikachuPenial"
 
-function GM:Initialize()
-
-end
-
 DeriveGamemode("sandbox")
-
---function GM:Initialize()
-	--local accoladeArray = {}
-
-	--Array Formatting (Accolade Name, Score)
-	--accoladeArray[1] = {"Headshot", 50}
-	--accoladeArray[2] = {"Marksman Bonus", 25}
-	--accoladeArray[3] = {"Kingslayer", 30}
-
-	--table.sort(accoladeArray, function(a, b) return a[4] > b[4] end)
-	--accoladeArr = accoladeArray
---end
 
 --Player Convars
 if !ConVarExists("tm_hideui") then CreateConVar("tm_hideui", "0", FCVAR_ARCHIVE, "Completely hide any custom UI elements created by the gamemode",0,1) end
@@ -250,8 +234,6 @@ RunConsoleCommand("sv_ae_vwallrun", "0")
 RunConsoleCommand("cl_qslide_view", "1")
 RunConsoleCommand("sv_qslide_duration", "1")
 RunConsoleCommand("sv_qslide_speedmult", "1.55")
-RunConsoleCommand("cl_ae_manualjumpmantle", "1")
-RunConsoleCommand("cl_ae_slowmantle", "0")
 
 --Player Acceleration
 RunConsoleCommand("sv_airaccelerate", "1000")
