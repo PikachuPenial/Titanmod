@@ -3,12 +3,16 @@ local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 
 function HUD()
-	if CLIENT and GetConVar("tm_hideui"):GetInt() == 0 then
+	if CLIENT and GetConVar("tm_enableui"):GetInt() == 1 then
 		local client = LocalPlayer()
 
 		if !client:Alive() then
 			return
 		end
+
+        if LocalPlayer():GetNWBool("mainmenu") == true then
+            return
+        end
 
         --Numeric Style
         if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
@@ -93,3 +97,7 @@ function HideHud(name)
 	end
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+
+function GM:PlayerStartVoice(ply)
+    return
+end

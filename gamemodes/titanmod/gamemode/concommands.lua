@@ -10,7 +10,7 @@ concommand.Add("testkill", TestKillNoti)
 function TestDeathNoti(ply, cmd, args)
 	net.Start("DeathHud")
 	net.WriteEntity(ply)
-	net.WriteString("MAC-10")
+	net.WriteString("the rope")
 	net.WriteFloat(10)
 	net.Send(ply)
 end

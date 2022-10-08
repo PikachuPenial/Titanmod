@@ -84,8 +84,12 @@ net.Receive("DeathHud", function(len, ply)
         else
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
             draw.SimpleText("Killed by", "Trebuchet18", 200, 5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 200, 67.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(killedWith .. " | " .. killedFrom .. "m", "WepNameKill", 200, 95, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("|", "PlayerDeathName", 200, 65.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("|", "PlayerDeathName", 200, 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 190, 67.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedWith, "PlayerDeathName", 210, 67.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 190, 100, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedFrom .. "m", "WepNameKill", 210, 100, Color(255, 255, 255), TEXT_ALIGN_LEFT)
         end
     end
 
