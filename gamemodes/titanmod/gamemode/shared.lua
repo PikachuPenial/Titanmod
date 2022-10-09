@@ -26,15 +26,6 @@ if SERVER then
     RunConsoleCommand("sbox_noclip", "0")
     RunConsoleCommand("dsp_off", "1")
 
-    --Wallrun/Mantling
-    RunConsoleCommand("sv_ae_angleleniency", "5")
-    RunConsoleCommand("sv_ae_hwallrun", "1")
-    RunConsoleCommand("sv_ae_mantle", "0")
-    RunConsoleCommand("sv_ae_mantleshort", "0")
-    RunConsoleCommand("sv_ae_mantlespeed", "2.00")
-    RunConsoleCommand("sv_ae_mustlookatwall", "0")
-    RunConsoleCommand("sv_ae_vwallrun", "0")
-
     --Proximity Voice Chat
     RunConsoleCommand("sv_maxVoiceAudible", "750")
 
@@ -79,7 +70,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_crosshair_showplayerteam", "0")
     RunConsoleCommand("sv_tfa_damage_mult_max", "1.05")
     RunConsoleCommand("sv_tfa_damage_mult_min", "0.95")
-    RunConsoleCommand("sv_tfa_damage_multiplier", "1.20")
+    RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
     RunConsoleCommand("sv_tfa_damage_multiplier_npc", "1.00")
     RunConsoleCommand("sv_tfa_default_clip", "1000")
     RunConsoleCommand("sv_tfa_door_respawn", "-1")
@@ -117,6 +108,10 @@ if SERVER then
     RunConsoleCommand("sv_tfa_weapon_strip", "0")
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
     RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1")
+
+    --Flashlight
+    RunConsoleCommand("sv_VMANIPFlash_canAttachShoulder", "1")
+    RunConsoleCommand("sv_VMANIPFlashlight_isOnlyUsingShoulder", "1")
 end
 
 --Client Side
@@ -184,13 +179,13 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_hud_hangtime", "1")
     RunConsoleCommand("cl_tfa_hud_hitmarker_3d_all", "0")
     RunConsoleCommand("cl_tfa_hud_hitmarker_3d_shotguns", "1")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_color_a", "200")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_color_b", "225")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_color_g", "225")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_color_a", "255")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_color_b", "255")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_color_g", "255")
     RunConsoleCommand("cl_tfa_hud_hitmarker_color_r", "225")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_enabled", "0")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_fadetime", "0.30")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_scale", "1.00")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_enabled", "1")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_fadetime", "0.04")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_scale", "1")
     RunConsoleCommand("cl_tfa_hud_hitmarker_solidtime", "0.10")
     RunConsoleCommand("cl_tfa_hud_scale", "1")
     RunConsoleCommand("cl_tfa_inspect_hide", "0")
@@ -244,14 +239,9 @@ if CLIENT then
     RunConsoleCommand("cl_aimingfx_vignette_intensity_initially_multiplier", "0.75")
     RunConsoleCommand("cl_aimingfx_vignette_intensity_sighted_multiplier", "0.60")
 
-    --Wallrun/Mantling
-    RunConsoleCommand("cl_ae_altmantlingsounds", "1")
-    RunConsoleCommand("cl_ae_automantle", "1")
-    RunConsoleCommand("cl_ae_fun", "0")
-    RunConsoleCommand("cl_ae_manualjumpmantle", "1")
-    RunConsoleCommand("cl_ae_slowmantle", "0")
-    RunConsoleCommand("cl_ae_usebody", "0")
-
     --Sliding
     RunConsoleCommand("cl_qslide_view", "1")
+
+    --Voice Chat animations
+    RunConsoleCommand("cl_vmanip_voicechat", "0")
 end

@@ -1,13 +1,6 @@
-Show killers HP on death screen.
 Show the kills that you and your victim have on your death screen.
 
 Main Menu:
-    Buttons:
-        Spawn
-        Customize
-        Options
-        Exit
-    
     Stats Button:
         Kills
         Death
