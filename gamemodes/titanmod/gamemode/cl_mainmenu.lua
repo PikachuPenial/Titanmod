@@ -1051,7 +1051,7 @@ function mainMenu()
 
     end
 
-    timer.Create("checkForMinimumRes", 0.4, 1, function()
+    timer.Create("checkForMinimumRes", 1, 1, function()
         if belowMinimumRes == true and LocalPlayer():GetNWBool("seenResWarning") ~= true then
             local ResWarning = vgui.Create("DPanel")
             ResWarning:SetPos(0, 0)

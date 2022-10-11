@@ -1,7 +1,7 @@
 local hit_reg = "hitsound/hit_reg.wav"
 local hit_reg_head = "hitsound/hit_reg_head.wav"
 
-net.Receive("hitsound_msg", function(len, pl)
+net.Receive("PlayHitsound", function(len, pl)
 	if CLIENT and GetConVar("tm_hitsounds"):GetInt() == 1 then
 		local hitgroup = net.ReadUInt(4)
 		local soundfile = hit_reg

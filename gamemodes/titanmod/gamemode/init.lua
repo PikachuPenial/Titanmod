@@ -2,12 +2,10 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_hitsound.lua")
 AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("cl_killhud.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_mainmenu.lua")
 
 include("shared.lua")
-include("sv_hitsound.lua")
 include("concommands.lua")
 
 function GM:Initialize()
@@ -76,6 +74,25 @@ function GM:PlayerInitialSpawn(ply)
 	end
 end
 
+util.AddNetworkString("PlayHitsound")
+util.AddNetworkString("NotifyKill")
+util.AddNetworkString("DeathHud")
+
+local function isplayer(ent)
+	return IsValid(ent) and ent:IsPlayer()
+end
+
+local function HitSound(target, hitgroup, dmginfo)
+	if (isplayer(dmginfo:GetAttacker()) and dmginfo:GetDamage() > 0.9) then
+		net.Start("PlayHitsound", true)
+			net.WriteUInt(hitgroup, 4)
+		net.Send(dmginfo:GetAttacker())
+
+		target:SetNWInt("lastHitIn", hitgroup)
+	end
+end
+hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
+
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if (victim == attacker) then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
@@ -108,6 +125,65 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
 	else
 		victim:SetNWInt("loadoutMelee", rareMelee[math.random(#rareMelee)])
+	end
+
+	local weaponInfo
+	local weaponName
+	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
+	local distance = math.Round(rawDistance * 0.01905)
+
+	if (attacker:GetActiveWeapon():IsValid()) then
+		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
+		weaponName = weaponInfo["PrintName"]
+	end
+
+	if (victim ~= attacker) and (inflictor ~= nil) then
+		net.Start("NotifyKill")
+		net.WriteEntity(victim)
+		net.WriteString(weaponName)
+		net.WriteFloat(distance)
+		net.Send(attacker)
+	end
+
+	if (victim ~= attacker) and (inflictor ~= nil) then
+		net.Start("DeathHud")
+		net.WriteEntity(attacker)
+		net.WriteString(weaponName)
+		net.WriteFloat(distance)
+		net.Send(victim)
+	end
+
+	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
+		if victim:GetNWBool("mainmenu") == false then
+			victim:Spawn()
+		end
+	end)
+
+	if victim:GetNWInt("lastHitIn") == HITGROUP_HEAD then
+
+	if attacker:GetNWInt("killStreak") >= 3 then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
+	end
+
+	if victim:GetNWInt("killStreak") >= 3 then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * victim:GetNWInt("killStreak"))
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * victim:GetNWInt("killStreak"))
+	end
+
+	if distance >= 40 then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + distance)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + distance)
+	end
+
+	if distance <= 3 then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
+	end
+
+	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 	end
 end
 
@@ -146,68 +222,6 @@ function CloseMainMenu(ply)
 end
 concommand.Add("tm_closemainmenu", CloseMainMenu)
 
-util.AddNetworkString("NotifyKill")
-util.AddNetworkString("DeathHud")
-
-hook.Add("PlayerDeath", "KillNotification", function(victim, inflictor, attacker)
-	local weaponInfo
-	local weaponName
-	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
-	local distance = math.Round(rawDistance * 0.01905)
-
-	if (attacker:GetActiveWeapon():IsValid()) then
-		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
-		weaponName = weaponInfo["PrintName"]
-	end
-
-	if (victim ~= attacker) and (inflictor ~= nil) then
-		net.Start("NotifyKill")
-		net.WriteEntity(victim)
-		net.WriteString(weaponName)
-		net.WriteFloat(distance)
-		net.Send(attacker)
-	end
-
-	if (victim ~= attacker) and (inflictor ~= nil) then
-		net.Start("DeathHud")
-		net.WriteEntity(attacker)
-		net.WriteString(weaponName)
-		net.WriteFloat(distance)
-		net.Send(victim)
-	end
-
-	timer.Create(victim:SteamID() .. "respawnTime", 5, 1, function()
-		if victim:GetNWBool("mainmenu") == false then
-			victim:Spawn()
-		end
-	end)
-
-	if attacker:GetNWInt("killStreak") >= 3 then
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
-	end
-
-	if victim:GetNWInt("killStreak") >= 3 then
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * victim:GetNWInt("killStreak"))
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * victim:GetNWInt("killStreak"))
-	end
-
-	if distance >= 40 then
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + distance)
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + distance)
-	end
-
-	if distance <= 3 then
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
-	end
-
-	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" then
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
-	end
-end)
-
 hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 	if timer.Exists(ply:SteamID() .. "respawnTime") then
 		return false
@@ -243,7 +257,7 @@ local function Regeneration()
 		end
 	end
 end
-hook.Add("Think", "HealthRegen.Think", Regeneration)
+hook.Add("Think", "HealthRegen", Regeneration)
 
 timer.Create("cleanMap", 60, 0, function()
 	RunConsoleCommand("r_cleardecals")

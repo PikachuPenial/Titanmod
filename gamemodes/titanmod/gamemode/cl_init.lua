@@ -1,7 +1,6 @@
 include("shared.lua")
 include("cl_hitsound.lua")
 include("cl_hud.lua")
-include("cl_killhud.lua")
 include("cl_scoreboard.lua")
 include("cl_mainmenu.lua")
 
