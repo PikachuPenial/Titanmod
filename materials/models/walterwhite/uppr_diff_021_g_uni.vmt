@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	$basetexture "models/walterwhite/uppr_diff_021_g_uni"
+	$bumpmap "models/walterwhite/uppr_normal_021"
+}

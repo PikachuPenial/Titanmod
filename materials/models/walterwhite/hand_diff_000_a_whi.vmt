@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	$basetexture "models/walterwhite/hand_diff_000_a_whi"
+	$bumpmap "models/walterwhite/hand_normal_000"
+}

@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\Fate\Astolfo/Blazon"
+                "$envmap" "env_cubemap"
+                "$envmapmask" "models/Fate/Astolfo/Envmap"
+
+	"$model" 1
+	"$nocull" 1
+
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" "1"
+	"$phongexponent" "5"
+	"$phongboost"	"1"
+                "$lightwarptexture" "models\Fate\Astolfo/toon_c"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}
