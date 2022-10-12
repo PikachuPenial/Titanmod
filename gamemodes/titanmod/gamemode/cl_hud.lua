@@ -107,6 +107,27 @@ function GM:PlayerStartVoice(ply)
     return
 end
 
+net.Receive("PlayHitsound", function(len, pl)
+    local clientHitHeadshot = false
+    local hit_reg = "hitsound/hit_reg.wav"
+    local hit_reg_head = "hitsound/hit_reg_head.wav"
+
+	local hitgroup = net.ReadUInt(4)
+	local soundfile = hit_reg
+
+	if (hitgroup == HITGROUP_HEAD) then
+		soundfile = hit_reg_head
+        clientHitHeadshot = true
+	end
+
+    if CLIENT and GetConVar("tm_hitsounds"):GetInt() == 1 then
+		surface.PlaySound(soundfile)
+	end
+
+    print("DID CLIENT HIT HEADSHOT?")
+    print(clientHitHeadshot)
+end )
+
 net.Receive("NotifyKill", function(len, ply)
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -192,8 +213,7 @@ net.Receive("NotifyKill", function(len, ply)
         smackdownSeperator = ""
     end
 
-    print(hitgroup)
-    if killedPlayer:GetNWInt("lastHitIn") == HITGROUP_HEAD then
+    if clientHitHeadshot == true then
         headshot = "Headshot"
         headshotScore = 20
         headshotIndent = " +"
@@ -217,7 +237,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillIcon:SetSize(50, 50)
     KillIcon:SetImage("icons/killicon.png")
 
-    if killedPlayer:GetNWInt("lastHitIn") == HITGROUP_HEAD then
+    if LocalPlayer():GetNWBool("lastShotHead") == true then
         KillIcon:SetImageColor(Color(255, 0, 0))
     end
 

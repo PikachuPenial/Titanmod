@@ -1,6 +1,5 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_hitsound.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_mainmenu.lua")
@@ -66,17 +65,25 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 
-local function isplayer(ent)
+local function TestEntityForPlayer(ent)
 	return IsValid(ent) and ent:IsPlayer()
 end
 
 local function HitSound(target, hitgroup, dmginfo)
-	target:SetNWInt("lastHitIn", hitgroup)
+	local serverHitHeadshot = false
 
-	if (isplayer(dmginfo:GetAttacker()) and dmginfo:GetDamage() > 0.9) then
+	if (TestEntityForPlayer(dmginfo:GetAttacker()) and dmginfo:GetDamage() > 0.9) then
 		net.Start("PlayHitsound", true)
 			net.WriteUInt(hitgroup, 4)
 		net.Send(dmginfo:GetAttacker())
+
+		if (hitgroup == HITGROUP_HEAD) then
+			serverHitHeadshot = true
+		end
+
+		dmginfo:GetAttacker():SetNWBool("lastShotHead", serverHitHeadshot)
+		print(dmginfo:GetAttacker():GetName())
+		print(serverHitHeadshot)
 	end
 end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
@@ -165,7 +172,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 	end
 
-	if victim:GetNWInt("lastHitIn") == HITGROUP_HEAD then
+	if attacker:GetNWBool("lastShotHead") == true then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 	end
