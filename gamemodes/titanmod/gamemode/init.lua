@@ -53,25 +53,13 @@ function GM:PlayerInitialSpawn(ply)
 
 	ply:ConCommand("tm_openmainmenu")
 
-	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_imi_uzi", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200"}
-	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92"}
-	local randMelee = {"tfa_japanese_exclusive_tanto"}
-	local rareMelee = {"tfa_ararebo_bf1"}
-
-	debugPrim = (randPrimary[math.random(#randPrimary)])
-	debugSec = (randSecondary[math.random(#randSecondary)])
-	debugMelee = (randMelee[math.random(#randMelee)])
-	debugRareMelee = (rareMelee[math.random(#rareMelee)])
-	rareMeleePer = math.random(1, 10)
+	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb"}
+	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45"}
+	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife"}
 
 	ply:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	ply:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-
-	if rareMeleePer == 1 or rareMeleePer == 2 then
-		ply:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
-	else
-		ply:SetNWInt("loadoutMelee", rareMelee[math.random(#rareMelee)])
-	end
+	ply:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
 end
 
 util.AddNetworkString("PlayHitsound")
@@ -83,12 +71,12 @@ local function isplayer(ent)
 end
 
 local function HitSound(target, hitgroup, dmginfo)
+	target:SetNWInt("lastHitIn", hitgroup)
+
 	if (isplayer(dmginfo:GetAttacker()) and dmginfo:GetDamage() > 0.9) then
 		net.Start("PlayHitsound", true)
 			net.WriteUInt(hitgroup, 4)
 		net.Send(dmginfo:GetAttacker())
-
-		target:SetNWInt("lastHitIn", hitgroup)
 	end
 end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
@@ -112,20 +100,13 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 	end
 
-	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_imi_uzi", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200"}
-	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92"}
-	local randMelee = {"tfa_japanese_exclusive_tanto"}
-	local rareMelee = {"tfa_ararebo_bf1"}
-	rareMeleePer = math.random(1, 10)
+	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_at_kriss_vector", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb"}
+	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45"}
+	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife"}
 
 	victim:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	victim:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-
-	if rareMeleePer == 1 or rareMeleePer == 2 then
-		victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
-	else
-		victim:SetNWInt("loadoutMelee", rareMelee[math.random(#rareMelee)])
-	end
+	victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
 
 	local weaponInfo
 	local weaponName
@@ -159,8 +140,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	if victim:GetNWInt("lastHitIn") == HITGROUP_HEAD then
-
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
@@ -182,6 +161,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
+	end
+
+	if victim:GetNWInt("lastHitIn") == HITGROUP_HEAD then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 	end
@@ -261,6 +245,7 @@ hook.Add("Think", "HealthRegen", Regeneration)
 
 timer.Create("cleanMap", 60, 0, function()
 	RunConsoleCommand("r_cleardecals")
+	print("cleaned map")
 end)
 
 function GM:PlayerDisconnected(ply)

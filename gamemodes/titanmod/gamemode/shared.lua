@@ -126,6 +126,18 @@ function GM:Initialize()
     weaponArray[100] = {"tfa_ins2_mx4", "Beretta Mx4 Storm"}
     weaponArray[101] = {"tfa_doi_garand", "M1 Garand"}
     weaponArray[102] = {"tfa_ins2_warface_cheytac_m200", "CheyTac M200"}
+    weaponArray[103] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
+    weaponArray[104] = {"tfa_fml_lefrench_mas38", "Mas 38"}
+    weaponArray[105] = {"tfa_ins2_minimi", "Minimi Para"}
+    weaponArray[106] = {"tfa_ins2_typhoon12", "Typhoon F12 Custom"}
+    weaponArray[107] = {"tfa_ins2_mc255", "MTs225-12"}
+    weaponArray[108] = {"tfa_km2000_knife", "KM-2000"}
+    weaponArray[109] = {"tfa_ins2_aa12", "AA-12"}
+    weaponArray[110] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
+    weaponArray[111] = {"tfa_ins2_fnp45", "FNP-45"}
+    weaponArray[109] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
+    weaponArray[110] = {"tfa_ins2_acrc", "ACR-C"}
+    weaponArray[111] = {"tfa_blast_lynx_msbsb", "FB MSBS-B"}
 
     --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
     local modelArray = {}
@@ -198,11 +210,11 @@ if SERVER then
     RunConsoleCommand("sv_tfa_ballistics_bullet_velocity", "1.00")
     RunConsoleCommand("sv_tfa_ballistics_custom_gravity", "0")
     RunConsoleCommand("sv_tfa_ballistics_custom_gravity_value", "0")
-    RunConsoleCommand("sv_tfa_ballistics_enabled", "1")
+    RunConsoleCommand("sv_tfa_ballistics_enabled", "0")
     RunConsoleCommand("sv_tfa_ballistics_mindist", "-1")
     RunConsoleCommand("sv_tfa_ballistics_substeps", "1")
-    RunConsoleCommand("sv_tfa_bullet_doordestruction", "0")
-    RunConsoleCommand("sv_tfa_bullet_doordestruction_keep", "0")
+    RunConsoleCommand("sv_tfa_bullet_doordestruction", "1")
+    RunConsoleCommand("sv_tfa_bullet_doordestruction_keep", "1")
     RunConsoleCommand("sv_tfa_bullet_penetration", "1")
     RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "1.00")
     RunConsoleCommand("sv_tfa_bullet_randomseed", "0")
@@ -222,7 +234,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_fx_penetration_decal", "0")
     RunConsoleCommand("sv_tfa_holdtype_dynamic", "1")
     RunConsoleCommand("sv_tfa_jamming", "0")
-    RunConsoleCommand("sv_tfa_melee_doordestruction", "0")
+    RunConsoleCommand("sv_tfa_melee_doordestruction", "1")
     RunConsoleCommand("sv_tfa_melee_blocking_stun_enabled", "1")
     RunConsoleCommand("sv_tfa_melee_blocking_stun_time", "0.65")
     RunConsoleCommand("sv_tfa_melee_blocking_anglemult", "1")
@@ -236,20 +248,21 @@ if SERVER then
     RunConsoleCommand("sv_tfa_penetration_hitmarker", "1")
     RunConsoleCommand("sv_tfa_range_modifier", "0.80")
     RunConsoleCommand("sv_tfa_recoil_legacy", "0")
-    RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.75")
     RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.75")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "2")
+    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.75")
     RunConsoleCommand("sv_tfa_scope_gun_speed_scale", "0")
     RunConsoleCommand("sv_tfa_soundscale", "1")
     RunConsoleCommand("sv_tfa_spread_legacy", "0")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "1")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.01")
     RunConsoleCommand("sv_tfa_sprint_enabled", "1")
     RunConsoleCommand("sv_tfa_unique_slots", "1")
     RunConsoleCommand("sv_tfa_weapon_strip", "0")
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
-    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1")
+    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1") 
+    RunConsoleCommand("sv_tfa_lean_automatic", "0")
 
     --Flashlight
     RunConsoleCommand("sv_VMANIPFlash_canAttachShoulder", "1")
@@ -266,7 +279,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_attachments_persist_enabled", "1")
     RunConsoleCommand("cl_tfa_ballistics_fx_bullet", "1")
     RunConsoleCommand("cl_tfa_ballistics_fx_tracers_adv", "1")
-    RunConsoleCommand("cl_tfa_ballistics_fx_tracers_style", "2.00")
+    RunConsoleCommand("cl_tfa_ballistics_fx_tracers_style", "2")
     RunConsoleCommand("cl_tfa_ballistics_mp", "1")
     RunConsoleCommand("cl_tfa_debug_animations", "0")
     RunConsoleCommand("cl_tfa_debug_cache", "0")

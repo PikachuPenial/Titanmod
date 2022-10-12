@@ -2,6 +2,11 @@
 local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 
+local scrw = ScrW()
+local scrh = ScrH()
+
+local isAnimatingKill
+
 function HUD()
 	if CLIENT and GetConVar("tm_enableui"):GetInt() == 1 then
 		local client = LocalPlayer()
@@ -107,35 +112,27 @@ net.Receive("NotifyKill", function(len, ply)
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
 
+    local seperator = ""
+
     if IsValid(KillNotif) then
         KillNotif:Hide()
     end
 
     KillNotif = vgui.Create("DFrame")
-    KillNotif:SetSize(600, 200)
-    KillNotif:SetX(ScrW() / 2 - 200)
+    KillNotif:SetSize(0, 200)
+    KillNotif:SetX(ScrW() / 2 - 300)
     KillNotif:SetY(ScrH() - 335)
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
+    KillNotif:SizeTo(600, 200, 1, 0, 0.25)
 
-    if killedPlayer:GetNWInt("lastHitIn") == HITGROUP_HEAD then
-        headshot = "Headshot"
-        headshotScore = 20
-        headshotIndent = " +"
-        headshotSeperator = " | "
-    else
-        headshot = ""
-        headshotScore = ""
-        headshotIndent = ""
-        headshotSeperator = ""
-    end
-
-    if LocalPlayer():GetNWInt("killStreak") >= 3 then
+    if LocalPlayer():GetNWInt("killStreak") >= 2 then
         onstreak = "On Streak"
-        onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak")
+        onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
         onstreakIndent = " +"
         onstreakSeperator = " | "
+        seperator = "| "
     else
         onstreak = ""
         onstreakScore = ""
@@ -148,6 +145,7 @@ net.Receive("NotifyKill", function(len, ply)
         buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
         buzzkillIndent = " +"
         buzzkillSeperator = " | "
+        seperator = "| "
     else
         buzzkill = ""
         buzzkillScore = ""
@@ -160,6 +158,7 @@ net.Receive("NotifyKill", function(len, ply)
         marksmanScore = killedFrom
         marksmanIndent = " +"
         marksmanSeperator = " | "
+        seperator = "| "
     else
         marksman = ""
         marksmanScore = ""
@@ -172,6 +171,7 @@ net.Receive("NotifyKill", function(len, ply)
         pointblankScore = 20
         pointblankIndent = " +"
         pointblankSeperator = " | "
+        seperator = "| "
     else
         pointblank = ""
         pointblankScore = ""
@@ -184,6 +184,7 @@ net.Receive("NotifyKill", function(len, ply)
         smackdownScore = 20
         smackdownIndent = " +"
         smackdownSeperator = " | "
+        seperator = "| "
     else
         smackdown = ""
         smackdownScore = ""
@@ -191,10 +192,24 @@ net.Receive("NotifyKill", function(len, ply)
         smackdownSeperator = ""
     end
 
+    print(hitgroup)
+    if killedPlayer:GetNWInt("lastHitIn") == HITGROUP_HEAD then
+        headshot = "Headshot"
+        headshotScore = 20
+        headshotIndent = " +"
+        headshotSeperator = " | "
+        seperator = "| "
+    else
+        headshot = ""
+        headshotScore = ""
+        headshotIndent = ""
+        headshotSeperator = ""
+    end
+
     KillNotif.Paint = function()
         draw.SimpleText(LocalPlayer():GetNWInt("killStreak") .. " Kills", "StreakText", 300, 25, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText("| " .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(seperator .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
     end
 
     KillIcon = vgui.Create("DImage", KillNotif)
@@ -214,7 +229,9 @@ net.Receive("NotifyKill", function(len, ply)
     surface.PlaySound("hitsound/killsound.wav")
 
     timer.Create("killNotification", 3.5, 1, function()
-        KillNotif:Hide()
+        KillNotif:SizeTo(0, 200, 1, 0.25, 0.25, function()
+            KillNotif:Hide()
+        end)
         notiAlreadyActive = false
     end)
 end )
@@ -249,12 +266,12 @@ net.Receive("DeathHud", function(len, ply)
     DeathNotif:ShowCloseButton(false)
 
     DeathNotif.Paint = function()
-        if killedBy == nil or killedWith == nil then
+        if killedBy == nil or killedWith == nil or !killedBy:IsPlayer() then
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 100))
             draw.SimpleText("You commited suicide!", "Trebuchet18", 200, 5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         else
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-            draw.SimpleText("Killed by", "Trebuchet18", 400, 5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText("|", "PlayerDeathName", 400, 65.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText("|", "PlayerDeathName", 400, 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 67.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
@@ -270,9 +287,14 @@ net.Receive("DeathHud", function(len, ply)
         end
     end
 
+    CallingCard = vgui.Create("DImage", DeathNotif)
+    CallingCard:SetPos(325, 20)
+    CallingCard:SetSize(150, 50)
+    CallingCard:SetImage("cards/industry.png")
+
     playerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    playerProfilePicture:SetPos(375, 20)
-    playerProfilePicture:SetSize(50, 50)
+    playerProfilePicture:SetPos(327.5, 22.5)
+    playerProfilePicture:SetSize(45, 45)
     playerProfilePicture:SetPlayer(killedBy, 184)
 
     DeathNotif:Show()
