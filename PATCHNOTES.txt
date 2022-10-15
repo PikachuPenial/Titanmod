@@ -1,0 +1,24 @@
+Notes are sorted by the patches upload date.
+
+0.1b2 - 10/15/22
+    Kill Cam, can be disabled in options
+    Added Clutch accolade
+    Health based HUD values can no longer go below 0
+
+0.1b1 - 10/14/22
+    Intro Screen, can be disabled in options
+    New default menu song to replace Chillwave
+    Added new community music track
+    Equalized audio between all music tracks
+    Added Below Crosshair anchoring for health and ammo
+    Updated KRISS Vector model
+    Added new primarys (KSVK 12.7, UMP9, Type-81)
+    Added new secondary (TCo Stim Pistol)
+    Increased Grappling Hook cooldown (15 > 18s)
+    Buffed UMP-45", "MainMenuLoadoutWeapons
+    Nerfed M14, Mk. 14 EBR", "MainMenuLoadoutWeapons
+    KM-2000 now applies the Smackdown Accolade
+    Velocity Counter added to options
+    Show Kill UI Accolades added to options
+    Added 3 new default PMs
+    Replaced Super Soilder PM with GMan PM
