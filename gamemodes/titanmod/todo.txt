@@ -1,9 +1,0 @@
-Show the kills that you and your victim have on your death screen.
-
-Animate kill hud killstreak text depending on the kill streak the player has
-    1-2 (White)
-    3-5 (Orange)
-    5-7 (Red)
-    8 and above (Rainbow)
-
-Show if the player has gotten headshot killed on the death hud
