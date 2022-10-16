@@ -10,7 +10,7 @@ if !ConVarExists("tm_enableui") then CreateConVar("tm_enableui", "1", FCVAR_ARCH
 if !ConVarExists("tm_enablekillpopup") then CreateConVar("tm_enablekillpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the kill popup",0,1) end
 if !ConVarExists("tm_enabledeathpopup") then CreateConVar("tm_enabledeathpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the death popup",0,1) end
 if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,2) end
-if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,2) end
+if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,3) end
 if !ConVarExists("tm_showspeed") then CreateConVar("tm_showspeed", "0", FCVAR_ARCHIVE, "Enables a speed indicator at the top of your screen",0,1) end
 if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "0", FCVAR_ARCHIVE, "Enable or disable the hitsounds",0,1) end
 if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
@@ -18,7 +18,9 @@ if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "
 if !ConVarExists("tm_communitymusic") then CreateConVar("tm_communitymusic", "0", FCVAR_ARCHIVE, "Enable or disable community requested Main Menu music",0,1) end
 if !ConVarExists("tm_skipintro") then CreateConVar("tm_skipintro", "0", FCVAR_ARCHIVE, "Enable or disable the intro to the main menu",0,1) end
 if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
-if !ConVarExists("tm_enablekillcam") then CreateConVar("tm_enablekillcam", "1", FCVAR_ARCHIVE, "Enable or disable the kill cam when you die",0,1) end
+if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
+if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
+if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the death UI at the top and the bottom of the screen",0,1) end
 
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
 	if !ply:Crouching() then return end
@@ -289,7 +291,6 @@ end
 if CLIENT then
     --Client Side TFA Configuration
     RunConsoleCommand("cl_tfa_3dscope", "1")
-    RunConsoleCommand("cl_tfa_3dscope_overlay", "1")
     RunConsoleCommand("cl_tfa_3dscope_quality", "0")
     RunConsoleCommand("cl_tfa_attachments_persist_enabled", "1")
     RunConsoleCommand("cl_tfa_ballistics_fx_bullet", "1")
@@ -313,8 +314,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_fx_rtscopeblur_mode", "0")
     RunConsoleCommand("cl_tfa_fx_rtscopeblur_passes", "1")
     RunConsoleCommand("cl_tfa_gunbob_custom", "1")
-    RunConsoleCommand("cl_tfa_gunbob_intensity", "1.00")
-    RunConsoleCommand("cl_tfa_gunbob_invertsway", "1")
     RunConsoleCommand("cl_tfa_hud_ammodata_fadein", "0.20")
     RunConsoleCommand("cl_tfa_hud_crosshair_color_enemy_b", "0")
     RunConsoleCommand("cl_tfa_hud_crosshair_color_enemy_g", "0")
@@ -350,9 +349,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_scope_sensitivity_autoscale", "1")
     RunConsoleCommand("cl_tfa_viewbob_animated", "1")
     RunConsoleCommand("cl_tfa_viewbob_intensity", "1.00")
-    RunConsoleCommand("cl_tfa_viewmodel_centered", "0")
     RunConsoleCommand("cl_tfa_viewmodel_flip", "0")
-    RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1.00")
     RunConsoleCommand("cl_tfa_viewmodel_nearwall", "1")
     RunConsoleCommand("cl_tfa_viewmodel_offset_fov", "0")
     RunConsoleCommand("cl_tfa_viewmodel_offset_x", "1.00")
@@ -369,7 +366,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw_is", "1")
 
     --ADS FX
-    RunConsoleCommand("cl_aimingfx_enabled", "1")
     RunConsoleCommand("cl_aimingfx_ca_enabled", "0")
     RunConsoleCommand("cl_aimingfx_vignette_enabled", "1")
     RunConsoleCommand("cl_aimingfx_vignette_intensity_initially_multiplier", "0.75")
@@ -380,7 +376,4 @@ if CLIENT then
 
     --Voice Chat animations
     RunConsoleCommand("cl_vmanip_voicechat", "0")
-
-    --Grappling Hook
-    RunConsoleCommand("frest_bindg", KEY_G)
 end

@@ -148,6 +148,7 @@ function mainMenu()
                 local accolades = Menu:AddSubMenu("View Lifetime Accolades")
 				accolades:AddOption("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot"))
 				accolades:AddOption("Melee Kills (Smackdown): " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown"))
+                accolades:AddOption("Clutches (Kills with less than 15 HP): " .. LocalPlayer():GetNWInt("playerAccoladeClutch"))
 				accolades:AddOption("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot"))
 				accolades:AddOption("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank"))
 				accolades:AddOption("Kill Streaks Started (On Streak): " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak"))
@@ -167,6 +168,11 @@ function mainMenu()
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton.DoClick = function()
+                if WorkshopButton:IsHovered() then
+                    WorkshopButton:SetImageColor(Color(255, 0, 0))
+                else
+                    WorkshopButton:SetImageColor(Color(255, 255, 255))
+                end
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
             end
 
@@ -653,11 +659,11 @@ function mainMenu()
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 160)
+                    DockInputs:SetSize(0, 200)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 360)
+                    DockUI:SetSize(0, 480)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -665,7 +671,7 @@ function mainMenu()
 
                     local DockViewmodel = vgui.Create("DPanel", OptionsScroller)
                     DockViewmodel:Dock(TOP)
-                    DockViewmodel:SetSize(0, 160)
+                    DockViewmodel:SetSize(0, 240)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
@@ -681,7 +687,7 @@ function mainMenu()
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 290)
+                    DockPerformance:SetSize(0, 330)
 
                     local DockBackButton = vgui.Create("DPanel", OptionsScroller)
                     DockBackButton:Dock(TOP)
@@ -702,6 +708,7 @@ function mainMenu()
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -718,6 +725,16 @@ function mainMenu()
                     ironsToggle:SetValue(true)
                     ironsToggle:SetSize(30, 30)
 
+                    local grappleBind = DockInputs:Add("DBinder")
+                    grappleBind:SetPos(22.5, 150)
+                    grappleBind:SetSize(100, 30)
+                    grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
+
+                    function grappleBind:OnChange(num)
+                        selectedGrappleBind = grappleBind:GetSelectedNumber()
+                        RunConsoleCommand("frest_bindg", selectedGrappleBind)
+                    end
+
                     DockUI.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("UI", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -729,6 +746,9 @@ function mainMenu()
                         draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Velocity Counter", "SettingsLabel", 55, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 425, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -772,12 +792,15 @@ function mainMenu()
                         ammoStyle:SetValue("Numeric")
                     elseif CLIENT and GetConVar("tm_ammostyle"):GetInt() == 1 then
                         ammoStyle:SetValue("Bar")
-                    else
+                    elseif CLIENT and GetConVar("tm_ammostyle"):GetInt() == 2 then
                         ammoStyle:SetValue("Below Crosshair")
+                    else
+                        ammoStyle:SetValue("Centered Numeric")
                     end
                     ammoStyle:AddChoice("Numeric")
                     ammoStyle:AddChoice("Bar")
                     ammoStyle:AddChoice("Below Crosshair")
+                    ammoStyle:AddChoice("Centered Numeric")
                     ammoStyle.OnSelect = function(self, value)
                         RunConsoleCommand("tm_ammostyle", value - 1)
                     end
@@ -793,6 +816,40 @@ function mainMenu()
                     accoladeToggle:SetConVar("tm_enableaccolades")
                     accoladeToggle:SetValue(true)
                     accoladeToggle:SetSize(30, 30)
+
+                    local reloadHintsToggle = DockUI:Add("DCheckBox")
+                    reloadHintsToggle:SetPos(20, 350)
+                    reloadHintsToggle:SetConVar("tm_reloadhints")
+                    reloadHintsToggle:SetValue(true)
+                    reloadHintsToggle:SetSize(30, 30)
+
+                    local killUIAnchor = DockUI:Add("DComboBox")
+                    killUIAnchor:SetPos(20, 390)
+                    killUIAnchor:SetSize(100, 30)
+                    if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
+                        killUIAnchor:SetValue("Bottom")
+                    else
+                        killUIAnchor:SetValue("Top")
+                    end
+                    killUIAnchor:AddChoice("Bottom")
+                    killUIAnchor:AddChoice("Top")
+                    killUIAnchor.OnSelect = function(self, value)
+                        RunConsoleCommand("tm_killuianchor", value - 1)
+                    end
+
+                    local deathUIAnchor = DockUI:Add("DComboBox")
+                    deathUIAnchor:SetPos(20, 430)
+                    deathUIAnchor:SetSize(100, 30)
+                    if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
+                        deathUIAnchor:SetValue("Bottom")
+                    else
+                        deathUIAnchor:SetValue("Top")
+                    end
+                    deathUIAnchor:AddChoice("Bottom")
+                    deathUIAnchor:AddChoice("Top")
+                    deathUIAnchor.OnSelect = function(self, value)
+                        RunConsoleCommand("tm_deathuianchor", value - 1)
+                    end
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
@@ -846,6 +903,8 @@ function mainMenu()
 
                         draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Weapon Bobbing Multiplier", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Invert Weapon Bobbing", "SettingsLabel", 55, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local viewmodelFOV = DockViewmodel:Add("DNumSlider")
@@ -860,6 +919,19 @@ function mainMenu()
                     centeredVM:SetPos(20, 110)
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
                     centeredVM:SetSize(30, 30)
+
+                    local bobbingMulti = DockViewmodel:Add("DNumSlider")
+                    bobbingMulti:SetPos(-85, 150)
+                    bobbingMulti:SetSize(250, 30)
+                    bobbingMulti:SetConVar("cl_tfa_gunbob_intensity")
+                    bobbingMulti:SetMin(1)
+                    bobbingMulti:SetMax(2)
+                    bobbingMulti:SetDecimals(1)
+
+                    local invertBobbing = DockViewmodel:Add("DCheckBox")
+                    invertBobbing:SetPos(20, 190)
+                    invertBobbing:SetConVar("cl_tfa_gunbob_invertsway")
+                    invertBobbing:SetSize(30, 30)
 
                     DockCrosshair.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
@@ -1026,39 +1098,46 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Muzzle Gas Blur", "SettingsLabel", 55 , 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Bullet Tracers", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Ejected Shells Time", "SettingsLabel", 155 , 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55 , 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Muzzle Gas Blur", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Bullet Tracers", "SettingsLabel", 55 , 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Ejected Shells Time", "SettingsLabel", 155 , 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
+                    local vignetteDOF = DockPerformance:Add("DCheckBox")
+                    vignetteDOF:SetPos(20, 70)
+                    vignetteDOF:SetConVar("cl_aimingfx_enabled")
+                    vignetteDOF:SetValue(true)
+                    vignetteDOF:SetSize(30, 30)
+
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 70)
+                    ironSightDOF:SetPos(20, 110)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetValue(true)
                     ironSightDOF:SetSize(30, 30)
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 110)
+                    inspectionDOF:SetPos(20, 150)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetValue(true)
                     inspectionDOF:SetSize(30, 30)
 
                     local gasBlur = DockPerformance:Add("DCheckBox")
-                    gasBlur:SetPos(20, 150)
+                    gasBlur:SetPos(20, 190)
                     gasBlur:SetConVar("cl_tfa_fx_gasblur")
                     gasBlur:SetValue(true)
                     gasBlur:SetSize(30, 30)
 
                     local bulletTracers = DockPerformance:Add("DCheckBox")
-                    bulletTracers:SetPos(20, 190)
+                    bulletTracers:SetPos(20, 230)
                     bulletTracers:SetConVar("cl_tfa_ballistics_fx_tracers_mp")
                     bulletTracers:SetValue(true)
                     bulletTracers:SetSize(30, 30)
 
                     local ejectedDespawnTime = DockPerformance:Add("DNumSlider")
-                    ejectedDespawnTime:SetPos(-85, 230)
+                    ejectedDespawnTime:SetPos(-85, 270)
                     ejectedDespawnTime:SetSize(250, 30)
                     ejectedDespawnTime:SetConVar("cl_tfa_fx_ejectionlife")
                     ejectedDespawnTime:SetMin(0)
@@ -1100,9 +1179,17 @@ function mainMenu()
             draw.SimpleText("WHAT'S NEW:", "MainMenuPlayerName", ScrW() / 2, ScrH() / 2 - 250, rainbowColor, TEXT_ALIGN_CENTER)
 
             --New things in a specific patch go below here with a 25 spacing on the Y
-            draw.SimpleText("Kill Cam, can be disabled in options.", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("WIP Kill Cam", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText("Added Clutch accolade.", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 175, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText("Health based HUD values can no longer go below 0", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Changable Grappling Hook keybind in options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 125, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Reload Hints toggle added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("ADS Vignette toggle added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 75, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Centered Numeric added as an Ammo Style in options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Viewmodel FOV Multiplier and Centered Viewmodel options now save upon leaving a game", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 25, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Kill/Death UI anchoring added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Weapon Bobbing Multiplier added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 + 25, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Invert Weapon Bobbing added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 + 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
 
         LocalPlayer():SetNWBool("seenIntro", true)

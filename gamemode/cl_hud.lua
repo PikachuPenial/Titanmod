@@ -25,11 +25,25 @@ function HUD()
                 draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 60, white, TEXT_ALIGN_RIGHT, 0)
             end
 
-            if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
+            if CLIENT and GetConVar("tm_reloadhints"):GetInt() == 1 and (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
                 draw.SimpleText("0", "AmmoCount", ScrW() - 15, ScrH() - 170, red, TEXT_ALIGN_RIGHT, 0)
                 draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 175, red, TEXT_ALIGN_CENTER, 0)
             elseif (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() >= 0) then
                 draw.SimpleText(client:GetActiveWeapon():Clip1(), "AmmoCount", ScrW() - 15, ScrH() - 170, white, TEXT_ALIGN_RIGHT, 0)
+            end
+        end
+
+        --Middle Numeric Style
+        if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 3 then
+            if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():GetPrintName() != nil) then
+                draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() / 2, ScrH() - 60, white, TEXT_ALIGN_CENTER, 0)
+            end
+
+            if CLIENT and GetConVar("tm_reloadhints"):GetInt() == 1 and (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
+                draw.SimpleText("0", "AmmoCount", ScrW() / 2, ScrH() - 170, red, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 175, red, TEXT_ALIGN_CENTER, 0)
+            elseif (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() >= 0) then
+                draw.SimpleText(client:GetActiveWeapon():Clip1(), "AmmoCount", ScrW() / 2, ScrH() - 170, white, TEXT_ALIGN_CENTER, 0)
             end
         end
 
@@ -39,7 +53,7 @@ function HUD()
                 draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 100, white, TEXT_ALIGN_RIGHT, 0)
             end
 
-            if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
+            if CLIENT and GetConVar("tm_reloadhints"):GetInt() == 1 and (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
                 draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 175, red, TEXT_ALIGN_CENTER, 0)
             end
 
@@ -54,7 +68,7 @@ function HUD()
                 draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 60, white, TEXT_ALIGN_RIGHT, 0)
             end
 
-            if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
+            if CLIENT and GetConVar("tm_reloadhints"):GetInt() == 1 and (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() == 0) then
                 draw.SimpleText("0", "GunPrintName", ScrW() / 2, ScrH() / 2 + 120, red, TEXT_ALIGN_CENTER, 0)
                 draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 170, red, TEXT_ALIGN_CENTER, 0)
             elseif (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():Clip1() >= 0) then
@@ -78,7 +92,11 @@ function HUD()
             end
 
             surface.DrawRect(10, ScrH() - 38, 450 * (client:Health() / client:GetMaxHealth()), 30)
-            draw.SimpleText(client:Health(), "Health", 450, ScrH() - 39, white, TEXT_ALIGN_RIGHT, 0)
+            if client:Health() <= 0 then
+                draw.SimpleText("0", "Health", 450, ScrH() - 39, white, TEXT_ALIGN_RIGHT, 0)
+            else
+                draw.SimpleText(client:Health(), "Health", 450, ScrH() - 39, white, TEXT_ALIGN_RIGHT, 0)
+            end
         end
 
         --Middle Anchor
@@ -97,7 +115,11 @@ function HUD()
             end
 
             surface.DrawRect(ScrW() / 2 - 225, ScrH() - 38, 450 * (client:Health() / client:GetMaxHealth()), 30)
-            draw.SimpleText(client:Health(), "Health", ScrW() / 2, ScrH() - 39, white, TEXT_ALIGN_CENTER, 0)
+            if client:Health() <= 0 then
+                draw.SimpleText("0", "Health", ScrW() / 2, ScrH() - 39, white, TEXT_ALIGN_CENTER, 0)
+            else
+                draw.SimpleText(client:Health(), "Health", ScrW() / 2, ScrH() - 39, white, TEXT_ALIGN_CENTER, 0)
+            end
         end
 
         if CLIENT and GetConVar("tm_showspeed"):GetInt() == 1 then
@@ -120,7 +142,11 @@ function HUD()
             end
 
             surface.DrawRect(ScrW() / 2 - 100, ScrH() / 2 + 200, 200 * (client:Health() / client:GetMaxHealth()), 30)
-            draw.SimpleText(client:Health(), "Health", ScrW() / 2, ScrH() / 2 + 200, white, TEXT_ALIGN_CENTER, 0)
+            if client:Health() <= 0 then
+                draw.SimpleText("0", "Health", ScrW() / 2, ScrH() / 2 + 200, white, TEXT_ALIGN_CENTER, 0)
+            else
+                draw.SimpleText(client:Health(), "Health", ScrW() / 2, ScrH() / 2 + 200, white, TEXT_ALIGN_CENTER, 0)
+            end
         end
 
         if CLIENT and GetConVar("tm_showspeed"):GetInt() == 1 then
@@ -178,7 +204,11 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif = vgui.Create("DFrame")
     KillNotif:SetSize(0, 200)
     KillNotif:SetX(ScrW() / 2 - 300)
-    KillNotif:SetY(ScrH() - 335)
+    if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
+        KillNotif:SetY(ScrH() - 335)
+    else
+        KillNotif:SetY(115)
+    end
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
@@ -349,7 +379,11 @@ net.Receive("DeathHud", function(len, ply)
     DeathNotif = vgui.Create("DFrame")
     DeathNotif:SetSize(800, 250)
     DeathNotif:SetX(ScrW() / 2 - 400)
-    DeathNotif:SetY(ScrH() - 350)
+    if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
+        DeathNotif:SetY(ScrH() - 350)
+    else
+        DeathNotif:SetY(100)
+    end
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
@@ -372,7 +406,11 @@ net.Receive("DeathHud", function(len, ply)
             draw.SimpleText("|", "PlayerDeathName", 400, 115, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 67.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
             draw.SimpleText(killedWith, "PlayerDeathName", 410, 67.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 100, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            if killedBy:Health() <= 0 then
+                draw.SimpleText("DEAD", "WepNameKill", 390, 100, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
+            else
+                draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 100, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            end
             draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 125, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
             draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 125, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 

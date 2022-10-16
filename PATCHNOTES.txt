@@ -1,9 +1,17 @@
 Notes are sorted by the patches upload date.
 
 0.1b2 - 10/15/22
-    Kill Cam, can be disabled in options
+    Kill Cam
     Added Clutch accolade
     Health based HUD values can no longer go below 0
+    Changable Grappling Hook keybind in options
+    Reload Hints toggle added to options
+    ADS Vignette toggle added to options
+    Centered Numeric added as an Ammo Style in options
+    Viewmodel FOV Multiplier and Centered Viewmodel options now save upon leaving a game
+    Kill/Death UI anchoring added to options
+    Weapon Bobbing Multiplier added to options
+    Invert Weapon Bobbing added to options
 
 0.1b1 - 10/14/22
     Intro Screen, can be disabled in options
