@@ -3,6 +3,8 @@ function TestKillNoti(ply, cmd, args)
     net.Start("NotifyKill")
     net.WriteEntity(ply)
     net.Send(ply)
+
+	ply:SetNWInt("")
 end
 concommand.Add("testkill", TestKillNoti)
 

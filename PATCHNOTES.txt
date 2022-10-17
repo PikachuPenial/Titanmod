@@ -1,5 +1,7 @@
 Notes are sorted by the patches upload date.
 
+0.1b3 - 10/16/22
+
 0.1b2 - 10/15/22
     Kill Cam
     Added Clutch accolade

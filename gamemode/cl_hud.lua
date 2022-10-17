@@ -415,7 +415,7 @@ net.Receive("DeathHud", function(len, ply)
             draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 125, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 
             draw.SimpleText("Respawning in     ", "WepNameKill", 390, 165, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            if respawnTimeLeft ~= nil or respawnTimeLeft > 4 or respawnTimeLeft < 0 then
+            if respawnTimeLeft ~= nil or respawnTimeLeft > 5 or respawnTimeLeft < 0 then
                 draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 165, Color(255, 255, 255), TEXT_ALIGN_LEFT)
             end
             draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 190, Color(255, 255, 255), TEXT_ALIGN_CENTER)

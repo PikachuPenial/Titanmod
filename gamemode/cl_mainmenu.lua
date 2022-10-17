@@ -168,11 +168,6 @@ function mainMenu()
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton.DoClick = function()
-                if WorkshopButton:IsHovered() then
-                    WorkshopButton:SetImageColor(Color(255, 0, 0))
-                else
-                    WorkshopButton:SetImageColor(Color(255, 255, 255))
-                end
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
             end
 

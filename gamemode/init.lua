@@ -11,6 +11,129 @@ function GM:Initialize()
 	print("Gamemode Initialized")
 end
 
+local weaponArray = {}
+weaponArray[1] = {"tfa_ins2_aa12", "AA-12"}
+weaponArray[2] = {"tfa_ins2_acrc", "ACR-C"}
+weaponArray[3] = {"tfa_ins2_aek971", "AEK-971"}
+weaponArray[4] = {"tfa_ins2_akms", "AKMS"}
+weaponArray[5] = {"tfa_inss_aks74u", "AKS-74U"}
+weaponArray[6] = {"tfa_ismc_ak12_rpk", "AK-12 (RPK)"}
+weaponArray[7] = {"tfa_ins2_ak400", "AK-400"}
+weaponArray[8] = {"tfa_ins2_warface_amp_dsr1", "AMP DSR-1"}
+weaponArray[9] = {"tfa_ins2_abakan", "AN-94"}
+weaponArray[10] = {"tfa_ins2_cw_ar15", "AR-15"}
+weaponArray[11] = {"tfa_ins2_ar57", "AR-57"}
+weaponArray[12] = {"tfa_at_shak_12", "ASh-12"}
+weaponArray[13] = {"tfa_inss_asval", "AS-VAL"}
+weaponArray[14] = {"tfa_ins2_warface_awm", "AWM"}
+weaponArray[15] = {"tfa_ins2_warface_ax308", "AX-308"}
+weaponArray[16] = {"tfa_ins2_barrett_m98_bravo", "Barrett M98B"}
+weaponArray[17] = {"tfa_ins2_mx4", "Beretta Mx4 Storm"}
+weaponArray[18] = {"tfa_doibren", "Bren"}
+weaponArray[19] = {"tfa_ins2_warface_bt_mp9", "B&T MP9"}
+weaponArray[20] = {"tfa_ins2_warface_cheytac_m200", "CheyTac M200"}
+weaponArray[21] = {"tfa_new_m1911", "Colt M1911"}
+weaponArray[22] = {"tfa_ins2_colt_m45", "Colt M45A1"}
+weaponArray[23] = {"tfa_ins2_cz75", "CZ 75 B"}
+weaponArray[24] = {"tfa_ins2_cz805", "CZ 805 BREN"}
+weaponArray[25] = {"tfa_ins2_ddm4v5", "DDM4V5"}
+weaponArray[26] = {"tfa_ins2_deagle", "Desert Eagle"}
+weaponArray[27] = {"tfa_ins2_famas", "Famas F1"}
+weaponArray[28] = {"tfa_blast_lynx_msbsb", "FB MSBS-B"}
+weaponArray[29] = {"tfa_doifg42", "FG 42"}
+weaponArray[30] = {"tfa_ins2_fiveseven_eft", "Fiveseven"}
+weaponArray[31] = {"tfa_ins2_fn_fal", "FN FAL"}
+weaponArray[32] = {"tfa_ins2_fnp45", "FNP-45"}
+weaponArray[33] = {"tfa_new_inss_galil", "Galil"}
+weaponArray[34] = {"tfa_new_glock17", "Glock 17"}
+weaponArray[35] = {"fres_grapple", "Grappling Hook"}
+weaponArray[36] = {"tfa_ins2_gsh18", "GSH-18"}
+weaponArray[37] = {"tfa_howa_type_64", "Howa Type 64"}
+weaponArray[38] = {"tfa_ins2_hk_mg36", "H&K MG36"}
+weaponArray[39] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5"}
+weaponArray[40] = {"tfa_ins2_imbelia2", "Imbel IA2"}
+weaponArray[41] = {"tfa_ins2_izh43sw", "IZH-43 Sawed Off"}
+weaponArray[42] = {"tfa_ararebo_bf1", "Japanese Ararebo"}
+weaponArray[43] = {"tfa_km2000_knife", "KM-2000"}
+weaponArray[44] = {"tfa_ins2_krissv", "KRISS Vector"}
+weaponArray[45] = {"tfa_ins2_ksg", "KSG"}
+weaponArray[46] = {"tfa_blast_ksvk_cqb", "KSVK 12.7"}
+weaponArray[47] = {"tfa_doi_enfield", "Lee-Enfield No. 4"}
+weaponArray[48] = {"tfa_doilewis", "Lewis"}
+weaponArray[49] = {"tfa_doi_garand", "M1 Garand"}
+weaponArray[50] = {"tfa_ins2_m14retro", "M1A"}
+weaponArray[51] = {"tfa_doim3greasegun", "M3 Grease Gun"}
+weaponArray[52] = {"tfa_ins2_m9", "M9"}
+weaponArray[53] = {"tfa_nam_m79", "M79"}
+weaponArray[54] = {"tfa_doim1918", "M1918"}
+weaponArray[55] = {"tfa_doim1919", "M1919"}
+weaponArray[56] = {"bocw_mac10_alt", "Mac 10"}
+weaponArray[57] = {"tfa_inss_makarov", "Makarov"}
+weaponArray[58] = {"tfa_fml_lefrench_mas38", "Mas 38"}
+weaponArray[59] = {"tfa_doimg34", "MG 34"}
+weaponArray[60] = {"tfa_doimg42", "MG 42"}
+weaponArray[61] = {"tfa_ins2_minimi", "Minimi Para"}
+weaponArray[62] = {"tfa_ins2_mk23", "MK 23"}
+weaponArray[63] = {"tfa_fml_inss_mk18", "MK18"}
+weaponArray[64] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR"}
+weaponArray[65] = {"tfa_ins2_swmodel10", "Model 10"}
+weaponArray[66] = {"tfa_ins2_mosin_nagant", "Mosin Nagant"}
+weaponArray[67] = {"tfa_doimp40", "MP 40"}
+weaponArray[68] = {"tfa_ins2_mp5k", "MP5K"}
+weaponArray[69] = {"tfa_inss_mp7_new", "MP7A1"}
+weaponArray[70] = {"tfa_ww1_mp18", "MP18"}
+weaponArray[71] = {"tfa_ins2_mr96", "MR-96"}
+weaponArray[72] = {"tfa_ins2_mc255", "MTs225-12"}
+weaponArray[73] = {"tfa_ins2_nova", "Nova"}
+weaponArray[74] = {"tfa_ins2_warface_orsis_t5000", "Orsis T-5000"}
+weaponArray[75] = {"tfa_ins2_groza", "OTs-14 Groza"}
+weaponArray[76] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach"}
+weaponArray[77] = {"tfa_doiowen", "Owen Mk.I"}
+weaponArray[78] = {"tfa_fml_p90_tac", "P90"}
+weaponArray[79] = {"tfa_new_pf940", "PF940"}
+weaponArray[80] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
+weaponArray[81] = {"tfa_ins2_pm9", "PM-9"}
+weaponArray[82] = {"tfa_nam_ppsh41", "PPSH-41"}
+weaponArray[83] = {"tfa_fas2_ppbizon", "PP-Bizon"}
+weaponArray[84] = {"tfa_ins2_norinco_qbz97", "QBZ-97"}
+weaponArray[85] = {"tfa_ins2_qsz92", "QSZ-92"}
+weaponArray[86] = {"tfa_ins2_remington_m870", "Remington M870"}
+weaponArray[87] = {"tfa_ins2_pd2_remington_msr", "Remington MSR"}
+weaponArray[88] = {"tfa_ins2_rfb", "RFB"}
+weaponArray[89] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
+weaponArray[90] = {"tfa_ins2_rpk_74m", "RPK-74M"}
+weaponArray[91] = {"tfa_ins2_l85a2", "SA80"}
+weaponArray[92] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR"}
+weaponArray[93] = {"tfa_ins2_sc_evo", "Scorpion Evo 3"}
+weaponArray[94] = {"tfa_new_p226", "SIG P226"}
+weaponArray[95] = {"tfa_ins2_sks", "SKS"}
+weaponArray[96] = {"tfa_ins2_spas12", "SPAS-12"}
+weaponArray[97] = {"tfa_ins2_spectre", "Spectre M4"}
+weaponArray[98] = {"tfa_ins2_saiga_spike", "Spike X15"}
+weaponArray[99] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
+weaponArray[100] = {"tfa_doisten", "Sten Mk.II"}
+weaponArray[101] = {"tfa_nam_stevens620", "Stevens 620"}
+weaponArray[102] = {"tfa_inss_aug", "Steyr AUG"}
+weaponArray[103] = {"tfa_doistg44", "StG44"}
+weaponArray[104] = {"tfa_ins2_sv98", "SV-98"}
+weaponArray[105] = {"tfa_ins2_s&w_500", "S&W 500"}
+weaponArray[106] = {"tfa_japanese_exclusive_tanto", "Tanto"}
+weaponArray[107] = {"tfa_ins_sandstorm_tariq", "Tariq"}
+weaponArray[108] = {"st_stim_pistol", "TCo Stim Pistol"}
+weaponArray[109] = {"tfa_doithompsonm1928", "Thompson M1928"}
+weaponArray[110] = {"tfa_doithompsonm1a1", "Thompson M1A1"}
+weaponArray[111] = {"tfa_ins2_type81", "Type 81"}
+weaponArray[112] = {"tfa_ins2_typhoon12", "Typhoon F12 Custom"}
+weaponArray[113] = {"tfa_ins2_ump45", "UMP .45"}
+weaponArray[114] = {"tfa_ins2_ump9", "UMP9"}
+weaponArray[115] = {"tfa_ins2_imi_uzi", "Uzi"}
+weaponArray[116] = {"tfa_ins2_br99", "UZK-BR99"}
+weaponArray[117] = {"tfa_ins2_vhsd2", "VHS-D2"}
+weaponArray[118] = {"tfa_ins2_walther_p99", "Walther P99"}
+weaponArray[119] = {"tfa_ins2_xm8", "XM8"}
+
+PDataWepArray = weaponArray
+
 --Player setup
 function GM:PlayerSpawn(ply)
 	ply:SetGravity(.72)
@@ -52,6 +175,11 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
+
+	--Tracking kills on a specific weapon using the table for Next Weapon tracking in the main menu.
+	for k, v in pairs(PDataWepArray) do
+		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
+	end
 
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
@@ -111,6 +239,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 
+		if (attacker:GetActiveWeapon():IsValid()) then
+			weaponClassName = weapons.Get(attacker:GetActiveWeapon():GetClass())
+			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
+		end
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 	end
 
@@ -149,13 +281,20 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		if attacker:GetPos():Distance(victim:GetPos()) < 5000 then
 			victim:SpectateEntity(attacker)
-			victim:Spectate(OBS_MODE_DEATHCAM)
+			victim:Spectate(OBS_MODE_DEATHCAM) 
 
-			timer.Simple(1, function()
+			timer.Simple(0.75, function()
 				if not IsValid(victim) or not IsValid(attacker) then return end
 
 				victim:SpectateEntity(attacker)
-				victim:Spectate(OBS_MODE_FIXED)
+				victim:Spectate(OBS_MODE_FREEZECAM)
+			end)
+
+			timer.Simple(2, function()
+				if not IsValid(victim) or not IsValid(attacker) then return end
+
+				victim:SpectateEntity(attacker)
+				victim:Spectate(OBS_MODE_IN_EYE)
 
 				victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
 			end)
@@ -206,7 +345,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerAccoladePointblank", attacker:GetNWInt("playerAccoladePointblank") + 1)
 	end
 
-	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" then
+	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)
