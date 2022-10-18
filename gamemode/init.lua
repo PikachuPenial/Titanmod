@@ -8,7 +8,7 @@ include("shared.lua")
 include("concommands.lua")
 
 function GM:Initialize()
-	print("Gamemode Initialized")
+	print("Titanmod Initialized")
 end
 
 local weaponArray = {}
@@ -176,10 +176,7 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
 
-	--Tracking kills on a specific weapon using the table for Next Weapon tracking in the main menu.
-	for k, v in pairs(PDataWepArray) do
-		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
-	end
+	--Checking if PData exists for the players weapon statistics, this could look much prettier, and could be much better optimized, but I have yet to find a way to do either of those.
 
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
@@ -239,10 +236,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 
-		if (attacker:GetActiveWeapon():IsValid()) then
-			weaponClassName = weapons.Get(attacker:GetActiveWeapon():GetClass())
-			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
-		end
+		--if (attacker:GetActiveWeapon():IsValid()) then
+			--weaponClassName = weapons.Get(attacker:GetActiveWeapon():GetClass())
+			--attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
+		--end
+
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 	end
 
@@ -455,6 +453,12 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+
+	--Weapon Statistics
+	--for k, v in pairs(PDataWepArray) do
+		--local weaponClass = v[1]
+		--ply:SetPData("killsWith_" .. weaponClass, ply:GetNWInt("killsWith_" .. weaponClass))
+	--end
 end
 
 function GM:ShutDown()
@@ -479,5 +483,11 @@ function GM:ShutDown()
 		v:SetPData("playerAccoladeSmackdown", v:GetNWInt("playerAccoladeSmackdown"))
 		v:SetPData("playerAccoladeHeadshot", v:GetNWInt("playerAccoladeHeadshot"))
 		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
+
+		--Weapon Statistics
+		--for k, v in pairs(PDataWepArray) do
+			--local weaponClass = v[1]
+			--v:SetPData("killsWith_" .. weaponClass, v:GetNWInt("killsWith_" .. weaponClass))
+		--end
 	end
 end

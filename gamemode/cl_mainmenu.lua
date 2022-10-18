@@ -83,8 +83,6 @@ function mainMenu()
 
         local MainPanel = MainMenu:Add("MainPanel")
             MainPanel.Paint = function()
-                draw.SimpleText("Welcome back, ", "MainMenuPlayerGreeting", 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText(LocalPlayer():GetName() .. "!", "MainMenuPlayerName", 300, 5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 if CLIENT and GetConVar("tm_menumusic"):GetInt() == 1 then
                     draw.SimpleText("Listening to: " .. musicName, "MainMenuMusicName", ScrW() - 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
@@ -93,22 +91,6 @@ function mainMenu()
                     end
                 else
                     draw.SimpleText("Listening to nothing, peace and quiet :)", "MainMenuMusicName", ScrW() - 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                end
-
-                draw.SimpleText("Next Loadout:", "MainMenuLoadout", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-
-                for k, v in pairs(weaponsArr) do
-                    if v[1] == LocalPlayer():GetNWInt("loadoutPrimary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 5, 250, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                    end
-
-                    if v[1] == LocalPlayer():GetNWInt("loadoutSecondary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 5, 275, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                    end
-
-                    if v[1] == LocalPlayer():GetNWInt("loadoutMelee") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                    end
                 end
             end
 
@@ -123,48 +105,25 @@ function mainMenu()
             end
 
             CallingCard = vgui.Create("DImage", MainPanel)
-            CallingCard:SetPos(5, 55)
-            CallingCard:SetSize(480, 160)
+            CallingCard:SetPos(100, 10)
+            CallingCard:SetSize(240, 80)
             CallingCard:SetImage("cards/industry.png")
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
-            playerProfilePicture:SetPos(15, 65)
-            playerProfilePicture:SetSize(140, 140)
+            playerProfilePicture:SetPos(105, 15)
+            playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPlayer(), 184)
 
-            playerProfilePicture.OnMousePressed = function(self)
-                local Menu = DermaMenu()
-
-                local profileButton = Menu:AddOption("View Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. LocalPlayer():SteamID64()) end)
-                profileButton:SetIcon("icon16/page_find.png")
-
-                local statistics = Menu:AddSubMenu("View Lifetime Stats")
-                statistics:AddOption("Score: " .. LocalPlayer():GetNWInt("playerScore"))
-                statistics:AddOption("Kills: " .. LocalPlayer():GetNWInt("playerKills"))
-                statistics:AddOption("Deaths: " .. LocalPlayer():GetNWInt("playerDeaths"))
-                statistics:AddOption("K/D Ratio: " .. (LocalPlayer():GetNWInt("playerKDR")))
-                statistics:AddOption("Highest Killstreak: " .. LocalPlayer():GetNWInt("highestKillStreak"))
-
-                local accolades = Menu:AddSubMenu("View Lifetime Accolades")
-				accolades:AddOption("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot"))
-				accolades:AddOption("Melee Kills (Smackdown): " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown"))
-                accolades:AddOption("Clutches (Kills with less than 15 HP): " .. LocalPlayer():GetNWInt("playerAccoladeClutch"))
-				accolades:AddOption("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot"))
-				accolades:AddOption("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank"))
-				accolades:AddOption("Kill Streaks Started (On Streak): " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak"))
-				accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill"))
-
-                Menu:AddSpacer()
-
-                local copyMenu = Menu:AddSubMenu("Copy...")
-                copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
-                copyMenu:AddOption("Copy SteamID", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
-
-                Menu:Open()
+            local StatisticsButton = vgui.Create("DImageButton", MainPanel)
+            StatisticsButton:SetPos(10, 10)
+            StatisticsButton:SetImage("icons/statsicon.png")
+            StatisticsButton:SetSize(80, 80)
+            StatisticsButton.DoClick = function()
+                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(ScrW() - 294, ScrH() - 72)
+            WorkshopButton:SetPos(8, ScrH() - 72)
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton.DoClick = function()
@@ -172,7 +131,7 @@ function mainMenu()
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(ScrW() - 220, ScrH() - 72)
+            YouTubeButton:SetPos(80, ScrH() - 72)
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton.DoClick = function()
@@ -180,7 +139,7 @@ function mainMenu()
             end
 
             local ServerButton = vgui.Create("DImageButton", MainPanel)
-            ServerButton:SetPos(ScrW() - 146, ScrH() - 72)
+            ServerButton:SetPos(152, ScrH() - 72)
             ServerButton:SetImage("icons/discordicon.png")
             ServerButton:SetSize(64, 64)
             ServerButton.DoClick = function()
@@ -188,17 +147,38 @@ function mainMenu()
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(ScrW() - 72, ScrH() - 72)
+            GithubButton:SetPos(224, ScrH() - 72)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton.DoClick = function()
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
             end
 
-            local SpawnButton = vgui.Create("DImageButton", MainPanel)
-            SpawnButton:SetPos(0, ScrH() - 400)
-            SpawnButton:SetImage("mainmenu/spawnbutton.png")
-            SpawnButton:SizeToContents()
+            local SpawnButton = vgui.Create("DButton", MainPanel)
+            SpawnButton:SetPos(0, ScrH() / 2 - 200)
+            SpawnButton:SetText("")
+            SpawnButton:SetSize(535, 100)
+            local textAnim = 0
+            SpawnButton.Paint = function()
+                if SpawnButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                end
+
+                draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                for k, v in pairs(weaponsArr) do
+                    if v[1] == LocalPlayer():GetNWInt("loadoutPrimary") then
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    end
+                    if v[1] == LocalPlayer():GetNWInt("loadoutSecondary") then
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    end
+                    if v[1] == LocalPlayer():GetNWInt("loadoutMelee") then
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    end
+                end
+            end
             SpawnButton.DoClick = function()
                 MainMenu:Remove(false)
                 gui.EnableScreenClicker(false)
@@ -209,10 +189,19 @@ function mainMenu()
                 LocalPlayer():Spawn()
             end
 
-            local CustomizeButton = vgui.Create("DImageButton", MainPanel)
-            CustomizeButton:SetPos(0, ScrH() - 300)
-            CustomizeButton:SetImage("mainmenu/customizebutton.png")
-            CustomizeButton:SizeToContents()
+            local CustomizeButton = vgui.Create("DButton", MainPanel)
+            CustomizeButton:SetPos(0, ScrH() / 2 - 100)
+            CustomizeButton:SetText("")
+            CustomizeButton:SetSize(530, 100)
+            local textAnim = 0
+            CustomizeButton.Paint = function()
+                if CustomizeButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                end
+                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            end
             CustomizeButton.DoClick = function()
                 MainPanel:Hide()
 
@@ -629,10 +618,19 @@ function mainMenu()
                 end
             end
 
-            local OptionsButton = vgui.Create("DImageButton", MainPanel)
-            OptionsButton:SetPos(0, ScrH() - 200)
-            OptionsButton:SetImage("mainmenu/optionsbutton.png")
-            OptionsButton:SizeToContents()
+            local OptionsButton = vgui.Create("DButton", MainPanel)
+            OptionsButton:SetPos(0, ScrH() / 2)
+            OptionsButton:SetText("")
+            OptionsButton:SetSize(415, 100)
+            local textAnim = 0
+            OptionsButton.Paint = function()
+                if OptionsButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                end
+                draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            end
             OptionsButton.DoClick = function()
                 MainPanel:Hide()
 
@@ -1145,10 +1143,19 @@ function mainMenu()
                 end
             end
 
-            local ExitButton = vgui.Create("DImageButton", MainPanel)
-            ExitButton:SetPos(0, ScrH() - 100)
-            ExitButton:SetImage("mainmenu/exitbutton.png")
-            ExitButton:SizeToContents()
+            local ExitButton = vgui.Create("DButton", MainPanel)
+            ExitButton:SetPos(0, ScrH() / 2 + 100)
+            ExitButton:SetText("")
+            ExitButton:SetSize(225, 100)
+            local textAnim = 0
+            ExitButton.Paint = function()
+                if ExitButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                end
+                draw.DrawText("EXIT", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            end
             ExitButton.DoClick = function()
                 RunConsoleCommand("disconnect")
             end

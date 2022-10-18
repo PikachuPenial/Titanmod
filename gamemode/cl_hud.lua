@@ -19,6 +19,9 @@ function HUD()
             return
         end
 
+        --Testing Watermark
+        draw.SimpleText("Titanmod Testing 0.1b3", "Health", 5, 0, white, TEXT_ALIGN_LEFT, 0)
+
         --Numeric Style
         if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
             if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():GetPrintName() != nil) then
