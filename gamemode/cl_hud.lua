@@ -61,7 +61,17 @@ function HUD()
             end
 
             if (client:GetActiveWeapon():IsValid()) then
-                surface.DrawRect(ScrW() - 420, ScrH() - 39, 400 * (client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1()), 30)
+                if not (client:GetActiveWeapon():Clip1() == 0) then
+                    surface.SetDrawColor(50, 50, 50, 150)
+                    surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
+                else
+                    surface.SetDrawColor(255, 0, 0, 150)
+                    surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
+                end
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1()), 30)
+                draw.SimpleText(client:GetActiveWeapon():Clip1(), "Health", ScrW() - 410, ScrH() - 40, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, 0)
             end
         end
 

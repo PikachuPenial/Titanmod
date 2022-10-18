@@ -119,7 +119,111 @@ function mainMenu()
             StatisticsButton:SetImage("icons/statsicon.png")
             StatisticsButton:SetSize(80, 80)
             StatisticsButton.DoClick = function()
-                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
+                MainPanel:Hide()
+
+                if not IsValid(StatisticsPanel) then
+                    local StatisticsPanel = MainMenu:Add("StatsPanel")
+
+                    local StatsScroller = vgui.Create("DScrollPanel", StatisticsPanel)
+                    StatsScroller:Dock(FILL)
+
+                    local StatsTextHolder = vgui.Create("DPanel", StatsScroller)
+                    StatsTextHolder:Dock(TOP)
+                    StatsTextHolder:SetSize(0, 150)
+
+                    local StatsCombat = vgui.Create("DPanel", StatsScroller)
+                    StatsCombat:Dock(TOP)
+                    StatsCombat:SetSize(0, 260)
+
+                    local StatsAccolades = vgui.Create("DPanel", StatsScroller)
+                    StatsAccolades:Dock(TOP)
+                    StatsAccolades:SetSize(0, 330)
+
+                    local StatsWeapons = vgui.Create("DPanel", StatsScroller)
+                    StatsWeapons:Dock(TOP)
+                    StatsWeapons:SetSize(0, 4250)
+
+                    local trackingPlayer = LocalPlayer()
+
+                    StatsCombat.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("COMBAT", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Total Score:", "SettingsLabel", 20, 80, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerScore"), "SettingsLabel", 500, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Total Player Kills:", "SettingsLabel", 20, 115, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerKills"), "SettingsLabel", 500, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Total Deaths:", "SettingsLabel", 20, 150, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerDeaths"), "SettingsLabel", 500, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("K/D Ratio:", "SettingsLabel", 20, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerKDR"), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Highest Player Killstreak:", "SettingsLabel", 20, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("highestKillStreak"), "SettingsLabel", 500, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    end
+
+                    StatsAccolades.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("ACCOLADES", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Headshot Kills:", "SettingsLabel", 20, 80, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 500, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Melee Kills (Smackdowns):", "SettingsLabel", 20, 115, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 500, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Clutches (Kills with <15HP):", "SettingsLabel", 20, 150, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 500, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Longshot Kills:", "SettingsLabel", 20, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Point Blank Kills:", "SettingsLabel", 20, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 500, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Killstreaks Started:", "SettingsLabel", 20, 255, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 500, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    end
+
+                    StatsWeapons.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                        for k, v in pairs(weaponsArr) do
+                            draw.SimpleText(v[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                            draw.SimpleText("0", "SettingsLabel", 500, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        end
+                    end
+
+                    local DockBackButton = vgui.Create("DPanel", StatsScroller)
+                    DockBackButton:Dock(TOP)
+                    DockBackButton:SetSize(0, 100)
+
+                    DockBackButton.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+
+                    StatsTextHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    end
+
+                    local BackButton = vgui.Create("DImageButton", DockBackButton)
+                    BackButton:SetPos(0, 0)
+                    BackButton:SetImage("mainmenu/backbutton.png")
+                    BackButton:SizeToContents()
+                    BackButton.DoClick = function()
+                        MainPanel:Show()
+                        StatisticsPanel:Hide()
+                    end
+                end
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
@@ -1146,20 +1250,30 @@ function mainMenu()
             local ExitButton = vgui.Create("DButton", MainPanel)
             ExitButton:SetPos(0, ScrH() / 2 + 100)
             ExitButton:SetText("")
-            ExitButton:SetSize(225, 100)
+            ExitButton:SetSize(500, 100)
             local textAnim = 0
+            local disconnectConfirm = 0
             ExitButton.Paint = function()
                 if ExitButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
-                draw.DrawText("EXIT", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                if (disconnectConfirm == 0) then
+                    draw.DrawText("EXIT GAME", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                else
+                    draw.DrawText("CONFIRM?", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                end
             end
             ExitButton.DoClick = function()
-                RunConsoleCommand("disconnect")
-            end
+                if (disconnectConfirm == 0) then
+                    disconnectConfirm = 1
+                else
+                    RunConsoleCommand("disconnect")
+                end
 
+                timer.Simple(3, function() disconnectConfirm = 0 end)
+            end
     end
 
     if CLIENT and GetConVar("tm_skipintro"):GetInt() == 0 and LocalPlayer():GetNWBool("seenIntro") ~= true then
@@ -1242,7 +1356,7 @@ vgui.Register("MainPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(564.7, ScrH())
+    self:SetSize(600, ScrH())
     self:SetPos(0, 0)
 end
 
@@ -1275,3 +1389,15 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("CustomizePreviewPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(600, ScrH())
+    self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("StatsPanel", PANEL, "Panel")
