@@ -75,7 +75,7 @@ function GM:ScoreboardShow()
 			CallingCard = vgui.Create("DImage", PlayerPanel)
 			CallingCard:SetPos(10, 10)
 			CallingCard:SetSize(240, 80)
-			CallingCard:SetImage("cards/industry.png")
+			CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"))
 
 			playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
 			playerProfilePicture:SetPos(15, 15)

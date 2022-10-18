@@ -438,7 +438,7 @@ net.Receive("DeathHud", function(len, ply)
     CallingCard = vgui.Create("DImage", DeathNotif)
     CallingCard:SetPos(325, 20)
     CallingCard:SetSize(150, 50)
-    CallingCard:SetImage("cards/industry.png")
+    CallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"))
 
     playerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
     playerProfilePicture:SetPos(327.5, 22.5)

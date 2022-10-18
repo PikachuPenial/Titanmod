@@ -107,7 +107,7 @@ function mainMenu()
             CallingCard = vgui.Create("DImage", MainPanel)
             CallingCard:SetPos(100, 10)
             CallingCard:SetSize(240, 80)
-            CallingCard:SetImage("cards/industry.png")
+            CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"))
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
             playerProfilePicture:SetPos(105, 15)
@@ -130,6 +130,12 @@ function mainMenu()
                     local StatsTextHolder = vgui.Create("DPanel", StatsScroller)
                     StatsTextHolder:Dock(TOP)
                     StatsTextHolder:SetSize(0, 150)
+
+                    StatsTextHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    end
 
                     local StatsCombat = vgui.Create("DPanel", StatsScroller)
                     StatsCombat:Dock(TOP)
@@ -207,12 +213,6 @@ function mainMenu()
 
                     DockBackButton.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                    end
-
-                    StatsTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local BackButton = vgui.Create("DImageButton", DockBackButton)
@@ -760,7 +760,7 @@ function mainMenu()
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 480)
+                    DockUI:SetSize(0, 520)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -836,37 +836,43 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("UI", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Health Anchor", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Velocity Counter", "SettingsLabel", 55, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 425, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Skip Game Intro", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable UI", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Health Anchor", "SettingsLabel", 125, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Ammo Style", "SettingsLabel", 125, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Velocity Counter", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 425, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 465, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
+                    local skipIntroButton = DockUI:Add("DCheckBox")
+                    skipIntroButton:SetPos(20, 70)
+                    skipIntroButton:SetConVar("tm_skipintro")
+                    skipIntroButton:SetSize(30, 30)
+
                     local enableUIButton = DockUI:Add("DCheckBox")
-                    enableUIButton:SetPos(20, 70)
+                    enableUIButton:SetPos(20, 110)
                     enableUIButton:SetConVar("tm_enableui")
                     enableUIButton:SetSize(30, 30)
 
                     local enableKillUIButton = DockUI:Add("DCheckBox")
-                    enableKillUIButton:SetPos(20, 110)
+                    enableKillUIButton:SetPos(20, 150)
                     enableKillUIButton:SetConVar("tm_enablekillpopup")
                     enableKillUIButton:SetValue(true)
                     enableKillUIButton:SetSize(30, 30)
 
                     local enableDeathUIButton = DockUI:Add("DCheckBox")
-                    enableDeathUIButton:SetPos(20, 150)
+                    enableDeathUIButton:SetPos(20, 190)
                     enableDeathUIButton:SetConVar("tm_enabledeathpopup")
                     enableDeathUIButton:SetValue(true)
                     enableDeathUIButton:SetSize(30, 30)
 
                     local healthAnchor = DockUI:Add("DComboBox")
-                    healthAnchor:SetPos(20, 190)
+                    healthAnchor:SetPos(20, 230)
                     healthAnchor:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 0 then
                         healthAnchor:SetValue("Left Side")
@@ -883,7 +889,7 @@ function mainMenu()
                     end
 
                     local ammoStyle = DockUI:Add("DComboBox")
-                    ammoStyle:SetPos(20, 230)
+                    ammoStyle:SetPos(20, 270)
                     ammoStyle:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
                         ammoStyle:SetValue("Numeric")
@@ -903,25 +909,25 @@ function mainMenu()
                     end
 
                     local velocityToggle = DockUI:Add("DCheckBox")
-                    velocityToggle:SetPos(20, 270)
+                    velocityToggle:SetPos(20, 310)
                     velocityToggle:SetConVar("tm_showspeed")
                     velocityToggle:SetValue(true)
                     velocityToggle:SetSize(30, 30)
 
                     local accoladeToggle = DockUI:Add("DCheckBox")
-                    accoladeToggle:SetPos(20, 310)
+                    accoladeToggle:SetPos(20, 350)
                     accoladeToggle:SetConVar("tm_enableaccolades")
                     accoladeToggle:SetValue(true)
                     accoladeToggle:SetSize(30, 30)
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 350)
+                    reloadHintsToggle:SetPos(20, 390)
                     reloadHintsToggle:SetConVar("tm_reloadhints")
                     reloadHintsToggle:SetValue(true)
                     reloadHintsToggle:SetSize(30, 30)
 
                     local killUIAnchor = DockUI:Add("DComboBox")
-                    killUIAnchor:SetPos(20, 390)
+                    killUIAnchor:SetPos(20, 430)
                     killUIAnchor:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
                         killUIAnchor:SetValue("Bottom")
@@ -935,7 +941,7 @@ function mainMenu()
                     end
 
                     local deathUIAnchor = DockUI:Add("DComboBox")
-                    deathUIAnchor:SetPos(20, 430)
+                    deathUIAnchor:SetPos(20, 470)
                     deathUIAnchor:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
                         deathUIAnchor:SetValue("Bottom")
@@ -1276,51 +1282,6 @@ function mainMenu()
             end
     end
 
-    if CLIENT and GetConVar("tm_skipintro"):GetInt() == 0 and LocalPlayer():GetNWBool("seenIntro") ~= true then
-        local Intro = vgui.Create("DPanel")
-        Intro:SetPos(0, 0)
-        Intro:SetSize(ScrW(), ScrH())
-        Intro:MakePopup()
-
-        Intro.Paint = function()
-            surface.SetDrawColor(75, 75, 100, 255)
-            surface.DrawRect(0, 0, Intro:GetWide(), Intro:GetTall())
-            local rainbowColor = HSVToColor((CurTime() * 100) % 360, 1, 1)
-
-            draw.SimpleText("TITANMOD", "AmmoCount", ScrW() / 2, ScrH() - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("0.1b2", "MainMenuLoadoutWeapons", ScrW() / 2 + 320, ScrH() - 120, Color(255, 255, 255, 155), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Developed by Penial", "MainMenuLoadout", ScrW() / 2, ScrH() - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Tested by Portanator, Checked, Seven, Unlucky, Suomij, RandomSZ", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() - 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-
-            draw.SimpleText("WHAT'S NEW:", "MainMenuPlayerName", ScrW() / 2, ScrH() / 2 - 250, rainbowColor, TEXT_ALIGN_CENTER)
-
-            --New things in a specific patch go below here with a 25 spacing on the Y
-            draw.SimpleText("WIP Kill Cam", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Added Clutch accolade.", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 175, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Health based HUD values can no longer go below 0", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Changable Grappling Hook keybind in options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 125, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Reload Hints toggle added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("ADS Vignette toggle added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 75, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Centered Numeric added as an Ammo Style in options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Viewmodel FOV Multiplier and Centered Viewmodel options now save upon leaving a game", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 25, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Kill/Death UI anchoring added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Weapon Bobbing Multiplier added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 + 25, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Invert Weapon Bobbing added to options", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 + 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        end
-
-        LocalPlayer():SetNWBool("seenIntro", true)
-
-        if belowMinimumRes == true then
-            timer.Create("removePopupIntroLowRes", 15.4, 1, function()
-                Intro:Hide()
-            end)
-        else
-            timer.Create("removePopupIntro", 7.4, 1, function()
-                Intro:Hide()
-            end)
-        end
-    end
-
     if belowMinimumRes == true and LocalPlayer():GetNWBool("seenResWarning") ~= true then
         local ResWarning = vgui.Create("DPanel")
         ResWarning:SetPos(0, 0)
@@ -1338,6 +1299,45 @@ function mainMenu()
         timer.Create("removeResWarning", 8, 1, function()
             ResWarning:Hide()
         end)
+    end
+
+    if CLIENT and GetConVar("tm_skipintro"):GetInt() == 0 and LocalPlayer():GetNWBool("seenIntro") ~= true then
+        local Intro = vgui.Create("DPanel")
+        Intro:SetPos(0, 0)
+        Intro:SetSize(ScrW(), ScrH())
+        Intro:MakePopup()
+
+        Intro.Paint = function()
+            surface.SetDrawColor(75, 75, 100, 255)
+            surface.DrawRect(0, 0, Intro:GetWide(), Intro:GetTall())
+            local rainbowColor = HSVToColor((CurTime() * 100) % 360, 1, 1)
+
+            draw.SimpleText("TITANMOD", "AmmoCount", ScrW() / 2, ScrH() - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("0.1b3", "MainMenuLoadoutWeapons", ScrW() / 2 + 320, ScrH() - 120, Color(255, 255, 255, 155), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Developed by Penial", "MainMenuLoadout", ScrW() / 2, ScrH() - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Tested by Portanator, Checked, Seven, Unlucky, Suomij, RandomSZ", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() - 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+
+            draw.SimpleText("WHAT'S NEW:", "MainMenuPlayerName", ScrW() / 2, ScrH() / 2 - 250, rainbowColor, TEXT_ALIGN_CENTER)
+
+            --New things in a specific patch go below here with a 25 spacing on the Y
+            draw.SimpleText("New redesigned and optimized Main Menu", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Statistics page added to Main Menu", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 175, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Work towards the Calling Card system", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Alphabetically sorted weapon lists for things like stat reading", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 125, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("tm_forcesave updated to save all of the new statistics", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        end
+
+        LocalPlayer():SetNWBool("seenIntro", true)
+
+        if belowMinimumRes == true then
+            timer.Create("removePopupIntroLowRes", 15.4, 1, function()
+                Intro:Hide()
+            end)
+        else
+            timer.Create("removePopupIntro", 7.4, 1, function()
+                Intro:Hide()
+            end)
+        end
     end
 end
 concommand.Add("tm_openmainmenu", mainMenu)

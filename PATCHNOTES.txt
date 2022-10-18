@@ -1,6 +1,11 @@
 Notes are sorted by the patches upload date.
 
-0.1b3 - 10/16/22
+0.1b3 - 10/18/22
+    New redesigned Main Menu
+    Statistics page added to Main Menu
+    Work towards the Calling Card system
+    Alphabetically sorted weapon lists for things like stat reading
+    "tm_forcesave" updated to save all of the new statistics
 
 0.1b2 - 10/15/22
     Kill Cam
