@@ -3,9 +3,10 @@ GM.Author = "Penial"
 GM.Email = "pissoff"
 GM.Website = "https://github.com/PikachuPenial"
 
---DeriveGamemode("sandbox")
+--Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
+if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
 
---Player Convars
+--Creating ConVars, mostly for use in the Options menu.
 if !ConVarExists("tm_enableui") then CreateConVar("tm_enableui", "1", FCVAR_ARCHIVE, "Enable/disable any custom UI elements created by the gamemode",0,1) end
 if !ConVarExists("tm_enablekillpopup") then CreateConVar("tm_enablekillpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the kill popup",0,1) end
 if !ConVarExists("tm_enabledeathpopup") then CreateConVar("tm_enabledeathpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the death popup",0,1) end
@@ -22,6 +23,7 @@ if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVA
 if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
 if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the death UI at the top and the bottom of the screen",0,1) end
 
+--Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
 	if !ply:Crouching() then return end
 	return true
@@ -179,9 +181,9 @@ function GM:Initialize()
     modelArr = modelArray
 end
 
---Convars for the gamemode will go here
---Server Side
+--ConVars for the gamemode will under this comment, this is used to set up default client settings, and server side stuff.
 
+--Server Side
 if SERVER then
     --Disabling NoClip/Tinnitus
     RunConsoleCommand("sbox_noclip", "0")
@@ -280,7 +282,6 @@ if SERVER then
 end
 
 --Client Side
-
 if CLIENT then
     --Client Side TFA Configuration
     RunConsoleCommand("cl_tfa_3dscope", "1")

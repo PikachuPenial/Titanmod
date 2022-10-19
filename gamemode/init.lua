@@ -11,6 +11,7 @@ function GM:Initialize()
 	print("Titanmod Initialized")
 end
 
+--This table is for saving weapon statistics.
 local weaponArray = {}
 weaponArray[1] = {"tfa_ins2_aa12", "AA-12"}
 weaponArray[2] = {"tfa_ins2_acrc", "ACR-C"}
@@ -134,7 +135,7 @@ weaponArray[119] = {"tfa_ins2_xm8", "XM8"}
 
 PDataWepArray = weaponArray
 
---Player setup
+--Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
@@ -177,8 +178,6 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
 
-	--Checking if PData exists for the players weapon statistics, this could look much prettier, and could be much better optimized, but I have yet to find a way to do either of those.
-
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
@@ -186,10 +185,12 @@ function GM:PlayerInitialSpawn(ply)
 
 	ply:ConCommand("tm_openmainmenu")
 
+	--These lists contain each weapon seperated into their respective category, for use in generating player loadouts.
 	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81"}
 	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol"}
 	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
 
+	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
 	ply:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	ply:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
 	ply:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
@@ -199,6 +200,7 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 
+--Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
 	return IsValid(ent) and ent:IsPlayer()
 end
@@ -220,6 +222,7 @@ local function HitSound(target, hitgroup, dmginfo)
 end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
 
+--Tracking statistics and sending the Kill/Death UI on a players death.
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
@@ -246,6 +249,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 	end
 
+	--This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
 	local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81"}
 	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol"}
 	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
@@ -254,6 +258,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	victim:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
 	victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
 
+	--Sends the Kill and Death UI, as well as initiating the Kill Cam.
 	local weaponInfo
 	local weaponName
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
@@ -279,6 +284,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteFloat(distance)
 		net.Send(victim)
 
+		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
 		if attacker:GetPos():Distance(victim:GetPos()) < 5000 then
 			victim:SpectateEntity(attacker)
 			victim:Spectate(OBS_MODE_DEATHCAM) 
@@ -306,12 +312,14 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end
 
+	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
 		if victim:GetNWBool("mainmenu") == false then
 			victim:Spawn()
 		end
 	end)
 
+	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
@@ -358,6 +366,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 end
 
+--Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
 function GM:ShowHelp(ply)
 	if !ply:Alive() then
 		ply:ConCommand("tm_openmainmenu")
@@ -386,6 +395,7 @@ function GM:ShowSpare2(ply)
 	end
 end
 
+--Lets the server know when a player is no longer in the Main Menu.
 function CloseMainMenu(ply)
 	if ply:GetNWBool("mainmenu") == true then
 		ply:SetNWBool("mainmenu", false)
@@ -393,12 +403,14 @@ function CloseMainMenu(ply)
 end
 concommand.Add("tm_closemainmenu", CloseMainMenu)
 
+--Overwritting the default respawn mechanics to lock players behind a spwan countdown.
 hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 	if timer.Exists(ply:SteamID() .. "respawnTime") then
 		return false
 	end
 end)
 
+--Player health regeneration after not being hit for 3.5 seconds.
 local function Regeneration()
 	local speed = 0.15
 	local damageDelay = 3.5
@@ -430,11 +442,14 @@ local function Regeneration()
 end
 hook.Add("Think", "HealthRegen", Regeneration)
 
+--Used to clear the map of decals (blood, bullet impacts, etc) every minute, helps people with shitty computers.
 timer.Create("cleanMap", 60, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
+--Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
+	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	--Statistics
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
 	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
@@ -464,6 +479,7 @@ function GM:PlayerDisconnected(ply)
 end
 
 function GM:ShutDown()
+	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics
 		v:SetPData("playerKills", v:GetNWInt("playerKills"))

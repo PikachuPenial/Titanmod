@@ -8,6 +8,7 @@ local scrh = ScrH()
 local isAnimatingKill
 
 function HUD()
+    --Disables the HUD if the player has it disabled in Options.
 	if CLIENT and GetConVar("tm_enableui"):GetInt() == 1 then
 		local client = LocalPlayer()
 
@@ -15,13 +16,15 @@ function HUD()
 			return
 		end
 
+        --Hides the HUD if the player has the Main Menu open.
         if LocalPlayer():GetNWBool("mainmenu") == true then
             return
         end
 
-        --Testing Watermark
+        --Gamemode watermark, I don't really know why I put this here, and I should probably make it a setting, but fuck you.
         draw.SimpleText("Titanmod Testing 0.2b1", "Health", 5, 0, white, TEXT_ALIGN_LEFT, 0)
 
+        --Shows the players ammo and weapon depending on the style they have selected in Options.
         --Numeric Style
         if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
             if (client:GetActiveWeapon():IsValid()) and (client:GetActiveWeapon():GetPrintName() != nil) then
@@ -89,6 +92,7 @@ function HUD()
             end
         end
 
+        --Shows the players health depending on the style they have selected in Options.
         --Left Anchor
         if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 0 then
             surface.SetDrawColor(50, 50, 50, 255)
@@ -162,6 +166,7 @@ function HUD()
             end
         end
 
+        --Velocity Counter
         if CLIENT and GetConVar("tm_showspeed"):GetInt() == 1 then
             draw.SimpleText(LocalPlayer():GetVelocity(), "Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, 0)
         end
@@ -169,11 +174,13 @@ function HUD()
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
+--Hides the players info that shows up when aiming at another player.
 function DrawTarget()
     return false
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
+--Hides default HL2 HUD elements.
 function HideHud(name)
     for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator"}) do
         if name == v then
@@ -183,10 +190,12 @@ function HideHud(name)
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
+--Hides the default voice chat HUD.
 function GM:PlayerStartVoice(ply)
     return
 end
 
+--Plays the received hitsound if a player hits another player.
 net.Receive("PlayHitsound", function(len, pl)
     if CLIENT and GetConVar("tm_hitsounds"):GetInt() == 1 then
         local hit_reg = "hitsound/hit_reg.wav"
@@ -203,6 +212,7 @@ net.Receive("PlayHitsound", function(len, pl)
     end
 end )
 
+--Displays after a player kills another player.
 net.Receive("NotifyKill", function(len, ply)
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -227,6 +237,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:ShowCloseButton(false)
     KillNotif:SizeTo(600, 200, 1, 0, 0.25)
 
+    --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
     if LocalPlayer():GetNWInt("killStreak") >= 2 then
         onstreak = "On Streak"
         onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
@@ -305,6 +316,7 @@ net.Receive("NotifyKill", function(len, ply)
         smackdownSeperator = ""
     end
 
+    --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
     local whiteColor = Color(255, 255, 255)
     local orangeColor = Color(255, 200, 100)
@@ -313,6 +325,7 @@ net.Receive("NotifyKill", function(len, ply)
     local rainbowSpeed = 160
 
     KillNotif.Paint = function()
+        --Changes the kill icons color if a player got a headshot kill.
         if LocalPlayer():GetNWBool("lastShotHead") == true then
             headshot = "Headshot"
             headshotScore = 20
@@ -330,6 +343,7 @@ net.Receive("NotifyKill", function(len, ply)
             KillIcon:SetImageColor(Color(255, 255, 255))
         end
 
+        --Dynamic text color depending on the killstreak of the player.
         if LocalPlayer():GetNWInt("killStreak") <= 2 then
             streakColor = whiteColor
         elseif LocalPlayer():GetNWInt("killStreak") <= 4 then
@@ -341,9 +355,11 @@ net.Receive("NotifyKill", function(len, ply)
         end
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
+        --Displays information about the player you killed, as well as the Accolades you achived.
         draw.SimpleText(LocalPlayer():GetNWInt("killStreak") .. " Kills", "StreakText", 300, 25, streakColor, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         if CLIENT and GetConVar("tm_enableaccolades"):GetInt() == 1 then
+            --Please ignore the code below, pretend it does not exist.
             draw.SimpleText(seperator .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. clutch .. clutchIndent .. clutchScore .. clutchSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
@@ -360,6 +376,7 @@ net.Receive("NotifyKill", function(len, ply)
 
     surface.PlaySound("hitsound/killsound.wav")
 
+    --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         KillNotif:SizeTo(0, 200, 1, 0.25, 0.25, function()
             KillNotif:Hide()
@@ -368,6 +385,7 @@ net.Receive("NotifyKill", function(len, ply)
     end)
 end )
 
+--Displays after a player dies to another player
 net.Receive("DeathHud", function(len, ply)
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -378,11 +396,13 @@ net.Receive("DeathHud", function(len, ply)
         notiAlreadyActive = false
     end
 
+    --Creates a cooldown for the death UI, having it disappear after 4 seconds.
     timer.Create("respawnTimeHideHud", 4, 1, function()
         DeathNotif:Hide()
         hook.Remove("PlayerDeathThink", "ShowRespawnTime")
     end)
 
+    --Gets the remaining respawn countdown, and sets it as a variable for later use.
     hook.Add("Think", "ShowRespawnTime", function(ply)
         if timer.Exists("respawnTimeHideHud") then
             respawnTimeLeft = math.Round(timer.TimeLeft("respawnTimeHideHud"), 1)
@@ -403,15 +423,18 @@ net.Receive("DeathHud", function(len, ply)
 
     DeathNotif.Paint = function()
         if killedBy == nil or killedWith == nil or !killedBy:IsPlayer() then
+            --This appears if the player died via a suicide.
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 100))
             draw.SimpleText("You commited suicide!", "Trebuchet18", 200, 5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         else
+            --This appears if the player died to another player
             if killedBy:GetNWBool("lastShotHead") == true then
                 draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 100, Color(255, 0, 0), TEXT_ALIGN_LEFT)
             else
                 draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 100, Color(255, 255, 255), TEXT_ALIGN_LEFT)
             end
 
+            --Information about the cause of your death, hopefully it wasn't too embarrising.
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
             draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText("|", "PlayerDeathName", 400, 65.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)

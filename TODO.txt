@@ -1,2 +1,2 @@
 Low Health vignette effect around edges of screen.
-Dropdown box in Stats Menu that allows you to see other players stats and to compare them to your own.
+Admin settings menu in Main Menu, obviously for admins. Would allow tweaking of server side settings.

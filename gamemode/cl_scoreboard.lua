@@ -29,6 +29,7 @@ function GM:ScoreboardShow()
 		for k, v in pairs(player.GetAll()) do
 			local ratio
 
+			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
 				ratio = 0
 			elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -37,6 +38,7 @@ function GM:ScoreboardShow()
 				ratio = v:Frags() / v:Deaths()
 			end
 
+			--Displays the players statistics.
 			local PlayerPanel = vgui.Create("DPanel", PlayerList)
 			PlayerPanel:SetSize(PlayerList:GetWide(), 100)
 			PlayerPanel:SetPos(0, 0)
@@ -50,7 +52,7 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:Ping() .. "ms", "Health", 460, 5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 			end
 
-			--Used to display icons near certain values on the player portion of the scoreboard.
+			--Displays icons near certain values, makes the board look prettier, and allows for quicker reading.
 			KillsIcon = vgui.Create("DImage", PlayerPanel)
 			KillsIcon:SetPos(260, 60)
 			KillsIcon:SetSize(30, 30)
@@ -71,7 +73,7 @@ function GM:ScoreboardShow()
 			ScoreIcon:SetSize(30, 30)
 			ScoreIcon:SetImage("icons/scoreicon.png")
 
-			--Support for the Calling Card system, hopefully this isn't too complicated.
+			--Displays a players calling card and profile picture.
 			CallingCard = vgui.Create("DImage", PlayerPanel)
 			CallingCard:SetPos(10, 10)
 			CallingCard:SetSize(240, 80)
@@ -82,6 +84,7 @@ function GM:ScoreboardShow()
 			playerProfilePicture:SetSize(70, 70)
 			playerProfilePicture:SetPlayer(v, 184)
 
+			--Allows the players profile to be clicked to display various options revolving around the specific player.
 			playerProfilePicture.OnMousePressed = function(self)
 				local Menu = DermaMenu()
 

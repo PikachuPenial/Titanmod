@@ -3,6 +3,7 @@ include("cl_hud.lua")
 include("cl_scoreboard.lua")
 include("cl_mainmenu.lua")
 
+--Custom fonts for the gamemode are created here.
 surface.CreateFont("GunPrintName", {
 	font = "Arial",
 	extended = false,

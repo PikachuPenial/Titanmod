@@ -20,11 +20,11 @@
 		
 		2
 		{
-			"name"		"sk_grenades"
-			"text"		"Allow Grenades"
-			"help"		"If enabled then grenades are enabled"
+			"name"		"tm_developermode"
+			"text"		"Developer Mode"
+			"help"		"Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression."
 			"type"		"CheckBox"
-			"default"	"1"
+			"default"	"0"
 		}
 	}
 }
