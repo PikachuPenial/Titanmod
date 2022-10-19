@@ -1,4 +1,2 @@
 Low Health vignette effect around edges of screen.
-Patch Notes panel that slides out over hover in Main Menu
-Remove intro for this Patch Notes slideout
 Dropdown box in Stats Menu that allows you to see other players stats and to compare them to your own.

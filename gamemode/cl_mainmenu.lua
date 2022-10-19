@@ -114,6 +114,113 @@ function mainMenu()
             playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPlayer(), 184)
 
+            local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
+            PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
+            PatchNotesButtonHolder:SetSize(48, 48)
+            PatchNotesButtonHolder.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 100))
+            end
+
+            local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
+            PatchNotesButton:SetPos(8, 8)
+            PatchNotesButton:SetImage("icons/patchnotesicon.png")
+            PatchNotesButton:SetSize(32, 32)
+            patchNotesAnim = 0
+            patchNotesOpen = 0
+            PatchNotesButton.DoClick = function()
+                if (patchNotesOpen == 0) then
+                    patchNotesOpen = 1
+                else
+                    patchNotesOpen = 0
+                end
+            end
+            PatchNotesButton.Paint = function(self, w, h)
+                if (patchNotesOpen == 1) then
+                    patchNotesAnim = math.Clamp(patchNotesAnim + 4000 * FrameTime(), 0, 400)
+                else
+                    patchNotesAnim = math.Clamp(patchNotesAnim - 4000 * FrameTime(), 0, 400)
+                end
+                PatchNotesButtonHolder:SetPos(ScrW() - 48 - patchNotesAnim, ScrH() / 2 - 28)
+            end
+
+            local PatchNotesPanel = vgui.Create("DPanel", MainPanel)
+            PatchNotesPanel:SetSize(420, 600)
+            PatchNotesPanel.Paint = function(self, w, h)
+                PatchNotesPanel:SetPos(ScrW() - 1 - patchNotesAnim, ScrH() / 2 - 300)
+                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 0))
+            end
+
+            local PatchScroller = vgui.Create("DScrollPanel", PatchNotesPanel)
+            PatchScroller:Dock(FILL)
+
+            local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
+            PatchTextHeader:Dock(TOP)
+            PatchTextHeader:SetSize(0, 90)
+            PatchTextHeader.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
+            local Patch02b1 = vgui.Create("DPanel", PatchScroller)
+            Patch02b1:Dock(TOP)
+            Patch02b1:SetSize(0, 250)
+            Patch02b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.2b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/18/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Minimi Para", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   tm_forcesave saves Accolades", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 220, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+            end
+
+            local Patch01b2 = vgui.Create("DPanel", PatchScroller)
+            Patch01b2:Dock(TOP)
+            Patch01b2:SetSize(0, 170)
+            Patch01b2.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.1b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/15/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Kill Cam", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Clutch Accolade", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 7 new Options", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed some Options not saving after disconnect", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
+            local Patch01b1 = vgui.Create("DPanel", PatchScroller)
+            Patch01b1:Dock(TOP)
+            Patch01b1:SetSize(0, 430)
+            Patch01b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.1b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/14/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KSVK 12.7, UMP9, Type-81", "StreakText", 5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   TCo Stim Pistol", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New default Main Menu song ", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New community music track", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 3 new default playermodels", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 3 new options", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      UMP-45", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      M14, Mk. 14 EBR", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Tweaked Grappling Hook cooldown (15 > 18s)", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated KRISS Vector", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KM-2000 now gives the Smackdown Accolade", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Equalized audio on music tracks", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Replaced Super Soilder PM with GMan PM", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
             StatisticsButton:SetPos(10, 10)
             StatisticsButton:SetImage("icons/statsicon.png")
@@ -1299,45 +1406,6 @@ function mainMenu()
         timer.Create("removeResWarning", 8, 1, function()
             ResWarning:Hide()
         end)
-    end
-
-    if CLIENT and GetConVar("tm_skipintro"):GetInt() == 0 and LocalPlayer():GetNWBool("seenIntro") ~= true then
-        local Intro = vgui.Create("DPanel")
-        Intro:SetPos(0, 0)
-        Intro:SetSize(ScrW(), ScrH())
-        Intro:MakePopup()
-
-        Intro.Paint = function()
-            surface.SetDrawColor(75, 75, 100, 255)
-            surface.DrawRect(0, 0, Intro:GetWide(), Intro:GetTall())
-            local rainbowColor = HSVToColor((CurTime() * 100) % 360, 1, 1)
-
-            draw.SimpleText("TITANMOD", "AmmoCount", ScrW() / 2, ScrH() - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("0.1b3", "MainMenuLoadoutWeapons", ScrW() / 2 + 320, ScrH() - 120, Color(255, 255, 255, 155), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Developed by Penial", "MainMenuLoadout", ScrW() / 2, ScrH() - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Tested by Portanator, Checked, Seven, Unlucky, Suomij, RandomSZ", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() - 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-
-            draw.SimpleText("WHAT'S NEW:", "MainMenuPlayerName", ScrW() / 2, ScrH() / 2 - 250, rainbowColor, TEXT_ALIGN_CENTER)
-
-            --New things in a specific patch go below here with a 25 spacing on the Y
-            draw.SimpleText("New redesigned and optimized Main Menu", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 200, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Statistics page added to Main Menu", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 175, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Work towards the Calling Card system", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Alphabetically sorted weapon lists for things like stat reading", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 125, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("tm_forcesave updated to save all of the new statistics", "MainMenuLoadoutWeapons", ScrW() / 2, ScrH() / 2 - 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        end
-
-        LocalPlayer():SetNWBool("seenIntro", true)
-
-        if belowMinimumRes == true then
-            timer.Create("removePopupIntroLowRes", 15.4, 1, function()
-                Intro:Hide()
-            end)
-        else
-            timer.Create("removePopupIntro", 7.4, 1, function()
-                Intro:Hide()
-            end)
-        end
     end
 end
 concommand.Add("tm_openmainmenu", mainMenu)
