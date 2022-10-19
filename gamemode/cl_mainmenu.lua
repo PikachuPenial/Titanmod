@@ -229,6 +229,9 @@ function mainMenu()
                 MainPanel:Hide()
 
                 if not IsValid(StatisticsPanel) then
+                    local comparisonSelectedPlayer = nil
+                    local compraingWith = false
+                    local playerSelected = false
                     local StatisticsPanel = MainMenu:Add("StatsPanel")
 
                     local StatsScroller = vgui.Create("DScrollPanel", StatisticsPanel)
@@ -256,6 +259,27 @@ function mainMenu()
                     StatsWeapons:Dock(TOP)
                     StatsWeapons:SetSize(0, 4250)
 
+                    local comparePlayerStats = StatsTextHolder:Add("DComboBox")
+                    comparePlayerStats:SetPos(524, 113)
+                    comparePlayerStats:SetSize(200, 30)
+                    comparePlayerStats:SetValue("Compare stats with...")
+                    comparePlayerStats.OnSelect = function(_, _, value, id)
+                        comparisonSelectedPlayerID = id
+                        comparingWith = player.GetBySteamID(comparisonSelectedPlayerID)
+
+                        playerSelected = true
+                        comparePlayerStats:SetValue("Comparing with " .. value)
+
+                        comparingWithPFP = vgui.Create("AvatarImage", StatsCombat)
+                        comparingWithPFP:SetPos(656, 15)
+                        comparingWithPFP:SetSize(64, 64)
+                        comparingWithPFP:SetPlayer(comparingWith, 184)
+                    end
+
+                    for _, v in pairs(player.GetAll()) do
+                        comparePlayerStats:AddChoice(v:Name(), v:SteamID())
+                    end
+
                     local trackingPlayer = LocalPlayer()
 
                     StatsCombat.Paint = function(self, w, h)
@@ -272,10 +296,18 @@ function mainMenu()
                         draw.SimpleText(trackingPlayer:GetNWInt("playerDeaths"), "SettingsLabel", 500, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
                         draw.SimpleText("K/D Ratio:", "SettingsLabel", 20, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerKDR"), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText(math.Round(trackingPlayer:GetNWInt("playerKDR"), 3), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
                         draw.SimpleText("Highest Player Killstreak:", "SettingsLabel", 20, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("highestKillStreak"), "SettingsLabel", 500, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        if playerSelected == true and comparingWith ~= false then
+                            draw.SimpleText(comparingWith:GetNWInt("playerScore"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerKills"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerDeaths"), "SettingsLabel", 720, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(math.Round(trackingPlayer:GetNWInt("playerKDR"), 3), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("highestKillStreak"), "SettingsLabel", 720, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        end
                     end
 
                     StatsAccolades.Paint = function(self, w, h)
@@ -302,6 +334,16 @@ function mainMenu()
 
                         draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                        if playerSelected == true and comparingWith ~= false then
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 720, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 720, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        end
                     end
 
                     StatsWeapons.Paint = function(self, w, h)
@@ -311,8 +353,17 @@ function mainMenu()
                         for k, v in pairs(weaponsArr) do
                             draw.SimpleText(v[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                             draw.SimpleText("0", "SettingsLabel", 500, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                            if playerSelected == true and comparingWith ~= false then
+                                draw.SimpleText("0", "SettingsLabel", 720, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            end
                         end
                     end
+
+                    localPFP = vgui.Create("AvatarImage", StatsCombat)
+                    localPFP:SetPos(436, 15)
+                    localPFP:SetSize(64, 64)
+                    localPFP:SetPlayer(LocalPlayer(), 184)
 
                     local DockBackButton = vgui.Create("DPanel", StatsScroller)
                     DockBackButton:Dock(TOP)
@@ -1460,7 +1511,7 @@ vgui.Register("CustomizePreviewPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(600, ScrH())
+    self:SetSize(780, ScrH())
     self:SetPos(0, 0)
 end
 

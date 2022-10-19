@@ -92,7 +92,7 @@ function GM:ScoreboardShow()
 				statistics:AddOption("Score: " .. v:GetNWInt("playerScore"))
 				statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
 				statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
-				statistics:AddOption("K/D Ratio: " .. v:GetNWInt("playerKDR"))
+				statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
 				statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
 
 				local accolades = Menu:AddSubMenu("View Lifetime Accolades")

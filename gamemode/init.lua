@@ -329,7 +329,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if attacker:Health() <= 15 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
-		attacker:SetNWInt("playerAccoladeLongshot", attacker:GetNWInt("playerAccoladeLongshot") + 1)
+		attacker:SetNWInt("playerAccoladeClutch", attacker:GetNWInt("playerAccoladeClutch") + 1)
 	end
 
 	if distance >= 40 then

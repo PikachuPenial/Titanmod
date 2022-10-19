@@ -20,7 +20,7 @@ function HUD()
         end
 
         --Testing Watermark
-        draw.SimpleText("Titanmod Testing 0.1b3", "Health", 5, 0, white, TEXT_ALIGN_LEFT, 0)
+        draw.SimpleText("Titanmod Testing 0.2b1", "Health", 5, 0, white, TEXT_ALIGN_LEFT, 0)
 
         --Numeric Style
         if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
