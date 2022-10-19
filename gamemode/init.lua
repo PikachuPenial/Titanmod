@@ -179,6 +179,7 @@ function GM:PlayerInitialSpawn(ply)
 
 	--Checking if PData exists for the players weapon statistics, this could look much prettier, and could be much better optimized, but I have yet to find a way to do either of those.
 
+	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
 	end)

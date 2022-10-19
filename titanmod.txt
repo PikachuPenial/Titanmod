@@ -5,4 +5,26 @@
 	"maps"		"^tm_"
 	"category"	"pvp"
 	"menusystem"	"1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"sk_maxfrags"
+			"text"		"Max Frags"
+			"help"		"The maxiumum number of frags before a map change"
+			"type"		"Numeric"
+			"default"	"20"
+		}
+
+		
+		2
+		{
+			"name"		"sk_grenades"
+			"text"		"Allow Grenades"
+			"help"		"If enabled then grenades are enabled"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+	}
 }
