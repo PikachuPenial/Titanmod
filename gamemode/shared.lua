@@ -17,7 +17,6 @@ if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "0", FCVAR_AR
 if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
 if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
 if !ConVarExists("tm_communitymusic") then CreateConVar("tm_communitymusic", "0", FCVAR_ARCHIVE, "Enable or disable community requested Main Menu music",0,1) end
-if !ConVarExists("tm_autoshowmenu") then CreateConVar("tm_autoshowmenu", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu opening automatically on server connect",0,1) end
 if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
 if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
 if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
@@ -187,7 +186,6 @@ end
 if SERVER then
     --Disabling NoClip/Tinnitus
     RunConsoleCommand("sbox_noclip", "0")
-    RunConsoleCommand("dsp_off", "1")
 
     --Proximity Voice Chat
     RunConsoleCommand("sv_maxVoiceAudible", "750")

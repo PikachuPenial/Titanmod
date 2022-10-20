@@ -112,6 +112,24 @@ surface.CreateFont("AmmoCount", {
 	outline = false,
 } )
 
+surface.CreateFont("AmmoCountESmall", {
+	font = "Arial",
+	extended = false,
+	size = 48,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 surface.CreateFont("AmmoCountSmall", {
 	font = "Arial",
 	extended = false,

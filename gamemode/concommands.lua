@@ -18,6 +18,7 @@ concommand.Add("testdeath", TestDeathNoti)
 
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
+	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	--Statistics
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
 	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
@@ -38,6 +39,8 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+
+	print("Save was successful!")
 end
 concommand.Add("tm_forcesave", ForceSave)
 

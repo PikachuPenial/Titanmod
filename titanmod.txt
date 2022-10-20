@@ -10,21 +10,12 @@
 	{
 		1
 		{
-			"name"		"sk_maxfrags"
-			"text"		"Max Frags"
-			"help"		"The maxiumum number of frags before a map change"
-			"type"		"Numeric"
-			"default"	"20"
-		}
-
-		
-		2
-		{
 			"name"		"tm_developermode"
-			"text"		"Developer Mode"
-			"help"		"Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression."
+			"text"		"Developer Mode (enable spawn menu, disable progression)"
+			"help"		"Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players."
 			"type"		"CheckBox"
 			"default"	"0"
+			"singleplayer"
 		}
 	}
 }

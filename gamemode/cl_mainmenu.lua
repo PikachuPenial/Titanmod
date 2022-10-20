@@ -105,12 +105,19 @@ function mainMenu()
             end
 
             CallingCard = vgui.Create("DImage", MainPanel)
-            CallingCard:SetPos(100, 10)
+            CallingCard:SetPos(190, 10)
             CallingCard:SetSize(240, 80)
             CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"))
 
+            local CallingCardText = vgui.Create("DPanel", CallingCard)
+            CallingCardText:SetPos(0, 0)
+            CallingCardText:SetSize(240, 80)
+            CallingCardText.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+            end
+
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
-            playerProfilePicture:SetPos(105, 15)
+            playerProfilePicture:SetPos(195, 15)
             playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPlayer(), 184)
 
@@ -122,11 +129,10 @@ function mainMenu()
             end
 
             local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
-            PatchNotesButton:SetPos(8, 8)
             PatchNotesButton:SetImage("icons/patchnotesicon.png")
-            PatchNotesButton:SetSize(32, 32)
             patchNotesAnim = 0
             patchNotesOpen = 0
+            local buttonSize = 32
             PatchNotesButton.DoClick = function()
                 if (patchNotesOpen == 0) then
                     patchNotesOpen = 1
@@ -135,16 +141,24 @@ function mainMenu()
                 end
             end
             PatchNotesButton.Paint = function(self, w, h)
+                if PatchNotesButton:IsHovered() then
+                    buttonSize = math.Clamp(buttonSize + 200 * FrameTime(), 0, 16)
+                else
+                    buttonSize = math.Clamp(buttonSize - 200 * FrameTime(), 0, 16)
+                end
                 if (patchNotesOpen == 1) then
                     patchNotesAnim = math.Clamp(patchNotesAnim + 4000 * FrameTime(), 0, 400)
                 else
                     patchNotesAnim = math.Clamp(patchNotesAnim - 4000 * FrameTime(), 0, 400)
                 end
+                PatchNotesButton:SetSize(32 + buttonSize, 32 + buttonSize)
+                PatchNotesButton:Center()
                 PatchNotesButtonHolder:SetPos(ScrW() - 48 - patchNotesAnim, ScrH() / 2 - 28)
             end
 
             local PatchNotesPanel = vgui.Create("DPanel", MainPanel)
             PatchNotesPanel:SetSize(420, 600)
+            PatchNotesPanel:SetPos(ScrW() - 1, ScrH() / 2 - 300)
             PatchNotesPanel.Paint = function(self, w, h)
                 PatchNotesPanel:SetPos(ScrW() - 1 - patchNotesAnim, ScrH() / 2 - 300)
                 draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 0))
@@ -384,6 +398,13 @@ function mainMenu()
                 end
             end
 
+            local SocialButton = vgui.Create("DImageButton", MainPanel)
+            SocialButton:SetPos(100, 10)
+            SocialButton:SetImage("icons/socialicon.png")
+            SocialButton:SetSize(80, 80)
+            SocialButton.DoClick = function()
+            end
+
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
             WorkshopButton:SetPos(8, ScrH() - 72)
             WorkshopButton:SetImage("icons/workshopicon.png")
@@ -452,19 +473,48 @@ function mainMenu()
             end
 
             local CustomizeButton = vgui.Create("DButton", MainPanel)
+            local CustomizeModelButton = vgui.Create("DButton", CustomizeButton)
+            local CustomizeCardButton = vgui.Create("DButton", CustomizeButton)
             CustomizeButton:SetPos(0, ScrH() / 2 - 100)
             CustomizeButton:SetText("")
             CustomizeButton:SetSize(530, 100)
             local textAnim = 0
+            local pushButtonsAbove = 100
             CustomizeButton.Paint = function()
-                if CustomizeButton:IsHovered() then
+                if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                    pushButtonsAbove = math.Clamp(pushButtonsAbove + 600     * FrameTime(), 100, 150)
+                    CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
+                    CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                    pushButtonsAbove = math.Clamp(pushButtonsAbove - 600 * FrameTime(), 100, 150)
+                    CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
+                    CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushButtonsAbove)
             end
-            CustomizeButton.DoClick = function()
+
+            CustomizeModelButton:SetPos(0, 100)
+            CustomizeModelButton:SetText("")
+            CustomizeModelButton:SetSize(180, 100)
+            CustomizeModelButton.Paint = function()
+                draw.DrawText("MODEL", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            end
+
+            CustomizeCardButton:SetPos(180, 100)
+            CustomizeCardButton:SetText("")
+            CustomizeCardButton:SetSize(160, 100)
+            CustomizeCardButton.Paint = function()
+                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            end
+
+            CustomizeCardButton.DoClick = function()
+                print("PLAYER CARD!")
+            end
+
+            CustomizeModelButton.DoClick = function()
                 MainPanel:Hide()
 
                 local previewModel = LocalPlayer():GetNWString("chosenPlayermodel")
@@ -1514,3 +1564,15 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("StatsPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(780, ScrH())
+    self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("SocialPanel", PANEL, "Panel")
