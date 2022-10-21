@@ -1,6 +1,8 @@
 Using this to simplify Patch Note creation for the Main Menu, this will be cleared on each new update, dukwater out!
 
 + Developer Mode
+   Many animations for the main menu
    Fixed Clutch Accolade being awarded
    Rounded played K/D on statistics
-   
+   KIllcam no longer ends until player spawn
+   Backend changes for future playercard support

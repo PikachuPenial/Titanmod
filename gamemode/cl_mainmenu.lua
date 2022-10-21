@@ -189,7 +189,7 @@ function mainMenu()
                 draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("      Minimi Para", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   tm_forcesave saves Accolades", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 220, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
             end
