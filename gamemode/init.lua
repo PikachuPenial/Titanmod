@@ -240,6 +240,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
+		victim:SetNWBool("watchingKillCam", false)
 
 		--if (attacker:GetActiveWeapon():IsValid()) then
 			--weaponClassName = weapons.Get(attacker:GetActiveWeapon():GetClass())
@@ -286,8 +287,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
 		if attacker:GetPos():Distance(victim:GetPos()) < 5000 then
+			victim:SetNWBool("watchingKillCam", true)
 			victim:SpectateEntity(attacker)
-			victim:Spectate(OBS_MODE_DEATHCAM) 
+			victim:Spectate(OBS_MODE_DEATHCAM)
 
 			timer.Simple(0.75, function()
 				if not IsValid(victim) or not IsValid(attacker) then return end
@@ -305,17 +307,20 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 				victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
 			end)
 
-			timer.Simple(4, function()
-				if not IsValid(victim) then return end
-				victim:UnSpectate()
-			end)
+			--timer.Simple(4, function()
+				--if not IsValid(victim) then return end
+				--if ply:GetNWBool("mainmenu") == true then return end
+				--victim:UnSpectate()
+			--end)
 		end
 	end
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
 		if victim:GetNWBool("mainmenu") == false then
+			victim:SetNWBool("watchingKillCam", false)
 			victim:Spawn()
+			victim:UnSpectate()
 		end
 	end)
 
@@ -399,6 +404,10 @@ end
 function CloseMainMenu(ply)
 	if ply:GetNWBool("mainmenu") == true then
 		ply:SetNWBool("mainmenu", false)
+	end
+
+	if ply:GetNWBool("watchingKillCam") == true then
+		ply:SetNWBool("watchingKillCam", false)
 	end
 end
 concommand.Add("tm_closemainmenu", CloseMainMenu)

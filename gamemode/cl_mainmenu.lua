@@ -468,6 +468,8 @@ function mainMenu()
 
                 menuMusic:FadeOut(2)
 
+                if LocalPlayer():GetNWBool("watchingKillCam") == true then LocalPlayer():UnSpectate() end
+
                 LocalPlayer():ConCommand("tm_closemainmenu")
                 LocalPlayer():Spawn()
             end
