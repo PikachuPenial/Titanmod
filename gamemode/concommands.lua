@@ -47,28 +47,28 @@ concommand.Add("tm_forcesave", ForceSave)
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
 	local modelList = {}
-    modelList[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
-    modelList[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
-    modelList[3] = {"models/player/Group01/male_03.mdl", "Casual Male", "Why so serious?", "default", "default"}
-    modelList[4] = {"models/player/mossman.mdl", "Casual Female", "Why so serious?", "default", "default"}
-    modelList[5] = {"models/player/Group03m/male_05.mdl", "Doctor", "I need a medic bag.", "default", "default"}
-    modelList[6] = {"models/player/Group03m/female_06.mdl", "Nurse", "I need a medic bag.", "default", "default"}
-    modelList[7] = {"models/player/barney.mdl", "Barney", "Not purple this time.", "default", "default"}
-    modelList[8] = {"models/player/breen.mdl", "Breen", "i couldn't think of anything", "default", "default"}
-    modelList[9] = {"models/player/kleiner.mdl", "Kleiner", "But in the end.", "default", "default"}
-    modelList[10] = {"models/player/Group01/male_07.mdl", "Male 07", "The one, the only.", "kills", 100}
-    modelList[11] = {"models/player/alyx.mdl", "Alyx", "ughhhhhhhhh.", "kills", 300}
-    modelList[12] = {"models/player/hostage/hostage_04.mdl", "Scientist", "Bill Nye.", "kills", 500}
-    modelList[13] = {"models/player/gman_high.mdl", "GMan", "Where is 3?", "kills", 1000}
-    modelList[14] = {"models/player/p2_chell.mdl", "Chell", "Funny portal reference.", "kills", 2000}
-    modelList[15] = {"models/player/leet.mdl", "Badass", "So cool.", "kills", 3000}
-    modelList[16] = {"models/player/arctic.mdl", "Arctic", "I don't think it's cold in here.", "streak", 5}
-    modelList[17] = {"models/player/riot.mdl", "Riot", "Tanto Addict.", "streak", 10}
-    modelList[18] = {"models/player/gasmask.mdl", "Hazmat Suit", "This isn't Rust.", "streak", 15}
-    modelList[19] = {"models/player/police.mdl", "Officer", "Pick up the can.", "streak", 20}
-    modelList[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
-    modelList[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
-    modelList[22] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
+	modelList[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
+	modelList[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
+	modelList[3] = {"models/player/Group01/male_03.mdl", "Casual Male", "Why so serious?", "default", "default"}
+	modelList[4] = {"models/player/mossman.mdl", "Casual Female", "Why so serious?", "default", "default"}
+	modelList[5] = {"models/player/Group03m/male_05.mdl", "Doctor", "I need a medic bag.", "default", "default"}
+	modelList[6] = {"models/player/Group03m/female_06.mdl", "Nurse", "I need a medic bag.", "default", "default"}
+	modelList[7] = {"models/player/barney.mdl", "Barney", "Not purple this time.", "default", "default"}
+	modelList[8] = {"models/player/breen.mdl", "Breen", "i couldn't think of anything", "default", "default"}
+	modelList[9] = {"models/player/kleiner.mdl", "Kleiner", "But in the end.", "default", "default"}
+	modelList[10] = {"models/player/Group01/male_07.mdl", "Male 07", "The one, the only.", "kills", 100}
+	modelList[11] = {"models/player/alyx.mdl", "Alyx", "ughhhhhhhhh.", "kills", 300}
+	modelList[12] = {"models/player/hostage/hostage_04.mdl", "Scientist", "Bill Nye.", "kills", 500}
+	modelList[13] = {"models/player/gman_high.mdl", "GMan", "Where is 3?", "kills", 1000}
+	modelList[14] = {"models/player/p2_chell.mdl", "Chell", "Funny portal reference.", "kills", 2000}
+	modelList[15] = {"models/player/leet.mdl", "Badass", "So cool.", "kills", 3000}
+	modelList[16] = {"models/player/arctic.mdl", "Arctic", "I don't think it's cold in here.", "streak", 5}
+	modelList[17] = {"models/player/riot.mdl", "Riot", "Tanto Addict.", "streak", 10}
+	modelList[18] = {"models/player/gasmask.mdl", "Hazmat Suit", "This isn't Rust.", "streak", 15}
+	modelList[19] = {"models/player/police.mdl", "Officer", "Pick up the can.", "streak", 20}
+	modelList[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
+	modelList[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
+	modelList[22] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
 
 	for k, v in pairs(modelList) do
 		if (args[1] == v[1]) then
@@ -96,3 +96,16 @@ function PlayerModelChange(ply, cmd, args)
 	end
 end
 concommand.Add("tm_selectplayermodel", PlayerModelChange)
+
+--Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
+function StartCustomSpectate(ply, cmd, args)
+	if (args[1] == "free") then
+		ply:Spectate(OBS_MODE_ROAMING)
+		ply:SetNWBool("isSpectating", true)
+	elseif (args[1] == "player") then
+		ply:SpectateEntity(args[2])
+		ply:Spectate(OBS_MODE_IN_EYE)
+		ply:SetNWBool("isSpectating", true)
+	end
+end
+concommand.Add("tm_spectate", StartCustomSpectate)

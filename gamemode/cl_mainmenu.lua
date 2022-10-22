@@ -178,20 +178,33 @@ function mainMenu()
 
             local Patch02b1 = vgui.Create("DPanel", PatchScroller)
             Patch02b1:Dock(TOP)
-            Patch02b1:SetSize(0, 250)
+            Patch02b1:SetSize(0, 510)
             Patch02b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
                 draw.SimpleText("0.2b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("10/18/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/22/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed:", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      Minimi Para", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 220, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   M1919, MG 34, Thompson M1928", "StreakText", 5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Spectating system", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Developer mode", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Colt M1911, Walther P99", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Minimi Para, SCAR-H SSR, OTs-14 Groza,", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Beretta Mx4 Storm, Imbel IA2, XM8, MP7A1,", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      FNP-45, PM-9, Colt M45A1, MK18, AEK-971", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fancy animations across the main menu", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Clutch Accolade being awarded", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Rounded played K/D on statistics", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KIllcam no longer ends until player spawn", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Backend changes for future playercard support", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 480, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
             end
 
             local Patch01b2 = vgui.Create("DPanel", PatchScroller)
@@ -398,11 +411,72 @@ function mainMenu()
                 end
             end
 
-            local SocialButton = vgui.Create("DImageButton", MainPanel)
-            SocialButton:SetPos(100, 10)
-            SocialButton:SetImage("icons/socialicon.png")
-            SocialButton:SetSize(80, 80)
-            SocialButton.DoClick = function()
+            local SpectatePanel = vgui.Create("DPanel", MainPanel)
+            SpectatePanel:SetSize(170, 0)
+            SpectatePanel:SetPos(10, 100)
+            SpectatePanel.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 255))
+            end
+
+            local SpectateTextHeader = vgui.Create("DPanel", SpectatePanel)
+            SpectateTextHeader:Dock(TOP)
+            SpectateTextHeader:SetSize(0, 70)
+            SpectateTextHeader.Paint = function(self, w, h)
+                draw.SimpleText("SPECTATE", "UITiny", 3, 0, Color(0, 0, 0), TEXT_ALIGN_LEFT)
+            end
+
+            local spectatePicker = SpectateTextHeader:Add("DComboBox")
+            spectatePicker:SetPos(0, 40)
+            spectatePicker:SetSize(170, 30)
+            spectatePicker:SetValue("Spectate...")
+            spectatePicker:AddChoice("Freecam")
+            local spectateFreecam = false
+            local playerSelected = false
+            spectatePicker.OnSelect = function(_, _, value, id)
+                if id ~= nil then
+                    currentlySpectatingPlayerID = id
+                    currentlySpectating = player.GetBySteamID(currentlySpectatingPlayerID)
+                    playerSelected = true
+                    spectateFreecam = false
+                else
+                    spectateFreecam = true
+                    playerSelected = false
+                end
+                spectatePicker:SetValue("Spectating " .. value)
+
+                if spectateFreecam == true then
+                    RunConsoleCommand("tm_spectate", "free")
+                    print("ONE")
+                else
+                    RunConsoleCommand("tm_spectate", "player", currentlySpectating)
+                    print("TWO")
+                end
+
+                MainMenu:Remove(false)
+                gui.EnableScreenClicker(false)
+                LocalPlayer():ConCommand("tm_closemainmenu")
+
+                menuMusic:FadeOut(2)
+            end
+
+            for _, v in pairs(player.GetAll()) do
+                spectatePicker:AddChoice(v:Name(), v:SteamID())
+            end
+
+            local SpectateButton = vgui.Create("DImageButton", MainPanel)
+            SpectateButton:SetPos(100, 10)
+            SpectateButton:SetImage("icons/spectateicon.png")
+            SpectateButton:SetSize(80, 80)
+            local spectatePanelOpen = 0
+            SpectateButton.DoClick = function()
+                if (spectatePanelOpen == 0) then
+                    spectatePanelOpen = 1
+                    SpectatePanel:SizeTo(-1, 70, 1, 0, 0.1)
+                else
+                    spectatePanelOpen = 0
+                    SpectatePanel:SizeTo(-1, 0, 1, 0, 0.1)
+                    spectatePicker:SetValue("Spectate...")
+                end
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
@@ -467,8 +541,6 @@ function mainMenu()
                 gui.EnableScreenClicker(false)
 
                 menuMusic:FadeOut(2)
-
-                if LocalPlayer():GetNWBool("watchingKillCam") == true then LocalPlayer():UnSpectate() end
 
                 LocalPlayer():ConCommand("tm_closemainmenu")
                 LocalPlayer():Spawn()
@@ -1566,15 +1638,3 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("StatsPanel", PANEL, "Panel")
-
-PANEL = {}
-function PANEL:Init()
-    self:SetSize(780, ScrH())
-    self:SetPos(0, 0)
-end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("SocialPanel", PANEL, "Panel")

@@ -21,9 +21,6 @@ function HUD()
             return
         end
 
-        --Gamemode watermark, I don't really know why I put this here, and I should probably make it a setting, but fuck you.
-        draw.SimpleText("Titanmod Testing 0.2b1", "Health", 5, 0, white, TEXT_ALIGN_LEFT, 0)
-
         --Shows the players ammo and weapon depending on the style they have selected in Options.
         --Numeric Style
         if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
