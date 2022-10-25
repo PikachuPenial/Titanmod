@@ -133,8 +133,6 @@ weaponArray[117] = {"tfa_ins2_vhsd2", "VHS-D2"}
 weaponArray[118] = {"tfa_ins2_walther_p99", "Walther P99"}
 weaponArray[119] = {"tfa_ins2_xm8", "XM8"}
 
-PDataWepArray = weaponArray
-
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
@@ -179,6 +177,11 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
+
+	--Checking if PData exists for every single fucking gun, gg.
+	for k, v in pairs(weaponArray) do
+		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
+	end
 
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
@@ -244,10 +247,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 		victim:SetNWBool("watchingKillCam", false)
 
-		--if (attacker:GetActiveWeapon():IsValid()) then
-			--weaponClassName = weapons.Get(attacker:GetActiveWeapon():GetClass())
-			--attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
-		--end
+		if (attacker:GetActiveWeapon():IsValid()) then
+			weaponClassName = attacker:GetActiveWeapon():GetClass()
+			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
+		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 	end
@@ -461,6 +464,7 @@ end)
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
+
 	--Statistics
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
 	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
@@ -483,10 +487,9 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
 
 	--Weapon Statistics
-	--for k, v in pairs(PDataWepArray) do
-		--local weaponClass = v[1]
-		--ply:SetPData("killsWith_" .. weaponClass, ply:GetNWInt("killsWith_" .. weaponClass))
-	--end
+	for p, t in pairs(weaponArray) do
+		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
+	end
 end
 
 function GM:ShutDown()
@@ -514,9 +517,8 @@ function GM:ShutDown()
 		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
 
 		--Weapon Statistics
-		--for k, v in pairs(PDataWepArray) do
-			--local weaponClass = v[1]
-			--v:SetPData("killsWith_" .. weaponClass, v:GetNWInt("killsWith_" .. weaponClass))
-		--end
+		for p, t in pairs(weaponArray) do
+			v:SetPData("killsWith_" .. t[1], v:GetNWInt("killsWith_" .. t[1]))
+		end
 	end
 end

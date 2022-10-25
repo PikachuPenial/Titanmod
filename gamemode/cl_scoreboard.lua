@@ -107,9 +107,9 @@ function GM:ScoreboardShow()
 				accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
 				accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
 
-				local weaponstatistics = Menu:AddSubMenu("View Lifetime Weapon Statistics")
-				for k, v in pairs(weaponsArr) do
-					weaponstatistics:AddOption(v[2] .. " Kills: " .. "0")
+				local weaponstatistics = Menu:AddSubMenu("View Lifetime Weapon Stats")
+				for p, t in pairs(weaponsArr) do
+					weaponstatistics:AddOption(t[2] .. " Kills: " .. v:GetNWInt("killsWith_" .. t[1]))
 				end
 
 				Menu:AddSpacer()

@@ -130,10 +130,46 @@ surface.CreateFont("UITiny", {
 	outline = false,
 } )
 
+surface.CreateFont("OptionsSlideoutText", {
+	font = "Arial",
+	extended = false,
+	size = 32,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 surface.CreateFont("AmmoCountESmall", {
 	font = "Arial",
 	extended = false,
 	size = 48,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("AmmoCountKindaSmall", {
+	font = "Arial",
+	extended = false,
+	size = 68,
 	weight = 500,
 	blursize = 0,
 	scanlines = 0,

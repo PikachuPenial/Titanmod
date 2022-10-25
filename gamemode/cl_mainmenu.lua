@@ -189,8 +189,8 @@ function mainMenu()
                 draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Spectating system", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Developer mode", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Developer Mode", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("       Colt M1911, Walther P99", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -198,7 +198,7 @@ function mainMenu()
                 draw.SimpleText("      Beretta Mx4 Storm, Imbel IA2, XM8, MP7A1,", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("      FNP-45, PM-9, Colt M45A1, MK18, AEK-971", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fancy animations across the main menu", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Clutch Accolade being awarded", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Clutch Accolade not being awarded", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Rounded played K/D on statistics", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   KIllcam no longer ends until player spawn", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Backend changes for future playercard support", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -332,7 +332,7 @@ function mainMenu()
                             draw.SimpleText(comparingWith:GetNWInt("playerScore"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerKills"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerDeaths"), "SettingsLabel", 720, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(math.Round(trackingPlayer:GetNWInt("playerKDR"), 3), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(math.Round(comparingWith:GetNWInt("playerKDR"), 3), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("highestKillStreak"), "SettingsLabel", 720, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                         end
                     end
@@ -377,12 +377,12 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        for k, v in pairs(weaponsArr) do
-                            draw.SimpleText(v[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                            draw.SimpleText("0", "SettingsLabel", 500, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        for p, t in pairs(weaponsArr) do
+                            draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                            draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
                             if playerSelected == true and comparingWith ~= false then
-                                draw.SimpleText("0", "SettingsLabel", 720, 80 + ((k - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             end
                         end
                     end
@@ -394,16 +394,25 @@ function mainMenu()
 
                     local DockBackButton = vgui.Create("DPanel", StatsScroller)
                     DockBackButton:Dock(TOP)
-                    DockBackButton:SetSize(0, 100)
+                    DockBackButton:SetSize(0, 80)
 
                     DockBackButton.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
 
-                    local BackButton = vgui.Create("DImageButton", DockBackButton)
+                    local BackButton = vgui.Create("DButton", DockBackButton)
                     BackButton:SetPos(0, 0)
-                    BackButton:SetImage("mainmenu/backbutton.png")
-                    BackButton:SizeToContents()
+                    BackButton:SetText("")
+                    BackButton:SetSize(600, 150)
+                    local textAnim = 0
+                    BackButton.Paint = function()
+                        if BackButton:IsHovered() then
+                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                        else
+                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                        end
+                        draw.DrawText("RETURN TO MENU", "AmmoCountKindaSmall", 15 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    end
                     BackButton.DoClick = function()
                         MainPanel:Show()
                         StatisticsPanel:Hide()
@@ -581,11 +590,10 @@ function mainMenu()
             CustomizeCardButton:SetText("")
             CustomizeCardButton:SetSize(160, 100)
             CustomizeCardButton.Paint = function()
-                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 0, 0, 75), TEXT_ALIGN_LEFT)
             end
 
             CustomizeCardButton.DoClick = function()
-                print("PLAYER CARD!")
             end
 
             CustomizeModelButton.DoClick = function()
@@ -992,10 +1000,19 @@ function mainMenu()
                         end
                     end
 
-                    local BackButton = vgui.Create("DImageButton", DockBackButton)
+                    local BackButton = vgui.Create("DButton", DockBackButton)
                     BackButton:SetPos(0, 0)
-                    BackButton:SetImage("mainmenu/backbutton.png")
-                    BackButton:SizeToContents()
+                    BackButton:SetText("")
+                    BackButton:SetSize(600, 150)
+                    local textAnim = 0
+                    BackButton.Paint = function()
+                        if BackButton:IsHovered() then
+                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                        else
+                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                        end
+                        draw.DrawText("RETURN TO MENU", "AmmoCountKindaSmall", 15, 15 - textAnim, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    end
                     BackButton.DoClick = function()
                         MainPanel:Show()
                         CustomizePanel:Hide()
@@ -1022,19 +1039,18 @@ function mainMenu()
 
                 if not IsValid(OptionsPanel) then
                     local OptionsPanel = MainMenu:Add("OptionsPanel")
+                    local OptionsSlideoutPanel = MainMenu:Add("OptionsSlideoutPanel")
+
+                    local OptionsQuickjumpHolder = vgui.Create("DPanel", OptionsSlideoutPanel)
+                    OptionsQuickjumpHolder:Dock(TOP)
+                    OptionsQuickjumpHolder:SetSize(0, ScrH())
+
+                    OptionsQuickjumpHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
 
                     local OptionsScroller = vgui.Create("DScrollPanel", OptionsPanel)
                     OptionsScroller:Dock(FILL)
-
-                    local OptionsTextHolder = vgui.Create("DPanel", OptionsScroller)
-                    OptionsTextHolder:Dock(TOP)
-                    OptionsTextHolder:SetSize(0, 200)
-
-                    OptionsTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("OPTIONS", "AmmoCount", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Tweak your experience.", "PlayerNotiName", 20, 130, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                    end
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
@@ -1042,7 +1058,7 @@ function mainMenu()
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 480)
+                    DockUI:SetSize(0, 520)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -1068,22 +1084,111 @@ function mainMenu()
                     DockPerformance:Dock(TOP)
                     DockPerformance:SetSize(0, 330)
 
+                    local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
+                    SettingsCog:SetPos(12, 12)
+                    SettingsCog:SetSize(32, 32)
+                    SettingsCog:SetImage("icons/settingsicon.png")
+
+                    local InputsJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    InputsJump:SetPos(4, 100)
+                    InputsJump:SetSize(48, 48)
+                    InputsJump:SetImage("icons/mouseicon.png")
+                    InputsJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockInputs)
+                    end
+
+                    local UIJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    UIJump:SetPos(4, 152)
+                    UIJump:SetSize(48, 48)
+                    UIJump:SetImage("icons/uiicon.png")
+                    UIJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockUI)
+                    end
+
+                    local AudioJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    AudioJump:SetPos(4, 204)
+                    AudioJump:SetSize(48, 48)
+                    AudioJump:SetImage("icons/audioicon.png")
+                    AudioJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockAudio)
+                    end
+
+                    local ModelJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    ModelJump:SetPos(4, 256)
+                    ModelJump:SetSize(48, 48)
+                    ModelJump:SetImage("icons/weaponicon.png")
+                    ModelJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockViewmodel)
+                    end
+
+                    local CrosshairJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    CrosshairJump:SetPos(4, 308)
+                    CrosshairJump:SetSize(48, 48)
+                    CrosshairJump:SetImage("icons/crosshairicon.png")
+                    CrosshairJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockCrosshair)
+                    end
+
+                    local HitmarkerJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    HitmarkerJump:SetPos(4, 360)
+                    HitmarkerJump:SetSize(48, 48)
+                    HitmarkerJump:SetImage("icons/hitmarkericon.png")
+                    HitmarkerJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockHitmarker)
+                    end
+
+                    local ScopesJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    ScopesJump:SetPos(4, 412)
+                    ScopesJump:SetSize(48, 48)
+                    ScopesJump:SetImage("icons/sighticon.png")
+                    ScopesJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockScopes)
+                    end
+
+                    local PerformanceJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    PerformanceJump:SetPos(4, 464)
+                    PerformanceJump:SetSize(48, 48)
+                    PerformanceJump:SetImage("icons/performanceicon.png")
+                    PerformanceJump.DoClick = function()
+                        OptionsScroller:ScrollToChild(DockPerformance)
+                    end
+
                     local DockBackButton = vgui.Create("DPanel", OptionsScroller)
                     DockBackButton:Dock(TOP)
                     DockBackButton:SetSize(0, 100)
 
-                    local BackButton = vgui.Create("DImageButton", DockBackButton)
+                    local BackButton = vgui.Create("DButton", DockBackButton)
                     BackButton:SetPos(0, 0)
-                    BackButton:SetImage("mainmenu/backbutton.png")
-                    BackButton:SizeToContents()
+                    BackButton:SetText("")
+                    BackButton:SetSize(600, 150)
+                    local textAnim = 0
+                    BackButton.Paint = function()
+                        if BackButton:IsHovered() then
+                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                        else
+                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                        end
+                        draw.DrawText("RETURN TO MENU", "AmmoCountKindaSmall", 15, 30 - textAnim, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    end
                     BackButton.DoClick = function()
                         MainPanel:Show()
+                        OptionsSlideoutPanel:Hide()
+                        OptionsPanel:Hide()
+                    end
+
+                    local BackButtonSlideout = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetImage("icons/exiticon.png")
+                    BackButtonSlideout.DoClick = function()
+                        MainPanel:Show()
+                        OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
                     end
 
                     DockInputs.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("INPUTS", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("INPUT", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -1230,6 +1335,22 @@ function mainMenu()
                         RunConsoleCommand("tm_deathuianchor", value - 1)
                     end
 
+                    local HUDEditorButton = vgui.Create("DButton", DockUI)
+                    HUDEditorButton:SetPos(20, 470)
+                    HUDEditorButton:SetText("")
+                    HUDEditorButton:SetSize(500, 40)
+                    local textAnim = 0
+                    HUDEditorButton.Paint = function()
+                        if HUDEditorButton:IsHovered() then
+                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        else
+                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        end
+                        draw.DrawText("Open HUD Editor", "SettingsLabel", 0 + textAnim, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    end
+                    HUDEditorButton.DoClick = function()
+                    end
+
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -1278,7 +1399,7 @@ function mainMenu()
 
                     DockViewmodel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("MODEL", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("WEAPONRY", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -1593,8 +1714,20 @@ vgui.Register("MainPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(600, ScrH())
+    self:SetSize(56, ScrH())
     self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("OptionsSlideoutPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(600, ScrH())
+    self:SetPos(56, 0)
 end
 
 function PANEL:Paint(w, h)
@@ -1638,3 +1771,15 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("StatsPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(656, ScrH())
+    self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("HUDEditorPanel", PANEL, "Panel")
