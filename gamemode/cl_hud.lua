@@ -222,7 +222,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     KillNotif = vgui.Create("DFrame")
-    KillNotif:SetSize(0, 200)
+    KillNotif:SetSize(600, 200)
     KillNotif:SetX(ScrW() / 2 - 300)
     if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
         KillNotif:SetY(ScrH() - 335)
@@ -232,7 +232,6 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
-    KillNotif:SizeTo(600, 200, 1, 0, 0.25)
 
     --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
     if LocalPlayer():GetNWInt("killStreak") >= 2 then
@@ -407,12 +406,12 @@ net.Receive("DeathHud", function(len, ply)
     end)
 
     DeathNotif = vgui.Create("DFrame")
-    DeathNotif:SetSize(800, 250)
+    DeathNotif:SetSize(800, 300)
     DeathNotif:SetX(ScrW() / 2 - 400)
     if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
         DeathNotif:SetY(ScrH() - 350)
     else
-        DeathNotif:SetY(100)
+        DeathNotif:SetY(125)
     end
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
@@ -426,43 +425,43 @@ net.Receive("DeathHud", function(len, ply)
         else
             --This appears if the player died to another player
             if killedBy:GetNWBool("lastShotHead") == true then
-                draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 100, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
             else
-                draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 100, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
             end
 
             --Information about the cause of your death, hopefully it wasn't too embarrising.
             draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
             draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 65.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 115, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 67.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            draw.SimpleText(killedWith, "PlayerDeathName", 410, 67.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText("|", "PlayerDeathName", 400, 95.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("|", "PlayerDeathName", 400, 120, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("|", "PlayerDeathName", 400, 145, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
             if killedBy:Health() <= 0 then
-                draw.SimpleText("DEAD", "WepNameKill", 390, 100, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
+                draw.SimpleText("DEAD", "WepNameKill", 390, 130, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
             else
-                draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 100, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
             end
-            draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 125, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 125, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 
-            draw.SimpleText("Respawning in     ", "WepNameKill", 390, 165, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             if respawnTimeLeft ~= nil or respawnTimeLeft > 5 or respawnTimeLeft < 0 then
-                draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 165, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, Color(255, 255, 255), TEXT_ALIGN_LEFT)
             end
-            draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 190, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
     CallingCard = vgui.Create("DImage", DeathNotif)
-    CallingCard:SetPos(325, 20)
-    CallingCard:SetSize(150, 50)
+    CallingCard:SetPos(280, 20)
+    CallingCard:SetSize(240, 80)
     CallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"))
 
     playerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    playerProfilePicture:SetPos(327.5, 22.5)
-    playerProfilePicture:SetSize(45, 45)
+    playerProfilePicture:SetPos(285, 25)
+    playerProfilePicture:SetSize(70, 70)
     playerProfilePicture:SetPlayer(killedBy, 184)
 
     DeathNotif:Show()

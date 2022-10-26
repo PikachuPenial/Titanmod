@@ -30,6 +30,7 @@ function ForceSave(ply, cmd, args)
 
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
+	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayermodel"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -97,12 +98,95 @@ function PlayerModelChange(ply, cmd, args)
 end
 concommand.Add("tm_selectplayermodel", PlayerModelChange)
 
+--Allows the Main Menu to change the players current playercard.
+function PlayercardChange(ply, cmd, args)
+    local cardList = {}
+    cardList[1] = {"cards/default/barrels.png", "Barrels", "kaboom.", "default", "default"}
+    cardList[2] = {"cards/default/construct.png", "Construct", "A classic.", "default", "default"}
+    cardList[3] = {"cards/default/grapple.png", "Grapple Hook", "360 no scope.", "default", "default"}
+    cardList[4] = {"cards/default/industry.png", "Industry", "To dupe, or not to dupe.", "default", "default"}
+    cardList[5] = {"cards/default/overhead.png", "Overhead", "Trees.", "default", "default"}
+    cardList[6] = {"cards/default/specops.png", "Spec Ops", "NVG's and stuff.", "default", "default"}
+    cardList[7] = {"cards/kills/pistoling.png", "Pistoling", "9x19 my beloved.", "kills", 300}
+    cardList[8] = {"cards/kills/smoke.png", "Smoke", "Cool soilders doing things.", "kills", 1200}
+    cardList[9] = {"cards/kills/titan.png", "Titan", "Titanfall 2 <3", "kills", 2500}
+	cardList[10] = {"cards/kills/killstreak10.png", "Convoy", "helicoboptor.", "streak", 10}
+    cardList[11] = {"cards/kills/killstreak20.png", "On Fire", "You did pretty well.", "streak", 20}
+    cardList[12] = {"cards/kills/killstreak30.png", "Nuclear", "pumpkin eater.", "streak", 30}
+	cardList[13] = {"cards/accolades/headshot_200.png", "Headshot You", "I headshot you.", "headshot", 200}
+    cardList[14] = {"cards/accolades/headshot_750.png", "Headhunter", "S&W addict.", "headshot", 750}
+    cardList[15] = {"cards/accolades/smackdown_50.png", "Karambit", "Movement players favorite.", "smackdown", 50}
+	cardList[16] = {"cards/accolades/smackdown_150.png", "Samuri", "Fruit ninja enjoyer.", "smackdown", 150}
+    cardList[17] = {"cards/accolades/clutch_40.png", "Desert Eagle", "crunch!", "clutch", 40}
+    cardList[18] = {"cards/accolades/clutch_120.png", "Magnum", "even louder crunch!", "clutch", 120}
+    cardList[19] = {"cards/accolades/longshot_80.png", "Down Sights", "Bipod down.", "longshot", 80}
+    cardList[20] = {"cards/accolades/longshot_250.png", "Stalker", "buy awp bruv.", "longshot", 250}
+    cardList[21] = {"cards/accolades/pointblank_125.png", "Showers", "Drip or drown BEAR.", "pointblank", 125}
+    cardList[22] = {"cards/accolades/pointblank_450.png", "No Full Auto", "in buildings.", "pointblank", 450}
+    cardList[23] = {"cards/accolades/killstreaks_80.png", "Soilder", "bang bang pow.", "killstreaks", 80}
+    cardList[24] = {"cards/accolades/killstreaks_240.png", "Badass", "Never look back.", "killstreaks", 240}
+    cardList[25] = {"cards/accolades/buzzkills_80.png", "Wobblers", "I. am. alive.", "buzzkills", 80}
+    cardList[26] = {"cards/accolades/buzzkills_240.png", "Execution", "Bye bye.", "buzzkills", 240}
+
+	for k, v in pairs(cardList) do
+		if (args[1] == v[1]) then
+
+			local cardID = v[1]
+			local cardUnlock = v[4]
+			local cardValue = v[5]
+
+			if cardUnlock == "default" then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+
+			if cardUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= cardValue then
+				ply:SetNWInt("chosenPlayercard", cardID)
+			end
+		end
+	end
+end
+concommand.Add("tm_selectplayercard", PlayercardChange)
+
 --Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
 function StartCustomSpectate(ply, cmd, args)
 	if (args[1] == "free") then
+		ply:UnSpectate()
 		ply:Spectate(OBS_MODE_ROAMING)
 		ply:SetNWBool("isSpectating", true)
 	elseif (args[1] == "player") then
+		ply:UnSpectate()
 		ply:SpectateEntity(args[2])
 		ply:Spectate(OBS_MODE_IN_EYE)
 		ply:SetNWBool("isSpectating", true)

@@ -159,6 +159,7 @@ function GM:PlayerSpawn(ply)
 	ply:Give(ply:GetNWInt("loadoutMelee"))
 
 	ply:SetNWInt("killStreak", 0)
+	ply:SetNWBool("isSpectating", false)
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -169,7 +170,7 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerScore") == nil) then ply:SetNWInt("playerScore", 0) else ply:SetNWInt("playerScore", tonumber(ply:GetPData("playerScore"))) end
 	if (ply:GetPData("highestKillStreak") == nil) then ply:SetNWInt("highestKillStreak", 0) else ply:SetNWInt("highestKillStreak", tonumber(ply:GetPData("highestKillStreak"))) end
 	if (ply:GetPData("chosenPlayermodel") == nil) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") else ply:SetNWString("chosenPlayermodel", ply:GetPData("chosenPlayermodel")) end
-	if (ply:GetPData("chosenPlayercard") == nil) then ply:SetNWString("chosenPlayercard", "cards/industry.png") else ply:SetNWString("chosenPlayercard", ply:GetPData("chosenPlayercard")) end
+	if (ply:GetPData("chosenPlayercard") == nil) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") else ply:SetNWString("chosenPlayercard", ply:GetPData("chosenPlayercard")) end
 	if (ply:GetPData("playerAccoladeHeadshot") == nil) then ply:SetNWInt("playerAccoladeHeadshot", 0) else ply:SetNWInt("playerAccoladeHeadshot", tonumber(ply:GetPData("playerAccoladeHeadshot"))) end
 	if (ply:GetPData("playerAccoladeSmackdown") == nil) then ply:SetNWInt("playerAccoladeSmackdown", 0) else ply:SetNWInt("playerAccoladeSmackdown", tonumber(ply:GetPData("playerAccoladeSmackdown"))) end
 	if (ply:GetPData("playerAccoladeLongshot") == nil) then ply:SetNWInt("playerAccoladeLongshot", 1) else ply:SetNWInt("playerAccoladeLongshot", tonumber(ply:GetPData("playerAccoladeLongshot"))) end
@@ -187,7 +188,6 @@ function GM:PlayerInitialSpawn(ply)
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
 	end)
-
 	ply:ConCommand("tm_openmainmenu")
 
 	--These lists contain each weapon seperated into their respective category, for use in generating player loadouts.
@@ -311,12 +311,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 				victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
 			end)
-
-			--timer.Simple(4, function()
-				--if not IsValid(victim) then return end
-				--if ply:GetNWBool("mainmenu") == true then return end
-				--victim:UnSpectate()
-			--end)
 		end
 	end
 
@@ -476,6 +470,7 @@ function GM:PlayerDisconnected(ply)
 
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
+	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -506,6 +501,7 @@ function GM:ShutDown()
 
 		--Customizatoin
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
+		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
 
 		--Accolades
 		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))
