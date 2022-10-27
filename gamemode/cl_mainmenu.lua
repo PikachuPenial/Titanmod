@@ -615,8 +615,15 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
+                    --Checking for the players currently equipped card.
                     for k, v in pairs(cardArr) do
-                        if v[1] == currentCard then
+                        if v[1] == currentCard and v[4] ~= "mastery" then
+                            newCard = v[1]
+                            newCardName = v[2]
+                            newCardDesc = v[3]
+                            newCardUnlockType = v[4]
+                            newCardUnlockValue = v[5]
+                        elseif v[1] == currentCard and v[4] == "mastery" then
                             newCard = v[1]
                             newCardName = v[2]
                             newCardDesc = v[3]
@@ -671,7 +678,16 @@ function mainMenu()
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 250)
+                    DockMasteryCards:SetSize(0, 4923)
+
+                    --Color related Playercards
+                    local TextColor = vgui.Create("DPanel", CardScroller)
+                    TextColor:Dock(TOP)
+                    TextColor:SetSize(0, 60)
+
+                    local DockColorCards = vgui.Create("DPanel", CardScroller)
+                    DockColorCards:Dock(TOP)
+                    DockColorCards:SetSize(0, 500)
 
                     --Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
@@ -694,6 +710,11 @@ function mainMenu()
                     MasteryCardList:SetSpaceY(5)
                     MasteryCardList:SetSpaceX(20)
 
+                    local ColorCardList = vgui.Create("DIconLayout", DockColorCards)
+                    ColorCardList:Dock(TOP)
+                    ColorCardList:SetSpaceY(5)
+                    ColorCardList:SetSpaceX(20)
+
                     DefaultCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     end
@@ -707,6 +728,10 @@ function mainMenu()
                     end
 
                     MasteryCardList.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                    end
+
+                    ColorCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     end
 
@@ -738,6 +763,10 @@ function mainMenu()
                         end
 
                         if newCardUnlockType == "default" then
+                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                        end
+
+                        if newCardUnlockType == "color" then
                             draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
                         end
 
@@ -815,10 +844,10 @@ function mainMenu()
                         if newCardUnlockType == "killstreaks" then
                             if LocalPlayer():GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
                             end
                         end
 
@@ -829,6 +858,17 @@ function mainMenu()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                            end
+                        end
+
+                        --Mastery
+                        if newCardUnlockType == "mastery" then
+                            if LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
                             end
                         end
 
@@ -915,6 +955,54 @@ function mainMenu()
                                 newCardUnlockValue = v[5]
                             end
                         end
+
+                        if v[4] == "color" then
+                            local card = vgui.Create("DImageButton", DockColorCards)
+                            card:SetImage(v[1])
+                            card:SetTooltip(v[2] .. "\n" .. v[3])
+                            card:SetSize(240, 80)
+                            ColorCardList:Add(card)
+
+                            card.DoClick = function(card)
+                                newCard = v[1]
+                                newCardName = v[2]
+                                newCardDesc = v[3]
+                                newCardUnlockType = v[4]
+                                newCardUnlockValue = v[5]
+                            end
+                        end
+
+                        if v[4] == "mastery" then
+                            local card = vgui.Create("DImageButton", DockMasteryCards)
+                            card:SetImage(v[1])
+                            card:SetTooltip(v[2] .. "\n" .. v[3])
+                            card:SetSize(240, 80)
+                            MasteryCardList:Add(card)
+
+                            if v[4] == "mastery" and LocalPlayer():GetNWInt("killsWith_" .. v[5]) < 50 then
+                                card:SetColor(Color(100, 100, 100))
+
+                                local lockIndicator = vgui.Create("DImageButton", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                end
+                            end
+
+                            card.DoClick = function(card)
+                                newCard = v[1]
+                                newCardName = v[2]
+                                newCardDesc = v[3]
+                                newCardUnlockType = v[4]
+                                newCardUnlockValue = v[5]
+                            end
+                        end
                     end
 
                     TextDefault.Paint = function(self, w, h)
@@ -937,6 +1025,11 @@ function mainMenu()
                         draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
+                    TextColor.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Solid Colors", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                    end
+
                     DockDefaultCards.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
@@ -953,6 +1046,10 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
 
+                    DockColorCards.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+
                     local ApplyButtonHolder = vgui.Create("DPanel", CardsPreviewScroller)
                     ApplyButtonHolder:Dock(TOP)
                     ApplyButtonHolder:SetSize(0, 100)
@@ -966,6 +1063,7 @@ function mainMenu()
                     ApplyModelButton:SetPos(82.5, 25)
                     ApplyModelButton:SetSize(350, 50)
                     ApplyModelButton.DoClick = function()
+                        local masteryUnlock = 50
                         if newCardUnlockType == "default" then
                             surface.PlaySound("common/wpn_select.wav")
                             RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
@@ -1091,6 +1189,28 @@ function mainMenu()
                                 CardSlideoutPanel:Hide()
                             end
                         end
+
+                        if newCardUnlockType == "color" then
+                            surface.PlaySound("common/wpn_select.wav")
+                            RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
+                            MainPanel:Show()
+                            CardPanel:Hide()
+                            CardPreviewPanel:Hide()
+                            CardSlideoutPanel:Hide()
+                        end
+
+                        if newCardUnlockType == "mastery" then
+                            if LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue, masteryUnlock)
+                                MainPanel:Show()
+                                CardPanel:Hide()
+                                CardPreviewPanel:Hide()
+                                CardSlideoutPanel:Hide()
+                            end
+                        end
                     end
 
                     local CardIcon = vgui.Create("DImage", CardQuickjumpHolder)
@@ -1104,7 +1224,7 @@ function mainMenu()
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
-                        CardScroller:ScrollToChild(DockDefaultCards)
+                        CardScroller:ScrollToChild(TextDefault)
                     end
 
                     local KillsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -1113,7 +1233,7 @@ function mainMenu()
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
                     KillsJump.DoClick = function()
-                        CardScroller:ScrollToChild(DockKillCards)
+                        CardScroller:ScrollToChild(TextKill)
                     end
 
                     local AccoladeJump = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -1122,7 +1242,7 @@ function mainMenu()
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
-                        CardScroller:ScrollToChild(DockAccoladeCards)
+                        CardScroller:ScrollToChild(TextAccolade)
                     end
 
                     local WeaponJump = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -1131,7 +1251,16 @@ function mainMenu()
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump:SetTooltip("Mastery")
                     WeaponJump.DoClick = function()
-                        CardScroller:ScrollToChild(DockMasteryCards)
+                        CardScroller:ScrollToChild(TextMastery)
+                    end
+
+                    local PaletteJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    PaletteJump:SetPos(4, 308)
+                    PaletteJump:SetSize(48, 48)
+                    PaletteJump:SetImage("icons/paletteicon.png")
+                    PaletteJump:SetTooltip("Solid Colors")
+                    PaletteJump.DoClick = function()
+                        CardScroller:ScrollToChild(TextColor)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
