@@ -312,6 +312,20 @@ net.Receive("NotifyKill", function(len, ply)
         smackdownSeperator = ""
     end
 
+    if killedPlayer:SteamID() == LocalPlayer():GetNWInt("recentlyKilledBy") and LocalPlayer():GetNWBool("gotRevenge") == false then
+        if killedPlayer:SteamID() == LocalPlayer():SteamID() then return end
+        revenge = "Revenge"
+        revengeScore = 20
+        revengeIndent = " +"
+        revengeSeperator = " | "
+        seperator = "| "
+    else
+        revenge = ""
+        revengeScore = ""
+        revengeIndent = ""
+        revengeSeperator = ""
+    end
+
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
     local whiteColor = Color(255, 255, 255)
@@ -356,7 +370,7 @@ net.Receive("NotifyKill", function(len, ply)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         if CLIENT and GetConVar("tm_enableaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. clutch .. clutchIndent .. clutchScore .. clutchSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. revenge .. revengeIndent .. revengeScore .. revengeSeperator .. clutch .. clutchIndent .. clutchScore .. clutchSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
@@ -460,9 +474,12 @@ net.Receive("DeathHud", function(len, ply)
     CallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"))
 
     playerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    playerProfilePicture:SetPos(285, 25)
+    playerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
     playerProfilePicture:SetSize(70, 70)
     playerProfilePicture:SetPlayer(killedBy, 184)
+    playerProfilePicture.Paint = function()
+        playerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
+    end
 
     DeathNotif:Show()
     DeathNotif:MakePopup()

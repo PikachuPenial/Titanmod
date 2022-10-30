@@ -159,7 +159,9 @@ function GM:PlayerSpawn(ply)
 	ply:Give(ply:GetNWInt("loadoutMelee"))
 
 	ply:SetNWInt("killStreak", 0)
+	ply:SetNWBool("gotRevenge", false)
 	ply:SetNWBool("isSpectating", false)
+	ply:ConCommand("tm_showloadout")
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -178,6 +180,8 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
+	if (ply:GetPData("playerAccoladeRevenge") == nil) then ply:SetNWInt("playerAccoladeRevenge", 0) else ply:SetNWInt("playerAccoladeRevenge", tonumber(ply:GetPData("playerAccoladeRevenge"))) end
+	if (ply:GetPData("cardPictureOffset") == nil) then ply:SetNWInt("cardPictureOffset", 0) else ply:SetNWInt("cardPictureOffset", tonumber(ply:GetPData("cardPictureOffset"))) end
 
 	--Checking if PData exists for every single fucking gun, gg.
 	for k, v in pairs(weaponArray) do
@@ -253,6 +257,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
+
+		if attacker:SteamID() ~= victim:SteamID() then
+			victim:SetNWInt("recentlyKilledBy", attacker:SteamID())
+		end
 	end
 
 	--This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
@@ -368,6 +376,14 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeHeadshot", attacker:GetNWInt("playerAccoladeHeadshot") + 1)
 	end
+
+	if victim:SteamID() == attacker:GetNWInt("recentlyKilledBy") and attacker:GetNWBool("gotRevenge") == false then
+		if victim:SteamID() == attacker:SteamID() then return end
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
+		attacker:SetNWInt("playerAccoladeRevenge", attacker:GetNWInt("playerAccoladeRevenge") + 1)
+		attacker:SetNWBool("gotRevenge", true)
+	end
 end
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
@@ -471,6 +487,7 @@ function GM:PlayerDisconnected(ply)
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
+	ply:SetPData("cardPictureOffset", ply:GetNWString("cardPictureOffset"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -480,6 +497,7 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+	ply:SetPData("playerAccoladeRevenge", ply:GetNWInt("playerAccoladeRevenge"))
 
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
@@ -502,6 +520,7 @@ function GM:ShutDown()
 		--Customizatoin
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
 		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
+		v:SetPData("cardPictureOffset", v:GetNWString("cardPictureOffset"))
 
 		--Accolades
 		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))
@@ -511,6 +530,7 @@ function GM:ShutDown()
 		v:SetPData("playerAccoladeSmackdown", v:GetNWInt("playerAccoladeSmackdown"))
 		v:SetPData("playerAccoladeHeadshot", v:GetNWInt("playerAccoladeHeadshot"))
 		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
+		v:SetPData("playerAccoladeRevenge", v:GetNWInt("playerAccoladeRevenge"))
 
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do
