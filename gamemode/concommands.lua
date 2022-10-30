@@ -18,10 +18,7 @@ concommand.Add("testdeath", TestDeathNoti)
 
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
-	if GetConVar("tm_developermode"):GetInt() == 1 then
-        print("Can not save, as the server is set to Developer Mode, disabling progression.")
-        return
-    end
+	if GetConVar("tm_developermode"):GetInt() == 1 then return end
     --Statistics
     ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
     ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
@@ -34,7 +31,7 @@ function ForceSave(ply, cmd, args)
     --Customizatoin
     ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
     ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayermodel"))
-    ply:SetPData("cardPictureOffset", ply:GetNWString("cardPictureOffset"))
+    ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
 
     --Accolades
     ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))

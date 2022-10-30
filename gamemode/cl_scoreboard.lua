@@ -83,9 +83,6 @@ function GM:ScoreboardShow()
 			playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
 			playerProfilePicture:SetSize(70, 70)
 			playerProfilePicture:SetPlayer(v, 184)
-			playerProfilePicture.Paint = function()
-				playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
-			end
 
 			--Allows the players profile to be clicked to display various options revolving around the specific player.
 			playerProfilePicture.OnMousePressed = function(self)

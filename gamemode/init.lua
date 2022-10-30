@@ -162,6 +162,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("gotRevenge", false)
 	ply:SetNWBool("isSpectating", false)
 	ply:ConCommand("tm_showloadout")
+
+	print(ply:GetNWString("chosenPlayercard"))
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -175,7 +177,7 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("chosenPlayercard") == nil) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") else ply:SetNWString("chosenPlayercard", ply:GetPData("chosenPlayercard")) end
 	if (ply:GetPData("playerAccoladeHeadshot") == nil) then ply:SetNWInt("playerAccoladeHeadshot", 0) else ply:SetNWInt("playerAccoladeHeadshot", tonumber(ply:GetPData("playerAccoladeHeadshot"))) end
 	if (ply:GetPData("playerAccoladeSmackdown") == nil) then ply:SetNWInt("playerAccoladeSmackdown", 0) else ply:SetNWInt("playerAccoladeSmackdown", tonumber(ply:GetPData("playerAccoladeSmackdown"))) end
-	if (ply:GetPData("playerAccoladeLongshot") == nil) then ply:SetNWInt("playerAccoladeLongshot", 1) else ply:SetNWInt("playerAccoladeLongshot", tonumber(ply:GetPData("playerAccoladeLongshot"))) end
+	if (ply:GetPData("playerAccoladeLongshot") == nil) then ply:SetNWInt("playerAccoladeLongshot", 0) else ply:SetNWInt("playerAccoladeLongshot", tonumber(ply:GetPData("playerAccoladeLongshot"))) end
 	if (ply:GetPData("playerAccoladePointblank") == nil) then ply:SetNWInt("playerAccoladePointblank", 0) else ply:SetNWInt("playerAccoladePointblank", tonumber(ply:GetPData("playerAccoladePointblank"))) end
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
@@ -487,7 +489,7 @@ function GM:PlayerDisconnected(ply)
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
-	ply:SetPData("cardPictureOffset", ply:GetNWString("cardPictureOffset"))
+	ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -520,7 +522,7 @@ function GM:ShutDown()
 		--Customizatoin
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
 		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
-		v:SetPData("cardPictureOffset", v:GetNWString("cardPictureOffset"))
+		v:SetPData("cardPictureOffset", v:GetNWInt("cardPictureOffset"))
 
 		--Accolades
 		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))
