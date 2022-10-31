@@ -468,17 +468,17 @@ net.Receive("DeathHud", function(len, ply)
         end
     end
 
-    CallingCard = vgui.Create("DImage", DeathNotif)
-    CallingCard:SetPos(280, 20)
-    CallingCard:SetSize(240, 80)
-    CallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"))
+    KilledByCallingCard = vgui.Create("DImage", DeathNotif)
+    KilledByCallingCard:SetPos(280, 20)
+    KilledByCallingCard:SetSize(240, 80)
+    KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"))
 
-    playerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    playerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
-    playerProfilePicture:SetSize(70, 70)
-    playerProfilePicture:SetPlayer(killedBy, 184)
-    playerProfilePicture.Paint = function()
-        playerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
+    killedByPlayerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
+    killedByPlayerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
+    killedByPlayerProfilePicture:SetSize(70, 70)
+    killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
+    killedByPlayerProfilePicture.Paint = function()
+        killedByPlayerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
     end
 
     DeathNotif:Show()

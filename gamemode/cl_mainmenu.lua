@@ -283,7 +283,7 @@ function mainMenu()
 
                     local StatsAccolades = vgui.Create("DPanel", StatsScroller)
                     StatsAccolades:Dock(TOP)
-                    StatsAccolades:SetSize(0, 365)
+                    StatsAccolades:SetSize(0, 400)
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
@@ -368,6 +368,9 @@ function mainMenu()
                         draw.SimpleText("Revenge Kills:", "SettingsLabel", 20, 325, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 500, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
+                        draw.SimpleText("Copycat Kills:", "SettingsLabel", 20, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeCopycat"), "SettingsLabel", 500, 360, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
                         if playerSelected == true and comparingWith ~= false then
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
@@ -377,6 +380,7 @@ function mainMenu()
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 720, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeCopycat"), "SettingsLabel", 720, 360, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                         end
                     end
 

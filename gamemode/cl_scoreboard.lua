@@ -74,10 +74,10 @@ function GM:ScoreboardShow()
 			ScoreIcon:SetImage("icons/scoreicon.png")
 
 			--Displays a players calling card and profile picture.
-			CallingCard = vgui.Create("DImage", PlayerPanel)
-			CallingCard:SetPos(10, 10)
-			CallingCard:SetSize(240, 80)
-			CallingCard:SetImage(v:GetNWString("chosenPlayercard"))
+			playerCallingCard = vgui.Create("DImage", PlayerPanel)
+			playerCallingCard:SetPos(10, 10)
+			playerCallingCard:SetSize(240, 80)
+			playerCallingCard:SetImage(v:GetNWString("chosenPlayercard"))
 
 			playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
 			playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
@@ -107,6 +107,7 @@ function GM:ScoreboardShow()
 				accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
 				accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
 				accolades:AddOption("Revenge Kills: " .. v:GetNWInt("playerAccoladeRevenge"))
+				accolades:AddOption("Copycat Kills: " .. v:GetNWInt("playerAccoladeCopycat"))
 
 				local weaponstatistics = Menu:AddSubMenu("View Lifetime Weapon Stats")
 				for p, t in pairs(weaponsArr) do

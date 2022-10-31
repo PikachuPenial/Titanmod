@@ -42,6 +42,7 @@ function ForceSave(ply, cmd, args)
     ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
     ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
     ply:SetPData("playerAccoladeRevenge", ply:GetNWInt("playerAccoladeRevenge"))
+    ply:SetPData("playerAccoladeCopycat", ply:GetNWInt("playerAccoladeCopycat"))
 
     print("Save was successful!")
 end
@@ -269,55 +270,55 @@ function PlayercardChange(ply, cmd, args)
 			local cardValue = v[5]
 
 			if cardUnlock == "default" then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
             if cardUnlock == "revenge" and ply:GetNWInt("playerAccoladeRevenge") >= cardValue then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "color" then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 
 			if cardUnlock == "mastery" and ply:GetNWInt("killsWith_" .. cardValue) >= masteryUnlockReq then
-				ply:SetNWInt("chosenPlayercard", cardID)
+				ply:SetNWString("chosenPlayercard", cardID)
 			end
 		end
 	end
