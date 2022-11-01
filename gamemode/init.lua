@@ -139,8 +139,11 @@ mapArray[2] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like h
 mapArray[3] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
 mapArray[4] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
 mapArray[5] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
+mapArray[6] = {"tm_rooftops", "Rooftops", "Mix of CQB and long range combat.", "maps/thumb/tm_rooftops.png"}
+mapArray[7] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
+mapArray[8] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
 
-local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown"}
+local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves"}
 local mapVoteOpen = false
 
 --Player setup, things like player movement and their loadout.
@@ -488,81 +491,83 @@ end)
 local mapVotes
 local playersVoted = {}
 
---Sets up Map Voting.
-timer.Create("startMapVote", 600, 0, function()
-	mapVotes = {0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
-	playersVoted = {}
+if table.HasValue(availableMaps, game.GetMap()) then
+	--Sets up Map Voting.
+	timer.Create("startMapVote", 600, 0, function()
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
+		playersVoted = {}
 
-	mapVoteOpen = true
-	if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", availableMaps[math.random(#availableMaps)]) return end
+		mapVoteOpen = true
+		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", availableMaps[math.random(#availableMaps)]) return end
 
-	local mapPool = {}
-	local firstMap
-	local secondMap
+		local mapPool = {}
+		local firstMap
+		local secondMap
 
-	for m, v in RandomPairs(mapArray) do
-		if game.GetMap() ~= v[1] then
-			table.insert(mapPool, v[1])
-		end
-	end
-
-	firstMap = mapPool[1]
-	secondMap = mapPool[2]
-
-	net.Start("MapVoteHUD")
-	net.WriteString(firstMap)
-	net.WriteString(secondMap)
-	net.Broadcast()
-
-	timer.Create("mapVoteStatus", 20, 1, function()
-		local newMapTable = {}
-		local maxVotes = 0
-
-		for k, v in pairs(mapVotes) do
-			if v > maxVotes then
-				maxVotes = v
+		for m, v in RandomPairs(mapArray) do
+			if game.GetMap() ~= v[1] then
+				table.insert(mapPool, v[1])
 			end
 		end
 
-		for k, v in pairs(availableMaps) do
-			if mapVotes[k] == maxVotes then
-				table.insert(newMapTable, v)
+		firstMap = mapPool[1]
+		secondMap = mapPool[2]
+
+		net.Start("MapVoteHUD")
+		net.WriteString(firstMap)
+		net.WriteString(secondMap)
+		net.Broadcast()
+
+		timer.Create("mapVoteStatus", 20, 1, function()
+			local newMapTable = {}
+			local maxVotes = 0
+
+			for k, v in pairs(mapVotes) do
+				if v > maxVotes then
+					maxVotes = v
+				end
 			end
-		end
 
-		if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
+			for k, v in pairs(availableMaps) do
+				if mapVotes[k] == maxVotes then
+					table.insert(newMapTable, v)
+				end
+			end
 
-		PrintMessage(HUD_PRINTTALK, "A new map has won the map vote, the server will switch to this map in 30 seconds!")
-		timer.Create("newMapCooldown", 30, 1, function()
-			RunConsoleCommand("changelevel", newMapTable[math.random(#newMapTable)])
+			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
+
+			PrintMessage(HUD_PRINTTALK, "A new map has won the map vote, the server will switch to this map in 30 seconds!")
+			timer.Create("newMapCooldown", 30, 1, function()
+				RunConsoleCommand("changelevel", newMapTable[math.random(#newMapTable)])
+			end)
 		end)
 	end)
-end)
 
-local function PlayerMapVote(ply, cmd, args)
-	if args[1] == nil then return end
+	local function PlayerMapVote(ply, cmd, args)
+		if args[1] == nil then return end
 
-	if playersVoted ~= nil then
-		for k, v in pairs(playersVoted) do
-			if v == ply then return end
+		if playersVoted ~= nil then
+			for k, v in pairs(playersVoted) do
+				if v == ply then return end
+			end
 		end
-	end
 
-	if mapVoteOpen == false then return end
+		if mapVoteOpen == false then return end
 
-	local votedMap = args[1]
-	local validMapVote = false
+		local votedMap = args[1]
+		local validMapVote = false
 
-	for k, v in pairs(availableMaps) do
-		if v == votedMap then
-			validMapVote = true
-			mapVotes[k] = mapVotes[k] + 1
+		for k, v in pairs(availableMaps) do
+			if v == votedMap then
+				validMapVote = true
+				mapVotes[k] = mapVotes[k] + 1
+			end
 		end
-	end
 
-	if validMapVote == false then return end
+		if validMapVote == false then return end
+	end
+	concommand.Add("tm_voteformap", PlayerMapVote)
 end
-concommand.Add("tm_voteformap", PlayerMapVote)
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)

@@ -494,7 +494,9 @@ net.Receive("MapVoteHUD", function(len, ply)
     --Creates a cooldown for the Map Vote UI, having it disappear after 30 seconds.
     timer.Create("mapVoteTimeRemaining", 20, 1, function()
         if votedOnMap == false then RunConsoleCommand("tm_voteformap", "skip") end
-        MapVoteHUD:Hide()
+        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+            MapVoteHUD:Hide()
+        end)
     end)
 
     local firstMap = net.ReadString()
@@ -521,12 +523,13 @@ net.Receive("MapVoteHUD", function(len, ply)
     end
 
     MapVoteHUD = vgui.Create("DFrame")
-    MapVoteHUD:SetSize(200, 490)
+    MapVoteHUD:SetSize(0, 490)
     MapVoteHUD:SetX(0)
     MapVoteHUD:SetY(ScrH() / 2 - 245)
     MapVoteHUD:SetTitle("")
     MapVoteHUD:SetDraggable(false)
     MapVoteHUD:ShowCloseButton(false)
+    MapVoteHUD:SizeTo(200, 490, 1, 0, 0.25)
 
     MapVoteHUD.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 150))
@@ -554,12 +557,15 @@ net.Receive("MapVoteHUD", function(len, ply)
     MapChoice.DoClick = function()
         RunConsoleCommand("tm_voteformap", firstMap)
         votedOnMap = true
-        MapVoteHUD:Hide()
 
         surface.PlaySound("buttons/button15.wav")
         notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. firstMapName .. "!")
         timer.Simple(4, function()
             notification.Kill("VoteConfirmation")
+        end)
+
+        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+            MapVoteHUD:Hide()
         end)
     end
 
@@ -580,12 +586,15 @@ net.Receive("MapVoteHUD", function(len, ply)
     MapChoiceTwo.DoClick = function()
         RunConsoleCommand("tm_voteformap", secondMap)
         votedOnMap = true
-        MapVoteHUD:Hide()
 
         surface.PlaySound("buttons/button15.wav")
         notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. secondMapName .. "!")
         timer.Simple(4, function()
             notification.Kill("VoteConfirmation")
+        end)
+
+        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+            MapVoteHUD:Hide()
         end)
     end
 
@@ -607,12 +616,15 @@ net.Receive("MapVoteHUD", function(len, ply)
     ContinueButton.DoClick = function()
         RunConsoleCommand("tm_voteformap", "skip")
         votedOnMap = true
-        MapVoteHUD:Hide()
 
         surface.PlaySound("buttons/button15.wav")
         notification.AddProgress("VoteConfirmation", "You have successfully voted to continue playing on " .. currentMapName .. "!")
         timer.Simple(4, function()
             notification.Kill("VoteConfirmation")
+        end)
+
+        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+            MapVoteHUD:Hide()
         end)
     end
 

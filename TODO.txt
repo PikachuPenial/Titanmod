@@ -3,4 +3,3 @@ Admin settings menu in Main Menu, obviously for admins. Would allow tweaking of 
 Sort weapon statistics by the kills on the weapon instead of alphabetically.
 Achivements
 Scoreboard redesign
-Map voting
