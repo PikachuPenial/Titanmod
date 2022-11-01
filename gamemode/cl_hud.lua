@@ -492,7 +492,7 @@ net.Receive("MapVoteHUD", function(len, ply)
     local votedOnMap = false
 
     --Creates a cooldown for the Map Vote UI, having it disappear after 30 seconds.
-    timer.Create("mapVoteTimeRemaining", 20, 1, function()
+    timer.Create("mapVoteTimeRemaining", 19, 1, function()
         if votedOnMap == false then RunConsoleCommand("tm_voteformap", "skip") end
         MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
             MapVoteHUD:Hide()

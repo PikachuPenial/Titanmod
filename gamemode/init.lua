@@ -143,8 +143,7 @@ mapArray[6] = {"tm_rooftops", "Rooftops", "Mix of CQB and long range combat.", "
 mapArray[7] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
 mapArray[8] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
 
-local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves"}
-local mapVoteOpen = false
+local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
 
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
@@ -224,6 +223,7 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 util.AddNetworkString("MapVoteHUD")
+--util.AddNetworkString("EndOfGame")
 
 --Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
@@ -490,11 +490,12 @@ end)
 
 local mapVotes
 local playersVoted = {}
+local mapVoteOpen = false
 
-if table.HasValue(availableMaps, game.GetMap()) then
+if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 then
 	--Sets up Map Voting.
 	timer.Create("startMapVote", 600, 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
 		playersVoted = {}
 
 		mapVoteOpen = true
@@ -537,8 +538,14 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
 
 			PrintMessage(HUD_PRINTTALK, "A new map has won the map vote, the server will switch to this map in 30 seconds!")
+			newMap = newMapTable[math.random(#newMapTable)]
+
+			--net.Start("EndOfGame")
+			--net.WriteString(newMap)
+			--net.Broadcast()
+
 			timer.Create("newMapCooldown", 30, 1, function()
-				RunConsoleCommand("changelevel", newMapTable[math.random(#newMapTable)])
+				RunConsoleCommand("changelevel", newMap)
 			end)
 		end)
 	end)
@@ -552,7 +559,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			end
 		end
 
-		if mapVoteOpen == false then return end
+		if mapVoteOpen == false then print("Can not vote for a map, as the map vote is not open yet.") return end
 
 		local votedMap = args[1]
 		local validMapVote = false

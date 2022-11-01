@@ -450,7 +450,11 @@ if SERVER then
     RunConsoleCommand("sv_VMANIPFlashlight_isOnlyUsingShoulder", "1")
 
     --Grappling Hook
-    RunConsoleCommand("frest_Cooldowng", "18")
+    if GetConVar("tm_developermode"):GetInt() == 1 then
+        RunConsoleCommand("frest_Cooldowng", "0")
+    else
+        RunConsoleCommand("frest_Cooldowng", "18")
+    end
     RunConsoleCommand("frest_range", "850")
 end
 
