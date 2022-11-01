@@ -133,6 +133,16 @@ weaponArray[117] = {"tfa_ins2_vhsd2", "VHS-D2"}
 weaponArray[118] = {"tfa_ins2_walther_p99", "Walther P99"}
 weaponArray[119] = {"tfa_ins2_xm8", "XM8"}
 
+local mapArray = {}
+mapArray[1] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
+mapArray[2] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
+mapArray[3] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
+mapArray[4] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
+mapArray[5] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
+
+local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown"}
+local mapVoteOpen = false
+
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
@@ -210,6 +220,7 @@ end
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
+util.AddNetworkString("MapVoteHUD")
 
 --Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
@@ -473,6 +484,85 @@ hook.Add("Think", "HealthRegen", Regeneration)
 timer.Create("cleanMap", 60, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
+
+local mapVotes
+local playersVoted = {}
+
+--Sets up Map Voting.
+timer.Create("startMapVote", 600, 0, function()
+	mapVotes = {0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
+	playersVoted = {}
+
+	mapVoteOpen = true
+	if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", availableMaps[math.random(#availableMaps)]) return end
+
+	local mapPool = {}
+	local firstMap
+	local secondMap
+
+	for m, v in RandomPairs(mapArray) do
+		if game.GetMap() ~= v[1] then
+			table.insert(mapPool, v[1])
+		end
+	end
+
+	firstMap = mapPool[1]
+	secondMap = mapPool[2]
+
+	net.Start("MapVoteHUD")
+	net.WriteString(firstMap)
+	net.WriteString(secondMap)
+	net.Broadcast()
+
+	timer.Create("mapVoteStatus", 20, 1, function()
+		local newMapTable = {}
+		local maxVotes = 0
+
+		for k, v in pairs(mapVotes) do
+			if v > maxVotes then
+				maxVotes = v
+			end
+		end
+
+		for k, v in pairs(availableMaps) do
+			if mapVotes[k] == maxVotes then
+				table.insert(newMapTable, v)
+			end
+		end
+
+		if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
+
+		PrintMessage(HUD_PRINTTALK, "A new map has won the map vote, the server will switch to this map in 30 seconds!")
+		timer.Create("newMapCooldown", 30, 1, function()
+			RunConsoleCommand("changelevel", newMapTable[math.random(#newMapTable)])
+		end)
+	end)
+end)
+
+local function PlayerMapVote(ply, cmd, args)
+	if args[1] == nil then return end
+
+	if playersVoted ~= nil then
+		for k, v in pairs(playersVoted) do
+			if v == ply then return end
+		end
+	end
+
+	if mapVoteOpen == false then return end
+
+	local votedMap = args[1]
+	local validMapVote = false
+
+	for k, v in pairs(availableMaps) do
+		if v == votedMap then
+			validMapVote = true
+			mapVotes[k] = mapVotes[k] + 1
+		end
+	end
+
+	if validMapVote == false then return end
+end
+concommand.Add("tm_voteformap", PlayerMapVote)
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)

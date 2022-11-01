@@ -338,9 +338,18 @@ function GM:Initialize()
     cardArray[155] = {"cards/mastery/placeholder.png", "", "Walther P99 mastery", "mastery", "tfa_ins2_walther_p99"}
     cardArray[156] = {"cards/mastery/placeholder.png", "", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
+    --Map Array Formatting (Map ID, Map Name, Map Description, Map Image)
+    local mapArray = {}
+    mapArray[1] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
+    mapArray[2] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
+    mapArray[3] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
+    mapArray[4] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
+    mapArray[5] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
+
     weaponsArr = weaponArray
     modelArr = modelArray
     cardArr = cardArray
+    mapArr = mapArray
 end
 
 --ConVars for the gamemode will under this comment, this is used to set up default client settings, and server side stuff.

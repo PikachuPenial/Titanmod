@@ -30,7 +30,7 @@ function ForceSave(ply, cmd, args)
 
     --Customizatoin
     ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
-    ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayermodel"))
+    ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
     ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
 
     --Accolades

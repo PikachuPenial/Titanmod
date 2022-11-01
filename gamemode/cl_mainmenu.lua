@@ -1,11 +1,18 @@
 local MainMenu
 
 function mainMenu()
+    if LocalPlayer():Alive() then return end
+
     local client = LocalPlayer()
     local chosenMusic
     local musicName
     local musicList
     local requestedBy
+
+    local mapID
+    local mapName
+    local mapDesc
+    local mapThumb
 
     if ScrW() < 1024 and ScrH() < 768 then
         belowMinimumRes = true
@@ -74,6 +81,15 @@ function mainMenu()
         MainMenu:SetDeleteOnClose(false)
         MainMenu:MakePopup()
 
+        for m, t in pairs(mapArr) do
+            if game.GetMap() == t[1] then
+                mapID = t[1]
+                mapName = t[2]
+                mapDesc = t[3]
+                mapThumb = t[4]
+            end
+        end
+
         MainMenu.Paint = function()
             surface.SetDrawColor(40, 40, 40, 200)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
@@ -92,6 +108,17 @@ function mainMenu()
                 else
                     draw.SimpleText("Listening to nothing, peace and quiet :)", "MainMenuMusicName", ScrW() - 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 end
+
+                if mapID ~= nil then
+                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(mapDesc, "StreakText", ScrW() - 210, ScrH() - 25, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 250, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Server Uptime: " .. math.Round(RealTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                else
+                    draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 70, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Server Uptime: " .. math.Round(RealTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                end
             end
 
             if requestedBy ~= nil and CLIENT and GetConVar("tm_menumusic"):GetInt() == 1 then
@@ -107,7 +134,7 @@ function mainMenu()
             CallingCard = vgui.Create("DImage", MainPanel)
             CallingCard:SetPos(190, 10)
             CallingCard:SetSize(240, 80)
-            CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"))
+            CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"), "cards/color/black.png")
 
             local CallingCardText = vgui.Create("DPanel", CallingCard)
             CallingCardText:SetPos(0, 0)
@@ -122,6 +149,13 @@ function mainMenu()
             playerProfilePicture:SetPlayer(LocalPlayer(), 184)
             playerProfilePicture.Paint = function()
                 playerProfilePicture:SetPos(195 + GetConVar("tm_cardpfpoffset"):GetInt(), 15)
+            end
+
+            if mapID ~= nil then
+                MapPreview = vgui.Create("DImage", MainPanel)
+                MapPreview:SetPos(ScrW() - 205, ScrH() - 205)
+                MapPreview:SetSize(200, 200)
+                MapPreview:SetImage(mapThumb)
             end
 
             local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
