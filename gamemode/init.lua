@@ -166,9 +166,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 
-	ply:Give(ply:GetNWInt("loadoutPrimary"))
-	ply:Give(ply:GetNWInt("loadoutSecondary"))
-	ply:Give(ply:GetNWInt("loadoutMelee"))
+	ply:Give(ply:GetNWString("loadoutPrimary"))
+	ply:Give(ply:GetNWString("loadoutSecondary"))
+	ply:Give(ply:GetNWString("loadoutMelee"))
 
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
@@ -214,11 +214,9 @@ function GM:PlayerInitialSpawn(ply)
 	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
 
 	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
-	ply:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	ply:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	ply:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
-
-	ply:SetNWInt("timeUntilMapVote", 600)
+	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 end
 
 util.AddNetworkString("PlayHitsound")
@@ -289,9 +287,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol"}
 	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
 
-	victim:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	victim:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
+	victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
@@ -355,8 +353,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 				victim:SpectateEntity(attacker)
 				victim:Spectate(OBS_MODE_IN_EYE)
-
-				victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
+				--victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
 			end)
 		end
 	end
@@ -409,10 +406,16 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if victim:SteamID() == attacker:GetNWInt("recentlyKilledBy") and attacker:GetNWBool("gotRevenge") == false then
 		if victim:SteamID() == attacker:SteamID() then return end
-		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
 		attacker:SetNWInt("playerAccoladeRevenge", attacker:GetNWInt("playerAccoladeRevenge") + 1)
 		attacker:SetNWBool("gotRevenge", true)
+	end
+
+	if attacker:GetActiveWeapon():GetClass() == attacker:GetNWString("loadoutPrimary") and victim:GetNWString("loadoutPrimary") or attacker:GetNWString("loadoutSecondary") and victim:GetNWString("loadoutSecondary") or attacker:GetNWString("loadoutMelee") and victim:GetNWString("loadoutMelee") then
+		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 40)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 40)
+		attacker:SetNWInt("playerAccoladeCopycat", attacker:GetNWInt("playerAccoladeCopycat") + 1)
 	end
 end
 
@@ -589,16 +592,18 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 	concommand.Add("tm_voteformap", PlayerMapVote)
 end
 
-local clientMapTimeLeft
-timer.Create("updateClientMapVoteTime", 10, 0, function()
-	if timer.Exists("startMapVote") then
-		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
-	end
+if GetConVar("tm_endless"):GetInt() == 0 then
+	local clientMapTimeLeft
+	timer.Create("updateClientMapVoteTime", 10, 0, function()
+		if timer.Exists("startMapVote") then
+			clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
+		end
 
-	net.Start("UpdateClientMapVoteTime", true)
-	net.WriteFloat(clientMapTimeLeft)
-	net.Broadcast()
-end)
+		net.Start("UpdateClientMapVoteTime", true)
+		net.WriteFloat(clientMapTimeLeft)
+		net.Broadcast()
+	end)
+end
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)

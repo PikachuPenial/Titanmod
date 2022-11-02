@@ -229,96 +229,64 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:ShowCloseButton(false)
 
     --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
-    if LocalPlayer():GetNWInt("killStreak") >= 2 then
-        onstreak = "On Streak"
-        onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
-        onstreakIndent = " +"
-        onstreakSeperator = " | "
-        seperator = "| "
-    else
-        onstreak = ""
-        onstreakScore = ""
-        onstreakIndent = ""
-        onstreakSeperator = ""
-    end
-
     if LocalPlayer():Health() <= 15 then
-        clutch = "Clutch"
-        clutchScore = 20
-        clutchIndent = " +"
-        clutchSeperator = " | "
+        clutch = "Clutch +20 | "
         seperator = "| "
     else
         clutch = ""
-        clutchScore = ""
-        clutchIndent = ""
-        clutchSeperator = ""
-    end
-
-    if killedPlayer:GetNWInt("killStreak") >= 3 then
-        buzzkill = "Buzz Kill"
-        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
-        buzzkillIndent = " +"
-        buzzkillSeperator = " | "
-        seperator = "| "
-    else
-        buzzkill = ""
-        buzzkillScore = ""
-        buzzkillIndent = ""
-        buzzkillSeperator = ""
     end
 
     if killedFrom >= 40 then
-        marksman = "Longshot"
-        marksmanScore = killedFrom
-        marksmanIndent = " +"
-        marksmanSeperator = " | "
+        marksman = "Longshot +" .. killedFrom .. " | "
         seperator = "| "
     else
         marksman = ""
-        marksmanScore = ""
-        marksmanIndent = ""
-        marksmanSeperator = ""
     end
 
     if killedFrom <= 3 then
-        pointblank = "Point Blank"
-        pointblankScore = 20
-        pointblankIndent = " +"
-        pointblankSeperator = " | "
+        pointblank = "Point Blank +20 | "
         seperator = "| "
     else
         pointblank = ""
-        pointblankScore = ""
-        pointblankIndent = ""
-        pointblankSeperator = ""
     end
 
     if killedWith == "Tanto" or killedWith == "Japanese Ararebo" or killedWith == "KM-2000" then
-        smackdown = "Smackdown"
-        smackdownScore = 20
-        smackdownIndent = " +"
-        smackdownSeperator = " | "
+        smackdown = "Smackdown +20 |"
         seperator = "| "
     else
         smackdown = ""
-        smackdownScore = ""
-        smackdownIndent = ""
-        smackdownSeperator = ""
     end
 
     if killedPlayer:SteamID() == LocalPlayer():GetNWInt("recentlyKilledBy") and LocalPlayer():GetNWBool("gotRevenge") == false then
         if killedPlayer:SteamID() == LocalPlayer():SteamID() then return end
-        revenge = "Revenge"
-        revengeScore = 20
-        revengeIndent = " +"
-        revengeSeperator = " | "
-        seperator = "| "
+        revenge = "Revenge +10 | "
     else
         revenge = ""
-        revengeScore = ""
-        revengeIndent = ""
-        revengeSeperator = ""
+    end
+
+    if LocalPlayer():GetActiveWeapon():GetClass() == LocalPlayer():GetNWString("loadoutPrimary") and killedPlayer:GetNWString("loadoutPrimary") or LocalPlayer():GetNWString("loadoutSecondary") and killedPlayer:GetNWString("loadoutSecondary") or LocalPlayer():GetNWString("loadoutMelee") and killedPlayer:GetNWString("loadoutMelee") then
+        copycat = "Copycat +40 | "
+        seperator = "| "
+    else
+        copycat = ""
+    end
+
+    if LocalPlayer():GetNWInt("killStreak") >= 2 then
+        onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
+        onstreak = "On Streak +" .. onstreakScore .. " | "
+        seperator = "| "
+    else
+        onstreakScore = ""
+        onstreak = ""
+    end
+
+    if killedPlayer:GetNWInt("killStreak") >= 3 then
+        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
+        buzzkill = "Buzz Kill +" .. buzzkillScore .. " | "
+        seperator = "| "
+    else
+        buzzkillScore = ""
+        buzzkill = ""
     end
 
     --Setting up variables related to colors, mostly for animations or dynamic text color.
@@ -332,19 +300,11 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif.Paint = function()
         --Changes the kill icons color if a player got a headshot kill.
         if LocalPlayer():GetNWBool("lastShotHead") == true then
-            headshot = "Headshot"
-            headshotScore = 20
-            headshotIndent = " +"
-            headshotSeperator = " | "
+            headshot = "Headshot +20 | "
             seperator = "| "
-
             KillIcon:SetImageColor(Color(255, 0, 0))
         else
             headshot = ""
-            headshotScore = ""
-            headshotIndent = ""
-            headshotSeperator = ""
-
             KillIcon:SetImageColor(Color(255, 255, 255))
         end
 
@@ -365,7 +325,7 @@ net.Receive("NotifyKill", function(len, ply)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         if CLIENT and GetConVar("tm_enableaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. headshotIndent .. headshotScore .. headshotSeperator .. onstreak .. onstreakIndent .. onstreakScore .. onstreakSeperator .. revenge .. revengeIndent .. revengeScore .. revengeSeperator .. clutch .. clutchIndent .. clutchScore .. clutchSeperator .. buzzkill .. buzzkillIndent .. buzzkillScore .. buzzkillSeperator .. marksman .. marksmanIndent .. marksmanScore .. marksmanSeperator .. pointblank .. pointblankIndent .. pointblankScore .. pointblankSeperator .. smackdown .. smackdownIndent .. smackdownScore, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. onstreak .. copycat .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
@@ -383,7 +343,7 @@ net.Receive("NotifyKill", function(len, ply)
 
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
-        KillNotif:SizeTo(0, 200, 1, 0.25, 0.25, function()
+        KillNotif:SizeTo(0, 200, 1, 0, 0.25, function()
             KillNotif:Hide()
         end)
         notiAlreadyActive = false

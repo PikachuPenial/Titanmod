@@ -213,6 +213,42 @@ function mainMenu()
                 draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
+            local Patch03b1 = vgui.Create("DPanel", PatchScroller)
+            Patch03b1:Dock(TOP)
+            Patch03b1:SetSize(0, 510)
+            Patch03b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.3b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/02/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Map voting","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Player cards and card options","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped scoreboard","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Weapon mastery","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)      
+                draw.SimpleText("+ Revenge and Copycat accolade","StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)         
+                draw.SimpleText("   Buffed:", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Stevens 620", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Minimi Para", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved options and customize menus", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added map information to main menu", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Loadout notification on player spawn", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Endless mode as a server option", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Maps are now included in the addon", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   AR-15 now defaults to full auto", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Players climb ladders 10% faster", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Grapple Hook refreshes on player kill", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Wallrun velocity slightly increased", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Death info now shows on a players suicide", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized Kill UI", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed poor hit registration", "StreakText", 5, 480, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed new weapons not spawning after death", "StreakText", 5, 500, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error on player suicide", "StreakText", 5, 520, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error on players first death", "StreakText", 5, 540, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error for loading player cards", "StreakText", 5, 560, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Player specific spectating due to bug", "StreakText", 5, 580, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+            end
+
             local Patch02b1 = vgui.Create("DPanel", PatchScroller)
             Patch02b1:Dock(TOP)
             Patch02b1:SetSize(0, 510)
@@ -579,13 +615,13 @@ function mainMenu()
 
                 draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
                 for k, v in pairs(weaponsArr) do
-                    if v[1] == LocalPlayer():GetNWInt("loadoutPrimary") then
+                    if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
                         draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
-                    if v[1] == LocalPlayer():GetNWInt("loadoutSecondary") then
+                    if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then
                         draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
-                    if v[1] == LocalPlayer():GetNWInt("loadoutMelee") then
+                    if v[1] == LocalPlayer():GetNWString("loadoutMelee") then
                         draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
                 end
@@ -2503,13 +2539,13 @@ concommand.Add("tm_openmainmenu", mainMenu)
 
 function ShowLoadoutOnSpawn()
     for n, v in pairs(weaponsArr) do
-        if v[1] == LocalPlayer():GetNWInt("loadoutPrimary") then
+        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
             primaryWeapon = v[2]
         end
-        if v[1] == LocalPlayer():GetNWInt("loadoutSecondary") then
+        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then
             secondaryWeapon = v[2]
         end
-        if v[1] == LocalPlayer():GetNWInt("loadoutMelee") then
+        if v[1] == LocalPlayer():GetNWString("loadoutMelee") then
             meleeWeapon = v[2]
         end
     end

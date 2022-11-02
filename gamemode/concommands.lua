@@ -131,8 +131,8 @@ function PlayercardChange(ply, cmd, args)
     cardArray[24] = {"cards/accolades/killstreaks_240.png", "Badass", "Never look back.", "killstreaks", 240}
     cardArray[25] = {"cards/accolades/buzzkills_80.png", "Wobblers", "I. am. alive.", "buzzkills", 80}
     cardArray[26] = {"cards/accolades/buzzkills_240.png", "Execution", "Bye bye.", "buzzkills", 240}
-    cardArray[27] = {"cards/accolades/revenge_80.png", "Preperation", "stab stab.", "revenge", 80}
-    cardArray[28] = {"cards/accolades/revenge_240.png", "Eyepatch", "", "revenge", 240}
+    cardArray[27] = {"cards/accolades/revenge_80.png", "Preperation", "stab stab.", "revenge", 300}
+    cardArray[28] = {"cards/accolades/revenge_240.png", "Eyepatch", "", "revenge", 900}
     cardArray[29] = {"cards/color/red.png", "Red", "Solid red color.", "color", "color"}
     cardArray[30] = {"cards/color/orange.png", "Orange", "Solid orange color.", "color", "color"}
     cardArray[31] = {"cards/color/yellow.png", "Yellow", "Solid yellow color.", "color", "color"}
