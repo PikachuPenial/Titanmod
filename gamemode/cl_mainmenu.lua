@@ -116,8 +116,8 @@ function mainMenu()
                     draw.SimpleText("Server Uptime: " .. math.Round(RealTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 else
                     draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 70, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Server Uptime: " .. math.Round(RealTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 70, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Server uptime: " .. math.Round(SysTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 end
             end
 

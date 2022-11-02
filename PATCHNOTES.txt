@@ -1,5 +1,9 @@
 Using this to simplify Patch Note creation for the Main Menu, this will be cleared on each new update, dukwater out!
 
+Map Voting
+Refreshed scoreboard
+Weapon Mastery
+
 AR-15 now defaults to full auto
 Players climb ladders 10% faster
 Grapple Hook refreshes on player kill

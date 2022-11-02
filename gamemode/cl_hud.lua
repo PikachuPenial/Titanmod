@@ -2,11 +2,6 @@
 local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 
-local scrw = ScrW()
-local scrh = ScrH()
-
-local isAnimatingKill
-
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
 	if CLIENT and GetConVar("tm_enableui"):GetInt() == 1 then
@@ -401,6 +396,8 @@ net.Receive("DeathHud", function(len, ply)
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
 
+    local respawnTimeLeft = 4
+
     if IsValid(KillNotif) then
         KillNotif:Hide()
         notiAlreadyActive = false
@@ -432,40 +429,34 @@ net.Receive("DeathHud", function(len, ply)
     DeathNotif:ShowCloseButton(false)
 
     DeathNotif.Paint = function()
-        if killedBy == nil or killedWith == nil or !killedBy:IsPlayer() then
-            --This appears if the player died via a suicide.
-            draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 100))
-            draw.SimpleText("You commited suicide!", "Trebuchet18", 200, 5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        --This appears if the player died to another player
+        if killedBy:GetNWBool("lastShotHead") == true then
+            draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
         else
-            --This appears if the player died to another player
-            if killedBy:GetNWBool("lastShotHead") == true then
-                draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-            else
-                draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-            end
-
-            --Information about the cause of your death, hopefully it wasn't too embarrising.
-            draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-            draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 95.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 120, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("|", "PlayerDeathName", 400, 145, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-            if killedBy:Health() <= 0 then
-                draw.SimpleText("DEAD", "WepNameKill", 390, 130, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
-            else
-                draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            end
-            draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-
-            draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            if respawnTimeLeft ~= nil or respawnTimeLeft > 5 or respawnTimeLeft < 0 then
-                draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-            end
-            draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
         end
+
+        --Information about the cause of your death, hopefully it wasn't too embarrising.
+        draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
+        draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 95.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 120, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 145, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+        draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        if killedBy:Health() <= 0 then
+            draw.SimpleText("DEAD", "WepNameKill", 390, 130, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
+        else
+            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+        end
+        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+
+        draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        if respawnTimeLeft ~= nil or respawnTimeLeft > 4 or respawnTimeLeft < 0 then
+            draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        end
+        draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, Color(255, 255, 255), TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)

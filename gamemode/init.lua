@@ -217,6 +217,8 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	ply:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
 	ply:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
+
+	ply:SetNWInt("timeUntilMapVote", 600)
 end
 
 util.AddNetworkString("PlayHitsound")
@@ -224,6 +226,7 @@ util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 util.AddNetworkString("MapVoteHUD")
 --util.AddNetworkString("EndOfGame")
+util.AddNetworkString("UpdateClientMapVoteTime")
 
 --Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
@@ -252,6 +255,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
+		victim:SetNWBool("watchingKillCam", false)
 	else
 		attacker:SetNWInt("playerKills", attacker:GetNWInt("playerKills") + 1)
 		attacker:SetNWInt("playerKDR", attacker:GetNWInt("playerKills") / attacker:GetNWInt("playerDeaths"))
@@ -285,6 +289,28 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol"}
 	local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
 
+	victim:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	victim:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
+
+	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
+	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
+		if victim:GetNWBool("mainmenu") == false and victim:GetNWBool("isSpectating") == false then
+			victim:SetNWBool("watchingKillCam", false)
+			victim:Spawn()
+			victim:UnSpectate()
+		end
+	end)
+
+	if not attacker:IsPlayer() then
+		net.Start("DeathHud")
+		net.WriteEntity(victim)
+		net.WriteString("Suicide")
+		net.WriteFloat(0)
+		net.Send(victim)
+		return
+	end
+
 	--Sends the Kill and Death UI, as well as initiating the Kill Cam.
 	local weaponInfo
 	local weaponName
@@ -295,10 +321,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 		weaponName = weaponInfo["PrintName"]
 	end
-
-	victim:SetNWInt("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	victim:SetNWInt("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	victim:SetNWInt("loadoutMelee", randMelee[math.random(#randMelee)])
 
 	if (victim ~= attacker) and (inflictor ~= nil) then
 		net.Start("NotifyKill")
@@ -338,15 +360,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			end)
 		end
 	end
-
-	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
-	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
-		if victim:GetNWBool("mainmenu") == false and victim:GetNWBool("isSpectating") == false then
-			victim:SetNWBool("watchingKillCam", false)
-			victim:Spawn()
-			victim:UnSpectate()
-		end
-	end)
 
 	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
 	if attacker:GetNWInt("killStreak") >= 3 then
@@ -575,6 +588,17 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 	end
 	concommand.Add("tm_voteformap", PlayerMapVote)
 end
+
+local clientMapTimeLeft
+timer.Create("updateClientMapVoteTime", 10, 0, function()
+	if timer.Exists("startMapVote") then
+		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
+	end
+
+	net.Start("UpdateClientMapVoteTime", true)
+	net.WriteFloat(clientMapTimeLeft)
+	net.Broadcast()
+end)
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
