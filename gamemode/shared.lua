@@ -6,7 +6,7 @@ GM.Website = "https://github.com/PikachuPenial"
 --Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
 
---Creating ConVars, mostly for use in the Options menu.
+--Creating client ConVars, mostly for use in the Options menu.
 if !ConVarExists("tm_enableui") then CreateConVar("tm_enableui", "1", FCVAR_ARCHIVE, "Enable/disable any custom UI elements created by the gamemode",0,1) end
 if !ConVarExists("tm_enablekillpopup") then CreateConVar("tm_enablekillpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the kill popup",0,1) end
 if !ConVarExists("tm_enabledeathpopup") then CreateConVar("tm_enabledeathpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the death popup",0,1) end
@@ -15,7 +15,9 @@ if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_AR
 if !ConVarExists("tm_showspeed") then CreateConVar("tm_showspeed", "0", FCVAR_ARCHIVE, "Enables a speed indicator at the top of your screen",0,1) end
 if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "0", FCVAR_ARCHIVE, "Enable or disable the hitsounds",0,1) end
 if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
-if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
+if !ConVarExists("tm_gameendmusic") then CreateConVar("tm_gameendmusic", "1", FCVAR_ARCHIVE, "Enable or disable the Game End music",0,1) end
+if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Main Menu music",0,1) end
+if !ConVarExists("tm_gameendmusicvolume") then CreateConVar("tm_gameendmusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Game End music",0,1) end
 if !ConVarExists("tm_communitymusic") then CreateConVar("tm_communitymusic", "0", FCVAR_ARCHIVE, "Enable or disable community requested Main Menu music",0,1) end
 if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
 if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
@@ -543,7 +545,7 @@ if CLIENT then
     RunConsoleCommand("cl_aimingfx_vignette_intensity_sighted_multiplier", "0.60")
 
     --Sliding
-    RunConsoleCommand("cl_qslide_view", "1")
+    RunConsoleCommand("cl_qslide_view", "0")
 
     --Voice Chat animations
     RunConsoleCommand("cl_vmanip_voicechat", "0")

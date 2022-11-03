@@ -2,6 +2,8 @@
 local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 
+local gameEnded = false
+
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
 	if CLIENT and GetConVar("tm_enableui"):GetInt() == 1 then
@@ -13,6 +15,11 @@ function HUD()
 
         --Hides the HUD if the player has the Main Menu open.
         if LocalPlayer():GetNWBool("mainmenu") == true then
+            return
+        end
+
+        --Hides the HUD if the player is viewing the Game End menu.
+        if gameEnded = true then
             return
         end
 
@@ -589,6 +596,9 @@ net.Receive("EndOfGame", function(len, ply)
         EndOfGameUI:Hide()
     end
 
+    gameEnded == true
+    RunConsoleCommand("tm_closemainmenu")
+
     local matchStartsIn = 30
     local nextMap = net.ReadString()
 
@@ -604,8 +614,12 @@ net.Receive("EndOfGame", function(len, ply)
 
     --Plays music on match end.
     local menuMusic = CreateSound(LocalPlayer(), "music/matchend.wav")
-    menuMusic:Play()
-    menuMusic:ChangeVolume(1)
+    musicVolume = GetConVar("tm_gameendmusicvolume"):GetInt() / 4
+
+    if CLIENT and GetConVar("tm_gameendmusic"):GetInt() == 1 then
+        menuMusic:Play()
+        menuMusic:ChangeVolume(musicVolume * 1.2)
+    end
 
     EndOfGameUI = vgui.Create("DPanel")
     EndOfGameUI:SetSize(ScrW(), 0)

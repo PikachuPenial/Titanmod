@@ -510,17 +510,20 @@ local mapVoteOpen = false
 
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 then
 	--Sets up Map Voting.
-	timer.Create("startMapVote", 60, 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
+	timer.Create("startMapVote", GetConVar("tm_mapvotetimer"):GetInt(), 0, function()
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
 		playersVoted = {}
 
+		--Failsafe for empty servers, will skip the map vote if a server has no players.
+		if #player.GetHumans() == 0 then print("Map Vote skipped as their are no players on the server.") return end
+
 		mapVoteOpen = true
-		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", availableMaps[math.random(#availableMaps)]) return end
 
 		local mapPool = {}
 		local firstMap
 		local secondMap
 
+		--Makes sure that the map currently being played is not added to the map pool.
 		for m, v in RandomPairs(mapArray) do
 			if game.GetMap() ~= v[1] then
 				table.insert(mapPool, v[1])
@@ -551,7 +554,8 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				end
 			end
 
-			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
+			--If players vote to continue on current map, end the map vote and restart the timer, otherwise, begin the intermission process.
+			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. GetConVar("tm_mapvotetimer"):GetInt() .. " seconds!") return end
 
 			newMap = newMapTable[math.random(#newMapTable)]
 
@@ -578,7 +582,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			end
 		end
 
-		if mapVoteOpen == false then print("Can not vote for a map, as the map vote is not open yet.") return end
+		if mapVoteOpen == false then print("You can not vote for a map, as the map vote is not open yet.") return end
 
 		local votedMap = args[1]
 		local validMapVote = false

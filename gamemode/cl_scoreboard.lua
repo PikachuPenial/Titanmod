@@ -6,7 +6,7 @@ local mapName
 local mapDesc
 local mapThumb
 
-local timeUntilMapVote = 600
+local timeUntilMapVote = GetConVar("tm_mapvotetimer"):GetInt()
 
 net.Receive("UpdateClientMapVoteTime", function(len, ply)
     timeUntilMapVote = net.ReadFloat()
