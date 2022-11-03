@@ -16,6 +16,14 @@ function TestDeathNoti(ply, cmd, args)
 end
 concommand.Add("testdeath", TestDeathNoti)
 
+function TestDeathNoti(ply, cmd, args)
+    ply:KillSilent()
+    net.Start("EndOfGame")
+    net.WriteString("tm_nuketown")
+    net.Broadcast()
+end
+concommand.Add("testend", TestDeathNoti) 
+
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end

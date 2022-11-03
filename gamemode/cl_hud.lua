@@ -442,7 +442,7 @@ end )
 net.Receive("MapVoteHUD", function(len, ply)
     local votedOnMap = false
 
-    --Creates a cooldown for the Map Vote UI, having it disappear after 30 seconds.
+    --Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
     timer.Create("mapVoteTimeRemaining", 19, 1, function()
         if votedOnMap == false then RunConsoleCommand("tm_voteformap", "skip") end
         MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
@@ -581,4 +581,112 @@ net.Receive("MapVoteHUD", function(len, ply)
 
     MapVoteHUD:Show()
     MapVoteHUD:SetKeyboardInputEnabled(false)
+end )
+
+--Displays to all players when a map vote begins.
+net.Receive("EndOfGame", function(len, ply)
+    if IsValid(EndOfGameUI) then
+        EndOfGameUI:Hide()
+    end
+
+    local matchStartsIn = 30
+    local nextMap = net.ReadString()
+
+    --Creates a timer so players can see how long it will be until the next match starts.
+    timer.Create("matchStartsIn", 30, 1, function()
+    end)
+
+    hook.Add("Think", "ShowNextMatchTime", function(ply)
+        if timer.Exists("matchStartsIn") then
+            matchStartsIn = math.Round(timer.TimeLeft("matchStartsIn"))
+        end
+    end)
+
+    --Plays music on match end.
+    local menuMusic = CreateSound(LocalPlayer(), "music/matchend.wav")
+    menuMusic:Play()
+    menuMusic:ChangeVolume(1)
+
+    EndOfGameUI = vgui.Create("DPanel")
+    EndOfGameUI:SetSize(ScrW(), 0)
+    EndOfGameUI:SetPos(0, 0)
+    EndOfGameUI:MakePopup()
+    EndOfGameUI:SizeTo(ScrW(), ScrH(), 1.5, 0, 0.25)
+
+    EndOfGameUI.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
+    end
+
+    local TopBlock = vgui.Create("DPanel", EndOfGameUI)
+    TopBlock:Dock(TOP)
+    TopBlock:SetSize(0, ScrH() * 0.15)
+    TopBlock.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
+    end
+
+    local PlayerScroller = vgui.Create("DHorizontalScroller", EndOfGameUI)
+    PlayerScroller:Dock(TOP)
+    PlayerScroller:SetSize(0, ScrH() * 0.7)
+
+    for k, v in pairs(player.GetAll()) do
+        if v:Frags() <= 0 then
+            ratio = 0
+        elseif v:Frags() >= 1 and v:Deaths() == 0 then
+            ratio = v:Frags()
+        else
+            ratio = v:Frags() / v:Deaths()
+        end
+
+        local PlayerPanel = vgui.Create("DPanel", PlayerScroller)
+        PlayerPanel:SetSize(400, ScrH() * 0.7)
+        PlayerPanel.Paint = function(self, w, h)
+            draw.SimpleText("1st", "GunPrintName", w / 2, 15, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 60, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+
+            draw.SimpleText(v:Frags(), "Health", 170, 150, Color(0, 255, 0), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:Deaths(), "Health", 230, 150, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+            draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        end
+
+        KillsIcon = vgui.Create("DImage", PlayerPanel)
+		KillsIcon:SetPos(155, 120)
+		KillsIcon:SetSize(30, 30)
+		KillsIcon:SetImage("icons/killicon.png")
+
+		DeathsIcon = vgui.Create("DImage", PlayerPanel)
+		DeathsIcon:SetPos(215, 120)
+		DeathsIcon:SetSize(30, 30)
+		DeathsIcon:SetImage("icons/deathicon.png")
+
+        local PlayerModelDisplay = vgui.Create("DModelPanel", PlayerPanel)
+        PlayerModelDisplay:SetSize(400, ScrH() * 0.7)
+        PlayerModelDisplay:SetModel(v:GetNWString("chosenPlayermodel"))
+        function PlayerModelDisplay:LayoutEntity(Entity) return end
+
+        --Displays a players calling card and profile picture.
+        playerMenuCallingCard = vgui.Create("DImage", PlayerPanel)
+        playerMenuCallingCard:SetPos(PlayerPanel:GetWide() / 2 - 120, PlayerPanel:GetTall() - 100)
+        playerMenuCallingCard:SetSize(240, 80)
+        playerMenuCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+
+        playerMenuProfilePicture = vgui.Create("AvatarImage", playerMenuCallingCard)
+        playerMenuProfilePicture:SetPos(5 + v:GetNWInt("cardPictureOffset"), 5)
+        playerMenuProfilePicture:SetSize(70, 70)
+        playerMenuProfilePicture:SetPlayer(v, 184)
+
+        PlayerScroller:AddPanel(PlayerPanel)
+    end
+
+
+    local BottomBlock = vgui.Create("DPanel", EndOfGameUI)
+    BottomBlock:Dock(TOP)
+    BottomBlock:SetSize(0, ScrH() * 0.15)
+    BottomBlock.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
+        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+    end
+
+    EndOfGameUI:Show()
+    gui.EnableScreenClicker(true)
 end )

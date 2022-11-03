@@ -223,7 +223,7 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 util.AddNetworkString("MapVoteHUD")
---util.AddNetworkString("EndOfGame")
+util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
 
 --Sending a hitsound if a player attacks another player.
@@ -412,7 +412,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWBool("gotRevenge", true)
 	end
 
-	if attacker:GetActiveWeapon():GetClass() == attacker:GetNWString("loadoutPrimary") and victim:GetNWString("loadoutPrimary") or attacker:GetNWString("loadoutSecondary") and victim:GetNWString("loadoutSecondary") or attacker:GetNWString("loadoutMelee") and victim:GetNWString("loadoutMelee") then
+	if victim ~= attacker and attacker:IsPlayer() and attacker:GetActiveWeapon():GetClass() == attacker:GetNWString("loadoutPrimary") and victim:GetNWString("loadoutPrimary") or attacker:GetNWString("loadoutSecondary") and victim:GetNWString("loadoutSecondary") or attacker:GetNWString("loadoutMelee") and victim:GetNWString("loadoutMelee") then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 40)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 40)
 		attacker:SetNWInt("playerAccoladeCopycat", attacker:GetNWInt("playerAccoladeCopycat") + 1)
@@ -462,7 +462,7 @@ concommand.Add("tm_closemainmenu", CloseMainMenu)
 
 --Overwritting the default respawn mechanics to lock players behind a spwan countdown.
 hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
-	if timer.Exists(ply:SteamID() .. "respawnTime") then
+	if timer.Exists(ply:SteamID() .. "respawnTime") or timer.Exists("newMapCooldown") then
 		return false
 	end
 end)
@@ -510,7 +510,7 @@ local mapVoteOpen = false
 
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 then
 	--Sets up Map Voting.
-	timer.Create("startMapVote", 600, 0, function()
+	timer.Create("startMapVote", 60, 0, function()
 		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool.
 		playersVoted = {}
 
@@ -553,12 +553,15 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in 10 minutes!") return end
 
-			PrintMessage(HUD_PRINTTALK, "A new map has won the map vote, the server will switch to this map in 30 seconds!")
 			newMap = newMapTable[math.random(#newMapTable)]
 
-			--net.Start("EndOfGame")
-			--net.WriteString(newMap)
-			--net.Broadcast()
+			for k, v in pairs(player.GetAll()) do
+				v:KillSilent()
+			end
+
+			net.Start("EndOfGame")
+			net.WriteString(newMap)
+			net.Broadcast()
 
 			timer.Create("newMapCooldown", 30, 1, function()
 				RunConsoleCommand("changelevel", newMap)
@@ -592,18 +595,16 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 	concommand.Add("tm_voteformap", PlayerMapVote)
 end
 
-if GetConVar("tm_endless"):GetInt() == 0 then
-	local clientMapTimeLeft
-	timer.Create("updateClientMapVoteTime", 10, 0, function()
-		if timer.Exists("startMapVote") then
-			clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
-		end
+local clientMapTimeLeft
+timer.Create("updateClientMapVoteTime", 10, 0, function()
+	if timer.Exists("startMapVote") then
+		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
+	end
 
-		net.Start("UpdateClientMapVoteTime", true)
-		net.WriteFloat(clientMapTimeLeft)
-		net.Broadcast()
-	end)
-end
+	net.Start("UpdateClientMapVoteTime", true)
+	net.WriteFloat(clientMapTimeLeft)
+	net.Broadcast()
+end)
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
