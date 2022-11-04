@@ -19,7 +19,7 @@ function HUD()
         end
 
         --Hides the HUD if the player is viewing the Game End menu.
-        if gameEnded = true then
+        if gameEnded == true then
             return
         end
 
@@ -271,13 +271,6 @@ net.Receive("NotifyKill", function(len, ply)
         revenge = ""
     end
 
-    if LocalPlayer():GetActiveWeapon():GetClass() == LocalPlayer():GetNWString("loadoutPrimary") and killedPlayer:GetNWString("loadoutPrimary") or LocalPlayer():GetNWString("loadoutSecondary") and killedPlayer:GetNWString("loadoutSecondary") or LocalPlayer():GetNWString("loadoutMelee") and killedPlayer:GetNWString("loadoutMelee") then
-        copycat = "Copycat +40 | "
-        seperator = "| "
-    else
-        copycat = ""
-    end
-
     if LocalPlayer():GetNWInt("killStreak") >= 2 then
         onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
         onstreak = "On Streak +" .. onstreakScore .. " | "
@@ -332,7 +325,7 @@ net.Receive("NotifyKill", function(len, ply)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         if CLIENT and GetConVar("tm_enableaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. onstreak .. copycat .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. onstreak .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
@@ -432,11 +425,11 @@ net.Receive("DeathHud", function(len, ply)
     KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
 
     killedByPlayerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    killedByPlayerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
+    killedByPlayerProfilePicture:SetPos(285 + killedBy:GetNWInt("cardPictureOffset"), 25)
     killedByPlayerProfilePicture:SetSize(70, 70)
     killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
     killedByPlayerProfilePicture.Paint = function()
-        killedByPlayerProfilePicture:SetPos(285 + LocalPlayer():GetNWInt("cardPictureOffset"), 25)
+        killedByPlayerProfilePicture:SetPos(285 + killedBy:GetNWInt("cardPictureOffset"), 25)
     end
 
     DeathNotif:Show()
@@ -596,11 +589,12 @@ net.Receive("EndOfGame", function(len, ply)
         EndOfGameUI:Hide()
     end
 
-    gameEnded == true
+    gameEnded = true
     RunConsoleCommand("tm_closemainmenu")
 
     local matchStartsIn = 30
     local nextMap = net.ReadString()
+    local nextMapThumbnail = "maps/thumb/" .. nextMap .. ".png"
 
     --Creates a timer so players can see how long it will be until the next match starts.
     timer.Create("matchStartsIn", 30, 1, function()
@@ -643,6 +637,8 @@ net.Receive("EndOfGame", function(len, ply)
     PlayerScroller:SetSize(0, ScrH() * 0.7)
 
     for k, v in pairs(player.GetAll()) do
+        local ratio
+
         if v:Frags() <= 0 then
             ratio = 0
         elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -654,8 +650,7 @@ net.Receive("EndOfGame", function(len, ply)
         local PlayerPanel = vgui.Create("DPanel", PlayerScroller)
         PlayerPanel:SetSize(400, ScrH() * 0.7)
         PlayerPanel.Paint = function(self, w, h)
-            draw.SimpleText("1st", "GunPrintName", w / 2, 15, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 60, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, Color(255, 255, 255), TEXT_ALIGN_CENTER)
 
             draw.SimpleText(v:Frags(), "Health", 170, 150, Color(0, 255, 0), TEXT_ALIGN_CENTER)
@@ -664,14 +659,14 @@ net.Receive("EndOfGame", function(len, ply)
         end
 
         KillsIcon = vgui.Create("DImage", PlayerPanel)
-		KillsIcon:SetPos(155, 120)
-		KillsIcon:SetSize(30, 30)
-		KillsIcon:SetImage("icons/killicon.png")
+        KillsIcon:SetPos(155, 120)
+        KillsIcon:SetSize(30, 30)
+        KillsIcon:SetImage("icons/killicon.png")
 
-		DeathsIcon = vgui.Create("DImage", PlayerPanel)
-		DeathsIcon:SetPos(215, 120)
-		DeathsIcon:SetSize(30, 30)
-		DeathsIcon:SetImage("icons/deathicon.png")
+        DeathsIcon = vgui.Create("DImage", PlayerPanel)
+        DeathsIcon:SetPos(215, 120)
+        DeathsIcon:SetSize(30, 30)
+        DeathsIcon:SetImage("icons/deathicon.png")
 
         local PlayerModelDisplay = vgui.Create("DModelPanel", PlayerPanel)
         PlayerModelDisplay:SetSize(400, ScrH() * 0.7)
@@ -696,9 +691,16 @@ net.Receive("EndOfGame", function(len, ply)
     local BottomBlock = vgui.Create("DPanel", EndOfGameUI)
     BottomBlock:Dock(TOP)
     BottomBlock:SetSize(0, ScrH() * 0.15)
+
+    nextMapThumbImage = vgui.Create("DImage", BottomBlock)
+    nextMapThumbImage:SetPos(5, 5)
+    nextMapThumbImage:SetSize(BottomBlock:GetTall() - 10, BottomBlock:GetTall() - 10)
+    nextMapThumbImage:SetImage(nextMapThumbnail)
+
     BottomBlock.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
-        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(nextMap, "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 55, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 30, Color(255, 255, 255), TEXT_ALIGN_LEFT)
     end
 
     EndOfGameUI:Show()

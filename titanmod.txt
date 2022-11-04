@@ -14,7 +14,7 @@
 			"text"		"Map Vote Timer"
 			"help"		"Changes the Map Vote timers length to the selected value in seconds."
 			"type"		"Numeric"
-			"default"	"600"
+			"default"	"900"
 			"singleplayer"
 		}
 

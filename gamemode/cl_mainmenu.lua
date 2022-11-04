@@ -2482,10 +2482,6 @@ function mainMenu()
                     ejectedDespawnTime:SetMin(0)
                     ejectedDespawnTime:SetMax(10)
                     ejectedDespawnTime:SetDecimals(0)
-
-                    DockBackButton.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                    end
                 end
             end
 

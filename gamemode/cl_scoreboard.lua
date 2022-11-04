@@ -39,7 +39,7 @@ function GM:ScoreboardShow()
 		InfoPanel:SetSize(0, 36)
 
 		InfoPanel.Paint = function(self, w, h)
-			draw.SimpleText("1 / " .. game.MaxPlayers(), "StreakText", 50, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 		end
 
 		PlayersIcon = vgui.Create("DImage", InfoPanel)
@@ -95,17 +95,22 @@ function GM:ScoreboardShow()
 		MapInfoPanel:SetSize(0, 100)
 
 		MapInfoPanel.Paint = function(self, w, h)
-			draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-			draw.SimpleText("Next map vote in " .. timeUntilMapVote .. "s~", "StreakText", 102.5, 80, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			if mapName ~= nil then
+				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			else
+				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			end
 
 			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 60.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 			draw.SimpleText("Server uptime: " .. math.Round(SysTime()) .. "s", "StreakText", 630, 80, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 		end
 
-		MapThumb = vgui.Create("DImage", MapInfoPanel)
-		MapThumb:SetPos(0, 5)
-		MapThumb:SetSize(100, 100)
-		MapThumb:SetImage(mapThumb)
+		if mapName ~= nil then
+			MapThumb = vgui.Create("DImage", MapInfoPanel)
+			MapThumb:SetPos(0, 5)
+			MapThumb:SetSize(100, 100)
+			MapThumb:SetImage(mapThumb)
+		end
 	end
 
 	if IsValid(ScoreboardDerma) then
@@ -139,12 +144,17 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
 			end
 
-			--Displays a players calling card and profile picture.
 			playerCallingCard = vgui.Create("DImage", PlayerPanel)
 			playerCallingCard:SetPos(10, 10)
 			playerCallingCard:SetSize(240, 80)
-			playerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+			if v:GetNWString("chosenPlayercard") ~= nil then
+				playerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+			else
+				playerCallingCard:SetImage("cards/color/black.png")
+				print(v:GetName() "'s player card is NIL, this is their player card. " .. v:GetNWString("chosenPlayercard"))
+			end
 
+			--Displays a players calling card and profile picture.
 			playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
 			playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
 			playerProfilePicture:SetSize(70, 70)
