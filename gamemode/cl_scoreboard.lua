@@ -31,7 +31,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.3b1", "StreakText", 20, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod 0.3b2", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -97,6 +97,7 @@ function GM:ScoreboardShow()
 		MapInfoPanel.Paint = function(self, w, h)
 			if mapName ~= nil then
 				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText("Next map vote in " .. timeUntilMapVote .. "s~", "StreakText", 102.5, 80, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 			else
 				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 			end

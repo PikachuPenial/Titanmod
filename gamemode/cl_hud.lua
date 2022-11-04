@@ -235,6 +235,11 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
 
+    KillIcon = vgui.Create("DImage", KillNotif)
+    KillIcon:SetPos(275, 50)
+    KillIcon:SetSize(50, 50)
+    KillIcon:SetImage("icons/killicon.png")
+
     --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
     if LocalPlayer():Health() <= 15 then
         clutch = "Clutch +20 | "
@@ -289,6 +294,15 @@ net.Receive("NotifyKill", function(len, ply)
         buzzkill = ""
     end
 
+    if LocalPlayer():GetNWBool("lastShotHead") == true then
+        headshot = "Headshot +20 | "
+        seperator = "| "
+        KillIcon:SetImageColor(Color(255, 0, 0))
+    else
+        headshot = ""
+        KillIcon:SetImageColor(Color(255, 255, 255))
+    end
+
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
     local whiteColor = Color(255, 255, 255)
@@ -328,11 +342,6 @@ net.Receive("NotifyKill", function(len, ply)
             draw.SimpleText(seperator .. headshot .. onstreak .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
-
-    KillIcon = vgui.Create("DImage", KillNotif)
-    KillIcon:SetPos(275, 50)
-    KillIcon:SetSize(50, 50)
-    KillIcon:SetImage("icons/killicon.png")
 
     KillNotif:Show()
     KillNotif:MakePopup()

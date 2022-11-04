@@ -512,7 +512,7 @@ local mapVoteOpen = false
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 then
 	--Sets up Map Voting.
 	timer.Create("startMapVote", GetConVar("tm_mapvotetimer"):GetInt(), 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
 		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.

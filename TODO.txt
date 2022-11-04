@@ -2,5 +2,3 @@ Low Health vignette effect around edges of screen.
 Admin settings menu in Main Menu, obviously for admins. Would allow tweaking of server side settings.
 Sort weapon statistics by the kills on the weapon instead of alphabetically.
 Achivements
-Rewrite Player Customization menu to be better in line with options/card menu
-Quick jumping for statistics menu

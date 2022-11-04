@@ -24,7 +24,7 @@ function mainMenu()
         musicList = {"music/sicktwisteddemented_sewerslvt.wav"}
         chosenMusic = (musicList[math.random(#musicList)])
     else
-        musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav"}
+        musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav"}
         chosenMusic = (musicList[math.random(#musicList)])
     end
 
@@ -62,6 +62,12 @@ function mainMenu()
         musicName = "Sneaky Snitch - Kevin MacLeod"
         requestedBy = "Checked"
         steamProfile = "https://steamcommunity.com/profiles/76561198853717083"
+    end
+
+    if chosenMusic == "music/waster_bladee.wav" then
+        musicName = "Waster - Bladee"
+        requestedBy = "Suomij (narkotica)"
+        steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
     end
 
     musicVolume = GetConVar("tm_menumusicvolume"):GetInt() / 4
@@ -213,6 +219,23 @@ function mainMenu()
                 draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
+            local Patch03b2 = vgui.Create("DPanel", PatchScroller)
+            Patch03b2:Dock(TOP)
+            Patch03b2:SetSize(0, 230)
+            Patch03b2.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.3b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/04/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Added Mall map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match end UI","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New community music track", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added Map Vote Time command", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Rooftops map", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Kill UI updating incorrectly", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
             local Patch03b1 = vgui.Create("DPanel", PatchScroller)
             Patch03b1:Dock(TOP)
             Patch03b1:SetSize(0, 630)
@@ -333,7 +356,9 @@ function mainMenu()
                     local comparisonSelectedPlayer = nil
                     local compraingWith = false
                     local playerSelected = false
+
                     local StatisticsPanel = MainMenu:Add("StatsPanel")
+                    local StatisticsSlideoutPanel = MainMenu:Add("StatsSlideoutPanel")
 
                     local StatsScroller = vgui.Create("DScrollPanel", StatisticsPanel)
                     StatsScroller:Dock(FILL)
@@ -474,30 +499,47 @@ function mainMenu()
                     localPFP:SetSize(64, 64)
                     localPFP:SetPlayer(LocalPlayer(), 184)
 
-                    local DockBackButton = vgui.Create("DPanel", StatsScroller)
-                    DockBackButton:Dock(TOP)
-                    DockBackButton:SetSize(0, 80)
+                    local StatsIcon = vgui.Create("DImage", StatisticsSlideoutPanel)
+                    StatsIcon:SetPos(12, 12)
+                    StatsIcon:SetSize(32, 32)
+                    StatsIcon:SetImage("icons/statsslideouticon.png")
 
-                    DockBackButton.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    local CombatJump = vgui.Create("DImageButton", StatisticsSlideoutPanel)
+                    CombatJump:SetPos(4, 100)
+                    CombatJump:SetSize(48, 48)
+                    CombatJump:SetImage("icons/uikillicon.png")
+                    CombatJump:SetTooltip("Combat Stats")
+                    CombatJump.DoClick = function()
+                        StatsScroller:ScrollToChild(StatsCombat)
                     end
 
-                    local BackButton = vgui.Create("DButton", DockBackButton)
-                    BackButton:SetPos(0, 0)
-                    BackButton:SetText("")
-                    BackButton:SetSize(600, 150)
-                    local textAnim = 0
-                    BackButton.Paint = function()
-                        if BackButton:IsHovered() then
-                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                        else
-                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                        end
-                        draw.DrawText("RETURN TO MENU", "AmmoCountKindaSmall", 15 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    local AccoladesJump = vgui.Create("DImageButton", StatisticsSlideoutPanel)
+                    AccoladesJump:SetPos(4, 152)
+                    AccoladesJump:SetSize(48, 48)
+                    AccoladesJump:SetImage("icons/accoladeicon.png")
+                    AccoladesJump:SetTooltip("Accolade Stats")
+                    AccoladesJump.DoClick = function()
+                        StatsScroller:ScrollToChild(StatsAccolades)
                     end
-                    BackButton.DoClick = function()
+
+                    local WeaponsJump = vgui.Create("DImageButton", StatisticsSlideoutPanel)
+                    WeaponsJump:SetPos(4, 204)
+                    WeaponsJump:SetSize(48, 48)
+                    WeaponsJump:SetImage("icons/weaponicon.png")
+                    WeaponsJump:SetTooltip("Weapon Stats")
+                    WeaponsJump.DoClick = function()
+                        StatsScroller:ScrollToChild(StatsWeapons)
+                    end
+
+                    local BackButtonSlideout = vgui.Create("DImageButton", StatisticsSlideoutPanel)
+                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetTooltip("Return to Main Menu")
+                    BackButtonSlideout:SetImage("icons/exiticon.png")
+                    BackButtonSlideout.DoClick = function()
                         MainPanel:Show()
                         StatisticsPanel:Hide()
+                        StatisticsSlideoutPanel:Hide()
                     end
                 end
             end
@@ -1171,11 +1213,11 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 80, 50, 200))
                     end
 
-                    local ApplyModelButton = vgui.Create("DButton", ApplyButtonHolder)
-                    ApplyModelButton:SetText("APPLY NEW PLAYERCARD")
-                    ApplyModelButton:SetPos(82.5, 25)
-                    ApplyModelButton:SetSize(350, 50)
-                    ApplyModelButton.DoClick = function()
+                    local ApplyCardButton = vgui.Create("DButton", ApplyButtonHolder)
+                    ApplyCardButton:SetText("APPLY NEW PLAYERCARD")
+                    ApplyCardButton:SetPos(82.5, 25)
+                    ApplyCardButton:SetSize(350, 50)
+                    ApplyCardButton.DoClick = function()
                         local masteryUnlock = 50
                         if newCardUnlockType == "default" then
                             surface.PlaySound("common/wpn_select.wav")
@@ -1441,6 +1483,7 @@ function mainMenu()
 
                 if not IsValid(CustomizePanel) then
                     local CustomizePanel = MainMenu:Add("CustomizePanel")
+                    local CustomizeSlideoutPanel = MainMenu:Add("CustomizeSlideoutPanel")
 
                     local newModel
                     local newModelName
@@ -1448,17 +1491,38 @@ function mainMenu()
                     local newModelUnlockType
                     local newModelUnlockValue
 
+                    local ModelQuickjumpHolder = vgui.Create("DPanel", CustomizeSlideoutPanel)
+                    ModelQuickjumpHolder:Dock(TOP)
+                    ModelQuickjumpHolder:SetSize(0, ScrH())
+
+                    ModelQuickjumpHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+
                     local CustomizeScroller = vgui.Create("DScrollPanel", CustomizePanel)
                     CustomizeScroller:Dock(FILL)
 
+                    local sbar = CustomizeScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
+
                     local CustomizeTextHolder = vgui.Create("DPanel", CustomizeScroller)
                     CustomizeTextHolder:Dock(TOP)
-                    CustomizeTextHolder:SetSize(0, 200)
+                    CustomizeTextHolder:SetSize(0, 140)
 
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("CUSTOMIZE", "AmmoCountSmall", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Personalize yourself.", "PlayerNotiName", 20, 130, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     --Default Playermodels
@@ -1468,7 +1532,7 @@ function mainMenu()
 
                     local DockModels = vgui.Create("DPanel", CustomizeScroller)
                     DockModels:Dock(TOP)
-                    DockModels:SetSize(0, 600   )
+                    DockModels:SetSize(0, 465)
 
                     --Kills Playermodels
                     local TextKills = vgui.Create("DPanel", CustomizeScroller)
@@ -1477,7 +1541,7 @@ function mainMenu()
 
                     local DockModelsKills = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsKills:Dock(TOP)
-                    DockModelsKills:SetSize(0, 400)
+                    DockModelsKills:SetSize(0, 310)
 
                     --Streak Playermodels
                     local TextStreak = vgui.Create("DPanel", CustomizeScroller)
@@ -1486,7 +1550,7 @@ function mainMenu()
 
                     local DockModelsStreak = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsStreak:Dock(TOP)
-                    DockModelsStreak:SetSize(0, 400)
+                    DockModelsStreak:SetSize(0, 310)
 
                     --Special Playermodels
                     local TextSpecial = vgui.Create("DPanel", CustomizeScroller)
@@ -1495,13 +1559,13 @@ function mainMenu()
 
                     local DockModelsSpecial = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsSpecial:Dock(TOP)
-                    DockModelsSpecial:SetSize(0, 217)
+                    DockModelsSpecial:SetSize(0, 155)
 
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
-                    DefaultModelList:SetSpaceY(17)
-                    DefaultModelList:SetSpaceX(17)
+                    DefaultModelList:SetSpaceY(5)
+                    DefaultModelList:SetSpaceX(5)
 
                     DefaultModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
@@ -1509,8 +1573,8 @@ function mainMenu()
 
                     local KillsModelList = vgui.Create("DIconLayout", DockModelsKills)
                     KillsModelList:Dock(TOP)
-                    KillsModelList:SetSpaceY(17)
-                    KillsModelList:SetSpaceX(17)
+                    KillsModelList:SetSpaceY(5)
+                    KillsModelList:SetSpaceX(5)
 
                     KillsModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
@@ -1518,8 +1582,8 @@ function mainMenu()
 
                     local StreakModelList = vgui.Create("DIconLayout", DockModelsStreak)
                     StreakModelList:Dock(TOP)
-                    StreakModelList:SetSpaceY(17)
-                    StreakModelList:SetSpaceX(17)
+                    StreakModelList:SetSpaceY(5)
+                    StreakModelList:SetSpaceX(5)
 
                     StreakModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
@@ -1527,8 +1591,8 @@ function mainMenu()
 
                     local SpecialModelList = vgui.Create("DIconLayout", DockModelsSpecial)
                     SpecialModelList:Dock(TOP)
-                    SpecialModelList:SetSpaceY(17)
-                    SpecialModelList:SetSpaceX(17)
+                    SpecialModelList:SetSpaceY(5)
+                    SpecialModelList:SetSpaceX(5)
 
                     SpecialModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
@@ -1553,7 +1617,7 @@ function mainMenu()
                     PreviewModelHolder:SetSize(0, 320)
 
                     PreviewModelHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
                     end
 
                     local NewModelTextHolder = vgui.Create("DPanel", PreviewScroller)
@@ -1564,7 +1628,7 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
 
                         if newModel ~= nil then
-                            draw.SimpleText("Selected playermodel:", "Health", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                             draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 50, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                             draw.SimpleText(newModelDesc, "Health", w / 2, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                         end
@@ -1608,15 +1672,7 @@ function mainMenu()
                     SelectedModelHolder:SetSize(0, 400)
 
                     SelectedModelHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                    end
-
-                    local DockBackButton = vgui.Create("DPanel", CustomizeScroller)
-                    DockBackButton:Dock(TOP)
-                    DockBackButton:SetSize(0, 100)
-
-                    DockBackButton.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
                     end
 
                     local SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
@@ -1627,7 +1683,7 @@ function mainMenu()
                             local icon = vgui.Create("SpawnIcon", DockModels)
                             icon:SetModel(v[1])
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(183, 183)
+                            icon:SetSize(150, 150)
                             DefaultModelList:Add(icon)
 
                             icon.DoClick = function(icon)
@@ -1657,7 +1713,7 @@ function mainMenu()
                             local icon = vgui.Create("SpawnIcon", DockModelsKills)
                             icon:SetModel(v[1])
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(183, 183)
+                            icon:SetSize(150, 150)
                             KillsModelList:Add(icon)
 
                             icon.DoClick = function(icon)
@@ -1687,7 +1743,7 @@ function mainMenu()
                             local icon = vgui.Create("SpawnIcon", DockModelsStreak)
                             icon:SetModel(v[1])
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(183, 183)
+                            icon:SetSize(150, 150)
                             StreakModelList:Add(icon)
 
                             icon.DoClick = function(icon)
@@ -1717,7 +1773,7 @@ function mainMenu()
                             local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
                             icon:SetModel(v[1])
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(183, 183)
+                            icon:SetSize(150, 150)
                             SpecialModelList:Add(icon)
 
                             icon.DoClick = function(icon)
@@ -1746,22 +1802,22 @@ function mainMenu()
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Default", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Default", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextKills.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Kills", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kills", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextStreak.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Streaks", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextSpecial.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Special", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Special", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     DockModels.Paint = function(self, w, h)
@@ -1838,21 +1894,55 @@ function mainMenu()
                         end
                     end
 
-                    local BackButton = vgui.Create("DButton", DockBackButton)
-                    BackButton:SetPos(0, 0)
-                    BackButton:SetText("")
-                    BackButton:SetSize(600, 150)
-                    local textAnim = 0
-                    BackButton.Paint = function()
-                        if BackButton:IsHovered() then
-                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                        else
-                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                        end
-                        draw.DrawText("RETURN TO MENU", "AmmoCountKindaSmall", 15, 15 - textAnim, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    local ModelIcon = vgui.Create("DImage", ModelQuickjumpHolder)
+                    ModelIcon:SetPos(12, 12)
+                    ModelIcon:SetSize(32, 32)
+                    ModelIcon:SetImage("icons/modelicon.png")
+
+                    local DefaultJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    DefaultJump:SetPos(4, 100)
+                    DefaultJump:SetSize(48, 48)
+                    DefaultJump:SetImage("icons/unlockedicon.png")
+                    DefaultJump:SetTooltip("Default")
+                    DefaultJump.DoClick = function()
+                        CustomizeScroller:ScrollToChild(TextDefault)
                     end
-                    BackButton.DoClick = function()
+
+                    local KillsJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    KillsJump:SetPos(4, 152)
+                    KillsJump:SetSize(48, 48)
+                    KillsJump:SetImage("icons/uikillicon.png")
+                    KillsJump:SetTooltip("Kills")
+                    KillsJump.DoClick = function()
+                        CustomizeScroller:ScrollToChild(TextKill)
+                    end
+
+                    local StreaksJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    StreaksJump:SetPos(4, 204)
+                    StreaksJump:SetSize(48, 48)
+                    StreaksJump:SetImage("icons/streakicon.png")
+                    StreaksJump:SetTooltip("Streaks")
+                    StreaksJump.DoClick = function()
+                        CustomizeScroller:ScrollToChild(TextAccolade)
+                    end
+
+                    local SpecialJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    SpecialJump:SetPos(4, 256)
+                    SpecialJump:SetSize(48, 48)
+                    SpecialJump:SetImage("icons/specialicon.png")
+                    SpecialJump:SetTooltip("Special")
+                    SpecialJump.DoClick = function()
+                        CustomizeScroller:ScrollToChild(TextMastery)
+                    end
+
+                    local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetImage("icons/exiticon.png")
+                    BackButtonSlideout:SetTooltip("Return to Main Menu")
+                    BackButtonSlideout.DoClick = function()
                         MainPanel:Show()
+                        CustomizeSlideoutPanel:Hide()
                         CustomizePanel:Hide()
                         PreviewPanel:Hide()
                     end
@@ -2594,8 +2684,20 @@ vgui.Register("OptionsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(600, ScrH())
+    self:SetSize(56, ScrH())
     self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("CustomizeSlideoutPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(475, ScrH())
+    self:SetPos(56, 0)
 end
 
 function PANEL:Paint(w, h)
@@ -2607,7 +2709,7 @@ vgui.Register("CustomizePanel", PANEL, "Panel")
 PANEL = {}
 function PANEL:Init()
     self:SetSize(400, ScrH())
-    self:SetPos(600, 0)
+    self:SetPos(531, 0)
 end
 
 function PANEL:Paint(w, h)
@@ -2654,8 +2756,20 @@ vgui.Register("CardPreviewPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(780, ScrH())
+    self:SetSize(56, ScrH())
     self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("StatsSlideoutPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(780, ScrH())
+    self:SetPos(56, 0)
 end
 
 function PANEL:Paint(w, h)
