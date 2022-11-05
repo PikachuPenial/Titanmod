@@ -70,89 +70,94 @@ function GM:Initialize()
     weaponArray[34] = {"tfa_new_glock17", "Glock 17"}
     weaponArray[35] = {"fres_grapple", "Grappling Hook"}
     weaponArray[36] = {"tfa_ins2_gsh18", "GSH-18"}
-    weaponArray[37] = {"tfa_howa_type_64", "Howa Type 64"}
-    weaponArray[38] = {"tfa_ins2_hk_mg36", "H&K MG36"}
-    weaponArray[39] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5"}
-    weaponArray[40] = {"tfa_ins2_imbelia2", "Imbel IA2"}
-    weaponArray[41] = {"tfa_ins2_izh43sw", "IZH-43 Sawed Off"}
-    weaponArray[42] = {"tfa_ararebo_bf1", "Japanese Ararebo"}
-    weaponArray[43] = {"tfa_km2000_knife", "KM-2000"}
-    weaponArray[44] = {"tfa_ins2_krissv", "KRISS Vector"}
-    weaponArray[45] = {"tfa_ins2_ksg", "KSG"}
-    weaponArray[46] = {"tfa_blast_ksvk_cqb", "KSVK 12.7"}
-    weaponArray[47] = {"tfa_doi_enfield", "Lee-Enfield No. 4"}
-    weaponArray[48] = {"tfa_doilewis", "Lewis"}
-    weaponArray[49] = {"tfa_doi_garand", "M1 Garand"}
-    weaponArray[50] = {"tfa_ins2_m14retro", "M14"}
+    weaponArray[37] = {"tfa_ins2_cq300", "Honey Badger"}
+    weaponArray[38] = {"tfa_howa_type_64", "Howa Type 64"}
+    weaponArray[39] = {"tfa_ins2_hk_mg36", "H&K MG36"}
+    weaponArray[40] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5"}
+    weaponArray[41] = {"tfa_ins2_imbelia2", "Imbel IA2"}
+    weaponArray[42] = {"tfa_ins2_izh43sw", "IZH-43 Sawed Off"}
+    weaponArray[43] = {"tfa_ararebo_bf1", "Japanese Ararebo"}
+    weaponArray[44] = {"tfa_km2000_knife", "KM-2000"}
+    weaponArray[45] = {"tfa_ins2_krissv", "KRISS Vector"}
+    weaponArray[46] = {"tfa_ins2_ksg", "KSG"}
+    weaponArray[47] = {"tfa_blast_ksvk_cqb", "KSVK 12.7"}
+    weaponArray[48] = {"tfa_doi_enfield", "Lee-Enfield No. 4"}
+    weaponArray[49] = {"tfa_doilewis", "Lewis"}
+    weaponArray[50] = {"tfa_doi_garand", "M1 Garand"}
     weaponArray[51] = {"tfa_doim3greasegun", "M3 Grease Gun"}
     weaponArray[52] = {"tfa_ins2_m9", "M9"}
-    weaponArray[53] = {"tfa_nam_m79", "M79"}
-    weaponArray[54] = {"tfa_doim1918", "M1918"}
-    weaponArray[55] = {"tfa_doim1919", "M1919"}
-    weaponArray[56] = {"bocw_mac10_alt", "Mac 10"}
-    weaponArray[57] = {"tfa_inss_makarov", "Makarov"}
-    weaponArray[58] = {"tfa_fml_lefrench_mas38", "Mas 38"}
-    weaponArray[59] = {"tfa_doimg34", "MG 34"}
-    weaponArray[60] = {"tfa_doimg42", "MG 42"}
-    weaponArray[61] = {"tfa_ins2_minimi", "Minimi Para"}
-    weaponArray[62] = {"tfa_ins2_mk23", "MK 23"}
-    weaponArray[63] = {"tfa_fml_inss_mk18", "MK18"}
-    weaponArray[64] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR"}
-    weaponArray[65] = {"tfa_ins2_swmodel10", "Model 10"}
-    weaponArray[66] = {"tfa_ins2_mosin_nagant", "Mosin Nagant"}
-    weaponArray[67] = {"tfa_doimp40", "MP 40"}
-    weaponArray[68] = {"tfa_ins2_mp5k", "MP5K"}
-    weaponArray[69] = {"tfa_inss_mp7_new", "MP7A1"}
-    weaponArray[70] = {"tfa_ww1_mp18", "MP18"}
-    weaponArray[71] = {"tfa_ins2_mr96", "MR-96"}
-    weaponArray[72] = {"tfa_ins2_mc255", "MTs225-12"}
-    weaponArray[73] = {"tfa_ins2_nova", "Nova"}
-    weaponArray[74] = {"tfa_ins2_warface_orsis_t5000", "Orsis T-5000"}
-    weaponArray[75] = {"tfa_ins2_groza", "OTs-14 Groza"}
-    weaponArray[76] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach"}
-    weaponArray[77] = {"tfa_doiowen", "Owen Mk.I"}
-    weaponArray[78] = {"tfa_fml_p90_tac", "P90"}
-    weaponArray[79] = {"tfa_new_pf940", "PF940"}
-    weaponArray[80] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
-    weaponArray[81] = {"tfa_ins2_pm9", "PM-9"}
-    weaponArray[82] = {"tfa_nam_ppsh41", "PPSH-41"}
-    weaponArray[83] = {"tfa_fas2_ppbizon", "PP-Bizon"}
-    weaponArray[84] = {"tfa_ins2_norinco_qbz97", "QBZ-97"}
-    weaponArray[85] = {"tfa_ins2_qsz92", "QSZ-92"}
-    weaponArray[86] = {"tfa_ins2_remington_m870", "Remington M870"}
-    weaponArray[87] = {"tfa_ins2_pd2_remington_msr", "Remington MSR"}
-    weaponArray[88] = {"tfa_ins2_rfb", "RFB"}
-    weaponArray[89] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
-    weaponArray[90] = {"tfa_ins2_rpk_74m", "RPK-74M"}
-    weaponArray[91] = {"tfa_ins2_l85a2", "SA80"}
-    weaponArray[92] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR"}
-    weaponArray[93] = {"tfa_ins2_sc_evo", "Scorpion Evo 3"}
-    weaponArray[94] = {"tfa_new_p226", "SIG P226"}
-    weaponArray[95] = {"tfa_ins2_sks", "SKS"}
-    weaponArray[96] = {"tfa_ins2_spas12", "SPAS-12"}
-    weaponArray[97] = {"tfa_ins2_spectre", "Spectre M4"}
-    weaponArray[98] = {"tfa_ins2_saiga_spike", "Spike X15"}
-    weaponArray[99] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
-    weaponArray[100] = {"tfa_doisten", "Sten Mk.II"}
-    weaponArray[101] = {"tfa_nam_stevens620", "Stevens 620"}
-    weaponArray[102] = {"tfa_inss_aug", "Steyr AUG"}
-    weaponArray[103] = {"tfa_doistg44", "StG44"}
-    weaponArray[104] = {"tfa_ins2_sv98", "SV-98"}
-    weaponArray[105] = {"tfa_ins2_s&w_500", "S&W 500"}
-    weaponArray[106] = {"tfa_japanese_exclusive_tanto", "Tanto"}
-    weaponArray[107] = {"tfa_ins_sandstorm_tariq", "Tariq"}
-    weaponArray[108] = {"st_stim_pistol", "TCo Stim Pistol"}
-    weaponArray[109] = {"tfa_doithompsonm1928", "Thompson M1928"}
-    weaponArray[110] = {"tfa_doithompsonm1a1", "Thompson M1A1"}
-    weaponArray[111] = {"tfa_ins2_type81", "Type 81"}
-    weaponArray[112] = {"tfa_ins2_typhoon12", "Typhoon F12 Custom"}
-    weaponArray[113] = {"tfa_ins2_ump45", "UMP .45"}
-    weaponArray[114] = {"tfa_ins2_ump9", "UMP9"}
-    weaponArray[115] = {"tfa_ins2_imi_uzi", "Uzi"}
-    weaponArray[116] = {"tfa_ins2_br99", "UZK-BR99"}
-    weaponArray[117] = {"tfa_ins2_vhsd2", "VHS-D2"}
-    weaponArray[118] = {"tfa_ins2_walther_p99", "Walther P99"}
-    weaponArray[119] = {"tfa_ins2_xm8", "XM8"}
+    weaponArray[53] = {"tfa_ins2_m14retro", "M14"}
+    weaponArray[54] = {"tfa_nam_m79", "M79"}
+    weaponArray[55] = {"tfa_doim1918", "M1918"}
+    weaponArray[56] = {"tfa_doim1919", "M1919"}
+    weaponArray[57] = {"bocw_mac10_alt", "Mac 10"}
+    weaponArray[58] = {"tfa_inss_makarov", "Makarov"}
+    weaponArray[59] = {"tfa_fml_lefrench_mas38", "Mas 38"}
+    weaponArray[60] = {"tfa_doimg34", "MG 34"}
+    weaponArray[61] = {"tfa_doimg42", "MG 42"}
+    weaponArray[62] = {"tfa_ins2_minimi", "Minimi Para"}
+    weaponArray[63] = {"tfa_ins2_mk23", "MK 23"}
+    weaponArray[64] = {"tfa_fml_inss_mk18", "MK18"}
+    weaponArray[65] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR"}
+    weaponArray[66] = {"tfa_ins2_swmodel10", "Model 10"}
+    weaponArray[67] = {"tfa_ins2_mosin_nagant", "Mosin Nagant"}
+    weaponArray[68] = {"tfa_doimp40", "MP 40"}
+    weaponArray[69] = {"tfa_ins2_mp5k", "MP5K"}
+    weaponArray[70] = {"tfa_inss_mp7_new", "MP7A1"}
+    weaponArray[71] = {"tfa_ww1_mp18", "MP18"}
+    weaponArray[72] = {"tfa_ins2_mr96", "MR-96"}
+    weaponArray[73] = {"tfa_ins2_mc255", "MTs225-12"}
+    weaponArray[74] = {"tfa_ins2_nova", "Nova"}
+    weaponArray[75] = {"tfa_ins2_warface_orsis_t5000", "Orsis T-5000"}
+    weaponArray[76] = {"tfa_l4d2_osp18", "OSP-18"}
+    weaponArray[77] = {"tfa_ins2_groza", "OTs-14 Groza"}
+    weaponArray[78] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach"}
+    weaponArray[79] = {"tfa_doiowen", "Owen Mk.I"}
+    weaponArray[80] = {"tfa_fml_p90_tac", "P90"}
+    weaponArray[81] = {"tfa_new_pf940", "PF940"}
+    weaponArray[82] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
+    weaponArray[83] = {"tfa_ins2_pm9", "PM-9"}
+    weaponArray[84] = {"tfa_nam_ppsh41", "PPSH-41"}
+    weaponArray[85] = {"tfa_fas2_ppbizon", "PP-Bizon"}
+    weaponArray[86] = {"tfa_ww2_pbz39", "PzB 39"}
+    weaponArray[87] = {"tfa_ins2_norinco_qbz97", "QBZ-97"}
+    weaponArray[88] = {"tfa_ins2_qsz92", "QSZ-92"}
+    weaponArray[89] = {"tfa_ins2_remington_m870", "Remington M870"}
+    weaponArray[90] = {"tfa_ins2_pd2_remington_msr", "Remington MSR"}
+    weaponArray[91] = {"tfa_ins2_rfb", "RFB"}
+    weaponArray[92] = {"tfa_fml_rk62", "RK62"}
+    weaponArray[93] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
+    weaponArray[94] = {"tfa_ins2_rpk_74m", "RPK-74M"}
+    weaponArray[95] = {"tfa_ins2_l85a2", "SA80"}
+    weaponArray[96] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR"}
+    weaponArray[97] = {"tfa_ins2_sc_evo", "Scorpion Evo 3"}
+    weaponArray[98] = {"tfa_new_p226", "SIG P226"}
+    weaponArray[99] = {"tfa_ins2_sks", "SKS"}
+    weaponArray[100] = {"tfa_ins2_spas12", "SPAS-12"}
+    weaponArray[101] = {"tfa_ins2_spectre", "Spectre M4"}
+    weaponArray[102] = {"tfa_ins2_saiga_spike", "Spike X15"}
+    weaponArray[103] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
+    weaponArray[104] = {"tfa_doisten", "Sten Mk.II"}
+    weaponArray[105] = {"tfa_nam_stevens620", "Stevens 620"}
+    weaponArray[106] = {"tfa_inss_aug", "Steyr AUG"}
+    weaponArray[107] = {"tfa_doistg44", "StG44"}
+    weaponArray[108] = {"tfa_ins2_sv98", "SV-98"}
+    weaponArray[109] = {"tfa_ins2_s&w_500", "S&W 500"}
+    weaponArray[110] = {"tfa_japanese_exclusive_tanto", "Tanto"}
+    weaponArray[111] = {"tfa_ins_sandstorm_tariq", "Tariq"}
+    weaponArray[112] = {"st_stim_pistol", "TCo Stim Pistol"}
+    weaponArray[113] = {"tfa_doithompsonm1928", "Thompson M1928"}
+    weaponArray[114] = {"tfa_doithompsonm1a1", "Thompson M1A1"}
+    weaponArray[115] = {"tfa_ins2_type81", "Type 81"}
+    weaponArray[116] = {"tfa_ins2_typhoon12", "Typhoon F12 Custom"}
+    weaponArray[117] = {"tfa_ins2_ump45", "UMP .45"}
+    weaponArray[118] = {"tfa_ins2_ump9", "UMP9"}
+    weaponArray[119] = {"tfa_ins2_imi_uzi", "Uzi"}
+    weaponArray[120] = {"tfa_ins2_br99", "UZK-BR99"}
+    weaponArray[121] = {"tfa_ins2_vhsd2", "VHS-D2"}
+    weaponArray[122] = {"tfa_ins2_walther_p99", "Walther P99"}
+    weaponArray[123] = {"tfa_ins2_wa2000", "WA-2000"}
+    weaponArray[124] = {"tfa_ins2_xm8", "XM8"}
 
     --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
     local modelArray = {}
@@ -178,6 +183,7 @@ function GM:Initialize()
     modelArray[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
     modelArray[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
     modelArray[22] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
+    modelArray[23] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
 
     --Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
     local cardArray = {}
@@ -258,87 +264,92 @@ function GM:Initialize()
     cardArray[73] = {"cards/mastery/placeholder.png", "", "Galil mastery", "mastery", "tfa_new_inss_galil"}
     cardArray[74] = {"cards/mastery/placeholder.png", "", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
     cardArray[75] = {"cards/mastery/placeholder.png", "", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
-    cardArray[76] = {"cards/mastery/placeholder.png", "", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
-    cardArray[77] = {"cards/mastery/placeholder.png", "", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
-    cardArray[78] = {"cards/mastery/placeholder.png", "", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
-    cardArray[79] = {"cards/mastery/placeholder.png", "", "Imbel IA2 mastery", "mastery", "tfa_ins2_imbelia2"}
-    cardArray[80] = {"cards/mastery/placeholder.png", "", "IZH-43 Sawed Off mastery", "mastery", "tfa_ins2_izh43sw"}
-    cardArray[81] = {"cards/mastery/placeholder.png", "", "Japanese Ararebo mastery", "mastery", "tfa_ararebo_bf1"}
-    cardArray[82] = {"cards/mastery/placeholder.png", "", "KM-2000 mastery", "mastery", "tfa_km2000_knife"}
-    cardArray[83] = {"cards/mastery/krissvector.png", "Narkotica", "KRISS Vector mastery", "mastery", "tfa_ins2_krissv"}
-    cardArray[84] = {"cards/mastery/placeholder.png", "", "KSG mastery", "mastery", "tfa_ins2_ksg"}
-    cardArray[85] = {"cards/mastery/placeholder.png", "", "KSVK 12.7 mastery", "mastery", "tfa_blast_ksvk_cqb"}
-    cardArray[86] = {"cards/mastery/placeholder.png", "", "Lee-Enfield No. 4 mastery", "mastery", "tfa_doi_enfield"}
-    cardArray[87] = {"cards/mastery/placeholder.png", "", "Lewis mastery", "mastery", "tfa_doilewis"}
-    cardArray[88] = {"cards/mastery/placeholder.png", "", "M1 Garand mastery", "mastery", "tfa_doi_garand"}
-    cardArray[89] = {"cards/mastery/placeholder.png", "", "M14 mastery", "mastery", "tfa_ins2_m14retro"}
-    cardArray[90] = {"cards/mastery/placeholder.png", "", "M3 Grease Gun mastery", "mastery", "tfa_doim3greasegun"}
-    cardArray[91] = {"cards/mastery/placeholder.png", "", "M9 mastery", "mastery", "tfa_ins2_m9"}
-    cardArray[92] = {"cards/mastery/m79.png", "Cool With It", "M79 mastery", "mastery", "tfa_nam_m79"}
-    cardArray[93] = {"cards/mastery/placeholder.png", "", "M1918 mastery", "mastery", "tfa_doim1918"}
-    cardArray[94] = {"cards/mastery/placeholder.png", "", "M1919 mastery", "mastery", "tfa_doim1919"}
-    cardArray[95] = {"cards/mastery/placeholder.png", "", "Mac 10 mastery", "mastery", "bocw_mac10_alt"}
-    cardArray[96] = {"cards/mastery/placeholder.png", "", "Makarov mastery", "mastery", "tfa_inss_makarov"}
-    cardArray[97] = {"cards/mastery/mas38.png", "Galaxy", "Mas 38 mastery", "mastery", "tfa_fml_lefrench_mas38"}
-    cardArray[98] = {"cards/mastery/placeholder.png", "", "MG 34 mastery", "mastery", "tfa_doimg34"}
-    cardArray[99] = {"cards/mastery/mg42.png", "D-Day", "MG 42 mastery", "mastery", "tfa_doimg42"}
-    cardArray[100] = {"cards/mastery/minimi.png", "Roof Camper", "Minimi Para mastery", "mastery", "tfa_ins2_minimi"}
-    cardArray[101] = {"cards/mastery/placeholder.png", "", "MK 23 mastery", "mastery", "tfa_ins2_mk23"}
-    cardArray[102] = {"cards/mastery/placeholder.png", "", "MK18 mastery", "mastery", "tfa_fml_inss_mk18"}
-    cardArray[103] = {"cards/mastery/placeholder.png", "", "Mk. 14 EBR mastery", "mastery", "tfa_ins2_mk14ebr"}
-    cardArray[104] = {"cards/mastery/model10.png", "Walter", "Model 10 mastery", "mastery", "tfa_ins2_swmodel10"}
-    cardArray[105] = {"cards/mastery/placeholder.png", "", "Mosin Nagant mastery", "mastery", "tfa_ins2_mosin_nagant"}
-    cardArray[106] = {"cards/mastery/placeholder.png", "", "MP 40 mastery", "mastery", "tfa_doimp40"}
-    cardArray[107] = {"cards/mastery/placeholder.png", "", "MP5K mastery", "mastery", "tfa_ins2_mp5k"}
-    cardArray[108] = {"cards/mastery/placeholder.png", "", "MP7A1 mastery", "mastery", "tfa_inss_mp7_new"}
-    cardArray[109] = {"cards/mastery/placeholder.png", "", "MP18 mastery", "mastery", "tfa_ww1_mp18"}
-    cardArray[110] = {"cards/mastery/placeholder.png", "", "MR-96 mastery", "mastery", "tfa_ins2_mr96"}
-    cardArray[111] = {"cards/mastery/placeholder.png", "", "MTs225-12 mastery", "mastery", "tfa_ins2_mc255"}
-    cardArray[112] = {"cards/mastery/placeholder.png", "", "Nova mastery", "mastery", "tfa_ins2_nova"}
-    cardArray[113] = {"cards/mastery/placeholder.png", "", "Orsis T-5000 mastery", "mastery", "tfa_ins2_warface_orsis_t5000"}
-    cardArray[114] = {"cards/mastery/placeholder.png", "", "OTs-14 Groza mastery", "mastery", "tfa_ins2_groza"}
-    cardArray[115] = {"cards/mastery/placeholder.png", "", "OTs-33 Pernach mastery", "mastery", "tfa_ins2_ots_33_pernach"}
-    cardArray[116] = {"cards/mastery/placeholder.png", "", "Owen Mk.I mastery", "mastery", "tfa_doiowen"}
-    cardArray[117] = {"cards/mastery/placeholder.png", "", "P90 mastery", "mastery", "tfa_fml_p90_tac"}
-    cardArray[118] = {"cards/mastery/placeholder.png", "", "PINDAD SS2-V1 mastery", "mastery", "tfa_blast_pindadss2"}
-    cardArray[119] = {"cards/mastery/placeholder.png", "", "PM-9 mastery", "mastery", "tfa_ins2_pm9"}
-    cardArray[120] = {"cards/mastery/placeholder.png", "", "PPSH-41 mastery", "mastery", "tfa_nam_ppsh41"}
-    cardArray[121] = {"cards/mastery/placeholder.png", "", "PP-Bizon mastery", "mastery", "tfa_fas2_ppbizon"}
-    cardArray[122] = {"cards/mastery/placeholder.png", "", "QBZ-97 mastery", "mastery", "tfa_ins2_norinco_qbz97"}
-    cardArray[123] = {"cards/mastery/placeholder.png", "", "QSZ-92 mastery", "mastery", "tfa_ins2_qsz92"}
-    cardArray[124] = {"cards/mastery/remingtonm870.png", "Mastery", "Remington M870 master", "mastery", "tfa_ins2_remington_m870"}
-    cardArray[125] = {"cards/mastery/placeholder.png", "", "Remington MSR mastery", "mastery", "tfa_ins2_pd2_remington_msr"}
-    cardArray[126] = {"cards/mastery/placeholder.png", "", "RFB mastery", "mastery", "tfa_ins2_rfb"}
-    cardArray[127] = {"cards/mastery/placeholder.png", "", "RPG-7 mastery", "mastery", "tfa_ins2_rpg7_scoped"}
-    cardArray[128] = {"cards/mastery/placeholder.png", "", "RPK-74M mastery", "mastery", "tfa_ins2_rpk_74m"}
-    cardArray[129] = {"cards/mastery/placeholder.png", "", "SA80 mastery", "mastery", "tfa_ins2_l85a2"}
-    cardArray[130] = {"cards/mastery/placeholder.png", "", "SCAR-H SSR mastery", "mastery", "tfa_ins2_scar_h_ssr"}
-    cardArray[131] = {"cards/mastery/placeholder.png", "", "Scorpion Evo 3 mastery", "mastery", "tfa_ins2_sc_evo"}
-    cardArray[132] = {"cards/mastery/placeholder.png", "", "SIG P226 mastery", "mastery", "tfa_new_p226"}
-    cardArray[133] = {"cards/mastery/placeholder.png", "", "SKS mastery", "mastery", "tfa_ins2_sks"}
-    cardArray[134] = {"cards/mastery/placeholder.png", "", "SPAS-12 mastery", "mastery", "tfa_ins2_spas12"}
-    cardArray[135] = {"cards/mastery/placeholder.png", "", "Spectre M4 mastery", "mastery", "tfa_ins2_spectre"}
-    cardArray[136] = {"cards/mastery/placeholder.png", "", "Spike X15 mastery", "mastery", "tfa_ins2_saiga_spike"}
-    cardArray[137] = {"cards/mastery/placeholder.png", "", "SR-2M Veresk mastery", "mastery", "tfa_ins2_sr2m_veresk"}
-    cardArray[138] = {"cards/mastery/placeholder.png", "", "Sten Mk.II mastery", "mastery", "tfa_doisten"}
-    cardArray[139] = {"cards/mastery/placeholder.png", "", "Stevens 620 mastery", "mastery", "tfa_nam_stevens620"}
-    cardArray[140] = {"cards/mastery/steyraug.png", "Cute", "Steyr AUG mastery", "mastery", "tfa_inss_aug"}
-    cardArray[141] = {"cards/mastery/placeholder.png", "", "StG44 mastery", "mastery", "tfa_doistg44"}
-    cardArray[142] = {"cards/mastery/placeholder.png", "", "SV-98 mastery", "mastery", "tfa_ins2_sv98"}
-    cardArray[143] = {"cards/mastery/placeholder.png", "", "S&W 500 mastery", "mastery", "tfa_ins2_s&w_500"}
-    cardArray[144] = {"cards/mastery/placeholder.png", "", "Tanto mastery", "mastery", "tfa_japanese_exclusive_tanto"}
-    cardArray[145] = {"cards/mastery/placeholder.png", "", "Tariq mastery", "mastery", "tfa_ins_sandstorm_tariq"}
-    cardArray[146] = {"cards/mastery/placeholder.png", "", "Thompson M1928 mastery", "mastery", "tfa_doithompsonm1928"}
-    cardArray[147] = {"cards/mastery/thompson.png", "Suicide", "Thompson M1A1 mastery", "mastery", "tfa_doithompsonm1a1"}
-    cardArray[148] = {"cards/mastery/placeholder.png", "", "Type 81 mastery", "mastery", "tfa_ins2_type81"}
-    cardArray[149] = {"cards/mastery/placeholder.png", "", "Typhoon F12 Custom mastery", "mastery", "tfa_ins2_typhoon12"}
-    cardArray[150] = {"cards/mastery/placeholder.png", "", "UMP .45 mastery", "mastery", "tfa_ins2_ump45"}
-    cardArray[151] = {"cards/mastery/placeholder.png", "", "UMP9 mastery", "mastery", "tfa_ins2_ump9"}
-    cardArray[152] = {"cards/mastery/placeholder.png", "", "Uzi mastery", "mastery", "tfa_ins2_imi_uzi"}
-    cardArray[153] = {"cards/mastery/placeholder.png", "", "UZK-BR99 mastery", "mastery", "tfa_ins2_br99"}
-    cardArray[154] = {"cards/mastery/placeholder.png", "", "VHS-D2 mastery", "mastery", "tfa_ins2_vhsd2"}
-    cardArray[155] = {"cards/mastery/placeholder.png", "", "Walther P99 mastery", "mastery", "tfa_ins2_walther_p99"}
-    cardArray[156] = {"cards/mastery/placeholder.png", "", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
+    cardArray[76] = {"cards/mastery/placeholder.png", "", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
+    cardArray[77] = {"cards/mastery/placeholder.png", "", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
+    cardArray[78] = {"cards/mastery/placeholder.png", "", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
+    cardArray[79] = {"cards/mastery/placeholder.png", "", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
+    cardArray[80] = {"cards/mastery/placeholder.png", "", "Imbel IA2 mastery", "mastery", "tfa_ins2_imbelia2"}
+    cardArray[81] = {"cards/mastery/placeholder.png", "", "IZH-43 Sawed Off mastery", "mastery", "tfa_ins2_izh43sw"}
+    cardArray[82] = {"cards/mastery/placeholder.png", "", "Japanese Ararebo mastery", "mastery", "tfa_ararebo_bf1"}
+    cardArray[83] = {"cards/mastery/placeholder.png", "", "KM-2000 mastery", "mastery", "tfa_km2000_knife"}
+    cardArray[84] = {"cards/mastery/krissvector.png", "Narkotica", "KRISS Vector mastery", "mastery", "tfa_ins2_krissv"}
+    cardArray[85] = {"cards/mastery/placeholder.png", "", "KSG mastery", "mastery", "tfa_ins2_ksg"}
+    cardArray[86] = {"cards/mastery/placeholder.png", "", "KSVK 12.7 mastery", "mastery", "tfa_blast_ksvk_cqb"}
+    cardArray[87] = {"cards/mastery/placeholder.png", "", "Lee-Enfield No. 4 mastery", "mastery", "tfa_doi_enfield"}
+    cardArray[88] = {"cards/mastery/placeholder.png", "", "Lewis mastery", "mastery", "tfa_doilewis"}
+    cardArray[89] = {"cards/mastery/placeholder.png", "", "M1 Garand mastery", "mastery", "tfa_doi_garand"}
+    cardArray[90] = {"cards/mastery/placeholder.png", "", "M14 mastery", "mastery", "tfa_ins2_m14retro"}
+    cardArray[91] = {"cards/mastery/placeholder.png", "", "M3 Grease Gun mastery", "mastery", "tfa_doim3greasegun"}
+    cardArray[92] = {"cards/mastery/placeholder.png", "", "M9 mastery", "mastery", "tfa_ins2_m9"}
+    cardArray[93] = {"cards/mastery/m79.png", "Cool With It", "M79 mastery", "mastery", "tfa_nam_m79"}
+    cardArray[94] = {"cards/mastery/placeholder.png", "", "M1918 mastery", "mastery", "tfa_doim1918"}
+    cardArray[95] = {"cards/mastery/placeholder.png", "", "M1919 mastery", "mastery", "tfa_doim1919"}
+    cardArray[96] = {"cards/mastery/placeholder.png", "", "Mac 10 mastery", "mastery", "bocw_mac10_alt"}
+    cardArray[97] = {"cards/mastery/placeholder.png", "", "Makarov mastery", "mastery", "tfa_inss_makarov"}
+    cardArray[98] = {"cards/mastery/mas38.png", "Galaxy", "Mas 38 mastery", "mastery", "tfa_fml_lefrench_mas38"}
+    cardArray[99] = {"cards/mastery/placeholder.png", "", "MG 34 mastery", "mastery", "tfa_doimg34"}
+    cardArray[100] = {"cards/mastery/mg42.png", "D-Day", "MG 42 mastery", "mastery", "tfa_doimg42"}
+    cardArray[101] = {"cards/mastery/minimi.png", "Roof Camper", "Minimi Para mastery", "mastery", "tfa_ins2_minimi"}
+    cardArray[102] = {"cards/mastery/placeholder.png", "", "MK 23 mastery", "mastery", "tfa_ins2_mk23"}
+    cardArray[103] = {"cards/mastery/placeholder.png", "", "MK18 mastery", "mastery", "tfa_fml_inss_mk18"}
+    cardArray[104] = {"cards/mastery/placeholder.png", "", "Mk. 14 EBR mastery", "mastery", "tfa_ins2_mk14ebr"}
+    cardArray[105] = {"cards/mastery/model10.png", "Walter", "Model 10 mastery", "mastery", "tfa_ins2_swmodel10"}
+    cardArray[106] = {"cards/mastery/placeholder.png", "", "Mosin Nagant mastery", "mastery", "tfa_ins2_mosin_nagant"}
+    cardArray[107] = {"cards/mastery/placeholder.png", "", "MP 40 mastery", "mastery", "tfa_doimp40"}
+    cardArray[108] = {"cards/mastery/placeholder.png", "", "MP5K mastery", "mastery", "tfa_ins2_mp5k"}
+    cardArray[109] = {"cards/mastery/placeholder.png", "", "MP7A1 mastery", "mastery", "tfa_inss_mp7_new"}
+    cardArray[110] = {"cards/mastery/placeholder.png", "", "MP18 mastery", "mastery", "tfa_ww1_mp18"}
+    cardArray[111] = {"cards/mastery/placeholder.png", "", "MR-96 mastery", "mastery", "tfa_ins2_mr96"}
+    cardArray[112] = {"cards/mastery/placeholder.png", "", "MTs225-12 mastery", "mastery", "tfa_ins2_mc255"}
+    cardArray[113] = {"cards/mastery/placeholder.png", "", "Nova mastery", "mastery", "tfa_ins2_nova"}
+    cardArray[114] = {"cards/mastery/placeholder.png", "", "Orsis T-5000 mastery", "mastery", "tfa_ins2_warface_orsis_t5000"}
+    cardArray[115] = {"cards/mastery/placeholder.png", "", "OSP-18", "mastery", "tfa_l4d2_osp18"}
+    cardArray[116] = {"cards/mastery/placeholder.png", "", "OTs-14 Groza mastery", "mastery", "tfa_ins2_groza"}
+    cardArray[117] = {"cards/mastery/placeholder.png", "", "OTs-33 Pernach mastery", "mastery", "tfa_ins2_ots_33_pernach"}
+    cardArray[118] = {"cards/mastery/placeholder.png", "", "Owen Mk.I mastery", "mastery", "tfa_doiowen"}
+    cardArray[119] = {"cards/mastery/placeholder.png", "", "P90 mastery", "mastery", "tfa_fml_p90_tac"}
+    cardArray[120] = {"cards/mastery/placeholder.png", "", "PINDAD SS2-V1 mastery", "mastery", "tfa_blast_pindadss2"}
+    cardArray[121] = {"cards/mastery/placeholder.png", "", "PM-9 mastery", "mastery", "tfa_ins2_pm9"}
+    cardArray[122] = {"cards/mastery/placeholder.png", "", "PPSH-41 mastery", "mastery", "tfa_nam_ppsh41"}
+    cardArray[123] = {"cards/mastery/placeholder.png", "", "PP-Bizon mastery", "mastery", "tfa_fas2_ppbizon"}
+    cardArray[124] = {"cards/mastery/placeholder.png", "", "PzB 39 mastery", "mastery", "tfa_ww2_pbz39"}
+    cardArray[125] = {"cards/mastery/placeholder.png", "", "QBZ-97 mastery", "mastery", "tfa_ins2_norinco_qbz97"}
+    cardArray[126] = {"cards/mastery/placeholder.png", "", "QSZ-92 mastery", "mastery", "tfa_ins2_qsz92"}
+    cardArray[127] = {"cards/mastery/remingtonm870.png", "Mastery", "Remington M870 master", "mastery", "tfa_ins2_remington_m870"}
+    cardArray[128] = {"cards/mastery/placeholder.png", "", "Remington MSR mastery", "mastery", "tfa_ins2_pd2_remington_msr"}
+    cardArray[129] = {"cards/mastery/placeholder.png", "", "RFB mastery", "mastery", "tfa_ins2_rfb"}
+    cardArray[130] = {"cards/mastery/placeholder.png", "", "RK62 mastery", "mastery", "tfa_fml_rk62"}
+    cardArray[131] = {"cards/mastery/placeholder.png", "", "RPG-7 mastery", "mastery", "tfa_ins2_rpg7_scoped"}
+    cardArray[132] = {"cards/mastery/placeholder.png", "", "RPK-74M mastery", "mastery", "tfa_ins2_rpk_74m"}
+    cardArray[133] = {"cards/mastery/placeholder.png", "", "SA80 mastery", "mastery", "tfa_ins2_l85a2"}
+    cardArray[134] = {"cards/mastery/placeholder.png", "", "SCAR-H SSR mastery", "mastery", "tfa_ins2_scar_h_ssr"}
+    cardArray[135] = {"cards/mastery/placeholder.png", "", "Scorpion Evo 3 mastery", "mastery", "tfa_ins2_sc_evo"}
+    cardArray[136] = {"cards/mastery/placeholder.png", "", "SIG P226 mastery", "mastery", "tfa_new_p226"}
+    cardArray[137] = {"cards/mastery/placeholder.png", "", "SKS mastery", "mastery", "tfa_ins2_sks"}
+    cardArray[138] = {"cards/mastery/placeholder.png", "", "SPAS-12 mastery", "mastery", "tfa_ins2_spas12"}
+    cardArray[139] = {"cards/mastery/placeholder.png", "", "Spectre M4 mastery", "mastery", "tfa_ins2_spectre"}
+    cardArray[140] = {"cards/mastery/placeholder.png", "", "Spike X15 mastery", "mastery", "tfa_ins2_saiga_spike"}
+    cardArray[141] = {"cards/mastery/placeholder.png", "", "SR-2M Veresk mastery", "mastery", "tfa_ins2_sr2m_veresk"}
+    cardArray[142] = {"cards/mastery/placeholder.png", "", "Sten Mk.II mastery", "mastery", "tfa_doisten"}
+    cardArray[143] = {"cards/mastery/placeholder.png", "", "Stevens 620 mastery", "mastery", "tfa_nam_stevens620"}
+    cardArray[144] = {"cards/mastery/steyraug.png", "Cute", "Steyr AUG mastery", "mastery", "tfa_inss_aug"}
+    cardArray[145] = {"cards/mastery/placeholder.png", "", "StG44 mastery", "mastery", "tfa_doistg44"}
+    cardArray[146] = {"cards/mastery/placeholder.png", "", "SV-98 mastery", "mastery", "tfa_ins2_sv98"}
+    cardArray[147] = {"cards/mastery/placeholder.png", "", "S&W 500 mastery", "mastery", "tfa_ins2_s&w_500"}
+    cardArray[148] = {"cards/mastery/placeholder.png", "", "Tanto mastery", "mastery", "tfa_japanese_exclusive_tanto"}
+    cardArray[149] = {"cards/mastery/placeholder.png", "", "Tariq mastery", "mastery", "tfa_ins_sandstorm_tariq"}
+    cardArray[150] = {"cards/mastery/placeholder.png", "", "Thompson M1928 master", "mastery", "tfa_doithompsonm1928"}
+    cardArray[151] = {"cards/mastery/thompson.png", "Suicide", "Thompson M1A1 master", "mastery", "tfa_doithompsonm1a1"}
+    cardArray[152] = {"cards/mastery/placeholder.png", "", "Type 81 mastery", "mastery", "tfa_ins2_type81"}
+    cardArray[153] = {"cards/mastery/placeholder.png", "", "Typhoon F12 Custom master", "mastery", "tfa_ins2_typhoon12"}
+    cardArray[154] = {"cards/mastery/placeholder.png", "", "UMP .45 mastery", "mastery", "tfa_ins2_ump45"}
+    cardArray[155] = {"cards/mastery/placeholder.png", "", "UMP9 mastery", "mastery", "tfa_ins2_ump9"}
+    cardArray[156] = {"cards/mastery/placeholder.png", "", "Uzi mastery", "mastery", "tfa_ins2_imi_uzi"}
+    cardArray[157] = {"cards/mastery/placeholder.png", "", "UZK-BR99 mastery", "mastery", "tfa_ins2_br99"}
+    cardArray[158] = {"cards/mastery/placeholder.png", "", "VHS-D2 mastery", "mastery", "tfa_ins2_vhsd2"}
+    cardArray[159] = {"cards/mastery/placeholder.png", "", "Walther P99 mastery", "mastery", "tfa_ins2_walther_p99"}
+    cardArray[160] = {"cards/mastery/placeholder.png", "", "WA-2000 mastery", "mastery", "tfa_ins2_wa2000"}
+    cardArray[161] = {"cards/mastery/placeholder.png", "", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
     --Map Array Formatting (Map ID, Map Name, Map Description, Map Image)
     local mapArray = {}
@@ -351,6 +362,7 @@ function GM:Initialize()
     mapArray[7] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
     mapArray[8] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
     mapArray[9] = {"tm_mall", "Mall", "Spacious shopping center with long sightlines.", "maps/thumb/tm_mall.png"}
+    mapArray[10] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
 
     weaponsArr = weaponArray
     modelArr = modelArray
@@ -446,11 +458,13 @@ if SERVER then
     RunConsoleCommand("sv_tfa_unique_slots", "1")
     RunConsoleCommand("sv_tfa_weapon_strip", "0")
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
-    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1") 
+    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1")
 
     --Flashlight
-    RunConsoleCommand("sv_VMANIPFlash_canAttachShoulder", "1")
-    RunConsoleCommand("sv_VMANIPFlashlight_isOnlyUsingShoulder", "1")
+    RunConsoleCommand("tpf_sv_light_forward_offset", "15")
+    RunConsoleCommand("tpf_sv_max_bright", "255")
+    RunConsoleCommand("tpf_sv_max_farz", "750")
+    RunConsoleCommand("tpf_sv_max_fov", "75")
 
     --Grappling Hook
     if GetConVar("tm_developermode"):GetInt() == 1 then
@@ -550,4 +564,10 @@ if CLIENT then
 
     --Voice Chat animations
     RunConsoleCommand("cl_vmanip_voicechat", "0")
+
+    --Flashlight
+    RunConsoleCommand("tpf_should_load_defaults", "0")
+    RunConsoleCommand("tpf_cl_farz", "750")
+    RunConsoleCommand("tpf_cl_fov", "75")
+    RunConsoleCommand("tpf_cl_bright", "255")
 end

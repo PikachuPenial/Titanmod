@@ -221,19 +221,34 @@ function mainMenu()
 
             local Patch03b2 = vgui.Create("DPanel", PatchScroller)
             Patch03b2:Dock(TOP)
-            Patch03b2:SetSize(0, 230)
+            Patch03b2:SetSize(0, 490)
             Patch03b2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
                 draw.SimpleText("0.3b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/04/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Added Mall map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match end UI","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New community music track", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added Map Vote Time command", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Rooftops map", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Kill UI updating incorrectly", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Added Mall and Bridge map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Honey Badger, RK62, PzB 39, WA-2000", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   OSP-18", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match end UI","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New community music track", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Beta participation rewards", "StreakText", 5, 240, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Glock 17, Steyr AUG", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      FG 42, KRISS Vector, Scropion Evo 3,", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("      PP-Bizon, Desert Eagle, ", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added Map Vote Time command", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Rooftops map", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Kill UI updating incorrectly", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized headshot tracking", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Flashlights are now rendered serverside", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added Flashlight customization options", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scoreboard is now sorted by player score", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed full auto from Mk. 14 EBR and M14", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
             local Patch03b1 = vgui.Create("DPanel", PatchScroller)
@@ -383,7 +398,7 @@ function mainMenu()
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 4250)
+                    StatsWeapons:SetSize(0, 4425)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -802,7 +817,7 @@ function mainMenu()
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 4923)
+                    DockMasteryCards:SetSize(0, 5180)
 
                     --Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1653,11 +1668,19 @@ function mainMenu()
                             end
                         end
 
-                        if newModelUnlockType == "special" then
+                        if newModelUnlockType == "special" and newModelUnlockValue == "name" then
                             if LocalPlayer():SteamID() == "STEAM_0:1:514443768" then
                                 draw.SimpleText("Unlocked", "Health", w / 2, 130, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                             else
                                 draw.SimpleText("[CLASSIFIED]", "Health", w / 2, 130, Color(0, 0, 250, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "special" and newModelUnlockValue == "beta" then
+                            if LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
+                                draw.SimpleText("Time Played: " .. LocalPlayer():GetNWInt("playerBetaTimePlayed") .. " / " .. 10800 .. "s", "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Time Played: " .. LocalPlayer():GetNWInt("playerBetaTimePlayed") .. " / " .. 10800 .. "s", "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
                             end
                         end
                     end
@@ -1881,7 +1904,7 @@ function mainMenu()
                             end
                         end
 
-                        if newModelUnlockType == "special" then
+                        if newModelUnlockType == "special" and newModelUnlockValue == "name" then
                             if LocalPlayer():SteamID() == "STEAM_0:1:514443768" then
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
@@ -1890,6 +1913,18 @@ function mainMenu()
                                 PreviewPanel:Hide()
                             else
                                 surface.PlaySound("common/wpn_denyselect.wav")
+                            end
+                        end
+
+                        if newModelUnlockType == "special" and newModelUnlockValue == "beta" then
+                            if LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
                             end
                         end
                     end
@@ -1994,7 +2029,7 @@ function mainMenu()
 
                     local DockViewmodel = vgui.Create("DPanel", OptionsScroller)
                     DockViewmodel:Dock(TOP)
-                    DockViewmodel:SetSize(0, 240)
+                    DockViewmodel:SetSize(0, 365)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
@@ -2010,7 +2045,7 @@ function mainMenu()
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 330)
+                    DockPerformance:SetSize(0, 360)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -2334,6 +2369,7 @@ function mainMenu()
                         draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Weapon Bobbing Multiplier", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Invert Weapon Bobbing", "SettingsLabel", 55, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local viewmodelFOV = DockViewmodel:Add("DNumSlider")
@@ -2361,6 +2397,16 @@ function mainMenu()
                     invertBobbing:SetPos(20, 190)
                     invertBobbing:SetConVar("cl_tfa_gunbob_invertsway")
                     invertBobbing:SetSize(30, 30)
+
+                    local flashlightMixer = vgui.Create("DColorMixer", DockViewmodel)
+                    flashlightMixer:SetPos(20, 230)
+                    flashlightMixer:SetSize(215, 110)
+                    flashlightMixer:SetConVarR("tpf_cl_color_red")
+                    flashlightMixer:SetConVarG("tpf_cl_color_green")
+                    flashlightMixer:SetConVarB("tpf_cl_color_blue")
+                    flashlightMixer:SetAlphaBar(false)
+                    flashlightMixer:SetPalette(false)
+                    flashlightMixer:SetWangs(true)
 
                     DockCrosshair.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
@@ -2533,6 +2579,7 @@ function mainMenu()
                         draw.SimpleText("Muzzle Gas Blur", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Bullet Tracers", "SettingsLabel", 55 , 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Ejected Shells Time", "SettingsLabel", 155 , 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Shadows", "SettingsLabel", 55 , 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local vignetteDOF = DockPerformance:Add("DCheckBox")
@@ -2572,6 +2619,12 @@ function mainMenu()
                     ejectedDespawnTime:SetMin(0)
                     ejectedDespawnTime:SetMax(10)
                     ejectedDespawnTime:SetDecimals(0)
+
+                    local flashlightShadows = DockPerformance:Add("DCheckBox")
+                    flashlightShadows:SetPos(20, 310)
+                    flashlightShadows:SetConVar("tpf_cl_shadows")
+                    flashlightShadows:SetValue(true)
+                    flashlightShadows:SetSize(30, 30)
                 end
             end
 

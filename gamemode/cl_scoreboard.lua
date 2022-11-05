@@ -117,8 +117,12 @@ function GM:ScoreboardShow()
 	if IsValid(ScoreboardDerma) then
 		PlayerList:Clear()
 
-		for k, v in pairs(player.GetAll()) do
+		local connectedPlayers = player.GetAll()
+		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+
+		for k, v in pairs(connectedPlayers) do
 			local ratio
+			local card = v:GetNWString("chosenPlayercard")
 
 			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
@@ -148,12 +152,7 @@ function GM:ScoreboardShow()
 			playerCallingCard = vgui.Create("DImage", PlayerPanel)
 			playerCallingCard:SetPos(10, 10)
 			playerCallingCard:SetSize(240, 80)
-			if v:GetNWString("chosenPlayercard") ~= nil then
-				playerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
-			else
-				playerCallingCard:SetImage("cards/color/black.png")
-				print(v:GetName() "'s player card is NIL, this is their player card. " .. v:GetNWString("chosenPlayercard"))
-			end
+			playerCallingCard:SetImage(card, "cards/color/black.png")
 
 			--Displays a players calling card and profile picture.
 			playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)

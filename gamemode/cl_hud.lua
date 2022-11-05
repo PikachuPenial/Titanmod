@@ -64,14 +64,14 @@ function HUD()
 
             if (client:GetActiveWeapon():IsValid()) then
                 if not (client:GetActiveWeapon():Clip1() == 0) then
-                    surface.SetDrawColor(50, 50, 50, 150)
+                    surface.SetDrawColor(50, 50, 50, 80)
                     surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
                 else
-                    surface.SetDrawColor(255, 0, 0, 150)
+                    surface.SetDrawColor(255, 0, 0, 80)
                     surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
                 end
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(255, 255, 255, 175)
                 surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1()), 30)
                 draw.SimpleText(client:GetActiveWeapon():Clip1(), "Health", ScrW() - 410, ScrH() - 40, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, 0)
             end
@@ -94,17 +94,17 @@ function HUD()
         --Shows the players health depending on the style they have selected in Options.
         --Left Anchor
         if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 0 then
-            surface.SetDrawColor(50, 50, 50, 255)
-            surface.DrawRect(10, ScrH() - 38, 450 , 30)
+            surface.SetDrawColor(50, 50, 50, 80)
+            surface.DrawRect(10, ScrH() - 38, 450, 30)
 
             if client:Health() <= 66 then
                 if client:Health() <= 33 then
-                    surface.SetDrawColor(180, 100, 100)
+                    surface.SetDrawColor(180, 100, 100, 120)
                 else
-                    surface.SetDrawColor(180, 180, 100)
+                    surface.SetDrawColor(180, 180, 100, 120)
                 end
             else
-                surface.SetDrawColor(100, 180, 100)
+                surface.SetDrawColor(100, 180, 100, 120)
             end
 
             surface.DrawRect(10, ScrH() - 38, 450 * (client:Health() / client:GetMaxHealth()), 30)
@@ -117,17 +117,17 @@ function HUD()
 
         --Middle Anchor
         if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 1 then
-            surface.SetDrawColor(50, 50, 50, 255)
+            surface.SetDrawColor(50, 50, 50, 80)
             surface.DrawRect(ScrW() / 2 - 225, ScrH() - 38, 450 , 30)
 
             if client:Health() <= 66 then
                 if client:Health() <= 33 then
-                    surface.SetDrawColor(180, 100, 100)
+                    surface.SetDrawColor(180, 100, 100, 120)
                 else
-                    surface.SetDrawColor(180, 180, 100)
+                    surface.SetDrawColor(180, 180, 100, 120)
                 end
             else
-                surface.SetDrawColor(100, 180, 100)
+                surface.SetDrawColor(100, 180, 100, 120)
             end
 
             surface.DrawRect(ScrW() / 2 - 225, ScrH() - 38, 450 * (client:Health() / client:GetMaxHealth()), 30)
@@ -144,17 +144,17 @@ function HUD()
 
         --Below Crosshair
         if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 2 then
-            surface.SetDrawColor(50, 50, 50, 255)
+            surface.SetDrawColor(50, 50, 50, 80)
             surface.DrawRect(ScrW() / 2 - 100, ScrH() / 2 + 200, 150 , 30)
 
             if client:Health() <= 66 then
                 if client:Health() <= 33 then
-                    surface.SetDrawColor(180, 100, 100)
+                    surface.SetDrawColor(180, 100, 100, 120)
                 else
-                    surface.SetDrawColor(180, 180, 100)
+                    surface.SetDrawColor(180, 180, 100, 120)
                 end
             else
-                surface.SetDrawColor(100, 180, 100)
+                surface.SetDrawColor(100, 180, 100, 120)
             end
 
             surface.DrawRect(ScrW() / 2 - 100, ScrH() / 2 + 200, 200 * (client:Health() / client:GetMaxHealth()), 30)
@@ -216,6 +216,7 @@ net.Receive("NotifyKill", function(len, ply)
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
+    local lastHitIn = net.ReadFloat()
 
     local seperator = ""
 
@@ -294,7 +295,7 @@ net.Receive("NotifyKill", function(len, ply)
         buzzkill = ""
     end
 
-    if LocalPlayer():GetNWBool("lastShotHead") == true then
+    if lastHitIn == 1 then
         headshot = "Headshot +20 | "
         seperator = "| "
         KillIcon:SetImageColor(Color(255, 0, 0))
@@ -312,16 +313,6 @@ net.Receive("NotifyKill", function(len, ply)
     local rainbowSpeed = 160
 
     KillNotif.Paint = function()
-        --Changes the kill icons color if a player got a headshot kill.
-        if LocalPlayer():GetNWBool("lastShotHead") == true then
-            headshot = "Headshot +20 | "
-            seperator = "| "
-            KillIcon:SetImageColor(Color(255, 0, 0))
-        else
-            headshot = ""
-            KillIcon:SetImageColor(Color(255, 255, 255))
-        end
-
         --Dynamic text color depending on the killstreak of the player.
         if LocalPlayer():GetNWInt("killStreak") <= 2 then
             streakColor = whiteColor
@@ -364,6 +355,7 @@ net.Receive("DeathHud", function(len, ply)
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
+    local lastHitIn = net.ReadFloat()
 
     local respawnTimeLeft = 4
 
@@ -398,8 +390,7 @@ net.Receive("DeathHud", function(len, ply)
     DeathNotif:ShowCloseButton(false)
 
     DeathNotif.Paint = function()
-        --This appears if the player died to another player
-        if killedBy:GetNWBool("lastShotHead") == true then
+        if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
         else
             draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
@@ -645,8 +636,12 @@ net.Receive("EndOfGame", function(len, ply)
     PlayerScroller:Dock(TOP)
     PlayerScroller:SetSize(0, ScrH() * 0.7)
 
-    for k, v in pairs(player.GetAll()) do
+    local connectedPlayers = player.GetAll()
+    table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+
+    for k, v in pairs(connectedPlayers) do
         local ratio
+        local card = v:GetNWString("chosenPlayercard")
 
         if v:Frags() <= 0 then
             ratio = 0
@@ -686,7 +681,7 @@ net.Receive("EndOfGame", function(len, ply)
         playerMenuCallingCard = vgui.Create("DImage", PlayerPanel)
         playerMenuCallingCard:SetPos(PlayerPanel:GetWide() / 2 - 120, PlayerPanel:GetTall() - 100)
         playerMenuCallingCard:SetSize(240, 80)
-        playerMenuCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+        playerMenuCallingCard:SetImage(card, "cards/color/black.png")
 
         playerMenuProfilePicture = vgui.Create("AvatarImage", playerMenuCallingCard)
         playerMenuProfilePicture:SetPos(5 + v:GetNWInt("cardPictureOffset"), 5)
