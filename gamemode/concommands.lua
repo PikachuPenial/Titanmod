@@ -74,7 +74,7 @@ function PlayerModelChange(ply, cmd, args)
 	modelList[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
 	modelList[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
 	modelList[22] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
-    modelArray[23] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
+    modelList[23] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
 
 	for k, v in pairs(modelList) do
 		if (args[1] == v[1]) then
@@ -163,7 +163,7 @@ function PlayercardChange(ply, cmd, args)
     cardArray[50] = {"cards/mastery/ar15.png", "Modified", "AR-15 mastery", "mastery", "tfa_ins2_cw_ar15"}
     cardArray[51] = {"cards/mastery/ar57.png", "Ghost", "AR-57 mastery", "mastery", "tfa_ins2_ar57"}
     cardArray[52] = {"cards/mastery/ash12.png", "Factory", "ASh-12 mastery", "mastery", "tfa_at_shak_12"}
-    cardArray[53] = {"cards/mastery/asval.png", "Crab Pride", "AS-VAL mastery", "mastery", "tfa_inss_asval"}
+    cardArray[53] = {"cards/mastery/asval.png", "Zedo Pride", "AS-VAL mastery", "mastery", "tfa_inss_asval"}
     cardArray[54] = {"cards/mastery/awm.png", "Dust II", "AWM mastery", "mastery", "tfa_ins2_warface_awm"}
     cardArray[55] = {"cards/mastery/ax308.png", "Down Range", "AX-308 mastery", "mastery", "tfa_ins2_warface_ax308"}
     cardArray[56] = {"cards/mastery/barrettm98b.png", "Ready", "Barrett M98B mastery", "mastery", "tfa_ins2_barrett_m98_bravo"}
@@ -175,18 +175,18 @@ function PlayercardChange(ply, cmd, args)
     cardArray[62] = {"cards/mastery/coltm45a1.png", "Legend", "Colt M45A1 mastery", "mastery", "tfa_ins2_colt_m45"}
     cardArray[63] = {"cards/mastery/cz75.png", "Nuke", "CZ 75 B mastery", "mastery", "tfa_ins2_cz75"}
     cardArray[64] = {"cards/mastery/cz805.png", "Attached", "CZ 805 BREN mastery", "mastery", "tfa_ins2_cz805"}
-    cardArray[65] = {"cards/mastery/placeholder.png", "", "DDM4V5 mastery", "mastery", "tfa_ins2_ddm4v5"}
+    cardArray[65] = {"cards/mastery/ddm4v5.png", "Carbine", "DDM4V5 mastery", "mastery", "tfa_ins2_ddm4v5"}
     cardArray[66] = {"cards/mastery/deserteagle.png", "Mag Check", "Desert Eagle mastery", "mastery", "tfa_ins2_deagle"}
     cardArray[67] = {"cards/mastery/famasf1.png", "Siege", "Famas F1 mastery", "mastery", "tfa_ins2_famas"}
     cardArray[68] = {"cards/mastery/fb_msbsb.png", "Left", "FB MSBS-B mastery", "mastery", "tfa_blast_lynx_msbsb"}
     cardArray[69] = {"cards/mastery/fg42.png", "Glint", "FG 42 mastery", "mastery", "tfa_doifg42"}
     cardArray[70] = {"cards/mastery/fiveseven.png", "Intergalactic", "Fiveseven mastery", "mastery", "tfa_ins2_fiveseven_eft"}
-    cardArray[71] = {"cards/mastery/placeholder.png", "", "FN FAL mastery", "mastery", "tfa_ins2_fn_fal"}
-    cardArray[72] = {"cards/mastery/placeholder.png", "", "FNP-45 mastery", "mastery", "tfa_ins2_fnp45"}
+    cardArray[71] = {"cards/mastery/fnfal.png", "Exposed", "FN FAL mastery", "mastery", "tfa_ins2_fn_fal"}
+    cardArray[72] = {"cards/mastery/fnp45.png", "ACP", "FNP-45 mastery", "mastery", "tfa_ins2_fnp45"}
     cardArray[73] = {"cards/mastery/placeholder.png", "", "Galil mastery", "mastery", "tfa_new_inss_galil"}
     cardArray[74] = {"cards/mastery/placeholder.png", "", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
     cardArray[75] = {"cards/mastery/placeholder.png", "", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
-    cardArray[76] = {"cards/mastery/placeholder.png", "", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
+    cardArray[76] = {"cards/mastery/honeybadger.png", "Business", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
     cardArray[77] = {"cards/mastery/placeholder.png", "", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
     cardArray[78] = {"cards/mastery/placeholder.png", "", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
     cardArray[79] = {"cards/mastery/placeholder.png", "", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
@@ -219,7 +219,7 @@ function PlayercardChange(ply, cmd, args)
     cardArray[106] = {"cards/mastery/placeholder.png", "", "Mosin Nagant mastery", "mastery", "tfa_ins2_mosin_nagant"}
     cardArray[107] = {"cards/mastery/placeholder.png", "", "MP 40 mastery", "mastery", "tfa_doimp40"}
     cardArray[108] = {"cards/mastery/placeholder.png", "", "MP5K mastery", "mastery", "tfa_ins2_mp5k"}
-    cardArray[109] = {"cards/mastery/placeholder.png", "", "MP7A1 mastery", "mastery", "tfa_inss_mp7_new"}
+    cardArray[109] = {"cards/mastery/mp7a1.png", "Oilspill", "MP7A1 mastery", "mastery", "tfa_inss_mp7_new"}
     cardArray[110] = {"cards/mastery/placeholder.png", "", "MP18 mastery", "mastery", "tfa_ww1_mp18"}
     cardArray[111] = {"cards/mastery/placeholder.png", "", "MR-96 mastery", "mastery", "tfa_ins2_mr96"}
     cardArray[112] = {"cards/mastery/placeholder.png", "", "MTs225-12 mastery", "mastery", "tfa_ins2_mc255"}
@@ -241,7 +241,7 @@ function PlayercardChange(ply, cmd, args)
     cardArray[128] = {"cards/mastery/placeholder.png", "", "Remington MSR mastery", "mastery", "tfa_ins2_pd2_remington_msr"}
     cardArray[129] = {"cards/mastery/placeholder.png", "", "RFB mastery", "mastery", "tfa_ins2_rfb"}
     cardArray[130] = {"cards/mastery/placeholder.png", "", "RK62 mastery", "mastery", "tfa_fml_rk62"}
-    cardArray[131] = {"cards/mastery/placeholder.png", "", "RPG-7 mastery", "mastery", "tfa_ins2_rpg7_scoped"}
+    cardArray[131] = {"cards/mastery/rpg7.png", "Damascus", "RPG-7 mastery", "mastery", "tfa_ins2_rpg7_scoped"}
     cardArray[132] = {"cards/mastery/placeholder.png", "", "RPK-74M mastery", "mastery", "tfa_ins2_rpk_74m"}
     cardArray[133] = {"cards/mastery/placeholder.png", "", "SA80 mastery", "mastery", "tfa_ins2_l85a2"}
     cardArray[134] = {"cards/mastery/placeholder.png", "", "SCAR-H SSR mastery", "mastery", "tfa_ins2_scar_h_ssr"}
