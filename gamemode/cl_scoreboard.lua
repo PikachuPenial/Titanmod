@@ -31,7 +31,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.3b2", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod 0.4b2", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)

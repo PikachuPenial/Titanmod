@@ -24,7 +24,7 @@ function mainMenu()
         musicList = {"music/sicktwisteddemented_sewerslvt.wav"}
         chosenMusic = (musicList[math.random(#musicList)])
     else
-        musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav"}
+        musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
         chosenMusic = (musicList[math.random(#musicList)])
     end
 
@@ -68,6 +68,12 @@ function mainMenu()
         musicName = "Waster - Bladee"
         requestedBy = "Suomij (narkotica)"
         steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
+    end
+
+    if chosenMusic == "music/systemfiles_zedorfski.wav" then
+        musicName = "System Files - Zedorfski"
+        requestedBy = "Zedorfski"
+        steamProfile = "https://steamcommunity.com/id/zedorfski"
     end
 
     musicVolume = GetConVar("tm_menumusicvolume"):GetInt() / 4
@@ -219,12 +225,26 @@ function mainMenu()
                 draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
-            local Patch03b2 = vgui.Create("DPanel", PatchScroller)
-            Patch03b2:Dock(TOP)
-            Patch03b2:SetSize(0, 530)
-            Patch03b2.Paint = function(self, w, h)
+            local Patch04b2 = vgui.Create("DPanel", PatchScroller)
+            Patch04b2:Dock(TOP)
+            Patch04b2:SetSize(0, 170)
+            Patch04b2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.3b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.4b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/08/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Map updates and optimizations","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Accolade player models", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scope Shadows are now forced off", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Many bug fixes", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
+            local Patch04b1 = vgui.Create("DPanel", PatchScroller)
+            Patch04b1:Dock(TOP)
+            Patch04b1:SetSize(0, 530)
+            Patch04b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.4b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/04/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Added Mall and Bridge map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
@@ -385,6 +405,20 @@ function mainMenu()
 
                     local StatsScroller = vgui.Create("DScrollPanel", StatisticsPanel)
                     StatsScroller:Dock(FILL)
+
+                    local sbar = StatsScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
 
                     local StatsTextHolder = vgui.Create("DPanel", StatsScroller)
                     StatsTextHolder:Dock(TOP)
@@ -781,6 +815,20 @@ function mainMenu()
 
                     local CardScroller = vgui.Create("DScrollPanel", CardPanel)
                     CardScroller:Dock(FILL)
+
+                    local sbar = CardScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
 
                     local CardTextHolder = vgui.Create("DPanel", CardScroller)
                     CardTextHolder:Dock(TOP)
@@ -1575,6 +1623,15 @@ function mainMenu()
                     DockModelsStreak:Dock(TOP)
                     DockModelsStreak:SetSize(0, 310)
 
+                    --Accolade Playermodels
+                    local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
+                    TextAccolade:Dock(TOP)
+                    TextAccolade:SetSize(0, 60)
+
+                    local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
+                    DockModelsAccolade:Dock(TOP)
+                    DockModelsAccolade:SetSize(0, 465)
+
                     --Special Playermodels
                     local TextSpecial = vgui.Create("DPanel", CustomizeScroller)
                     TextSpecial:Dock(TOP)
@@ -1609,6 +1666,15 @@ function mainMenu()
                     StreakModelList:SetSpaceX(5)
 
                     StreakModelList.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                    end
+
+                    local AccoladeModelList = vgui.Create("DIconLayout", DockModelsAccolade)
+                    AccoladeModelList:Dock(TOP)
+                    AccoladeModelList:SetSpaceY(5)
+                    AccoladeModelList:SetSpaceX(5)
+
+                    AccoladeModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     end
 
@@ -1673,6 +1739,70 @@ function mainMenu()
                                 draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
                             else
                                 draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "headshot" then
+                            if LocalPlayer():GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+                        
+                        if newModelUnlockType == "smackdown" then
+                            if LocalPlayer():GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
+                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "clutch" then
+                            if LocalPlayer():GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "longshot" then
+                            if LocalPlayer():GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "pointblank" then
+                            if LocalPlayer():GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "killstreaks" then
+                            if LocalPlayer():GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "buzzkills" then
+                            if LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                            end
+                        end
+
+                        if newModelUnlockType == "revenge" then
+                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newModelUnlockValue then
+                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
                             end
                         end
 
@@ -1829,6 +1959,36 @@ function mainMenu()
                                 end
                             end
                         end
+
+                        if v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" or v[4] == "revenge" then
+                            local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
+                            icon:SetModel(v[1])
+                            icon:SetTooltip(v[2] .. "\n" .. v[3])
+                            icon:SetSize(150, 150)
+                            AccoladeModelList:Add(icon)
+
+                            icon.DoClick = function(icon)
+                                newModel = v[1]
+                                newModelName = v[2]
+                                newModelDesc = v[3]
+                                newModelUnlockType = v[4]
+                                newModelUnlockValue = v[5]
+
+                                if selectedModelShown == true then
+                                    SelectedModelDisplay:Remove()
+
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(400, 400)
+                                    SelectedModelDisplay:SetPos(0, -25)
+                                    SelectedModelDisplay:SetModel(newModel)
+                                else
+                                    SelectedModelDisplay:SetSize(400, 400)
+                                    SelectedModelDisplay:SetPos(0, -25)
+                                    SelectedModelDisplay:SetModel(newModel)
+                                    selectedModelShown = true
+                                end
+                            end
+                        end
                     end
 
                     TextDefault.Paint = function(self, w, h)
@@ -1846,6 +2006,11 @@ function mainMenu()
                         draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
+                    TextAccolade.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Accolades", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                    end
+
                     TextSpecial.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Special", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
@@ -1860,6 +2025,10 @@ function mainMenu()
                     end
 
                     DockModelsStreak.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+
+                    DockModelsAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
 
@@ -1904,6 +2073,110 @@ function mainMenu()
 
                         if newModelUnlockType == "streak" then
                             if LocalPlayer():GetNWInt("highestKillStreak") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "headshot" then
+                            if LocalPlayer():GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "smackdown" then
+                            if LocalPlayer():GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "clutch" then
+                            if LocalPlayer():GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "longshot" then
+                            if LocalPlayer():GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "pointblank" then
+                            if LocalPlayer():GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "killstreaks" then
+                            if LocalPlayer():GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "buzzkills" then
+                            if LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
+                                MainPanel:Show()
+                                CustomizeSlideoutPanel:Hide()
+                                CustomizePanel:Hide()
+                                PreviewPanel:Hide()
+                            end
+                        end
+
+                        if newModelUnlockType == "revenge" then
+                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1974,8 +2247,17 @@ function mainMenu()
                         CustomizeScroller:ScrollToChild(TextStreak)
                     end
 
+                    local AccoladeJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    AccoladeJump:SetPos(4, 256)
+                    AccoladeJump:SetSize(48, 48)
+                    AccoladeJump:SetImage("icons/accoladeicon.png")
+                    AccoladeJump:SetTooltip("Accolades")
+                    AccoladeJump.DoClick = function()
+                        CustomizeScroller:ScrollToChild(TextAccolade)
+                    end
+
                     local SpecialJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    SpecialJump:SetPos(4, 256)
+                    SpecialJump:SetPos(4, 305)
                     SpecialJump:SetSize(48, 48)
                     SpecialJump:SetImage("icons/specialicon.png")
                     SpecialJump:SetTooltip("Special")
@@ -2028,6 +2310,20 @@ function mainMenu()
                     local OptionsScroller = vgui.Create("DScrollPanel", OptionsPanel)
                     OptionsScroller:Dock(FILL)
 
+                    local sbar = OptionsScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
+
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
                     DockInputs:SetSize(0, 200)
@@ -2054,7 +2350,7 @@ function mainMenu()
 
                     local DockScopes = vgui.Create("DPanel", OptionsScroller)
                     DockScopes:Dock(TOP)
-                    DockScopes:SetSize(0, 245)
+                    DockScopes:SetSize(0, 195)
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
@@ -2556,18 +2852,11 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("SIGHTS & SCOPES", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Scope Shadows", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reticle Color", "SettingsLabel", 245 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reticle Color", "SettingsLabel", 245 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
-                    local scopeShadows = DockScopes:Add("DCheckBox")
-                    scopeShadows:SetPos(20, 70)
-                    scopeShadows:SetConVar("cl_tfa_3dscope_overlay")
-                    scopeShadows:SetValue(true)
-                    scopeShadows:SetSize(30, 30)
-
                     local scopeMixer = vgui.Create("DColorMixer", DockScopes)
-                    scopeMixer:SetPos(20, 110)
+                    scopeMixer:SetPos(20, 70)
                     scopeMixer:SetSize(215, 110)
                     scopeMixer:SetConVarR("cl_tfa_reticule_color_r")
                     scopeMixer:SetConVarG("cl_tfa_reticule_color_g")

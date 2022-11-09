@@ -51,32 +51,40 @@ concommand.Add("tm_forcesave", ForceSave)
 
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
-	local modelList = {}
-	modelList[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
-	modelList[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
-	modelList[3] = {"models/player/Group01/male_03.mdl", "Casual Male", "Why so serious?", "default", "default"}
-	modelList[4] = {"models/player/mossman.mdl", "Casual Female", "Why so serious?", "default", "default"}
-	modelList[5] = {"models/player/Group03m/male_05.mdl", "Doctor", "I need a medic bag.", "default", "default"}
-	modelList[6] = {"models/player/Group03m/female_06.mdl", "Nurse", "I need a medic bag.", "default", "default"}
-	modelList[7] = {"models/player/barney.mdl", "Barney", "Not purple this time.", "default", "default"}
-	modelList[8] = {"models/player/breen.mdl", "Breen", "i couldn't think of anything", "default", "default"}
-	modelList[9] = {"models/player/kleiner.mdl", "Kleiner", "But in the end.", "default", "default"}
-	modelList[10] = {"models/player/Group01/male_07.mdl", "Male 07", "The one, the only.", "kills", 100}
-	modelList[11] = {"models/player/alyx.mdl", "Alyx", "ughhhhhhhhh.", "kills", 300}
-	modelList[12] = {"models/player/hostage/hostage_04.mdl", "Scientist", "Bill Nye.", "kills", 500}
-	modelList[13] = {"models/player/gman_high.mdl", "GMan", "Where is 3?", "kills", 1000}
-	modelList[14] = {"models/player/p2_chell.mdl", "Chell", "Funny portal reference.", "kills", 2000}
-	modelList[15] = {"models/player/leet.mdl", "Badass", "So cool.", "kills", 3000}
-	modelList[16] = {"models/player/arctic.mdl", "Arctic", "I don't think it's cold in here.", "streak", 5}
-	modelList[17] = {"models/player/riot.mdl", "Riot", "Tanto Addict.", "streak", 10}
-	modelList[18] = {"models/player/gasmask.mdl", "Hazmat Suit", "This isn't Rust.", "streak", 15}
-	modelList[19] = {"models/player/police.mdl", "Officer", "Pick up the can.", "streak", 20}
-	modelList[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
-	modelList[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
-	modelList[22] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
-    modelList[23] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
+	local modelArray = {}
+    modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
+    modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
+    modelArray[3] = {"models/player/Group01/male_03.mdl", "Casual Male", "Why so serious?", "default", "default"}
+    modelArray[4] = {"models/player/mossman.mdl", "Casual Female", "Why so serious?", "default", "default"}
+    modelArray[5] = {"models/player/Group03m/male_05.mdl", "Doctor", "I need a medic bag.", "default", "default"}
+    modelArray[6] = {"models/player/Group03m/female_06.mdl", "Nurse", "I need a medic bag.", "default", "default"}
+    modelArray[7] = {"models/player/barney.mdl", "Barney", "Not purple this time.", "default", "default"}
+    modelArray[8] = {"models/player/breen.mdl", "Breen", "i couldn't think of anything", "default", "default"}
+    modelArray[9] = {"models/player/kleiner.mdl", "Kleiner", "But in the end.", "default", "default"}
+    modelArray[10] = {"models/player/Group01/male_07.mdl", "Male 07", "The one, the only.", "kills", 100}
+    modelArray[11] = {"models/player/alyx.mdl", "Alyx", "ughhhhhhhhh.", "kills", 300}
+    modelArray[12] = {"models/player/hostage/hostage_04.mdl", "Scientist", "Bill Nye.", "kills", 500}
+    modelArray[13] = {"models/player/gman_high.mdl", "GMan", "Where is 3?", "kills", 1000}
+    modelArray[14] = {"models/player/p2_chell.mdl", "Chell", "Funny portal reference.", "kills", 2000}
+    modelArray[15] = {"models/player/leet.mdl", "Badass", "So cool.", "kills", 3000}
+    modelArray[16] = {"models/player/arctic.mdl", "Frozen", "I don't think it's cold in here.", "streak", 5}
+    modelArray[17] = {"models/player/riot.mdl", "Riot", "Tanto Addict.", "streak", 10}
+    modelArray[18] = {"models/player/gasmask.mdl", "Hazard Suit", "This isn't Rust.", "streak", 15}
+    modelArray[19] = {"models/player/police.mdl", "Officer", "Pick up the can.", "streak", 20}
+    modelArray[20] = {"models/player/combine_soldier_prisonguard.mdl", "Cobalt Soilder", "No green card?", "streak", 25}
+    modelArray[21] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug Dealer", "waltuh.", "streak", 30}
+    modelArray[22] = {"models/paynamia/bms/gordon_survivor_player.mdl", "Gordon", "", "headshot", 450}
+    modelArray[23] = {"models/player/darky_m/rust/arctic_hazmat.mdl", "Arctic", "", "headshot", 1000}
+    modelArray[24] = {"models/player/darky_m/rust/scientist.mdl", "Cobalt", "", "smackdown", 100}
+    modelArray[25] = {"models/mark2580/payday2/pd2_bulldozer_player.mdl", "Bulldozer", "", "smackdown", 200}
+    modelArray[26] = {"models/player/combine_super_soldier.mdl", "Super Soilder", "@Portanator", "clutch", 80}
+    modelArray[27] = {"models/player/darky_m/rust/spacesuit.mdl", "Spacesuit", "", "clutch", 160}
+    modelArray[28] = {"models/player/darky_m/rust/hazmat.mdl", "Hazmat", "", "longshot", 150}
+    modelArray[29] = {"models/player/darky_m/rust/nomad.mdl", "Nomad", "", "longshot", 350}
+    modelArray[30] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
+    modelArray[31] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
 
-	for k, v in pairs(modelList) do
+	for k, v in pairs(modelArray) do
 		if (args[1] == v[1]) then
 
 			local modelID = v[1]
@@ -84,23 +92,55 @@ function PlayerModelChange(ply, cmd, args)
 			local modelValue = v[5]
 
 			if modelUnlock == "default" then
-				ply:SetNWInt("chosenPlayermodel", modelID)
+				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 
 			if modelUnlock == "kills" and ply:GetNWInt("playerKills") >= modelValue then
-				ply:SetNWInt("chosenPlayermodel", modelID)
+				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 
 			if modelUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= modelValue then
-				ply:SetNWInt("chosenPlayermodel", modelID)
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+            if modelUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+			if modelUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+
+            if modelUnlock == "revenge" and ply:GetNWInt("playerAccoladeRevenge") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 
 			if modelUnlock == "special" and modelValue == "name" and ply:SteamID() == "STEAM_0:1:514443768" then
-				ply:SetNWInt("chosenPlayermodel", modelID)
+				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 
             if modelUnlock == "special" and modelValue == "beta" and ply:GetNWInt("playerBetaTimePlayed") == 10800 then
-				ply:SetNWInt("chosenPlayermodel", modelID)
+				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 		end
 	end
@@ -183,37 +223,37 @@ function PlayercardChange(ply, cmd, args)
     cardArray[70] = {"cards/mastery/fiveseven.png", "Intergalactic", "Fiveseven mastery", "mastery", "tfa_ins2_fiveseven_eft"}
     cardArray[71] = {"cards/mastery/fnfal.png", "Exposed", "FN FAL mastery", "mastery", "tfa_ins2_fn_fal"}
     cardArray[72] = {"cards/mastery/fnp45.png", "ACP", "FNP-45 mastery", "mastery", "tfa_ins2_fnp45"}
-    cardArray[73] = {"cards/mastery/placeholder.png", "", "Galil mastery", "mastery", "tfa_new_inss_galil"}
-    cardArray[74] = {"cards/mastery/placeholder.png", "", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
-    cardArray[75] = {"cards/mastery/placeholder.png", "", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
+    cardArray[73] = {"cards/mastery/galil.png", "Chains", "Galil mastery", "mastery", "tfa_new_inss_galil"}
+    cardArray[74] = {"cards/mastery/glock17.png", "Ospery", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
+    cardArray[75] = {"cards/mastery/gsh18.png", "Skyscraper", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
     cardArray[76] = {"cards/mastery/honeybadger.png", "Business", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
-    cardArray[77] = {"cards/mastery/placeholder.png", "", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
-    cardArray[78] = {"cards/mastery/placeholder.png", "", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
-    cardArray[79] = {"cards/mastery/placeholder.png", "", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
-    cardArray[80] = {"cards/mastery/placeholder.png", "", "Imbel IA2 mastery", "mastery", "tfa_ins2_imbelia2"}
-    cardArray[81] = {"cards/mastery/placeholder.png", "", "IZH-43 Sawed Off mastery", "mastery", "tfa_ins2_izh43sw"}
-    cardArray[82] = {"cards/mastery/placeholder.png", "", "Japanese Ararebo mastery", "mastery", "tfa_ararebo_bf1"}
+    cardArray[77] = {"cards/mastery/howatype64.png", "Cradle", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
+    cardArray[78] = {"cards/mastery/hkmg36.png", "Aimpoint", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
+    cardArray[79] = {"cards/mastery/hkmp5.png", "Mode Select", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
+    cardArray[80] = {"cards/mastery/imbelia2.png", "Due Process", "Imbel IA2 mastery", "mastery", "tfa_ins2_imbelia2"}
+    cardArray[81] = {"cards/mastery/izhsawedoff.png", "Cut In Half", "IZH43 Sawed Off master", "mastery", "tfa_ins2_izh43sw"}
+    cardArray[82] = {"cards/mastery/placeholder.png", "", "Japanese Ararebo master", "mastery", "tfa_ararebo_bf1"}
     cardArray[83] = {"cards/mastery/placeholder.png", "", "KM-2000 mastery", "mastery", "tfa_km2000_knife"}
     cardArray[84] = {"cards/mastery/krissvector.png", "Narkotica", "KRISS Vector mastery", "mastery", "tfa_ins2_krissv"}
-    cardArray[85] = {"cards/mastery/placeholder.png", "", "KSG mastery", "mastery", "tfa_ins2_ksg"}
-    cardArray[86] = {"cards/mastery/placeholder.png", "", "KSVK 12.7 mastery", "mastery", "tfa_blast_ksvk_cqb"}
-    cardArray[87] = {"cards/mastery/placeholder.png", "", "Lee-Enfield No. 4 mastery", "mastery", "tfa_doi_enfield"}
-    cardArray[88] = {"cards/mastery/placeholder.png", "", "Lewis mastery", "mastery", "tfa_doilewis"}
-    cardArray[89] = {"cards/mastery/placeholder.png", "", "M1 Garand mastery", "mastery", "tfa_doi_garand"}
-    cardArray[90] = {"cards/mastery/placeholder.png", "", "M14 mastery", "mastery", "tfa_ins2_m14retro"}
-    cardArray[91] = {"cards/mastery/placeholder.png", "", "M3 Grease Gun mastery", "mastery", "tfa_doim3greasegun"}
-    cardArray[92] = {"cards/mastery/placeholder.png", "", "M9 mastery", "mastery", "tfa_ins2_m9"}
+    cardArray[85] = {"cards/mastery/ksg.png", "Flames", "KSG mastery", "mastery", "tfa_ins2_ksg"}
+    cardArray[86] = {"cards/mastery/ksvk.png", "Quickscope", "KSVK 12.7 mastery", "mastery", "tfa_blast_ksvk_cqb"}
+    cardArray[87] = {"cards/mastery/leeenfield.png", "Minecraft", "Lee-Enfield No. 4 mastery", "mastery", "tfa_doi_enfield"}
+    cardArray[88] = {"cards/mastery/lewis.png", "Plates", "Lewis mastery", "mastery", "tfa_doilewis"}
+    cardArray[89] = {"cards/mastery/m1garand.png", "Ping", "M1 Garand mastery", "mastery", "tfa_doi_garand"}
+    cardArray[90] = {"cards/mastery/m14.png", "Bridge", "M14 mastery", "mastery", "tfa_ins2_m14retro"}
+    cardArray[91] = {"cards/mastery/m3grease.png", "Grease", "M3 Grease Gun mastery", "mastery", "tfa_doim3greasegun"}
+    cardArray[92] = {"cards/mastery/m9.png", "Full Metal", "M9 mastery", "mastery", "tfa_ins2_m9"}
     cardArray[93] = {"cards/mastery/m79.png", "Cool With It", "M79 mastery", "mastery", "tfa_nam_m79"}
     cardArray[94] = {"cards/mastery/placeholder.png", "", "M1918 mastery", "mastery", "tfa_doim1918"}
     cardArray[95] = {"cards/mastery/placeholder.png", "", "M1919 mastery", "mastery", "tfa_doim1919"}
-    cardArray[96] = {"cards/mastery/placeholder.png", "", "Mac 10 mastery", "mastery", "bocw_mac10_alt"}
+    cardArray[96] = {"cards/mastery/mac10.png", "Dev", "Mac 10 mastery", "mastery", "bocw_mac10_alt"}
     cardArray[97] = {"cards/mastery/placeholder.png", "", "Makarov mastery", "mastery", "tfa_inss_makarov"}
     cardArray[98] = {"cards/mastery/mas38.png", "Galaxy", "Mas 38 mastery", "mastery", "tfa_fml_lefrench_mas38"}
-    cardArray[99] = {"cards/mastery/placeholder.png", "", "MG 34 mastery", "mastery", "tfa_doimg34"}
+    cardArray[99] = {"cards/mastery/mg34.png", "Heavy   ", "MG 34 mastery", "mastery", "tfa_doimg34"}
     cardArray[100] = {"cards/mastery/mg42.png", "D-Day", "MG 42 mastery", "mastery", "tfa_doimg42"}
     cardArray[101] = {"cards/mastery/minimi.png", "Roof Camper", "Minimi Para mastery", "mastery", "tfa_ins2_minimi"}
     cardArray[102] = {"cards/mastery/placeholder.png", "", "MK 23 mastery", "mastery", "tfa_ins2_mk23"}
-    cardArray[103] = {"cards/mastery/placeholder.png", "", "MK18 mastery", "mastery", "tfa_fml_inss_mk18"}
+    cardArray[103] = {"cards/mastery/mk18.png", "Wednesday", "MK18 mastery", "mastery", "tfa_fml_inss_mk18"}
     cardArray[104] = {"cards/mastery/placeholder.png", "", "Mk. 14 EBR mastery", "mastery", "tfa_ins2_mk14ebr"}
     cardArray[105] = {"cards/mastery/model10.png", "Walter", "Model 10 mastery", "mastery", "tfa_ins2_swmodel10"}
     cardArray[106] = {"cards/mastery/placeholder.png", "", "Mosin Nagant mastery", "mastery", "tfa_ins2_mosin_nagant"}
@@ -223,16 +263,16 @@ function PlayercardChange(ply, cmd, args)
     cardArray[110] = {"cards/mastery/placeholder.png", "", "MP18 mastery", "mastery", "tfa_ww1_mp18"}
     cardArray[111] = {"cards/mastery/placeholder.png", "", "MR-96 mastery", "mastery", "tfa_ins2_mr96"}
     cardArray[112] = {"cards/mastery/placeholder.png", "", "MTs225-12 mastery", "mastery", "tfa_ins2_mc255"}
-    cardArray[113] = {"cards/mastery/placeholder.png", "", "Nova mastery", "mastery", "tfa_ins2_nova"}
+    cardArray[113] = {"cards/mastery/nova.png", "Dark Streets", "Nova mastery", "mastery", "tfa_ins2_nova"}
     cardArray[114] = {"cards/mastery/placeholder.png", "", "Orsis T-5000 mastery", "mastery", "tfa_ins2_warface_orsis_t5000"}
-    cardArray[115] = {"cards/mastery/placeholder.png", "", "OSP-18", "mastery", "tfa_l4d2_osp18"}
+    cardArray[115] = {"cards/mastery/placeholder.png", "", "OSP-18 mastery", "mastery", "tfa_l4d2_osp18"}
     cardArray[116] = {"cards/mastery/placeholder.png", "", "OTs-14 Groza mastery", "mastery", "tfa_ins2_groza"}
     cardArray[117] = {"cards/mastery/placeholder.png", "", "OTs-33 Pernach mastery", "mastery", "tfa_ins2_ots_33_pernach"}
-    cardArray[118] = {"cards/mastery/placeholder.png", "", "Owen Mk.I mastery", "mastery", "tfa_doiowen"}
-    cardArray[119] = {"cards/mastery/placeholder.png", "", "P90 mastery", "mastery", "tfa_fml_p90_tac"}
+    cardArray[118] = {"cards/mastery/owenmki.png", "Grid", "Owen Mk.I mastery", "mastery", "tfa_doiowen"}
+    cardArray[119] = {"cards/mastery/p90.png", "MISSING", "P90 mastery", "mastery", "tfa_fml_p90_tac"}
     cardArray[120] = {"cards/mastery/placeholder.png", "", "PINDAD SS2-V1 mastery", "mastery", "tfa_blast_pindadss2"}
     cardArray[121] = {"cards/mastery/placeholder.png", "", "PM-9 mastery", "mastery", "tfa_ins2_pm9"}
-    cardArray[122] = {"cards/mastery/placeholder.png", "", "PPSH-41 mastery", "mastery", "tfa_nam_ppsh41"}
+    cardArray[122] = {"cards/mastery/ppsh41.png", "Mephitic", "PPSH-41 mastery", "mastery", "tfa_nam_ppsh41"}
     cardArray[123] = {"cards/mastery/placeholder.png", "", "PP-Bizon mastery", "mastery", "tfa_fas2_ppbizon"}
     cardArray[124] = {"cards/mastery/placeholder.png", "", "PzB 39 mastery", "mastery", "tfa_ww2_pbz39"}
     cardArray[125] = {"cards/mastery/placeholder.png", "", "QBZ-97 mastery", "mastery", "tfa_ins2_norinco_qbz97"}
@@ -243,14 +283,14 @@ function PlayercardChange(ply, cmd, args)
     cardArray[130] = {"cards/mastery/placeholder.png", "", "RK62 mastery", "mastery", "tfa_fml_rk62"}
     cardArray[131] = {"cards/mastery/rpg7.png", "Damascus", "RPG-7 mastery", "mastery", "tfa_ins2_rpg7_scoped"}
     cardArray[132] = {"cards/mastery/placeholder.png", "", "RPK-74M mastery", "mastery", "tfa_ins2_rpk_74m"}
-    cardArray[133] = {"cards/mastery/placeholder.png", "", "SA80 mastery", "mastery", "tfa_ins2_l85a2"}
+    cardArray[133] = {"cards/mastery/sa80.png", "Groves", "SA80 mastery", "mastery", "tfa_ins2_l85a2"}
     cardArray[134] = {"cards/mastery/placeholder.png", "", "SCAR-H SSR mastery", "mastery", "tfa_ins2_scar_h_ssr"}
     cardArray[135] = {"cards/mastery/placeholder.png", "", "Scorpion Evo 3 mastery", "mastery", "tfa_ins2_sc_evo"}
     cardArray[136] = {"cards/mastery/placeholder.png", "", "SIG P226 mastery", "mastery", "tfa_new_p226"}
     cardArray[137] = {"cards/mastery/placeholder.png", "", "SKS mastery", "mastery", "tfa_ins2_sks"}
     cardArray[138] = {"cards/mastery/placeholder.png", "", "SPAS-12 mastery", "mastery", "tfa_ins2_spas12"}
-    cardArray[139] = {"cards/mastery/placeholder.png", "", "Spectre M4 mastery", "mastery", "tfa_ins2_spectre"}
-    cardArray[140] = {"cards/mastery/placeholder.png", "", "Spike X15 mastery", "mastery", "tfa_ins2_saiga_spike"}
+    cardArray[139] = {"cards/mastery/spectrem4.png", "Mall", "Spectre M4 mastery", "mastery", "tfa_ins2_spectre"}
+    cardArray[140] = {"cards/mastery/spikex15.png", "Prototype", "Spike X15 mastery", "mastery", "tfa_ins2_saiga_spike"}
     cardArray[141] = {"cards/mastery/placeholder.png", "", "SR-2M Veresk mastery", "mastery", "tfa_ins2_sr2m_veresk"}
     cardArray[142] = {"cards/mastery/placeholder.png", "", "Sten Mk.II mastery", "mastery", "tfa_doisten"}
     cardArray[143] = {"cards/mastery/placeholder.png", "", "Stevens 620 mastery", "mastery", "tfa_nam_stevens620"}
@@ -263,14 +303,14 @@ function PlayercardChange(ply, cmd, args)
     cardArray[150] = {"cards/mastery/placeholder.png", "", "Thompson M1928 master", "mastery", "tfa_doithompsonm1928"}
     cardArray[151] = {"cards/mastery/thompson.png", "Suicide", "Thompson M1A1 master", "mastery", "tfa_doithompsonm1a1"}
     cardArray[152] = {"cards/mastery/placeholder.png", "", "Type 81 mastery", "mastery", "tfa_ins2_type81"}
-    cardArray[153] = {"cards/mastery/placeholder.png", "", "Typhoon F12 Custom master", "mastery", "tfa_ins2_typhoon12"}
-    cardArray[154] = {"cards/mastery/placeholder.png", "", "UMP .45 mastery", "mastery", "tfa_ins2_ump45"}
+    cardArray[153] = {"cards/mastery/placeholder.png", "", "Typhoon F12 mastery", "mastery", "tfa_ins2_typhoon12"}
+    cardArray[154] = {"cards/mastery/ump45.png", "Nuketown", "UMP .45 mastery", "mastery", "tfa_ins2_ump45"}
     cardArray[155] = {"cards/mastery/placeholder.png", "", "UMP9 mastery", "mastery", "tfa_ins2_ump9"}
     cardArray[156] = {"cards/mastery/placeholder.png", "", "Uzi mastery", "mastery", "tfa_ins2_imi_uzi"}
     cardArray[157] = {"cards/mastery/placeholder.png", "", "UZK-BR99 mastery", "mastery", "tfa_ins2_br99"}
-    cardArray[158] = {"cards/mastery/placeholder.png", "", "VHS-D2 mastery", "mastery", "tfa_ins2_vhsd2"}
+    cardArray[158] = {"cards/mastery/vhsd2.png", "Liminal Pool", "VHS-D2 mastery", "mastery", "tfa_ins2_vhsd2"}
     cardArray[159] = {"cards/mastery/placeholder.png", "", "Walther P99 mastery", "mastery", "tfa_ins2_walther_p99"}
-    cardArray[160] = {"cards/mastery/placeholder.png", "", "WA-2000 mastery", "mastery", "tfa_ins2_wa2000"}
+    cardArray[160] = {"cards/mastery/wa2000.png", "Rooftops", "WA-2000 mastery", "mastery", "tfa_ins2_wa2000"}
     cardArray[161] = {"cards/mastery/placeholder.png", "", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
 	for k, v in pairs(cardArray) do
