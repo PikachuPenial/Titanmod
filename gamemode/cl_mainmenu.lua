@@ -225,6 +225,26 @@ function mainMenu()
                 draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
+            local Patch05b1 = vgui.Create("DPanel", PatchScroller)
+            Patch05b1:Dock(TOP)
+            Patch05b1:SetSize(0, 290)
+            Patch05b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.5b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/10/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Added Shipment and Firing Range map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Colt 9mm, FN 2000, LR-300", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapons:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Mare's Leg, MP-443 Grach", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Firing Range Weapon Spawning","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hit/Kill sound type options","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated card and model menus", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Shortened some weapon names", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed YouTube link", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
             local Patch04b2 = vgui.Create("DPanel", PatchScroller)
             Patch04b2:Dock(TOP)
             Patch04b2:SetSize(0, 170)
@@ -440,7 +460,7 @@ function mainMenu()
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 4425)
+                    StatsWeapons:SetSize(0, 4600)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -682,7 +702,7 @@ function mainMenu()
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton.DoClick = function()
-                gui.OpenURL("https://www.youtube.com/channel/UC1aCX3i4L6TyEv_rmo_HeR")
+                gui.OpenURL("https://www.youtube.com/channel/UC1aCX3i4L6TyEv_rmo_HeRA")
             end
 
             local ServerButton = vgui.Create("DImageButton", MainPanel)
@@ -796,6 +816,24 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
+                    local totalCards = 166
+                    local cardsUnlocked = 0
+
+                    local defaultCardsTotal = 0
+                    local defaultCardsUnlocked = 0
+
+                    local killCardsTotal = 0
+                    local killCardsUnlocked = 0
+
+                    local accoladeCardsTotal = 0
+                    local accoladeCardsUnlocked = 0
+
+                    local masteryCardsTotal = 0
+                    local masteryCardsUnlocked = 0
+
+                    local colorCardsTotal = 0
+                    local colorCardsUnlocked = 0
+
                     --Checking for the players currently equipped card.
                     for k, v in pairs(cardArr) do
                         if v[1] == currentCard and v[4] ~= "mastery" then
@@ -832,17 +870,18 @@ function mainMenu()
 
                     local CardTextHolder = vgui.Create("DPanel", CardScroller)
                     CardTextHolder:Dock(TOP)
-                    CardTextHolder:SetSize(0, 125)
+                    CardTextHolder:SetSize(0, 140)
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     --Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
-                    TextDefault:SetSize(0, 60)
+                    TextDefault:SetSize(0, 90)
 
                     local DockDefaultCards = vgui.Create("DPanel", CardScroller)
                     DockDefaultCards:Dock(TOP)
@@ -851,7 +890,7 @@ function mainMenu()
                     --Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
                     TextKill:Dock(TOP)
-                    TextKill:SetSize(0, 60)
+                    TextKill:SetSize(0, 90)
 
                     local DockKillCards = vgui.Create("DPanel", CardScroller)
                     DockKillCards:Dock(TOP)
@@ -860,7 +899,7 @@ function mainMenu()
                     --Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
-                    TextAccolade:SetSize(0, 60)
+                    TextAccolade:SetSize(0, 90)
 
                     local DockAccoladeCards = vgui.Create("DPanel", CardScroller)
                     DockAccoladeCards:Dock(TOP)
@@ -869,16 +908,16 @@ function mainMenu()
                     --Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
-                    TextMastery:SetSize(0, 60)
+                    TextMastery:SetSize(0, 90)
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 5180)
+                    DockMasteryCards:SetSize(0, 5360)
 
                     --Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
-                    TextColor:SetSize(0, 60)
+                    TextColor:SetSize(0, 90)
 
                     local DockColorCards = vgui.Create("DPanel", CardScroller)
                     DockColorCards:Dock(TOP)
@@ -1099,6 +1138,10 @@ function mainMenu()
                             card:SetSize(240, 80)
                             DefaultCardList:Add(card)
 
+                            defaultCardsTotal = defaultCardsTotal + 1
+                            cardsUnlocked = cardsUnlocked + 1
+                            defaultCardsUnlocked = defaultCardsUnlocked + 1
+
                             card.DoClick = function(card)
                                 newCard = v[1]
                                 newCardName = v[2]
@@ -1115,6 +1158,8 @@ function mainMenu()
                             card:SetSize(240, 80)
                             KillCardList:Add(card)
 
+                            killCardsTotal = killCardsTotal + 1
+
                             if v[4] == "kills" and LocalPlayer():GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPlayer():GetNWInt("highestKillStreak") < v[5] then
                                 card:SetColor(Color(100, 100, 100))
 
@@ -1129,6 +1174,9 @@ function mainMenu()
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
                                 end
+                            else
+                                cardsUnlocked = cardsUnlocked + 1
+                                killCardsUnlocked = killCardsUnlocked + 1
                             end
 
                             card.DoClick = function(card)
@@ -1147,6 +1195,8 @@ function mainMenu()
                             card:SetSize(240, 80)
                             AccoladeCardList:Add(card)
 
+                            accoladeCardsTotal = accoladeCardsTotal + 1
+
                             if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] or v[4] == "revenge" and LocalPlayer():GetNWInt("playerAccoladeRevenge") < v[5] then
                                 card:SetColor(Color(100, 100, 100))
 
@@ -1161,6 +1211,9 @@ function mainMenu()
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
                                 end
+                            else
+                                cardsUnlocked = cardsUnlocked + 1
+                                accoladeCardsUnlocked = accoladeCardsUnlocked + 1
                             end
 
                             card.DoClick = function(card)
@@ -1179,6 +1232,10 @@ function mainMenu()
                             card:SetSize(240, 80)
                             ColorCardList:Add(card)
 
+                            colorCardsTotal = colorCardsTotal + 1
+                            cardsUnlocked = cardsUnlocked + 1
+                            colorCardsUnlocked = colorCardsUnlocked + 1
+
                             card.DoClick = function(card)
                                 newCard = v[1]
                                 newCardName = v[2]
@@ -1195,6 +1252,8 @@ function mainMenu()
                             card:SetSize(240, 80)
                             MasteryCardList:Add(card)
 
+                            masteryCardsTotal = masteryCardsTotal + 1
+
                             if v[4] == "mastery" and LocalPlayer():GetNWInt("killsWith_" .. v[5]) < 50 then
                                 card:SetColor(Color(100, 100, 100))
 
@@ -1209,6 +1268,9 @@ function mainMenu()
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
                                 end
+                            else
+                                cardsUnlocked = cardsUnlocked + 1
+                                masteryCardsUnlocked = masteryCardsUnlocked + 1
                             end
 
                             card.DoClick = function(card)
@@ -1224,26 +1286,46 @@ function mainMenu()
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Default", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextKill.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Kills", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if killCardsUnlocked == killCardsTotal then
+                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Accolades", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if accoladeCardsUnlocked == accoladeCardsTotal then
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextMastery.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if masteryCardsUnlocked == masteryCardsTotal then
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextColor.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Solid Colors", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextOptions.Paint = function(self, w, h)
@@ -1562,6 +1644,24 @@ function mainMenu()
                     local newModelUnlockType
                     local newModelUnlockValue
 
+                    local totalModels = 35
+                    local modelsUnlocked = 0
+
+                    local defaultModelsTotal = 0
+                    local defaultModelsUnlocked = 0
+
+                    local killModelsTotal = 0
+                    local killModelsUnlocked = 0
+
+                    local streakModelsTotal = 0
+                    local streakModelsUnlocked = 0
+
+                    local accoladeModelsTotal = 0
+                    local accoladeModelsUnlocked = 0
+
+                    local specialModelsTotal = 0
+                    local specialModelsUnlocked = 0
+
                     local ModelQuickjumpHolder = vgui.Create("DPanel", CustomizeSlideoutPanel)
                     ModelQuickjumpHolder:Dock(TOP)
                     ModelQuickjumpHolder:SetSize(0, ScrH())
@@ -1594,12 +1694,13 @@ function mainMenu()
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
                     --Default Playermodels
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
                     TextDefault:Dock(TOP)
-                    TextDefault:SetSize(0, 60)
+                    TextDefault:SetSize(0, 90)
 
                     local DockModels = vgui.Create("DPanel", CustomizeScroller)
                     DockModels:Dock(TOP)
@@ -1608,7 +1709,7 @@ function mainMenu()
                     --Kills Playermodels
                     local TextKills = vgui.Create("DPanel", CustomizeScroller)
                     TextKills:Dock(TOP)
-                    TextKills:SetSize(0, 60)
+                    TextKills:SetSize(0, 90)
 
                     local DockModelsKills = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsKills:Dock(TOP)
@@ -1617,7 +1718,7 @@ function mainMenu()
                     --Streak Playermodels
                     local TextStreak = vgui.Create("DPanel", CustomizeScroller)
                     TextStreak:Dock(TOP)
-                    TextStreak:SetSize(0, 60)
+                    TextStreak:SetSize(0, 90)
 
                     local DockModelsStreak = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsStreak:Dock(TOP)
@@ -1626,16 +1727,16 @@ function mainMenu()
                     --Accolade Playermodels
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
-                    TextAccolade:SetSize(0, 60)
+                    TextAccolade:SetSize(0, 90)
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 465)
+                    DockModelsAccolade:SetSize(0, 620)
 
                     --Special Playermodels
                     local TextSpecial = vgui.Create("DPanel", CustomizeScroller)
                     TextSpecial:Dock(TOP)
-                    TextSpecial:SetSize(0, 60)
+                    TextSpecial:SetSize(0, 90)
 
                     local DockModelsSpecial = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsSpecial:Dock(TOP)
@@ -1847,6 +1948,10 @@ function mainMenu()
                             icon:SetSize(150, 150)
                             DefaultModelList:Add(icon)
 
+                            defaultModelsTotal = defaultModelsTotal + 1
+                            modelsUnlocked = modelsUnlocked + 1
+                            defaultModelsUnlocked = defaultModelsUnlocked + 1
+
                             icon.DoClick = function(icon)
                                 newModel = v[1]
                                 newModelName = v[2]
@@ -1876,6 +1981,39 @@ function mainMenu()
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
                             icon:SetSize(150, 150)
                             KillsModelList:Add(icon)
+
+                            killModelsTotal = killModelsTotal + 1
+
+                            if v[4] == "kills" and LocalPlayer():GetNWInt("playerKills") < v[5] then
+                                local lockIndicator = vgui.Create("DImageButton", icon)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+    
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+    
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                end
+                            else
+                                killModelsUnlocked = killModelsUnlocked + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                            end
 
                             icon.DoClick = function(icon)
                                 newModel = v[1]
@@ -1907,6 +2045,39 @@ function mainMenu()
                             icon:SetSize(150, 150)
                             StreakModelList:Add(icon)
 
+                            streakModelsTotal = streakModelsTotal + 1
+
+                            if LocalPlayer():GetNWInt("highestKillStreak") < v[5] then
+                                local lockIndicator = vgui.Create("DImageButton", icon)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+    
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+    
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                end
+                            else
+                                streakModelsUnlocked = streakModelsUnlocked + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                            end
+
                             icon.DoClick = function(icon)
                                 newModel = v[1]
                                 newModelName = v[2]
@@ -1936,6 +2107,39 @@ function mainMenu()
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
                             icon:SetSize(150, 150)
                             SpecialModelList:Add(icon)
+
+                            specialModelsTotal = specialModelsTotal + 1
+
+                            if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" or v[5] == "beta" and LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
+                                local lockIndicator = vgui.Create("DImageButton", icon)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+    
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+    
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                end
+                            else
+                                specialModelsUnlocked = specialModelsUnlocked + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                            end
 
                             icon.DoClick = function(icon)
                                 newModel = v[1]
@@ -1967,6 +2171,39 @@ function mainMenu()
                             icon:SetSize(150, 150)
                             AccoladeModelList:Add(icon)
 
+                            accoladeModelsTotal = accoladeModelsTotal + 1
+
+                            if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] or v[4] == "revenge" and LocalPlayer():GetNWInt("playerAccoladeRevenge") < v[5] then
+                                local lockIndicator = vgui.Create("DImageButton", icon)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+    
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+    
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                end
+                            else
+                                accoladeModelsUnlocked = accoladeModelsUnlocked + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                            end
+
                             icon.DoClick = function(icon)
                                 newModel = v[1]
                                 newModelName = v[2]
@@ -1994,26 +2231,51 @@ function mainMenu()
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Default", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextKills.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Kills", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if killModelsUnlocked == killModelsTotal then
+                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextStreak.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if streakModelsUnlocked == streakModelsTotal then
+                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Accolades", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if accoladeModelsUnlocked == accoladeModelsTotal then
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     TextSpecial.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("Special", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if specialModelsUnlocked == specialModelsTotal then
+                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
                     end
 
                     DockModels.Paint = function(self, w, h)
@@ -2334,7 +2596,7 @@ function mainMenu()
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
-                    DockAudio:SetSize(0, 320)
+                    DockAudio:SetSize(0, 440)
 
                     local DockViewmodel = vgui.Create("DPanel", OptionsScroller)
                     DockViewmodel:Dock(TOP)
@@ -2613,12 +2875,15 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable Hitsounds", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu Music", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu Music Volume", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Community Requested Music", "SettingsLabel", 55, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Game End Music", "SettingsLabel", 55, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Game End Music Volume", "SettingsLabel", 155, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill Sounds", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hit Sound Style", "SettingsLabel", 125, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu Music", "SettingsLabel", 55, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu Music Volume", "SettingsLabel", 155, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Community Requested Menu Music", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Game End Music", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Game End Music Volume", "SettingsLabel", 155, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
@@ -2626,8 +2891,35 @@ function mainMenu()
                     hitSoundsButton:SetConVar("tm_hitsounds")
                     hitSoundsButton:SetSize(30, 30)
 
+                    local killSoundButton = DockAudio:Add("DCheckBox")
+                    killSoundButton:SetPos(20, 110)
+                    killSoundButton:SetConVar("tm_killsound")
+                    killSoundButton:SetSize(30, 30)
+
+                    local hitSoundsType = DockAudio:Add("DComboBox")
+                    hitSoundsType:SetPos(20, 150)
+                    hitSoundsType:SetSize(100, 30)
+                    if CLIENT and GetConVar("tm_hitsoundtype"):GetInt() == 0 then
+                        hitSoundsType:SetValue("Rust")
+                    end
+                    hitSoundsType:AddChoice("Rust")
+                    hitSoundsType.OnSelect = function(self, value)
+                        RunConsoleCommand("tm_hitsoundtype", value - 1)
+                    end
+
+                    local killSoundsType = DockAudio:Add("DComboBox")
+                    killSoundsType:SetPos(20, 190)
+                    killSoundsType:SetSize(100, 30)
+                    if CLIENT and GetConVar("tm_killsoundtype"):GetInt() == 0 then
+                        killSoundsType:SetValue("Call Of Duty")
+                    end
+                    killSoundsType:AddChoice("Call Of Duty")
+                    killSoundsType.OnSelect = function(self, value)
+                        RunConsoleCommand("tm_killsoundtype", value - 1)
+                    end
+
                     local menuMusicButton = DockAudio:Add("DCheckBox")
-                    menuMusicButton:SetPos(20, 110)
+                    menuMusicButton:SetPos(20, 230)
                     menuMusicButton:SetConVar("tm_menumusic")
                     menuMusicButton:SetSize(30, 30)
 
@@ -2641,7 +2933,7 @@ function mainMenu()
                     end
 
                     local menuMusicVolume = DockAudio:Add("DNumSlider")
-                    menuMusicVolume:SetPos(-85, 150)
+                    menuMusicVolume:SetPos(-85, 270)
                     menuMusicVolume:SetSize(250, 30)
                     menuMusicVolume:SetConVar("tm_menumusicvolume")
                     menuMusicVolume:SetMin(0)
@@ -2653,17 +2945,17 @@ function mainMenu()
                     end
 
                     local communityMusicButton = DockAudio:Add("DCheckBox")
-                    communityMusicButton:SetPos(20, 190)
+                    communityMusicButton:SetPos(20, 310)
                     communityMusicButton:SetConVar("tm_communitymusic")
                     communityMusicButton:SetSize(30, 30)
 
                     local gameEndMusicButton = DockAudio:Add("DCheckBox")
-                    gameEndMusicButton:SetPos(20, 230)
+                    gameEndMusicButton:SetPos(20, 350)
                     gameEndMusicButton:SetConVar("tm_gameendmusic")
                     gameEndMusicButton:SetSize(30, 30)
 
                     local gameEndMusicVolume = DockAudio:Add("DNumSlider")
-                    gameEndMusicVolume:SetPos(-85, 270)
+                    gameEndMusicVolume:SetPos(-85, 390)
                     gameEndMusicVolume:SetSize(250, 30)
                     gameEndMusicVolume:SetConVar("tm_gameendmusicvolume")
                     gameEndMusicVolume:SetMin(0)
@@ -2715,7 +3007,7 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Crosshair", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Crosshair Dot", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Pump Feedback", "SettingsLabel", 55 , 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Triangular Crosshair", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -2811,7 +3103,7 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Hitmarkers", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("3D/Dynamic Hitmarkers", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker Scale", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker Color", "SettingsLabel", 245 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)

@@ -169,6 +169,11 @@ function HUD()
         if CLIENT and GetConVar("tm_showspeed"):GetInt() == 1 then
             draw.SimpleText(LocalPlayer():GetVelocity(), "Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, 0)
         end
+
+        --Shooting range disclaimer
+        if game.GetMap() == "tm_firingrange" then
+            draw.SimpleText("Use the scoreboard to spawn weapons.", "Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, 0)
+        end
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)

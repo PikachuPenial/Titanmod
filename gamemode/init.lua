@@ -29,114 +29,119 @@ weaponArray[13] = {"tfa_inss_asval", "AS-VAL"}
 weaponArray[14] = {"tfa_ins2_warface_awm", "AWM"}
 weaponArray[15] = {"tfa_ins2_warface_ax308", "AX-308"}
 weaponArray[16] = {"tfa_ins2_barrett_m98_bravo", "Barrett M98B"}
-weaponArray[17] = {"tfa_ins2_mx4", "Beretta Mx4 Storm"}
+weaponArray[17] = {"tfa_ins2_mx4", "Beretta Mx4"}
 weaponArray[18] = {"tfa_doibren", "Bren"}
 weaponArray[19] = {"tfa_ins2_warface_bt_mp9", "B&T MP9"}
 weaponArray[20] = {"tfa_ins2_warface_cheytac_m200", "CheyTac M200"}
-weaponArray[21] = {"tfa_new_m1911", "Colt M1911"}
-weaponArray[22] = {"tfa_ins2_colt_m45", "Colt M45A1"}
-weaponArray[23] = {"tfa_ins2_cz75", "CZ 75 B"}
-weaponArray[24] = {"tfa_ins2_cz805", "CZ 805 BREN"}
-weaponArray[25] = {"tfa_ins2_ddm4v5", "DDM4V5"}
-weaponArray[26] = {"tfa_ins2_deagle", "Desert Eagle"}
-weaponArray[27] = {"tfa_ins2_famas", "Famas F1"}
-weaponArray[28] = {"tfa_blast_lynx_msbsb", "FB MSBS-B"}
-weaponArray[29] = {"tfa_doifg42", "FG 42"}
-weaponArray[30] = {"tfa_ins2_fiveseven_eft", "Fiveseven"}
-weaponArray[31] = {"tfa_ins2_fn_fal", "FN FAL"}
-weaponArray[32] = {"tfa_ins2_fnp45", "FNP-45"}
-weaponArray[33] = {"tfa_new_inss_galil", "Galil"}
-weaponArray[34] = {"tfa_new_glock17", "Glock 17"}
-weaponArray[35] = {"fres_grapple", "Grappling Hook"}
-weaponArray[36] = {"tfa_ins2_gsh18", "GSH-18"}
-weaponArray[37] = {"tfa_ins2_cq300", "Honey Badger"}
-weaponArray[38] = {"tfa_howa_type_64", "Howa Type 64"}
-weaponArray[39] = {"tfa_ins2_hk_mg36", "H&K MG36"}
-weaponArray[40] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5"}
-weaponArray[41] = {"tfa_ins2_imbelia2", "Imbel IA2"}
-weaponArray[42] = {"tfa_ins2_izh43sw", "IZH-43 Sawed Off"}
-weaponArray[43] = {"tfa_ararebo_bf1", "Japanese Ararebo"}
-weaponArray[44] = {"tfa_km2000_knife", "KM-2000"}
-weaponArray[45] = {"tfa_ins2_krissv", "KRISS Vector"}
-weaponArray[46] = {"tfa_ins2_ksg", "KSG"}
-weaponArray[47] = {"tfa_blast_ksvk_cqb", "KSVK 12.7"}
-weaponArray[48] = {"tfa_doi_enfield", "Lee-Enfield No. 4"}
-weaponArray[49] = {"tfa_doilewis", "Lewis"}
-weaponArray[50] = {"tfa_doi_garand", "M1 Garand"}
-weaponArray[51] = {"tfa_doim3greasegun", "M3 Grease Gun"}
-weaponArray[52] = {"tfa_ins2_m9", "M9"}
-weaponArray[53] = {"tfa_ins2_m14retro", "M14"}
-weaponArray[54] = {"tfa_nam_m79", "M79"}
-weaponArray[55] = {"tfa_doim1918", "M1918"}
-weaponArray[56] = {"tfa_doim1919", "M1919"}
-weaponArray[57] = {"bocw_mac10_alt", "Mac 10"}
-weaponArray[58] = {"tfa_inss_makarov", "Makarov"}
-weaponArray[59] = {"tfa_fml_lefrench_mas38", "Mas 38"}
-weaponArray[60] = {"tfa_doimg34", "MG 34"}
-weaponArray[61] = {"tfa_doimg42", "MG 42"}
-weaponArray[62] = {"tfa_ins2_minimi", "Minimi Para"}
-weaponArray[63] = {"tfa_ins2_mk23", "MK 23"}
-weaponArray[64] = {"tfa_fml_inss_mk18", "MK18"}
-weaponArray[65] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR"}
-weaponArray[66] = {"tfa_ins2_swmodel10", "Model 10"}
-weaponArray[67] = {"tfa_ins2_mosin_nagant", "Mosin Nagant"}
-weaponArray[68] = {"tfa_doimp40", "MP 40"}
-weaponArray[69] = {"tfa_ins2_mp5k", "MP5K"}
-weaponArray[70] = {"tfa_inss_mp7_new", "MP7A1"}
-weaponArray[71] = {"tfa_ww1_mp18", "MP18"}
-weaponArray[72] = {"tfa_ins2_mr96", "MR-96"}
-weaponArray[73] = {"tfa_ins2_mc255", "MTs225-12"}
-weaponArray[74] = {"tfa_ins2_nova", "Nova"}
-weaponArray[75] = {"tfa_ins2_warface_orsis_t5000", "Orsis T-5000"}
-weaponArray[76] = {"tfa_l4d2_osp18", "OSP-18"}
-weaponArray[77] = {"tfa_ins2_groza", "OTs-14 Groza"}
-weaponArray[78] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach"}
-weaponArray[79] = {"tfa_doiowen", "Owen Mk.I"}
-weaponArray[80] = {"tfa_fml_p90_tac", "P90"}
-weaponArray[81] = {"tfa_new_pf940", "PF940"}
-weaponArray[82] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
-weaponArray[83] = {"tfa_ins2_pm9", "PM-9"}
-weaponArray[84] = {"tfa_nam_ppsh41", "PPSH-41"}
-weaponArray[85] = {"tfa_fas2_ppbizon", "PP-Bizon"}
-weaponArray[86] = {"tfa_ww2_pbz39", "PzB 39"}
-weaponArray[87] = {"tfa_ins2_norinco_qbz97", "QBZ-97"}
-weaponArray[88] = {"tfa_ins2_qsz92", "QSZ-92"}
-weaponArray[89] = {"tfa_ins2_remington_m870", "Remington M870"}
-weaponArray[90] = {"tfa_ins2_pd2_remington_msr", "Remington MSR"}
-weaponArray[91] = {"tfa_ins2_rfb", "RFB"}
-weaponArray[92] = {"tfa_fml_rk62", "RK62"}
-weaponArray[93] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
-weaponArray[94] = {"tfa_ins2_rpk_74m", "RPK-74M"}
-weaponArray[95] = {"tfa_ins2_l85a2", "SA80"}
-weaponArray[96] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR"}
-weaponArray[97] = {"tfa_ins2_sc_evo", "Scorpion Evo 3"}
-weaponArray[98] = {"tfa_new_p226", "SIG P226"}
-weaponArray[99] = {"tfa_ins2_sks", "SKS"}
-weaponArray[100] = {"tfa_ins2_spas12", "SPAS-12"}
-weaponArray[101] = {"tfa_ins2_spectre", "Spectre M4"}
-weaponArray[102] = {"tfa_ins2_saiga_spike", "Spike X15"}
-weaponArray[103] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
-weaponArray[104] = {"tfa_doisten", "Sten Mk.II"}
-weaponArray[105] = {"tfa_nam_stevens620", "Stevens 620"}
-weaponArray[106] = {"tfa_inss_aug", "Steyr AUG"}
-weaponArray[107] = {"tfa_doistg44", "StG44"}
-weaponArray[108] = {"tfa_ins2_sv98", "SV-98"}
-weaponArray[109] = {"tfa_ins2_s&w_500", "S&W 500"}
-weaponArray[110] = {"tfa_japanese_exclusive_tanto", "Tanto"}
-weaponArray[111] = {"tfa_ins_sandstorm_tariq", "Tariq"}
-weaponArray[112] = {"st_stim_pistol", "TCo Stim Pistol"}
-weaponArray[113] = {"tfa_doithompsonm1928", "Thompson M1928"}
-weaponArray[114] = {"tfa_doithompsonm1a1", "Thompson M1A1"}
-weaponArray[115] = {"tfa_ins2_type81", "Type 81"}
-weaponArray[116] = {"tfa_ins2_typhoon12", "Typhoon F12 Custom"}
-weaponArray[117] = {"tfa_ins2_ump45", "UMP .45"}
-weaponArray[118] = {"tfa_ins2_ump9", "UMP9"}
-weaponArray[119] = {"tfa_ins2_imi_uzi", "Uzi"}
-weaponArray[120] = {"tfa_ins2_br99", "UZK-BR99"}
-weaponArray[121] = {"tfa_ins2_vhsd2", "VHS-D2"}
-weaponArray[122] = {"tfa_ins2_walther_p99", "Walther P99"}
-weaponArray[123] = {"tfa_ins2_wa2000", "WA-2000"}
-weaponArray[124] = {"tfa_ins2_xm8", "XM8"}
+weaponArray[21] = {"tfa_ins2_m4_9mm", "Colt 9mm"}
+weaponArray[22] = {"tfa_new_m1911", "Colt M1911"}
+weaponArray[23] = {"tfa_ins2_colt_m45", "Colt M45A1"}
+weaponArray[24] = {"tfa_ins2_cz75", "CZ 75 B"}
+weaponArray[25] = {"tfa_ins2_cz805", "CZ 805 BREN"}
+weaponArray[26] = {"tfa_ins2_ddm4v5", "DDM4V5"}
+weaponArray[27] = {"tfa_ins2_deagle", "Desert Eagle"}
+weaponArray[28] = {"tfa_ins2_famas", "Famas F1"}
+weaponArray[29] = {"tfa_blast_lynx_msbsb", "FB MSBS-B"}
+weaponArray[30] = {"tfa_doifg42", "FG 42"}
+weaponArray[31] = {"tfa_ins2_fiveseven_eft", "Fiveseven"}
+weaponArray[32] = {"tfa_ins2_fn_2000", "FN 2000"}
+weaponArray[33] = {"tfa_ins2_fn_fal", "FN FAL"}
+weaponArray[34] = {"tfa_ins2_fnp45", "FNP-45"}
+weaponArray[35] = {"tfa_new_inss_galil", "Galil"}
+weaponArray[36] = {"tfa_new_glock17", "Glock 17"}
+weaponArray[37] = {"fres_grapple", "Grappling Hook"}
+weaponArray[38] = {"tfa_ins2_gsh18", "GSH-18"}
+weaponArray[39] = {"tfa_ins2_cq300", "Honey Badger"}
+weaponArray[40] = {"tfa_howa_type_64", "Howa Type 64"}
+weaponArray[41] = {"tfa_ins2_hk_mg36", "H&K MG36"}
+weaponArray[42] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5"}
+weaponArray[43] = {"tfa_ins2_imbelia2", "Imbel IA2"}
+weaponArray[44] = {"tfa_ins2_izh43sw", "IZH-43 Sawed Off"}
+weaponArray[45] = {"tfa_ararebo_bf1", "Japanese Ararebo"}
+weaponArray[46] = {"tfa_km2000_knife", "KM-2000"}
+weaponArray[47] = {"tfa_ins2_krissv", "KRISS Vector"}
+weaponArray[48] = {"tfa_ins2_ksg", "KSG"}
+weaponArray[49] = {"tfa_blast_ksvk_cqb", "KSVK 12.7"}
+weaponArray[50] = {"tfa_doi_enfield", "Lee-Enfield No. 4"}
+weaponArray[51] = {"tfa_doilewis", "Lewis"}
+weaponArray[52] = {"tfa_ins2_zm_lr300", "LR-300"}
+weaponArray[53] = {"tfa_doi_garand", "M1 Garand"}
+weaponArray[54] = {"tfa_doim3greasegun", "M3 Grease Gun"}
+weaponArray[55] = {"tfa_ins2_m9", "M9"}
+weaponArray[56] = {"tfa_ins2_m14retro", "M14"}
+weaponArray[57] = {"tfa_nam_m79", "M79"}
+weaponArray[58] = {"tfa_doim1918", "M1918"}
+weaponArray[59] = {"tfa_doim1919", "M1919"}
+weaponArray[60] = {"bocw_mac10_alt", "Mac 10"}
+weaponArray[61] = {"tfa_inss_makarov", "Makarov"}
+weaponArray[62] = {"tfa_tfre_maresleg", "Mare's Leg"}
+weaponArray[63] = {"tfa_fml_lefrench_mas38", "Mas 38"}
+weaponArray[64] = {"tfa_doimg34", "MG 34"}
+weaponArray[65] = {"tfa_doimg42", "MG 42"}
+weaponArray[66] = {"tfa_ins2_minimi", "Minimi Para"}
+weaponArray[67] = {"tfa_ins2_mk23", "MK 23"}
+weaponArray[68] = {"tfa_fml_inss_mk18", "MK18"}
+weaponArray[69] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR"}
+weaponArray[70] = {"tfa_ins2_swmodel10", "Model 10"}
+weaponArray[71] = {"tfa_ins2_mosin_nagant", "Mosin Nagant"}
+weaponArray[72] = {"tfa_doimp40", "MP 40"}
+weaponArray[73] = {"tfa_ins2_mp443", "MP-443 Grach"}
+weaponArray[74] = {"tfa_ins2_mp5k", "MP5K"}
+weaponArray[75] = {"tfa_inss_mp7_new", "MP7A1"}
+weaponArray[76] = {"tfa_ww1_mp18", "MP18"}
+weaponArray[77] = {"tfa_ins2_mr96", "MR-96"}
+weaponArray[78] = {"tfa_ins2_mc255", "MTs225-12"}
+weaponArray[79] = {"tfa_ins2_nova", "Nova"}
+weaponArray[80] = {"tfa_ins2_warface_orsis_t5000", "Orsis T-5000"}
+weaponArray[81] = {"tfa_l4d2_osp18", "OSP-18"}
+weaponArray[82] = {"tfa_ins2_groza", "OTs-14 Groza"}
+weaponArray[83] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach"}
+weaponArray[84] = {"tfa_doiowen", "Owen Mk.I"}
+weaponArray[85] = {"tfa_fml_p90_tac", "P90"}
+weaponArray[86] = {"tfa_new_pf940", "PF940"}
+weaponArray[87] = {"tfa_blast_pindadss2", "PINDAD SS2-V1"}
+weaponArray[88] = {"tfa_ins2_pm9", "PM-9"}
+weaponArray[89] = {"tfa_nam_ppsh41", "PPSH-41"}
+weaponArray[90] = {"tfa_fas2_ppbizon", "PP-Bizon"}
+weaponArray[91] = {"tfa_ww2_pbz39", "PzB 39"}
+weaponArray[92] = {"tfa_ins2_norinco_qbz97", "QBZ-97"}
+weaponArray[93] = {"tfa_ins2_qsz92", "QSZ-92"}
+weaponArray[94] = {"tfa_ins2_remington_m870", "Remington M870"}
+weaponArray[95] = {"tfa_ins2_pd2_remington_msr", "Remington MSR"}
+weaponArray[96] = {"tfa_ins2_rfb", "RFB"}
+weaponArray[97] = {"tfa_fml_rk62", "RK62"}
+weaponArray[98] = {"tfa_ins2_rpg7_scoped", "RPG-7"}
+weaponArray[99] = {"tfa_ins2_rpk_74m", "RPK-74M"}
+weaponArray[100] = {"tfa_ins2_l85a2", "SA80"}
+weaponArray[101] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR"}
+weaponArray[102] = {"tfa_ins2_sc_evo", "Scorpion Evo 3"}
+weaponArray[103] = {"tfa_new_p226", "SIG P226"}
+weaponArray[104] = {"tfa_ins2_sks", "SKS"}
+weaponArray[105] = {"tfa_ins2_spas12", "SPAS-12"}
+weaponArray[106] = {"tfa_ins2_spectre", "Spectre M4"}
+weaponArray[107] = {"tfa_ins2_saiga_spike", "Spike X15"}
+weaponArray[108] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk"}
+weaponArray[109] = {"tfa_doisten", "Sten Mk.II"}
+weaponArray[110] = {"tfa_nam_stevens620", "Stevens 620"}
+weaponArray[111] = {"tfa_inss_aug", "Steyr AUG"}
+weaponArray[112] = {"tfa_doistg44", "StG44"}
+weaponArray[113] = {"tfa_ins2_sv98", "SV-98"}
+weaponArray[114] = {"tfa_ins2_s&w_500", "S&W 500"}
+weaponArray[115] = {"tfa_japanese_exclusive_tanto", "Tanto"}
+weaponArray[116] = {"tfa_ins_sandstorm_tariq", "Tariq"}
+weaponArray[117] = {"st_stim_pistol", "TCo Stim Pistol"}
+weaponArray[118] = {"tfa_doithompsonm1928", "Thompson M1928"}
+weaponArray[119] = {"tfa_doithompsonm1a1", "Thompson M1A1"}
+weaponArray[120] = {"tfa_ins2_type81", "Type 81"}
+weaponArray[121] = {"tfa_ins2_typhoon12", "Typhoon F12"}
+weaponArray[122] = {"tfa_ins2_ump45", "UMP .45"}
+weaponArray[123] = {"tfa_ins2_ump9", "UMP9"}
+weaponArray[124] = {"tfa_ins2_imi_uzi", "Uzi"}
+weaponArray[125] = {"tfa_ins2_br99", "UZK-BR99"}
+weaponArray[126] = {"tfa_ins2_vhsd2", "VHS-D2"}
+weaponArray[127] = {"tfa_ins2_walther_p99", "Walther P99"}
+weaponArray[128] = {"tfa_ins2_wa2000", "WA-2000"}
+weaponArray[129] = {"tfa_ins2_xm8", "XM8"}
 
 local mapArray = {}
 mapArray[1] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
@@ -149,12 +154,14 @@ mapArray[7] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", 
 mapArray[8] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
 mapArray[9] = {"tm_mall", "Mall", "Spacious shopping center with long sightlines.", "maps/thumb/tm_mall.png"}
 mapArray[10] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
+mapArray[11] = {"tm_shipment", "Shipment", "Extremely small and chaotic map.", "maps/thumb/tm_shipment.png"}
+mapArray[12] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression", "maps/thumb/tm_firingrange.png"}
 
-local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "tm_mall", "tm_bridge", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
+local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "tm_mall", "tm_bridge", "tm_shipment", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
 
 --This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
-local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81", "tfa_doim1919", "tfa_doimg34", "tfa_doithompsonm1928", "tfa_fml_rk62", "tfa_ins2_cq300", "tfa_ww2_pbz39", "tfa_ins2_wa2000", "tfa_ins2_ump9"}
-local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol", "tfa_l4d2_osp18"}
+local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81", "tfa_doim1919", "tfa_doimg34", "tfa_doithompsonm1928", "tfa_fml_rk62", "tfa_ins2_cq300", "tfa_ww2_pbz39", "tfa_ins2_wa2000", "tfa_ins2_ump9", "tfa_ins2_m4_9mm", "tfa_ins2_fn_2000", "tfa_ins2_zm_lr300"}
+local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol", "tfa_l4d2_osp18", "tfa_ins2_mp443", "tfa_tfre_maresleg"}
 local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
 
 --Player setup, things like player movement and their loadout.
@@ -227,12 +234,22 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 end
 
+net.Receive("FiringRangeGiveWeapon", function(len, ply)
+	local selectedWeapon = net.ReadString()
+	ply:StripWeapons()
+	ply:Give(selectedWeapon)
+end )
+
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("DeathHud")
 util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
+
+if game.GetMap() == "tm_firingrange" then
+	util.AddNetworkString("FiringRangeGiveWeapon")
+end
 
 --Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
@@ -508,10 +525,10 @@ local mapVotes
 local playersVoted = {}
 local mapVoteOpen = false
 
-if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 then
+if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 and game.GetMap() ~= "tm_firingrange" then
 	--Sets up Map Voting.
 	timer.Create("startMapVote", GetConVar("tm_mapvotetimer"):GetInt(), 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
 		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
@@ -619,6 +636,7 @@ end)
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
+	if game.GetMap() == "tm_firingrange" then return end
 
 	--Statistics
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
@@ -654,6 +672,8 @@ end
 
 function GM:ShutDown()
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
+	if game.GetMap() == "tm_firingrange" then return end
+
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics
 		v:SetPData("playerKills", v:GetNWInt("playerKills"))
