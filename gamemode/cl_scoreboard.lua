@@ -94,6 +94,7 @@ function GM:ScoreboardShow()
 		MapInfoPanel:Dock(TOP)
 		MapInfoPanel:SetSize(0, 100)
 
+		--Displays information about the current map, the map vote, and the server.
 		MapInfoPanel.Paint = function(self, w, h)
 			if mapName ~= nil then
 				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
@@ -203,6 +204,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:MakePopup()
 		ScoreboardDerma:SetKeyboardInputEnabled(false)
 
+		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
 		if game.GetMap() == "tm_firingrange" then
 			FiringRangeDerma = vgui.Create("DFrame")
 			FiringRangeDerma:SetSize(200, 470)
