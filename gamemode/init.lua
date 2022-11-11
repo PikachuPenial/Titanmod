@@ -542,7 +542,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 		--Makes sure that the map currently being played is not added to the map pool.
 		for m, v in RandomPairs(mapArray) do
-			if game.GetMap() ~= v[1] then
+			if game.GetMap() ~= v[1] and v[1] ~= "tm_firingrange" then
 				table.insert(mapPool, v[1])
 			end
 		end
