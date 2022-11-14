@@ -28,6 +28,11 @@ function ForceSave(ply, cmd, args)
     --Streaks
     ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
 
+    --Leveling
+	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
+	ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
+	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
+
     --Customizatoin
     ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
     ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
@@ -51,7 +56,7 @@ concommand.Add("tm_forcesave", ForceSave)
 
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
-	local modelArray = {}
+    local modelArray = {}
     modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
     modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
     modelArray[3] = {"models/player/Group01/male_03.mdl", "Casual Male", "Why so serious?", "default", "default"}
@@ -86,7 +91,8 @@ function PlayerModelChange(ply, cmd, args)
     modelArray[32] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantc.mdl", "General", "", "killstreaks", 160}
     modelArray[33] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantb.mdl", "Guard", "", "killstreaks", 360}
     modelArray[34] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
-    modelArray[35] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
+    modelArray[35] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Hatsune Miku", "Its Miku! Yippee!", "special", "name"}
+    modelArray[36] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
 
 	for k, v in pairs(modelArray) do
 		if (args[1] == v[1]) then
@@ -406,3 +412,14 @@ function PictureOffset(ply, cmd, args)
     ply:SetNWInt("cardPictureOffset", value)
 end
 concommand.Add("tm_setcardpfpoffset", PictureOffset)
+
+--Allows the player to prestige if they have hit the max level cap (Level 60).
+function PlayerPrestige(ply, cmd, args)
+	if ply:GetNWInt("playerLevel") == 60 then
+        ply:SetNWInt("playerLevel", 1)
+        ply:SetNWInt("playerPrestige", ply:GetNWInt("playerPrestige") + 1)
+        ply:SetNWInt("playerXP", 0)
+        ply:SetNWInt("playerXPToNextLevel", 750)
+	end
+end
+concommand.Add("tm_prestige", PlayerPrestige)

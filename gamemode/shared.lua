@@ -168,6 +168,7 @@ function GM:Initialize()
     weaponArray[129] = {"tfa_ins2_xm8", "XM8"}
 
     --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
+    --unlucky kys i dont want more anime woman here
     local modelArray = {}
     modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
     modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
@@ -203,7 +204,8 @@ function GM:Initialize()
     modelArray[32] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantc.mdl", "General", "", "killstreaks", 160}
     modelArray[33] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantb.mdl", "Guard", "", "killstreaks", 360}
     modelArray[34] = {"models/cyanblue/fate/astolfo/astolfo.mdl", "Astolfo", "I was forced to do this.", "special", "name"}
-    modelArray[35] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
+    modelArray[35] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Hatsune Miku", "Its Miku! Yippee!", "special", "name"}
+    modelArray[36] = {"models/titanfall2_playermodel/kanepm.mdl", "Kane", "3 hour of beta playtime reward.", "special", "beta"}
 
     --Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
     local cardArray = {}

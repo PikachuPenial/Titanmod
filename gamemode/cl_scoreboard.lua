@@ -31,7 +31,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.5b1", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod 0.6b1", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -141,12 +141,13 @@ function GM:ScoreboardShow()
 			PlayerPanel.Paint = function(self, w, h)
 				draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
 				draw.SimpleText(v:GetName(), "Health", 255, 5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-				draw.SimpleText(v:Ping() .. "ms", "Health", 255, 65, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 
-				draw.SimpleText(v:Frags(), "Health", 375, 30, Color(0, 255, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(v:Deaths(), "Health", 420, 30, Color(255, 0, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 30, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+				draw.SimpleText(v:Frags(), "Health", 375, 35, Color(0, 255, 0), TEXT_ALIGN_CENTER)
+				draw.SimpleText(v:Deaths(), "Health", 420, 35, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, Color(255, 255, 255), TEXT_ALIGN_CENTER)
 			end
 
 			playerCallingCard = vgui.Create("DImage", PlayerPanel)

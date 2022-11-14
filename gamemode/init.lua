@@ -159,6 +159,69 @@ mapArray[12] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force d
 
 local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "tm_mall", "tm_bridge", "tm_shipment", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
 
+--Creating a leveling array, this removes the consistency of the leveling, using developer set xp requierments per level instead of a formula. Is this time consuming? Yes, very much, but it feels more polished IMO.
+local levelArray = {}
+levelArray[1] = {1, 750} -- +75 XP
+levelArray[2] = {2, 825}
+levelArray[3] = {3, 900}
+levelArray[4] = {4, 975}
+levelArray[5] = {5, 1050}
+levelArray[6] = {6, 1125}
+levelArray[7] = {7, 1200}
+levelArray[8] = {8, 1275}
+levelArray[9] = {9, 1350}
+levelArray[10] = {10, 1450} -- +100 XP
+levelArray[11] = {11, 1550}
+levelArray[12] = {12, 1650}
+levelArray[13] = {13, 1750}
+levelArray[14] = {14, 1850}
+levelArray[15] = {15, 1950}
+levelArray[16] = {16, 2050}
+levelArray[17] = {17, 2150}
+levelArray[18] = {18, 2250}
+levelArray[19] = {19, 2350}
+levelArray[20] = {20, 2475} -- +125 XP
+levelArray[21] = {21, 2600}
+levelArray[22] = {22, 2725}
+levelArray[23] = {23, 2850}
+levelArray[24] = {24, 2975}
+levelArray[25] = {25, 3100}
+levelArray[26] = {26, 3225}
+levelArray[27] = {27, 3350}
+levelArray[28] = {28, 3475}
+levelArray[29] = {29, 3600}
+levelArray[30] = {30, 3750} -- +150 XP
+levelArray[31] = {31, 3900}
+levelArray[32] = {32, 4050}
+levelArray[33] = {33, 4200}
+levelArray[34] = {34, 4350}
+levelArray[35] = {35, 4500}
+levelArray[36] = {36, 4650}
+levelArray[37] = {37, 4800}
+levelArray[38] = {38, 4950}
+levelArray[39] = {39, 5100}
+levelArray[40] = {40, 5275} -- +175 XP
+levelArray[41] = {41, 5450}
+levelArray[42] = {42, 5625}
+levelArray[43] = {43, 5800}
+levelArray[44] = {44, 5975}
+levelArray[45] = {45, 6150}
+levelArray[46] = {46, 6325}
+levelArray[47] = {47, 6500}
+levelArray[48] = {48, 6675}
+levelArray[49] = {49, 6850}
+levelArray[50] = {50, 7050} -- +200 XP
+levelArray[51] = {51, 7250}
+levelArray[52] = {52, 7450}
+levelArray[53] = {53, 7650}
+levelArray[54] = {54, 7850}
+levelArray[55] = {55, 8075} -- +225 XP
+levelArray[56] = {56, 8300}
+levelArray[57] = {57, 8525}
+levelArray[58] = {58, 8750}
+levelArray[59] = {59, 8975}
+levelArray[60] = {60, "prestige"}
+
 --This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
 local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81", "tfa_doim1919", "tfa_doimg34", "tfa_doithompsonm1928", "tfa_fml_rk62", "tfa_ins2_cq300", "tfa_ww2_pbz39", "tfa_ins2_wa2000", "tfa_ins2_ump9", "tfa_ins2_m4_9mm", "tfa_ins2_fn_2000", "tfa_ins2_zm_lr300"}
 local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol", "tfa_l4d2_osp18", "tfa_ins2_mp443", "tfa_tfre_maresleg"}
@@ -203,6 +266,9 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerKDR") == nil) then ply:SetNWInt("playerKDR", 1) else ply:SetNWInt("playerKDR", tonumber(ply:GetPData("playerKDR"))) end
 	if (ply:GetPData("playerScore") == nil) then ply:SetNWInt("playerScore", 0) else ply:SetNWInt("playerScore", tonumber(ply:GetPData("playerScore"))) end
 	if (ply:GetPData("highestKillStreak") == nil) then ply:SetNWInt("highestKillStreak", 0) else ply:SetNWInt("highestKillStreak", tonumber(ply:GetPData("highestKillStreak"))) end
+	if (ply:GetPData("playerLevel") == nil) then ply:SetNWInt("playerLevel", 1) else ply:SetNWInt("playerLevel", tonumber(ply:GetPData("playerLevel"))) end
+	if (ply:GetPData("playerPrestige") == nil) then ply:SetNWInt("playerPrestige", 0) else ply:SetNWInt("playerPrestige", tonumber(ply:GetPData("playerPrestige"))) end
+	if (ply:GetPData("playerXP") == nil) then ply:SetNWInt("playerXP", 0) else ply:SetNWInt("playerXP", tonumber(ply:GetPData("playerXP"))) end
 	if (ply:GetPData("chosenPlayermodel") == nil) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") else ply:SetNWString("chosenPlayermodel", ply:GetPData("chosenPlayermodel")) end
 	if (ply:GetPData("chosenPlayercard") == nil) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") else ply:SetNWString("chosenPlayercard", ply:GetPData("chosenPlayercard")) end
 	if (ply:GetPData("playerAccoladeHeadshot") == nil) then ply:SetNWInt("playerAccoladeHeadshot", 0) else ply:SetNWInt("playerAccoladeHeadshot", tonumber(ply:GetPData("playerAccoladeHeadshot"))) end
@@ -222,16 +288,20 @@ function GM:PlayerInitialSpawn(ply)
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
 	end
 
+	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
+	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+
+	for k, v in pairs(levelArray) do
+		if ply:GetNWInt("playerLevel") == v[1] and v[2] ~= "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+	end
+
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
 	end)
 	ply:ConCommand("tm_openmainmenu")
-
-	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
-	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 end
 
 net.Receive("FiringRangeGiveWeapon", function(len, ply)
@@ -277,6 +347,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("killStreak", attacker:GetNWInt("killStreak") + 1)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 100)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 100)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 100)
 
 		if attacker:GetNWInt("killStreak") >= attacker:GetNWInt("highestKillStreak") then
 			attacker:SetNWInt("highestKillStreak", attacker:GetNWInt("killStreak"))
@@ -376,9 +447,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
+	if not attacker:IsPlayer() or (attacker == victim) then return end
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * attacker:GetNWInt("killStreak"))
 
 		if attacker:GetNWInt("killStreak") == 3 then
 			attacker:SetNWInt("playerAccoladeOnStreak", attacker:GetNWInt("playerAccoladeOnStreak") + 1)
@@ -389,30 +462,35 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * victim:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * victim:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerAccoladeBuzzkill", attacker:GetNWInt("playerAccoladeBuzzkill") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * victim:GetNWInt("killStreak"))
 	end
 
 	if attacker:Health() <= 15 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
 		attacker:SetNWInt("playerAccoladeClutch", attacker:GetNWInt("playerAccoladeClutch") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
 	end
 
 	if distance >= 40 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + distance)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + distance)
 		attacker:SetNWInt("playerAccoladeLongshot", attacker:GetNWInt("playerAccoladeLongshot") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + distance)
 	end
 
 	if distance <= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladePointblank", attacker:GetNWInt("playerAccoladePointblank") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
 	end
 
 	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
 	end
 
 	if victim:SteamID() == attacker:GetNWInt("recentlyKilledBy") and attacker:GetNWBool("gotRevenge") == false then
@@ -421,19 +499,35 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
 		attacker:SetNWInt("playerAccoladeRevenge", attacker:GetNWInt("playerAccoladeRevenge") + 1)
 		attacker:SetNWBool("gotRevenge", true)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10)
 	end
 
 	if victim:LastHitGroup() == 1 and victim:IsPlayer() then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeHeadshot", attacker:GetNWInt("playerAccoladeHeadshot") + 1)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
 	end
 
-	--if victim ~= attacker and attacker:IsPlayer() and attacker:GetActiveWeapon():GetClass() == attacker:GetNWString("loadoutPrimary") and victim:GetNWString("loadoutPrimary") or attacker:GetNWString("loadoutSecondary") and victim:GetNWString("loadoutSecondary") or attacker:GetNWString("loadoutMelee") and victim:GetNWString("loadoutMelee") then
-		--attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 40)
-		--attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 40)
-		--attacker:SetNWInt("playerAccoladeCopycat", attacker:GetNWInt("playerAccoladeCopycat") + 1)
-	--end
+	CheckForPlayerLevel(attacker)
+end
+
+function CheckForPlayerLevel(ply)
+	if ply:GetNWInt("playerLevel") == 60 then return end
+	local curExp = ply:GetNWInt("playerXP")
+	local curLvl = ply:GetNWInt("playerLevel")
+
+	if (curExp >= ply:GetNWInt("playerXPToNextLevel")) then
+		curExp = curExp - ply:GetNWInt("playerXPToNextLevel")
+		ply:SetNWInt("playerLevel", curLvl + 1)
+		ply:SetNWInt("playerXP", curExp)
+
+		for k, v in pairs(levelArray) do
+			if (curLvl + 1) == v[1] then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+		end
+
+		ply:PrintMessage(HUD_PRINTCENTER, "You have leveled up to level " .. (curLvl + 1) .. ".", Color(85, 0, 255, 255), 0)
+	end
 end
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
@@ -647,6 +741,11 @@ function GM:PlayerDisconnected(ply)
 	--Streaks
 	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
 
+	--Leveling
+	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
+	ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
+	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
+
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
@@ -683,6 +782,11 @@ function GM:ShutDown()
 
 		--Streaks
 		v:SetPData("highestKillStreak", v:GetNWInt("highestKillStreak"))
+
+		--Leveling
+		v:SetPData("playerLevel", v:GetNWInt("playerLevel"))
+		v:SetPData("playerPrestige", v:GetNWInt("playerPrestige"))
+		v:SetPData("playerXP", v:GetNWInt("playerXP"))
 
 		--Customizatoin
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))

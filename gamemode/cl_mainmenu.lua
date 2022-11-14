@@ -14,6 +14,9 @@ function mainMenu()
     local mapDesc
     local mapThumb
 
+    local canPrestige
+    if LocalPlayer():GetNWInt("playerLevel") ~= 60 then canPrestige = false else canPrestige = true end
+
     if ScrW() < 1024 and ScrH() < 768 then
         belowMinimumRes = true
     else
@@ -130,6 +133,59 @@ function mainMenu()
                     draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                     draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 70, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                     draw.SimpleText("Server uptime: " .. math.Round(SysTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                end
+
+                draw.SimpleText(LocalPlayer():GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                if LocalPlayer():GetNWInt("playerPrestige") ~= 0 and LocalPlayer():GetNWInt("playerLevel") ~= 60 then
+                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 660, 37.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                elseif LocalPlayer():GetNWInt("playerPrestige") ~= 0 and LocalPlayer():GetNWInt("playerLevel") == 60 then
+                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 535, 37.5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                end
+
+                if LocalPlayer():GetNWInt("playerLevel") ~= 60 then
+                    draw.SimpleText(math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer():GetNWInt("playerXPToNextLevel"), 0) .. " XP", "StreakText", 660, 57.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(LocalPlayer():GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                    surface.SetDrawColor(30, 30, 30, 200)
+                    surface.DrawRect(440, 80, 220, 10)
+
+                    surface.SetDrawColor(200, 200, 0, 200)
+                    surface.DrawRect(440, 80, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 220, 10)
+                else
+                    draw.SimpleText("+ " .. math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " XP", "StreakText", 535, 55, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                end
+            end
+
+            if canPrestige == true then
+                local PrestigeButton = vgui.Create("DButton", MainPanel)
+                PrestigeButton:SetPos(437.5, 67.5)
+                PrestigeButton:SetText("")
+                PrestigeButton:SetSize(180, 30)
+                local textAnim = 0
+                local prestigeConfirm = 0
+                PrestigeButton.Paint = function()
+                    if PrestigeButton:IsHovered() then
+                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                    else
+                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                    end
+                    
+                    if prestigeConfirm == 0 then
+                        draw.DrawText("PRESTIGE TO P" .. LocalPlayer():GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    else
+                        draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, Color(255, 0, 0, 255), TEXT_ALIGN_LEFT)
+                    end
+                end
+                PrestigeButton.DoClick = function()
+                    if (prestigeConfirm == 0) then
+                        prestigeConfirm = 1
+                    else
+                        LocalPlayer():ConCommand("tm_prestige")
+                        PrestigeButton:Hide()
+                    end
+    
+                    timer.Simple(3, function() prestigeConfirm = 0 end)
                 end
             end
 
@@ -2058,10 +2114,10 @@ function mainMenu()
                                     newModelDesc = v[3]
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
-    
+
                                     if selectedModelShown == true then
                                         SelectedModelDisplay:Remove()
-    
+
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                                         SelectedModelDisplay:SetSize(400, 400)
                                         SelectedModelDisplay:SetPos(0, -25)
@@ -3267,7 +3323,7 @@ end
 concommand.Add("tm_openmainmenu", mainMenu)
 
 function ShowLoadoutOnSpawn()
-    for n, v in pairs(weaponsArr) do
+    for k, v in pairs(weaponsArr) do
         if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
             primaryWeapon = v[2]
         end
