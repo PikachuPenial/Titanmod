@@ -4,4 +4,5 @@ Sort weapon statistics by the kills on the weapon instead of alphabetically.
 Achivements
 Various server ConVars
 Firing Range improvments
-New main menu backgrounds
+Sort weapon slots
+Main Menu rewrite (much more compact and optimized.)
