@@ -237,6 +237,7 @@ for k, v in pairs(weaponArray) do
 	end
 end
 
+--Variables for the proprities of the player, things like health and movement speed.
 local playerHealth = 100
 local playerSpeedMulti = 1
 local healthRegenSpeed = 0.15

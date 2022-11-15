@@ -612,12 +612,12 @@ net.Receive("EndOfGame", function(len, ply)
     end)
 
     --Plays music on match end.
-    local menuMusic = CreateSound(LocalPlayer(), "music/matchend.wav")
-    musicVolume = GetConVar("tm_gameendmusicvolume"):GetInt() / 4
+    local gameEndMusic = CreateSound(LocalPlayer(), "music/matchend.wav")
+    gameEndMusic = GetConVar("tm_gameendmusicvolume"):GetInt() / 4
 
     if CLIENT and GetConVar("tm_gameendmusic"):GetInt() == 1 then
-        menuMusic:Play()
-        menuMusic:ChangeVolume(musicVolume * 1.2)
+        gameEndMusic:Play()
+        gameEndMusic:ChangeVolume(musicVolume * 1.2)
     end
 
     EndOfGameUI = vgui.Create("DPanel")
