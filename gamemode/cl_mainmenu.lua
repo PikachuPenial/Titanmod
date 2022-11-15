@@ -296,6 +296,7 @@ function mainMenu()
                 draw.SimpleText("   Fixed Firing Range appearing in map vote", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Various efforts towards optimization", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Reduced recoil by 10% due to spread addition", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Streamlined new content creation", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
             local Patch05b1 = vgui.Create("DPanel", PatchScroller)
