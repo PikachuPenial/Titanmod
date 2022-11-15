@@ -122,50 +122,49 @@ function GM:Initialize()
     weaponArray[83] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach", "secondary"}
     weaponArray[84] = {"tfa_doiowen", "Owen Mk.I", "primary"}
     weaponArray[85] = {"tfa_fml_p90_tac", "P90", "primary"}
-    weaponArray[86] = {"tfa_new_pf940", "PF940", "secondary"}
-    weaponArray[87] = {"tfa_blast_pindadss2", "PINDAD SS2-V1", "primary"}
-    weaponArray[88] = {"tfa_ins2_pm9", "PM-9", "primary"}
-    weaponArray[89] = {"tfa_nam_ppsh41", "PPSH-41", "primary"}
-    weaponArray[90] = {"tfa_fas2_ppbizon", "PP-Bizon", "primary"}
-    weaponArray[91] = {"tfa_ww2_pbz39", "PzB 39", "primary"}
-    weaponArray[92] = {"tfa_ins2_norinco_qbz97", "QBZ-97", "primary"}
-    weaponArray[93] = {"tfa_ins2_qsz92", "QSZ-92", "secondary"}
-    weaponArray[94] = {"tfa_ins2_remington_m870", "Remington M870", "primary"}
-    weaponArray[95] = {"tfa_ins2_pd2_remington_msr", "Remington MSR", "primary"}
-    weaponArray[96] = {"tfa_ins2_rfb", "RFB", "primary"}
-    weaponArray[97] = {"tfa_fml_rk62", "RK62", "primary"}
-    weaponArray[98] = {"tfa_ins2_rpg7_scoped", "RPG-7", "primary"}
-    weaponArray[99] = {"tfa_ins2_rpk_74m", "RPK-74M", "primary"}
-    weaponArray[100] = {"tfa_ins2_l85a2", "SA80", "primary"}
-    weaponArray[101] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR", "primary"}
-    weaponArray[102] = {"tfa_ins2_sc_evo", "Scorpion Evo 3", "primary"}
-    weaponArray[103] = {"tfa_new_p226", "SIG P226", "secondary"}
-    weaponArray[104] = {"tfa_ins2_sks", "SKS", "primary"}
-    weaponArray[105] = {"tfa_ins2_spas12", "SPAS-12", "primary"}
-    weaponArray[106] = {"tfa_ins2_spectre", "Spectre M4", "primary"}
-    weaponArray[107] = {"tfa_ins2_saiga_spike", "Spike X15", "primary"}
-    weaponArray[108] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk", "primary"}
-    weaponArray[109] = {"tfa_doisten", "Sten Mk.II", "primary"}
-    weaponArray[110] = {"tfa_nam_stevens620", "Stevens 620", "primary"}
-    weaponArray[111] = {"tfa_inss_aug", "Steyr AUG", "primary"}
-    weaponArray[112] = {"tfa_doistg44", "StG44", "primary"}
-    weaponArray[113] = {"tfa_ins2_sv98", "SV-98", "primary"}
-    weaponArray[114] = {"tfa_ins2_s&w_500", "S&W 500", "secondary"}
-    weaponArray[115] = {"tfa_japanese_exclusive_tanto", "Tanto", "melee"}
-    weaponArray[116] = {"tfa_ins_sandstorm_tariq", "Tariq", "secondary"}
-    weaponArray[117] = {"st_stim_pistol", "TCo Stim Pistol", "secondary"}
-    weaponArray[118] = {"tfa_doithompsonm1928", "Thompson M1928", "primary"}
-    weaponArray[119] = {"tfa_doithompsonm1a1", "Thompson M1A1", "primary"}
-    weaponArray[120] = {"tfa_ins2_type81", "Type 81", "primary"}
-    weaponArray[121] = {"tfa_ins2_typhoon12", "Typhoon F12", "primary"}
-    weaponArray[122] = {"tfa_ins2_ump45", "UMP .45", "primary"}
-    weaponArray[123] = {"tfa_ins2_ump9", "UMP9", "primary"}
-    weaponArray[124] = {"tfa_ins2_imi_uzi", "Uzi", "secondary"}
-    weaponArray[125] = {"tfa_ins2_br99", "UZK-BR99", "primary"}
-    weaponArray[126] = {"tfa_ins2_vhsd2", "VHS-D2", "primary"}
-    weaponArray[127] = {"tfa_ins2_walther_p99", "Walther P99", "secondary"}
-    weaponArray[128] = {"tfa_ins2_wa2000", "WA-2000", "primary"}
-    weaponArray[129] = {"tfa_ins2_xm8", "XM8", "primary"}
+    weaponArray[86] = {"tfa_blast_pindadss2", "PINDAD SS2-V1", "primary"}
+    weaponArray[87] = {"tfa_ins2_pm9", "PM-9", "primary"}
+    weaponArray[88] = {"tfa_nam_ppsh41", "PPSH-41", "primary"}
+    weaponArray[89] = {"tfa_fas2_ppbizon", "PP-Bizon", "primary"}
+    weaponArray[90] = {"tfa_ww2_pbz39", "PzB 39", "primary"}
+    weaponArray[91] = {"tfa_ins2_norinco_qbz97", "QBZ-97", "primary"}
+    weaponArray[92] = {"tfa_ins2_qsz92", "QSZ-92", "secondary"}
+    weaponArray[93] = {"tfa_ins2_remington_m870", "Remington M870", "primary"}
+    weaponArray[94] = {"tfa_ins2_pd2_remington_msr", "Remington MSR", "primary"}
+    weaponArray[95] = {"tfa_ins2_rfb", "RFB", "primary"}
+    weaponArray[96] = {"tfa_fml_rk62", "RK62", "primary"}
+    weaponArray[97] = {"tfa_ins2_rpg7_scoped", "RPG-7", "primary"}
+    weaponArray[98] = {"tfa_ins2_rpk_74m", "RPK-74M", "primary"}
+    weaponArray[99] = {"tfa_ins2_l85a2", "SA80", "primary"}
+    weaponArray[100] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR", "primary"}
+    weaponArray[101] = {"tfa_ins2_sc_evo", "Scorpion Evo 3", "primary"}
+    weaponArray[102] = {"tfa_new_p226", "SIG P226", "secondary"}
+    weaponArray[103] = {"tfa_ins2_sks", "SKS", "primary"}
+    weaponArray[104] = {"tfa_ins2_spas12", "SPAS-12", "primary"}
+    weaponArray[105] = {"tfa_ins2_spectre", "Spectre M4", "primary"}
+    weaponArray[106] = {"tfa_ins2_saiga_spike", "Spike X15", "primary"}
+    weaponArray[107] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk", "primary"}
+    weaponArray[108] = {"tfa_doisten", "Sten Mk.II", "primary"}
+    weaponArray[109] = {"tfa_nam_stevens620", "Stevens 620", "primary"}
+    weaponArray[110] = {"tfa_inss_aug", "Steyr AUG", "primary"}
+    weaponArray[111] = {"tfa_doistg44", "StG44", "primary"}
+    weaponArray[112] = {"tfa_ins2_sv98", "SV-98", "primary"}
+    weaponArray[113] = {"tfa_ins2_s&w_500", "S&W 500", "secondary"}
+    weaponArray[114] = {"tfa_japanese_exclusive_tanto", "Tanto", "melee"}
+    weaponArray[115] = {"tfa_ins_sandstorm_tariq", "Tariq", "secondary"}
+    weaponArray[116] = {"st_stim_pistol", "TCo Stim Pistol", "secondary"}
+    weaponArray[117] = {"tfa_doithompsonm1928", "Thompson M1928", "primary"}
+    weaponArray[118] = {"tfa_doithompsonm1a1", "Thompson M1A1", "primary"}
+    weaponArray[119] = {"tfa_ins2_type81", "Type 81", "primary"}
+    weaponArray[120] = {"tfa_ins2_typhoon12", "Typhoon F12", "primary"}
+    weaponArray[121] = {"tfa_ins2_ump45", "UMP .45", "primary"}
+    weaponArray[122] = {"tfa_ins2_ump9", "UMP9", "primary"}
+    weaponArray[123] = {"tfa_ins2_imi_uzi", "Uzi", "secondary"}
+    weaponArray[124] = {"tfa_ins2_br99", "UZK-BR99", "primary"}
+    weaponArray[125] = {"tfa_ins2_vhsd2", "VHS-D2", "primary"}
+    weaponArray[126] = {"tfa_ins2_walther_p99", "Walther P99", "secondary"}
+    weaponArray[127] = {"tfa_ins2_wa2000", "WA-2000", "primary"}
+    weaponArray[128] = {"tfa_ins2_xm8", "XM8", "primary"}
 
     --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
     --unlucky kys i dont want more anime woman here
@@ -474,15 +473,15 @@ if SERVER then
     RunConsoleCommand("sv_tfa_penetration_hitmarker", "1")
     RunConsoleCommand("sv_tfa_range_modifier", "0.80")
     RunConsoleCommand("sv_tfa_recoil_legacy", "0")
-    RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.9")
     RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.9")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.75")
+    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.65")
     RunConsoleCommand("sv_tfa_scope_gun_speed_scale", "0")
     RunConsoleCommand("sv_tfa_soundscale", "1")
     RunConsoleCommand("sv_tfa_spread_legacy", "0")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.8")
     RunConsoleCommand("sv_tfa_sprint_enabled", "1")
     RunConsoleCommand("sv_tfa_unique_slots", "1")
     RunConsoleCommand("sv_tfa_weapon_strip", "0")

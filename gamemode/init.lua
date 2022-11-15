@@ -98,50 +98,49 @@ weaponArray[82] = {"tfa_ins2_groza", "OTs-14 Groza", "primary"}
 weaponArray[83] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach", "secondary"}
 weaponArray[84] = {"tfa_doiowen", "Owen Mk.I", "primary"}
 weaponArray[85] = {"tfa_fml_p90_tac", "P90", "primary"}
-weaponArray[86] = {"tfa_new_pf940", "PF940", "secondary"}
-weaponArray[87] = {"tfa_blast_pindadss2", "PINDAD SS2-V1", "primary"}
-weaponArray[88] = {"tfa_ins2_pm9", "PM-9", "primary"}
-weaponArray[89] = {"tfa_nam_ppsh41", "PPSH-41", "primary"}
-weaponArray[90] = {"tfa_fas2_ppbizon", "PP-Bizon", "primary"}
-weaponArray[91] = {"tfa_ww2_pbz39", "PzB 39", "primary"}
-weaponArray[92] = {"tfa_ins2_norinco_qbz97", "QBZ-97", "primary"}
-weaponArray[93] = {"tfa_ins2_qsz92", "QSZ-92", "secondary"}
-weaponArray[94] = {"tfa_ins2_remington_m870", "Remington M870", "primary"}
-weaponArray[95] = {"tfa_ins2_pd2_remington_msr", "Remington MSR", "primary"}
-weaponArray[96] = {"tfa_ins2_rfb", "RFB", "primary"}
-weaponArray[97] = {"tfa_fml_rk62", "RK62", "primary"}
-weaponArray[98] = {"tfa_ins2_rpg7_scoped", "RPG-7", "primary"}
-weaponArray[99] = {"tfa_ins2_rpk_74m", "RPK-74M", "primary"}
-weaponArray[100] = {"tfa_ins2_l85a2", "SA80", "primary"}
-weaponArray[101] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR", "primary"}
-weaponArray[102] = {"tfa_ins2_sc_evo", "Scorpion Evo 3", "primary"}
-weaponArray[103] = {"tfa_new_p226", "SIG P226", "secondary"}
-weaponArray[104] = {"tfa_ins2_sks", "SKS", "primary"}
-weaponArray[105] = {"tfa_ins2_spas12", "SPAS-12", "primary"}
-weaponArray[106] = {"tfa_ins2_spectre", "Spectre M4", "primary"}
-weaponArray[107] = {"tfa_ins2_saiga_spike", "Spike X15", "primary"}
-weaponArray[108] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk", "primary"}
-weaponArray[109] = {"tfa_doisten", "Sten Mk.II", "primary"}
-weaponArray[110] = {"tfa_nam_stevens620", "Stevens 620", "primary"}
-weaponArray[111] = {"tfa_inss_aug", "Steyr AUG", "primary"}
-weaponArray[112] = {"tfa_doistg44", "StG44", "primary"}
-weaponArray[113] = {"tfa_ins2_sv98", "SV-98", "primary"}
-weaponArray[114] = {"tfa_ins2_s&w_500", "S&W 500", "secondary"}
-weaponArray[115] = {"tfa_japanese_exclusive_tanto", "Tanto", "melee"}
-weaponArray[116] = {"tfa_ins_sandstorm_tariq", "Tariq", "secondary"}
-weaponArray[117] = {"st_stim_pistol", "TCo Stim Pistol", "secondary"}
-weaponArray[118] = {"tfa_doithompsonm1928", "Thompson M1928", "primary"}
-weaponArray[119] = {"tfa_doithompsonm1a1", "Thompson M1A1", "primary"}
-weaponArray[120] = {"tfa_ins2_type81", "Type 81", "primary"}
-weaponArray[121] = {"tfa_ins2_typhoon12", "Typhoon F12", "primary"}
-weaponArray[122] = {"tfa_ins2_ump45", "UMP .45", "primary"}
-weaponArray[123] = {"tfa_ins2_ump9", "UMP9", "primary"}
-weaponArray[124] = {"tfa_ins2_imi_uzi", "Uzi", "secondary"}
-weaponArray[125] = {"tfa_ins2_br99", "UZK-BR99", "primary"}
-weaponArray[126] = {"tfa_ins2_vhsd2", "VHS-D2", "primary"}
-weaponArray[127] = {"tfa_ins2_walther_p99", "Walther P99", "secondary"}
-weaponArray[128] = {"tfa_ins2_wa2000", "WA-2000", "primary"}
-weaponArray[129] = {"tfa_ins2_xm8", "XM8", "primary"}
+weaponArray[86] = {"tfa_blast_pindadss2", "PINDAD SS2-V1", "primary"}
+weaponArray[87] = {"tfa_ins2_pm9", "PM-9", "primary"}
+weaponArray[88] = {"tfa_nam_ppsh41", "PPSH-41", "primary"}
+weaponArray[89] = {"tfa_fas2_ppbizon", "PP-Bizon", "primary"}
+weaponArray[90] = {"tfa_ww2_pbz39", "PzB 39", "primary"}
+weaponArray[91] = {"tfa_ins2_norinco_qbz97", "QBZ-97", "primary"}
+weaponArray[92] = {"tfa_ins2_qsz92", "QSZ-92", "secondary"}
+weaponArray[93] = {"tfa_ins2_remington_m870", "Remington M870", "primary"}
+weaponArray[94] = {"tfa_ins2_pd2_remington_msr", "Remington MSR", "primary"}
+weaponArray[95] = {"tfa_ins2_rfb", "RFB", "primary"}
+weaponArray[96] = {"tfa_fml_rk62", "RK62", "primary"}
+weaponArray[97] = {"tfa_ins2_rpg7_scoped", "RPG-7", "primary"}
+weaponArray[98] = {"tfa_ins2_rpk_74m", "RPK-74M", "primary"}
+weaponArray[99] = {"tfa_ins2_l85a2", "SA80", "primary"}
+weaponArray[100] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR", "primary"}
+weaponArray[101] = {"tfa_ins2_sc_evo", "Scorpion Evo 3", "primary"}
+weaponArray[102] = {"tfa_new_p226", "SIG P226", "secondary"}
+weaponArray[103] = {"tfa_ins2_sks", "SKS", "primary"}
+weaponArray[104] = {"tfa_ins2_spas12", "SPAS-12", "primary"}
+weaponArray[105] = {"tfa_ins2_spectre", "Spectre M4", "primary"}
+weaponArray[106] = {"tfa_ins2_saiga_spike", "Spike X15", "primary"}
+weaponArray[107] = {"tfa_ins2_sr2m_veresk", "SR-2M Veresk", "primary"}
+weaponArray[108] = {"tfa_doisten", "Sten Mk.II", "primary"}
+weaponArray[109] = {"tfa_nam_stevens620", "Stevens 620", "primary"}
+weaponArray[110] = {"tfa_inss_aug", "Steyr AUG", "primary"}
+weaponArray[111] = {"tfa_doistg44", "StG44", "primary"}
+weaponArray[112] = {"tfa_ins2_sv98", "SV-98", "primary"}
+weaponArray[113] = {"tfa_ins2_s&w_500", "S&W 500", "secondary"}
+weaponArray[114] = {"tfa_japanese_exclusive_tanto", "Tanto", "melee"}
+weaponArray[115] = {"tfa_ins_sandstorm_tariq", "Tariq", "secondary"}
+weaponArray[116] = {"st_stim_pistol", "TCo Stim Pistol", "secondary"}
+weaponArray[117] = {"tfa_doithompsonm1928", "Thompson M1928", "primary"}
+weaponArray[118] = {"tfa_doithompsonm1a1", "Thompson M1A1", "primary"}
+weaponArray[119] = {"tfa_ins2_type81", "Type 81", "primary"}
+weaponArray[120] = {"tfa_ins2_typhoon12", "Typhoon F12", "primary"}
+weaponArray[121] = {"tfa_ins2_ump45", "UMP .45", "primary"}
+weaponArray[122] = {"tfa_ins2_ump9", "UMP9", "primary"}
+weaponArray[123] = {"tfa_ins2_imi_uzi", "Uzi", "secondary"}
+weaponArray[124] = {"tfa_ins2_br99", "UZK-BR99", "primary"}
+weaponArray[125] = {"tfa_ins2_vhsd2", "VHS-D2", "primary"}
+weaponArray[126] = {"tfa_ins2_walther_p99", "Walther P99", "secondary"}
+weaponArray[127] = {"tfa_ins2_wa2000", "WA-2000", "primary"}
+weaponArray[128] = {"tfa_ins2_xm8", "XM8", "primary"}
 
 --This array contains all of the information for every map in the map pool.
 local mapArray = {}
@@ -223,19 +222,32 @@ levelArray[58] = {58, 8750}
 levelArray[59] = {59, 8975}
 levelArray[60] = {60, "prestige"}
 
---This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
-local randPrimary = {"tfa_nam_ppsh41", "tfa_ins2_aek971", "tfa_ins2_ak400", "tfa_ins2_abakan", "tfa_ins2_cw_ar15", "tfa_inss_asval", "tfa_inss_aug", "tfa_ins2_warface_awm", "tfa_ins2_warface_bt_mp9", "tfa_ins2_barrett_m98_bravo", "tfa_ins2_cz805", "tfa_ins2_famas", "tfa_ins2_fn_fal", "tfa_ins2_hk_mg36", "tfa_inss2_hk_mp5a5", "tfa_howa_type_64", "tfa_ins2_ksg", "tfa_ins2_m14retro", "tfa_doithompsonm1a1", "tfa_ins2_mk14ebr", "tfa_fml_inss_mk18", "tfa_ins2_mosin_nagant", "tfa_inss_mp7_new", "tfa_ins2_nova", "tfa_ins2_norinco_qbz97", "tfa_ins2_pd2_remington_msr", "tfa_ins2_rpk_74m", "tfa_ins2_l85a2", "tfa_ins2_scar_h_ssr", "tfa_ins2_sks", "tfa_doisten", "tfa_ins2_ump45", "tfa_ins2_br99", "tfa_ins2_vhsd2", "tfa_ins2_xm8", "tfa_fml_p90_tac", "tfa_ins2_krissv", "tfa_ismc_ak12_rpk", "tfa_inss_aks74u", "tfa_new_inss_galil", "tfa_doimp40", "tfa_ins2_rfb", "tfa_at_shak_12", "tfa_ins2_imbelia2", "tfa_doibren", "tfa_doim1918", "tfa_doimg42", "tfa_doistg44", "tfa_ins2_remington_m870", "tfa_ins2_sv98", "tfa_ins2_warface_orsis_t5000", "tfa_ins2_warface_amp_dsr1", "tfa_ins2_warface_ax308", "tfa_nam_m79", "tfa_doilewis", "tfa_doi_enfield", "tfa_doifg42", "tfa_ins2_ar57", "tfa_doiowen", "tfa_ww1_mp18", "tfa_fas2_ppbizon", "tfa_ins2_akms", "tfa_ins2_pm9", "tfa_nam_stevens620", "tfa_ins2_saiga_spike", "tfa_ins2_spectre", "tfa_ins2_groza", "tfa_ins2_sc_evo", "tfa_ins2_spas12", "tfa_ins2_ddm4v5", "tfa_ins2_mx4", "tfa_doi_garand", "tfa_ins2_warface_cheytac_m200", "tfa_ins2_rpg7_scoped", "tfa_fml_lefrench_mas38", "tfa_ins2_minimi", "tfa_ins2_typhoon12", "tfa_ins2_mc255", "tfa_ins2_aa12", "tfa_ins2_sr2m_veresk", "tfa_blast_pindadss2", "tfa_ins2_acrc", "tfa_blast_lynx_msbsb", "tfa_blast_ksvk_cqb", "tfa_ins2_type81", "tfa_doim1919", "tfa_doimg34", "tfa_doithompsonm1928", "tfa_fml_rk62", "tfa_ins2_cq300", "tfa_ww2_pbz39", "tfa_ins2_wa2000", "tfa_ins2_ump9", "tfa_ins2_m4_9mm", "tfa_ins2_fn_2000", "tfa_ins2_zm_lr300"}
-local randSecondary = {"tfa_ins2_colt_m45", "tfa_ins2_cz75", "tfa_ins2_deagle", "tfa_ins2_fiveseven_eft", "tfa_ins2_izh43sw", "tfa_ins2_m9", "tfa_ins2_swmodel10", "tfa_ins2_mr96", "tfa_ins2_ots_33_pernach", "tfa_ins2_s&w_500", "bocw_mac10_alt", "tfa_ins2_walther_p99", "tfa_new_m1911", "tfa_new_glock17", "tfa_inss_makarov", "tfa_new_p226", "tfa_doim3greasegun", "tfa_ins2_gsh18", "tfa_ins2_mk23", "tfa_ins2_mp5k", "tfa_ins_sandstorm_tariq", "tfa_ins2_qsz92", "tfa_ins2_imi_uzi", "tfa_ins2_fnp45", "st_stim_pistol", "tfa_l4d2_osp18", "tfa_ins2_mp443", "tfa_tfre_maresleg"}
-local randMelee = {"tfa_japanese_exclusive_tanto", "tfa_ararebo_bf1", "tfa_km2000_knife", "fres_grapple"}
+local randPrimary = {}
+local randSecondary = {}
+local randMelee = {}
 
-local playerHealth = GetConVar("tm_players_health"):GetInt()
+--This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
+for k, v in pairs(weaponArray) do
+	if v[3] == "primary" then
+		table.insert(randPrimary, v[1])
+	elseif v[3] == "secondary" then
+		table.insert(randSecondary, v[1])
+	elseif v[3] == "melee" or "gadget" then
+		table.insert(randMelee, v[1])
+	end
+end
+
+local playerHealth = 100
 local playerSpeedMulti = 1
+local healthRegenSpeed = 0.15
+local healthRegenDamageDelay = 3.5
 
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
 
 	ply:SetGravity(.72)
+	ply:SetHealth(playerHealth)
 	ply:SetMaxHealth(playerHealth)
 	ply:SetRunSpeed(275 * playerSpeedMulti)
 	ply:SetWalkSpeed(165 * playerSpeedMulti)
@@ -584,26 +596,21 @@ end)
 
 --Player health regeneration after not being hit for 3.5 seconds.
 local function Regeneration()
-	local speed = 0.15
-	local damageDelay = 3.5
-	local max = 100
-	local time = FrameTime()
-
 	for _, ply in pairs(player.GetAll()) do
 		if (ply:Alive()) then
 			local health = ply:Health()
 
 			if (health < (ply.LastHealth or 0)) then
-				ply.HealthRegenNext = CurTime() + damageDelay
+				ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
 			end
 
 			if (CurTime() > (ply.HealthRegenNext or 0)) then
-				ply.HealthRegen = (ply.HealthRegen or 0) + time
-			 	if (ply.HealthRegen >= speed) then
-					local add = math.floor(ply.HealthRegen / speed)
-					ply.HealthRegen = ply.HealthRegen - (add * speed)
-					if (health < max or speed < 0) then
-						ply:SetHealth(math.min(health + add, max))
+				ply.HealthRegen = (ply.HealthRegen or 0) + FrameTime()
+			 	if (ply.HealthRegen >= healthRegenSpeed) then
+					local add = math.floor(ply.HealthRegen / healthRegenSpeed)
+					ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
+					if (health < playerHealth or healthRegenSpeed < 0) then
+						ply:SetHealth(math.min(health + add, playerHealth))
 					end
 				end
 			end

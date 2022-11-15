@@ -24,7 +24,7 @@ function GM:ScoreboardShow()
 		end
 
 		ScoreboardDerma = vgui.Create("DFrame")
-		ScoreboardDerma:SetSize(640, 470)
+		ScoreboardDerma:SetSize(640, 500)
 		ScoreboardDerma:Center()
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:SetDraggable(false)
@@ -112,6 +112,21 @@ function GM:ScoreboardShow()
 			MapThumb:SetPos(0, 5)
 			MapThumb:SetSize(100, 100)
 			MapThumb:SetImage(mapThumb)
+		end
+
+		local LevelingPanel = vgui.Create("DPanel", ScoreboardDerma)
+		LevelingPanel:Dock(TOP)
+		LevelingPanel:SetSize(0, 30)
+
+		--Displays information about the current map, the map vote, and the server.
+		LevelingPanel.Paint = function(self, w, h)
+			draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige") .. " L" .. LocalPlayer():GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+
+			surface.SetDrawColor(35, 35, 35, 100)
+			surface.DrawRect(0, 20, 630, 10)
+
+			surface.SetDrawColor(255, 255, 0, 50)
+			surface.DrawRect(0, 20, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 630, 10)
 		end
 	end
 

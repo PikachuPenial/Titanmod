@@ -10,16 +10,6 @@
 	{
 		1
 		{
-			"name"		"tm_players_health"
-			"text"		"Player Health"
-			"help"		"Changes the players max health to the set value"
-			"type"		"Numeric"
-			"default"	"100"
-			"singleplayer"
-		}
-
-		2
-		{
 			"name"		"tm_mapvotetimer"
 			"text"		"Map Vote Timer"
 			"help"		"Changes the Map Vote timers length to the set value in seconds."
@@ -28,7 +18,7 @@
 			"singleplayer"
 		}
 
-		3
+		2
 		{
 			"name"		"tm_endless"
 			"text"		"Endless (disable map voting)"
@@ -38,7 +28,7 @@
 			"singleplayer"
 		}
 
-		4
+		3
 		{
 			"name"		"tm_developermode"
 			"text"		"Developer Mode (enable spawn menu, disable progression)"
