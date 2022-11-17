@@ -392,10 +392,59 @@ function GM:Initialize()
     mapArray[11] = {"tm_shipment", "Shipment", "Extremely small and chaotic map.", "maps/thumb/tm_shipment.png"}
     mapArray[12] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression", "maps/thumb/tm_firingrange.png"}
 
+    --Hint Array, no use as of now.
+    local hintArray = {}
+    hintArray[1] = {"Crouching drastically increases your accuracy and recoil control."}
+    hintArray[2] = {"Each weapon has its own distinct recoil pattern to master."}
+    hintArray[3] = {"Your grappling hook cooldown refreshes on each kill."}
+    hintArray[4] = {"Shooting the torso and/or head will guarintee good damage per shot."}
+    hintArray[5] = {"You can sprint and/or slide in any direction, not just forwards."}
+    hintArray[6] = {"Don't stand still, potshotters will have an easy time killing you."}
+    hintArray[7] = {"All bullet based projectiles are hitscan, there is no bullet velocity/drop to account for."}
+    hintArray[8] = {"The vehicles can be mounted and surfed on while playing the Bridge map."}
+    hintArray[9] = {"Bunny hopping will help perserve velocity after landing from a grapple/slide."}
+    hintArray[10] = {"Explosives hurt, don't aim downwards if you want to stay alive."}
+    hintArray[11] = {"Some snipers and hand cannons can one shot to the torso."}
+    hintArray[12] = {"Attachments save throughout play sessions, tweak your guns once and you are done."}
+    hintArray[13] = {"All melee weapons have a left and right click attack, learn how effective each are."}
+    hintArray[14] = {"Wall jumping constantly allows for continuous climbing of said wall."}
+    hintArray[15] = {"Wall running through a chokepoint can catch opponents off guard."}
+    hintArray[16] = {"Combine wall running and jumping for extremely unpredictable movement."}
+    hintArray[17] = {"Certain playermodels may shine or stand out in dark enviroments."}
+    hintArray[18] = {"Other players can see your flashlight, be cautious."}
+    hintArray[19] = {"Hip fire is an effective strategy while on the move."}
+    hintArray[20] = {"There is no scope glint (as of now.) Hardscope all you want."}
+    hintArray[21] = {"There are over 125+ weapons, try to get consistent with many different loadouts."}
+    hintArray[22] = {"Running any optic lowers your weapons ADS speed."}
+    hintArray[23] = {"Accolades award good amounts of score and XP."}
+    hintArray[24] = {"Chaining multiple accolades together can give a big score/XP boost."}
+    hintArray[25] = {"The map vote is not mandatory, not voting for a map will auto vote for you."}
+    hintArray[26] = {"Sliding provides the same accuracy and recoil benefits as crouching."}
+    hintArray[27] = {"Jumping or being in mid air gives your weapons less accuracy."}
+    hintArray[28] = {"The grappling hook can easily be used to start favorable engagments."}
+    hintArray[29] = {"Almost everything you do in game is tracked, check out the stats page to compare yourself with others."}
+    hintArray[30] = {"Players can not shoot most weapons while submerged in water, use this to your advantage."}
+    hintArray[31] = {"Explosive barrels can be used as a funny distraction."}
+    hintArray[32] = {"Frag ammunition deafens hit players for a few seconds, and slows down their movement speed."}
+    hintArray[33] = {"G.I.B ammunition is a good choice if you want to slow down hit opponents."}
+    hintArray[34] = {"Air strafing is extremely useful movement tech, try to incorperate it into your playstyle."}
+    hintArray[35] = {"All melee weapons can be thrown with the reload key."}
+    hintArray[36] = {"You can cycle through firing modes by using your Interact + Reload keys."}
+    hintArray[37] = {"Underbarrel grenade launchers can be used by pressing Interact + Left Click."}
+    hintArray[38] = {"Crouching completely eliminates your footstep audio for other players. Embrace the sneaky."}
+    hintArray[39] = {"Try personalizing yourself in the customize menus."}
+    hintArray[40] = {"Slug ammunition turns your traditional shotgun into a marksman rifle."}
+    hintArray[41] = {"Magnum ammunition pairs extremely well with low damage weapons."}
+    hintArray[42] = {"Voice chat is proximity based, do with this information as you see fit."}
+    hintArray[43] = {"Health regeneration begins after not taking damage for 3.5 seconds."}
+    hintArray[44] = {"Bullets may not align with your crosshair or sight due to recoil."}
+    hintArray[45] = {"To win a match, a player must have more score than the rest of the competing players."}
+
     weaponsArr = weaponArray
     modelArr = modelArray
     cardArr = cardArray
     mapArr = mapArray
+    hintArr = hintArray
 end
 
 --ConVars for the gamemode will under this comment, this is used to set up default client settings, and server side stuff.

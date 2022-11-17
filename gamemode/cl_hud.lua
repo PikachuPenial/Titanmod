@@ -395,7 +395,7 @@ net.Receive("DeathHud", function(len, ply)
     DeathNotif:ShowCloseButton(false)
 
     DeathNotif.Paint = function()
-        if lastHitIn == 1 then
+    if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
         else
             draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
