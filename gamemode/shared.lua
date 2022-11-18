@@ -439,6 +439,13 @@ function GM:Initialize()
     hintArray[43] = {"Health regeneration begins after not taking damage for 3.5 seconds."}
     hintArray[44] = {"Bullets may not align with your crosshair or sight due to recoil."}
     hintArray[45] = {"To win a match, a player must have more score than the rest of the competing players."}
+    hintArray[46] = {"Switching to your secondary is 'usually' faster than reloading."}
+    hintArray[47] = {"Follow CaptainBear on the Steam Workshop!"}
+    hintArray[48] = {"Match Ammunition is a good choice for low accuracy weapons."}
+    hintArray[49] = {"You can climb onto the houses while playing on the Nuketown map."}
+    hintArray[50] = {"Be vigilant with the acid flood while playing on the Mephitic map."}
+    hintArray[51] = {"Suppressors might make your gun sound badass, but it will also lower your damage."}
+    hintArray[52] = {""}
 
     weaponsArr = weaponArray
     modelArr = modelArray
