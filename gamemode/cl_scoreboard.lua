@@ -31,7 +31,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.6b1", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod 0.7b1", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -154,7 +154,13 @@ function GM:ScoreboardShow()
 			PlayerPanel:SetSize(PlayerList:GetWide(), 100)
 			PlayerPanel:SetPos(0, 0)
 			PlayerPanel.Paint = function(self, w, h)
-				draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
+				if v:GetNWBool("mainmenu") == true then
+					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 100, 100))
+				elseif !v:Alive() then
+					draw.RoundedBox(5, 0, 0, w, h, Color(100, 35, 35, 100))
+				else
+					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
+				end
 				draw.SimpleText(v:GetName(), "Health", 255, 5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, Color(255, 255, 255), TEXT_ALIGN_LEFT)
@@ -184,7 +190,8 @@ function GM:ScoreboardShow()
 				profileButton:SetIcon("icon16/page_find.png")
 
 				local statistics = Menu:AddSubMenu("View Lifetime Stats")
-				statistics:AddOption("Score: " .. v:GetNWInt("playerScore"))
+				statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
+				statistics:AddOption("Score/XP: " .. v:GetNWInt("playerScore"))
 				statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
 				statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
 				statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
@@ -204,6 +211,14 @@ function GM:ScoreboardShow()
 				local weaponstatistics = Menu:AddSubMenu("View Lifetime Weapon Stats")
 				for p, t in pairs(weaponsArr) do
 					weaponstatistics:AddOption(t[2] .. " Kills: " .. v:GetNWInt("killsWith_" .. t[1]))
+				end
+
+				local mapStatistics = Menu:AddSubMenu("View Lifetime Map Stats")
+				local mapTimesPlayed = mapStatistics:AddSubMenu("Times Plaed")
+				for q, m in pairs(mapArr) do
+					if m[1] ~= "tm_firingrange" then
+						mapTimesPlayed:AddOption(m[2] .. ": " .. v:GetNWInt("playedOn_" .. m[1]))
+					end
 				end
 
 				Menu:AddSpacer()

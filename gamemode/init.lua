@@ -37,7 +37,7 @@ weaponArray[21] = {"tfa_ins2_m4_9mm", "Colt 9mm", "primary"}
 weaponArray[22] = {"tfa_new_m1911", "Colt M1911", "secondary"}
 weaponArray[23] = {"tfa_ins2_colt_m45", "Colt M45A1", "secondary"}
 weaponArray[24] = {"tfa_ins2_cz75", "CZ 75 B", "secondary"}
-weaponArray[25] = {"tfa_ins2_cz805", "CZ 805 BREN", "primary"}
+weaponArray[25] = {"tfa_ins2_cz805", "CZ 805", "primary"}
 weaponArray[26] = {"tfa_ins2_ddm4v5", "DDM4V5", "primary"}
 weaponArray[27] = {"tfa_ins2_deagle", "Desert Eagle", "secondary"}
 weaponArray[28] = {"tfa_ins2_famas", "Famas F1", "primary"}
@@ -85,7 +85,7 @@ weaponArray[69] = {"tfa_ins2_mk14ebr", "Mk. 14 EBR", "primary"}
 weaponArray[70] = {"tfa_ins2_swmodel10", "Model 10", "secondary"}
 weaponArray[71] = {"tfa_ins2_mosin_nagant", "Mosin Nagant", "primary"}
 weaponArray[72] = {"tfa_doimp40", "MP 40", "primary"}
-weaponArray[73] = {"tfa_ins2_mp443", "MP-443 Grach", "secondary"}
+weaponArray[73] = {"tfa_ins2_mp443", "MP-443", "secondary"}
 weaponArray[74] = {"tfa_ins2_mp5k", "MP5K", "secondary"}
 weaponArray[75] = {"tfa_inss_mp7_new", "MP7A1", "primary"}
 weaponArray[76] = {"tfa_ww1_mp18", "MP18", "primary"}
@@ -112,8 +112,8 @@ weaponArray[96] = {"tfa_fml_rk62", "RK62", "primary"}
 weaponArray[97] = {"tfa_ins2_rpg7_scoped", "RPG-7", "primary"}
 weaponArray[98] = {"tfa_ins2_rpk_74m", "RPK-74M", "primary"}
 weaponArray[99] = {"tfa_ins2_l85a2", "SA80", "primary"}
-weaponArray[100] = {"tfa_ins2_scar_h_ssr", "SCAR-H SSR", "primary"}
-weaponArray[101] = {"tfa_ins2_sc_evo", "Scorpion Evo 3", "primary"}
+weaponArray[100] = {"tfa_ins2_scar_h_ssr", "SCAR-H", "primary"}
+weaponArray[101] = {"tfa_ins2_sc_evo", "Scorpion Evo", "primary"}
 weaponArray[102] = {"tfa_new_p226", "SIG P226", "secondary"}
 weaponArray[103] = {"tfa_ins2_sks", "SKS", "primary"}
 weaponArray[104] = {"tfa_ins2_spas12", "SPAS-12", "primary"}
@@ -144,20 +144,23 @@ weaponArray[128] = {"tfa_ins2_xm8", "XM8", "primary"}
 
 --This array contains all of the information for every map in the map pool.
 local mapArray = {}
-mapArray[1] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
-mapArray[2] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
-mapArray[3] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
-mapArray[4] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
-mapArray[5] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
-mapArray[6] = {"tm_rooftops", "Rooftops", "Mix of CQB and long range combat.", "maps/thumb/tm_rooftops.png"}
-mapArray[7] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
-mapArray[8] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
+mapArray[1] = {"tm_arctic", "Arctic", "Snowy close quarters combat.", "maps/thumb/tm_arctic.png"}
+mapArray[2] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
+mapArray[3] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
+mapArray[4] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
+mapArray[5] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression.", "maps/thumb/tm_firingrange.png"}
+mapArray[6] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
+mapArray[7] = {"tm_groves", "Groves", "Sandy environment with countless cover.", "maps/thumb/tm_groves.png"}
+mapArray[8] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
 mapArray[9] = {"tm_mall", "Mall", "Spacious shopping center with long sightlines.", "maps/thumb/tm_mall.png"}
-mapArray[10] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
-mapArray[11] = {"tm_shipment", "Shipment", "Extremely small and chaotic map.", "maps/thumb/tm_shipment.png"}
-mapArray[12] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression", "maps/thumb/tm_firingrange.png"}
+mapArray[10] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
+mapArray[11] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
+mapArray[12] = {"tm_rig", "Rig", "Dark and rainy oil rig.", "maps/thumb/tm_rig.png"}
+mapArray[13] = {"tm_rooftops", "Rooftops", "Mix of urban CQB and long range combat.", "maps/thumb/tm_rooftops.png"}
+mapArray[14] = {"tm_shipment", "Shipment", "Extremely small and chaotic.", "maps/thumb/tm_shipment.png"}
+mapArray[15] = {"tm_station", "Station", "A vertical and open battleground.", "maps/thumb/tm_station.png"}
 
-local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "tm_mall", "tm_bridge", "tm_shipment", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
+local availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_rooftops", "tm_cradle", "tm_groves", "tm_mall", "tm_bridge", "tm_shipment", "tm_station", "tm_rig", "tm_arctic", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
 
 --Creating a leveling array, this removes the consistency of the leveling, using developer set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but it feels more polished IMO.
 local levelArray = {}
@@ -268,6 +271,7 @@ function GM:PlayerSpawn(ply)
 	ply:Give(ply:GetNWString("loadoutPrimary"))
 	ply:Give(ply:GetNWString("loadoutSecondary"))
 	ply:Give(ply:GetNWString("loadoutMelee"))
+	ply:SetAmmo(1, "Grenade")
 
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
@@ -298,11 +302,17 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeRevenge") == nil) then ply:SetNWInt("playerAccoladeRevenge", 0) else ply:SetNWInt("playerAccoladeRevenge", tonumber(ply:GetPData("playerAccoladeRevenge"))) end
 	if (ply:GetPData("playerAccoladeCopycat") == nil) then ply:SetNWInt("playerAccoladeCopycat", 0) else ply:SetNWInt("playerAccoladeCopycat", tonumber(ply:GetPData("playerAccoladeCopycat"))) end
 	if (ply:GetPData("cardPictureOffset") == nil) then ply:SetNWInt("cardPictureOffset", 0) else ply:SetNWInt("cardPictureOffset", tonumber(ply:GetPData("cardPictureOffset"))) end
-	if (ply:GetPData("playerBetaTimePlayed") == nil) then ply:SetNWInt("playerBetaTimePlayed", 0) else ply:SetNWInt("playerBetaTimePlayed", tonumber(ply:GetPData("playerBetaTimePlayed"))) end
 
 	--Checking if PData exists for every single fucking gun, gg.
 	for k, v in pairs(weaponArray) do
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
+	end
+
+	--Now we do it again for maps, yippee.
+	for k, v in pairs(mapArray) do
+		if v[1] ~= "tm_firingrange" then
+			if (ply:GetPData("playedOn_" .. v[1]) == nil) then ply:SetNWInt("playedOn_" .. v[1], 0) else ply:SetNWInt("playedOn_" .. v[1], tonumber(ply:GetPData("playedOn_" .. v[1]))) end
+		end
 	end
 
 	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
@@ -351,6 +361,22 @@ local function HitSound(target, hitgroup, dmginfo)
 	end
 end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
+
+--Rocket jumping.
+local function reduceRocketDamage( ent, dmginfo )
+    if not dmginfo:IsExplosionDamage() then return end
+    if not ent:IsPlayer() then return end
+    if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
+
+    local attacker = dmginfo:GetAttacker()
+
+    local dmgForce = dmginfo:GetDamageForce()
+    local newForce = dmgForce * 1.15
+    dmginfo:SetDamageForce(newForce)
+    ent:SetVelocity(newForce / 70)
+    dmginfo:ScaleDamage(0.3)
+end
+hook.Add("EntityTakeDamage", "rocketjumpsEntityTakeDamage", reduceRocketDamage)
 
 --Tracking statistics and sending the Kill/Death UI on a players death.
 function GM:PlayerDeath(victim, inflictor, attacker)
@@ -599,9 +625,8 @@ end)
 local function Regeneration()
 	for _, ply in pairs(player.GetAll()) do
 		if (ply:Alive()) then
-			local health = ply:Health()
 
-			if (health < (ply.LastHealth or 0)) then
+			if (ply:Health() < (ply.LastHealth or 0)) then
 				ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
 			end
 
@@ -610,8 +635,8 @@ local function Regeneration()
 			 	if (ply.HealthRegen >= healthRegenSpeed) then
 					local add = math.floor(ply.HealthRegen / healthRegenSpeed)
 					ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
-					if (health < playerHealth or healthRegenSpeed < 0) then
-						ply:SetHealth(math.min(health + add, playerHealth))
+					if (ply:Health() < playerHealth or healthRegenSpeed < 0) then
+						ply:SetHealth(math.min(ply:Health() + add, playerHealth))
 					end
 				end
 			end
@@ -634,7 +659,7 @@ local mapVoteOpen = false
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 and game.GetMap() ~= "tm_firingrange" then
 	--Sets up Map Voting.
 	timer.Create("startMapVote", GetConVar("tm_mapvotetimer"):GetInt(), 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
+		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
 		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
@@ -684,6 +709,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 			for k, v in pairs(player.GetAll()) do
 				v:KillSilent()
+				v:SetNWInt("playedOn_" .. game.GetMap(), v:GetNWInt("playedOn_" .. game.GetMap()) + 1)
 			end
 
 			net.Start("EndOfGame")
@@ -730,12 +756,6 @@ timer.Create("updateClientMapVoteTime", 10, 0, function()
 		net.Start("UpdateClientMapVoteTime", true)
 		net.WriteFloat(clientMapTimeLeft)
 		net.Broadcast()
-
-		for k, v in pairs(player.GetHumans()) do
-			if v:GetNWInt("playerBetaTimePlayed") < 10800 then
-				v:SetNWInt("playerBetaTimePlayed", v:GetNWInt("playerBetaTimePlayed") + 10)
-			end
-		end
 	end
 end)
 
@@ -762,7 +782,6 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
 	ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
-	ply:SetPData("playerBetaTimePlayed", ply:GetNWInt("playerBetaTimePlayed"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -778,6 +797,12 @@ function GM:PlayerDisconnected(ply)
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
 		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
+	end
+
+	for m, v in pairs(availableMaps) do
+		if v[1] ~= "tm_firingrange" then
+			ply:SetPData("playedOn_" .. v[1], ply:GetNWInt("playedOn_" .. v[1]))
+		end
 	end
 end
 
@@ -804,7 +829,6 @@ function GM:ShutDown()
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
 		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
 		v:SetPData("cardPictureOffset", v:GetNWInt("cardPictureOffset"))
-		v:SetPData("playerBetaTimePlayed", v:GetNWInt("playerBetaTimePlayed"))
 
 		--Accolades
 		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))
@@ -820,6 +844,12 @@ function GM:ShutDown()
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do
 			v:SetPData("killsWith_" .. t[1], v:GetNWInt("killsWith_" .. t[1]))
+		end
+
+		for m, n in pairs(mapArray) do
+			if n[1] ~= "tm_firingrange" then
+				v:SetPData("playedOn_" .. n[1], v:GetNWInt("playedOn_" .. n[1]))
+			end
 		end
 	end
 end

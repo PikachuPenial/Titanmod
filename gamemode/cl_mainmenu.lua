@@ -115,13 +115,13 @@ function mainMenu()
         local MainPanel = MainMenu:Add("MainPanel")
             MainPanel.Paint = function()
                 if CLIENT and GetConVar("tm_menumusic"):GetInt() == 1 then
-                    draw.SimpleText("Listening to: " .. musicName, "MainMenuMusicName", ScrW() - 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Listening to: " .. musicName, "StreakText", ScrW() - 5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
                     if requestedBy ~= nil then
-                        draw.SimpleText("Requested by " .. requestedBy, "MainMenuMusicName", ScrW() - 5, 30, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Requested by " .. requestedBy, "StreakText", ScrW() - 5, 20, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                     end
                 else
-                    draw.SimpleText("Listening to nothing, peace and quiet :)", "MainMenuMusicName", ScrW() - 5, 5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Listening to nothing, peace and quiet :)", "StreakText", ScrW() - 5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 end
 
                 if mapID ~= nil then
@@ -144,7 +144,7 @@ function mainMenu()
                 end
 
                 if LocalPlayer():GetNWInt("playerLevel") ~= 60 then
-                    draw.SimpleText(math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer():GetNWInt("playerXPToNextLevel"), 0) .. " XP", "StreakText", 660, 57.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer():GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                     draw.SimpleText(LocalPlayer():GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
 
                     surface.SetDrawColor(30, 30, 30, 200)
@@ -153,7 +153,7 @@ function mainMenu()
                     surface.SetDrawColor(200, 200, 0, 200)
                     surface.DrawRect(440, 80, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 220, 10)
                 else
-                    draw.SimpleText("+ " .. math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " XP", "StreakText", 535, 55, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("+ " .. math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                 end
             end
 
@@ -170,7 +170,7 @@ function mainMenu()
                     else
                         textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                     end
-                    
+
                     if prestigeConfirm == 0 then
                         draw.DrawText("PRESTIGE TO P" .. LocalPlayer():GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
                     else
@@ -178,21 +178,22 @@ function mainMenu()
                     end
                 end
                 PrestigeButton.DoClick = function()
+                    surface.PlaySound("tmui/buttonclick.wav")
                     if (prestigeConfirm == 0) then
                         prestigeConfirm = 1
                     else
                         LocalPlayer():ConCommand("tm_prestige")
                         PrestigeButton:Hide()
                     end
-    
+
                     timer.Simple(3, function() prestigeConfirm = 0 end)
                 end
             end
 
             if requestedBy ~= nil and CLIENT and GetConVar("tm_menumusic"):GetInt() == 1 then
                 local ProfileButton = vgui.Create("DImageButton", MainPanel)
-                ProfileButton:SetPos(ScrW() - 53, 60)
-                ProfileButton:SetSize(48, 48)
+                ProfileButton:SetPos(ScrW() - 37, 45)
+                ProfileButton:SetSize(32, 32)
                 ProfileButton:SetImage("icons/steamicon.png")
                 ProfileButton.DoClick = function()
                     gui.OpenURL(steamProfile)
@@ -239,6 +240,7 @@ function mainMenu()
             patchNotesOpen = 0
             local buttonSize = 32
             PatchNotesButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 if (patchNotesOpen == 0) then
                     patchNotesOpen = 1
                 else
@@ -281,9 +283,27 @@ function mainMenu()
                 draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
+            local Patch07b1 = vgui.Create("DPanel", PatchScroller)
+            Patch07b1:Dock(TOP)
+            Patch07b1:SetSize(0, 250)
+            Patch07b1.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
+                draw.SimpleText("0.7b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/21/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Added Arctic, Rig, and Station map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Grenades","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Rocket/M79 Jumping","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ UI SFX","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved explosion FX", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Small scale optimization", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed conflicting files", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+            end
+
             local Patch06b1 = vgui.Create("DPanel", PatchScroller)
             Patch06b1:Dock(TOP)
-            Patch06b1:SetSize(0, 230)
+            Patch06b1:SetSize(0, 350)
             Patch06b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
                 draw.SimpleText("0.6b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -291,12 +311,17 @@ function mainMenu()
 
                 draw.SimpleText("+ Player Leveling and Prestiging","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Dynamic weapon spread","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Scoreboard improvments", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Suicides no longer give accolades", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Firing Range appearing in map vote", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Various efforts towards optimization", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Reduced recoil by 10% due to spread addition", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Streamlined new content creation", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 50+ player cards","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("       RFB, Makarov, Mare's Leg, Honey Badger", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scoreboard improvments", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Suicides no longer give accolades", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated fonts", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated weapon names", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Firing Range appearing in map vote", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Various efforts towards optimization", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Reduced recoil by 10% due to spread addition", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Streamlined new content creation", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
             local Patch05b1 = vgui.Create("DPanel", PatchScroller)
@@ -479,6 +504,7 @@ function mainMenu()
             StatisticsButton:SetImage("icons/statsicon.png")
             StatisticsButton:SetSize(80, 80)
             StatisticsButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
 
                 if not IsValid(StatisticsPanel) then
@@ -534,7 +560,11 @@ function mainMenu()
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 4600)
+                    StatsWeapons:SetSize(0, 4570)
+
+                    local StatsMaps = vgui.Create("DPanel", StatsScroller)
+                    StatsMaps:Dock(TOP)
+                    StatsMaps:SetSize(0, 650)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -645,6 +675,23 @@ function mainMenu()
                         end
                     end
 
+                    StatsMaps.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("MAPS", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Times Played", "SettingsLabel", 20, 70, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+
+                        for p, t in pairs(mapArr) do
+                            if t[1] ~= "tm_firingrange" then
+                                draw.SimpleText(t[2] .. ":", "SettingsLabel", 20, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(trackingPlayer:GetNWInt("playedOn_" .. t[1]), "SettingsLabel", 500, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+
+                                if playerSelected == true and comparingWith ~= false then
+                                    draw.SimpleText(comparingWith:GetNWInt("playedOn_" .. t[1]), "SettingsLabel", 720, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                                end
+                            end
+                        end
+                    end
+
                     localPFP = vgui.Create("AvatarImage", StatsCombat)
                     localPFP:SetPos(436, 15)
                     localPFP:SetSize(64, 64)
@@ -661,6 +708,7 @@ function mainMenu()
                     CombatJump:SetImage("icons/uikillicon.png")
                     CombatJump:SetTooltip("Combat Stats")
                     CombatJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         StatsScroller:ScrollToChild(StatsCombat)
                     end
 
@@ -670,6 +718,7 @@ function mainMenu()
                     AccoladesJump:SetImage("icons/accoladeicon.png")
                     AccoladesJump:SetTooltip("Accolade Stats")
                     AccoladesJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         StatsScroller:ScrollToChild(StatsAccolades)
                     end
 
@@ -679,7 +728,18 @@ function mainMenu()
                     WeaponsJump:SetImage("icons/weaponicon.png")
                     WeaponsJump:SetTooltip("Weapon Stats")
                     WeaponsJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         StatsScroller:ScrollToChild(StatsWeapons)
+                    end
+
+                    local MapsJump = vgui.Create("DImageButton", StatsQuickjumpHolder)
+                    MapsJump:SetPos(4, 256)
+                    MapsJump:SetSize(48, 48)
+                    MapsJump:SetImage("icons/mapicon.png")
+                    MapsJump:SetTooltip("Map Stats")
+                    MapsJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        StatsScroller:ScrollToChild(StatsMaps)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", StatsQuickjumpHolder)
@@ -688,6 +748,7 @@ function mainMenu()
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
                         StatisticsPanel:Hide()
                         StatisticsSlideoutPanel:Hide()
@@ -753,6 +814,7 @@ function mainMenu()
             SpectateButton:SetSize(80, 80)
             local spectatePanelOpen = 0
             SpectateButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 if (spectatePanelOpen == 0) then
                     spectatePanelOpen = 1
                     SpectatePanel:SizeTo(-1, 70, 1, 0, 0.1)
@@ -768,6 +830,7 @@ function mainMenu()
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
             end
 
@@ -776,6 +839,7 @@ function mainMenu()
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://www.youtube.com/channel/UC1aCX3i4L6TyEv_rmo_HeRA")
             end
 
@@ -784,6 +848,7 @@ function mainMenu()
             ServerButton:SetImage("icons/discordicon.png")
             ServerButton:SetSize(64, 64)
             ServerButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://discord.gg/landfall")
             end
 
@@ -792,6 +857,7 @@ function mainMenu()
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
             end
 
@@ -821,6 +887,7 @@ function mainMenu()
                 end
             end
             SpawnButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 MainMenu:Remove(false)
                 gui.EnableScreenClicker(false)
 
@@ -869,6 +936,7 @@ function mainMenu()
             end
 
             CustomizeCardButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
                 local currentCard = LocalPlayer():GetNWString("chosenPlayercard")
 
@@ -890,7 +958,7 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
-                    local totalCards = 166
+                    local totalCards = 184
                     local cardsUnlocked = 0
 
                     local defaultCardsTotal = 0
@@ -902,21 +970,20 @@ function mainMenu()
                     local accoladeCardsTotal = 0
                     local accoladeCardsUnlocked = 0
 
+                    local levelCardsTotal = 0
+                    local levelCardsUnlocked = 0
+
                     local masteryCardsTotal = 0
                     local masteryCardsUnlocked = 0
 
                     local colorCardsTotal = 0
                     local colorCardsUnlocked = 0
 
+                    local playerTotalLevel = (LocalPlayer():GetNWInt("playerPrestige") * 60) + LocalPlayer():GetNWInt("playerLevel")
+
                     --Checking for the players currently equipped card.
                     for k, v in pairs(cardArr) do
-                        if v[1] == currentCard and v[4] ~= "mastery" then
-                            newCard = v[1]
-                            newCardName = v[2]
-                            newCardDesc = v[3]
-                            newCardUnlockType = v[4]
-                            newCardUnlockValue = v[5]
-                        elseif v[1] == currentCard and v[4] == "mastery" then
+                        if v[1] == currentCard then
                             newCard = v[1]
                             newCardName = v[2]
                             newCardDesc = v[3]
@@ -979,6 +1046,15 @@ function mainMenu()
                     DockAccoladeCards:Dock(TOP)
                     DockAccoladeCards:SetSize(0, 666)
 
+                    --Leveling related Playercards
+                    local TextLevel = vgui.Create("DPanel", CardScroller)
+                    TextLevel:Dock(TOP)
+                    TextLevel:SetSize(0, 90)
+
+                    local DockLevelCards = vgui.Create("DPanel", CardScroller)
+                    DockLevelCards:Dock(TOP)
+                    DockLevelCards:SetSize(0, 750)
+
                     --Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
@@ -1021,6 +1097,11 @@ function mainMenu()
                     AccoladeCardList:SetSpaceY(5)
                     AccoladeCardList:SetSpaceX(20)
 
+                    local LevelCardList = vgui.Create("DIconLayout", DockLevelCards)
+                    LevelCardList:Dock(TOP)
+                    LevelCardList:SetSpaceY(5)
+                    LevelCardList:SetSpaceX(20)
+
                     local MasteryCardList = vgui.Create("DIconLayout", DockMasteryCards)
                     MasteryCardList:Dock(TOP)
                     MasteryCardList:SetSpaceY(5)
@@ -1040,6 +1121,10 @@ function mainMenu()
                     end
 
                     AccoladeCardList.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                    end
+
+                    LevelCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     end
 
@@ -1190,6 +1275,16 @@ function mainMenu()
                             end
                         end
 
+                        if newCardUnlockType == "level" then
+                            if playerTotalLevel < newCardUnlockValue then
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                            end
+                        end
+
                         --Mastery
                         if newCardUnlockType == "mastery" then
                             if LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
@@ -1222,6 +1317,7 @@ function mainMenu()
                                 newCardDesc = v[3]
                                 newCardUnlockType = v[4]
                                 newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -1247,6 +1343,7 @@ function mainMenu()
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 cardsUnlocked = cardsUnlocked + 1
@@ -1259,6 +1356,7 @@ function mainMenu()
                                 newCardDesc = v[3]
                                 newCardUnlockType = v[4]
                                 newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -1284,6 +1382,7 @@ function mainMenu()
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 cardsUnlocked = cardsUnlocked + 1
@@ -1296,6 +1395,7 @@ function mainMenu()
                                 newCardDesc = v[3]
                                 newCardUnlockType = v[4]
                                 newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -1316,6 +1416,46 @@ function mainMenu()
                                 newCardDesc = v[3]
                                 newCardUnlockType = v[4]
                                 newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
+                            end
+                        end
+
+                        if v[4] == "level" then
+                            local card = vgui.Create("DImageButton", DockLevelCards)
+                            card:SetImage(v[1])
+                            card:SetTooltip(v[2] .. "\n" .. v[3])
+                            card:SetSize(240, 80)
+                            LevelCardList:Add(card)
+
+                            levelCardsTotal = levelCardsTotal + 1
+
+                            if v[4] == "level" and playerTotalLevel < v[5] then
+                                card:SetColor(Color(100, 100, 100))
+
+                                local lockIndicator = vgui.Create("DImageButton", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                lockIndicator.DoClick = function(lockIndicator)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            else
+                                cardsUnlocked = cardsUnlocked + 1
+                                levelCardsUnlocked = levelCardsUnlocked + 1
+                            end
+
+                            card.DoClick = function(card)
+                                newCard = v[1]
+                                newCardName = v[2]
+                                newCardDesc = v[3]
+                                newCardUnlockType = v[4]
+                                newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -1341,6 +1481,7 @@ function mainMenu()
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 cardsUnlocked = cardsUnlocked + 1
@@ -1353,6 +1494,7 @@ function mainMenu()
                                 newCardDesc = v[3]
                                 newCardUnlockType = v[4]
                                 newCardUnlockValue = v[5]
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
                     end
@@ -1382,6 +1524,17 @@ function mainMenu()
                             draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        end
+                    end
+
+                    TextLevel.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Leveling", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+
+                        if levelCardsUnlocked == levelCardsTotal then
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        else
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                         end
                     end
 
@@ -1419,6 +1572,10 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
 
+                    DockLevelCards.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+
                     DockMasteryCards.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                     end
@@ -1445,6 +1602,7 @@ function mainMenu()
                     ApplyCardButton:SetPos(82.5, 25)
                     ApplyCardButton:SetSize(350, 50)
                     ApplyCardButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         local masteryUnlock = 50
                         if newCardUnlockType == "default" then
                             surface.PlaySound("common/wpn_select.wav")
@@ -1596,6 +1754,20 @@ function mainMenu()
                             end
                         end
 
+                        if newCardUnlockType == "level" then
+                            if playerTotalLevel < newCardUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("common/wpn_select.wav")
+                                RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
+                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
+                                MainPanel:Show()
+                                CardPanel:Hide()
+                                CardPreviewPanel:Hide()
+                                CardSlideoutPanel:Hide()
+                            end
+                        end
+
                         if newCardUnlockType == "color" then
                             surface.PlaySound("common/wpn_select.wav")
                             RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
@@ -1640,6 +1812,7 @@ function mainMenu()
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextDefault)
                     end
 
@@ -1649,6 +1822,7 @@ function mainMenu()
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
                     KillsJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextKill)
                     end
 
@@ -1658,33 +1832,47 @@ function mainMenu()
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextAccolade)
                     end
 
+                    local LevelJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    LevelJump:SetPos(4, 256)
+                    LevelJump:SetSize(48, 48)
+                    LevelJump:SetImage("icons/performanceicon.png")
+                    LevelJump:SetTooltip("Leveling")
+                    LevelJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        CardScroller:ScrollToChild(TextLevel)
+                    end
+
                     local WeaponJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    WeaponJump:SetPos(4, 256)
+                    WeaponJump:SetPos(4, 308)
                     WeaponJump:SetSize(48, 48)
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump:SetTooltip("Mastery")
                     WeaponJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextMastery)
                     end
 
                     local PaletteJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    PaletteJump:SetPos(4, 308)
+                    PaletteJump:SetPos(4, 360)
                     PaletteJump:SetSize(48, 48)
                     PaletteJump:SetImage("icons/paletteicon.png")
                     PaletteJump:SetTooltip("Solid Colors")
                     PaletteJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextColor)
                     end
 
                     local OptionsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    OptionsJump:SetPos(4, 360)
+                    OptionsJump:SetPos(4, 412)
                     OptionsJump:SetSize(48, 48)
                     OptionsJump:SetImage("icons/settingsicon.png")
                     OptionsJump:SetTooltip("Card Options")
                     OptionsJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextOptions)
                     end
 
@@ -1694,6 +1882,7 @@ function mainMenu()
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
                         CardPanel:Hide()
                         CardPreviewPanel:Hide()
@@ -1704,6 +1893,7 @@ function mainMenu()
             end
 
             CustomizeModelButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
 
                 local previewModel = LocalPlayer():GetNWString("chosenPlayermodel")
@@ -1988,14 +2178,6 @@ function mainMenu()
                                 draw.SimpleText("[CLASSIFIED]", "Health", w / 2, 130, Color(0, 0, 250, 255), TEXT_ALIGN_CENTER)
                             end
                         end
-
-                        if newModelUnlockType == "special" and newModelUnlockValue == "beta" then
-                            if LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
-                                draw.SimpleText("Time Played: " .. LocalPlayer():GetNWInt("playerBetaTimePlayed") .. " / " .. 10800 .. "s", "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Time Played: " .. LocalPlayer():GetNWInt("playerBetaTimePlayed") .. " / " .. 10800 .. "s", "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-                            end
-                        end
                     end
 
                     local PlayerModelDisplay = vgui.Create("DModelPanel", PreviewModelHolder)
@@ -2046,6 +2228,7 @@ function mainMenu()
                                     SelectedModelDisplay:SetModel(newModel)
                                     selectedModelShown = true
                                 end
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -2083,6 +2266,7 @@ function mainMenu()
                                         SelectedModelDisplay:SetModel(newModel)
                                         selectedModelShown = true
                                     end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 killModelsUnlocked = killModelsUnlocked + 1
@@ -2109,6 +2293,7 @@ function mainMenu()
                                     SelectedModelDisplay:SetModel(newModel)
                                     selectedModelShown = true
                                 end
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -2146,6 +2331,7 @@ function mainMenu()
                                         SelectedModelDisplay:SetModel(newModel)
                                         selectedModelShown = true
                                     end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 streakModelsUnlocked = streakModelsUnlocked + 1
@@ -2172,6 +2358,7 @@ function mainMenu()
                                     SelectedModelDisplay:SetModel(newModel)
                                     selectedModelShown = true
                                 end
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -2184,7 +2371,7 @@ function mainMenu()
 
                             specialModelsTotal = specialModelsTotal + 1
 
-                            if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" or v[5] == "beta" and LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
+                            if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" then
                                 local lockIndicator = vgui.Create("DImageButton", icon)
                                 lockIndicator:SetImage("icons/lockicon.png")
                                 lockIndicator:SetSize(96, 96)
@@ -2209,6 +2396,7 @@ function mainMenu()
                                         SelectedModelDisplay:SetModel(newModel)
                                         selectedModelShown = true
                                     end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 specialModelsUnlocked = specialModelsUnlocked + 1
@@ -2235,6 +2423,7 @@ function mainMenu()
                                     SelectedModelDisplay:SetModel(newModel)
                                     selectedModelShown = true
                                 end
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
 
@@ -2272,6 +2461,7 @@ function mainMenu()
                                         SelectedModelDisplay:SetModel(newModel)
                                         selectedModelShown = true
                                     end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             else
                                 accoladeModelsUnlocked = accoladeModelsUnlocked + 1
@@ -2298,6 +2488,7 @@ function mainMenu()
                                     SelectedModelDisplay:SetModel(newModel)
                                     selectedModelShown = true
                                 end
+                                surface.PlaySound("tmui/buttonrollover.wav")
                             end
                         end
                     end
@@ -2385,6 +2576,7 @@ function mainMenu()
                     ApplyModelButton:SetPos(25, 25)
                     ApplyModelButton:SetSize(350, 50)
                     ApplyModelButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         if newModelUnlockType == "default" then
                             surface.PlaySound("common/wpn_select.wav")
                             RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
@@ -2536,19 +2728,6 @@ function mainMenu()
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             end
                         end
-
-                        if newModelUnlockType == "special" and newModelUnlockValue == "beta" then
-                            if LocalPlayer():GetNWInt("playerBetaTimePlayed") < 10800 then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("common/wpn_select.wav")
-                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
-                                MainPanel:Show()
-                                CustomizeSlideoutPanel:Hide()
-                                CustomizePanel:Hide()
-                                PreviewPanel:Hide()
-                            end
-                        end
                     end
 
                     local ModelIcon = vgui.Create("DImage", ModelQuickjumpHolder)
@@ -2562,6 +2741,7 @@ function mainMenu()
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextDefault)
                     end
 
@@ -2571,6 +2751,7 @@ function mainMenu()
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
                     KillsJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextKills)
                     end
 
@@ -2580,6 +2761,7 @@ function mainMenu()
                     StreaksJump:SetImage("icons/streakicon.png")
                     StreaksJump:SetTooltip("Streaks")
                     StreaksJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextStreak)
                     end
 
@@ -2589,6 +2771,7 @@ function mainMenu()
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextAccolade)
                     end
 
@@ -2598,6 +2781,7 @@ function mainMenu()
                     SpecialJump:SetImage("icons/specialicon.png")
                     SpecialJump:SetTooltip("Special")
                     SpecialJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextSpecial)
                     end
 
@@ -2607,6 +2791,7 @@ function mainMenu()
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
                         CustomizeSlideoutPanel:Hide()
                         CustomizePanel:Hide()
@@ -2629,6 +2814,7 @@ function mainMenu()
                 draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
             end
             OptionsButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
 
                 if not IsValid(OptionsPanel) then
@@ -2662,7 +2848,7 @@ function mainMenu()
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 200)
+                    DockInputs:SetSize(0, 240)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
@@ -2712,6 +2898,7 @@ function mainMenu()
                     UIJump:SetTooltip("UI")
                     UIJump:SetImage("icons/uiicon.png")
                     UIJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockUI)
                     end
 
@@ -2721,6 +2908,7 @@ function mainMenu()
                     AudioJump:SetTooltip("Audio")
                     AudioJump:SetImage("icons/audioicon.png")
                     AudioJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockAudio)
                     end
 
@@ -2730,6 +2918,7 @@ function mainMenu()
                     ModelJump:SetTooltip("Viewmodel")
                     ModelJump:SetImage("icons/weaponicon.png")
                     ModelJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockViewmodel)
                     end
 
@@ -2739,6 +2928,7 @@ function mainMenu()
                     CrosshairJump:SetTooltip("Crosshair")
                     CrosshairJump:SetImage("icons/crosshairicon.png")
                     CrosshairJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockCrosshair)
                     end
 
@@ -2748,6 +2938,7 @@ function mainMenu()
                     HitmarkerJump:SetTooltip("Hitmarkers")
                     HitmarkerJump:SetImage("icons/hitmarkericon.png")
                     HitmarkerJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockHitmarker)
                     end
 
@@ -2757,6 +2948,7 @@ function mainMenu()
                     ScopesJump:SetTooltip("Scopes")
                     ScopesJump:SetImage("icons/sighticon.png")
                     ScopesJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockScopes)
                     end
 
@@ -2766,6 +2958,7 @@ function mainMenu()
                     PerformanceJump:SetTooltip("Performance")
                     PerformanceJump:SetImage("icons/performanceicon.png")
                     PerformanceJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockPerformance)
                     end
 
@@ -2775,6 +2968,7 @@ function mainMenu()
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
@@ -2786,7 +2980,8 @@ function mainMenu()
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2803,12 +2998,24 @@ function mainMenu()
                     ironsToggle:SetValue(true)
                     ironsToggle:SetSize(30, 30)
 
+                    local grenadeBind = DockInputs:Add("DBinder")
+                    grenadeBind:SetPos(22.5, 150)
+                    grenadeBind:SetSize(100, 30)
+                    grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
+
+                    function grenadeBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
+                        selectedGrenadeBind = grenadeBind:GetSelectedNumber()
+                        RunConsoleCommand("tm_nadebind", selectedGrenadeBind)
+                    end
+
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 150)
+                    grappleBind:SetPos(22.5, 190)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
 
                     function grappleBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         selectedGrappleBind = grappleBind:GetSelectedNumber()
                         RunConsoleCommand("frest_bindg", selectedGrappleBind)
                     end
@@ -2860,6 +3067,7 @@ function mainMenu()
                     healthAnchor:AddChoice("Middle")
                     healthAnchor:AddChoice("Below Crosshair")
                     healthAnchor.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_healthanchor", value - 1)
                     end
 
@@ -2880,6 +3088,7 @@ function mainMenu()
                     ammoStyle:AddChoice("Below Crosshair")
                     ammoStyle:AddChoice("Centered Numeric")
                     ammoStyle.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_ammostyle", value - 1)
                     end
 
@@ -2912,6 +3121,7 @@ function mainMenu()
                     killUIAnchor:AddChoice("Bottom")
                     killUIAnchor:AddChoice("Top")
                     killUIAnchor.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_killuianchor", value - 1)
                     end
 
@@ -2926,6 +3136,7 @@ function mainMenu()
                     deathUIAnchor:AddChoice("Bottom")
                     deathUIAnchor:AddChoice("Top")
                     deathUIAnchor.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_deathuianchor", value - 1)
                     end
 
@@ -2978,6 +3189,7 @@ function mainMenu()
                     end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_hitsoundtype", value - 1)
                     end
 
@@ -2989,6 +3201,7 @@ function mainMenu()
                     end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType.OnSelect = function(self, value)
+                        surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_killsoundtype", value - 1)
                     end
 
@@ -3309,6 +3522,7 @@ function mainMenu()
                 end
             end
             ExitButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
                 if (disconnectConfirm == 0) then
                     disconnectConfirm = 1
                 else

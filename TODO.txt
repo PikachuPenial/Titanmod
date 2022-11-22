@@ -5,3 +5,5 @@ Achivements
 Various server ConVars
 Firing Range improvments
 Main Menu rewrite (much more compact and optimized.)
+Map specific statistics
+Player account wipe option
