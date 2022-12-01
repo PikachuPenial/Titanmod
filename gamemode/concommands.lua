@@ -3,18 +3,13 @@ function TestKillNoti(ply, cmd, args)
     net.Start("NotifyKill")
     net.WriteEntity(ply)
     net.Send(ply)
+
+    net.Start("KillFeedUpdate")
+    net.WriteString(ply:GetName() .. " [AX-308] " .. ply:GetName())
+    net.WriteFloat(math.random(0, 1))
+    net.Broadcast()
 end
 concommand.Add("testkill", TestKillNoti)
-
---This is only here to help me test deaths easier, will be removed when no-longer needed.
-function TestDeathNoti(ply, cmd, args)
-	net.Start("DeathHud")
-	net.WriteEntity(ply)
-	net.WriteString("the rope")
-	net.WriteFloat(100)
-	net.Send(ply)
-end
-concommand.Add("testdeath", TestDeathNoti)
 
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
@@ -47,7 +42,6 @@ function ForceSave(ply, cmd, args)
     ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
     ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
     ply:SetPData("playerAccoladeRevenge", ply:GetNWInt("playerAccoladeRevenge"))
-    ply:SetPData("playerAccoladeCopycat", ply:GetNWInt("playerAccoladeCopycat"))
 
     print("Save was successful!")
 end
@@ -344,6 +338,8 @@ function PlayercardChange(ply, cmd, args)
     cardArray[182] = {"cards/leveling/160.png", "Critters", "", "level", 160}
     cardArray[183] = {"cards/leveling/170.png", "Sweat", "", "level", 170}
     cardArray[184] = {"cards/leveling/180.png", "Walls", "", "level", 180}
+    cardArray[185] = {"cards/leveling/190.png", "Dinner", "", "level", 190}
+    cardArray[186] = {"cards/leveling/200.png", "Thunder", "", "level", 200}
 
     for k, v in pairs(cardArray) do
 		if (args[1] == v[1]) then
@@ -418,11 +414,6 @@ function StartCustomSpectate(ply, cmd, args)
 	if (args[1] == "free") then
 		ply:UnSpectate()
 		ply:Spectate(OBS_MODE_ROAMING)
-		ply:SetNWBool("isSpectating", true)
-	elseif (args[1] == "player") then
-		ply:UnSpectate()
-		ply:SpectateEntity(args[2])
-		ply:Spectate(OBS_MODE_IN_EYE)
 		ply:SetNWBool("isSpectating", true)
 	end
 end

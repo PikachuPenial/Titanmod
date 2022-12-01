@@ -10,16 +10,12 @@ if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") en
 if !ConVarExists("tm_enableui") then CreateConVar("tm_enableui", "1", FCVAR_ARCHIVE, "Enable/disable any custom UI elements created by the gamemode",0,1) end
 if !ConVarExists("tm_enablekillpopup") then CreateConVar("tm_enablekillpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the kill popup",0,1) end
 if !ConVarExists("tm_enabledeathpopup") then CreateConVar("tm_enabledeathpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the death popup",0,1) end
-if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,2) end
-if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,3) end
-if !ConVarExists("tm_showspeed") then CreateConVar("tm_showspeed", "0", FCVAR_ARCHIVE, "Enables a speed indicator at the top of your screen",0,1) end
+if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,1) end
+if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,1) end
 if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "1", FCVAR_ARCHIVE, "Enable or disable the hitsounds",0,1) end
 if !ConVarExists("tm_killsound") then CreateConVar("tm_killsound", "1", FCVAR_ARCHIVE, "Enable or disable the kill sound",0,1) end
 if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
-if !ConVarExists("tm_gameendmusic") then CreateConVar("tm_gameendmusic", "1", FCVAR_ARCHIVE, "Enable or disable the Game End music",0,1) end
 if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Main Menu music",0,1) end
-if !ConVarExists("tm_gameendmusicvolume") then CreateConVar("tm_gameendmusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Game End music",0,1) end
-if !ConVarExists("tm_communitymusic") then CreateConVar("tm_communitymusic", "1", FCVAR_ARCHIVE, "Enable or disable community requested Main Menu music",0,1) end
 if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
 if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
 if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
@@ -181,7 +177,6 @@ function GM:Initialize()
     weaponArray[128] = {"tfa_ins2_xm8", "XM8", "primary"}
 
     --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
-    --unlucky kys i dont want more anime woman here
     local modelArray = {}
     modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
     modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "The default female character.", "default", "default"}
@@ -409,6 +404,8 @@ function GM:Initialize()
     cardArray[182] = {"cards/leveling/160.png", "Critters", "", "level", 160}
     cardArray[183] = {"cards/leveling/170.png", "Sweat", "", "level", 170}
     cardArray[184] = {"cards/leveling/180.png", "Walls", "", "level", 180}
+    cardArray[185] = {"cards/leveling/190.png", "Dinner", "", "level", 190}
+    cardArray[186] = {"cards/leveling/200.png", "Thunder", "", "level", 200}
 
     --Map Array Formatting (Map ID, Map Name, Map Description, Map Image)
     local mapArray = {}
@@ -513,13 +510,13 @@ if SERVER then
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
-    RunConsoleCommand("sv_tfa_ammo_detonation", "1")
-    RunConsoleCommand("sv_tfa_ammo_detonation_chain", "1")
-    RunConsoleCommand("sv_tfa_ammo_detonation_mode", "2")
+    RunConsoleCommand("sv_tfa_ammo_detonation", "0")
+    RunConsoleCommand("sv_tfa_ammo_detonation_chain", "0")
+    RunConsoleCommand("sv_tfa_ammo_detonation_mode", "0")
     RunConsoleCommand("sv_tfa_arrow_lifetime", "30")
     RunConsoleCommand("sv_tfa_attachments_alphabetical", "0")
     RunConsoleCommand("sv_tfa_attachments_enabled", "1")
-    RunConsoleCommand("sv_tfa_backcompat_patchswepthink", "1")
+    RunConsoleCommand("sv_tfa_backcompat_patchswepthink", "0")
     RunConsoleCommand("sv_tfa_ballistics_bullet_damping_air", "1.00")
     RunConsoleCommand("sv_tfa_ballistics_bullet_damping_water", "3.00")
     RunConsoleCommand("sv_tfa_ballistics_bullet_life", "10.00")
@@ -541,12 +538,12 @@ if SERVER then
     RunConsoleCommand("sv_tfa_damage_mult_max", "1.05")
     RunConsoleCommand("sv_tfa_damage_mult_min", "0.95")
     RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
-    RunConsoleCommand("sv_tfa_damage_multiplier_npc", "1.00")
+    RunConsoleCommand("sv_tfa_damage_multiplier_npc", "1.05")
     RunConsoleCommand("sv_tfa_default_clip", "1000")
     RunConsoleCommand("sv_tfa_door_respawn", "-1")
     RunConsoleCommand("sv_tfa_dynamicaccuracy", "1")
     RunConsoleCommand("sv_tfa_fixed_crosshair", "1")
-    RunConsoleCommand("sv_tfa_force_multiplier", "1.00")
+    RunConsoleCommand("sv_tfa_force_multiplier", "0")
     RunConsoleCommand("sv_tfa_fx_penetration_decal", "0")
     RunConsoleCommand("sv_tfa_holdtype_dynamic", "1")
     RunConsoleCommand("sv_tfa_jamming", "0")
@@ -577,7 +574,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_unique_slots", "1")
     RunConsoleCommand("sv_tfa_weapon_strip", "0")
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
-    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "-1")
+    RunConsoleCommand("sv_tfa_worldmodel_culldistance", "30")
 
     --Flashlight
     RunConsoleCommand("tpf_sv_light_forward_offset", "15")
@@ -601,8 +598,9 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_3dscope_overlay", "0")
     RunConsoleCommand("cl_tfa_3dscope_quality", "0")
     RunConsoleCommand("cl_tfa_attachments_persist_enabled", "1")
-    RunConsoleCommand("cl_tfa_ballistics_fx_bullet", "1")
+    RunConsoleCommand("cl_tfa_ballistics_fx_bullet", "0")
     RunConsoleCommand("cl_tfa_ballistics_fx_tracers_adv", "1")
+    RunConsoleCommand("cl_tfa_ballistics_fx_tracers_mp", "0")
     RunConsoleCommand("cl_tfa_ballistics_fx_tracers_style", "2")
     RunConsoleCommand("cl_tfa_ballistics_mp", "1")
     RunConsoleCommand("cl_tfa_debug_animations", "0")
@@ -611,10 +609,12 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_debug_rt", "0")
     RunConsoleCommand("cl_tfa_fx_ads_dof_hd", "0")
     RunConsoleCommand("cl_tfa_fx_ejectionsmoke", "0")
-    RunConsoleCommand("cl_tfa_fx_impact_enabled", "1")
+    RunConsoleCommand("cl_tfa_fx_ejectionlife", "0")
+    RunConsoleCommand("cl_tfa_fx_gasblur", "0")
+    RunConsoleCommand("cl_tfa_fx_impact_enabled", "0")
     RunConsoleCommand("cl_tfa_fx_impact_ricochet_enabled", "0")
     RunConsoleCommand("cl_tfa_fx_impact_ricochet_sparklife", "0")
-    RunConsoleCommand("cl_tfa_fx_impact_ricochet_sparks", "6")
+    RunConsoleCommand("cl_tfa_fx_impact_ricochet_sparks", "0")
     RunConsoleCommand("cl_tfa_fx_muzzleflashsmoke", "0")
     RunConsoleCommand("cl_tfa_fx_muzzlesmoke", "0")
     RunConsoleCommand("cl_tfa_fx_muzzlesmoke_limited", "1")
@@ -651,9 +651,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_laser_color_r", "255")
     RunConsoleCommand("cl_tfa_laser_trails", "1")
     RunConsoleCommand("cl_tfa_legacy_shells", "0")
-    RunConsoleCommand("cl_tfa_rms_default_eject_smoke", "0")
-    RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "1")
-    RunConsoleCommand("cl_tfa_rms_smoke_shock", "0")
     RunConsoleCommand("cl_tfa_scope_sensitivity_3d", "2")
     RunConsoleCommand("cl_tfa_scope_sensitivity_autoscale", "1")
     RunConsoleCommand("cl_tfa_viewbob_animated", "1")
@@ -688,7 +685,8 @@ if CLIENT then
 
     --Flashlight
     RunConsoleCommand("tpf_should_load_defaults", "0")
+    RunConsoleCommand("tpf_cl_bright", "255")
     RunConsoleCommand("tpf_cl_farz", "750")
     RunConsoleCommand("tpf_cl_fov", "75")
-    RunConsoleCommand("tpf_cl_bright", "255")
+    RunConsoleCommand("tpf_cl_shadows", "0")
 end

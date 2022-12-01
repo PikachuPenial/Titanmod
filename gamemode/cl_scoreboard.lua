@@ -24,7 +24,7 @@ function GM:ScoreboardShow()
 		end
 
 		ScoreboardDerma = vgui.Create("DFrame")
-		ScoreboardDerma:SetSize(640, 500)
+		ScoreboardDerma:SetSize(640, 600)
 		ScoreboardDerma:Center()
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:SetDraggable(false)
@@ -69,7 +69,7 @@ function GM:ScoreboardShow()
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
 		PlayerScrollPanel:Dock(TOP)
-		PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 300)
+		PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 400)
 		PlayerScrollPanel:SetPos(0, 0)
 
 		local sbar = PlayerScrollPanel:GetVBar()
@@ -103,8 +103,7 @@ function GM:ScoreboardShow()
 				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 			end
 
-			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 60.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-			draw.SimpleText("Server uptime: " .. math.Round(SysTime()) .. "s", "StreakText", 630, 80, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 80, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 		end
 
 		if mapName ~= nil then
@@ -131,7 +130,6 @@ function GM:ScoreboardShow()
 	end
 
 	if IsValid(ScoreboardDerma) then
-		PlayerList:Clear()
 
 		local connectedPlayers = player.GetAll()
 		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
@@ -189,7 +187,9 @@ function GM:ScoreboardShow()
 				local profileButton = Menu:AddOption("View Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
 				profileButton:SetIcon("icon16/page_find.png")
 
-				local statistics = Menu:AddSubMenu("View Lifetime Stats")
+				Menu:AddSpacer()
+
+				local statistics = Menu:AddSubMenu("View Stats")
 				statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
 				statistics:AddOption("Score/XP: " .. v:GetNWInt("playerScore"))
 				statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
@@ -197,7 +197,7 @@ function GM:ScoreboardShow()
 				statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
 				statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
 
-				local accolades = Menu:AddSubMenu("View Lifetime Accolades")
+				local accolades = Menu:AddSubMenu("View Accolades")
 				accolades:AddOption("Headshots: " .. v:GetNWInt("playerAccoladeHeadshot"))
 				accolades:AddOption("Melee Kills (Smackdown): " .. v:GetNWInt("playerAccoladeSmackdown"))
 				accolades:AddOption("Clutches (Kills with less than 15 HP): " .. v:GetNWInt("playerAccoladeClutch"))
@@ -206,19 +206,11 @@ function GM:ScoreboardShow()
 				accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
 				accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
 				accolades:AddOption("Revenge Kills: " .. v:GetNWInt("playerAccoladeRevenge"))
-				accolades:AddOption("Copycat Kills: " .. v:GetNWInt("playerAccoladeCopycat"))
 
-				local weaponstatistics = Menu:AddSubMenu("View Lifetime Weapon Stats")
+				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
+				local weaponKills = weaponstatistics:AddSubMenu("Kills")
 				for p, t in pairs(weaponsArr) do
-					weaponstatistics:AddOption(t[2] .. " Kills: " .. v:GetNWInt("killsWith_" .. t[1]))
-				end
-
-				local mapStatistics = Menu:AddSubMenu("View Lifetime Map Stats")
-				local mapTimesPlayed = mapStatistics:AddSubMenu("Times Plaed")
-				for q, m in pairs(mapArr) do
-					if m[1] ~= "tm_firingrange" then
-						mapTimesPlayed:AddOption(m[2] .. ": " .. v:GetNWInt("playedOn_" .. m[1]))
-					end
+					weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
 				end
 
 				Menu:AddSpacer()
@@ -238,8 +230,8 @@ function GM:ScoreboardShow()
 		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
 		if game.GetMap() == "tm_firingrange" then
 			FiringRangeDerma = vgui.Create("DFrame")
-			FiringRangeDerma:SetSize(200, 470)
-			FiringRangeDerma:SetPos(ScrW() / 2 + 325, ScrH() / 2 - 235)
+			FiringRangeDerma:SetSize(200, 500)
+			FiringRangeDerma:SetPos(ScrW() / 2 + 325, ScrH() / 2 - 250)
 			FiringRangeDerma:SetTitle("")
 			FiringRangeDerma:SetDraggable(false)
 			FiringRangeDerma:ShowCloseButton(false)
@@ -276,10 +268,11 @@ function GM:ScoreboardShow()
 
 			for k, v in pairs(weaponsArr) do
 				local weapon = vgui.Create("DButton", DockDefaultCards)
-				weapon:SetSize(170, 30)
+				weapon:SetSize(170, 40)
 				weapon:SetText("")
 				weapon.Paint = function()
 					draw.DrawText(v[2], "StreakText", 5, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+					draw.DrawText(v[3], "StreakTextMini", 5, 25, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 				end
 				WeaponList:Add(weapon)
 

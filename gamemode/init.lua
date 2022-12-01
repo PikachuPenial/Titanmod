@@ -256,10 +256,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetRunSpeed(275 * playerSpeedMulti)
 	ply:SetWalkSpeed(165 * playerSpeedMulti)
 	ply:SetJumpPower(150)
-
 	ply:SetLadderClimbSpeed(155 * playerSpeedMulti)
 	ply:SetSlowWalkSpeed(78 * playerSpeedMulti)
-
 	ply:SetCrouchedWalkSpeed(0.5)
 	ply:SetDuckSpeed(0.65)
 	ply:SetUnDuckSpeed(0.65)
@@ -300,19 +298,11 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
 	if (ply:GetPData("playerAccoladeRevenge") == nil) then ply:SetNWInt("playerAccoladeRevenge", 0) else ply:SetNWInt("playerAccoladeRevenge", tonumber(ply:GetPData("playerAccoladeRevenge"))) end
-	if (ply:GetPData("playerAccoladeCopycat") == nil) then ply:SetNWInt("playerAccoladeCopycat", 0) else ply:SetNWInt("playerAccoladeCopycat", tonumber(ply:GetPData("playerAccoladeCopycat"))) end
 	if (ply:GetPData("cardPictureOffset") == nil) then ply:SetNWInt("cardPictureOffset", 0) else ply:SetNWInt("cardPictureOffset", tonumber(ply:GetPData("cardPictureOffset"))) end
 
 	--Checking if PData exists for every single fucking gun, gg.
 	for k, v in pairs(weaponArray) do
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
-	end
-
-	--Now we do it again for maps, yippee.
-	for k, v in pairs(mapArray) do
-		if v[1] ~= "tm_firingrange" then
-			if (ply:GetPData("playedOn_" .. v[1]) == nil) then ply:SetNWInt("playedOn_" .. v[1], 0) else ply:SetNWInt("playedOn_" .. v[1], tonumber(ply:GetPData("playedOn_" .. v[1]))) end
-		end
 	end
 
 	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
@@ -327,8 +317,8 @@ function GM:PlayerInitialSpawn(ply)
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
 		ply:KillSilent()
+		ply:ConCommand("tm_openmainmenu")
 	end)
-	ply:ConCommand("tm_openmainmenu")
 end
 
 net.Receive("FiringRangeGiveWeapon", function(len, ply)
@@ -339,7 +329,9 @@ end )
 
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
-util.AddNetworkString("DeathHud")
+util.AddNetworkString("NotifyDeath")
+util.AddNetworkString("NotifyLevelUp")
+util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
@@ -364,17 +356,18 @@ hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
 
 --Rocket jumping.
 local function reduceRocketDamage( ent, dmginfo )
-    if not dmginfo:IsExplosionDamage() then return end
-    if not ent:IsPlayer() then return end
-    if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
+	if not dmginfo:IsExplosionDamage() then return end
+	if not ent:IsPlayer() then return end
+	if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
 
-    local attacker = dmginfo:GetAttacker()
+	local attacker = dmginfo:GetAttacker()
+	if attacker ~= ent then return end
 
-    local dmgForce = dmginfo:GetDamageForce()
-    local newForce = dmgForce * 1.15
-    dmginfo:SetDamageForce(newForce)
-    ent:SetVelocity(newForce / 70)
-    dmginfo:ScaleDamage(0.3)
+	local dmgForce = dmginfo:GetDamageForce()
+	local newForce = dmgForce * 1.15
+	dmginfo:SetDamageForce(newForce)
+	ent:SetVelocity(newForce / 70)
+	dmginfo:ScaleDamage(0.3)
 end
 hook.Add("EntityTakeDamage", "rocketjumpsEntityTakeDamage", reduceRocketDamage)
 
@@ -383,7 +376,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
-		victim:SetNWBool("watchingKillCam", false)
 	else
 		attacker:SetNWInt("playerKills", attacker:GetNWInt("playerKills") + 1)
 		attacker:SetNWInt("playerKDR", attacker:GetNWInt("playerKills") / attacker:GetNWInt("playerDeaths"))
@@ -398,7 +390,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
-		victim:SetNWBool("watchingKillCam", false)
 
 		if (attacker:GetActiveWeapon():IsValid()) then
 			weaponClassName = attacker:GetActiveWeapon():GetClass()
@@ -419,20 +410,24 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
-		if victim:GetNWBool("mainmenu") == false and victim:GetNWBool("isSpectating") == false then
-			victim:SetNWBool("watchingKillCam", false)
+		if victim:GetNWBool("mainmenu") == false and victim:GetNWBool("isSpectating") == false and victim ~= nil then
 			victim:Spawn()
 			victim:UnSpectate()
 		end
 	end)
 
 	if not attacker:IsPlayer() then
-		net.Start("DeathHud")
+		net.Start("NotifyDeath")
 		net.WriteEntity(victim)
 		net.WriteString("Suicide")
 		net.WriteFloat(0)
 		net.WriteBool(false)
 		net.Send(victim)
+
+		net.Start("KillFeedUpdate")
+		net.WriteString(victim:GetName() .. " commited suicide")
+		net.WriteFloat(0)
+		net.Broadcast()
 		return
 	end
 
@@ -447,6 +442,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if (attacker:GetActiveWeapon():IsValid()) then
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 		weaponName = weaponInfo["PrintName"]
+	else
+		weaponName = ""
 	end
 
 	if (victim ~= attacker) and (inflictor ~= nil) then
@@ -456,37 +453,36 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteFloat(distance)
 		net.WriteFloat(victimHitgroup)
 		net.Send(attacker)
-	end
 
-	if (victim ~= attacker) and (inflictor ~= nil) then
-		net.Start("DeathHud")
+		net.Start("NotifyDeath")
 		net.WriteEntity(attacker)
 		net.WriteString(weaponName)
 		net.WriteFloat(distance)
 		net.WriteFloat(victimHitgroup)
 		net.Send(victim)
 
+		net.Start("KillFeedUpdate")
+		net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
+		net.WriteFloat(victimHitgroup)
+		net.Broadcast()
+
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
-		if attacker:GetPos():Distance(victim:GetPos()) < 5000 then
-			victim:SetNWBool("watchingKillCam", true)
+		victim:SpectateEntity(attacker)
+		victim:Spectate(OBS_MODE_DEATHCAM)
+
+		timer.Simple(0.75, function()
+			if not IsValid(victim) or not IsValid(attacker) then return end
+
 			victim:SpectateEntity(attacker)
-			victim:Spectate(OBS_MODE_DEATHCAM)
+			victim:Spectate(OBS_MODE_FREEZECAM)
+		end)
 
-			timer.Simple(0.75, function()
-				if not IsValid(victim) or not IsValid(attacker) then return end
+		timer.Simple(2, function()
+			if not IsValid(victim) or not IsValid(attacker) then return end
 
-				victim:SpectateEntity(attacker)
-				victim:Spectate(OBS_MODE_FREEZECAM)
-			end)
-
-			timer.Simple(2, function()
-				if not IsValid(victim) or not IsValid(attacker) then return end
-
-				victim:SpectateEntity(attacker)
-				victim:Spectate(OBS_MODE_IN_EYE)
-				--victim:SendLua("surface.PlaySound('misc/freeze_cam.wav')")
-			end)
-		end
+			victim:SpectateEntity(attacker)
+			victim:Spectate(OBS_MODE_IN_EYE)
+		end)
 	end
 
 	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
@@ -520,9 +516,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + distance)
 		attacker:SetNWInt("playerAccoladeLongshot", attacker:GetNWInt("playerAccoladeLongshot") + 1)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + distance)
-	end
-
-	if distance <= 3 then
+	elseif distance <= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladePointblank", attacker:GetNWInt("playerAccoladePointblank") + 1)
@@ -569,7 +563,9 @@ function CheckForPlayerLevel(ply)
 			if (curLvl + 1) == v[1] then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 		end
 
-		ply:PrintMessage(HUD_PRINTCENTER, "You have leveled up to level " .. (curLvl + 1) .. ".", Color(85, 0, 255, 255), 0)
+		net.Start("NotifyLevelUp")
+		net.WriteFloat(curLvl)
+		net.Send(ply)
 	end
 end
 
@@ -606,10 +602,6 @@ end
 function CloseMainMenu(ply)
 	if ply:GetNWBool("mainmenu") == true then
 		ply:SetNWBool("mainmenu", false)
-	end
-
-	if ply:GetNWBool("watchingKillCam") == true then
-		ply:SetNWBool("watchingKillCam", false)
 	end
 end
 concommand.Add("tm_closemainmenu", CloseMainMenu)
@@ -648,7 +640,7 @@ end
 hook.Add("Think", "HealthRegen", Regeneration)
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every minute, helps people with shitty computers.
-timer.Create("cleanMap", 60, 0, function()
+timer.Create("cleanMap", 30, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
@@ -663,7 +655,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
-		if #player.GetHumans() == 0 then print("Map Vote skipped as their are no players on the server.") return end
+		if #player.GetHumans() == 0 then return end
 
 		mapVoteOpen = true
 
@@ -792,17 +784,10 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
 	ply:SetPData("playerAccoladeRevenge", ply:GetNWInt("playerAccoladeRevenge"))
-	ply:SetPData("playerAccoladeCopycat", ply:GetNWInt("playerAccoladeCopycat"))
 
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
 		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
-	end
-
-	for m, v in pairs(availableMaps) do
-		if v[1] ~= "tm_firingrange" then
-			ply:SetPData("playedOn_" .. v[1], ply:GetNWInt("playedOn_" .. v[1]))
-		end
 	end
 end
 
@@ -839,17 +824,10 @@ function GM:ShutDown()
 		v:SetPData("playerAccoladeHeadshot", v:GetNWInt("playerAccoladeHeadshot"))
 		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
 		v:SetPData("playerAccoladeRevenge", v:GetNWInt("playerAccoladeRevenge"))
-		v:SetPData("playerAccoladeCopycat", v:GetNWInt("playerAccoladeCopycat"))
 
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do
 			v:SetPData("killsWith_" .. t[1], v:GetNWInt("killsWith_" .. t[1]))
-		end
-
-		for m, n in pairs(mapArray) do
-			if n[1] ~= "tm_firingrange" then
-				v:SetPData("playedOn_" .. n[1], v:GetNWInt("playedOn_" .. n[1]))
-			end
 		end
 	end
 end

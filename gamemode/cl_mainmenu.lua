@@ -23,14 +23,8 @@ function mainMenu()
         belowMinimumRes = false
     end
 
-    if CLIENT and GetConVar("tm_communitymusic"):GetInt() == 0 then
-        musicList = {"music/sicktwisteddemented_sewerslvt.wav"}
-        chosenMusic = (musicList[math.random(#musicList)])
-    else
-        musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
-        chosenMusic = (musicList[math.random(#musicList)])
-    end
-
+    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(client, chosenMusic)
 
     if chosenMusic == "music/sicktwisteddemented_sewerslvt.wav" then
@@ -127,12 +121,10 @@ function mainMenu()
                 if mapID ~= nil then
                     draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                     draw.SimpleText(mapDesc, "StreakText", ScrW() - 210, ScrH() - 25, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 250, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Server Uptime: " .. math.Round(RealTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 else
                     draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 70, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Server uptime: " .. math.Round(SysTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                 end
 
                 draw.SimpleText(LocalPlayer():GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -285,7 +277,7 @@ function mainMenu()
 
             local Patch07b1 = vgui.Create("DPanel", PatchScroller)
             Patch07b1:Dock(TOP)
-            Patch07b1:SetSize(0, 250)
+            Patch07b1:SetSize(0, 270)
             Patch07b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
                 draw.SimpleText("0.7b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
@@ -295,10 +287,11 @@ function mainMenu()
                 draw.SimpleText("+ Grenades","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Rocket/M79 Jumping","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ UI SFX","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved explosion FX", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Small scale optimization", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed conflicting files", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Leveling player cards","StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved explosion FX", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Small scale optimization", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed conflicting files", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
             end
 
             local Patch06b1 = vgui.Create("DPanel", PatchScroller)
@@ -556,15 +549,11 @@ function mainMenu()
 
                     local StatsAccolades = vgui.Create("DPanel", StatsScroller)
                     StatsAccolades:Dock(TOP)
-                    StatsAccolades:SetSize(0, 400)
+                    StatsAccolades:SetSize(0, 360)
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
                     StatsWeapons:SetSize(0, 4570)
-
-                    local StatsMaps = vgui.Create("DPanel", StatsScroller)
-                    StatsMaps:Dock(TOP)
-                    StatsMaps:SetSize(0, 650)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -645,9 +634,6 @@ function mainMenu()
                         draw.SimpleText("Revenge Kills:", "SettingsLabel", 20, 325, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 500, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Copycat Kills:", "SettingsLabel", 20, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeCopycat"), "SettingsLabel", 500, 360, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-
                         if playerSelected == true and comparingWith ~= false then
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
@@ -657,7 +643,6 @@ function mainMenu()
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 720, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeCopycat"), "SettingsLabel", 720, 360, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
                         end
                     end
 
@@ -671,23 +656,6 @@ function mainMenu()
 
                             if playerSelected == true and comparingWith ~= false then
                                 draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            end
-                        end
-                    end
-
-                    StatsMaps.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("MAPS", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Times Played", "SettingsLabel", 20, 70, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-
-                        for p, t in pairs(mapArr) do
-                            if t[1] ~= "tm_firingrange" then
-                                draw.SimpleText(t[2] .. ":", "SettingsLabel", 20, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                                draw.SimpleText(trackingPlayer:GetNWInt("playedOn_" .. t[1]), "SettingsLabel", 500, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-
-                                if playerSelected == true and comparingWith ~= false then
-                                    draw.SimpleText(comparingWith:GetNWInt("playedOn_" .. t[1]), "SettingsLabel", 720, 115 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                                end
                             end
                         end
                     end
@@ -730,16 +698,6 @@ function mainMenu()
                     WeaponsJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         StatsScroller:ScrollToChild(StatsWeapons)
-                    end
-
-                    local MapsJump = vgui.Create("DImageButton", StatsQuickjumpHolder)
-                    MapsJump:SetPos(4, 256)
-                    MapsJump:SetSize(48, 48)
-                    MapsJump:SetImage("icons/mapicon.png")
-                    MapsJump:SetTooltip("Map Stats")
-                    MapsJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        StatsScroller:ScrollToChild(StatsMaps)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", StatsQuickjumpHolder)
@@ -843,17 +801,8 @@ function mainMenu()
                 gui.OpenURL("https://www.youtube.com/channel/UC1aCX3i4L6TyEv_rmo_HeRA")
             end
 
-            local ServerButton = vgui.Create("DImageButton", MainPanel)
-            ServerButton:SetPos(152, ScrH() - 72)
-            ServerButton:SetImage("icons/discordicon.png")
-            ServerButton:SetSize(64, 64)
-            ServerButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
-                gui.OpenURL("https://discord.gg/landfall")
-            end
-
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(224, ScrH() - 72)
+            GithubButton:SetPos(152, ScrH() - 72)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton.DoClick = function()
@@ -958,7 +907,7 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
-                    local totalCards = 184
+                    local totalCards = 186
                     local cardsUnlocked = 0
 
                     local defaultCardsTotal = 0
@@ -1053,7 +1002,7 @@ function mainMenu()
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 750)
+                    DockLevelCards:SetSize(0, 850)
 
                     --Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
@@ -2062,7 +2011,7 @@ function mainMenu()
                     PreviewTextHolder:SetSize(0, 100)
 
                     PreviewTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
                         draw.SimpleText("Current playermodel:", "Health", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
                     end
 
@@ -2079,7 +2028,7 @@ function mainMenu()
                     NewModelTextHolder:SetSize(0, 160)
 
                     NewModelTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
 
                         if newModel ~= nil then
                             draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
@@ -2114,7 +2063,7 @@ function mainMenu()
                                 draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
                             end
                         end
-                        
+
                         if newModelUnlockType == "smackdown" then
                             if LocalPlayer():GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
                                 draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
@@ -2252,10 +2201,10 @@ function mainMenu()
                                     newModelDesc = v[3]
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
-    
+
                                     if selectedModelShown == true then
                                         SelectedModelDisplay:Remove()
-    
+
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                                         SelectedModelDisplay:SetSize(400, 400)
                                         SelectedModelDisplay:SetPos(0, -25)
@@ -2382,10 +2331,10 @@ function mainMenu()
                                     newModelDesc = v[3]
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
-    
+
                                     if selectedModelShown == true then
                                         SelectedModelDisplay:Remove()
-    
+
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                                         SelectedModelDisplay:SetSize(400, 400)
                                         SelectedModelDisplay:SetPos(0, -25)
@@ -2447,10 +2396,10 @@ function mainMenu()
                                     newModelDesc = v[3]
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
-    
+
                                     if selectedModelShown == true then
                                         SelectedModelDisplay:Remove()
-    
+
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                                         SelectedModelDisplay:SetSize(400, 400)
                                         SelectedModelDisplay:SetPos(0, -25)
@@ -2852,11 +2801,11 @@ function mainMenu()
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 520)
+                    DockUI:SetSize(0, 480)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
-                    DockAudio:SetSize(0, 440)
+                    DockAudio:SetSize(0, 320)
 
                     local DockViewmodel = vgui.Create("DPanel", OptionsScroller)
                     DockViewmodel:Dock(TOP)
@@ -2876,7 +2825,7 @@ function mainMenu()
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 360)
+                    DockPerformance:SetSize(0, 190)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -3027,13 +2976,12 @@ function mainMenu()
                         draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Health Anchor", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Health Style", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Velocity Counter", "SettingsLabel", 55, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 425, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -3060,12 +3008,10 @@ function mainMenu()
                         healthAnchor:SetValue("Left Side")
                     elseif CLIENT and GetConVar("tm_healthanchor"):GetInt() == 1 then
                         healthAnchor:SetValue("Middle")
-                    else
-                        healthAnchor:SetValue("Below Crosshair")
                     end
+
                     healthAnchor:AddChoice("Left Side")
                     healthAnchor:AddChoice("Middle")
-                    healthAnchor:AddChoice("Below Crosshair")
                     healthAnchor.OnSelect = function(self, value)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_healthanchor", value - 1)
@@ -3078,40 +3024,29 @@ function mainMenu()
                         ammoStyle:SetValue("Numeric")
                     elseif CLIENT and GetConVar("tm_ammostyle"):GetInt() == 1 then
                         ammoStyle:SetValue("Bar")
-                    elseif CLIENT and GetConVar("tm_ammostyle"):GetInt() == 2 then
-                        ammoStyle:SetValue("Below Crosshair")
-                    else
-                        ammoStyle:SetValue("Centered Numeric")
                     end
+
                     ammoStyle:AddChoice("Numeric")
                     ammoStyle:AddChoice("Bar")
-                    ammoStyle:AddChoice("Below Crosshair")
-                    ammoStyle:AddChoice("Centered Numeric")
                     ammoStyle.OnSelect = function(self, value)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         RunConsoleCommand("tm_ammostyle", value - 1)
                     end
 
-                    local velocityToggle = DockUI:Add("DCheckBox")
-                    velocityToggle:SetPos(20, 270)
-                    velocityToggle:SetConVar("tm_showspeed")
-                    velocityToggle:SetValue(true)
-                    velocityToggle:SetSize(30, 30)
-
                     local accoladeToggle = DockUI:Add("DCheckBox")
-                    accoladeToggle:SetPos(20, 310)
+                    accoladeToggle:SetPos(20, 270)
                     accoladeToggle:SetConVar("tm_enableaccolades")
                     accoladeToggle:SetValue(true)
                     accoladeToggle:SetSize(30, 30)
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 350)
+                    reloadHintsToggle:SetPos(20, 310)
                     reloadHintsToggle:SetConVar("tm_reloadhints")
                     reloadHintsToggle:SetValue(true)
                     reloadHintsToggle:SetSize(30, 30)
 
                     local killUIAnchor = DockUI:Add("DComboBox")
-                    killUIAnchor:SetPos(20, 390)
+                    killUIAnchor:SetPos(20, 350)
                     killUIAnchor:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
                         killUIAnchor:SetValue("Bottom")
@@ -3126,7 +3061,7 @@ function mainMenu()
                     end
 
                     local deathUIAnchor = DockUI:Add("DComboBox")
-                    deathUIAnchor:SetPos(20, 430)
+                    deathUIAnchor:SetPos(20, 390)
                     deathUIAnchor:SetSize(100, 30)
                     if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
                         deathUIAnchor:SetValue("Bottom")
@@ -3141,7 +3076,7 @@ function mainMenu()
                     end
 
                     local HUDEditorButton = vgui.Create("DButton", DockUI)
-                    HUDEditorButton:SetPos(20, 470)
+                    HUDEditorButton:SetPos(20, 430)
                     HUDEditorButton:SetText("")
                     HUDEditorButton:SetSize(500, 40)
                     local textAnim = 0
@@ -3166,9 +3101,6 @@ function mainMenu()
                         draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Menu Music", "SettingsLabel", 55, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Menu Music Volume", "SettingsLabel", 155, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Community Requested Menu Music", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Game End Music", "SettingsLabel", 55, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Game End Music Volume", "SettingsLabel", 155, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
@@ -3230,24 +3162,6 @@ function mainMenu()
                     menuMusicVolume.OnValueChanged = function(self, value)
                         menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4)
                     end
-
-                    local communityMusicButton = DockAudio:Add("DCheckBox")
-                    communityMusicButton:SetPos(20, 310)
-                    communityMusicButton:SetConVar("tm_communitymusic")
-                    communityMusicButton:SetSize(30, 30)
-
-                    local gameEndMusicButton = DockAudio:Add("DCheckBox")
-                    gameEndMusicButton:SetPos(20, 350)
-                    gameEndMusicButton:SetConVar("tm_gameendmusic")
-                    gameEndMusicButton:SetSize(30, 30)
-
-                    local gameEndMusicVolume = DockAudio:Add("DNumSlider")
-                    gameEndMusicVolume:SetPos(-85, 390)
-                    gameEndMusicVolume:SetSize(250, 30)
-                    gameEndMusicVolume:SetConVar("tm_gameendmusicvolume")
-                    gameEndMusicVolume:SetMin(0)
-                    gameEndMusicVolume:SetMax(1)
-                    gameEndMusicVolume:SetDecimals(2)
 
                     DockViewmodel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
@@ -3451,10 +3365,6 @@ function mainMenu()
                         draw.SimpleText("ADS Vignette", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("ADS DOF", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                         draw.SimpleText("Inspection DOF", "SettingsLabel", 55 , 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Muzzle Gas Blur", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Bullet Tracers", "SettingsLabel", 55 , 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Ejected Shells Time", "SettingsLabel", 155 , 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Flashlight Shadows", "SettingsLabel", 55 , 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
                     end
 
                     local vignetteDOF = DockPerformance:Add("DCheckBox")
@@ -3474,32 +3384,6 @@ function mainMenu()
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetValue(true)
                     inspectionDOF:SetSize(30, 30)
-
-                    local gasBlur = DockPerformance:Add("DCheckBox")
-                    gasBlur:SetPos(20, 190)
-                    gasBlur:SetConVar("cl_tfa_fx_gasblur")
-                    gasBlur:SetValue(true)
-                    gasBlur:SetSize(30, 30)
-
-                    local bulletTracers = DockPerformance:Add("DCheckBox")
-                    bulletTracers:SetPos(20, 230)
-                    bulletTracers:SetConVar("cl_tfa_ballistics_fx_tracers_mp")
-                    bulletTracers:SetValue(true)
-                    bulletTracers:SetSize(30, 30)
-
-                    local ejectedDespawnTime = DockPerformance:Add("DNumSlider")
-                    ejectedDespawnTime:SetPos(-85, 270)
-                    ejectedDespawnTime:SetSize(250, 30)
-                    ejectedDespawnTime:SetConVar("cl_tfa_fx_ejectionlife")
-                    ejectedDespawnTime:SetMin(0)
-                    ejectedDespawnTime:SetMax(10)
-                    ejectedDespawnTime:SetDecimals(0)
-
-                    local flashlightShadows = DockPerformance:Add("DCheckBox")
-                    flashlightShadows:SetPos(20, 310)
-                    flashlightShadows:SetConVar("tpf_cl_shadows")
-                    flashlightShadows:SetValue(true)
-                    flashlightShadows:SetSize(30, 30)
                 end
             end
 
