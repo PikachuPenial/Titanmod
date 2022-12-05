@@ -1,3 +1,6 @@
+--Color array, saving space
+local white = Color(255, 255, 255, 255)
+
 local ScoreboardDerma = nil
 local PlayerList = nil
 
@@ -31,7 +34,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.7b1", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod 0.7b1", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -39,7 +42,7 @@ function GM:ScoreboardShow()
 		InfoPanel:SetSize(0, 36)
 
 		InfoPanel.Paint = function(self, w, h)
-			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 0, white, TEXT_ALIGN_LEFT)
 		end
 
 		PlayersIcon = vgui.Create("DImage", InfoPanel)
@@ -97,13 +100,13 @@ function GM:ScoreboardShow()
 		--Displays information about the current map, the map vote, and the server.
 		MapInfoPanel.Paint = function(self, w, h)
 			if mapName ~= nil then
-				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-				draw.SimpleText("Next map vote in " .. timeUntilMapVote .. "s~", "StreakText", 102.5, 80, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("Next map vote in " .. timeUntilMapVote .. "s~", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
 			else
-				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, white, TEXT_ALIGN_LEFT)
 			end
 
-			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 80, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 80, white, TEXT_ALIGN_RIGHT)
 		end
 
 		if mapName ~= nil then
@@ -119,7 +122,7 @@ function GM:ScoreboardShow()
 
 		--Displays information about the current map, the map vote, and the server.
 		LevelingPanel.Paint = function(self, w, h)
-			draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige") .. " L" .. LocalPlayer():GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+			draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige") .. " L" .. LocalPlayer():GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, white, TEXT_ALIGN_LEFT)
 
 			surface.SetDrawColor(35, 35, 35, 100)
 			surface.DrawRect(0, 20, 630, 10)
@@ -161,14 +164,14 @@ function GM:ScoreboardShow()
 				else
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
 				end
-				draw.SimpleText(v:GetName(), "Health", 255, 5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText(v:GetName(), "Health", 255, 5, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, white, TEXT_ALIGN_LEFT)
 
 				draw.SimpleText(v:Frags(), "Health", 375, 35, Color(0, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:Deaths(), "Health", 420, 35, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
 
 			playerCallingCard = vgui.Create("DImage", PlayerPanel)
@@ -244,7 +247,7 @@ function GM:ScoreboardShow()
 			FiringRangeDerma:ShowCloseButton(false)
 			FiringRangeDerma.Paint = function()
 				draw.RoundedBox(5, 0, 0, FiringRangeDerma:GetWide(), FiringRangeDerma:GetTall(), Color(35, 35, 35, 150))
-				draw.SimpleText("Weapon Spawner", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+				draw.SimpleText("Weapon Spawner", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 			end
 
 			FiringRangeDerma:MoveTo(ScrW() / 2 + 325, ScrH() / 2 - 265, 0.5, 0, 0.25)
@@ -280,8 +283,8 @@ function GM:ScoreboardShow()
 				weapon:SetSize(170, 40)
 				weapon:SetText("")
 				weapon.Paint = function()
-					draw.DrawText(v[2], "StreakText", 5, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-					draw.DrawText(v[3], "StreakTextMini", 5, 25, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+					draw.DrawText(v[2], "StreakText", 5, 5, white, TEXT_ALIGN_LEFT)
+					draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT)
 				end
 				WeaponList:Add(weapon)
 

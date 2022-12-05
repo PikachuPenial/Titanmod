@@ -5,8 +5,7 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local feedArray = {}
 local health
-local playingFiringRange = false
-if game.GetMap() == "tm_firingrange" then playingFiringRange = true end
+if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
@@ -251,15 +250,15 @@ net.Receive("NotifyKill", function(len, ply)
     if lastHitIn == 1 then
         headshot = "Headshot +20 | "
         seperator = "| "
-        KillIcon:SetImageColor(Color(255, 0, 0))
+        KillIcon:SetImageColor(red)
     else
         headshot = ""
-        KillIcon:SetImageColor(Color(255, 255, 255))
+        KillIcon:SetImageColor(white)
     end
 
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
-    local whiteColor = Color(255, 255, 255)
+    local whiteColor = white
     local orangeColor = Color(255, 200, 100)
     local redColor = Color(255, 50, 50)
     local rainbowColor
@@ -280,10 +279,10 @@ net.Receive("NotifyKill", function(len, ply)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
         draw.SimpleText(LocalPlayer():GetNWInt("killStreak") .. " Kills", "StreakText", 300, 25, streakColor, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, white, TEXT_ALIGN_CENTER)
         if GetConVar("tm_enableaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. onstreak .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. onstreak .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, white, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -342,32 +341,32 @@ net.Receive("NotifyDeath", function(len, ply)
 
     DeathNotif.Paint = function()
     if lastHitIn == 1 then
-            draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+            draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, red, TEXT_ALIGN_LEFT)
         else
-            draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, white, TEXT_ALIGN_LEFT)
         end
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-        draw.SimpleText("Killed by", "Trebuchet18", 400, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 95.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 120, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 145, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-        draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.SimpleText("Killed by", "Trebuchet18", 400, 0, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 95.5, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 120, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "PlayerDeathName", 400, 145, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, white, TEXT_ALIGN_RIGHT)
+        draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, white, TEXT_ALIGN_LEFT)
         if killedBy:Health() <= 0 then
-            draw.SimpleText("DEAD", "WepNameKill", 390, 130, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
+            draw.SimpleText("DEAD", "WepNameKill", 390, 130, red, TEXT_ALIGN_RIGHT)
         else
-            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, white, TEXT_ALIGN_RIGHT)
         end
-        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, white, TEXT_ALIGN_RIGHT)
+        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, white, TEXT_ALIGN_LEFT)
 
-        draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, white, TEXT_ALIGN_CENTER)
         if respawnTimeLeft != nil or respawnTimeLeft > 4 or respawnTimeLeft < 0 then
-            draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, white, TEXT_ALIGN_LEFT)
         end
-        draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, white, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
@@ -436,11 +435,11 @@ net.Receive("MapVoteHUD", function(len, ply)
     MapVoteHUD.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 150))
         draw.RoundedBox(0, 0, 0, 20, h, Color(40, 40, 40, 150))
-        draw.SimpleText("VOTE FOR NEXT MAP", "StreakText", 110, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText("Open scoreboard to use mouse", "StreakTextMini", 110, 17.5, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("VOTE FOR NEXT MAP", "StreakText", 110, 0, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Open scoreboard to use mouse", "StreakTextMini", 110, 17.5, white, TEXT_ALIGN_CENTER)
 
-        draw.SimpleText(firstMapName, "MapName", 110, 188, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText(secondMapName, "MapName", 110, 388, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(firstMapName, "MapName", 110, 188, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText(secondMapName, "MapName", 110, 388, white, TEXT_ALIGN_CENTER)
     end
 
     local MapChoice = vgui.Create("DImageButton", MapVoteHUD)
@@ -513,8 +512,8 @@ net.Receive("MapVoteHUD", function(len, ply)
             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 10)
         end
 
-        draw.SimpleText("CONTINUE ON", "MapName", 90, 10 - textAnim, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText(currentMapName, "WepNameKill", 90, 27.5 - textAnim, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("CONTINUE ON", "MapName", 90, 10 - textAnim, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText(currentMapName, "WepNameKill", 90, 27.5 - textAnim, white, TEXT_ALIGN_CENTER)
     end
     ContinueButton.DoClick = function()
         RunConsoleCommand("tm_voteformap", "skip")
@@ -597,12 +596,12 @@ net.Receive("EndOfGame", function(len, ply)
         local PlayerPanel = vgui.Create("DPanel", PlayerScroller)
         PlayerPanel:SetSize(400, ScrH() * 0.7)
         PlayerPanel.Paint = function(self, w, h)
-            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 30, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, white, TEXT_ALIGN_CENTER)
 
             draw.SimpleText(v:Frags(), "Health", 170, 150, Color(0, 255, 0), TEXT_ALIGN_CENTER)
-            draw.SimpleText(v:Deaths(), "Health", 230, 150, Color(255, 0, 0), TEXT_ALIGN_CENTER)
-            draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(v:Deaths(), "Health", 230, 150, red, TEXT_ALIGN_CENTER)
+            draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, white, TEXT_ALIGN_CENTER)
         end
 
         KillsIcon = vgui.Create("DImage", PlayerPanel)
@@ -646,8 +645,8 @@ net.Receive("EndOfGame", function(len, ply)
 
     BottomBlock.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
-        draw.SimpleText(nextMap, "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 55, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 30, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.SimpleText(nextMap, "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 55, white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 30, white, TEXT_ALIGN_LEFT)
     end
 
     EndOfGameUI:Show()
@@ -673,7 +672,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
 
     LevelNotif.Paint = function(self, w, h)
         draw.SimpleText("LEVEL UP", "PlayerNotiName", 300, 0, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-        draw.SimpleText(previousLevel .. "  > " .. previousLevel + 1, "PlayerNotiName", 300, 55, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(previousLevel .. "  > " .. previousLevel + 1, "PlayerNotiName", 300, 55, white, TEXT_ALIGN_CENTER)
     end
 
     LevelNotif:Show()

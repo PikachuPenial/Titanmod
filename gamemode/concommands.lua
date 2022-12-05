@@ -14,26 +14,17 @@ concommand.Add("testkill", TestKillNoti)
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-    --Statistics
     ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
     ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
     ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
     ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
-
-    --Streaks
     ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
-
-    --Leveling
 	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
 	ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
 	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
-
-    --Customizatoin
     ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
     ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
     ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
-
-    --Accolades
     ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
     ply:SetPData("playerAccoladeBuzzkill", ply:GetNWInt("playerAccoladeBuzzkill"))
     ply:SetPData("playerAccoladeLongshot", ply:GetNWInt("playerAccoladeLongshot"))
@@ -42,7 +33,6 @@ function ForceSave(ply, cmd, args)
     ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
     ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
     ply:SetPData("playerAccoladeRevenge", ply:GetNWInt("playerAccoladeRevenge"))
-
     print("Save was successful!")
 end
 concommand.Add("tm_forcesave", ForceSave)

@@ -1,3 +1,6 @@
+--Color array, saving space
+local white = Color(255, 255, 255, 255)
+
 local MainMenu
 
 function mainMenu()
@@ -109,35 +112,35 @@ function mainMenu()
         local MainPanel = MainMenu:Add("MainPanel")
             MainPanel.Paint = function()
                 if CLIENT and GetConVar("tm_menumusic"):GetInt() == 1 then
-                    draw.SimpleText("Listening to: " .. musicName, "StreakText", ScrW() - 5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Listening to: " .. musicName, "StreakText", ScrW() - 5, 0, white, TEXT_ALIGN_RIGHT)
 
                     if requestedBy ~= nil then
-                        draw.SimpleText("Requested by " .. requestedBy, "StreakText", ScrW() - 5, 20, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Requested by " .. requestedBy, "StreakText", ScrW() - 5, 20, white, TEXT_ALIGN_RIGHT)
                     end
                 else
-                    draw.SimpleText("Listening to nothing, peace and quiet :)", "StreakText", ScrW() - 5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Listening to nothing, peace and quiet :)", "StreakText", ScrW() - 5, 0, white, TEXT_ALIGN_RIGHT)
                 end
 
                 if mapID ~= nil then
-                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText(mapDesc, "StreakText", ScrW() - 210, ScrH() - 25, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 50, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(mapDesc, "StreakText", ScrW() - 210, ScrH() - 25, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map Uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, white, TEXT_ALIGN_RIGHT)
                 else
-                    draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, white, TEXT_ALIGN_RIGHT)
                 end
 
-                draw.SimpleText(LocalPlayer():GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText(LocalPlayer():GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
 
                 if LocalPlayer():GetNWInt("playerPrestige") ~= 0 and LocalPlayer():GetNWInt("playerLevel") ~= 60 then
-                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 660, 37.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
                 elseif LocalPlayer():GetNWInt("playerPrestige") ~= 0 and LocalPlayer():GetNWInt("playerLevel") == 60 then
-                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 535, 37.5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
                 end
 
                 if LocalPlayer():GetNWInt("playerLevel") ~= 60 then
-                    draw.SimpleText(math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer():GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                    draw.SimpleText(LocalPlayer():GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText(math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer():GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(LocalPlayer():GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
 
                     surface.SetDrawColor(30, 30, 30, 200)
                     surface.DrawRect(440, 80, 220, 10)
@@ -145,7 +148,7 @@ function mainMenu()
                     surface.SetDrawColor(200, 200, 0, 200)
                     surface.DrawRect(440, 80, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 220, 10)
                 else
-                    draw.SimpleText("+ " .. math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("+ " .. math.Round(LocalPlayer():GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
             end
 
@@ -164,7 +167,7 @@ function mainMenu()
                     end
 
                     if prestigeConfirm == 0 then
-                        draw.DrawText("PRESTIGE TO P" .. LocalPlayer():GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                        draw.DrawText("PRESTIGE TO P" .. LocalPlayer():GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                     else
                         draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, Color(255, 0, 0, 255), TEXT_ALIGN_LEFT)
                     end
@@ -271,8 +274,8 @@ function mainMenu()
             PatchTextHeader:SetSize(0, 90)
             PatchTextHeader.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch07b1 = vgui.Create("DPanel", PatchScroller)
@@ -280,18 +283,18 @@ function mainMenu()
             Patch07b1:SetSize(0, 270)
             Patch07b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.7b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/21/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.7b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/21/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Added Arctic, Rig, and Station map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Grenades","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Rocket/M79 Jumping","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ UI SFX","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Leveling player cards","StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved explosion FX", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Small scale optimization", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed conflicting files", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved explosion FX", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Small scale optimization", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed conflicting files", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch06b1 = vgui.Create("DPanel", PatchScroller)
@@ -299,22 +302,22 @@ function mainMenu()
             Patch06b1:SetSize(0, 350)
             Patch06b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.6b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/14/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.6b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/14/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Player Leveling and Prestiging","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Dynamic weapon spread","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ 50+ player cards","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed:", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("       RFB, Makarov, Mare's Leg, Honey Badger", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Scoreboard improvments", "StreakText", 5, 180, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Suicides no longer give accolades", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated fonts", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated weapon names", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Firing Range appearing in map vote", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Various efforts towards optimization", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Reduced recoil by 10% due to spread addition", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Streamlined new content creation", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("       RFB, Makarov, Mare's Leg, Honey Badger", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scoreboard improvments", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Suicides no longer give accolades", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated fonts", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated weapon names", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Firing Range appearing in map vote", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Various efforts towards optimization", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Reduced recoil by 10% due to spread addition", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Streamlined new content creation", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch05b1 = vgui.Create("DPanel", PatchScroller)
@@ -322,19 +325,19 @@ function mainMenu()
             Patch05b1:SetSize(0, 290)
             Patch05b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.5b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/10/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.5b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/10/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Added Shipment and Firing Range map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Colt 9mm, FN 2000, LR-300", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Colt 9mm, FN 2000, LR-300", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New Secondary weapons:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Mare's Leg, MP-443 Grach", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Mare's Leg, MP-443 Grach", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Firing Range Weapon Spawning","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Hit/Kill sound type options","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated card and model menus", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Shortened some weapon names", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed YouTube link", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated card and model menus", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Shortened some weapon names", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed YouTube link", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch04b2 = vgui.Create("DPanel", PatchScroller)
@@ -342,13 +345,13 @@ function mainMenu()
             Patch04b2:SetSize(0, 170)
             Patch04b2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.4b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/08/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.4b2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/08/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Map updates and optimizations","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Accolade player models", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Scope Shadows are now forced off", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Many bug fixes", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scope Shadows are now forced off", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Many bug fixes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch04b1 = vgui.Create("DPanel", PatchScroller)
@@ -356,31 +359,31 @@ function mainMenu()
             Patch04b1:SetSize(0, 530)
             Patch04b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.4b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/04/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.4b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/04/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Added Mall and Bridge map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Honey Badger, RK62, PzB 39, WA-2000", "StreakText", 5, 120, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Honey Badger, RK62, PzB 39, WA-2000", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   OSP-18", "StreakText", 5, 160, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   OSP-18", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Match end UI","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New community music track", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Beta participation rewards", "StreakText", 5, 240, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed:", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("       Glock 17, Steyr AUG", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed:", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      FG 42, KRISS Vector, Scropion Evo 3,", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      PP-Bizon, Desert Eagle, ", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added Map Vote Time command", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Rooftops map", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Kill UI updating incorrectly", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized headshot tracking", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Flashlights are now rendered serverside", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added Flashlight customization options", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Scoreboard is now sorted by player score", "StreakText", 5, 480, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed full auto from Mk. 14 EBR and M14", "StreakText", 5, 500, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Glock 17, Steyr AUG", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      FG 42, KRISS Vector, Scropion Evo 3,", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      PP-Bizon, Desert Eagle, ", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added Map Vote Time command", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Rooftops map", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Kill UI updating incorrectly", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized headshot tracking", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Flashlights are now rendered serverside", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added Flashlight customization options", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Scoreboard is now sorted by player score", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed full auto from Mk. 14 EBR and M14", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch03b1 = vgui.Create("DPanel", PatchScroller)
@@ -388,8 +391,8 @@ function mainMenu()
             Patch03b1:SetSize(0, 630)
             Patch03b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.3b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("11/02/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.3b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("11/02/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Map voting","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Player cards and card options","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
@@ -397,26 +400,26 @@ function mainMenu()
                 draw.SimpleText("+ Weapon mastery","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Revenge and Copycat accolade","StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ 5 optics","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed:", "StreakText", 5, 200, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("       Stevens 620", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed:", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      Minimi Para", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved options and customize menus", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added map information to main menu", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Loadout notification on player spawn", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Endless mode as a server option", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Maps are now included in the addon", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   AR-15 now defaults to full auto", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Players climb ladders 10% faster", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Grapple Hook refreshes on player kill", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Wallrun velocity slightly increased", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Death info now shows on a players suicide", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized Kill UI", "StreakText", 5, 480, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed poor hit registration", "StreakText", 5, 500, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed new weapons not spawning after death", "StreakText", 5, 520, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed error on player suicide", "StreakText", 5, 540, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed error on players first death", "StreakText", 5, 560, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed error for loading player cards", "StreakText", 5, 580, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Stevens 620", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Minimi Para", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved options and customize menus", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added map information to main menu", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Loadout notification on player spawn", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Endless mode as a server option", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Maps are now included in the addon", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   AR-15 now defaults to full auto", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Players climb ladders 10% faster", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Grapple Hook refreshes on player kill", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Wallrun velocity slightly increased", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Death info now shows on a players suicide", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized Kill UI", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed poor hit registration", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed new weapons not spawning after death", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error on player suicide", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error on players first death", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed error for loading player cards", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("- Player specific spectating due to bug", "StreakText", 5, 600, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
             end
 
@@ -425,29 +428,29 @@ function mainMenu()
             Patch02b1:SetSize(0, 510)
             Patch02b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.2b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("10/22/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.2b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/22/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   M1919, MG 34, Thompson M1928", "StreakText", 5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   M1919, MG 34, Thompson M1928", "StreakText", 5, 100, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Spectating system", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Developer Mode", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed:", "StreakText", 5, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("       Colt M1911, Walther P99", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed:", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      Minimi Para, SCAR-H SSR, OTs-14 Groza,", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      Beretta Mx4 Storm, Imbel IA2, XM8, MP7A1,", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      FNP-45, PM-9, Colt M45A1, MK18, AEK-971", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fancy animations across the main menu", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed Clutch Accolade not being awarded", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Rounded played K/D on statistics", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   KIllcam no longer ends until player spawn", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Backend changes for future playercard support", "StreakText", 5, 420, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 440, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 460, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("       Colt M1911, Walther P99", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Minimi Para, SCAR-H SSR, OTs-14 Groza,", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      Beretta Mx4 Storm, Imbel IA2, XM8, MP7A1,", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      FNP-45, PM-9, Colt M45A1, MK18, AEK-971", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fancy animations across the main menu", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed Clutch Accolade not being awarded", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Rounded played K/D on statistics", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KIllcam no longer ends until player spawn", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Backend changes for future playercard support", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 480, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
             end
 
@@ -456,13 +459,13 @@ function mainMenu()
             Patch01b2:SetSize(0, 170)
             Patch01b2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.1b2", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("10/15/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.1b2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/15/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ Kill Cam", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Clutch Accolade", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ 7 new Options", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed some Options not saving after disconnect", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed some Options not saving after disconnect", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch01b1 = vgui.Create("DPanel", PatchScroller)
@@ -470,26 +473,26 @@ function mainMenu()
             Patch01b1:SetSize(0, 430)
             Patch01b1.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(100, 100, 100, 150))
-                draw.SimpleText("0.1b1", "OptionsHeader", 3, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("10/14/22", "Health", 5, 50, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("0.1b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("10/14/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
                 draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   KSVK 12.7, UMP9, Type-81", "StreakText", 5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KSVK 12.7, UMP9, Type-81", "StreakText", 5, 100, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   TCo Stim Pistol", "StreakText", 5, 140, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   TCo Stim Pistol", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New default Main Menu song ", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ New community music track", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ 3 new default playermodels", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ 3 new options", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed:", "StreakText", 5, 240, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      UMP-45", "StreakText", 5, 260, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed:", "StreakText", 5, 280, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("      M14, Mk. 14 EBR", "StreakText", 5, 300, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Tweaked Grappling Hook cooldown (15 > 18s)", "StreakText", 5, 320, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated KRISS Vector", "StreakText", 5, 340, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   KM-2000 now gives the Smackdown Accolade", "StreakText", 5, 360, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Equalized audio on music tracks", "StreakText", 5, 380, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Replaced Super Soilder PM with GMan PM", "StreakText", 5, 400, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed:", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      UMP-45", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed:", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("      M14, Mk. 14 EBR", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Tweaked Grappling Hook cooldown (15 > 18s)", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated KRISS Vector", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   KM-2000 now gives the Smackdown Accolade", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Equalized audio on music tracks", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Replaced Super Soilder PM with GMan PM", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -539,8 +542,8 @@ function mainMenu()
 
                     StatsTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, white, TEXT_ALIGN_LEFT)
                     end
 
                     local StatsCombat = vgui.Create("DPanel", StatsScroller)
@@ -580,82 +583,82 @@ function mainMenu()
 
                     StatsCombat.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("COMBAT", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("COMBAT", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Total Score:", "SettingsLabel", 20, 80, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerScore"), "SettingsLabel", 500, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Total Score:", "SettingsLabel", 20, 80, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerScore"), "SettingsLabel", 500, 80, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Total Player Kills:", "SettingsLabel", 20, 115, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerKills"), "SettingsLabel", 500, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Total Player Kills:", "SettingsLabel", 20, 115, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerKills"), "SettingsLabel", 500, 115, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Total Deaths:", "SettingsLabel", 20, 150, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerDeaths"), "SettingsLabel", 500, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Total Deaths:", "SettingsLabel", 20, 150, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerDeaths"), "SettingsLabel", 500, 150, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("K/D Ratio:", "SettingsLabel", 20, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(math.Round(trackingPlayer:GetNWInt("playerKDR"), 3), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("K/D Ratio:", "SettingsLabel", 20, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(math.Round(trackingPlayer:GetNWInt("playerKDR"), 3), "SettingsLabel", 500, 185, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Highest Player Killstreak:", "SettingsLabel", 20, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("highestKillStreak"), "SettingsLabel", 500, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Highest Player Killstreak:", "SettingsLabel", 20, 220, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("highestKillStreak"), "SettingsLabel", 500, 220, white, TEXT_ALIGN_RIGHT)
 
                         if playerSelected == true and comparingWith ~= false then
-                            draw.SimpleText(comparingWith:GetNWInt("playerScore"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerKills"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerDeaths"), "SettingsLabel", 720, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(math.Round(comparingWith:GetNWInt("playerKDR"), 3), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("highestKillStreak"), "SettingsLabel", 720, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerScore"), "SettingsLabel", 720, 80, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerKills"), "SettingsLabel", 720, 115, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerDeaths"), "SettingsLabel", 720, 150, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(math.Round(comparingWith:GetNWInt("playerKDR"), 3), "SettingsLabel", 720, 185, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("highestKillStreak"), "SettingsLabel", 720, 220, white, TEXT_ALIGN_RIGHT)
                         end
                     end
 
                     StatsAccolades.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("ACCOLADES", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ACCOLADES", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Headshot Kills:", "SettingsLabel", 20, 80, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 500, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Headshot Kills:", "SettingsLabel", 20, 80, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 500, 80, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Melee Kills (Smackdowns):", "SettingsLabel", 20, 115, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 500, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Melee Kills (Smackdowns):", "SettingsLabel", 20, 115, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 500, 115, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Clutches (Kills with <15HP):", "SettingsLabel", 20, 150, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 500, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Clutches (Kills with <15HP):", "SettingsLabel", 20, 150, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 500, 150, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Longshot Kills:", "SettingsLabel", 20, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 500, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Longshot Kills:", "SettingsLabel", 20, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 500, 185, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Point Blank Kills:", "SettingsLabel", 20, 220, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 500, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Point Blank Kills:", "SettingsLabel", 20, 220, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 500, 220, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Killstreaks Started:", "SettingsLabel", 20, 255, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 500, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Killstreaks Started:", "SettingsLabel", 20, 255, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 500, 255, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Revenge Kills:", "SettingsLabel", 20, 325, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 500, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Revenge Kills:", "SettingsLabel", 20, 325, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 500, 325, white, TEXT_ALIGN_RIGHT)
 
                         if playerSelected == true and comparingWith ~= false then
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 720, 150, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 720, 185, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 720, 220, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 720, 325, Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 720, 150, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeLongshot"), "SettingsLabel", 720, 185, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 720, 220, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 720, 325, white, TEXT_ALIGN_RIGHT)
                         end
                     end
 
                     StatsWeapons.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
                         for p, t in pairs(weaponsArr) do
-                            draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                            draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
 
                             if playerSelected == true and comparingWith ~= false then
-                                draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), Color(250, 250, 250, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
                             end
                         end
                     end
@@ -718,7 +721,7 @@ function mainMenu()
             SpectatePanel:SetSize(170, 0)
             SpectatePanel:SetPos(10, 100)
             SpectatePanel.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 255))
+                draw.RoundedBox(0, 0, 0, w, h, white)
             end
 
             local SpectateTextHeader = vgui.Create("DPanel", SpectatePanel)
@@ -822,16 +825,16 @@ function mainMenu()
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
 
-                draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 for k, v in pairs(weaponsArr) do
                     if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT)
                     end
                     if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT)
                     end
                     if v[1] == LocalPlayer():GetNWString("loadoutMelee") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT)
                     end
                 end
             end
@@ -866,7 +869,7 @@ function mainMenu()
                     CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
-                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushButtonsAbove)
             end
 
@@ -874,14 +877,14 @@ function mainMenu()
             CustomizeModelButton:SetText("")
             CustomizeModelButton:SetSize(180, 100)
             CustomizeModelButton.Paint = function()
-                draw.DrawText("MODEL", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("MODEL", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
             CustomizeCardButton:SetPos(180, 100)
             CustomizeCardButton:SetText("")
             CustomizeCardButton:SetSize(160, 100)
             CustomizeCardButton.Paint = function()
-                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
             CustomizeCardButton.DoClick = function()
@@ -964,8 +967,8 @@ function mainMenu()
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
-                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, white, TEXT_ALIGN_CENTER)
                     end
 
                     --Default Playercards
@@ -1111,8 +1114,8 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
 
                         if currentCard ~= nil then
-                            draw.SimpleText(newCardName, "PlayerNotiName", 5, 90, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                            draw.SimpleText(newCardDesc, "Health", 5, 135, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                            draw.SimpleText(newCardName, "PlayerNotiName", 5, 90, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(newCardDesc, "Health", 5, 135, white, TEXT_ALIGN_LEFT)
                         end
 
                         if newCardUnlockType == "default" then
@@ -1450,63 +1453,63 @@ function mainMenu()
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Default", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Default", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextKill.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Kills", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Kills", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if killCardsUnlocked == killCardsTotal then
                             draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Accolades", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Accolades", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if accoladeCardsUnlocked == accoladeCardsTotal then
                             draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextLevel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Leveling", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Leveling", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if levelCardsUnlocked == levelCardsTotal then
                             draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextMastery.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if masteryCardsUnlocked == masteryCardsTotal then
                             draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextColor.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Solid Colors", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Solid Colors", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextOptions.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Card Options", "OptionsHeader", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Card Options", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
                     end
 
                     DockDefaultCards.Paint = function(self, w, h)
@@ -1535,7 +1538,7 @@ function mainMenu()
 
                     DockCardOptions.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Profile Picture X Offset", "SettingsLabel", 257.5, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Profile Picture X Offset", "SettingsLabel", 257.5, 0, white, TEXT_ALIGN_CENTER)
                     end
 
                     local ApplyButtonHolder = vgui.Create("DPanel", CardsPreviewScroller)
@@ -1906,8 +1909,8 @@ function mainMenu()
 
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
-                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
                     end
 
                     --Default Playermodels
@@ -2012,7 +2015,7 @@ function mainMenu()
 
                     PreviewTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
-                        draw.SimpleText("Current playermodel:", "Health", w / 2, 20, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Current playermodel:", "Health", w / 2, 20, white, TEXT_ALIGN_CENTER)
                     end
 
                     local PreviewModelHolder = vgui.Create("DPanel", PreviewScroller)
@@ -2031,9 +2034,9 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
 
                         if newModel ~= nil then
-                            draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
-                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 50, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
-                            draw.SimpleText(newModelDesc, "Health", w / 2, 100, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(newModelDesc, "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
                         end
 
                         if newModelUnlockType == "default" then
@@ -2444,51 +2447,51 @@ function mainMenu()
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Default", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Default", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                     end
 
                     TextKills.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Kills", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Kills", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if killModelsUnlocked == killModelsTotal then
                             draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextStreak.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if streakModelsUnlocked == streakModelsTotal then
                             draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Accolades", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Accolades", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if accoladeModelsUnlocked == accoladeModelsTotal then
                             draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextSpecial.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Special", "OptionsHeader", w / 2, 0, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Special", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if specialModelsUnlocked == specialModelsTotal then
                             draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
@@ -2760,7 +2763,7 @@ function mainMenu()
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
-                draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
             OptionsButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
@@ -2939,12 +2942,12 @@ function mainMenu()
 
                     DockInputs.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("INPUT", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2987,17 +2990,17 @@ function mainMenu()
 
                     DockUI.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("UI", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("UI", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Health Style", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 305, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Health Style", "SettingsLabel", 125, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill UI Accolades", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 385, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -3111,21 +3114,21 @@ function mainMenu()
                         else
                             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
                         end
-                        draw.DrawText("Open HUD Editor", "SettingsLabel", 0 + textAnim, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                        draw.DrawText("Open HUD Editor", "SettingsLabel", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                     end
                     HUDEditorButton.DoClick = function()
                     end
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill Sounds", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hit Sound Style", "SettingsLabel", 125, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu Music", "SettingsLabel", 55, 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu Music Volume", "SettingsLabel", 155, 265, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill Sounds", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hit Sound Style", "SettingsLabel", 125, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu Music", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu Music Volume", "SettingsLabel", 155, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
@@ -3196,12 +3199,12 @@ function mainMenu()
 
                     DockViewmodel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("WEAPONRY", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("WEAPONRY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Weapon Bobbing Multiplier", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Weapon Bobbing Multiplier", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 185, white, TEXT_ALIGN_LEFT)
                     end
 
                     local viewmodelFOV = DockViewmodel:Add("DNumSlider")
@@ -3241,19 +3244,19 @@ function mainMenu()
 
                     DockCrosshair.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable Crosshair", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Dot", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Pump Feedback", "SettingsLabel", 55 , 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Triangular Crosshair", "SettingsLabel", 55 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Color", "SettingsLabel", 245 , 225, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Length", "SettingsLabel", 155, 345, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Width", "SettingsLabel", 155, 385, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Gap Scale", "SettingsLabel", 155, 425, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Outline", "SettingsLabel", 55, 465, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Width", "SettingsLabel", 155, 505, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 545, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Crosshair", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Dot", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Pump Feedback", "SettingsLabel", 55 , 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Triangular Crosshair", "SettingsLabel", 55 , 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Color", "SettingsLabel", 245 , 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Length", "SettingsLabel", 155, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Width", "SettingsLabel", 155, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Gap Scale", "SettingsLabel", 155, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Crosshair Outline", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline Width", "SettingsLabel", 155, 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 545, white, TEXT_ALIGN_LEFT)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
@@ -3348,12 +3351,12 @@ function mainMenu()
 
                     DockHitmarker.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable Hitmarkers", "SettingsLabel", 55 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("3D/Dynamic Hitmarkers", "SettingsLabel", 55 , 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker Scale", "SettingsLabel", 155, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker Color", "SettingsLabel", 245 , 185, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Hitmarkers", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("3D/Dynamic Hitmarkers", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hitmarker Scale", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hitmarker Color", "SettingsLabel", 245 , 185, white, TEXT_ALIGN_LEFT)
                     end
 
                     local hitmarkerToggle = DockHitmarker:Add("DCheckBox")
@@ -3393,9 +3396,9 @@ function mainMenu()
 
                     DockScopes.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("SIGHTS & SCOPES", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("SIGHTS & SCOPES", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Reticle Color", "SettingsLabel", 245 , 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reticle Color", "SettingsLabel", 245 , 65, white, TEXT_ALIGN_LEFT)
                     end
 
                     local scopeMixer = vgui.Create("DColorMixer", DockScopes)
@@ -3411,11 +3414,11 @@ function mainMenu()
 
                     DockPerformance.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                     end
 
                     local vignetteDOF = DockPerformance:Add("DCheckBox")
@@ -3441,10 +3444,10 @@ function mainMenu()
 
                     DockAccount.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Streamer Mode", "SettingsLabel", 55, 105, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Streamer Mode", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                     end
 
                     local hideStatsFromOthers = DockAccount:Add("DCheckBox")
@@ -3472,7 +3475,7 @@ function mainMenu()
                         else
                             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
                         end
-                        draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 0 + textAnim, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                        draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                     end
                     WipeAccountButton.DoClick = function()
                     end
@@ -3492,7 +3495,7 @@ function mainMenu()
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
                 if (disconnectConfirm == 0) then
-                    draw.DrawText("EXIT GAME", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                    draw.DrawText("EXIT GAME", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 else
                     draw.DrawText("CONFIRM?", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
                 end

@@ -355,7 +355,7 @@ end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
 
 --Rocket jumping.
-local function reduceRocketDamage( ent, dmginfo )
+local function reduceRocketDamage(ent, dmginfo)
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
 	if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
@@ -416,7 +416,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	if not attacker:IsPlayer() then
+	if not attacker:IsPlayer() or (attacker == victim) then
 		net.Start("NotifyDeath")
 		net.WriteEntity(victim)
 		net.WriteString("Suicide")
@@ -436,7 +436,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local weaponName
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = math.Round(rawDistance * 0.01905)
-
 	local victimHitgroup = victim:LastHitGroup()
 
 	if (attacker:GetActiveWeapon():IsValid()) then
@@ -482,7 +481,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
-	if not attacker:IsPlayer() or (attacker == victim) then return end
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
@@ -531,8 +529,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
 		attacker:SetNWInt("playerAccoladeRevenge", attacker:GetNWInt("playerAccoladeRevenge") + 1)
-		attacker:SetNWBool("gotRevenge", true)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10)
+		attacker:SetNWBool("gotRevenge", true)
 	end
 
 	if victim:LastHitGroup() == 1 and victim:IsPlayer() then
@@ -635,7 +633,7 @@ local function Regeneration()
 end
 hook.Add("Think", "HealthRegen", Regeneration)
 
---Used to clear the map of decals (blood, bullet impacts, etc) every minute, helps people with shitty computers.
+--Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
 timer.Create("cleanMap", 30, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
@@ -690,6 +688,8 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				end
 			end
 
+			mapVoteOpen = false
+
 			--If players vote to continue on current map, end the map vote and restart the timer, otherwise, begin the intermission process.
 			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. GetConVar("tm_mapvotetimer"):GetInt() .. " seconds!") return end
 
@@ -697,7 +697,6 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 			for k, v in pairs(player.GetAll()) do
 				v:KillSilent()
-				v:SetNWInt("playedOn_" .. game.GetMap(), v:GetNWInt("playedOn_" .. game.GetMap()) + 1)
 			end
 
 			net.Start("EndOfGame")
@@ -737,7 +736,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 end
 
 local clientMapTimeLeft
-timer.Create("updateClientMapVoteTime", 10, 0, function()
+timer.Create("updateClientMapVoteTime", 15, 0, function()
 	if timer.Exists("startMapVote") then
 		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
 
