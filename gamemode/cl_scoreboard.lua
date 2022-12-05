@@ -25,7 +25,7 @@ function GM:ScoreboardShow()
 
 		ScoreboardDerma = vgui.Create("DFrame")
 		ScoreboardDerma:SetSize(640, 600)
-		ScoreboardDerma:Center()
+		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
@@ -130,6 +130,8 @@ function GM:ScoreboardShow()
 	end
 
 	if IsValid(ScoreboardDerma) then
+		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - 300, 0.5, 0, 0.25)
+		PlayerList:Clear()
 
 		local connectedPlayers = player.GetAll()
 		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
@@ -190,27 +192,32 @@ function GM:ScoreboardShow()
 				Menu:AddSpacer()
 
 				local statistics = Menu:AddSubMenu("View Stats")
-				statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
-				statistics:AddOption("Score/XP: " .. v:GetNWInt("playerScore"))
-				statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
-				statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
-				statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
-				statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
-
 				local accolades = Menu:AddSubMenu("View Accolades")
-				accolades:AddOption("Headshots: " .. v:GetNWInt("playerAccoladeHeadshot"))
-				accolades:AddOption("Melee Kills (Smackdown): " .. v:GetNWInt("playerAccoladeSmackdown"))
-				accolades:AddOption("Clutches (Kills with less than 15 HP): " .. v:GetNWInt("playerAccoladeClutch"))
-				accolades:AddOption("Longshots: " .. v:GetNWInt("playerAccoladeLongshot"))
-				accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
-				accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
-				accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-				accolades:AddOption("Revenge Kills: " .. v:GetNWInt("playerAccoladeRevenge"))
-
 				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
 				local weaponKills = weaponstatistics:AddSubMenu("Kills")
-				for p, t in pairs(weaponsArr) do
-					weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+
+				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer() then
+					statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
+					statistics:AddOption("Score/XP: " .. v:GetNWInt("playerScore"))
+					statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
+					statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
+					statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
+					statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
+					accolades:AddOption("Headshots: " .. v:GetNWInt("playerAccoladeHeadshot"))
+					accolades:AddOption("Melee Kills (Smackdown): " .. v:GetNWInt("playerAccoladeSmackdown"))
+					accolades:AddOption("Clutches (Kills with less than 15 HP): " .. v:GetNWInt("playerAccoladeClutch"))
+					accolades:AddOption("Longshots: " .. v:GetNWInt("playerAccoladeLongshot"))
+					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
+					accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
+					accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
+					accolades:AddOption("Revenge Kills: " .. v:GetNWInt("playerAccoladeRevenge"))
+					for p, t in pairs(weaponsArr) do
+						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+					end
+				else
+					statistics:AddOption("This player has their stats hidden.")
+					accolades:AddOption("This player has their stats hidden.")
+					weaponKills:AddOption("This player has their stats hidden.")
 				end
 
 				Menu:AddSpacer()
@@ -230,8 +237,8 @@ function GM:ScoreboardShow()
 		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
 		if game.GetMap() == "tm_firingrange" then
 			FiringRangeDerma = vgui.Create("DFrame")
-			FiringRangeDerma:SetSize(200, 500)
-			FiringRangeDerma:SetPos(ScrW() / 2 + 325, ScrH() / 2 - 250)
+			FiringRangeDerma:SetSize(200, 530)
+			FiringRangeDerma:SetPos(ScrW() / 2 + 325, 0)
 			FiringRangeDerma:SetTitle("")
 			FiringRangeDerma:SetDraggable(false)
 			FiringRangeDerma:ShowCloseButton(false)
@@ -239,6 +246,8 @@ function GM:ScoreboardShow()
 				draw.RoundedBox(5, 0, 0, FiringRangeDerma:GetWide(), FiringRangeDerma:GetTall(), Color(35, 35, 35, 150))
 				draw.SimpleText("Weapon Spawner", "StreakText", 15, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 			end
+
+			FiringRangeDerma:MoveTo(ScrW() / 2 + 325, ScrH() / 2 - 265, 0.5, 0, 0.25)
 
 			local FiringRangeScroller = vgui.Create("DScrollPanel", FiringRangeDerma)
 			FiringRangeScroller:Dock(FILL)
@@ -288,7 +297,9 @@ end
 
 function GM:ScoreboardHide()
 	if IsValid(ScoreboardDerma) then
+		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:Hide()
+
 		if game.GetMap() == "tm_firingrange" then
 			FiringRangeDerma:Hide()
 		end

@@ -472,15 +472,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		timer.Simple(0.75, function()
 			if not IsValid(victim) or not IsValid(attacker) then return end
-
-			victim:SpectateEntity(attacker)
 			victim:Spectate(OBS_MODE_FREEZECAM)
 		end)
 
 		timer.Simple(2, function()
 			if not IsValid(victim) or not IsValid(attacker) then return end
-
-			victim:SpectateEntity(attacker)
 			victim:Spectate(OBS_MODE_IN_EYE)
 		end)
 	end

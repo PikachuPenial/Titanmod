@@ -23,7 +23,9 @@ if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", 
 if !ConVarExists("tm_cardpfpoffset") then CreateConVar("tm_cardpfpoffset", "0", FCVAR_ARCHIVE, "Moves the Profile Picture of the player around their playercard.",0,160) end
 if !ConVarExists("tm_hitsoundtype") then CreateConVar("tm_hitsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of hitsounds",0,3) end
 if !ConVarExists("tm_killsoundtype") then CreateConVar("tm_killsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,3) end
+if !ConVarExists("tm_streamermode") then CreateConVar("tm_streamermode", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,1) end
 if CLIENT then CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade.") end
+if CLIENT then CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats.", 0, 1) end
 
 --Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
