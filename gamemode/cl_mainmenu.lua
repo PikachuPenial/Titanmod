@@ -96,7 +96,7 @@ function mainMenu()
         MainMenu:SetDeleteOnClose(false)
         MainMenu:MakePopup()
 
-        for m, t in pairs(mapArr) do
+        for m, t in pairs(mapArray) do
             if game.GetMap() == t[1] then
                 mapID = t[1]
                 mapName = t[2]
@@ -267,34 +267,38 @@ function mainMenu()
 
             local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
             PatchTextHeader:Dock(TOP)
-            PatchTextHeader:SetSize(0, 90)
+            PatchTextHeader:SetSize(0, 65)
             PatchTextHeader.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(40, 40, 40, 200))
                 draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("Scroll to view older patch notes.", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 350)
+            PatchPreRelease:SetSize(0, 450)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(50, 50, 50, 200))
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ G28 Primary Weapon", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ G28 primary weapon", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ File Compression", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Option tooltips", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Credits menu", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Level 200-300 Player Cards", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized arrays", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 380, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Concrete and Groves maps", "StreakText", 5, 400, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 420, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -354,7 +358,7 @@ function mainMenu()
 
                     local StatsAccolades = vgui.Create("DPanel", StatsScroller)
                     StatsAccolades:Dock(TOP)
-                    StatsAccolades:SetSize(0, 360)
+                    StatsAccolades:SetSize(0, 320)
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
@@ -436,9 +440,6 @@ function mainMenu()
                         draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, white, TEXT_ALIGN_RIGHT)
 
-                        draw.SimpleText("Revenge Kills:", "SettingsLabel", 20, 325, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 500, 325, white, TEXT_ALIGN_RIGHT)
-
                         if playerSelected == true and comparingWith ~= false then
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, white, TEXT_ALIGN_RIGHT)
@@ -447,7 +448,6 @@ function mainMenu()
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladePointblank"), "SettingsLabel", 720, 220, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeOnStreak"), "SettingsLabel", 720, 255, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 720, 290, white, TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(comparingWith:GetNWInt("playerAccoladeRevenge"), "SettingsLabel", 720, 325, white, TEXT_ALIGN_RIGHT)
                         end
                     end
 
@@ -455,7 +455,7 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
-                        for p, t in pairs(weaponsArr) do
+                        for p, t in pairs(weaponArray) do
                             draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), white, TEXT_ALIGN_LEFT)
                             draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
 
@@ -628,7 +628,7 @@ function mainMenu()
                 end
 
                 draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-                for k, v in pairs(weaponsArr) do
+                for k, v in pairs(weaponArray) do
                     if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
                         draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT)
                     end
@@ -712,7 +712,7 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
-                    local totalCards = 186
+                    local totalCards = 194
                     local cardsUnlocked = 0
 
                     local defaultCardsTotal = 0
@@ -736,7 +736,7 @@ function mainMenu()
                     local playerTotalLevel = (LocalPlayer():GetNWInt("playerPrestige") * 60) + LocalPlayer():GetNWInt("playerLevel")
 
                     --Checking for the players currently equipped card.
-                    for k, v in pairs(cardArr) do
+                    for k, v in pairs(cardArray) do
                         if v[1] == currentCard then
                             newCard = v[1]
                             newCardName = v[2]
@@ -798,7 +798,7 @@ function mainMenu()
 
                     local DockAccoladeCards = vgui.Create("DPanel", CardScroller)
                     DockAccoladeCards:Dock(TOP)
-                    DockAccoladeCards:SetSize(0, 666)
+                    DockAccoladeCards:SetSize(0, 583)
 
                     --Leveling related Playercards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
@@ -807,7 +807,7 @@ function mainMenu()
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 850)
+                    DockLevelCards:SetSize(0, 1280)
 
                     --Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
@@ -1019,16 +1019,6 @@ function mainMenu()
                             end
                         end
 
-                        if newCardUnlockType == "revenge" then
-                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
-                            end
-                        end
-
                         if newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
@@ -1053,7 +1043,7 @@ function mainMenu()
                         CallingCard:SetImage(newCard)
                     end
 
-                    for k, v in pairs(cardArr) do
+                    for k, v in pairs(cardArray) do
                         if v[4] == "default" then
                             local card = vgui.Create("DImageButton", DockDefaultCards)
                             card:SetImage(v[1])
@@ -1114,7 +1104,7 @@ function mainMenu()
                             end
                         end
 
-                        if v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" or v[4] == "revenge" then
+                        if v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                             local card = vgui.Create("DImageButton", DockAccoladeCards)
                             card:SetImage(v[1])
                             card:SetTooltip(v[2] .. "\n" .. v[3])
@@ -1123,7 +1113,7 @@ function mainMenu()
 
                             accoladeCardsTotal = accoladeCardsTotal + 1
 
-                            if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] or v[4] == "revenge" and LocalPlayer():GetNWInt("playerAccoladeRevenge") < v[5] then
+                            if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] then
                                 card:SetColor(Color(100, 100, 100))
 
                                 local lockIndicator = vgui.Create("DImageButton", card)
@@ -1494,20 +1484,6 @@ function mainMenu()
                             end
                         end
 
-                        if newCardUnlockType == "revenge" then
-                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("common/wpn_select.wav")
-                                RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        end
-
                         if newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
@@ -1662,7 +1638,7 @@ function mainMenu()
                     local newModelUnlockType
                     local newModelUnlockValue
 
-                    local totalModels = 35
+                    local totalModels = 34
                     local modelsUnlocked = 0
 
                     local defaultModelsTotal = 0
@@ -1917,14 +1893,6 @@ function mainMenu()
                             end
                         end
 
-                        if newModelUnlockType == "revenge" then
-                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newModelUnlockValue then
-                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Revenge Kills: " .. LocalPlayer():GetNWInt("playerAccoladeRevenge") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-                            end
-                        end
-
                         if newModelUnlockType == "special" and newModelUnlockValue == "name" then
                             if LocalPlayer():SteamID() == "STEAM_0:1:514443768" then
                                 draw.SimpleText("Unlocked", "Health", w / 2, 130, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
@@ -1950,7 +1918,7 @@ function mainMenu()
                     local SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                     selectedModelShown = false
 
-                    for k, v in pairs(modelArr) do
+                    for k, v in pairs(modelArray) do
                         if v[4] == "default" then
                             local icon = vgui.Create("SpawnIcon", DockModels)
                             icon:SetModel(v[1])
@@ -2181,7 +2149,7 @@ function mainMenu()
                             end
                         end
 
-                        if v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" or v[4] == "revenge" then
+                        if v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                             local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                             icon:SetModel(v[1])
                             icon:SetTooltip(v[2] .. "\n" .. v[3])
@@ -2190,7 +2158,7 @@ function mainMenu()
 
                             accoladeModelsTotal = accoladeModelsTotal + 1
 
-                            if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] or v[4] == "revenge" and LocalPlayer():GetNWInt("playerAccoladeRevenge") < v[5] then
+                            if v[4] == "headshot" and LocalPlayer():GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer():GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer():GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer():GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer():GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer():GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < v[5] then
                                 local lockIndicator = vgui.Create("DImageButton", icon)
                                 lockIndicator:SetImage("icons/lockicon.png")
                                 lockIndicator:SetSize(96, 96)
@@ -2446,19 +2414,6 @@ function mainMenu()
 
                         if newModelUnlockType == "buzzkills" then
                             if LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("common/wpn_select.wav")
-                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
-                                MainPanel:Show()
-                                CustomizeSlideoutPanel:Hide()
-                                CustomizePanel:Hide()
-                                PreviewPanel:Hide()
-                            end
-                        end
-
-                        if newModelUnlockType == "revenge" then
-                            if LocalPlayer():GetNWInt("playerAccoladeRevenge") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -3460,7 +3415,7 @@ end
 concommand.Add("tm_openmainmenu", mainMenu)
 
 function ShowLoadoutOnSpawn()
-    for k, v in pairs(weaponsArr) do
+    for k, v in pairs(weaponArray) do
         if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
             primaryWeapon = v[2]
         end

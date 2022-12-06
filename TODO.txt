@@ -1,4 +1,3 @@
 Various server ConVars
 Player account wipe option
-Credits page
-Look into net abuse with shooting range stuffs
+Switch killfeed off of net messages

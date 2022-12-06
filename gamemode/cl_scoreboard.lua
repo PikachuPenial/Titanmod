@@ -17,7 +17,7 @@ end)
 
 function GM:ScoreboardShow()
 	if not IsValid(ScoreboardDerma) then
-		for m, t in pairs(mapArr) do
+		for m, t in pairs(mapArray) do
 			if game.GetMap() == t[1] then
 				mapID = t[1]
 				mapName = t[2]
@@ -213,8 +213,7 @@ function GM:ScoreboardShow()
 					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
 					accolades:AddOption("Kill Streaks Started (On Streak): " .. v:GetNWInt("playerAccoladeOnStreak"))
 					accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-					accolades:AddOption("Revenge Kills: " .. v:GetNWInt("playerAccoladeRevenge"))
-					for p, t in pairs(weaponsArr) do
+					for p, t in pairs(weaponArray) do
 						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
 					end
 				else
@@ -278,7 +277,7 @@ function GM:ScoreboardShow()
 				draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
 			end
 
-			for k, v in pairs(weaponsArr) do
+			for k, v in pairs(weaponArray) do
 				local weapon = vgui.Create("DButton", DockDefaultCards)
 				weapon:SetSize(170, 40)
 				weapon:SetText("")

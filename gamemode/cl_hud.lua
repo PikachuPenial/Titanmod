@@ -222,13 +222,6 @@ net.Receive("NotifyKill", function(len, ply)
         smackdown = ""
     end
 
-    if killedPlayer:SteamID() == LocalPlayer():GetNWInt("recentlyKilledBy") and LocalPlayer():GetNWBool("gotRevenge") == false then
-        if killedPlayer:SteamID() == LocalPlayer():SteamID() then return end
-        revenge = "Revenge +10 | "
-    else
-        revenge = ""
-    end
-
     if LocalPlayer():GetNWInt("killStreak") >= 2 then
         onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
         onstreak = "On Streak +" .. onstreakScore .. " | "
@@ -282,7 +275,7 @@ net.Receive("NotifyKill", function(len, ply)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, white, TEXT_ALIGN_CENTER)
         if GetConVar("tm_enableaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. onstreak .. revenge .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, white, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -409,7 +402,7 @@ net.Receive("MapVoteHUD", function(len, ply)
     local secondMapName
     local secondMapThumb
 
-    for o, v in pairs(mapArr) do
+    for o, v in pairs(mapArray) do
         if game.GetMap() == v[1] then currentMapName = v[2] end
 
         if firstMap == v[1] then
