@@ -1,5 +1,8 @@
 --Color array, saving space
 local white = Color(255, 255, 255, 255)
+local patchGreen = Color(100, 250, 100, 255)
+local patchRed = Color(250, 100, 100, 255)
+local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
 
@@ -204,7 +207,7 @@ function mainMenu()
             CallingCardText:SetPos(0, 0)
             CallingCardText:SetSize(240, 80)
             CallingCardText.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                draw.RoundedBox(0, 0, 0, w, h, transparent)
             end
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
@@ -226,7 +229,7 @@ function mainMenu()
             PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
             PatchNotesButtonHolder:SetSize(48, 48)
             PatchNotesButtonHolder.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                draw.RoundedBox(0, 0, 0, w, h, transparent)
             end
 
             local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
@@ -280,22 +283,23 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 290)
+            PatchPreRelease:SetSize(0, 310)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(50, 50, 50, 200))
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ G28 Primary Weapon", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ File Compression", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Option tooltips", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Account and Privacy options","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ G28 Primary Weapon", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ File Compression", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Option tooltips", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Credits menu", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
             end
 
             local Patch07b1 = vgui.Create("DPanel", PatchScroller)
@@ -306,11 +310,11 @@ function mainMenu()
                 draw.SimpleText("0.7b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/21/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Added Arctic, Rig, and Station map", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Grenades", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Rocket/M79 Jumping", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ UI SFX","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Leveling player cards", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Added Arctic, Rig, and Station map", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Grenades", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Rocket/M79 Jumping", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ UI SFX","StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Leveling player cards", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Slight scoreboard coloring on player states", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Improved explosion FX", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Small scale optimization", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
@@ -325,9 +329,9 @@ function mainMenu()
                 draw.SimpleText("0.6b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/14/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Player Leveling and Prestiging","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Dynamic weapon spread","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ 50+ player cards","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Player Leveling and Prestiging","StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Dynamic weapon spread","StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 50+ player cards","StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("       RFB, Makarov, Mare's Leg, Honey Badger", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Scoreboard improvments", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
@@ -348,13 +352,13 @@ function mainMenu()
                 draw.SimpleText("0.5b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/10/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Added Shipment and Firing Range map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Added Shipment and Firing Range map","StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Colt 9mm, FN 2000, LR-300", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New Secondary weapons:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapons:", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Mare's Leg, MP-443 Grach", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Firing Range Weapon Spawning","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Hit/Kill sound type options","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Firing Range Weapon Spawning","StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hit/Kill sound type options","StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Updated card and model menus", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Shortened some weapon names", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed YouTube link", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
@@ -368,8 +372,8 @@ function mainMenu()
                 draw.SimpleText("0.4b2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/08/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Map updates and optimizations","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Accolade player models", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Map updates and optimizations","StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Accolade player models", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Scope Shadows are now forced off", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Many bug fixes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
@@ -382,15 +386,15 @@ function mainMenu()
                 draw.SimpleText("0.4b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/04/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Added Mall and Bridge map","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Added Mall and Bridge map","StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Honey Badger, RK62, PzB 39, WA-2000", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   OSP-18", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match end UI","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New community music track", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Beta participation rewards", "StreakText", 5, 240, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match end UI","StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped stats/model menus","StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New community music track", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Beta participation rewards", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("       Glock 17, Steyr AUG", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
@@ -414,12 +418,12 @@ function mainMenu()
                 draw.SimpleText("0.3b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("11/02/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Map voting","StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Player cards and card options","StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Revamped scoreboard","StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Weapon mastery","StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Revenge and Copycat accolade","StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ 5 optics","StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Map voting","StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Player cards and card options","StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped scoreboard","StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Weapon mastery","StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revenge and Copycat accolade","StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 5 optics","StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("       Stevens 620", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
@@ -440,7 +444,7 @@ function mainMenu()
                 draw.SimpleText("   Fixed error on player suicide", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed error on players first death", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed error for loading player cards", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Player specific spectating due to bug", "StreakText", 5, 600, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Player specific spectating due to bug", "StreakText", 5, 600, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local Patch02b1 = vgui.Create("DPanel", PatchScroller)
@@ -451,13 +455,13 @@ function mainMenu()
                 draw.SimpleText("0.2b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("10/22/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   M1919, MG 34, Thompson M1928", "StreakText", 5, 100, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 140, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Spectating system", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Developer Mode", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Revamped and optimized Main Menu", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Dedicated Stats page", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Spectating system", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Patch Notes page (you are here)", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Developer Mode", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("       Colt M1911, Walther P99", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
@@ -471,7 +475,7 @@ function mainMenu()
                 draw.SimpleText("   Backend changes for future playercard support", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   tm_forcesave now saves Accolades", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Alphabetically sorted weapon arrays", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 480, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Removed Intro splash screen", "StreakText", 5, 480, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local Patch01b2 = vgui.Create("DPanel", PatchScroller)
@@ -482,9 +486,9 @@ function mainMenu()
                 draw.SimpleText("0.1b2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("10/15/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Kill Cam", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Clutch Accolade", "StreakText", 5, 100, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ 7 new Options", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Kill Cam", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Clutch Accolade", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 7 new Options", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed some Options not saving after disconnect", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
 
@@ -496,14 +500,14 @@ function mainMenu()
                 draw.SimpleText("0.1b1", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("10/14/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Primary weapons:", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   KSVK 12.7, UMP9, Type-81", "StreakText", 5, 100, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 120, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New Secondary weapon:", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   TCo Stim Pistol", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New default Main Menu song ", "StreakText", 5, 160, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ New community music track", "StreakText", 5, 180, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ 3 new default playermodels", "StreakText", 5, 200, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ 3 new options", "StreakText", 5, 220, Color(100, 250, 100, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New default Main Menu song ", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ New community music track", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 3 new default playermodels", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ 3 new options", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Buffed:", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("      UMP-45", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Nerfed:", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
@@ -1085,27 +1089,27 @@ function mainMenu()
                     ColorCardList:SetSpaceX(20)
 
                     DefaultCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     KillCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     AccoladeCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     LevelCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     MasteryCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     ColorCardList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local CardPreviewPanel = MainMenu:Add("CardPreviewPanel")
@@ -1985,7 +1989,7 @@ function mainMenu()
                     DefaultModelList:SetSpaceX(5)
 
                     DefaultModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local KillsModelList = vgui.Create("DIconLayout", DockModelsKills)
@@ -1994,7 +1998,7 @@ function mainMenu()
                     KillsModelList:SetSpaceX(5)
 
                     KillsModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local StreakModelList = vgui.Create("DIconLayout", DockModelsStreak)
@@ -2003,7 +2007,7 @@ function mainMenu()
                     StreakModelList:SetSpaceX(5)
 
                     StreakModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local AccoladeModelList = vgui.Create("DIconLayout", DockModelsAccolade)
@@ -2012,7 +2016,7 @@ function mainMenu()
                     AccoladeModelList:SetSpaceX(5)
 
                     AccoladeModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local SpecialModelList = vgui.Create("DIconLayout", DockModelsSpecial)
@@ -2021,7 +2025,7 @@ function mainMenu()
                     SpecialModelList:SetSpaceX(5)
 
                     SpecialModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local PreviewPanel = MainMenu:Add("CustomizePreviewPanel")
@@ -3530,6 +3534,130 @@ function mainMenu()
 
                 timer.Simple(3, function() disconnectConfirm = 0 end)
             end
+
+            local CreditsButton = vgui.Create("DButton", MainPanel)
+            CreditsButton:SetPos(220, ScrH() - 32)
+            CreditsButton:SetText("")
+            CreditsButton:SetSize(70, 100)
+            local textAnim = 0
+            CreditsButton.Paint = function()
+                draw.DrawText("Credits", "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                if CreditsButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 10)
+                else
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 10)
+                end
+            end
+            CreditsButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
+                MainPanel:Hide()
+
+                if not IsValid(CreditsPanel) then
+                    local CreditsPanel = MainMenu:Add("CreditsPanel")
+                    local CreditsSlideoutPanel = MainMenu:Add("CreditsSlideoutPanel")
+
+                    local CreditsQuickjumpHolder = vgui.Create("DPanel", CreditsSlideoutPanel)
+                    CreditsQuickjumpHolder:Dock(TOP)
+                    CreditsQuickjumpHolder:SetSize(0, ScrH())
+
+                    CreditsQuickjumpHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                    end
+
+                    local CreditsScroller = vgui.Create("DScrollPanel", CreditsPanel)
+                    CreditsScroller:Dock(FILL)
+
+                    local sbar = CreditsScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
+
+                    local CreditsTextHolder = vgui.Create("DPanel", CreditsScroller)
+                    CreditsTextHolder:Dock(TOP)
+                    CreditsTextHolder:SetSize(0, 100)
+
+                    local CreditsDev = vgui.Create("DPanel", CreditsScroller)
+                    CreditsDev:Dock(TOP)
+                    CreditsDev:SetSize(0, 50)
+
+                    local CreditsTesters = vgui.Create("DPanel", CreditsScroller)
+                    CreditsTesters:Dock(TOP)
+                    CreditsTesters:SetSize(0, 450)
+
+                    local CreditsBugs = vgui.Create("DPanel", CreditsScroller)
+                    CreditsBugs:Dock(TOP)
+                    CreditsBugs:SetSize(0, 200)
+
+                    local CreditsMaps = vgui.Create("DPanel", CreditsScroller)
+                    CreditsMaps:Dock(TOP)
+                    CreditsMaps:SetSize(0, 200)
+
+                    local CreditsWeapons = vgui.Create("DPanel", CreditsScroller)
+                    CreditsWeapons:Dock(TOP)
+                    CreditsWeapons:SetSize(0, 200)
+
+                    CreditsTextHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("CREDITS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    CreditsDev.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Created and maintained by Penial.", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    CreditsTesters.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Testing", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Portanator", "SettingsLabel", 20, 120, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Seven", "SettingsLabel", 20, 155, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Unlucky", "SettingsLabel", 20, 190, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("suomij (narkotica)", "SettingsLabel", 20, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("theBean", "SettingsLabel", 20, 260, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Zedorfski", "SettingsLabel", 20, 295, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("RandomSZ", "SettingsLabel", 20, 330, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Checked", "SettingsLabel", 20, 365, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("mooseisrael321", "SettingsLabel", 20, 400, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    CreditsBugs.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Bugs", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    CreditsMaps.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Maps", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    CreditsWeapons.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.SimpleText("Weapons", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    local BackButtonSlideout = vgui.Create("DImageButton", CreditsQuickjumpHolder)
+                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetTooltip("Return to Main Menu")
+                    BackButtonSlideout:SetImage("icons/exiticon.png")
+                    BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        MainPanel:Show()
+                        CreditsPanel:Hide()
+                        CreditsSlideoutPanel:Hide()
+                    end
+                end
+            end
     end
 
     if belowMinimumRes == true and LocalPlayer():GetNWBool("seenResWarning") ~= true then
@@ -3705,6 +3833,30 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("StatsPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(56, ScrH())
+    self:SetPos(0, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("CreditsSlideoutPanel", PANEL, "Panel")
+
+PANEL = {}
+function PANEL:Init()
+    self:SetSize(600, ScrH())
+    self:SetPos(56, 0)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 0)
+    surface.DrawRect(0, 0, w, h)
+end
+vgui.Register("CreditsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
