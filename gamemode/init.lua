@@ -300,16 +300,17 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeRevenge") == nil) then ply:SetNWInt("playerAccoladeRevenge", 0) else ply:SetNWInt("playerAccoladeRevenge", tonumber(ply:GetPData("playerAccoladeRevenge"))) end
 	if (ply:GetPData("cardPictureOffset") == nil) then ply:SetNWInt("cardPictureOffset", 0) else ply:SetNWInt("cardPictureOffset", tonumber(ply:GetPData("cardPictureOffset"))) end
 
-	--Checking if PData exists for every single fucking gun, gg.
+	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
 	end
 
-	--This sets the players loadout as Networked Integers, this is mainly used to show the players loadout in the Main Menu.
+	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
 	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
 	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 
+	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
 		if ply:GetNWInt("playerLevel") == v[1] and v[2] ~= "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 	end
@@ -500,7 +501,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if attacker:Health() <= 15 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
-		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10)
+		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeClutch", attacker:GetNWInt("playerAccoladeClutch") + 1)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
 	end
