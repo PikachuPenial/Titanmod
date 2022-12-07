@@ -25,16 +25,16 @@ concommand.Add("tm_forcesave", ForceSave)
 
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
-	for k, v in pairs(modelArray) do
-		if (args[1] == v[1]) then
+    for k, v in pairs(modelArray) do
+        if (args[1] == v[1]) then
 
-			local modelID = v[1]
-			local modelUnlock = v[4]
-			local modelValue = v[5]
+            local modelID = v[1]
+            local modelUnlock = v[4]
+            local modelValue = v[5]
 
-			if modelUnlock == "default" then
-				ply:SetNWString("chosenPlayermodel", modelID)
-			end
+            if modelUnlock == "default" then
+                ply:SetNWString("chosenPlayermodel", modelID)
+            end
 
 			if modelUnlock == "kills" and ply:GetNWInt("playerKills") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
