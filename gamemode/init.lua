@@ -59,7 +59,6 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	ply:SetNWBool("isSpectating", false)
 	ply:ConCommand("tm_showloadout")
 end
 
@@ -195,7 +194,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
-		if victim:GetNWBool("mainmenu") == false and victim:GetNWBool("isSpectating") == false and victim ~= nil then
+		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
 			victim:Spawn()
 			victim:UnSpectate()
 		end
@@ -248,6 +247,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("KillFeedUpdate")
 		net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
 		net.WriteFloat(victimHitgroup)
+		net.WriteInt(attacker:GetNWInt("killStreak"))
 		net.Broadcast()
 
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.

@@ -154,6 +154,7 @@ end )
 net.Receive("KillFeedUpdate", function(len, ply)
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadFloat()
+    local streak = net.ReadInt()
     table.insert(feedArray, {playersInAction, victimLastHitIn})
 
     if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
