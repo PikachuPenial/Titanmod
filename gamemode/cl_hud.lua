@@ -154,14 +154,22 @@ end )
 net.Receive("KillFeedUpdate", function(len, ply)
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadFloat()
-    local streak = net.ReadInt()
+    local attacker = net.ReadEntity()
+    local streak = attacker:GetNWInt("killStreak")
+
     table.insert(feedArray, {playersInAction, victimLastHitIn})
-
     if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
-
     timer.Create(playersInAction .. math.Round(CurTime()), 8, 1, function()
         table.remove(feedArray, 1)
     end)
+
+    if streak == 5 or streak == 10 or streak == 15 or streak == 20 or streak == 25 or streak == 30 then
+        table.insert(feedArray, attacker:GetName() .. " is on a " .. streak .. " killstreak")
+        if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
+        timer.Create(attacker:GetName() .. streak, 8, 1, function()
+            table.remove(feedArray, 1)
+        end)
+    end
 end )
 
 --Displays after a player kills another player.

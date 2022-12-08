@@ -6,6 +6,7 @@ AddCSLuaFile("cl_mainmenu.lua")
 
 include("shared.lua")
 include("concommands.lua")
+include("config.lua")
 
 function GM:Initialize()
 	print("Titanmod Initialized")
@@ -25,12 +26,6 @@ for k, v in pairs(weaponArray) do
 		table.insert(randMelee, v[1])
 	end
 end
-
---Variables for the proprities of the player, things like health and movement speed.
-local playerHealth = 100
-local playerSpeedMulti = 1
-local healthRegenSpeed = 0.15
-local healthRegenDamageDelay = 3.5
 
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
@@ -182,10 +177,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 		attacker:SetNWFloat("linat", 0)
-
-		if attacker:SteamID() ~= victim:SteamID() then
-			victim:SetNWInt("recentlyKilledBy", attacker:SteamID())
-		end
 	end
 
 	victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
@@ -211,6 +202,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("KillFeedUpdate")
 		net.WriteString(victim:GetName() .. " commited suicide")
 		net.WriteFloat(0)
+		net.WriteEntity(victim)
 		net.Broadcast()
 		return
 	end
@@ -247,7 +239,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("KillFeedUpdate")
 		net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
 		net.WriteFloat(victimHitgroup)
-		net.WriteInt(attacker:GetNWInt("killStreak"))
+		net.WriteEntity(attacker)
 		net.Broadcast()
 
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
@@ -341,28 +333,28 @@ end
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
 function GM:ShowHelp(ply)
-	if !ply:Alive() then
+	if not ply:Alive() then
 		ply:ConCommand("tm_openmainmenu")
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowTeam(ply)
-	if !ply:Alive() then
+	if not ply:Alive() then
 		ply:ConCommand("tm_openmainmenu")
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowSpare1(ply)
-	if !ply:Alive() then
+	if not ply:Alive() then
 		ply:ConCommand("tm_openmainmenu")
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowSpare2(ply)
-	if !ply:Alive() then
+	if not ply:Alive() then
 		ply:ConCommand("tm_openmainmenu")
 		ply:SetNWBool("mainmenu", true)
 	end
