@@ -101,13 +101,11 @@ function HUD()
 
         --Kill feed
         for k, v in pairs(feedArray) do
-            if !table.IsEmpty(feedArray) then
-                if v[2] == 1 then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
-                local nameLength = select(1, surface.GetTextSize(v[1]))
+            if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
+            local nameLength = select(1, surface.GetTextSize(v[1]))
 
-                surface.DrawRect(10, ScrH() - 62.5 + ((k - 1) * -20), nameLength + 5, 20)
-                draw.SimpleText(v[1], "StreakText", 12.5, ScrH() - 55 + ((k - 1) * -20), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            end
+            surface.DrawRect(10, ScrH() - 62.5 + ((k - 1) * -20), nameLength + 5, 20)
+            draw.SimpleText(v[1], "StreakText", 12.5, ScrH() - 55 + ((k - 1) * -20), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 end
@@ -164,7 +162,7 @@ net.Receive("KillFeedUpdate", function(len, ply)
     end)
 
     if streak == 5 or streak == 10 or streak == 15 or streak == 20 or streak == 25 or streak == 30 then
-        table.insert(feedArray, attacker:GetName() .. " is on a " .. streak .. " killstreak")
+        table.insert(feedArray, {attacker:GetName() .. " is on a " .. streak .. " killstreak", 0})
         if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
         timer.Create(attacker:GetName() .. streak, 8, 1, function()
             table.remove(feedArray, 1)
@@ -241,7 +239,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     if killedPlayer:GetNWInt("killStreak") >= 3 then
-        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
+        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak") + 10
         buzzkill = "Buzz Kill +" .. buzzkillScore .. " | "
         seperator = "| "
     else

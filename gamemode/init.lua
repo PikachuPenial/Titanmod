@@ -3,6 +3,7 @@ AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_mainmenu.lua")
+AddCSLuaFile("config.lua")
 
 include("shared.lua")
 include("concommands.lua")

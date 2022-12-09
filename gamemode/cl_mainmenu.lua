@@ -14,6 +14,7 @@ function mainMenu()
     local musicName
     local musicList
     local requestedBy
+    local dof
 
     local mapID
     local mapName
@@ -28,6 +29,8 @@ function mainMenu()
     else
         belowMinimumRes = false
     end
+
+    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
@@ -106,6 +109,9 @@ function mainMenu()
         end
 
         MainMenu.Paint = function()
+            if dof == true then
+                DrawBokehDOF(4, 1, 0)
+            end
             surface.SetDrawColor(40, 40, 40, 225)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
         end
@@ -275,7 +281,7 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 490)
+            PatchPreRelease:SetSize(0, 650)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(50, 50, 50, 200))
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -287,20 +293,28 @@ function mainMenu()
                 draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Credits menu", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Level 200-300 Player Cards", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 220, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized arrays", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 420, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 440, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 460, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Config File", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 240, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized arrays", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed Mac 10", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed quotes from AK-12 RPK's name", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 560, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 580, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 600, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 620, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -621,7 +635,7 @@ function mainMenu()
             end
             SpawnButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
-                MainMenu:Remove(false)
+                MainMenu:Remove()
                 gui.EnableScreenClicker(false)
 
                 menuMusic:FadeOut(2)
@@ -2444,7 +2458,7 @@ function mainMenu()
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 190)
+                    DockPerformance:SetSize(0, 230)
 
                     local DockAccount = vgui.Create("DPanel", OptionsScroller)
                     DockAccount:Dock(TOP)
@@ -3032,17 +3046,18 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                     end
 
-                    local vignetteDOF = DockPerformance:Add("DCheckBox")
-                    vignetteDOF:SetPos(20, 70)
-                    vignetteDOF:SetConVar("cl_aimingfx_enabled")
-                    vignetteDOF:SetValue(true)
-                    vignetteDOF:SetSize(30, 30)
-                    vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
+                    local menuDOF = DockPerformance:Add("DCheckBox")
+                    menuDOF:SetPos(20, 70)
+                    menuDOF:SetConVar("tm_menudof")
+                    menuDOF:SetValue(true)
+                    menuDOF:SetSize(30, 30)
+                    menuDOF:SetTooltip("Blurs the background of certain in game menus.")
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
                     ironSightDOF:SetPos(20, 110)
@@ -3057,6 +3072,13 @@ function mainMenu()
                     inspectionDOF:SetValue(true)
                     inspectionDOF:SetSize(30, 30)
                     inspectionDOF:SetTooltip("Enables a blur affect while in the attachment editing menu.")
+
+                    local vignetteDOF = DockPerformance:Add("DCheckBox")
+                    vignetteDOF:SetPos(20, 190)
+                    vignetteDOF:SetConVar("cl_aimingfx_enabled")
+                    vignetteDOF:SetValue(true)
+                    vignetteDOF:SetSize(30, 30)
+                    vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
 
                     DockAccount.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))

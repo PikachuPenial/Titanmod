@@ -1,6 +1,5 @@
 Various server ConVars (custom options for server owners)
 Player account wipe option
-Switch killfeed off of net messages (better optimized)
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus

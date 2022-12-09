@@ -1,13 +1,11 @@
 --Color array, saving space
 local white = Color(255, 255, 255, 255)
 
-local ScoreboardDerma = nil
-local PlayerList = nil
-
 local mapID
 local mapName
 local mapDesc
 local mapThumb
+local dof
 
 local timeUntilMapVote = GetConVar("tm_mapvotetimer"):GetInt()
 
@@ -26,6 +24,8 @@ function GM:ScoreboardShow()
 			end
 		end
 
+		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
+
 		ScoreboardDerma = vgui.Create("DFrame")
 		ScoreboardDerma:SetSize(640, 600)
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
@@ -33,8 +33,11 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
+			if dof == true then
+				DrawBokehDOF(4, 1, 0)
+			end
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod 0.7b1", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
+			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -45,27 +48,27 @@ function GM:ScoreboardShow()
 			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 0, white, TEXT_ALIGN_LEFT)
 		end
 
-		PlayersIcon = vgui.Create("DImage", InfoPanel)
+		local PlayersIcon = vgui.Create("DImage", InfoPanel)
 		PlayersIcon:SetPos(10, 0)
 		PlayersIcon:SetSize(30, 30)
 		PlayersIcon:SetImage("icons/playericon.png")
 
-		KillsIcon = vgui.Create("DImage", InfoPanel)
+		local KillsIcon = vgui.Create("DImage", InfoPanel)
 		KillsIcon:SetPos(360, 0)
 		KillsIcon:SetSize(30, 30)
 		KillsIcon:SetImage("icons/killicon.png")
 
-		DeathsIcon = vgui.Create("DImage", InfoPanel)
+		local DeathsIcon = vgui.Create("DImage", InfoPanel)
 		DeathsIcon:SetPos(405, 0)
 		DeathsIcon:SetSize(30, 30)
 		DeathsIcon:SetImage("icons/deathicon.png")
 
-		KDIcon = vgui.Create("DImage", InfoPanel)
+		local KDIcon = vgui.Create("DImage", InfoPanel)
 		KDIcon:SetPos(455, 0)
 		KDIcon:SetSize(30, 30)
 		KDIcon:SetImage("icons/ratioicon.png")
 
-		ScoreIcon = vgui.Create("DImage", InfoPanel)
+		local ScoreIcon = vgui.Create("DImage", InfoPanel)
 		ScoreIcon:SetPos(525, 0)
 		ScoreIcon:SetSize(30, 30)
 		ScoreIcon:SetImage("icons/scoreicon.png")
@@ -174,13 +177,13 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
 
-			playerCallingCard = vgui.Create("DImage", PlayerPanel)
+			local playerCallingCard = vgui.Create("DImage", PlayerPanel)
 			playerCallingCard:SetPos(10, 10)
 			playerCallingCard:SetSize(240, 80)
 			playerCallingCard:SetImage(card, "cards/color/black.png")
 
 			--Displays a players calling card and profile picture.
-			playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
+			local playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
 			playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
 			playerProfilePicture:SetSize(70, 70)
 			playerProfilePicture:SetPlayer(v, 184)
@@ -238,7 +241,7 @@ function GM:ScoreboardShow()
 
 		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
 		if game.GetMap() == "tm_firingrange" then
-			FiringRangeDerma = vgui.Create("DFrame")
+			local FiringRangeDerma = vgui.Create("DFrame")
 			FiringRangeDerma:SetSize(200, 530)
 			FiringRangeDerma:SetPos(ScrW() / 2 + 325, 0)
 			FiringRangeDerma:SetTitle("")
@@ -300,10 +303,10 @@ end
 function GM:ScoreboardHide()
 	if IsValid(ScoreboardDerma) then
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
-		ScoreboardDerma:Hide()
+		ScoreboardDerma:Remove()
 
 		if game.GetMap() == "tm_firingrange" then
-			FiringRangeDerma:Hide()
+			FiringRangeDerma:Remove()
 		end
 	end
 end

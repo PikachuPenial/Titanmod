@@ -24,8 +24,9 @@ if !ConVarExists("tm_cardpfpoffset") then CreateConVar("tm_cardpfpoffset", "0", 
 if !ConVarExists("tm_hitsoundtype") then CreateConVar("tm_hitsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of hitsounds",0,3) end
 if !ConVarExists("tm_killsoundtype") then CreateConVar("tm_killsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,3) end
 if !ConVarExists("tm_streamermode") then CreateConVar("tm_streamermode", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,1) end
-if CLIENT then CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade.") end
-if CLIENT then CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats.", 0, 1) end
+if !ConVarExists("tm_menudof") then CreateConVar("tm_menudof", "1", FCVAR_ARCHIVE, "Enable or disable Depth Of Field on certain in game menus",0,1) end
+if CLIENT then CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade") end
+if CLIENT then CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1) end
 
 --Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
@@ -284,25 +285,7 @@ cardArray[192] = {"cards/leveling/280.png", "Meep", "hi!", "level", 280}
 cardArray[193] = {"cards/leveling/290.png", "Superpowers", "bitch!", "level", 290}
 cardArray[194] = {"cards/leveling/300.png", "Shocked", "300 levels of pain.", "level", 300}
 
---Map Array Formatting (Map ID, Map Name, Map Description, Map Image)
-mapArray = {}
-mapArray[1] = {"tm_arctic", "Arctic", "Snowy close quarters combat.", "maps/thumb/tm_arctic.png"}
-mapArray[2] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
-mapArray[3] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
-mapArray[4] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
-mapArray[5] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression.", "maps/thumb/tm_firingrange.png"}
-mapArray[6] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
-mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
-mapArray[8] = {"tm_mall", "Mall", "Spacious shopping center with long sightlines.", "maps/thumb/tm_mall.png"}
-mapArray[9] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
-mapArray[10] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
-mapArray[11] = {"tm_rig", "Rig", "Dark and rainy oil rig.", "maps/thumb/tm_rig.png"}
-mapArray[12] = {"tm_shipment", "Shipment", "Extremely small and chaotic.", "maps/thumb/tm_shipment.png"}
-mapArray[13] = {"tm_station", "Station", "A vertical and open battleground.", "maps/thumb/tm_station.png"}
-
-availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_cradle", "tm_mall", "tm_bridge", "tm_shipment", "tm_station", "tm_rig", "tm_arctic", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
-
---Creating a leveling array, this removes the consistency of the leveling, using developer set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but it feels more polished IMO.
+--Creating a leveling array, this removes the consistency of the leveling, using developer set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro.
 levelArray = {}
 levelArray[1] = {1, 750} -- +75 XP
 levelArray[2] = {2, 825}

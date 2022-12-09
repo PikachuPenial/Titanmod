@@ -1,27 +1,44 @@
 --[[
-
-Titanmod Config File
-This is primarily for server owners that are trying to fine tune their experience.
-If you do not understand what a certain setting does, I would recommend towards not changing it.
-
+    Titanmod Config File
+    This is primarily for server owners that are trying to fine tune their experience.
+    If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
---PLAYER SPECIFICATIONS
-playerHealth = 100              --Changes the max health of the player
-playerSpeedMulti = 1            --Changes the speed multipler of the player (walking, sprinting, crouching, sliding, and climbing speed)
-healthRegenSpeed = 0.15
-healthRegenDamageDelay = 3.5
+--PLAYER
+playerHealth = 100              --The the max health of the player.
+playerSpeedMulti = 1            --The speed multipler of the player (affects walking, sprinting, crouching, sliding, and climbing speeds.)
+healthRegenSpeed = 0.15         --The speed of the players health regeneration.
+healthRegenDamageDelay = 3.5    --The time in seconds from when the player was last hit to begin health regeneration.
 
---WEAPON ARRAY
---If you want to use custom weaponary, or want to add or remove certain weapons, edit this array.
---Weapon Array Formatting (Item Name/ID, Print Name, Category)
+--MAPS
+--If you want to use custom maps, or want to add or remove certain maps, edit this array.
+--Map Array Formatting (Map ID, map name, map description, map thumbnail image.)
+mapArray = {}
+mapArray[1] = {"tm_arctic", "Arctic", "Snowy close quarters combat.", "maps/thumb/tm_arctic.png"}
+mapArray[2] = {"tm_bridge", "Bridge", "Speeding cars act as hazards during your fights.", "maps/thumb/tm_bridge.png"}
+mapArray[3] = {"tm_cradle", "Cradle", "Wide and open with many grapple spots.", "maps/thumb/tm_cradle.png"}
+mapArray[4] = {"tm_darkstreets", "Dark Streets", "Limited movement and narrow chokepoints.", "maps/thumb/tm_darkstreets.png"}
+mapArray[5] = {"tm_firingrange", "Firing Range", "Free weapon spawning, force disabled progression.", "maps/thumb/tm_firingrange.png"}
+mapArray[6] = {"tm_grid", "Grid", "Open, vibrant rooms connected via maze-like hallways.", "maps/thumb/tm_grid.png"}
+mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "Prone to sniping, many movemeny opportunities", "maps/thumb/tm_liminal_pool.png"}
+mapArray[8] = {"tm_mall", "Mall", "Spacious shopping center with long sightlines.", "maps/thumb/tm_mall.png"}
+mapArray[9] = {"tm_mephitic", "Mephitic", "Dark facility with a continuous acid flood.", "maps/thumb/tm_mephitic.png"}
+mapArray[10] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and engagements.", "maps/thumb/tm_nuketown.png"}
+mapArray[11] = {"tm_rig", "Rig", "Dark and rainy oil rig.", "maps/thumb/tm_rig.png"}
+mapArray[12] = {"tm_shipment", "Shipment", "Extremely small and chaotic.", "maps/thumb/tm_shipment.png"}
+mapArray[13] = {"tm_station", "Station", "A vertical and open battleground.", "maps/thumb/tm_station.png"}
+availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_cradle", "tm_mall", "tm_bridge", "tm_shipment", "tm_station", "tm_rig", "tm_arctic", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map. Any map added in the map array above NEEDS to be added here as well.
+
+--WEAPONS
+--If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
+--Formatting (Item ID, print name, category.)
 weaponArray = {}
 weaponArray[1] = {"tfa_ins2_aa12", "AA-12", "primary"}
 weaponArray[2] = {"tfa_ins2_acrc", "ACR-C", "primary"}
 weaponArray[3] = {"tfa_ins2_aek971", "AEK-971", "primary"}
 weaponArray[4] = {"tfa_ins2_akms", "AKMS", "primary"}
 weaponArray[5] = {"tfa_inss_aks74u", "AKS-74U", "primary"}
-weaponArray[6] = {"tfa_ismc_ak12_rpk", "AK-12 (RPK)", "primary"}
+weaponArray[6] = {"tfa_ismc_ak12_rpk", "AK-12 RPK", "primary"}
 weaponArray[7] = {"tfa_ins2_ak400", "AK-400", "primary"}
 weaponArray[8] = {"tfa_ins2_warface_amp_dsr1", "AMP DSR-1", "primary"}
 weaponArray[9] = {"tfa_ins2_abakan", "AN-94", "primary"}

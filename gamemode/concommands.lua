@@ -23,6 +23,24 @@ function ForceSave(ply, cmd, args)
 end
 concommand.Add("tm_forcesave", ForceSave)
 
+function TestKill(ply, cmd, args)
+	ply:SetNWInt("killStreak", ply:GetNWInt("killStreak") + 1)
+
+	net.Start("NotifyKill")
+	net.WriteEntity(ply)
+	net.WriteString("AWP")
+	net.WriteFloat(0)
+	net.WriteFloat(0)
+	net.Send(ply)
+
+	net.Start("KillFeedUpdate")
+	net.WriteString(ply:GetName() .. " [AWP] " .. ply:GetName())
+	net.WriteFloat(0)
+	net.WriteEntity(ply)
+	net.Broadcast()
+end
+concommand.Add("testkill", TestKill)
+
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
     for k, v in pairs(modelArray) do
