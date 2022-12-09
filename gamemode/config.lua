@@ -4,27 +4,32 @@
     If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
---PLAYER
 playerHealth = 100              --The the max health of the player.
-playerSpeedMulti = 1            --The speed multipler of the player (affects walking, sprinting, crouching, sliding, and climbing speeds.)
-playerGravityMulti = 1          --The strength of gravity affecting the player.
-playerJumpMulti = 1             --The strength of the players jump.
-playerDuckStateMulti = 1        --The speed at which the player enters/exits a crocuh after the key is pressed/released.
+playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and climbing speeds.)
+playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
+playerJumpMulti = 1             --The multiplier for the strength of the players jump.
+playerDuckStateMulti = 1        --The multuplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
 playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
 healthRegenSpeed = 0.15         --The speed of the players health regeneration.
 healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
 playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
 
-usePrimary = true               --Enable primary weapons in the players loadout.
-useSecondary = true             --Enable secondary weapons in the players loadout.
-useMelee = true                 --Enable melee weapons in the players loadout.
-useGadget = true                --Enable gadgets in the players loadout.
+forceDisableProgression = false --Any progress or unlocs made during a play session will be reset upon leaving.
+xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
+
+usePrimary = true               --Enable primary weapons for the players loadout.
+useSecondary = true             --Enable secondary weapons for the players loadout.
+useMelee = true                 --Enable melee weapons for the players loadout.
+useGadget = true                --Enable gadgets for the players loadout.
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
-grappleCooldown = 18            --The cooldown in sceonds of the grappling hook after being used.
-grappleKillReset = true         --The cooldown in sceonds of the grappling hook after being used.
+grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
+grappleKillReset = true         --The cooldown (in sceonds) of the grappling hook after being used.
 grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
 rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
 damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
+
+mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
+forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.

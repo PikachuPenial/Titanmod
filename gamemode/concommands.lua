@@ -1,6 +1,8 @@
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
     if GetConVar("tm_developermode"):GetInt() == 1 then return end
+	if game.GetMap() == "tm_firingrange" then return end
+	if forceDisableProgression == true then return end
     ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
     ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
     ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))

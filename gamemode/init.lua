@@ -110,7 +110,7 @@ util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
 
-if game.GetMap() == "tm_firingrange" then
+if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
 	util.AddNetworkString("FiringRangeGiveWeapon")
 end
 
@@ -163,7 +163,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("killStreak", attacker:GetNWInt("killStreak") + 1)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 100)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 100)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 100)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 100 * xpMultiplier)
 
 		if attacker:GetNWInt("killStreak") >= attacker:GetNWInt("highestKillStreak") then
 			attacker:SetNWInt("highestKillStreak", attacker:GetNWInt("killStreak"))
@@ -263,7 +263,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * attacker:GetNWInt("killStreak"))
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * attacker:GetNWInt("killStreak") * xpMultiplier)
 
 		if attacker:GetNWInt("killStreak") == 3 then
 			attacker:SetNWInt("playerAccoladeOnStreak", attacker:GetNWInt("playerAccoladeOnStreak") + 1)
@@ -274,40 +274,40 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * victim:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * victim:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerAccoladeBuzzkill", attacker:GetNWInt("playerAccoladeBuzzkill") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * victim:GetNWInt("killStreak"))
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 10 * victim:GetNWInt("killStreak") * xpMultiplier)
 	end
 
 	if attacker:Health() <= 15 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeClutch", attacker:GetNWInt("playerAccoladeClutch") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20 * xpMultiplier)
 	end
 
 	if distance >= 40 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + distance)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + distance)
 		attacker:SetNWInt("playerAccoladeLongshot", attacker:GetNWInt("playerAccoladeLongshot") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + distance)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + distance * xpMultiplier)
 	elseif distance <= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladePointblank", attacker:GetNWInt("playerAccoladePointblank") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20 * xpMultiplier)
 	end
 
 	if weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20 * xpMultiplier)
 	end
 
 	if victim:LastHitGroup() == 1 and victim:IsPlayer() then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeHeadshot", attacker:GetNWInt("playerAccoladeHeadshot") + 1)
-		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20)
+		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + 20 * xpMultiplier)
 	end
 
 	CheckForPlayerLevel(attacker)
@@ -404,7 +404,7 @@ end
 hook.Add("Think", "HealthRegen", Regeneration)
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
-timer.Create("cleanMap", 30, 0, function()
+timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
@@ -558,6 +558,7 @@ end
 function GM:ShutDown()
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	if game.GetMap() == "tm_firingrange" then return end
+	if forceDisableProgression == true then return end
 
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics

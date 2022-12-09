@@ -241,7 +241,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetKeyboardInputEnabled(false)
 
 		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
-		if game.GetMap() == "tm_firingrange" then
+		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
 			local FiringRangeDerma = vgui.Create("DFrame")
 			FiringRangeDerma:SetSize(200, 530)
 			FiringRangeDerma:SetPos(ScrW() / 2 + 325, 0)
@@ -306,7 +306,7 @@ function GM:ScoreboardHide()
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:Remove()
 
-		if game.GetMap() == "tm_firingrange" then
+		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
 			FiringRangeDerma:Remove()
 		end
 	end
