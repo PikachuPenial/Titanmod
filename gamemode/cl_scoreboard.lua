@@ -1,6 +1,7 @@
 --Color array, saving space
 local white = Color(255, 255, 255, 255)
 
+local ScoreboardDerma
 local mapID
 local mapName
 local mapDesc
@@ -131,7 +132,7 @@ function GM:ScoreboardShow()
 			surface.DrawRect(0, 20, 630, 10)
 
 			surface.SetDrawColor(255, 255, 0, 50)
-			surface.DrawRect(0, 20, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 630, 10)
+			if LocalPlayer():GetNWInt("playerLevel") ~= 60 then surface.DrawRect(0, 20, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 630, 10) end
 		end
 	end
 

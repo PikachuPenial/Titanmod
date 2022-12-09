@@ -161,8 +161,8 @@ net.Receive("KillFeedUpdate", function(len, ply)
         table.remove(feedArray, 1)
     end)
 
-    if streak == 5 or streak == 10 or streak == 15 or streak == 20 or streak == 25 or streak == 30 then
-        table.insert(feedArray, {attacker:GetName() .. " is on a " .. streak .. " killstreak", 0})
+    if streak == 4 or streak == 9 or streak == 14 or streak == 19 or streak == 24 or streak == 29 then
+        table.insert(feedArray, {attacker:GetName() .. " is on a " .. streak + 1 .. " killstreak", 0})
         if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
         timer.Create(attacker:GetName() .. streak, 8, 1, function()
             table.remove(feedArray, 1)
@@ -239,7 +239,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     if killedPlayer:GetNWInt("killStreak") >= 3 then
-        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak") + 10
+        buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
         buzzkill = "Buzz Kill +" .. buzzkillScore .. " | "
         seperator = "| "
     else
@@ -662,13 +662,13 @@ net.Receive("NotifyLevelUp", function(len, ply)
     end
 
     LevelNotif = vgui.Create("DFrame")
-    LevelNotif:SetSize(600, 0)
+    LevelNotif:SetSize(600, 100)
     LevelNotif:SetX(ScrW() / 2 - 300)
-    LevelNotif:SetY(ScrH() - 110)
+    LevelNotif:SetY(ScrH())
     LevelNotif:SetTitle("")
     LevelNotif:SetDraggable(false)
     LevelNotif:ShowCloseButton(false)
-    LevelNotif:SizeTo(600, 100, 1, 0, 0.15)
+    LevelNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 110, 0.5, 0, 0.25)
 
     LevelNotif.Paint = function(self, w, h)
         draw.SimpleText("LEVEL UP", "PlayerNotiName", 300, 0, Color(255, 255, 0), TEXT_ALIGN_CENTER)
@@ -683,7 +683,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     surface.PlaySound("tmui/levelup.wav")
 
     timer.Create("LevelNotif", 6, 1, function()
-        LevelNotif:SizeTo(600, 0, 0.5, 0, 0.15, function()
+        LevelNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
             LevelNotif:Hide()
         end)
     end)

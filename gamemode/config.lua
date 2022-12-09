@@ -27,7 +27,13 @@ mapArray[10] = {"tm_nuketown", "Nuketown", "Cult classic, predictible spawns and
 mapArray[11] = {"tm_rig", "Rig", "Dark and rainy oil rig.", "maps/thumb/tm_rig.png"}
 mapArray[12] = {"tm_shipment", "Shipment", "Extremely small and chaotic.", "maps/thumb/tm_shipment.png"}
 mapArray[13] = {"tm_station", "Station", "A vertical and open battleground.", "maps/thumb/tm_station.png"}
-availableMaps = {"tm_darkstreets", "tm_grid", "tm_liminal_pool", "tm_mephitic", "tm_nuketown", "tm_cradle", "tm_mall", "tm_bridge", "tm_shipment", "tm_station", "tm_rig", "tm_arctic", "skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map. Any map added in the map array above NEEDS to be added here as well.
+
+availableMaps = {"skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
+for m, v in pairs(mapArray) do
+    if game.GetMap() ~= v[1] and v[1] ~= "tm_firingrange" then
+        table.insert(availableMaps, v[1])
+    end
+end
 
 --WEAPONS
 --If you want to use custom weapons, or want to add or remove certain weapons, edit this array.

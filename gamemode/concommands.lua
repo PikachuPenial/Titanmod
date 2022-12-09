@@ -23,24 +23,6 @@ function ForceSave(ply, cmd, args)
 end
 concommand.Add("tm_forcesave", ForceSave)
 
-function TestKill(ply, cmd, args)
-	ply:SetNWInt("killStreak", ply:GetNWInt("killStreak") + 1)
-
-	net.Start("NotifyKill")
-	net.WriteEntity(ply)
-	net.WriteString("AWP")
-	net.WriteFloat(0)
-	net.WriteFloat(0)
-	net.Send(ply)
-
-	net.Start("KillFeedUpdate")
-	net.WriteString(ply:GetName() .. " [AWP] " .. ply:GetName())
-	net.WriteFloat(0)
-	net.WriteEntity(ply)
-	net.Broadcast()
-end
-concommand.Add("testkill", TestKill)
-
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
     for k, v in pairs(modelArray) do
@@ -55,19 +37,19 @@ function PlayerModelChange(ply, cmd, args)
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
-            elseif modelUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= modelValue then
+			elseif modelUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
-            elseif modelUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= modelValue then
+			elseif modelUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
-            elseif modelUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= modelValue then
+			elseif modelUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
-            elseif modelUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= modelValue then
+			elseif modelUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "special" and modelValue == "name" and ply:SteamID() == "STEAM_0:1:514443768" then
 				ply:SetNWString("chosenPlayermodel", modelID)
@@ -80,42 +62,49 @@ concommand.Add("tm_selectplayermodel", PlayerModelChange)
 --Allows the Main Menu to change the players current playercard.
 function PlayercardChange(ply, cmd, args)
 	local masteryUnlockReq = 50
-    for k, v in pairs(cardArray) do
+	for k, v in pairs(cardArray) do
 		if (args[1] == v[1]) then
 			local cardID = v[1]
 			local cardUnlock = v[4]
 			local cardValue = v[5]
-            local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
+			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
 			if cardUnlock == "default" or cardUnlock == "color" then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
+			elseif cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
+			elseif cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= cardValue then
+			elseif cardUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= cardValue then
+			elseif cardUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= cardValue then
+			elseif cardUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "level" and playerTotalLevel >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
-            elseif cardUnlock == "mastery" and ply:GetNWInt("killsWith_" .. cardValue) >= masteryUnlockReq then
+			elseif cardUnlock == "mastery" and ply:GetNWInt("killsWith_" .. cardValue) >= masteryUnlockReq then
 				ply:SetNWString("chosenPlayercard", cardID)
 			end
 		end
 	end
 end
 concommand.Add("tm_selectplayercard", PlayercardChange)
+
+--Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
+function LevelTest(ply, cmd, args)
+	ply:SetNWInt("playerXP", ply:GetNWInt("playerXP") + 2000)
+	CheckForPlayerLevel(ply)
+end
+concommand.Add("leveltest", LevelTest)
 
 --Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
 function StartCustomSpectate(ply, cmd, args)
@@ -128,18 +117,18 @@ concommand.Add("tm_spectate", StartCustomSpectate)
 
 --Sets a players profile picture offset for their playercard.
 function PictureOffset(ply, cmd, args)
-    local value = args[1]
-    ply:SetNWInt("cardPictureOffset", value)
+	local value = args[1]
+	ply:SetNWInt("cardPictureOffset", value)
 end
 concommand.Add("tm_setcardpfpoffset", PictureOffset)
 
 --Allows the player to prestige if they have hit the max level cap (Level 60).
 function PlayerPrestige(ply, cmd, args)
 	if ply:GetNWInt("playerLevel") == 60 then
-        ply:SetNWInt("playerLevel", 1)
-        ply:SetNWInt("playerPrestige", ply:GetNWInt("playerPrestige") + 1)
-        ply:SetNWInt("playerXP", 0)
-        ply:SetNWInt("playerXPToNextLevel", 750)
+		ply:SetNWInt("playerLevel", 1)
+		ply:SetNWInt("playerPrestige", ply:GetNWInt("playerPrestige") + 1)
+		ply:SetNWInt("playerXP", 0)
+		ply:SetNWInt("playerXPToNextLevel", 750)
 	end
 end
 concommand.Add("tm_prestige", PlayerPrestige)
