@@ -180,7 +180,7 @@ net.Receive("NotifyKill", function(len, ply)
     local seperator = ""
 
     if IsValid(KillNotif) then
-        KillNotif:Hide()
+        KillNotif:Remove()
     end
 
     KillNotif = vgui.Create("DFrame")
@@ -296,7 +296,7 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         KillNotif:SizeTo(600, 0, 1, 0, 0.25, function()
-            KillNotif:Hide()
+            KillNotif:Remove()
         end)
     end)
 end )
@@ -307,16 +307,15 @@ net.Receive("NotifyDeath", function(len, ply)
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
     local lastHitIn = net.ReadFloat()
-
-    local respawnTimeLeft = 4
+    local respawnTimeLeft = playerRespawnTime
 
     if IsValid(KillNotif) then
-        KillNotif:Hide()
+        KillNotif:Remove()
     end
 
     --Creates a cooldown for the death UI, having it disappear after 4 seconds.
-    timer.Create("respawnTimeHideHud", 4, 1, function()
-        DeathNotif:Hide()
+    timer.Create("respawnTimeHideHud", playerRespawnTime, 1, function()
+        DeathNotif:Remove()
         hook.Remove("PlayerDeathThink", "ShowRespawnTime")
     end)
 
@@ -396,7 +395,7 @@ net.Receive("MapVoteHUD", function(len, ply)
     timer.Create("mapVoteTimeRemaining", 19, 1, function()
         if votedOnMap == false then RunConsoleCommand("tm_voteformap", "skip") end
         MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Hide()
+            MapVoteHUD:Remove()
         end)
     end)
 
@@ -467,7 +466,7 @@ net.Receive("MapVoteHUD", function(len, ply)
         end)
 
         MapVoteHUD:SizeTo(0, 500, 1, 0, 0.25, function()
-            MapVoteHUD:Hide()
+            MapVoteHUD:Remove()
         end)
     end
 
@@ -496,7 +495,7 @@ net.Receive("MapVoteHUD", function(len, ply)
         end)
 
         MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Hide()
+            MapVoteHUD:Remove()
         end)
     end
 
@@ -526,7 +525,7 @@ net.Receive("MapVoteHUD", function(len, ply)
         end)
 
         MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Hide()
+            MapVoteHUD:Remove()
         end)
     end
 
@@ -537,7 +536,7 @@ end )
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
     if IsValid(EndOfGameUI) then
-        EndOfGameUI:Hide()
+        EndOfGameUI:Remove()
     end
 
     gameEnded = true
@@ -658,7 +657,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     local previousLevel = net.ReadFloat()
 
     if IsValid(LevelNotif) then
-        LevelNotif:Hide()
+        LevelNotif:Remove()
     end
 
     LevelNotif = vgui.Create("DFrame")
@@ -684,7 +683,21 @@ net.Receive("NotifyLevelUp", function(len, ply)
 
     timer.Create("LevelNotif", 6, 1, function()
         LevelNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
-            LevelNotif:Hide()
+            LevelNotif:Remove()
         end)
     end)
 end )
+
+function ShowLoadoutOnSpawn()
+    for k, v in pairs(weaponArray) do
+        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then primaryWeapon = v[2] end
+        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then secondaryWeapon = v[2] end
+        if v[1] == LocalPlayer():GetNWString("loadoutMelee") then meleeWeapon = v[2] end
+    end
+
+    notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
+    timer.Simple(3, function()
+        notification.Kill("LoadoutText")
+    end)
+end
+concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)

@@ -281,7 +281,7 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 690)
+            PatchPreRelease:SetSize(0, 710)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, Color(50, 50, 50, 200))
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -313,10 +313,11 @@ function mainMenu()
                 draw.SimpleText("   Removed quotes from AK-12 RPK's name", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 600, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 620, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 640, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 660, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 620, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 640, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 660, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 680, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -330,7 +331,6 @@ function mainMenu()
                 if not IsValid(StatisticsPanel) then
                     local comparisonSelectedPlayer = nil
                     local comparingWith = false
-                    local playerSelected = false
 
                     local StatisticsPanel = MainMenu:Add("StatsPanel")
                     local StatisticsSlideoutPanel = MainMenu:Add("StatsSlideoutPanel")
@@ -389,8 +389,6 @@ function mainMenu()
                     comparePlayerStats.OnSelect = function(_, _, value, id)
                         comparisonSelectedPlayerID = id
                         comparingWith = player.GetBySteamID(comparisonSelectedPlayerID)
-
-                        playerSelected = true
                         comparePlayerStats:SetValue("Comparing with " .. value)
 
                         comparingWithPFP = vgui.Create("AvatarImage", StatsCombat)
@@ -400,7 +398,9 @@ function mainMenu()
                     end
 
                     for _, v in pairs(player.GetAll()) do
-                        comparePlayerStats:AddChoice(v:Name(), v:SteamID())
+                        if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 and v != LocalPlayer() then
+                            comparePlayerStats:AddChoice(v:Name(), v:SteamID())
+                        end
                     end
 
                     local trackingPlayer = LocalPlayer()
@@ -424,7 +424,7 @@ function mainMenu()
                         draw.SimpleText("Highest Player Killstreak:", "SettingsLabel", 20, 220, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("highestKillStreak"), "SettingsLabel", 500, 220, white, TEXT_ALIGN_RIGHT)
 
-                        if playerSelected == true and comparingWith ~= false then
+                        if comparingWith ~= false then
                             draw.SimpleText(comparingWith:GetNWInt("playerScore"), "SettingsLabel", 720, 80, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerKills"), "SettingsLabel", 720, 115, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerDeaths"), "SettingsLabel", 720, 150, white, TEXT_ALIGN_RIGHT)
@@ -458,7 +458,7 @@ function mainMenu()
                         draw.SimpleText("Killstreaks Ended:", "SettingsLabel", 20, 290, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText(trackingPlayer:GetNWInt("playerAccoladeBuzzkill"), "SettingsLabel", 500, 290, white, TEXT_ALIGN_RIGHT)
 
-                        if playerSelected == true and comparingWith ~= false then
+                        if comparingWith ~= false then
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeHeadshot"), "SettingsLabel", 720, 80, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeSmackdown"), "SettingsLabel", 720, 115, white, TEXT_ALIGN_RIGHT)
                             draw.SimpleText(comparingWith:GetNWInt("playerAccoladeClutch"), "SettingsLabel", 720, 150, white, TEXT_ALIGN_RIGHT)
@@ -477,7 +477,7 @@ function mainMenu()
                             draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), white, TEXT_ALIGN_LEFT)
                             draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
 
-                            if playerSelected == true and comparingWith ~= false then
+                            if comparingWith ~= false then
                                 draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
                             end
                         end
@@ -624,15 +624,9 @@ function mainMenu()
 
                 draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 for k, v in pairs(weaponArray) do
-                    if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT)
-                    end
-                    if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT)
-                    end
-                    if v[1] == LocalPlayer():GetNWString("loadoutMelee") then
-                        draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT)
-                    end
+                    if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
+                    if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                    if v[1] == LocalPlayer():GetNWString("loadoutMelee") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
                 end
             end
             SpawnButton.DoClick = function()
@@ -3296,27 +3290,6 @@ function mainMenu()
     end
 end
 concommand.Add("tm_openmainmenu", mainMenu)
-
-function ShowLoadoutOnSpawn()
-    for k, v in pairs(weaponArray) do
-        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then
-            primaryWeapon = v[2]
-        end
-        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then
-            secondaryWeapon = v[2]
-        end
-        if v[1] == LocalPlayer():GetNWString("loadoutMelee") then
-            meleeWeapon = v[2]
-        end
-    end
-
-    notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
-    timer.Simple(3, function()
-        notification.Kill("LoadoutText")
-    end)
-end
-concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
-
 
 PANEL = {}
 function PANEL:Init()

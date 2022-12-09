@@ -3,6 +3,6 @@ Player account wipe option
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus
-Reduce load times on models and player card menus (idfk how to do this, maybe preload it?)
-Privacy working in stats menu
+Option for hiding loadout hints
+Check death HUD optimization yippee
 FIX THE SCOREBOARD BUG GAHHHHHHHHHHHHHHHHHHH

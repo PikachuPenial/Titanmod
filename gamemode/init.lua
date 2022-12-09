@@ -23,7 +23,7 @@ for k, v in pairs(weaponArray) do
 		table.insert(randPrimary, v[1])
 	elseif v[3] == "secondary" then
 		table.insert(randSecondary, v[1])
-	elseif v[3] == "melee" or "gadget" then
+	elseif v[3] == "melee" and useMelee == true or "gadget" and useGadget == true then
 		table.insert(randMelee, v[1])
 	end
 end
@@ -32,26 +32,26 @@ end
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
 
-	ply:SetGravity(.72)
+	ply:SetGravity(.72 * playerGravityMulti)
 	ply:SetHealth(playerHealth)
 	ply:SetMaxHealth(playerHealth)
 	ply:SetRunSpeed(275 * playerSpeedMulti)
 	ply:SetWalkSpeed(165 * playerSpeedMulti)
-	ply:SetJumpPower(150)
+	ply:SetJumpPower(150 * playerJumpMulti)
 	ply:SetLadderClimbSpeed(155 * playerSpeedMulti)
 	ply:SetSlowWalkSpeed(78 * playerSpeedMulti)
-	ply:SetCrouchedWalkSpeed(0.5)
-	ply:SetDuckSpeed(0.65)
-	ply:SetUnDuckSpeed(0.65)
+	ply:SetCrouchedWalkSpeed(0.5 * playerCrouchWalkSpeedMulti)
+	ply:SetDuckSpeed(0.65 * playerDuckStateMulti)
+	ply:SetUnDuckSpeed(0.65 * playerDuckStateMulti)
 
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
-	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
+	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
 
 	ply:Give(ply:GetNWString("loadoutPrimary"))
 	ply:Give(ply:GetNWString("loadoutSecondary"))
 	ply:Give(ply:GetNWString("loadoutMelee"))
-	ply:SetAmmo(1, "Grenade")
+	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
@@ -85,9 +85,9 @@ function GM:PlayerInitialSpawn(ply)
 	end
 
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
-	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+	if usePrimary == true then ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
+	if useSecondary == true then  ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
+	if useMelee == true or useGadget == true then ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
 
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
@@ -101,12 +101,6 @@ function GM:PlayerInitialSpawn(ply)
 	end)
 end
 
-net.Receive("FiringRangeGiveWeapon", function(len, ply)
-	local selectedWeapon = net.ReadString()
-	ply:StripWeapons()
-	ply:Give(selectedWeapon)
-end )
-
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
@@ -119,6 +113,12 @@ util.AddNetworkString("UpdateClientMapVoteTime")
 if game.GetMap() == "tm_firingrange" then
 	util.AddNetworkString("FiringRangeGiveWeapon")
 end
+
+net.Receive("FiringRangeGiveWeapon", function(len, ply)
+	local selectedWeapon = net.ReadString()
+	ply:StripWeapons()
+	ply:Give(selectedWeapon)
+end )
 
 --Sending a hitsound if a player attacks another player.
 local function TestEntityForPlayer(ent)
@@ -136,6 +136,7 @@ hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
 
 --Rocket jumping.
 local function reduceRocketDamage(ent, dmginfo)
+	if rocketJumping == false then return end
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
 	if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
@@ -177,15 +178,15 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
-		attacker:SetNWFloat("linat", 0)
+		if grappleKillReset == true then  attacker:SetNWFloat("linat", 0) end
 	end
 
-	victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+	if usePrimary == true then victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
+	if useSecondary == true then  victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
+	if useMelee == true or useGadget == true then victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
-	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
+	timer.Create(victim:SteamID() .. "respawnTime", playerRespawnTime, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
 			victim:Spawn()
 			victim:UnSpectate()
@@ -250,11 +251,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		timer.Simple(0.75, function()
 			if not IsValid(victim) or not IsValid(attacker) then return end
 			victim:Spectate(OBS_MODE_FREEZECAM)
-		end)
 
-		timer.Simple(2, function()
-			if not IsValid(victim) or not IsValid(attacker) then return end
-			victim:Spectate(OBS_MODE_IN_EYE)
+			timer.Simple(1.25, function()
+				if not IsValid(victim) or not IsValid(attacker) then return end
+				victim:Spectate(OBS_MODE_IN_EYE)
+			end)			
 		end)
 	end
 
