@@ -18,6 +18,7 @@ if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_AR
 if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Main Menu music",0,1) end
 if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
 if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
+if !ConVarExists("tm_loadouthints") then CreateConVar("tm_loadouthints", "1", FCVAR_ARCHIVE, "Enable or disable the loadout hud on player respawn",0,1) end
 if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
 if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the death UI at the top and the bottom of the screen",0,1) end
 if !ConVarExists("tm_cardpfpoffset") then CreateConVar("tm_cardpfpoffset", "0", FCVAR_ARCHIVE, "Moves the Profile Picture of the player around their playercard.",0,160) end
@@ -348,56 +349,5 @@ levelArray[58] = {58, 8750}
 levelArray[59] = {59, 8975}
 levelArray[60] = {60, "prestige"}
 
---Hint Array, no use as of now.
-hintArray = {}
-hintArray[1] = {"Crouching drastically increases your accuracy and recoil control."}
-hintArray[2] = {"Each weapon has its own distinct recoil pattern to master."}
-hintArray[3] = {"Your grappling hook cooldown refreshes on each kill."}
-hintArray[4] = {"Shooting the torso and/or head will guarintee good damage per shot."}
-hintArray[5] = {"You can sprint and/or slide in any direction, not just forwards."}
-hintArray[6] = {"Don't stand still, potshotters will have an easy time killing you."}
-hintArray[7] = {"All bullet based projectiles are hitscan, there is no bullet velocity/drop to account for."}
-hintArray[8] = {"The vehicles can be mounted and surfed on while playing the Bridge map."}
-hintArray[9] = {"Bunny hopping will help perserve velocity after landing from a grapple/slide."}
-hintArray[10] = {"Explosives hurt, don't aim downwards if you want to stay alive."}
-hintArray[11] = {"Some snipers and hand cannons can one shot to the torso."}
-hintArray[12] = {"Attachments save throughout play sessions, tweak your guns once and you are done."}
-hintArray[13] = {"All melee weapons have a left and right click attack, learn how effective each are."}
-hintArray[14] = {"Wall jumping constantly allows for continuous climbing of said wall."}
-hintArray[15] = {"Wall running through a chokepoint can catch opponents off guard."}
-hintArray[16] = {"Combine wall running and jumping for extremely unpredictable movement."}
-hintArray[17] = {"Certain playermodels may shine or stand out in dark enviroments."}
-hintArray[18] = {"Other players can see your flashlight, be cautious."}
-hintArray[19] = {"Hip fire is an effective strategy while on the move."}
-hintArray[20] = {"There is no scope glint (as of now.) Hardscope all you want."}
-hintArray[21] = {"There are over 125+ weapons, try to get consistent with many different loadouts."}
-hintArray[22] = {"Running any optic lowers your weapons ADS speed."}
-hintArray[23] = {"Accolades award good amounts of score and XP."}
-hintArray[24] = {"Chaining multiple accolades together can give a big score/XP boost."}
-hintArray[25] = {"The map vote is not mandatory, not voting for a map will auto vote for you."}
-hintArray[26] = {"Sliding provides the same accuracy and recoil benefits as crouching."}
-hintArray[27] = {"Jumping or being in mid air gives your weapons less accuracy."}
-hintArray[28] = {"The grappling hook can easily be used to start favorable engagments."}
-hintArray[29] = {"Almost everything you do in game is tracked, check out the stats page to compare yourself with others."}
-hintArray[30] = {"Players can not shoot most weapons while submerged in water, use this to your advantage."}
-hintArray[31] = {"Explosive barrels can be used as a funny distraction."}
-hintArray[32] = {"Frag ammunition deafens hit players for a few seconds, and slows down their movement speed."}
-hintArray[33] = {"G.I.B ammunition is a good choice if you want to slow down hit opponents."}
-hintArray[34] = {"Air strafing is extremely useful movement tech, try to incorperate it into your playstyle."}
-hintArray[35] = {"All melee weapons can be thrown with the reload key."}
-hintArray[36] = {"You can cycle through firing modes by using your Interact + Reload keys."}
-hintArray[37] = {"Underbarrel grenade launchers can be used by pressing Interact + Left Click."}
-hintArray[38] = {"Crouching completely eliminates your footstep audio for other players. Embrace the sneaky."}
-hintArray[39] = {"Try personalizing yourself in the customize menus."}
-hintArray[40] = {"Slug ammunition turns your traditional shotgun into a marksman rifle."}
-hintArray[41] = {"Magnum ammunition pairs extremely well with low damage weapons."}
-hintArray[42] = {"Voice chat is proximity based, do with this information as you see fit."}
-hintArray[43] = {"Health regeneration begins after not taking damage for 3.5 seconds."}
-hintArray[44] = {"Bullets may not align with your crosshair or sight due to recoil."}
-hintArray[45] = {"To win a match, a player must have more score than the rest of the competing players."}
-hintArray[46] = {"Switching to your secondary is 'usually' faster than reloading."}
-hintArray[47] = {"Follow CaptainBear on the Steam Workshop!"}
-hintArray[48] = {"Match Ammunition is a good choice for low accuracy weapons."}
-hintArray[49] = {"You can climb onto the houses while playing on the Nuketown map."}
-hintArray[50] = {"Be vigilant with the acid flood while playing on the Mephitic map."}
-hintArray[51] = {"Suppressors might make your gun sound badass, but it will also lower your damage."}
+--Hints, are displayed at the bottom of the death UI.
+hintArray = {"Suppressors might make your gun sound badass, but it will also lower your damage.", "Be vigilant with the acidic flood while playing on the Mephitic map.", "Match Ammunition is a good choice for low accuracy weapons.", "Follow CaptainBear on the Steam Workshop!", "Switching to your secondary is 'usually' faster than reloading.", "To win a match, a player must have more score than the rest of the competing players.", "Bullets may not align with your crosshair or sight due to recoil and inaccuracy.", "Voice chat is proximity based, do with this information as you see fit.", "Magnum ammunition pairs extremely well with low damage weapons.", "Slug ammunition turns your traditional shotgun into a marksman rifle.", "Try personalizing yourself in the cuztomization menus.", "Crouching completely eliminates your footstep audio, embrace the sneaky.", "Underbarrel grenade launchers can be used by pressing Interact + Left Click.", "You can cycle through firing modes by using your Interact + Reload keys.", "All melee weapons can be thrown with the reload key.", "Air strafing is extremely useful, try to incorperate it into your playstyle.", "G.I.B ammunition is a good choice if you want to slow down hit opponents.", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed.", "Explosive barrels can be used as a funny distraction.", "Players can not shoot most weapons while submerged in water, use this to your advantage.", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others.", "The grappling hook can easily be used to start favorable engagments.", "Jumping and/or being in mid air gives your weapons less accuracy.", "Sliding provides the same accuracy and recoil benefits as crouching.", "Chaining multiple accolades together can give a big score/XP boost.", "Accolades award good amounts of score and XP.", "Running any optic lowers your weapons ADS speed.", "Running any optic lowers your weapons ADS speed.", "There are over 125+ weapons, try to get consistent with many different loadouts.", "There is no scope glint, hardscope all you want.", "Hip fire is an effective strategy while on the move.", "Other players can see your flashlight, be cautious.", "Certain playermodels may shine or stand out in dark enviroments.", "Combine wall running and jumping for extremely unpredictable movement.", "Wall running through a chokepoint can catch opponents off guard.", "Wall jumping constantly allows for continuous climbing of said wall.", "All melee weapons have a left and right click attack, learn how effective each are.", "Attachments save throughout play sessions, tweak your guns once and you are done.", "Some snipers and hand cannons can one shot to the torso.", "Explosives hurt, don't aim downwards if you want to stay alive.", "Crouching drastically increases your accuracy and recoil control.", "Each weapon has its own distinct recoil pattern to master.", "Your grappling hook cooldown refreshes on each kill.", "Shooting the torso and/or head will guarintee good damage per shot.", "You can sprint and/or slide in any direction, not just forwards.", "Don't stand still, potshotters will have an easy time killing you.", "All projectiles are hitscan, there is no bullet velocity/drop to account for.", "The vehicles can be mounted and surfed on while playing the Bridge map.", "Bunny hopping will help perserve velocity after landing from a grapple/slide."}

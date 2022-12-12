@@ -2,9 +2,9 @@
 local white = Color(255, 255, 255, 255)
 
 local ScoreboardDerma
-local mapID
+local FiringRangeDerma
+
 local mapName
-local mapDesc
 local mapThumb
 local dof
 
@@ -18,9 +18,7 @@ function GM:ScoreboardShow()
 	if not IsValid(ScoreboardDerma) then
 		for m, t in pairs(mapArray) do
 			if game.GetMap() == t[1] then
-				mapID = t[1]
 				mapName = t[2]
-				mapDesc = t[3]
 				mapThumb = t[4]
 			end
 		end
@@ -34,7 +32,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
-			if dof == true then
+			if dof == true and forceEnableWepSpawner == false and game.GetMap() ~= "tm_firingrange" then
 				DrawBokehDOF(4, 1, 0)
 			end
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
@@ -178,19 +176,19 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
 
-			local playerCallingCard = vgui.Create("DImage", PlayerPanel)
-			playerCallingCard:SetPos(10, 10)
-			playerCallingCard:SetSize(240, 80)
-			playerCallingCard:SetImage(card, "cards/color/black.png")
+			local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
+			PlayerCallingCard:SetPos(10, 10)
+			PlayerCallingCard:SetSize(240, 80)
+			PlayerCallingCard:SetImage(card, "cards/color/black.png")
 
 			--Displays a players calling card and profile picture.
-			local playerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
-			playerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
-			playerProfilePicture:SetSize(70, 70)
-			playerProfilePicture:SetPlayer(v, 184)
+			local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
+			PlayerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
+			PlayerProfilePicture:SetSize(70, 70)
+			PlayerProfilePicture:SetPlayer(v, 184)
 
 			--Allows the players profile to be clicked to display various options revolving around the specific player.
-			playerProfilePicture.OnMousePressed = function(self)
+			PlayerProfilePicture.OnMousePressed = function(self)
 				local Menu = DermaMenu()
 
 				local profileButton = Menu:AddOption("View Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
@@ -242,13 +240,16 @@ function GM:ScoreboardShow()
 
 		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
 		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
-			local FiringRangeDerma = vgui.Create("DFrame")
+			FiringRangeDerma = vgui.Create("DFrame")
 			FiringRangeDerma:SetSize(200, 530)
 			FiringRangeDerma:SetPos(ScrW() / 2 + 325, 0)
 			FiringRangeDerma:SetTitle("")
 			FiringRangeDerma:SetDraggable(false)
 			FiringRangeDerma:ShowCloseButton(false)
 			FiringRangeDerma.Paint = function()
+				if dof == true and forceEnableWepSpawner == true or game.GetMap() == "tm_firingrange" then
+					DrawBokehDOF(4, 1, 0)
+				end
 				draw.RoundedBox(5, 0, 0, FiringRangeDerma:GetWide(), FiringRangeDerma:GetTall(), Color(35, 35, 35, 150))
 				draw.SimpleText("Weapon Spawner", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 			end

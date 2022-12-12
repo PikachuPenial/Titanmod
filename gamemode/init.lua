@@ -95,7 +95,7 @@ function GM:PlayerInitialSpawn(ply)
 	end
 
 	--Opens Main Menu on server connect if enabled by the user.
-	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.2, 1, function()
+	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
 		ply:KillSilent()
 		ply:ConCommand("tm_openmainmenu")
 	end)
@@ -178,7 +178,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
-		if grappleKillReset == true then  attacker:SetNWFloat("linat", 0) end
+		if grappleKillReset == true then attacker:SetNWFloat("linat", 0) end
 	end
 
 	if usePrimary == true then victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
@@ -255,7 +255,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			timer.Simple(1.25, function()
 				if not IsValid(victim) or not IsValid(attacker) then return end
 				victim:Spectate(OBS_MODE_IN_EYE)
-			end)			
+			end)
 		end)
 	end
 
@@ -412,10 +412,13 @@ local mapVotes
 local playersVoted = {}
 local mapVoteOpen = false
 
-if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() == 0 and game.GetMap() ~= "tm_firingrange" then
+if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then
 	--Sets up Map Voting.
-	timer.Create("startMapVote", GetConVar("tm_mapvotetimer"):GetInt(), 0, function()
-		mapVotes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} --Each zero corresponds with a map in the map pool, and the value will increase per vote, add an extra 0 for each map that is added to the map pool.
+	timer.Create("startMapVote", mapVoteTimer, 0, function()
+		for k, v in RandomPairs(availableMaps) do
+			table.insert(mapVotes, 0)
+		end
+
 		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
@@ -428,7 +431,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		local secondMap
 
 		--Makes sure that the map currently being played is not added to the map pool.
-		for m, v in RandomPairs(mapArray) do
+		for m, v in RandomPairs(availableMaps) do
 			if game.GetMap() ~= v[1] and v[1] ~= "tm_firingrange" then
 				table.insert(mapPool, v[1])
 			end
@@ -461,7 +464,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			mapVoteOpen = false
 
 			--If players vote to continue on current map, end the map vote and restart the timer, otherwise, begin the intermission process.
-			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. GetConVar("tm_mapvotetimer"):GetInt() .. " seconds!") return end
+			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. mapVoteTimer .. " seconds!") return end
 
 			newMap = newMapTable[math.random(#newMapTable)]
 
@@ -503,18 +506,16 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		if validMapVote == false then return end
 	end
 	concommand.Add("tm_voteformap", PlayerMapVote)
-end
 
-local clientMapTimeLeft
-timer.Create("updateClientMapVoteTime", 15, 0, function()
-	if timer.Exists("startMapVote") then
+	local clientMapTimeLeft
+	timer.Create("updateClientMapVoteTime", 15, 0, function()
 		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
 
 		net.Start("UpdateClientMapVoteTime", true)
 		net.WriteFloat(clientMapTimeLeft)
 		net.Broadcast()
-	end
-end)
+	end)
+end
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)

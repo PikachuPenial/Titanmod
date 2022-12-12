@@ -1,41 +1,41 @@
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
-    if GetConVar("tm_developermode"):GetInt() == 1 then return end
+	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	if game.GetMap() == "tm_firingrange" then return end
 	if forceDisableProgression == true then return end
-    ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
-    ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
-    ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
-    ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
-    ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
-    ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
-    ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
-    ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
-    ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
-    ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
-    ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
-    ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
-    ply:SetPData("playerAccoladeBuzzkill", ply:GetNWInt("playerAccoladeBuzzkill"))
-    ply:SetPData("playerAccoladeLongshot", ply:GetNWInt("playerAccoladeLongshot"))
-    ply:SetPData("playerAccoladePointblank", ply:GetNWInt("playerAccoladePointblank"))
-    ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
-    ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
-    ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
-    print("Save was successful!")
+	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
+	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
+	ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
+	ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
+	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
+	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
+	ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
+	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
+	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
+	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
+	ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
+	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
+	ply:SetPData("playerAccoladeBuzzkill", ply:GetNWInt("playerAccoladeBuzzkill"))
+	ply:SetPData("playerAccoladeLongshot", ply:GetNWInt("playerAccoladeLongshot"))
+	ply:SetPData("playerAccoladePointblank", ply:GetNWInt("playerAccoladePointblank"))
+	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
+	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
+	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+	print("Save was successful!")
 end
 concommand.Add("tm_forcesave", ForceSave)
 
 --Allows the Main Menu to change the players current playermodel.
 function PlayerModelChange(ply, cmd, args)
-    for k, v in pairs(modelArray) do
-        if (args[1] == v[1]) then
-            local modelID = v[1]
-            local modelUnlock = v[4]
-            local modelValue = v[5]
+	for k, v in pairs(modelArray) do
+		if (args[1] == v[1]) then
+			local modelID = v[1]
+			local modelUnlock = v[4]
+			local modelValue = v[5]
 
-            if modelUnlock == "default" then
-                ply:SetNWString("chosenPlayermodel", modelID)
-            elseif modelUnlock == "kills" and ply:GetNWInt("playerKills") >= modelValue then
+			if modelUnlock == "default" then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "kills" and ply:GetNWInt("playerKills") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
@@ -62,7 +62,7 @@ end
 concommand.Add("tm_selectplayermodel", PlayerModelChange)
 
 --Allows the Main Menu to change the players current playercard.
-function PlayercardChange(ply, cmd, args)
+function PlayerCardChange(ply, cmd, args)
 	local masteryUnlockReq = 50
 	for k, v in pairs(cardArray) do
 		if (args[1] == v[1]) then
@@ -99,14 +99,7 @@ function PlayercardChange(ply, cmd, args)
 		end
 	end
 end
-concommand.Add("tm_selectplayercard", PlayercardChange)
-
---Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
-function LevelTest(ply, cmd, args)
-	ply:SetNWInt("playerXP", ply:GetNWInt("playerXP") + 2000)
-	CheckForPlayerLevel(ply)
-end
-concommand.Add("leveltest", LevelTest)
+concommand.Add("tm_selectplayercard", PlayerCardChange)
 
 --Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
 function StartCustomSpectate(ply, cmd, args)

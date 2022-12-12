@@ -4,7 +4,7 @@
     If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
-playerHealth = 100              --The the max health of the player.
+playerHealth = 100              --The max health of the player.
 playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and climbing speeds.)
 playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
 playerJumpMulti = 1             --The multiplier for the strength of the players jump.
@@ -14,7 +14,7 @@ healthRegenSpeed = 0.15         --The speed of the players health regeneration.
 healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
 playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
 
-forceDisableProgression = false --Any progress or unlocs made during a play session will be reset upon leaving.
+forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
 xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
 
 usePrimary = true               --Enable primary weapons for the players loadout.
@@ -30,6 +30,8 @@ damageKnockback = false         --Enable or disable knockback from incoming dama
 
 mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
+
+mapVoteTimer = GetConVar("tm_mapvotetimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
@@ -51,7 +53,7 @@ mapArray[13] = {"tm_station", "Station", "A vertical and open battleground.", "m
 
 availableMaps = {"skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
 for m, v in pairs(mapArray) do
-    if game.GetMap() ~= v[1] and v[1] ~= "tm_firingrange" then
+    if v[1] ~= "tm_firingrange" then
         table.insert(availableMaps, v[1])
     end
 end

@@ -3,6 +3,6 @@ Player account wipe option
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus
-Option for hiding loadout hints
-Check death HUD optimization yippee
+HUD Editor
+Custom chatbox
 FIX THE SCOREBOARD BUG GAHHHHHHHHHHHHHHHHHHH

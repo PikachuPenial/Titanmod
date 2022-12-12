@@ -295,9 +295,11 @@ net.Receive("NotifyKill", function(len, ply)
 
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
-        KillNotif:SizeTo(600, 0, 1, 0, 0.25, function()
-            KillNotif:Remove()
-        end)
+        if IsValid(KillNotif) then
+            KillNotif:SizeTo(600, 0, 1, 0, 0.25, function()
+                KillNotif:Remove()
+            end)
+        end
     end)
 end )
 
@@ -316,11 +318,11 @@ net.Receive("NotifyDeath", function(len, ply)
     --Creates a cooldown for the death UI, having it disappear after 4 seconds.
     timer.Create("respawnTimeHideHud", playerRespawnTime, 1, function()
         DeathNotif:Remove()
-        hook.Remove("PlayerDeathThink", "ShowRespawnTime")
+        hook.Remove("Think", "ShowRespawnTime")
     end)
 
     --Gets the remaining respawn countdown, and sets it as a variable for later use.
-    hook.Add("Think", "ShowRespawnTime", function(ply)
+    hook.Add("Think", "ShowRespawnTime", function()
         if timer.Exists("respawnTimeHideHud") then
             respawnTimeLeft = math.Round(timer.TimeLeft("respawnTimeHideHud"), 1)
         end
@@ -337,6 +339,8 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
+
+    local hint = table.Random(hintArray)
 
     DeathNotif.Paint = function()
     if lastHitIn == 1 then
@@ -366,6 +370,7 @@ net.Receive("NotifyDeath", function(len, ply)
             draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, white, TEXT_ALIGN_LEFT)
         end
         draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("HINT: " .. hint, "Trebuchet18", 400, 247.5, white, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
@@ -689,6 +694,10 @@ net.Receive("NotifyLevelUp", function(len, ply)
 end )
 
 function ShowLoadoutOnSpawn()
+    if GetConVar("tm_loadouthints"):GetInt() != 1 then return end
+    local primaryWeapon = ""
+    local secondaryWeapon = ""
+    local meleeWeapon = ""
     for k, v in pairs(weaponArray) do
         if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then primaryWeapon = v[2] end
         if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then secondaryWeapon = v[2] end
