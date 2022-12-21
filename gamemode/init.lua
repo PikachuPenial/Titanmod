@@ -64,6 +64,8 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerDeaths") == nil) then ply:SetNWInt("playerDeaths", 0) else ply:SetNWInt("playerDeaths", tonumber(ply:GetPData("playerDeaths"))) end
 	if (ply:GetPData("playerKDR") == nil) then ply:SetNWInt("playerKDR", 1) else ply:SetNWInt("playerKDR", tonumber(ply:GetPData("playerKDR"))) end
 	if (ply:GetPData("playerScore") == nil) then ply:SetNWInt("playerScore", 0) else ply:SetNWInt("playerScore", tonumber(ply:GetPData("playerScore"))) end
+	if (ply:GetPData("matchesPlayed") == nil) then ply:SetNWInt("matchesPlayed", 0) else ply:SetNWInt("matchesPlayed", tonumber(ply:GetPData("matchesPlayed"))) end
+	if (ply:GetPData("matchesWon") == nil) then ply:SetNWInt("matchesWon", 0) else ply:SetNWInt("matchesWon", tonumber(ply:GetPData("matchesWon"))) end
 	if (ply:GetPData("highestKillStreak") == nil) then ply:SetNWInt("highestKillStreak", 0) else ply:SetNWInt("highestKillStreak", tonumber(ply:GetPData("highestKillStreak"))) end
 	if (ply:GetPData("playerLevel") == nil) then ply:SetNWInt("playerLevel", 1) else ply:SetNWInt("playerLevel", tonumber(ply:GetPData("playerLevel"))) end
 	if (ply:GetPData("playerPrestige") == nil) then ply:SetNWInt("playerPrestige", 0) else ply:SetNWInt("playerPrestige", tonumber(ply:GetPData("playerPrestige"))) end
@@ -408,18 +410,22 @@ timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
-local mapVotes
-local playersVoted = {}
 local mapVoteOpen = false
+local mapVotes = {}
+local playersVoted = {}
+local firstMap
+local secondMap
 
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then
 	--Sets up Map Voting.
 	timer.Create("startMapVote", mapVoteTimer, 0, function()
+		mapVotes = {}
+		playersVoted = {}
+
 		for k, v in RandomPairs(availableMaps) do
 			table.insert(mapVotes, 0)
 		end
 
-		playersVoted = {}
 
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
 		if #player.GetHumans() == 0 then return end
@@ -427,13 +433,11 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		mapVoteOpen = true
 
 		local mapPool = {}
-		local firstMap
-		local secondMap
 
 		--Makes sure that the map currently being played is not added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
-			if game.GetMap() ~= v[1] and v[1] ~= "tm_firingrange" then
-				table.insert(mapPool, v[1])
+			if game.GetMap() ~= v and v ~= "tm_firingrange" and v ~= "skip" then
+				table.insert(mapPool, v)
 			end
 		end
 
@@ -476,6 +480,14 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			net.WriteString(newMap)
 			net.Broadcast()
 
+			local connectedPlayers = player.GetAll()
+			table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+
+			for k, v in pairs(connectedPlayers) do
+				v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
+				if k == 2 then v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1) end
+			end
+
 			timer.Create("newMapCooldown", 30, 1, function()
 				RunConsoleCommand("changelevel", newMap)
 			end)
@@ -503,7 +515,8 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			end
 		end
 
-		if validMapVote == false then return end
+		if validMapVote == false then print("The map you attempted to vote for does not exist.") return end
+		--if votedMap ~= firstMap or votedMap ~= secondMap then print("The map you attempted to vote for was not picked for this voting phase.") return end
 	end
 	concommand.Add("tm_voteformap", PlayerMapVote)
 
@@ -521,12 +534,15 @@ end
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	if game.GetMap() == "tm_firingrange" then return end
+	if forceDisableProgression == true then return end
 
 	--Statistics
 	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
 	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
 	ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
 	ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
+	ply:SetPData("matchesPlayed", ply:GetNWInt("matchesPlayed"))
+	ply:SetPData("matchesWon", ply:GetNWInt("matchesWon"))
 
 	--Streaks
 	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
@@ -567,6 +583,8 @@ function GM:ShutDown()
 		v:SetPData("playerDeaths", v:GetNWInt("playerDeaths"))
 		v:SetPData("playerKDR", v:GetNWInt("playerKDR"))
 		v:SetPData("playerScore", v:GetNWInt("playerScore"))
+		v:SetPData("matchesPlayed", v:GetNWInt("matchesPlayed"))
+		v:SetPData("matchesWon", v:GetNWInt("matchesWon"))
 
 		--Streaks
 		v:SetPData("highestKillStreak", v:GetNWInt("highestKillStreak"))

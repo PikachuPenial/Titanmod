@@ -394,14 +394,17 @@ end )
 
 --Displays to all players when a map vote begins.
 net.Receive("MapVoteHUD", function(len, ply)
+    local MapVoteHUD
     local votedOnMap = false
 
     --Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
     timer.Create("mapVoteTimeRemaining", 19, 1, function()
-        if votedOnMap == false then RunConsoleCommand("tm_voteformap", "skip") end
-        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
-        end)
+        if votedOnMap == false then
+            RunConsoleCommand("tm_voteformap", "skip")
+            MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+                MapVoteHUD:Remove()
+            end)
+        end
     end)
 
     local firstMap = net.ReadString()
@@ -540,9 +543,12 @@ end )
 
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
+    local dof
     if IsValid(EndOfGameUI) then
         EndOfGameUI:Remove()
     end
+
+    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     gameEnded = true
     RunConsoleCommand("tm_closemainmenu")
@@ -568,6 +574,9 @@ net.Receive("EndOfGame", function(len, ply)
     EndOfGameUI:SizeTo(ScrW(), ScrH(), 1.5, 0, 0.25)
 
     EndOfGameUI.Paint = function(self, w, h)
+        if dof == true then
+            DrawBokehDOF(4, 1, 0)
+        end
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
     end
 
@@ -606,6 +615,8 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText(v:Frags(), "Health", 170, 150, Color(0, 255, 0), TEXT_ALIGN_CENTER)
             draw.SimpleText(v:Deaths(), "Health", 230, 150, red, TEXT_ALIGN_CENTER)
             draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, white, TEXT_ALIGN_CENTER)
+
+            if k == 1 then draw.SimpleText("WINNER", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
         end
 
         KillsIcon = vgui.Create("DImage", PlayerPanel)

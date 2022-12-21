@@ -208,6 +208,8 @@ function GM:ScoreboardShow()
 					statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
 					statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKDR"), 3))
 					statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
+					statistics:AddOption("Matches Played: " .. v:GetNWInt("matchesPlayed"))
+					statistics:AddOption("Matches Won: " .. v:GetNWInt("matchesWon"))
 					accolades:AddOption("Headshots: " .. v:GetNWInt("playerAccoladeHeadshot"))
 					accolades:AddOption("Melee Kills (Smackdown): " .. v:GetNWInt("playerAccoladeSmackdown"))
 					accolades:AddOption("Clutches (Kills with less than 15 HP): " .. v:GetNWInt("playerAccoladeClutch"))
@@ -288,7 +290,7 @@ function GM:ScoreboardShow()
 				weapon:SetText("")
 				weapon.Paint = function()
 					draw.DrawText(v[2], "StreakText", 5, 5, white, TEXT_ALIGN_LEFT)
-					draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT)
+					if v[4] ~= nil then draw.DrawText(v[3] .. " | " .. v[4], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) else draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) end
 				end
 				WeaponList:Add(weapon)
 
