@@ -15,7 +15,6 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
-	ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
 	ply:SetPData("playerAccoladeBuzzkill", ply:GetNWInt("playerAccoladeBuzzkill"))
 	ply:SetPData("playerAccoladeLongshot", ply:GetNWInt("playerAccoladeLongshot"))
@@ -111,13 +110,6 @@ function StartCustomSpectate(ply, cmd, args)
 	end
 end
 concommand.Add("tm_spectate", StartCustomSpectate)
-
---Sets a players profile picture offset for their playercard.
-function PictureOffset(ply, cmd, args)
-	local value = args[1]
-	ply:SetNWInt("cardPictureOffset", value)
-end
-concommand.Add("tm_setcardpfpoffset", PictureOffset)
 
 --Allows the player to prestige if they have hit the max level cap (Level 60).
 function PlayerPrestige(ply, cmd, args)

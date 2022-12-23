@@ -21,13 +21,16 @@ if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVA
 if !ConVarExists("tm_loadouthints") then CreateConVar("tm_loadouthints", "1", FCVAR_ARCHIVE, "Enable or disable the loadout hud on player respawn",0,1) end
 if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
 if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the death UI at the top and the bottom of the screen",0,1) end
-if !ConVarExists("tm_cardpfpoffset") then CreateConVar("tm_cardpfpoffset", "0", FCVAR_ARCHIVE, "Moves the Profile Picture of the player around their playercard.",0,160) end
 if !ConVarExists("tm_hitsoundtype") then CreateConVar("tm_hitsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of hitsounds",0,3) end
 if !ConVarExists("tm_killsoundtype") then CreateConVar("tm_killsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,3) end
 if !ConVarExists("tm_streamermode") then CreateConVar("tm_streamermode", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,1) end
 if !ConVarExists("tm_menudof") then CreateConVar("tm_menudof", "1", FCVAR_ARCHIVE, "Enable or disable Depth Of Field on certain in game menus",0,1) end
 if CLIENT then CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade") end
 if CLIENT then CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1) end
+
+if CLIENT then CreateClientConVar("tm_hud_healthsize", 450, true, false, "Adjusts the size of the players health bar", 100, 800) end
+if CLIENT then CreateClientConVar("tm_hud_healthoffsetx", 0, true, false, "Adjusts the size of the players health bar", 0, 600) end
+if CLIENT then CreateClientConVar("tm_hud_healthoffsety", 0, true, false, "Adjusts the size of the players health bar", 0, 600) end
 
 --Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
@@ -139,7 +142,7 @@ cardArray[47] = {"cards/mastery/an94.png", "Hijacked", "AN-94 mastery", "mastery
 cardArray[48] = {"cards/mastery/ar15.png", "Modified", "AR-15 mastery", "mastery", "tfa_ins2_cw_ar15"}
 cardArray[49] = {"cards/mastery/ar57.png", "Ghost", "AR-57 mastery", "mastery", "tfa_ins2_ar57"}
 cardArray[50] = {"cards/mastery/ash12.png", "Factory", "ASh-12 mastery", "mastery", "tfa_at_shak_12"}
-cardArray[51] = {"cards/mastery/asval.png", "Zedo Pride", "AS-VAL mastery", "mastery", "tfa_inss_asval"}
+cardArray[51] = {"cards/mastery/asval.png", "Obesa", "AS-VAL mastery", "mastery", "tfa_inss_asval"}
 cardArray[52] = {"cards/mastery/awm.png", "Dust II", "AWM mastery", "mastery", "tfa_ins2_warface_awm"}
 cardArray[53] = {"cards/mastery/ax308.png", "Down Range", "AX-308 mastery", "mastery", "tfa_ins2_warface_ax308"}
 cardArray[54] = {"cards/mastery/barrettm98b.png", "Ready", "Barrett M98B mastery", "mastery", "tfa_ins2_barrett_m98_bravo"}
@@ -162,12 +165,12 @@ cardArray[70] = {"cards/mastery/fn2000.png", "Armory", "FN 2000 mastery", "maste
 cardArray[71] = {"cards/mastery/fnfal.png", "Exposed", "FN FAL mastery", "mastery", "tfa_ins2_fn_fal"}
 cardArray[72] = {"cards/mastery/fnp45.png", "ACP", "FNP-45 mastery", "mastery", "tfa_ins2_fnp45"}
 cardArray[73] = {"cards/mastery/g28.png", "Rooftops", "G28 mastery", "mastery", "tfa_ins2_g28"}
-cardArray[74] = {"cards/mastery/galil.png", "Chains", "Galil mastery", "mastery", "tfa_new_inss_galil"}
-cardArray[75] = {"cards/mastery/glock17.png", "Ospery", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
-cardArray[76] = {"cards/mastery/gsh18.png", "Skyscraper", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
-cardArray[77] = {"cards/mastery/honeybadger.png", "Business", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
-cardArray[78] = {"cards/mastery/howatype64.png", "Cradle", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
-cardArray[79] = {"cards/mastery/hkmg36.png", "Aimpoint", "H&K MG36 mastery", "mastery", "tfa_ins2_hk_mg36"}
+cardArray[74] = {"cards/mastery/g36a1.png", "Aimpoint", "G36A1 mastery", "mastery", "tfa_ins2_g36a1"}
+cardArray[75] = {"cards/mastery/galil.png", "Chains", "Galil mastery", "mastery", "tfa_new_inss_galil"}
+cardArray[76] = {"cards/mastery/glock17.png", "Ospery", "Glock 17 mastery", "mastery", "tfa_new_glock17"}
+cardArray[77] = {"cards/mastery/gsh18.png", "Skyscraper", "GSH-18 mastery", "mastery", "tfa_ins2_gsh18"}
+cardArray[78] = {"cards/mastery/honeybadger.png", "Business", "Honey Badger mastery", "mastery", "tfa_ins2_cq300"}
+cardArray[79] = {"cards/mastery/howatype64.png", "Cradle", "Howa Type 64 mastery", "mastery", "tfa_howa_type_64"}
 cardArray[80] = {"cards/mastery/hkmp5.png", "Mode Select", "H&K MP5A5 mastery", "mastery", "tfa_inss2_hk_mp5a5"}
 cardArray[81] = {"cards/mastery/imbelia2.png", "Due Process", "Imbel IA2 mastery", "mastery", "tfa_ins2_imbelia2"}
 cardArray[82] = {"cards/mastery/izhsawedoff.png", "Halves", "IZH43 Sawed Off master", "mastery", "tfa_ins2_izh43sw"}
@@ -286,6 +289,18 @@ cardArray[192] = {"cards/leveling/280.png", "Meep", "hi!", "level", 280}
 cardArray[193] = {"cards/leveling/290.png", "Superpowers", "bitch!", "level", 290}
 cardArray[194] = {"cards/leveling/300.png", "Shocked", "300 levels of pain.", "level", 300}
 
+--Pride cards
+cardArray[195] = {"cards/pride/pride.png", "Pride", "Pride flag", "color", "color"}
+cardArray[196] = {"cards/pride/trans.png", "Trans", "Trans flag", "color", "color"}
+cardArray[197] = {"cards/pride/gay.png", "Gay", "Gay flag", "color", "color"}
+cardArray[198] = {"cards/pride/lesbian.png", "Lesbian", "Lesbian flag", "color", "color"}
+cardArray[199] = {"cards/pride/bi.png", "Bi", "Bi flag", "color", "color"}
+cardArray[200] = {"cards/pride/pan.png", "Pan", "Pan flag", "color", "color"}
+cardArray[201] = {"cards/pride/ace.png", "Ace", "Ace flag", "color", "color"}
+cardArray[202] = {"cards/pride/nonbinary.png", "Nonbinary", "Nonbinary flag", "color", "color"}
+cardArray[203] = {"cards/pride/genderfluid.png", "Genderfluid", "Genderfluid flag", "color", "color"}
+cardArray[204] = {"cards/pride/zedo.png", "Zedo", "What's his name?", "color", "color"}
+
 --Creating a leveling array, this removes the consistency of the leveling, using developer set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro.
 levelArray = {}
 levelArray[1] = {1, 750} -- +75 XP
@@ -351,3 +366,35 @@ levelArray[60] = {60, "prestige"}
 
 --Hints, are displayed at the bottom of the death UI.
 hintArray = {"Suppressors might make your gun sound badass, but it will also lower your damage.", "Be vigilant with the acidic flood while playing on the Mephitic map.", "Match Ammunition is a good choice for low accuracy weapons.", "Follow CaptainBear on the Steam Workshop!", "Switching to your secondary is 'usually' faster than reloading.", "To win a match, a player must have more score than the rest of the competing players.", "Bullets may not align with your crosshair or sight due to recoil and inaccuracy.", "Voice chat is proximity based, do with this information as you see fit.", "Magnum ammunition pairs extremely well with low damage weapons.", "Slug ammunition turns your traditional shotgun into a marksman rifle.", "Try personalizing yourself in the cuztomization menus.", "Crouching completely eliminates your footstep audio, embrace the sneaky.", "Underbarrel grenade launchers can be used by pressing Interact + Left Click.", "You can cycle through firing modes by using your Interact + Reload keys.", "All melee weapons can be thrown with the reload key.", "Air strafing is extremely useful, try to incorperate it into your playstyle.", "G.I.B ammunition is a good choice if you want to slow down hit opponents.", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed.", "Explosive barrels can be used as a funny distraction.", "Players can not shoot most weapons while submerged in water, use this to your advantage.", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others.", "The grappling hook can easily be used to start favorable engagments.", "Jumping and/or being in mid air gives your weapons less accuracy.", "Sliding provides the same accuracy and recoil benefits as crouching.", "Chaining multiple accolades together can give a big score/XP boost.", "Accolades award good amounts of score and XP.", "Running any optic lowers your weapons ADS speed.", "Running any optic lowers your weapons ADS speed.", "There are over 125+ weapons, try to get consistent with many different loadouts.", "There is no scope glint, hardscope all you want.", "Hip fire is an effective strategy while on the move.", "Other players can see your flashlight, be cautious.", "Certain playermodels may shine or stand out in dark enviroments.", "Combine wall running and jumping for extremely unpredictable movement.", "Wall running through a chokepoint can catch opponents off guard.", "Wall jumping constantly allows for continuous climbing of said wall.", "All melee weapons have a left and right click attack, learn how effective each are.", "Attachments save throughout play sessions, tweak your guns once and you are done.", "Some snipers and hand cannons can one shot to the torso.", "Explosives hurt, don't aim downwards if you want to stay alive.", "Crouching drastically increases your accuracy and recoil control.", "Each weapon has its own distinct recoil pattern to master.", "Your grappling hook cooldown refreshes on each kill.", "Shooting the torso and/or head will guarintee good damage per shot.", "You can sprint and/or slide in any direction, not just forwards.", "Don't stand still, potshotters will have an easy time killing you.", "All projectiles are hitscan, there is no bullet velocity/drop to account for.", "The vehicles can be mounted and surfed on while playing the Bridge map.", "Bunny hopping will help perserve velocity after landing from a grapple/slide."}
+
+hook.Add("Initialize", "Optimization", function()
+    hook.Remove("PlayerTick", "TickWidgets")
+
+    if SERVER and timer.Exists("CheckHookTimes") then
+        timer.Remove("CheckHookTimes")
+    end
+
+    if CLIENT then
+        hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
+        hook.Remove("RenderScreenspaceEffects", "RenderBloom")
+        hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
+        hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
+        hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")
+        hook.Remove("RenderScreenspaceEffects", "RenderSobel")
+        hook.Remove("RenderScreenspaceEffects", "RenderSharpen")
+        hook.Remove("RenderScreenspaceEffects", "RenderMaterialOverlay")
+        hook.Remove("RenderScreenspaceEffects", "RenderMotionBlur")
+        hook.Remove("RenderScene", "RenderStereoscopy")
+        hook.Remove("RenderScene", "RenderSuperDoF")
+        hook.Remove("GUIMousePressed", "SuperDOFMouseDown")
+        hook.Remove("GUIMouseReleased", "SuperDOFMouseUp")
+        hook.Remove("PreventScreenClicks", "SuperDOFPreventClicks")
+        hook.Remove("PostRender", "RenderFrameBlend")
+        hook.Remove("PreRender", "PreRenderFrameBlend")
+        hook.Remove("Think", "DOFThink")
+        hook.Remove("RenderScreenspaceEffects", "RenderBokeh")
+        hook.Remove("NeedsDepthPass", "NeedsDepthPass_Bokeh")
+        hook.Remove("PostDrawEffects", "RenderWidgets")
+        hook.Remove("PostDrawEffects", "RenderHalos")
+    end
+end)

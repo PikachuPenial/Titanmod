@@ -143,7 +143,6 @@ function GM:ScoreboardShow()
 
 		for k, v in pairs(connectedPlayers) do
 			local ratio
-			local card = v:GetNWString("chosenPlayercard")
 
 			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
@@ -161,29 +160,34 @@ function GM:ScoreboardShow()
 			PlayerPanel.Paint = function(self, w, h)
 				if v:GetNWBool("mainmenu") == true then
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 100, 100))
-				elseif !v:Alive() then
+				elseif not v:Alive() then
 					draw.RoundedBox(5, 0, 0, w, h, Color(100, 35, 35, 100))
 				else
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
 				end
+
 				draw.SimpleText(v:GetName(), "Health", 255, 5, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, white, TEXT_ALIGN_LEFT)
-
 				draw.SimpleText(v:Frags(), "Health", 375, 35, Color(0, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:Deaths(), "Health", 420, 35, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
 
-			local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
+			--Displays a players calling card and profile picture.
+			local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)
 			PlayerCallingCard:SetPos(10, 10)
 			PlayerCallingCard:SetSize(240, 80)
-			PlayerCallingCard:SetImage(card, "cards/color/black.png")
 
-			--Displays a players calling card and profile picture.
+			if v:GetNWString("chosenPlayercard") ~= nil then
+				PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+			else
+				PlayerCallingCard:SetImage("cards/color/black.png")
+			end
+
 			local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
-			PlayerProfilePicture:SetPos(15 + v:GetNWInt("cardPictureOffset"), 15)
+			PlayerProfilePicture:SetPos(15, 15)
 			PlayerProfilePicture:SetSize(70, 70)
 			PlayerProfilePicture:SetPlayer(v, 184)
 
@@ -286,11 +290,11 @@ function GM:ScoreboardShow()
 
 			for k, v in pairs(weaponArray) do
 				local weapon = vgui.Create("DButton", DockDefaultCards)
-				weapon:SetSize(170, 40)
+				weapon:SetSize(170, 42.5)
 				weapon:SetText("")
 				weapon.Paint = function()
 					draw.DrawText(v[2], "StreakText", 5, 5, white, TEXT_ALIGN_LEFT)
-					if v[4] ~= nil then draw.DrawText(v[3] .. " | " .. v[4], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) else draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) end
+					if v[4] ~= nil then draw.DrawText(v[3] .. " | " .. v[4], "CaliberText", 5, 25, white, TEXT_ALIGN_LEFT) else draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) end
 				end
 				WeaponList:Add(weapon)
 

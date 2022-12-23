@@ -275,6 +275,24 @@ surface.CreateFont("StreakTextMini", {
 	outline = false,
 } )
 
+surface.CreateFont("CaliberText", {
+	font = "Tahoma",
+	extended = false,
+	size = 17.5,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = true,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 surface.CreateFont("MainMenuMusicName", {
 	font = "Tahoma",
 	extended = false,

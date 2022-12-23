@@ -79,7 +79,6 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
-	if (ply:GetPData("cardPictureOffset") == nil) then ply:SetNWInt("cardPictureOffset", 0) else ply:SetNWInt("cardPictureOffset", tonumber(ply:GetPData("cardPictureOffset"))) end
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
@@ -99,7 +98,7 @@ function GM:PlayerInitialSpawn(ply)
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
 		ply:KillSilent()
-		ply:ConCommand("tm_openmainmenu")
+		timer.Simple(0.25, function() ply:ConCommand("tm_openmainmenu") end) --Delaying by 0.25 because the menu just doesn't open sometimes, might fix, idk.
 	end)
 end
 
@@ -112,6 +111,7 @@ util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
 
+--Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
 if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
 	util.AddNetworkString("FiringRangeGiveWeapon")
 end
@@ -426,7 +426,6 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			table.insert(mapVotes, 0)
 		end
 
-
 		--Failsafe for empty servers, will skip the map vote if a server has no players.
 		if #player.GetHumans() == 0 then return end
 
@@ -485,7 +484,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 			for k, v in pairs(connectedPlayers) do
 				v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
-				if k == 2 then v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1) end
+				if k == 1 then v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1) end
 			end
 
 			timer.Create("newMapCooldown", 30, 1, function()
@@ -555,7 +554,6 @@ function GM:PlayerDisconnected(ply)
 	--Customizatoin
 	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
 	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
-	ply:SetPData("cardPictureOffset", ply:GetNWInt("cardPictureOffset"))
 
 	--Accolades
 	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
@@ -597,7 +595,6 @@ function GM:ShutDown()
 		--Customizatoin
 		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
 		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
-		v:SetPData("cardPictureOffset", v:GetNWInt("cardPictureOffset"))
 
 		--Accolades
 		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))

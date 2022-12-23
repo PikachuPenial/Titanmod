@@ -7,6 +7,10 @@ local feedArray = {}
 local health
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
+local healthSize = GetConVar("tm_hud_healthsize"):GetInt()
+local healthOffsetX = GetConVar("tm_hud_healthoffsetx"):GetInt()
+local healthOffsetY = GetConVar("tm_hud_healthoffsety"):GetInt()
+
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_enableui"):GetInt() == 1 then
@@ -59,7 +63,7 @@ function HUD()
         --Left Anchor
         if GetConVar("tm_healthanchor"):GetInt() == 0 then
             surface.SetDrawColor(50, 50, 50, 80)
-            surface.DrawRect(10, ScrH() - 38, 450, 30)
+            surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize, 30)
 
             if LocalPlayer():Health() <= 66 then
                 if LocalPlayer():Health() <= 33 then
@@ -71,8 +75,8 @@ function HUD()
                 surface.SetDrawColor(100, 180, 100, 120)
             end
 
-            surface.DrawRect(10, ScrH() - 38, 450 * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
-            draw.SimpleText(health, "Health", 450, ScrH() - 39, white, TEXT_ALIGN_RIGHT, 0)
+            surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
+            draw.SimpleText(health, "Health", healthSize + healthOffsetX, ScrH() - 39 - healthOffsetY, white, TEXT_ALIGN_RIGHT, 0)
         end
 
         --Middle Anchor
@@ -110,6 +114,18 @@ function HUD()
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
+
+cvars.AddChangeCallback("tm_hud_healthsize", function(convar_name, value_old, value_new)
+    healthSize = value_new
+end)
+
+cvars.AddChangeCallback("tm_hud_healthoffsetx", function(convar_name, value_old, value_new)
+    healthOffsetX = value_new
+end)
+
+cvars.AddChangeCallback("tm_hud_healthoffsety", function(convar_name, value_old, value_new)
+    healthOffsetY = value_new
+end)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
@@ -296,7 +312,7 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
-            KillNotif:SizeTo(600, 0, 1, 0, 0.25, function()
+            KillNotif:MoveTo(ScrW() / 2 - 300, 0, 1, 0, 0.25, function()
                 KillNotif:Remove()
             end)
         end
@@ -379,12 +395,9 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
 
     killedByPlayerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    killedByPlayerProfilePicture:SetPos(285 + killedBy:GetNWInt("cardPictureOffset"), 25)
+    killedByPlayerProfilePicture:SetPos(285, 25)
     killedByPlayerProfilePicture:SetSize(70, 70)
     killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
-    killedByPlayerProfilePicture.Paint = function()
-        killedByPlayerProfilePicture:SetPos(285 + killedBy:GetNWInt("cardPictureOffset"), 25)
-    end
 
     DeathNotif:Show()
     DeathNotif:MakePopup()
@@ -641,7 +654,7 @@ net.Receive("EndOfGame", function(len, ply)
         playerMenuCallingCard:SetImage(card, "cards/color/black.png")
 
         playerMenuProfilePicture = vgui.Create("AvatarImage", playerMenuCallingCard)
-        playerMenuProfilePicture:SetPos(5 + v:GetNWInt("cardPictureOffset"), 5)
+        playerMenuProfilePicture:SetPos(5, 5)
         playerMenuProfilePicture:SetSize(70, 70)
         playerMenuProfilePicture:SetPlayer(v, 184)
 

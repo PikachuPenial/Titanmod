@@ -1,7 +1,11 @@
 --Color array, saving space
 local white = Color(255, 255, 255, 255)
+local gray = Color(50, 50, 50, 200)
+local lightGray = Color(40, 40, 40, 200)
 local patchGreen = Color(100, 250, 100, 255)
 local patchRed = Color(250, 100, 100, 255)
+local solidGreen = Color(0, 255, 0, 255)
+local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
@@ -178,7 +182,7 @@ function mainMenu()
                     if prestigeConfirm == 0 then
                         draw.DrawText("PRESTIGE TO P" .. LocalPlayer():GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                     else
-                        draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, Color(255, 0, 0, 255), TEXT_ALIGN_LEFT)
+                        draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, solidRed, TEXT_ALIGN_LEFT)
                     end
                 end
                 PrestigeButton.DoClick = function()
@@ -210,12 +214,9 @@ function mainMenu()
             CallingCard:SetImage(LocalPlayer():GetNWString("chosenPlayercard"), "cards/color/black.png")
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
-            playerProfilePicture:SetPos(195 + GetConVar("tm_cardpfpoffset"):GetInt(), 15)
+            playerProfilePicture:SetPos(195, 15)
             playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPlayer(), 184)
-            playerProfilePicture.Paint = function()
-                playerProfilePicture:SetPos(195 + GetConVar("tm_cardpfpoffset"):GetInt(), 15)
-            end
 
             if mapID ~= nil then
                 MapPreview = vgui.Create("DImage", MainPanel)
@@ -275,24 +276,24 @@ function mainMenu()
             PatchTextHeader:Dock(TOP)
             PatchTextHeader:SetSize(0, 65)
             PatchTextHeader.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, Color(40, 40, 40, 200))
+                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
                 draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 910)
+            PatchPreRelease:SetSize(0, 970)
             PatchPreRelease.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, Color(50, 50, 50, 200))
+                draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ G28 primary weapon", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ G28 and G36A1 primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ File Compression", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Option tooltips", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Credits menu", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Level 200-300 Player Cards", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Config File", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Hints", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
@@ -324,10 +325,13 @@ function mainMenu()
                 draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 primary weapon", "StreakText", 5, 820, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 840, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 860, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 880, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 860, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 880, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 900, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 920, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Profile picture offset setting", "StreakText", 5, 940, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -350,7 +354,7 @@ function mainMenu()
                     StatsQuickjumpHolder:SetSize(0, ScrH())
 
                     StatsQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local StatsScroller = vgui.Create("DScrollPanel", StatisticsPanel)
@@ -358,13 +362,13 @@ function mainMenu()
 
                     local sbar = StatsScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -375,7 +379,7 @@ function mainMenu()
                     StatsTextHolder:SetSize(0, 150)
 
                     StatsTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("STATISTICS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("View your lifetime stats.", "PlayerNotiName", 20, 100, white, TEXT_ALIGN_LEFT)
                     end
@@ -390,7 +394,7 @@ function mainMenu()
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 4570)
+                    StatsWeapons:SetSize(0, 6170)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -416,7 +420,7 @@ function mainMenu()
                     local trackingPlayer = LocalPlayer()
 
                     StatsCombat.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("COMBAT", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Total Score:", "SettingsLabel", 20, 80, white, TEXT_ALIGN_LEFT)
@@ -452,7 +456,7 @@ function mainMenu()
                     end
 
                     StatsAccolades.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("ACCOLADES", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Headshot Kills:", "SettingsLabel", 20, 80, white, TEXT_ALIGN_LEFT)
@@ -488,15 +492,16 @@ function mainMenu()
                     end
 
                     StatsWeapons.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("WEAPONS", "OptionsHeader", 20, 20, white, TEXT_ALIGN_LEFT)
 
                         for p, t in pairs(weaponArray) do
-                            draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 35), white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(t[2] .. " Kills: ", "SettingsLabel", 20, 80 + ((p - 1) * 47.5), white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(trackingPlayer:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 500, 80 + ((p - 1) * 47.5), white, TEXT_ALIGN_RIGHT)
+                            if t[4] ~= nil then draw.DrawText(t[3] .. " | " .. t[4], "CaliberText", 22.5, 112.5 + ((p - 1) * 47.5), white, TEXT_ALIGN_LEFT) else draw.DrawText(t[3], "StreakTextMini", 22.5, 112.5 + ((p - 1) * 47.5), white, TEXT_ALIGN_LEFT) end
 
                             if comparingWith ~= false then
-                                draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 35), white, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(comparingWith:GetNWInt("killsWith_" .. t[1]), "SettingsLabel", 720, 80 + ((p - 1) * 47.5), white, TEXT_ALIGN_RIGHT)
                             end
                         end
                     end
@@ -597,7 +602,7 @@ function mainMenu()
                 else
                     spectatePanelOpen = 0
                     SpectatePanel:SizeTo(-1, 0, 1, 0, 0.1)
-                    spectatePicker:SetValue("Spectate...")
+
                 end
             end
 
@@ -669,7 +674,7 @@ function mainMenu()
             CustomizeButton.Paint = function()
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                    pushButtonsAbove = math.Clamp(pushButtonsAbove + 600     * FrameTime(), 100, 150)
+                    pushButtonsAbove = math.Clamp(pushButtonsAbove + 600 * FrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
@@ -710,7 +715,7 @@ function mainMenu()
                     CardQuickjumpHolder:SetSize(0, ScrH())
 
                     CardQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local newCard
@@ -719,7 +724,7 @@ function mainMenu()
                     local newCardUnlockType
                     local newCardUnlockValue
 
-                    local totalCards = 194
+                    local totalCards = table.Count(cardArray)
                     local cardsUnlocked = 0
 
                     local defaultCardsTotal = 0
@@ -758,13 +763,13 @@ function mainMenu()
 
                     local sbar = CardScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -775,7 +780,7 @@ function mainMenu()
                     CardTextHolder:SetSize(0, 140)
 
                     CardTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, white, TEXT_ALIGN_CENTER)
                     end
@@ -832,15 +837,7 @@ function mainMenu()
 
                     local DockColorCards = vgui.Create("DPanel", CardScroller)
                     DockColorCards:Dock(TOP)
-                    DockColorCards:SetSize(0, 500)
-
-                    local TextOptions = vgui.Create("DPanel", CardScroller)
-                    TextOptions:Dock(TOP)
-                    TextOptions:SetSize(0, 60)
-
-                    local DockCardOptions = vgui.Create("DPanel", CardScroller)
-                    DockCardOptions:Dock(TOP)
-                    DockCardOptions:SetSize(0, 75)
+                    DockColorCards:SetSize(0, 930)
 
                     --Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
@@ -912,15 +909,12 @@ function mainMenu()
                     CallingCard:SetImage(newCard)
 
                     ProfilePicture = vgui.Create("AvatarImage", CallingCard)
-                    ProfilePicture:SetPos(5 + GetConVar("tm_cardpfpoffset"):GetInt(), 5)
+                    ProfilePicture:SetPos(5, 5)
                     ProfilePicture:SetSize(70, 70)
                     ProfilePicture:SetPlayer(LocalPlayer(), 184)
-                    ProfilePicture.Paint = function()
-                        ProfilePicture:SetPos(5 + GetConVar("tm_cardpfpoffset"):GetInt(), 5)
-                    end
 
                     PreviewCardTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
                         if currentCard ~= nil then
                             draw.SimpleText(newCardName, "PlayerNotiName", 5, 90, white, TEXT_ALIGN_LEFT)
@@ -928,94 +922,94 @@ function mainMenu()
                         end
 
                         if newCardUnlockType == "default" or newCardUnlockType == "color" then
-                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
                         elseif newCardUnlockType == "kills" then
                             if LocalPlayer():GetNWInt("playerKills") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPlayer():GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(LocalPlayer():GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPlayer():GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(LocalPlayer():GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPlayer():GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Highest Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Highest Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPlayer():GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPlayer():GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Melee Kills: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Melee Kills: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPlayer():GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPlayer():GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPlayer():GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPlayer():GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, Color(250, 0, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, Color(0, 250, 0, 255), TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, Color(0, 255, 0, 255), TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer():GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         end
 
@@ -1213,93 +1207,83 @@ function mainMenu()
                     end
 
                     TextDefault.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Default", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextKill.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Kills", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if killCardsUnlocked == killCardsTotal then
-                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Accolades", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if accoladeCardsUnlocked == accoladeCardsTotal then
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextLevel.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Leveling", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if levelCardsUnlocked == levelCardsTotal then
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextMastery.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
                         if masteryCardsUnlocked == masteryCardsTotal then
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextColor.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Solid Colors", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
-                    end
-
-                    TextOptions.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Card Options", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.SimpleText("Colors and Pride", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     DockDefaultCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockKillCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockAccoladeCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockLevelCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockMasteryCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockColorCards.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                    end
-
-                    DockCardOptions.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
-                        draw.SimpleText("Profile Picture X Offset", "SettingsLabel", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     local ApplyButtonHolder = vgui.Create("DPanel", CardsPreviewScroller)
@@ -1319,7 +1303,6 @@ function mainMenu()
                         if newCardUnlockType == "default" or newCardUnlockType == "color" then
                             surface.PlaySound("common/wpn_select.wav")
                             RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                            RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                             MainPanel:Show()
                             CardPanel:Hide()
                             CardPreviewPanel:Hide()
@@ -1330,7 +1313,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1342,7 +1324,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1354,7 +1335,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1366,7 +1346,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1378,7 +1357,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1390,7 +1368,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1402,7 +1379,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1414,7 +1390,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1426,7 +1401,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1438,7 +1412,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1450,7 +1423,6 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayercard", newCard, newCardUnlockType, newCardUnlockValue, masteryUnlock)
-                                RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                                 MainPanel:Show()
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
@@ -1458,14 +1430,6 @@ function mainMenu()
                             end
                         end
                     end
-
-                    local offset = DockCardOptions:Add("DNumSlider")
-                    offset:SetPos(-15, 0)
-                    offset:SetSize(400, 100)
-                    offset:SetConVar("tm_cardpfpoffset")
-                    offset:SetMin(0)
-                    offset:SetMax(160)
-                    offset:SetDecimals(0)
 
                     local CardIcon = vgui.Create("DImage", CardQuickjumpHolder)
                     CardIcon:SetPos(12, 12)
@@ -1526,20 +1490,10 @@ function mainMenu()
                     PaletteJump:SetPos(4, 360)
                     PaletteJump:SetSize(48, 48)
                     PaletteJump:SetImage("icons/paletteicon.png")
-                    PaletteJump:SetTooltip("Solid Colors")
+                    PaletteJump:SetTooltip("Colors and Pride")
                     PaletteJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextColor)
-                    end
-
-                    local OptionsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    OptionsJump:SetPos(4, 412)
-                    OptionsJump:SetSize(48, 48)
-                    OptionsJump:SetImage("icons/settingsicon.png")
-                    OptionsJump:SetTooltip("Card Options")
-                    OptionsJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        CardScroller:ScrollToChild(TextOptions)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -1553,7 +1507,6 @@ function mainMenu()
                         CardPanel:Hide()
                         CardPreviewPanel:Hide()
                         CardSlideoutPanel:Hide()
-                        RunConsoleCommand("tm_setcardpfpoffset", GetConVar("tm_cardpfpoffset"):GetInt())
                     end
                 end
             end
@@ -1574,7 +1527,7 @@ function mainMenu()
                     local newModelUnlockType
                     local newModelUnlockValue
 
-                    local totalModels = 34
+                    local totalModels = table.Count(modelArray)
                     local modelsUnlocked = 0
 
                     local defaultModelsTotal = 0
@@ -1597,7 +1550,7 @@ function mainMenu()
                     ModelQuickjumpHolder:SetSize(0, ScrH())
 
                     ModelQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local CustomizeScroller = vgui.Create("DScrollPanel", CustomizePanel)
@@ -1605,13 +1558,13 @@ function mainMenu()
 
                     local sbar = CustomizeScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -1622,7 +1575,7 @@ function mainMenu()
                     CustomizeTextHolder:SetSize(0, 140)
 
                     CustomizeTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
                     end
@@ -1728,7 +1681,7 @@ function mainMenu()
                     PreviewTextHolder:SetSize(0, 100)
 
                     PreviewTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                         draw.SimpleText("Current playermodel:", "Health", w / 2, 20, white, TEXT_ALIGN_CENTER)
                     end
 
@@ -1737,7 +1690,7 @@ function mainMenu()
                     PreviewModelHolder:SetSize(0, 320)
 
                     PreviewModelHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local NewModelTextHolder = vgui.Create("DPanel", PreviewScroller)
@@ -1745,7 +1698,7 @@ function mainMenu()
                     NewModelTextHolder:SetSize(0, 160)
 
                     NewModelTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
                         if newModel ~= nil then
                             draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, white, TEXT_ALIGN_CENTER)
@@ -1754,64 +1707,64 @@ function mainMenu()
                         end
 
                         if newModelUnlockType == "default" then
-                            draw.SimpleText("Unlocked", "Health", w / 2, 130, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                         elseif newModelUnlockType == "kills" then
                             if LocalPlayer():GetNWInt("playerKills") < newModelUnlockValue then
-                                draw.SimpleText("Total Kills: " .. LocalPlayer():GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Total Kills: " .. LocalPlayer():GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Total Kills: " .. LocalPlayer():GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Total Kills: " .. LocalPlayer():GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "streak" then
                             if LocalPlayer():GetNWInt("highestKillStreak") < newModelUnlockValue then
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer():GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "headshot" then
                             if LocalPlayer():GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
-                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Headshots: " .. LocalPlayer():GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "smackdown" then
                             if LocalPlayer():GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
-                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Smackdowns: " .. LocalPlayer():GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "clutch" then
                             if LocalPlayer():GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
-                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Clutches: " .. LocalPlayer():GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "longshot" then
                             if LocalPlayer():GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
-                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longshots: " .. LocalPlayer():GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "pointblank" then
                             if LocalPlayer():GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Point Blanks: " .. LocalPlayer():GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "killstreaks" then
                             if LocalPlayer():GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer():GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "buzzkills" then
                             if LocalPlayer():GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(250, 0, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Buzzkills: " .. LocalPlayer():GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "special" and newModelUnlockValue == "name" then
                             if LocalPlayer():SteamID() == "STEAM_0:1:514443768" then
-                                draw.SimpleText("Unlocked", "Health", w / 2, 130, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             else
                                 draw.SimpleText("[CLASSIFIED]", "Health", w / 2, 130, Color(0, 0, 250, 255), TEXT_ALIGN_CENTER)
                             end
@@ -1828,7 +1781,7 @@ function mainMenu()
                     SelectedModelHolder:SetSize(0, 400)
 
                     SelectedModelHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
@@ -2124,73 +2077,73 @@ function mainMenu()
                     end
 
                     TextDefault.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Default", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextKills.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Kills", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if killModelsUnlocked == killModelsTotal then
-                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(killModelsUnlocked .. " / " .. killModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextStreak.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Streaks", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if streakModelsUnlocked == streakModelsTotal then
-                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(streakModelsUnlocked .. " / " .. streakModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Accolades", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if accoladeModelsUnlocked == accoladeModelsTotal then
-                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextSpecial.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Special", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if specialModelsUnlocked == specialModelsTotal then
-                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, Color(0, 250, 0, 255), TEXT_ALIGN_CENTER)
+                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
                             draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     DockModels.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockModelsKills.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockModelsStreak.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockModelsAccolade.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     DockModelsSpecial.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
                     local ApplyButtonHolder = vgui.Create("DPanel", PreviewScroller)
@@ -2422,7 +2375,7 @@ function mainMenu()
                     OptionsQuickjumpHolder:SetSize(0, ScrH())
 
                     OptionsQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local OptionsScroller = vgui.Create("DScrollPanel", OptionsPanel)
@@ -2430,13 +2383,13 @@ function mainMenu()
 
                     local sbar = OptionsScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -2585,7 +2538,7 @@ function mainMenu()
                     end
 
                     DockInputs.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
@@ -2633,7 +2586,7 @@ function mainMenu()
                     end
 
                     DockUI.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("UI", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
@@ -2772,7 +2725,7 @@ function mainMenu()
                     end
 
                     DockAudio.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
@@ -2850,7 +2803,7 @@ function mainMenu()
                     end
 
                     DockViewmodel.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("WEAPONRY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
@@ -2895,7 +2848,7 @@ function mainMenu()
                     flashlightMixer:SetTooltip("Change the color of your flashlight.")
 
                     DockCrosshair.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable Crosshair", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
@@ -3002,7 +2955,7 @@ function mainMenu()
                     outlineMixer:SetTooltip("Change the color of your crosshairs outline.")
 
                     DockHitmarker.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable Hitmarkers", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
@@ -3047,7 +3000,7 @@ function mainMenu()
                     hitmarkerMixer:SetTooltip("Change the color of hitmarkers.")
 
                     DockScopes.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("SIGHTS & SCOPES", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Reticle Color", "SettingsLabel", 245 , 65, white, TEXT_ALIGN_LEFT)
@@ -3065,7 +3018,7 @@ function mainMenu()
                     scopeMixer:SetTooltip("Override the color of the reticle on sights and scopes.")
 
                     DockPerformance.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Menu DOF", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
@@ -3103,7 +3056,7 @@ function mainMenu()
                     vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
 
                     DockAccount.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
@@ -3197,7 +3150,7 @@ function mainMenu()
                     CreditsQuickjumpHolder:SetSize(0, ScrH())
 
                     CreditsQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(40, 40, 40, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
 
                     local CreditsScroller = vgui.Create("DScrollPanel", CreditsPanel)
@@ -3205,13 +3158,13 @@ function mainMenu()
 
                     local sbar = CreditsScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -3242,17 +3195,17 @@ function mainMenu()
                     CreditsWeapons:SetSize(0, 200)
 
                     CreditsTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CREDITS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                     end
 
                     CreditsDev.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Created and maintained by Penial.", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     end
 
                     CreditsTesters.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Testing", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Portanator", "SettingsLabel", 20, 120, white, TEXT_ALIGN_LEFT)
@@ -3267,17 +3220,17 @@ function mainMenu()
                     end
 
                     CreditsBugs.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Bugs", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                     end
 
                     CreditsMaps.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Maps", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                     end
 
                     CreditsWeapons.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 200))
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Weapons", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                     end
 
