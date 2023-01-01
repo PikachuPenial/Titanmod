@@ -3,6 +3,5 @@ Player account wipe option
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus
-HUD Editor
 Custom chatbox
 FIX THE SCOREBOARD BUG GAHHHHHHHHHHHHHHHHHHH

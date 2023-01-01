@@ -10,37 +10,40 @@ if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playing
 local healthSize = GetConVar("tm_hud_healthsize"):GetInt()
 local healthOffsetX = GetConVar("tm_hud_healthoffsetx"):GetInt()
 local healthOffsetY = GetConVar("tm_hud_healthoffsety"):GetInt()
+local colorR = GetConVar("tm_hud_color_r"):GetInt()
+local colorG = GetConVar("tm_hud_color_g"):GetInt()
+local colorB = GetConVar("tm_hud_color_b"):GetInt()
 
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
-    if GetConVar("tm_enableui"):GetInt() == 1 then
+    if GetConVar("tm_hud_enable"):GetInt() == 1 then
         if !LocalPlayer():Alive() or LocalPlayer():GetNWBool("mainmenu") == true or gameEnded == true then
             return
         end
 
         --Shows the players ammo and weapon depending on the style they have selected in Options.
         --Numeric Style
-        if GetConVar("tm_ammostyle"):GetInt() == 0 then
+        if GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 60, white, TEXT_ALIGN_RIGHT, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
 
-            if GetConVar("tm_reloadhints"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
-                draw.SimpleText("0", "AmmoCount", ScrW() - 15, ScrH() - 170, red, TEXT_ALIGN_RIGHT, 0)
-                draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 175, red, TEXT_ALIGN_CENTER, 0)
+            if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
+                draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
             elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "AmmoCount", ScrW() - 15, ScrH() - 170, white, TEXT_ALIGN_RIGHT, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
         end
 
         --Bar Style
-        if GetConVar("tm_ammostyle"):GetInt() == 1 then
+        if GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "GunPrintName", ScrW() - 15, ScrH() - 100, white, TEXT_ALIGN_RIGHT, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
 
-            if GetConVar("tm_reloadhints"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
-                draw.SimpleText("RELOAD", "WepNameKill", ScrW() / 2, ScrH() / 2 + 175, red, TEXT_ALIGN_CENTER, 0)
+            if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
+                draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
             end
 
             if (LocalPlayer():GetActiveWeapon():IsValid()) then
@@ -52,55 +55,33 @@ function HUD()
                     surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
                 end
 
-                surface.SetDrawColor(255, 255, 255, 175)
+                surface.SetDrawColor(colorR, colorG, colorB, 175)
                 surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (LocalPlayer():GetActiveWeapon():Clip1() / LocalPlayer():GetActiveWeapon():GetMaxClip1()), 30)
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "Health", ScrW() - 410, ScrH() - 40, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 25, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
             end
         end
 
         --Shows the players health depending on the style they have selected in Options.
         if LocalPlayer():Health() <= 0 then health = 0 else health = LocalPlayer():Health() end
-        --Left Anchor
-        if GetConVar("tm_healthanchor"):GetInt() == 0 then
-            surface.SetDrawColor(50, 50, 50, 80)
-            surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize, 30)
+        surface.SetDrawColor(50, 50, 50, 80)
+        surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize, 30)
 
-            if LocalPlayer():Health() <= 66 then
-                if LocalPlayer():Health() <= 33 then
-                    surface.SetDrawColor(180, 100, 100, 120)
-                else
-                    surface.SetDrawColor(180, 180, 100, 120)
-                end
+        if LocalPlayer():Health() <= 66 then
+            if LocalPlayer():Health() <= 33 then
+                surface.SetDrawColor(180, 100, 100, 120)
             else
-                surface.SetDrawColor(100, 180, 100, 120)
+                surface.SetDrawColor(180, 180, 100, 120)
             end
-
-            surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
-            draw.SimpleText(health, "Health", healthSize + healthOffsetX, ScrH() - 39 - healthOffsetY, white, TEXT_ALIGN_RIGHT, 0)
+        else
+            surface.SetDrawColor(100, 180, 100, 120)
         end
 
-        --Middle Anchor
-        if GetConVar("tm_healthanchor"):GetInt() == 1 then
-            surface.SetDrawColor(50, 50, 50, 80)
-            surface.DrawRect(ScrW() / 2 - 225, ScrH() - 38, 450 , 30)
-
-            if LocalPlayer():Health() <= 66 then
-                if LocalPlayer():Health() <= 33 then
-                    surface.SetDrawColor(180, 100, 100, 120)
-                else
-                    surface.SetDrawColor(180, 180, 100, 120)
-                end
-            else
-                surface.SetDrawColor(100, 180, 100, 120)
-            end
-
-            surface.DrawRect(ScrW() / 2 - 225, ScrH() - 38, 450 * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
-            draw.SimpleText(health, "Health", ScrW() / 2, ScrH() - 39, white, TEXT_ALIGN_CENTER, 0)
-        end
+        surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
+        draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
         --Shooting range disclaimer
         if playingFiringRange == true then
-            draw.SimpleText("Use the scoreboard to spawn weapons.", "Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, 0)
+            draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
         end
 
         --Kill feed
@@ -109,7 +90,7 @@ function HUD()
             local nameLength = select(1, surface.GetTextSize(v[1]))
 
             surface.DrawRect(10, ScrH() - 62.5 + ((k - 1) * -20), nameLength + 5, 20)
-            draw.SimpleText(v[1], "StreakText", 12.5, ScrH() - 55 + ((k - 1) * -20), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(v[1], "HUD_StreakText", 12.5, ScrH() - 55 + ((k - 1) * -20), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 end
@@ -125,6 +106,18 @@ end)
 
 cvars.AddChangeCallback("tm_hud_healthoffsety", function(convar_name, value_old, value_new)
     healthOffsetY = value_new
+end)
+
+cvars.AddChangeCallback("tm_hud_color_r", function(convar_name, value_old, value_new)
+    colorR = value_new
+end)
+
+cvars.AddChangeCallback("tm_hud_color_g", function(convar_name, value_old, value_new)
+    colorG = value_new
+end)
+
+cvars.AddChangeCallback("tm_hud_color_b", function(convar_name, value_old, value_new)
+    colorB = value_new
 end)
 
 --Hides the players info that shows up when aiming at another player.
@@ -188,6 +181,8 @@ end )
 
 --Displays after a player kills another player.
 net.Receive("NotifyKill", function(len, ply)
+    if GetConVar("tm_hud_enablekill"):GetInt() == 0 then return end
+
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
@@ -202,11 +197,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif = vgui.Create("DFrame")
     KillNotif:SetSize(600, 200)
     KillNotif:SetX(ScrW() / 2 - 300)
-    if GetConVar("tm_killuianchor"):GetInt() == 0 then
-        KillNotif:SetY(ScrH() - 335)
-    else
-        KillNotif:SetY(115)
-    end
+    KillNotif:SetY(ScrH() - 335)
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
@@ -296,7 +287,7 @@ net.Receive("NotifyKill", function(len, ply)
         --Displays information about the player you killed, as well as the Accolades you achived.
         draw.SimpleText(LocalPlayer():GetNWInt("killStreak") .. " Kills", "StreakText", 300, 25, streakColor, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, white, TEXT_ALIGN_CENTER)
-        if GetConVar("tm_enableaccolades"):GetInt() == 1 then
+        if GetConVar("tm_hud_killaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
             draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, white, TEXT_ALIGN_CENTER)
         end
@@ -321,6 +312,8 @@ end )
 
 --Displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
+    if GetConVar("tm_hud_enabledeath"):GetInt() == 0 then return end
+
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
@@ -347,11 +340,7 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif = vgui.Create("DFrame")
     DeathNotif:SetSize(800, 300)
     DeathNotif:SetX(ScrW() / 2 - 400)
-    if GetConVar("tm_deathuianchor"):GetInt() == 0 then
-        DeathNotif:SetY(ScrH() - 350)
-    else
-        DeathNotif:SetY(125)
-    end
+    DeathNotif:SetY(ScrH() - 350)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
@@ -574,7 +563,7 @@ net.Receive("EndOfGame", function(len, ply)
     timer.Create("matchStartsIn", 30, 1, function()
     end)
 
-    hook.Add("Think", "ShowNextMatchTime", function(ply)
+    hook.Add("Think", "ShowNextMatchTime", function()
         if timer.Exists("matchStartsIn") then
             matchStartsIn = math.Round(timer.TimeLeft("matchStartsIn"))
         end
@@ -718,7 +707,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
 end )
 
 function ShowLoadoutOnSpawn()
-    if GetConVar("tm_loadouthints"):GetInt() != 1 then return end
+    if GetConVar("tm_hud_loadouthint"):GetInt() != 1 then return end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""

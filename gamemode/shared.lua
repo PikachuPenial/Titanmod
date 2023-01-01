@@ -7,35 +7,40 @@ GM.Website = "https://github.com/PikachuPenial"
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
 
 --Creating client ConVars, mostly for use in the Options menu.
-if !ConVarExists("tm_enableui") then CreateConVar("tm_enableui", "1", FCVAR_ARCHIVE, "Enable/disable any custom UI elements created by the gamemode",0,1) end
-if !ConVarExists("tm_enablekillpopup") then CreateConVar("tm_enablekillpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the kill popup",0,1) end
-if !ConVarExists("tm_enabledeathpopup") then CreateConVar("tm_enabledeathpopup", "1", FCVAR_ARCHIVE, "Completely show/hide the death popup",0,1) end
-if !ConVarExists("tm_healthanchor") then CreateConVar("tm_healthanchor", "0", FCVAR_ARCHIVE, "Changes the corner of the screen that holds your health bar",0,1) end
-if !ConVarExists("tm_ammostyle") then CreateConVar("tm_ammostyle", "0", FCVAR_ARCHIVE, "Switch between a numeric value and a bar to display your weapons ammo",0,1) end
-if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "1", FCVAR_ARCHIVE, "Enable or disable the hitsounds",0,1) end
-if !ConVarExists("tm_killsound") then CreateConVar("tm_killsound", "1", FCVAR_ARCHIVE, "Enable or disable the kill sound",0,1) end
-if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable or disable the Main Menu music",0,1) end
-if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Main Menu music",0,1) end
-if !ConVarExists("tm_enableaccolades") then CreateConVar("tm_enableaccolades", "1", FCVAR_ARCHIVE, "Enable or disable the accolade popup in the kill UI",0,1) end
-if !ConVarExists("tm_reloadhints") then CreateConVar("tm_reloadhints", "1", FCVAR_ARCHIVE, "Enable or disable the reload text when out of ammo",0,1) end
-if !ConVarExists("tm_loadouthints") then CreateConVar("tm_loadouthints", "1", FCVAR_ARCHIVE, "Enable or disable the loadout hud on player respawn",0,1) end
-if !ConVarExists("tm_killuianchor") then CreateConVar("tm_killuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the kill UI at the top and the bottom of the screen",0,1) end
-if !ConVarExists("tm_deathuianchor") then CreateConVar("tm_deathuianchor", "0", FCVAR_ARCHIVE, "Switch between anchoring the death UI at the top and the bottom of the screen",0,1) end
-if !ConVarExists("tm_hitsoundtype") then CreateConVar("tm_hitsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of hitsounds",0,3) end
-if !ConVarExists("tm_killsoundtype") then CreateConVar("tm_killsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,3) end
-if !ConVarExists("tm_streamermode") then CreateConVar("tm_streamermode", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds",0,1) end
-if !ConVarExists("tm_menudof") then CreateConVar("tm_menudof", "1", FCVAR_ARCHIVE, "Enable or disable Depth Of Field on certain in game menus",0,1) end
-if CLIENT then CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade") end
-if CLIENT then CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1) end
+if CLIENT then
+    CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
+    CreateClientConVar("tm_killsound", 1, true, false, "Enable/disable the kill confirmation sound", 0, 1)
+    CreateClientConVar("tm_menumusic", 1, true, false, "Enable/disable the Main Menu music", 0, 1)
+    CreateClientConVar("tm_menumusicvolume", 0.90, true, false, "Increase or lower the volume of the Main Menu music", 0, 1)
+    CreateClientConVar("tm_hitsoundtype", 0, true, false, "Switch between the multiple styles of hitsounds", 0, 3)
+    CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 3)
+    CreateClientConVar("tm_streamermode", 0, true, true, "Enable/disable streamer mode", 0, 1)
+    CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)
+    CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
+    CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
 
-if CLIENT then CreateClientConVar("tm_hud_healthsize", 450, true, false, "Adjusts the size of the players health bar", 100, 800) end
-if CLIENT then CreateClientConVar("tm_hud_healthoffsetx", 0, true, false, "Adjusts the size of the players health bar", 0, 600) end
-if CLIENT then CreateClientConVar("tm_hud_healthoffsety", 0, true, false, "Adjusts the size of the players health bar", 0, 600) end
+    CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
+    CreateClientConVar("tm_hud_enablekill", 1, true, false, "Enable/disable the kill UI", 0, 1)
+    CreateClientConVar("tm_hud_enabledeath", 1, true, false, "Enable/disable the death UI", 0, 1)
+    CreateClientConVar("tm_hud_font", "Arial", true, false, "Enable/disable any custom HUD elements created by the gamemode")
+    CreateClientConVar("tm_hud_color_r", 255, true, false, "Adjusts the red coloring for the hud", 0, 255)
+    CreateClientConVar("tm_hud_color_g", 255, true, false, "Adjusts the green coloring for the hud", 0, 255)
+    CreateClientConVar("tm_hud_color_b", 255, true, false, "Adjusts the blue coloring for the hud", 0, 255)
+    CreateClientConVar("tm_hud_healthsize", 450, true, false, "Adjusts the size of the players health bar", 100, 800)
+    CreateClientConVar("tm_hud_healthoffsetx", 0, true, false, "Adjusts the X offset of the players health bar", 0, 600)
+    CreateClientConVar("tm_hud_healthoffsety", 0, true, false, "Adjusts the Y offset of the players health bar", 0, 600)
+    CreateClientConVar("tm_hud_ammostyle", 0, true, false, "Adjusts the style and look of the ammo counter", 0, 1)
+    CreateClientConVar("tm_hud_killoffsety", 0, true, false, "Adjusts the Y offset of the kill UI", -400, 400)
+    CreateClientConVar("tm_hud_deathoffsety", 0, true, false, "Adjusts the style and look of the ammo counter", -400, 400)
+    CreateClientConVar("tm_hud_reloadhint", 1, true, false, "Enable/disable the reload text when out of ammo", 0, 1)
+    CreateClientConVar("tm_hud_loadouthint", 1, true, false, "Enable/disable the loadout info displaying on player spawn", 0, 1)
+    CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
+end
 
 --Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
-	if !ply:Crouching() then return end
-	return true
+    if !ply:Crouching() then return end
+    return true
 end)
 
 --Sets up the keybind for grenade throwing.

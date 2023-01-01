@@ -7,6 +7,7 @@ local patchRed = Color(250, 100, 100, 255)
 local solidGreen = Color(0, 255, 0, 255)
 local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
+local slightTransparent = Color(25, 25, 25, 100)
 
 local MainMenu
 
@@ -412,7 +413,7 @@ function mainMenu()
                     end
 
                     for _, v in pairs(player.GetAll()) do
-                        if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 and v != LocalPlayer() then
+                        if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 and v ~= LocalPlayer() then
                             comparePlayerStats:AddChoice(v:Name(), v:SteamID())
                         end
                     end
@@ -2401,7 +2402,7 @@ function mainMenu()
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 520)
+                    DockUI:SetSize(0, 355)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -2592,123 +2593,54 @@ function mainMenu()
                         draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Kill UI", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Enable Death UI", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Health Style", "SettingsLabel", 125, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Ammo Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill UI Accolades", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill UI Anchor", "SettingsLabel", 125, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death UI Anchor", "SettingsLabel", 125, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill UI Accolades", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
                     enableUIButton:SetPos(20, 70)
-                    enableUIButton:SetConVar("tm_enableui")
+                    enableUIButton:SetConVar("tm_hud_enable")
                     enableUIButton:SetSize(30, 30)
                     enableUIButton:SetTooltip("Enable the UI.")
 
                     local enableKillUIButton = DockUI:Add("DCheckBox")
                     enableKillUIButton:SetPos(20, 110)
-                    enableKillUIButton:SetConVar("tm_enablekillpopup")
+                    enableKillUIButton:SetConVar("tm_hud_enablekill")
                     enableKillUIButton:SetValue(true)
                     enableKillUIButton:SetSize(30, 30)
                     enableKillUIButton:SetTooltip("Enable the kill UI.")
 
                     local enableDeathUIButton = DockUI:Add("DCheckBox")
                     enableDeathUIButton:SetPos(20, 150)
-                    enableDeathUIButton:SetConVar("tm_enabledeathpopup")
+                    enableDeathUIButton:SetConVar("tm_hud_enabledeath")
                     enableDeathUIButton:SetValue(true)
                     enableDeathUIButton:SetSize(30, 30)
                     enableDeathUIButton:SetTooltip("Enable the death UI.")
 
-                    local healthAnchor = DockUI:Add("DComboBox")
-                    healthAnchor:SetPos(20, 190)
-                    healthAnchor:SetSize(100, 30)
-                    healthAnchor:SetTooltip("Adjust the style of the health bar.")
-                    if CLIENT and GetConVar("tm_healthanchor"):GetInt() == 0 then
-                        healthAnchor:SetValue("Left Side")
-                    elseif CLIENT and GetConVar("tm_healthanchor"):GetInt() == 1 then
-                        healthAnchor:SetValue("Middle")
-                    end
-
-                    healthAnchor:AddChoice("Left Side")
-                    healthAnchor:AddChoice("Middle")
-                    healthAnchor.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
-                        RunConsoleCommand("tm_healthanchor", value - 1)
-                    end
-
-                    local ammoStyle = DockUI:Add("DComboBox")
-                    ammoStyle:SetPos(20, 230)
-                    ammoStyle:SetSize(100, 30)
-                    ammoStyle:SetTooltip("Adjust the style of the ammo counter.")
-                    if CLIENT and GetConVar("tm_ammostyle"):GetInt() == 0 then
-                        ammoStyle:SetValue("Numeric")
-                    elseif CLIENT and GetConVar("tm_ammostyle"):GetInt() == 1 then
-                        ammoStyle:SetValue("Bar")
-                    end
-                    ammoStyle:AddChoice("Numeric")
-                    ammoStyle:AddChoice("Bar")
-                    ammoStyle.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
-                        RunConsoleCommand("tm_ammostyle", value - 1)
-                    end
-
                     local accoladeToggle = DockUI:Add("DCheckBox")
-                    accoladeToggle:SetPos(20, 270)
-                    accoladeToggle:SetConVar("tm_enableaccolades")
+                    accoladeToggle:SetPos(20, 190)
+                    accoladeToggle:SetConVar("tm_hud_killaccolades")
                     accoladeToggle:SetValue(true)
                     accoladeToggle:SetSize(30, 30)
                     accoladeToggle:SetTooltip("Enable accolades displaying on the kill UI.")
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 310)
-                    reloadHintsToggle:SetConVar("tm_reloadhints")
+                    reloadHintsToggle:SetPos(20, 230)
+                    reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetValue(true)
                     reloadHintsToggle:SetSize(30, 30)
                     reloadHintsToggle:SetTooltip("Enable visual cues when you need to reload.")
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
-                    loadoutHintsToggle:SetPos(20, 350)
-                    loadoutHintsToggle:SetConVar("tm_loadouthints")
+                    loadoutHintsToggle:SetPos(20, 270)
+                    loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetValue(true)
                     loadoutHintsToggle:SetSize(30, 30)
                     loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
 
-                    local killUIAnchor = DockUI:Add("DComboBox")
-                    killUIAnchor:SetPos(20, 390)
-                    killUIAnchor:SetSize(100, 30)
-                    killUIAnchor:SetTooltip("Adjust the position of the kill UI.")
-                    if CLIENT and GetConVar("tm_killuianchor"):GetInt() == 0 then
-                        killUIAnchor:SetValue("Bottom")
-                    else
-                        killUIAnchor:SetValue("Top")
-                    end
-                    killUIAnchor:AddChoice("Bottom")
-                    killUIAnchor:AddChoice("Top")
-                    killUIAnchor.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
-                        RunConsoleCommand("tm_killuianchor", value - 1)
-                    end
-
-                    local deathUIAnchor = DockUI:Add("DComboBox")
-                    deathUIAnchor:SetPos(20, 430)
-                    deathUIAnchor:SetSize(100, 30)
-                    deathUIAnchor:SetTooltip("Adjust the position of the death UI.")
-                    if CLIENT and GetConVar("tm_deathuianchor"):GetInt() == 0 then
-                        deathUIAnchor:SetValue("Bottom")
-                    else
-                        deathUIAnchor:SetValue("Top")
-                    end
-                    deathUIAnchor:AddChoice("Bottom")
-                    deathUIAnchor:AddChoice("Top")
-                    deathUIAnchor.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
-                        RunConsoleCommand("tm_deathuianchor", value - 1)
-                    end
-
                     local HUDEditorButton = vgui.Create("DButton", DockUI)
-                    HUDEditorButton:SetPos(20, 470)
+                    HUDEditorButton:SetPos(20, 310)
                     HUDEditorButton:SetText("")
                     HUDEditorButton:SetSize(300, 40)
                     HUDEditorButton:SetTooltip("Adjust the position and size of many HUD elements.")
@@ -2722,6 +2654,178 @@ function mainMenu()
                         draw.DrawText("Open HUD Editor", "SettingsLabel", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                     end
                     HUDEditorButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        OptionsSlideoutPanel:Hide()
+                        OptionsPanel:Hide()
+
+                        local health = 100
+                        timer.Create("healthLoop", 1, 0, function()
+                            health = math.random(1, 100)
+                        end)
+
+                        local FakeHUD = MainMenu:Add("HUDEditorPanel")
+                        MainMenu:SetMouseInputEnabled(false)
+                        FakeHUD.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                            if GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
+                                draw.SimpleText("KRISS Vector", "HUD_GunPrintName", ScrW() - 15, ScrH() - 60, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                                draw.SimpleText("30", "HUD_AmmoCount", ScrW() - 15, ScrH() - 170, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                            elseif GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
+                                draw.SimpleText("KRISS Vector", "HUD_GunPrintName", ScrW() - 15, ScrH() - 100, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                                surface.SetDrawColor(50, 50, 50, 80)
+                                surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
+                                surface.SetDrawColor(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt(), 175)
+                                surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (30 / 30), 30)
+                                draw.SimpleText(30, "HUD_Health", ScrW() - 410, ScrH() - 25, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
+                            end
+
+                            surface.SetDrawColor(50, 50, 50, 80)
+                            surface.DrawRect(10 + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_healthoffsety"):GetInt(), GetConVar("tm_hud_healthsize"):GetInt(), 30)
+                            if health <= 66 then
+                                if health <= 33 then
+                                    surface.SetDrawColor(180, 100, 100, 120)
+                                else
+                                    surface.SetDrawColor(180, 180, 100, 120)
+                                end
+                            else
+                                surface.SetDrawColor(100, 180, 100, 120)
+                            end
+                            surface.DrawRect(10 + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_healthoffsety"):GetInt(), GetConVar("tm_hud_healthsize"):GetInt() * (health / 100), 30)
+                            draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_healthsize"):GetInt() + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 24 - GetConVar("tm_hud_healthoffsety"):GetInt(), white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                        end
+
+                        local EditorPanel = vgui.Create("DFrame", FakeHUD)
+                        EditorPanel:SetSize(550, 550)
+                        EditorPanel:MakePopup()
+                        EditorPanel:SetTitle("HUD Editor")
+                        EditorPanel:Center()
+                        EditorPanel:SetScreenLock(true)
+                        EditorPanel:GetBackgroundBlur(false)
+                        EditorPanel.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                        end
+                        EditorPanel.OnClose = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                            MainMenu:SetMouseInputEnabled(true)
+                            FakeHUD:Hide()
+                            OptionsSlideoutPanel:Show()
+                            OptionsPanel:Show()
+                        end
+
+                        local EditorScroller = vgui.Create("DScrollPanel", EditorPanel)
+                        EditorScroller:Dock(FILL)
+
+                        local sbar = EditorScroller:GetVBar()
+                        function sbar:Paint(w, h)
+                            draw.RoundedBox(5, 0, 0, w, h, gray)
+                        end
+                        function sbar.btnUp:Paint(w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, gray)
+                        end
+                        function sbar.btnDown:Paint(w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, gray)
+                        end
+                        function sbar.btnGrip:Paint(w, h)
+                            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+                        end
+
+                        local GeneralEditor = vgui.Create("DPanel", EditorScroller)
+                        GeneralEditor:Dock(TOP)
+                        GeneralEditor:SetSize(0, 200)
+                        GeneralEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("HUD Color", "Health", 210, 90, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local HUDFont = GeneralEditor:Add("DComboBox")
+                        HUDFont:SetPos(20, 50)
+                        HUDFont:SetSize(100, 30)
+                        HUDFont:SetTooltip("Adjust the font used on HUD text.")
+                        HUDFont:SetValue(GetConVar("tm_hud_font"):GetString())
+                        HUDFont:AddChoice("Arial")
+                        HUDFont:AddChoice("Comic Sans MS")
+                        HUDFont:AddChoice("Tahoma")
+                        HUDFont:AddChoice("Roboto")
+                        HUDFont.OnSelect = function(self, index, value)
+                            surface.PlaySound("tmui/buttonrollover.wav")
+                            RunConsoleCommand("tm_hud_font", value)
+                        end
+
+                        local HUDColor = vgui.Create("DColorMixer", GeneralEditor)
+                        HUDColor:SetPos(20, 90)
+                        HUDColor:SetSize(185, 100)
+                        HUDColor:SetConVarR("tm_hud_color_r")
+                        HUDColor:SetConVarG("tm_hud_color_g")
+                        HUDColor:SetConVarB("tm_hud_color_b")
+                        HUDColor:SetAlphaBar(false)
+                        HUDColor:SetPalette(false)
+                        HUDColor:SetWangs(true)
+                        HUDColor:SetTooltip("Adjusts your HUD color.")
+
+                        local AmmoEditor = vgui.Create("DPanel", EditorScroller)
+                        AmmoEditor:Dock(TOP)
+                        AmmoEditor:SetSize(0, 80)
+                        AmmoEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("AMMO", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Ammo HUD Style", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local AmmoStyle = AmmoEditor:Add("DComboBox")
+                        AmmoStyle:SetPos(20, 50)
+                        AmmoStyle:SetSize(100, 30)
+                        AmmoStyle:SetTooltip("Adjust the style of the ammo counter.")
+                        if CLIENT and GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
+                            AmmoStyle:SetValue("Numeric")
+                        elseif CLIENT and GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
+                            AmmoStyle:SetValue("Bar")
+                        end
+                        AmmoStyle:AddChoice("Numeric")
+                        AmmoStyle:AddChoice("Bar")
+                        AmmoStyle.OnSelect = function(self, value)
+                            surface.PlaySound("tmui/buttonrollover.wav")
+                            RunConsoleCommand("tm_hud_ammostyle", value - 1)
+                        end
+
+                        local HealthEditor = vgui.Create("DPanel", EditorScroller)
+                        HealthEditor:Dock(TOP)
+                        HealthEditor:SetSize(0, 150)
+                        HealthEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("HEALTH", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Bar Size", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Bar X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Bar Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local HealthBarSize = HealthEditor:Add("DNumSlider")
+                        HealthBarSize:SetPos(-85, 50)
+                        HealthBarSize:SetSize(250, 30)
+                        HealthBarSize:SetConVar("tm_hud_healthsize")
+                        HealthBarSize:SetMin(100)
+                        HealthBarSize:SetMax(800)
+                        HealthBarSize:SetDecimals(0)
+                        HealthBarSize:SetTooltip("Adjust the size of your health bar.")
+
+                        local HealthBarX = HealthEditor:Add("DNumSlider")
+                        HealthBarX:SetPos(-85, 80)
+                        HealthBarX:SetSize(250, 30)
+                        HealthBarX:SetConVar("tm_hud_healthoffsetx")
+                        HealthBarX:SetMin(0)
+                        HealthBarX:SetMax(600)
+                        HealthBarX:SetDecimals(0)
+                        HealthBarX:SetTooltip("Adjust the X offset of your health bar.")
+
+                        local HealthBarY = HealthEditor:Add("DNumSlider")
+                        HealthBarY:SetPos(-85, 110)
+                        HealthBarY:SetSize(250, 30)
+                        HealthBarY:SetConVar("tm_hud_healthoffsety")
+                        HealthBarY:SetMin(0)
+                        HealthBarY:SetMax(600)
+                        HealthBarY:SetDecimals(0)
+                        HealthBarY:SetTooltip("Adjust the Y offset of your health bar.")
                     end
 
                     DockAudio.Paint = function(self, w, h)
@@ -3264,7 +3368,7 @@ function mainMenu()
         LocalPlayer():SetNWBool("seenResWarning", true)
 
         timer.Create("removeResWarning", 8, 1, function()
-            ResWarning:Hide()
+            ResWarning:Remove()
         end)
     end
 end
@@ -3428,7 +3532,7 @@ vgui.Register("CreditsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(656, ScrH())
+    self:SetSize(ScrW(), ScrH())
     self:SetPos(0, 0)
 end
 

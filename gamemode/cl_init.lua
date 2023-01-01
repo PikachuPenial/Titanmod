@@ -1,7 +1,7 @@
 include("shared.lua")
 include("cl_hud.lua")
 include("cl_scoreboard.lua")
-include("cl_mainmenu.lua")
+include("cl_menu.lua")
 include("config.lua")
 
 --Custom fonts for the gamemode are created here.
@@ -400,3 +400,185 @@ surface.CreateFont("MapName", {
 	additive = false,
 	outline = false,
 } )
+
+surface.CreateFont("HUD_GunPrintName", {
+	font = GetConVar("tm_hud_font"):GetString(),
+	extended = false,
+	size = 56,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("HUD_AmmoCount", {
+	font = GetConVar("tm_hud_font"):GetString(),
+	extended = false,
+	size = 128,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("HUD_WepNameKill", {
+	font = GetConVar("tm_hud_font"):GetString(),
+	extended = false,
+	size = 28,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("HUD_Health", {
+	font = GetConVar("tm_hud_font"):GetString(),
+	extended = false,
+	size = 30,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("HUD_StreakText", {
+	font = GetConVar("tm_hud_font"):GetString(),
+	extended = false,
+	size = 22,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+cvars.AddChangeCallback("tm_hud_font", function(convar_name, value_old, value_new)
+	surface.CreateFont("HUD_GunPrintName", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 56,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("HUD_AmmoCount", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 128,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("HUD_WepNameKill", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 28,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("HUD_Health", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 30,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("HUD_StreakText", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 22,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+end)
