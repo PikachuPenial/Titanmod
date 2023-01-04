@@ -33,6 +33,8 @@ local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
 local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
 local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
 local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
+local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
+local kdOffsetY = GetConVar("tm_hud_killdeath_offset_y"):GetInt()
 
 local StreakFont = "StreakText"
 local NameFont = "PlayerNotiName"
@@ -54,9 +56,7 @@ end
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_hud_enable"):GetInt() == 1 then
-        if !LocalPlayer():Alive() or LocalPlayer():GetNWBool("mainmenu") == true or gameEnded == true then
-            return
-        end
+        if !LocalPlayer():Alive() or LocalPlayer():GetNWBool("mainmenu") == true or gameEnded == true then return end
 
         --Shows the players ammo and weapon depending on the style they have selected in Options.
         --Numeric Style
@@ -156,22 +156,22 @@ end
 
 --Plays the received hitsound if a player hits another player.
 net.Receive("PlayHitsound", function(len, pl)
-    if GetConVar("tm_hitsounds"):GetInt() == 1 then
-        local hit_reg = "hitsound/hit_reg.wav"
-        local hit_reg_head = "hitsound/hit_reg_head.wav"
+    if GetConVar("tm_hitsounds"):GetInt() == 0 then return end
+    local hit_reg = "hitsound/hit_reg.wav"
+    local hit_reg_head = "hitsound/hit_reg_head.wav"
 
-        local hitgroup = net.ReadUInt(4)
-        local soundfile = hit_reg
+    local hitgroup = net.ReadUInt(4)
+    local soundfile = hit_reg
 
-        if (hitgroup == HITGROUP_HEAD) then
-            soundfile = hit_reg_head
-        end
-
-        surface.PlaySound(soundfile)
+    if (hitgroup == HITGROUP_HEAD) then
+        soundfile = hit_reg_head
     end
+
+    surface.PlaySound(soundfile)
 end )
 
 net.Receive("KillFeedUpdate", function(len, ply)
+    if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadFloat()
     local attacker = net.ReadEntity()
@@ -213,8 +213,8 @@ net.Receive("NotifyKill", function(len, ply)
 
     KillNotif = vgui.Create("DFrame")
     KillNotif:SetSize(ScrW(), 200)
-    KillNotif:SetX(0)
-    KillNotif:SetY(ScrH() - 335)
+    KillNotif:SetX(kdOffsetX)
+    KillNotif:SetY(ScrH() - kdOffsetY)
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
@@ -280,6 +280,8 @@ net.Receive("NotifyKill", function(len, ply)
         KillIcon:SetImageColor(white)
     end
 
+    local killStreak = LocalPlayer():GetNWInt("killStreak")
+
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
     local orangeColor = Color(255, 200, 100)
@@ -288,7 +290,6 @@ net.Receive("NotifyKill", function(len, ply)
     local rainbowSpeed = 160
 
     KillNotif.Paint = function(self, w, h)
-        local killStreak = LocalPlayer():GetNWInt("killStreak")
         --Dynamic text color depending on the killstreak of the player.
         if killStreak <= 2 then
             streakColor = white
@@ -320,9 +321,15 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
-            KillNotif:MoveTo(0, ScrH(), 1, 0, 0.25, function()
-                KillNotif:Remove()
-            end)
+            if GetConVar("tm_hud_killdeath_offset_y"):GetInt() <= ScrH() / 2 then
+                KillNotif:MoveTo(kdOffsetX, ScrH(), 1, 0, 0.25, function()
+                    KillNotif:Remove()
+                end)
+            else
+                KillNotif:MoveTo(kdOffsetX, 0, 1, 0, 0.25, function()
+                    KillNotif:Remove()
+                end)
+            end
         end
     end)
 end )
@@ -360,8 +367,8 @@ net.Receive("NotifyDeath", function(len, ply)
 
     DeathNotif = vgui.Create("DFrame")
     DeathNotif:SetSize(ScrW(), 300)
-    DeathNotif:SetX(0)
-    DeathNotif:SetY(ScrH() - 350)
+    DeathNotif:SetX(kdOffsetX)
+    DeathNotif:SetY(ScrH() - kdOffsetY)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
@@ -590,7 +597,7 @@ function ShowLoadoutOnSpawn()
     end
 
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
-    timer.Simple(3, function()
+    timer.Simple(2.5, function()
         notification.Kill("LoadoutText")
     end)
 end
@@ -669,11 +676,17 @@ end)
 cvars.AddChangeCallback("tm_hud_health_color_low_b", function(convar_name, value_old, value_new)
     hpLowB = value_new
 end)
-cvars.AddChangeCallback("tm_hud_killfeedoffsetx", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_old, value_new)
     feedOffsetX = value_new
 end)
-cvars.AddChangeCallback("tm_hud_killfeedoffsety", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_killfeed_offset_y", function(convar_name, value_old, value_new)
     feedOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killdeath_offset_x", function(convar_name, value_old, value_new)
+    kdOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killdeath_offset_y", function(convar_name, value_old, value_new)
+    kdOffsetY = value_new
 end)
 cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
     if value_new == "1" then

@@ -22,6 +22,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
     CreateClientConVar("tm_hud_enablekill", 1, true, false, "Enable/disable the kill UI", 0, 1)
     CreateClientConVar("tm_hud_enabledeath", 1, true, false, "Enable/disable the death UI", 0, 1)
+    CreateClientConVar("tm_hud_enablekillfeed", 1, true, false, "Enable/disable the kill feed", 0, 1)
     CreateClientConVar("tm_hud_font", "Arial", true, false, "Enable/disable any custom HUD elements created by the gamemode")
     CreateClientConVar("tm_hud_font_scale", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0.5, 1.5)
     CreateClientConVar("tm_hud_font_kill", 0, true, false, "Enable/disable the use of your custom font for the kill UI", 0, 1)
@@ -54,8 +55,8 @@ if CLIENT then
     CreateClientConVar("tm_hud_killfeed_limit", 4, true, false, "Limit the amount of kill feed entries that are shown at one time", 1, 10)
     CreateClientConVar("tm_hud_killfeed_offset_x", 0, true, false, "Adjusts the X offset of the kill feed", 0, ScrW())
     CreateClientConVar("tm_hud_killfeed_offset_y", 0, true, false, "Adjusts the Y offset of the kill feed", 0, ScrH())
-    CreateClientConVar("tm_hud_kill_offset_y", 0, true, false, "Adjusts the Y offset of the kill UI", -400, 400)
-    CreateClientConVar("tm_hud_death_offset_y", 0, true, false, "Adjusts the style and look of the ammo counter", -400, 400)
+    CreateClientConVar("tm_hud_killdeath_offset_x", 0, true, false, "Adjusts the X offset of the kill and death UI", ScrW() / -2, ScrW() / 2)
+    CreateClientConVar("tm_hud_killdeath_offset_y", 335, true, false, "Adjusts the Y offset of the kill and death UI", 0, ScrH())
     CreateClientConVar("tm_hud_reloadhint", 1, true, false, "Enable/disable the reload text when out of ammo", 0, 1)
     CreateClientConVar("tm_hud_loadouthint", 1, true, false, "Enable/disable the loadout info displaying on player spawn", 0, 1)
     CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
@@ -73,7 +74,7 @@ hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
         ply:ConCommand("+quicknade")
     end
 
-    hook.Add("PlayerButtonUp", "NadeThrow", function()
+    hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
         if button == ply:GetInfoNum("tm_nadebind", KEY_4) then
             ply:ConCommand("-quicknade")
         end
@@ -403,9 +404,7 @@ hintArray = {"Suppressors might make your gun sound badass, but it will also low
 hook.Add("Initialize", "Optimization", function()
     hook.Remove("PlayerTick", "TickWidgets")
 
-    if SERVER and timer.Exists("CheckHookTimes") then
-        timer.Remove("CheckHookTimes")
-    end
+    if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
 
     if CLIENT then
         hook.Remove("RenderScreenspaceEffects", "RenderColorModify")

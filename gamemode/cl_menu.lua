@@ -2952,13 +2952,14 @@ function mainMenu()
 
                         local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                         KillFeedEditor:Dock(TOP)
-                        KillFeedEditor:SetSize(0, 230)
+                        KillFeedEditor:SetSize(0, 180)
                         KillFeedEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed Item Limit", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Enable Kill Feed", "Health", 55, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Item Limit", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed X Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Y Offset", "Health", 150, 140, white, TEXT_ALIGN_LEFT)
                         end
 
                         local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
@@ -2975,6 +2976,7 @@ function mainMenu()
                             draw.DrawText("Add Feed Entry", "StreakText", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                         end
                         AddFeedEntryButton.DoClick = function()
+                            if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
                             local playersInAction = LocalPlayer():Name() .. " killed " .. math.random(1, 1000)
                             local victimLastHitIn = math.random(0, 1)
 
@@ -2982,8 +2984,15 @@ function mainMenu()
                             if table.Count(fakeFeedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(fakeFeedArray, 1) end
                         end
 
+                        local EnableKillFeed = KillFeedEditor:Add("DCheckBox")
+                        EnableKillFeed:SetPos(20, 50)
+                        EnableKillFeed:SetConVar("tm_hud_enablekillfeed")
+                        EnableKillFeed:SetValue(true)
+                        EnableKillFeed:SetSize(30, 30)
+                        EnableKillFeed:SetTooltip("Enable the kill feed.")
+
                         local KillFeedItemLimit = KillFeedEditor:Add("DNumSlider")
-                        KillFeedItemLimit:SetPos(-85, 50)
+                        KillFeedItemLimit:SetPos(-85, 80)
                         KillFeedItemLimit:SetSize(250, 30)
                         KillFeedItemLimit:SetConVar("tm_hud_killfeed_limit")
                         KillFeedItemLimit:SetMin(1)
@@ -2992,7 +3001,7 @@ function mainMenu()
                         KillFeedItemLimit:SetTooltip("Limit the amount of entries that can be shown on the kill feed.")
 
                         local KillFeedX = KillFeedEditor:Add("DNumSlider")
-                        KillFeedX:SetPos(-85, 80)
+                        KillFeedX:SetPos(-85, 110)
                         KillFeedX:SetSize(250, 30)
                         KillFeedX:SetConVar("tm_hud_killfeed_offset_x")
                         KillFeedX:SetMin(0)
@@ -3001,13 +3010,41 @@ function mainMenu()
                         KillFeedX:SetTooltip("Adjust the X offset of your kill feed.")
 
                         local KillFeedY = KillFeedEditor:Add("DNumSlider")
-                        KillFeedY:SetPos(-85, 110)
+                        KillFeedY:SetPos(-85, 140)
                         KillFeedY:SetSize(250, 30)
                         KillFeedY:SetConVar("tm_hud_killfeed_offset_y")
                         KillFeedY:SetMin(0)
                         KillFeedY:SetMax(ScrH())
                         KillFeedY:SetDecimals(0)
                         KillFeedY:SetTooltip("Adjust the Y offset of your kill feed.")
+
+                        local KillDeathEditor = vgui.Create("DPanel", EditorScroller)
+                        KillDeathEditor:Dock(TOP)
+                        KillDeathEditor:SetSize(0, 120)
+                        KillDeathEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("KILL/DEATH UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("UI X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("UI Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local KillDeathX = KillDeathEditor:Add("DNumSlider")
+                        KillDeathX:SetPos(-85, 50)
+                        KillDeathX:SetSize(250, 30)
+                        KillDeathX:SetConVar("tm_hud_killdeath_offset_x")
+                        KillDeathX:SetMin(ScrW() / -2)
+                        KillDeathX:SetMax(ScrW() / 2)
+                        KillDeathX:SetDecimals(0)
+                        KillDeathX:SetTooltip("Adjust the X offset of your kill and death UI.")
+
+                        local KillDeathY = KillDeathEditor:Add("DNumSlider")
+                        KillDeathY:SetPos(-85, 80)
+                        KillDeathY:SetSize(250, 30)
+                        KillDeathY:SetConVar("tm_hud_killdeath_offset_y")
+                        KillDeathY:SetMin(0)
+                        KillDeathY:SetMax(ScrH())
+                        KillDeathY:SetDecimals(0)
+                        KillDeathY:SetTooltip("Adjust the Y offset of your kill and death UI.")
 
                         local EditorButtons = vgui.Create("DPanel", EditorScroller)
                         EditorButtons:Dock(TOP)
@@ -3108,17 +3145,29 @@ function mainMenu()
                         ResetToDefaultButton:SetPos(20, 165)
                         ResetToDefaultButton:SetText("")
                         ResetToDefaultButton:SetSize(360, 40)
-                        local textAnim = 0
+                        local ResetToDefaultConfirm = 0
                         ResetToDefaultButton.Paint = function()
                             if ResetToDefaultButton:IsHovered() then
                                 textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
                             else
                                 textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
                             end
-                            draw.DrawText("Reset HUD options to default", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                            if (ResetToDefaultConfirm == 0) then
+                                draw.DrawText("Reset HUD To Default Options", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                            else
+                                draw.DrawText("ARE YOU SURE?", "Health", 0 + textAnim, 0, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                            end
                         end
                         ResetToDefaultButton.DoClick = function()
                             surface.PlaySound("tmui/buttonclick.wav")
+                            if (ResetToDefaultConfirm == 0) then
+                                ResetToDefaultConfirm = 1
+                            else
+                                RunConsoleCommand("tm_resethudtodefault_cannotbeundone")
+                                ResetToDefaultConfirm = 0
+                            end
+
+                            timer.Simple(3, function() ResetToDefaultConfirm = 0 end)
                         end
                     end
 
@@ -3489,6 +3538,7 @@ function mainMenu()
                             wipeConfirm = 1
                         else
                             RunConsoleCommand("tm_wipeplayeraccount_cannotbeundone")
+                            wipeConfirm = 0
                         end
 
                         timer.Simple(3, function() wipeConfirm = 0 end)

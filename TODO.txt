@@ -1,9 +1,17 @@
-Player account wipe option
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus
 Custom chatbox
-FIX THE SCOREBOARD BUG GAHHHHHHHHHHHHHHHHHHH
+Disconnect button on end of match screen
+Add a scoreboard to the main menu (could potentially fix the scoreboard bug due to pre loading)
 
-Color customization:
-health states on health bar (low, mid, full)
+Renaming weapons:
+
+Steyr AUG > AUG A3
+AR-15 > M4A1 (might just replace with a actual m4 might not idfk)
+AK-12 RPK > AK-12 (might also replace lol)
+Orsis T-5000 > T-5000
+AMP DSR-1 > DSR-1
+CheyTac M200 > Intervention
+IZH-43 Sawed Off > Sawed Off
+Minimi Para > M249
