@@ -7,7 +7,6 @@ local patchRed = Color(250, 100, 100, 255)
 local solidGreen = Color(0, 255, 0, 255)
 local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
-local slightTransparent = Color(25, 25, 25, 100)
 
 local MainMenu
 
@@ -37,7 +36,7 @@ function mainMenu()
 
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/altarsofapostasy_ultrakillost.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(client, chosenMusic)
 
@@ -61,12 +60,6 @@ function mainMenu()
         musicName = "TABG Main Theme"
         requestedBy = "Portanator"
         steamProfile = "https://steamcommunity.com/id/portmens/"
-    end
-
-    if chosenMusic == "music/altarsofapostasy_ultrakillost.wav" then
-        musicName = "Altars of Apostasy - Ultrakill OST"
-        requestedBy = "Checked"
-        steamProfile = "https://steamcommunity.com/profiles/76561198853717083"
     end
 
     if chosenMusic == "music/sneakysnitch_kevinmacleod.wav" then
@@ -283,56 +276,62 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 970)
+            PatchPreRelease:SetSize(0, 1090)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ G28 and G36A1 primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ File Compression", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Option tooltips", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Credits menu", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Config File", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Hints", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match tracking", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 340, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 360, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized arrays", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed AKS-74U", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed quotes from AK-12 RPK's name", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 860, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 880, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 900, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 920, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Profile picture offset setting", "StreakText", 5, 940, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ G28, G36A1 & Dual Skorpions primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Skorpion secondary weapon", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ File Compression", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Option tooltips", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Credits menu", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Config File", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hints", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match tracking", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 320, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ HUD Editing and recoloring", "StreakText", 5, 340, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Custom font support", "StreakText", 5, 360, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized arrays", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed AKS-74U", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed quotes from AK-12 RPK's name", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 860, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 880, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 900, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Kill/Death UI now scale properly", "StreakText", 5, 920, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 980, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1000, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1020, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1040, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Profile picture offset setting", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -395,7 +394,7 @@ function mainMenu()
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 6170)
+                    StatsWeapons:SetSize(0, 6260)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
@@ -829,7 +828,7 @@ function mainMenu()
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 5360)
+                    DockMasteryCards:SetSize(0, 5440)
 
                     --Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1615,7 +1614,7 @@ function mainMenu()
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 620)
+                    DockModelsAccolade:SetSize(0, 775)
 
                     --Special Playermodels
                     local TextSpecial = vgui.Create("DPanel", CustomizeScroller)
@@ -2410,7 +2409,7 @@ function mainMenu()
 
                     local DockViewmodel = vgui.Create("DPanel", OptionsScroller)
                     DockViewmodel:Dock(TOP)
-                    DockViewmodel:SetSize(0, 325)
+                    DockViewmodel:SetSize(0, 285)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
@@ -2659,43 +2658,54 @@ function mainMenu()
                         OptionsPanel:Hide()
 
                         local health = 100
-                        timer.Create("healthLoop", 1, 0, function()
+                        local ammo = 30
+                        local wep = "KRISS Vector"
+                        local fakeFeedArray = {}
+                        timer.Create("previewLoop", 1, 0, function()
                             health = math.random(1, 100)
+                            ammo = math.random(1, 30)
                         end)
 
                         local FakeHUD = MainMenu:Add("HUDEditorPanel")
                         MainMenu:SetMouseInputEnabled(false)
                         FakeHUD.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-                            if GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
-                                draw.SimpleText("KRISS Vector", "HUD_GunPrintName", ScrW() - 15, ScrH() - 60, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
-                                draw.SimpleText("30", "HUD_AmmoCount", ScrW() - 15, ScrH() - 170, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
-                            elseif GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
-                                draw.SimpleText("KRISS Vector", "HUD_GunPrintName", ScrW() - 15, ScrH() - 100, Color(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
-                                surface.SetDrawColor(50, 50, 50, 80)
+                            if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
+                                draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 60, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                                draw.SimpleText(ammo, "HUD_AmmoCount", ScrW() - 15, ScrH() - 170, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                            elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
+                                draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, 0)
+                                surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
                                 surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
-                                surface.SetDrawColor(GetConVar("tm_hud_color_r"):GetInt(), GetConVar("tm_hud_color_g"):GetInt(), GetConVar("tm_hud_color_b"):GetInt(), 175)
-                                surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (30 / 30), 30)
-                                draw.SimpleText(30, "HUD_Health", ScrW() - 410, ScrH() - 25, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
+                                surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
+                                surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (ammo / 30), 30)
+                                draw.SimpleText(ammo, "HUD_Health", ScrW() - 410, ScrH() - 25, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
                             end
 
                             surface.SetDrawColor(50, 50, 50, 80)
-                            surface.DrawRect(10 + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_healthoffsety"):GetInt(), GetConVar("tm_hud_healthsize"):GetInt(), 30)
+                            surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
                             if health <= 66 then
                                 if health <= 33 then
-                                    surface.SetDrawColor(180, 100, 100, 120)
+                                    surface.SetDrawColor(GetConVar("tm_hud_health_color_low_r"):GetInt(), GetConVar("tm_hud_health_color_low_g"):GetInt(), GetConVar("tm_hud_health_color_low_b"):GetInt(), 120)
                                 else
-                                    surface.SetDrawColor(180, 180, 100, 120)
+                                    surface.SetDrawColor(GetConVar("tm_hud_health_color_mid_r"):GetInt(), GetConVar("tm_hud_health_color_mid_g"):GetInt(), GetConVar("tm_hud_health_color_mid_b"):GetInt(), 120)
                                 end
                             else
-                                surface.SetDrawColor(100, 180, 100, 120)
+                                surface.SetDrawColor(GetConVar("tm_hud_health_color_high_r"):GetInt(), GetConVar("tm_hud_health_color_high_g"):GetInt(), GetConVar("tm_hud_health_color_high_b"):GetInt(), 120)
                             end
-                            surface.DrawRect(10 + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_healthoffsety"):GetInt(), GetConVar("tm_hud_healthsize"):GetInt() * (health / 100), 30)
-                            draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_healthsize"):GetInt() + GetConVar("tm_hud_healthoffsetx"):GetInt(), ScrH() - 24 - GetConVar("tm_hud_healthoffsety"):GetInt(), white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                            surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
+                            draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 24 - GetConVar("tm_hud_health_offset_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                            for k, v in pairs(fakeFeedArray) do
+                                if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
+                                local nameLength = select(1, surface.GetTextSize(v[1]))
+
+                                surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 62.5 + ((k - 1) * -20) + GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
+                                draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 55 + ((k - 1) * -20) + GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            end
                         end
 
                         local EditorPanel = vgui.Create("DFrame", FakeHUD)
-                        EditorPanel:SetSize(550, 550)
+                        EditorPanel:SetSize(435, 550)
                         EditorPanel:MakePopup()
                         EditorPanel:SetTitle("HUD Editor")
                         EditorPanel:Center()
@@ -2710,6 +2720,7 @@ function mainMenu()
                             FakeHUD:Hide()
                             OptionsSlideoutPanel:Show()
                             OptionsPanel:Show()
+                            timer.Remove("previewLoop")
                         end
 
                         local EditorScroller = vgui.Create("DScrollPanel", EditorPanel)
@@ -2731,12 +2742,14 @@ function mainMenu()
 
                         local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                         GeneralEditor:Dock(TOP)
-                        GeneralEditor:SetSize(0, 200)
+                        GeneralEditor:SetSize(0, 210)
                         GeneralEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("HUD Color", "Health", 210, 90, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Font Scale", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Use Font on Kill UI", "Health", 55, 127.5, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Use Font on Death UI", "Health", 55, 167.5, white, TEXT_ALIGN_LEFT)
                         end
 
                         local HUDFont = GeneralEditor:Add("DComboBox")
@@ -2748,84 +2761,365 @@ function mainMenu()
                         HUDFont:AddChoice("Comic Sans MS")
                         HUDFont:AddChoice("Tahoma")
                         HUDFont:AddChoice("Roboto")
+                        HUDFont:AddChoice("Impact")
+                        HUDFont:AddChoice("Times New Roman")
+                        HUDFont:AddChoice("Trebuchet MS")
+                        HUDFont:AddChoice("VCR OSD Mono")
+                        HUDFont:AddChoice("Bender")
                         HUDFont.OnSelect = function(self, index, value)
                             surface.PlaySound("tmui/buttonrollover.wav")
                             RunConsoleCommand("tm_hud_font", value)
                         end
 
-                        local HUDColor = vgui.Create("DColorMixer", GeneralEditor)
-                        HUDColor:SetPos(20, 90)
-                        HUDColor:SetSize(185, 100)
-                        HUDColor:SetConVarR("tm_hud_color_r")
-                        HUDColor:SetConVarG("tm_hud_color_g")
-                        HUDColor:SetConVarB("tm_hud_color_b")
-                        HUDColor:SetAlphaBar(false)
-                        HUDColor:SetPalette(false)
-                        HUDColor:SetWangs(true)
-                        HUDColor:SetTooltip("Adjusts your HUD color.")
+                        local CustomFontInput = GeneralEditor:Add("DTextEntry")
+                        CustomFontInput:SetPlaceholderText("Enter a custom font...")
+                        CustomFontInput:SetPos(275, 50)
+                        CustomFontInput:SetSize(125, 30)
+                        CustomFontInput.OnEnter = function(self)
+                            RunConsoleCommand("tm_hud_font", self:GetValue())
+                            HUDFont:SetValue(self:GetValue())
+                        end
+
+                        local FontScale = GeneralEditor:Add("DNumSlider")
+                        FontScale:SetPos(-85, 90)
+                        FontScale:SetSize(250, 30)
+                        FontScale:SetConVar("tm_hud_font_scale")
+                        FontScale:SetMin(0.5)
+                        FontScale:SetMax(1.5)
+                        FontScale:SetDecimals(2)
+                        FontScale:SetTooltip("Adjust the size of your font.")
+
+                        local KillUICustomFont = GeneralEditor:Add("DCheckBox")
+                        KillUICustomFont:SetPos(20, 130)
+                        KillUICustomFont:SetConVar("tm_hud_font_kill")
+                        KillUICustomFont:SetValue(true)
+                        KillUICustomFont:SetSize(30, 30)
+                        KillUICustomFont:SetTooltip("Enable use of your custom font for the kill UI.")
+
+                        local DeathUICustomFont = GeneralEditor:Add("DCheckBox")
+                        DeathUICustomFont:SetPos(20, 170)
+                        DeathUICustomFont:SetConVar("tm_hud_font_death")
+                        DeathUICustomFont:SetValue(true)
+                        DeathUICustomFont:SetSize(30, 30)
+                        DeathUICustomFont:SetTooltip("Enable use of your custom font for the death UI.")
 
                         local AmmoEditor = vgui.Create("DPanel", EditorScroller)
                         AmmoEditor:Dock(TOP)
-                        AmmoEditor:SetSize(0, 80)
+                        AmmoEditor:SetSize(0, 330)
                         AmmoEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("AMMO", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Ammo HUD Style", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Style", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Gun Text Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Ammo Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Bar Color", "Health", 210, 245, white, TEXT_ALIGN_LEFT)
                         end
 
                         local AmmoStyle = AmmoEditor:Add("DComboBox")
                         AmmoStyle:SetPos(20, 50)
                         AmmoStyle:SetSize(100, 30)
                         AmmoStyle:SetTooltip("Adjust the style of the ammo counter.")
-                        if CLIENT and GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
+                        if CLIENT and GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
                             AmmoStyle:SetValue("Numeric")
-                        elseif CLIENT and GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
+                        elseif CLIENT and GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
                             AmmoStyle:SetValue("Bar")
                         end
                         AmmoStyle:AddChoice("Numeric")
                         AmmoStyle:AddChoice("Bar")
                         AmmoStyle.OnSelect = function(self, value)
                             surface.PlaySound("tmui/buttonrollover.wav")
-                            RunConsoleCommand("tm_hud_ammostyle", value - 1)
+                            RunConsoleCommand("tm_hud_ammo_style", value - 1)
                         end
+
+                        local WepTextColor = vgui.Create("DColorMixer", AmmoEditor)
+                        WepTextColor:SetPos(20, 90)
+                        WepTextColor:SetSize(185, 70)
+                        WepTextColor:SetConVarR("tm_hud_ammo_wep_text_color_r")
+                        WepTextColor:SetConVarG("tm_hud_ammo_wep_text_color_g")
+                        WepTextColor:SetConVarB("tm_hud_ammo_wep_text_color_b")
+                        WepTextColor:SetAlphaBar(false)
+                        WepTextColor:SetPalette(false)
+                        WepTextColor:SetWangs(true)
+                        WepTextColor:SetTooltip("Adjusts your gun name text color.")
+
+                        local AmmoTextColor = vgui.Create("DColorMixer", AmmoEditor)
+                        AmmoTextColor:SetPos(20, 170)
+                        AmmoTextColor:SetSize(185, 70)
+                        AmmoTextColor:SetConVarR("tm_hud_ammo_text_color_r")
+                        AmmoTextColor:SetConVarG("tm_hud_ammo_text_color_g")
+                        AmmoTextColor:SetConVarB("tm_hud_ammo_text_color_b")
+                        AmmoTextColor:SetAlphaBar(false)
+                        AmmoTextColor:SetPalette(false)
+                        AmmoTextColor:SetWangs(true)
+                        AmmoTextColor:SetTooltip("Adjusts your ammo text color.")
+
+                        local AmmoBarColor = vgui.Create("DColorMixer", AmmoEditor)
+                        AmmoBarColor:SetPos(20, 250)
+                        AmmoBarColor:SetSize(185, 70)
+                        AmmoBarColor:SetConVarR("tm_hud_ammo_bar_color_r")
+                        AmmoBarColor:SetConVarG("tm_hud_ammo_bar_color_g")
+                        AmmoBarColor:SetConVarB("tm_hud_ammo_bar_color_b")
+                        AmmoBarColor:SetAlphaBar(false)
+                        AmmoBarColor:SetPalette(false)
+                        AmmoBarColor:SetWangs(true)
+                        AmmoBarColor:SetTooltip("Adjusts your ammo bar color.")
 
                         local HealthEditor = vgui.Create("DPanel", EditorScroller)
                         HealthEditor:Dock(TOP)
-                        HealthEditor:SetSize(0, 150)
+                        HealthEditor:SetSize(0, 470)
                         HealthEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("HEALTH", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Bar Size", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Bar X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Bar Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("HP Text Color", "Health", 210, 145, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("High HP Color", "Health", 210, 225, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Mid HP Color", "Health", 210, 305, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Low HP Color", "Health", 210, 385, white, TEXT_ALIGN_LEFT)
                         end
 
                         local HealthBarSize = HealthEditor:Add("DNumSlider")
                         HealthBarSize:SetPos(-85, 50)
                         HealthBarSize:SetSize(250, 30)
-                        HealthBarSize:SetConVar("tm_hud_healthsize")
+                        HealthBarSize:SetConVar("tm_hud_health_size")
                         HealthBarSize:SetMin(100)
-                        HealthBarSize:SetMax(800)
+                        HealthBarSize:SetMax(1000)
                         HealthBarSize:SetDecimals(0)
                         HealthBarSize:SetTooltip("Adjust the size of your health bar.")
 
                         local HealthBarX = HealthEditor:Add("DNumSlider")
                         HealthBarX:SetPos(-85, 80)
                         HealthBarX:SetSize(250, 30)
-                        HealthBarX:SetConVar("tm_hud_healthoffsetx")
+                        HealthBarX:SetConVar("tm_hud_health_offset_x")
                         HealthBarX:SetMin(0)
-                        HealthBarX:SetMax(600)
+                        HealthBarX:SetMax(ScrW())
                         HealthBarX:SetDecimals(0)
                         HealthBarX:SetTooltip("Adjust the X offset of your health bar.")
 
                         local HealthBarY = HealthEditor:Add("DNumSlider")
                         HealthBarY:SetPos(-85, 110)
                         HealthBarY:SetSize(250, 30)
-                        HealthBarY:SetConVar("tm_hud_healthoffsety")
+                        HealthBarY:SetConVar("tm_hud_health_offset_y")
                         HealthBarY:SetMin(0)
-                        HealthBarY:SetMax(600)
+                        HealthBarY:SetMax(ScrH())
                         HealthBarY:SetDecimals(0)
                         HealthBarY:SetTooltip("Adjust the Y offset of your health bar.")
+
+                        local HealthTextColor = vgui.Create("DColorMixer", HealthEditor)
+                        HealthTextColor:SetPos(20, 150)
+                        HealthTextColor:SetSize(185, 70)
+                        HealthTextColor:SetConVarR("tm_hud_health_text_color_r")
+                        HealthTextColor:SetConVarG("tm_hud_health_text_color_g")
+                        HealthTextColor:SetConVarB("tm_hud_health_text_color_b")
+                        HealthTextColor:SetAlphaBar(false)
+                        HealthTextColor:SetPalette(false)
+                        HealthTextColor:SetWangs(true)
+                        HealthTextColor:SetTooltip("Adjusts your health text color.")
+
+                        local HealthHighColor = vgui.Create("DColorMixer", HealthEditor)
+                        HealthHighColor:SetPos(20, 230)
+                        HealthHighColor:SetSize(185, 70)
+                        HealthHighColor:SetConVarR("tm_hud_health_color_high_r")
+                        HealthHighColor:SetConVarG("tm_hud_health_color_high_g")
+                        HealthHighColor:SetConVarB("tm_hud_health_color_high_b")
+                        HealthHighColor:SetAlphaBar(false)
+                        HealthHighColor:SetPalette(false)
+                        HealthHighColor:SetWangs(true)
+                        HealthHighColor:SetTooltip("Adjusts your health bar color while on 100% or less HP.")
+
+                        local HealthMidColor = vgui.Create("DColorMixer", HealthEditor)
+                        HealthMidColor:SetPos(20, 310)
+                        HealthMidColor:SetSize(185, 70)
+                        HealthMidColor:SetConVarR("tm_hud_health_color_mid_r")
+                        HealthMidColor:SetConVarG("tm_hud_health_color_mid_g")
+                        HealthMidColor:SetConVarB("tm_hud_health_color_mid_b")
+                        HealthMidColor:SetAlphaBar(false)
+                        HealthMidColor:SetPalette(false)
+                        HealthMidColor:SetWangs(true)
+                        HealthMidColor:SetTooltip("Adjusts your health bar color while on 66% or less HP.")
+
+                        local HealthLowColor = vgui.Create("DColorMixer", HealthEditor)
+                        HealthLowColor:SetPos(20, 390)
+                        HealthLowColor:SetSize(185, 70)
+                        HealthLowColor:SetConVarR("tm_hud_health_color_low_r")
+                        HealthLowColor:SetConVarG("tm_hud_health_color_low_g")
+                        HealthLowColor:SetConVarB("tm_hud_health_color_low_b")
+                        HealthLowColor:SetAlphaBar(false)
+                        HealthLowColor:SetPalette(false)
+                        HealthLowColor:SetWangs(true)
+                        HealthLowColor:SetTooltip("Adjusts your health bar color while on 33% or less HP.")
+
+                        local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
+                        KillFeedEditor:Dock(TOP)
+                        KillFeedEditor:SetSize(0, 230)
+                        KillFeedEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Item Limit", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
+                        AddFeedEntryButton:SetPos(190, 17.5)
+                        AddFeedEntryButton:SetText("")
+                        AddFeedEntryButton:SetSize(145, 40)
+                        local textAnim = 0
+                        AddFeedEntryButton.Paint = function()
+                            if AddFeedEntryButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Add Feed Entry", "StreakText", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        AddFeedEntryButton.DoClick = function()
+                            local playersInAction = LocalPlayer():Name() .. " killed " .. math.random(1, 1000)
+                            local victimLastHitIn = math.random(0, 1)
+
+                            table.insert(fakeFeedArray, {playersInAction, victimLastHitIn})
+                            if table.Count(fakeFeedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(fakeFeedArray, 1) end
+                        end
+
+                        local KillFeedItemLimit = KillFeedEditor:Add("DNumSlider")
+                        KillFeedItemLimit:SetPos(-85, 50)
+                        KillFeedItemLimit:SetSize(250, 30)
+                        KillFeedItemLimit:SetConVar("tm_hud_killfeed_limit")
+                        KillFeedItemLimit:SetMin(1)
+                        KillFeedItemLimit:SetMax(10)
+                        KillFeedItemLimit:SetDecimals(0)
+                        KillFeedItemLimit:SetTooltip("Limit the amount of entries that can be shown on the kill feed.")
+
+                        local KillFeedX = KillFeedEditor:Add("DNumSlider")
+                        KillFeedX:SetPos(-85, 80)
+                        KillFeedX:SetSize(250, 30)
+                        KillFeedX:SetConVar("tm_hud_killfeed_offset_x")
+                        KillFeedX:SetMin(0)
+                        KillFeedX:SetMax(ScrW())
+                        KillFeedX:SetDecimals(0)
+                        KillFeedX:SetTooltip("Adjust the X offset of your kill feed.")
+
+                        local KillFeedY = KillFeedEditor:Add("DNumSlider")
+                        KillFeedY:SetPos(-85, 110)
+                        KillFeedY:SetSize(250, 30)
+                        KillFeedY:SetConVar("tm_hud_killfeed_offset_y")
+                        KillFeedY:SetMin(0)
+                        KillFeedY:SetMax(ScrH())
+                        KillFeedY:SetDecimals(0)
+                        KillFeedY:SetTooltip("Adjust the Y offset of your kill feed.")
+
+                        local EditorButtons = vgui.Create("DPanel", EditorScroller)
+                        EditorButtons:Dock(TOP)
+                        EditorButtons:SetSize(0, 210)
+                        EditorButtons.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                        end
+
+                        local TestKillButton = vgui.Create("DButton", EditorButtons)
+                        TestKillButton:SetPos(20, 0)
+                        TestKillButton:SetText("")
+                        TestKillButton:SetSize(145, 40)
+                        local textAnim = 0
+                        TestKillButton.Paint = function()
+                            if TestKillButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Test Kill", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        TestKillButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                            RunConsoleCommand("tm_hud_testkill")
+                        end
+
+                        local TestDeathButton = vgui.Create("DButton", EditorButtons)
+                        TestDeathButton:SetPos(20, 30)
+                        TestDeathButton:SetText("")
+                        TestDeathButton:SetSize(165, 40)
+                        local textAnim = 0
+                        TestDeathButton.Paint = function()
+                            if TestDeathButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Test Death", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        TestDeathButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                            RunConsoleCommand("tm_hud_testdeath")
+                        end
+
+                        local TestLevelUpButton = vgui.Create("DButton", EditorButtons)
+                        TestLevelUpButton:SetPos(20, 60)
+                        TestLevelUpButton:SetText("")
+                        TestLevelUpButton:SetSize(200, 40)
+                        local textAnim = 0
+                        TestLevelUpButton.Paint = function()
+                            if TestLevelUpButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Test Level Up", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        TestLevelUpButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                            RunConsoleCommand("tm_hud_testlevelup")
+                        end
+
+                        local ExportProfileButton = vgui.Create("DButton", EditorButtons)
+                        ExportProfileButton:SetPos(20, 105)
+                        ExportProfileButton:SetText("")
+                        ExportProfileButton:SetSize(300, 40)
+                        local textAnim = 0
+                        ExportProfileButton.Paint = function()
+                            if ExportProfileButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Export HUD Profile Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        ExportProfileButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                        end
+
+                        local ImportProfileButton = vgui.Create("DButton", EditorButtons)
+                        ImportProfileButton:SetPos(20, 135)
+                        ImportProfileButton:SetText("")
+                        ImportProfileButton:SetSize(300, 40)
+                        local textAnim = 0
+                        ImportProfileButton.Paint = function()
+                            if ImportProfileButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Import HUD Profile Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        ImportProfileButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                        end
+
+                        local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
+                        ResetToDefaultButton:SetPos(20, 165)
+                        ResetToDefaultButton:SetText("")
+                        ResetToDefaultButton:SetSize(360, 40)
+                        local textAnim = 0
+                        ResetToDefaultButton.Paint = function()
+                            if ResetToDefaultButton:IsHovered() then
+                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            else
+                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            end
+                            draw.DrawText("Reset HUD options to default", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        end
+                        ResetToDefaultButton.DoClick = function()
+                            surface.PlaySound("tmui/buttonclick.wav")
+                        end
                     end
 
                     DockAudio.Paint = function(self, w, h)
@@ -2912,8 +3206,7 @@ function mainMenu()
 
                         draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Weapon Bobbing Multiplier", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 145, white, TEXT_ALIGN_LEFT)
                     end
 
                     local viewmodelFOV = DockViewmodel:Add("DNumSlider")
@@ -2931,17 +3224,8 @@ function mainMenu()
                     centeredVM:SetSize(30, 30)
                     centeredVM:SetTooltip("Centeres your viewmodel towards the middle of your screen.")
 
-                    local bobbingMulti = DockViewmodel:Add("DNumSlider")
-                    bobbingMulti:SetPos(-85, 150)
-                    bobbingMulti:SetSize(250, 30)
-                    bobbingMulti:SetConVar("cl_tfa_gunbob_intensity")
-                    bobbingMulti:SetMin(0.80)
-                    bobbingMulti:SetMax(2)
-                    bobbingMulti:SetDecimals(1)
-                    bobbingMulti:SetTooltip("Adjust the intensity of your weapon bob.")
-
                     local flashlightMixer = vgui.Create("DColorMixer", DockViewmodel)
-                    flashlightMixer:SetPos(20, 190)
+                    flashlightMixer:SetPos(20, 150)
                     flashlightMixer:SetSize(215, 110)
                     flashlightMixer:SetConVarR("tpf_cl_color_red")
                     flashlightMixer:SetConVarG("tpf_cl_color_green")
@@ -3186,15 +3470,28 @@ function mainMenu()
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0
+                    local wipeConfirm = 0
                     WipeAccountButton.Paint = function()
                         if WipeAccountButton:IsHovered() then
                             textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
                         else
                             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
                         end
-                        draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        if (wipeConfirm == 0) then
+                            draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                        else
+                            draw.DrawText("ARE YOU SURE?", "SettingsLabel", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                        end
                     end
                     WipeAccountButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        if (wipeConfirm == 0) then
+                            wipeConfirm = 1
+                        else
+                            RunConsoleCommand("tm_wipeplayeraccount_cannotbeundone")
+                        end
+
+                        timer.Simple(3, function() wipeConfirm = 0 end)
                     end
                 end
             end

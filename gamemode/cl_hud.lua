@@ -7,12 +7,49 @@ local feedArray = {}
 local health
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
-local healthSize = GetConVar("tm_hud_healthsize"):GetInt()
-local healthOffsetX = GetConVar("tm_hud_healthoffsetx"):GetInt()
-local healthOffsetY = GetConVar("tm_hud_healthoffsety"):GetInt()
-local colorR = GetConVar("tm_hud_color_r"):GetInt()
-local colorG = GetConVar("tm_hud_color_g"):GetInt()
-local colorB = GetConVar("tm_hud_color_b"):GetInt()
+local healthSize = GetConVar("tm_hud_health_size"):GetInt()
+local healthOffsetX = GetConVar("tm_hud_health_offset_x"):GetInt()
+local healthOffsetY = GetConVar("tm_hud_health_offset_y"):GetInt()
+local wepTextR = GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt()
+local wepTextG = GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt()
+local wepTextB = GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()
+local ammoBarR = GetConVar("tm_hud_ammo_bar_color_r"):GetInt()
+local ammoBarG = GetConVar("tm_hud_ammo_bar_color_g"):GetInt()
+local ammoBarB = GetConVar("tm_hud_ammo_bar_color_b"):GetInt()
+local ammoTextR = GetConVar("tm_hud_ammo_text_color_r"):GetInt()
+local ammoTextG = GetConVar("tm_hud_ammo_text_color_g"):GetInt()
+local ammoTextB = GetConVar("tm_hud_ammo_text_color_b"):GetInt()
+local hpTextR = GetConVar("tm_hud_health_text_color_r"):GetInt()
+local hpTextG = GetConVar("tm_hud_health_text_color_g"):GetInt()
+local hpTextB = GetConVar("tm_hud_health_text_color_b"):GetInt()
+local hpHighR = GetConVar("tm_hud_health_color_high_r"):GetInt()
+local hpHighG = GetConVar("tm_hud_health_color_high_g"):GetInt()
+local hpHighB = GetConVar("tm_hud_health_color_high_b"):GetInt()
+local hpMidR = GetConVar("tm_hud_health_color_mid_r"):GetInt()
+local hpMidG = GetConVar("tm_hud_health_color_mid_g"):GetInt()
+local hpMidB = GetConVar("tm_hud_health_color_mid_b"):GetInt()
+local hpLowR = GetConVar("tm_hud_health_color_low_r"):GetInt()
+local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
+local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
+local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
+local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
+
+local StreakFont = "StreakText"
+local NameFont = "PlayerNotiName"
+local ArialFont = "Arial18"
+local DeathFont = "PlayerDeathName"
+local WepFont = "WepNameKill"
+
+if GetConVar("tm_hud_font_kill"):GetInt() == 1 then
+    StreakFont = "HUD_StreakText"
+    NameFont = "HUD_PlayerNotiName"
+end
+
+if GetConVar("tm_hud_font_death"):GetInt() == 1 then
+    ArialFont = "HUD_Arial18"
+    DeathFont = "HUD_PlayerDeathName"
+    WepFont = "HUD_WepNameKill"
+end
 
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
@@ -23,23 +60,23 @@ function HUD()
 
         --Shows the players ammo and weapon depending on the style they have selected in Options.
         --Numeric Style
-        if GetConVar("tm_hud_ammostyle"):GetInt() == 0 then
+        if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
 
             if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
                 draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
                 draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
             elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
         end
 
         --Bar Style
-        if GetConVar("tm_hud_ammostyle"):GetInt() == 1 then
+        if GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(colorR, colorG, colorB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
 
             if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
@@ -48,16 +85,16 @@ function HUD()
 
             if (LocalPlayer():GetActiveWeapon():IsValid()) then
                 if (LocalPlayer():GetActiveWeapon():Clip1() != 0) then
-                    surface.SetDrawColor(50, 50, 50, 80)
+                    surface.SetDrawColor(ammoBarR - 205, ammoBarG - 205, ammoBarB - 205, 80)
                     surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
                 else
                     surface.SetDrawColor(255, 0, 0, 80)
                     surface.DrawRect(ScrW() - 415, ScrH() - 39, 400, 30)
                 end
 
-                surface.SetDrawColor(colorR, colorG, colorB, 175)
+                surface.SetDrawColor(ammoBarR, ammoBarG, ammoBarB, 175)
                 surface.DrawRect(ScrW() - 415, ScrH() - 39, 400 * (LocalPlayer():GetActiveWeapon():Clip1() / LocalPlayer():GetActiveWeapon():GetMaxClip1()), 30)
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 25, Color(50, 50, 50, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
+                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 25, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
             end
         end
 
@@ -68,16 +105,16 @@ function HUD()
 
         if LocalPlayer():Health() <= 66 then
             if LocalPlayer():Health() <= 33 then
-                surface.SetDrawColor(180, 100, 100, 120)
+                surface.SetDrawColor(hpLowR, hpLowG, hpLowB, 120)
             else
-                surface.SetDrawColor(180, 180, 100, 120)
+                surface.SetDrawColor(hpMidR, hpMidG, hpMidB, 120)
             end
         else
-            surface.SetDrawColor(100, 180, 100, 120)
+            surface.SetDrawColor(hpHighR, hpHighG, hpHighB, 120)
         end
 
         surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
-        draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+        draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
         --Shooting range disclaimer
         if playingFiringRange == true then
@@ -89,36 +126,12 @@ function HUD()
             if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
             local nameLength = select(1, surface.GetTextSize(v[1]))
 
-            surface.DrawRect(10, ScrH() - 62.5 + ((k - 1) * -20), nameLength + 5, 20)
-            draw.SimpleText(v[1], "HUD_StreakText", 12.5, ScrH() - 55 + ((k - 1) * -20), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            surface.DrawRect(10 + feedOffsetX, ScrH() - 62.5 + ((k - 1) * -20) + feedOffsetY, nameLength + 5, 20)
+            draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 55 + ((k - 1) * -20) + feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
-
-cvars.AddChangeCallback("tm_hud_healthsize", function(convar_name, value_old, value_new)
-    healthSize = value_new
-end)
-
-cvars.AddChangeCallback("tm_hud_healthoffsetx", function(convar_name, value_old, value_new)
-    healthOffsetX = value_new
-end)
-
-cvars.AddChangeCallback("tm_hud_healthoffsety", function(convar_name, value_old, value_new)
-    healthOffsetY = value_new
-end)
-
-cvars.AddChangeCallback("tm_hud_color_r", function(convar_name, value_old, value_new)
-    colorR = value_new
-end)
-
-cvars.AddChangeCallback("tm_hud_color_g", function(convar_name, value_old, value_new)
-    colorG = value_new
-end)
-
-cvars.AddChangeCallback("tm_hud_color_b", function(convar_name, value_old, value_new)
-    colorB = value_new
-end)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
@@ -165,14 +178,14 @@ net.Receive("KillFeedUpdate", function(len, ply)
     local streak = attacker:GetNWInt("killStreak")
 
     table.insert(feedArray, {playersInAction, victimLastHitIn})
-    if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
+    if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
     timer.Create(playersInAction .. math.Round(CurTime()), 8, 1, function()
         table.remove(feedArray, 1)
     end)
 
     if streak == 4 or streak == 9 or streak == 14 or streak == 19 or streak == 24 or streak == 29 then
         table.insert(feedArray, {attacker:GetName() .. " is on a " .. streak + 1 .. " killstreak", 0})
-        if table.Count(feedArray) >= 5 then table.remove(feedArray, 1) end
+        if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
         timer.Create(attacker:GetName() .. streak, 8, 1, function()
             table.remove(feedArray, 1)
         end)
@@ -194,16 +207,20 @@ net.Receive("NotifyKill", function(len, ply)
         KillNotif:Remove()
     end
 
+    if IsValid(DeathNotif) then
+        DeathNotif:Remove()
+    end
+
     KillNotif = vgui.Create("DFrame")
-    KillNotif:SetSize(600, 200)
-    KillNotif:SetX(ScrW() / 2 - 300)
+    KillNotif:SetSize(ScrW(), 200)
+    KillNotif:SetX(0)
     KillNotif:SetY(ScrH() - 335)
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
 
     KillIcon = vgui.Create("DImage", KillNotif)
-    KillIcon:SetPos(275, 50)
+    KillIcon:SetPos(ScrW() / 2 - 25, 50)
     KillIcon:SetSize(50, 50)
     KillIcon:SetImage("icons/killicon.png")
 
@@ -265,31 +282,31 @@ net.Receive("NotifyKill", function(len, ply)
 
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor
-    local whiteColor = white
     local orangeColor = Color(255, 200, 100)
     local redColor = Color(255, 50, 50)
     local rainbowColor
     local rainbowSpeed = 160
 
-    KillNotif.Paint = function()
+    KillNotif.Paint = function(self, w, h)
+        local killStreak = LocalPlayer():GetNWInt("killStreak")
         --Dynamic text color depending on the killstreak of the player.
-        if LocalPlayer():GetNWInt("killStreak") <= 2 then
-            streakColor = whiteColor
-        elseif LocalPlayer():GetNWInt("killStreak") <= 4 then
+        if killStreak <= 2 then
+            streakColor = white
+        elseif killStreak <= 4 then
             streakColor = orangeColor
-        elseif LocalPlayer():GetNWInt("killStreak") <= 6 then
+        elseif killStreak <= 6 then
             streakColor = redColor
-        elseif LocalPlayer():GetNWInt("killStreak") >= 7 then
+        elseif killStreak >= 7 then
             streakColor = rainbowColor
         end
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
-        draw.SimpleText(LocalPlayer():GetNWInt("killStreak") .. " Kills", "StreakText", 300, 25, streakColor, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedPlayer:GetName(), "PlayerNotiName", 300, 100, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killStreak .. " Kills", StreakFont, w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedPlayer:GetName(), NameFont, w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         if GetConVar("tm_hud_killaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "StreakText", 300, 150, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, StreakFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -303,7 +320,7 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
-            KillNotif:MoveTo(ScrW() / 2 - 300, 0, 1, 0, 0.25, function()
+            KillNotif:MoveTo(0, ScrH(), 1, 0, 0.25, function()
                 KillNotif:Remove()
             end)
         end
@@ -324,6 +341,10 @@ net.Receive("NotifyDeath", function(len, ply)
         KillNotif:Remove()
     end
 
+    if IsValid(DeathNotif) then
+        DeathNotif:Remove()
+    end
+
     --Creates a cooldown for the death UI, having it disappear after 4 seconds.
     timer.Create("respawnTimeHideHud", playerRespawnTime, 1, function()
         DeathNotif:Remove()
@@ -338,8 +359,8 @@ net.Receive("NotifyDeath", function(len, ply)
     end)
 
     DeathNotif = vgui.Create("DFrame")
-    DeathNotif:SetSize(800, 300)
-    DeathNotif:SetX(ScrW() / 2 - 400)
+    DeathNotif:SetSize(ScrW(), 300)
+    DeathNotif:SetX(0)
     DeathNotif:SetY(ScrH() - 350)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
@@ -347,44 +368,44 @@ net.Receive("NotifyDeath", function(len, ply)
 
     local hint = table.Random(hintArray)
 
-    DeathNotif.Paint = function()
+    DeathNotif.Paint = function(self, w, h)
     if lastHitIn == 1 then
-            draw.SimpleText(killedFrom .. "m" .. " HS", "WepNameKill", 410, 130, red, TEXT_ALIGN_LEFT)
+            draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 145, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedFrom .. "m", "WepNameKill", 410, 130, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(killedFrom .. "m", WepFont, w / 2 + 10, 145, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-        draw.SimpleText("Killed by", "Trebuchet18", 400, 0, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 95.5, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 120, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", "PlayerDeathName", 400, 145, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetName(), "PlayerDeathName", 390, 97.5, white, TEXT_ALIGN_RIGHT)
-        draw.SimpleText(killedWith, "PlayerDeathName", 410, 97.5, white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Killed by", ArialFont, w / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", DeathFont, w / 2, 115.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", DeathFont, w / 2, 140, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", DeathFont, w / 2, 165, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetName(), DeathFont, w / 2 - 10, 117.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedWith, DeathFont, w / 2 + 10, 117.5, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         if killedBy:Health() <= 0 then
-            draw.SimpleText("DEAD", "WepNameKill", 390, 130, red, TEXT_ALIGN_RIGHT)
+            draw.SimpleText("DEAD", WepFont, w / 2 - 10, 145, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedBy:Health() .. "HP", "WepNameKill", 390, 130, white, TEXT_ALIGN_RIGHT)
+            draw.SimpleText(killedBy:Health() .. "HP", WepFont, w / 2 - 10, 145, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
-        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), "WepNameKill", 390, 155, white, TEXT_ALIGN_RIGHT)
-        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", "WepNameKill", 410, 155, white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-        draw.SimpleText("Respawning in     ", "WepNameKill", 390, 195, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Respawning in     ", WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         if respawnTimeLeft != nil or respawnTimeLeft > 4 or respawnTimeLeft < 0 then
-            draw.SimpleText(respawnTimeLeft .. "s", "WepNameKill", 465, 195, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(respawnTimeLeft .. "s", WepFont, w / 2 + 65, 210, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
-        draw.SimpleText("Press [F1 - F4] to open the menu", "WepNameKill", 400, 220, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("HINT: " .. hint, "Trebuchet18", 400, 247.5, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [F1 - F4] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("HINT: " .. hint, ArialFont, w / 2, 257.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
-    KilledByCallingCard:SetPos(280, 20)
+    KilledByCallingCard:SetPos(ScrW() / 2 - 120, 20)
     KilledByCallingCard:SetSize(240, 80)
     KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
 
-    killedByPlayerProfilePicture = vgui.Create("AvatarImage", DeathNotif)
-    killedByPlayerProfilePicture:SetPos(285, 25)
+    killedByPlayerProfilePicture = vgui.Create("AvatarImage", KilledByCallingCard)
+    killedByPlayerProfilePicture:SetPos(5, 5)
     killedByPlayerProfilePicture:SetSize(70, 70)
     killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
 
@@ -392,155 +413,6 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:MakePopup()
     DeathNotif:SetMouseInputEnabled(false)
     DeathNotif:SetKeyboardInputEnabled(false)
-end )
-
---Displays to all players when a map vote begins.
-net.Receive("MapVoteHUD", function(len, ply)
-    local MapVoteHUD
-    local votedOnMap = false
-
-    --Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
-    timer.Create("mapVoteTimeRemaining", 19, 1, function()
-        if votedOnMap == false then
-            RunConsoleCommand("tm_voteformap", "skip")
-            MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-                MapVoteHUD:Remove()
-            end)
-        end
-    end)
-
-    local firstMap = net.ReadString()
-    local secondMap = net.ReadString()
-
-    local firstMapName
-    local firstMapThumb
-
-    local secondMapName
-    local secondMapThumb
-
-    for o, v in pairs(mapArray) do
-        if game.GetMap() == v[1] then currentMapName = v[2] end
-
-        if firstMap == v[1] then
-            firstMapName = v[2]
-            firstMapThumb = v[4]
-        end
-
-        if secondMap == v[1] then
-            secondMapName = v[2]
-            secondMapThumb = v[4]
-        end
-    end
-
-    MapVoteHUD = vgui.Create("DFrame")
-    MapVoteHUD:SetSize(0, 500)
-    MapVoteHUD:SetX(0)
-    MapVoteHUD:SetY(ScrH() / 2 - 250)
-    MapVoteHUD:SetTitle("")
-    MapVoteHUD:SetDraggable(false)
-    MapVoteHUD:ShowCloseButton(false)
-    MapVoteHUD:SizeTo(200, 500, 1, 0, 0.25)
-
-    MapVoteHUD.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 150))
-        draw.RoundedBox(0, 0, 0, 20, h, Color(40, 40, 40, 150))
-        draw.SimpleText("VOTE FOR NEXT MAP", "StreakText", 110, 0, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Open scoreboard to use mouse", "StreakTextMini", 110, 17.5, white, TEXT_ALIGN_CENTER)
-
-        draw.SimpleText(firstMapName, "MapName", 110, 188, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText(secondMapName, "MapName", 110, 388, white, TEXT_ALIGN_CENTER)
-    end
-
-    local MapChoice = vgui.Create("DImageButton", MapVoteHUD)
-    MapChoice:SetPos(30, 50)
-    MapChoice:SetText("")
-    MapChoice:SetSize(160, 160)
-    MapChoice:SetImage(firstMapThumb)
-    local choiceAnim = 0
-    MapChoice.Paint = function()
-        if MapChoice:IsHovered() then
-            choiceAnim = math.Clamp(choiceAnim + 200 * FrameTime(), 0, 20)
-        else
-            choiceAnim = math.Clamp(choiceAnim - 200 * FrameTime(), 0, 20)
-        end
-        MapChoice:SetPos(30, 50 - choiceAnim)
-    end
-    MapChoice.DoClick = function()
-        RunConsoleCommand("tm_voteformap", firstMap)
-        votedOnMap = true
-
-        surface.PlaySound("buttons/button15.wav")
-        notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. firstMapName .. "!")
-        timer.Simple(4, function()
-            notification.Kill("VoteConfirmation")
-        end)
-
-        MapVoteHUD:SizeTo(0, 500, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
-        end)
-    end
-
-    local MapChoiceTwo = vgui.Create("DImageButton", MapVoteHUD)
-    MapChoiceTwo:SetPos(30, 250)
-    MapChoiceTwo:SetText("")
-    MapChoiceTwo:SetSize(160, 160)
-    MapChoiceTwo:SetImage(secondMapThumb)
-    local choiceTwoAnim = 0
-    MapChoiceTwo.Paint = function()
-        if MapChoiceTwo:IsHovered() then
-            choiceTwoAnim = math.Clamp(choiceTwoAnim + 200 * FrameTime(), 0, 20)
-        else
-            choiceTwoAnim = math.Clamp(choiceTwoAnim - 200 * FrameTime(), 0, 20)
-        end
-        MapChoiceTwo:SetPos(30, 250 - choiceTwoAnim)
-    end
-    MapChoiceTwo.DoClick = function()
-        RunConsoleCommand("tm_voteformap", secondMap)
-        votedOnMap = true
-
-        surface.PlaySound("buttons/button15.wav")
-        notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. secondMapName .. "!")
-        timer.Simple(4, function()
-            notification.Kill("VoteConfirmation")
-        end)
-
-        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
-        end)
-    end
-
-    local ContinueButton = vgui.Create("DButton", MapVoteHUD)
-    ContinueButton:SetPos(20, 430)
-    ContinueButton:SetText("")
-    ContinueButton:SetSize(180, 60)
-    local textAnim = 0
-    ContinueButton.Paint = function()
-        if ContinueButton:IsHovered() then
-            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 10)
-        else
-            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 10)
-        end
-
-        draw.SimpleText("CONTINUE ON", "MapName", 90, 10 - textAnim, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText(currentMapName, "WepNameKill", 90, 27.5 - textAnim, white, TEXT_ALIGN_CENTER)
-    end
-    ContinueButton.DoClick = function()
-        RunConsoleCommand("tm_voteformap", "skip")
-        votedOnMap = true
-
-        surface.PlaySound("buttons/button15.wav")
-        notification.AddProgress("VoteConfirmation", "You have successfully voted to continue playing on " .. currentMapName .. "!")
-        timer.Simple(4, function()
-            notification.Kill("VoteConfirmation")
-        end)
-
-        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
-        end)
-    end
-
-    MapVoteHUD:Show()
-    MapVoteHUD:SetKeyboardInputEnabled(false)
 end )
 
 --Displays to all players when a map vote begins.
@@ -618,7 +490,7 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText(v:Deaths(), "Health", 230, 150, red, TEXT_ALIGN_CENTER)
             draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, white, TEXT_ALIGN_CENTER)
 
-            if k == 1 then draw.SimpleText("WINNER", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
+            if k == 1 then draw.SimpleText("WINNER [+25% XP]", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
         end
 
         KillsIcon = vgui.Create("DImage", PlayerPanel)
@@ -688,8 +560,8 @@ net.Receive("NotifyLevelUp", function(len, ply)
     LevelNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 110, 0.5, 0, 0.25)
 
     LevelNotif.Paint = function(self, w, h)
-        draw.SimpleText("LEVEL UP", "PlayerNotiName", 300, 0, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-        draw.SimpleText(previousLevel .. "  > " .. previousLevel + 1, "PlayerNotiName", 300, 55, white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("LEVEL UP", "HUD_PlayerNotiName", 300, 25, Color(255, 255, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(previousLevel .. "  > " .. previousLevel + 1, "HUD_PlayerNotiName", 300, 80, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     LevelNotif:Show()
@@ -723,3 +595,103 @@ function ShowLoadoutOnSpawn()
     end)
 end
 concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
+
+--ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings.
+cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)
+    healthSize = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_offset_x", function(convar_name, value_old, value_new)
+    healthOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_offset_y", function(convar_name, value_old, value_new)
+    healthOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_r", function(convar_name, value_old, value_new)
+    wepTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_g", function(convar_name, value_old, value_new)
+    wepTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_b", function(convar_name, value_old, value_new)
+    wepTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_r", function(convar_name, value_old, value_new)
+    ammoBarR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_g", function(convar_name, value_old, value_new)
+    ammoBarG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_b", function(convar_name, value_old, value_new)
+    ammoBarB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_r", function(convar_name, value_old, value_new)
+    ammoTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_g", function(convar_name, value_old, value_new)
+    ammoTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_b", function(convar_name, value_old, value_new)
+    ammoTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_r", function(convar_name, value_old, value_new)
+    hpTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_g", function(convar_name, value_old, value_new)
+    hpTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_b", function(convar_name, value_old, value_new)
+    hpTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_r", function(convar_name, value_old, value_new)
+    hpHighR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_g", function(convar_name, value_old, value_new)
+    hpHighG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_b", function(convar_name, value_old, value_new)
+    hpHighB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_r", function(convar_name, value_old, value_new)
+    hpMidR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_g", function(convar_name, value_old, value_new)
+    hpMidG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_b", function(convar_name, value_old, value_new)
+    hpMidB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_r", function(convar_name, value_old, value_new)
+    hpLowR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_g", function(convar_name, value_old, value_new)
+    hpLowG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_b", function(convar_name, value_old, value_new)
+    hpLowB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeedoffsetx", function(convar_name, value_old, value_new)
+    feedOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeedoffsety", function(convar_name, value_old, value_new)
+    feedOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
+    if value_new == "1" then
+        StreakFont = "HUD_StreakText"
+        NameFont = "HUD_PlayerNotiName"
+    else
+        StreakFont = "StreakText"
+        NameFont = "PlayerNotiName"
+    end
+end)
+cvars.AddChangeCallback("tm_hud_font_death", function(convar_name, value_old, value_new)
+    if value_new == "1" then
+        ArialFont = "HUD_Arial18"
+        DeathFont = "HUD_PlayerDeathName"
+        WepFont = "HUD_WepNameKill"
+    else
+        ArialFont = "Arial18"
+        DeathFont = "PlayerDeathName"
+        WepFont = "WepNameKill"
+    end
+end)

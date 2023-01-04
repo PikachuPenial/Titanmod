@@ -1,7 +1,9 @@
-Various server ConVars (custom options for server owners)
 Player account wipe option
 Promo codes
 Easter Egg (if you know you know)
 Hide locked option for models and player card menus
 Custom chatbox
 FIX THE SCOREBOARD BUG GAHHHHHHHHHHHHHHHHHHH
+
+Color customization:
+health states on health bar (low, mid, full)
