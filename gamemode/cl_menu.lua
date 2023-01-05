@@ -2395,6 +2395,10 @@ function mainMenu()
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
                     end
 
+                    local DockAccount = vgui.Create("DPanel", OptionsScroller)
+                    DockAccount:Dock(TOP)
+                    DockAccount:SetSize(0, 270)
+
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
                     DockInputs:SetSize(0, 240)
@@ -2425,11 +2429,7 @@ function mainMenu()
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 230)
-
-                    local DockAccount = vgui.Create("DPanel", OptionsScroller)
-                    DockAccount:Dock(TOP)
-                    DockAccount:SetSize(0, 195)
+                    DockPerformance:SetSize(0, 320)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -2536,6 +2536,43 @@ function mainMenu()
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
                     end
+
+                    DockAccount.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Clan Tag", "SettingsLabel", 160, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Clan Tag Color", "SettingsLabel", 245, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    local ClanTagInput = DockAccount:Add("DTextEntry")
+                    ClanTagInput:SetPlaceholderText("6 characters max...")
+                    ClanTagInput:SetPos(20, 70)
+                    ClanTagInput:SetSize(135, 30)
+                    ClanTagInput:SetValue(GetConVar("tm_clantag"):GetString())
+                    ClanTagInput.OnEnter = function(self)
+                        RunConsoleCommand("tm_clantag", self:GetValue())
+                        ClanTagInput:SetValue(self:GetValue())
+                    end
+
+                    local ClanTagColor = vgui.Create("DColorMixer", DockAccount)
+                    ClanTagColor:SetPos(20, 110)
+                    ClanTagColor:SetSize(215, 110)
+                    ClanTagColor:SetConVarR("tm_clantag_color_r")
+                    ClanTagColor:SetConVarG("tm_clantag_color_g")
+                    ClanTagColor:SetConVarB("tm_clantag_color_b")
+                    ClanTagColor:SetAlphaBar(false)
+                    ClanTagColor:SetPalette(false)
+                    ClanTagColor:SetWangs(true)
+                    ClanTagColor:SetTooltip("Change the color of your clan tag.")
+
+                    local hideStatsFromOthers = DockAccount:Add("DCheckBox")
+                    hideStatsFromOthers:SetPos(20, 230)
+                    hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
+                    hideStatsFromOthers:SetValue(true)
+                    hideStatsFromOthers:SetSize(30, 30)
+                    hideStatsFromOthers:SetTooltip("Hides your own personal stats from other players, making them only viewable by you.")
 
                     DockInputs.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3145,6 +3182,7 @@ function mainMenu()
                         ResetToDefaultButton:SetPos(20, 165)
                         ResetToDefaultButton:SetText("")
                         ResetToDefaultButton:SetSize(360, 40)
+                        local textAnim = 0
                         local ResetToDefaultConfirm = 0
                         ResetToDefaultButton.Paint = function()
                             if ResetToDefaultButton:IsHovered() then
@@ -3492,30 +3530,8 @@ function mainMenu()
                     vignetteDOF:SetSize(30, 30)
                     vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
 
-                    DockAccount.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
-
-                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Streamer Mode", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    local hideStatsFromOthers = DockAccount:Add("DCheckBox")
-                    hideStatsFromOthers:SetPos(20, 70)
-                    hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
-                    hideStatsFromOthers:SetValue(true)
-                    hideStatsFromOthers:SetSize(30, 30)
-                    hideStatsFromOthers:SetTooltip("Hides your own personal stats from other players, making them only viewable by you.")
-
-                    local streamerMode = DockAccount:Add("DCheckBox")
-                    streamerMode:SetPos(20, 110)
-                    streamerMode:SetConVar("tm_streamermode")
-                    streamerMode:SetValue(true)
-                    streamerMode:SetSize(30, 30)
-                    streamerMode:SetTooltip("Hides player generated content.")
-
-                    local WipeAccountButton = vgui.Create("DButton", DockAccount)
-                    WipeAccountButton:SetPos(20, 150)
+                    local WipeAccountButton = vgui.Create("DButton", DockPerformance)
+                    WipeAccountButton:SetPos(20, 270)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0

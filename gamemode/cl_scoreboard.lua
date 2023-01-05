@@ -167,7 +167,6 @@ function GM:ScoreboardShow()
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
 				end
 
-				draw.SimpleText(v:GetName(), "Health", 255, 5, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText(v:Frags(), "Health", 375, 35, Color(0, 255, 0), TEXT_ALIGN_CENTER)
@@ -175,6 +174,27 @@ function GM:ScoreboardShow()
 				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
+
+			local PlayerName = vgui.Create("RichText", PlayerPanel)
+			PlayerName:SetPos(252.5, 4)
+			PlayerName:SetSize(400, 32.5)
+			PlayerName:SetVerticalScrollbarEnabled(false)
+
+			function PlayerName:PerformLayout()
+				self:SetFontInternal("Health")
+			end
+
+			if v:GetInfo("tm_clantag") ~= "" or v:GetInfo("tm_clantag") == nil then
+				PlayerName:InsertColorChange(255, 255, 255, 255)
+				PlayerName:AppendText("[")
+				PlayerName:InsertColorChange(v:GetInfoNum("tm_clantag_color_r", 255), v:GetInfoNum("tm_clantag_color_g", 255), v:GetInfoNum("tm_clantag_color_b", 255), 255)
+				PlayerName:AppendText(v:GetInfo("tm_clantag", ""))
+				PlayerName:InsertColorChange(255, 255, 255, 255)
+				PlayerName:AppendText("] ")
+			end
+
+			PlayerName:InsertColorChange(255, 255, 255, 255)
+			PlayerName:AppendText(v:GetName())
 
 			--Displays a players calling card and profile picture.
 			local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)

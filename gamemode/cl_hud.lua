@@ -321,15 +321,9 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
-            if GetConVar("tm_hud_killdeath_offset_y"):GetInt() <= ScrH() / 2 then
-                KillNotif:MoveTo(kdOffsetX, ScrH(), 1, 0, 0.25, function()
-                    KillNotif:Remove()
-                end)
-            else
-                KillNotif:MoveTo(kdOffsetX, 0, 1, 0, 0.25, function()
-                    KillNotif:Remove()
-                end)
-            end
+            KillNotif:MoveTo(kdOffsetX, ScrH(), 1, 0, 0.25, function()
+                KillNotif:Remove()
+            end)
         end
     end)
 end )
