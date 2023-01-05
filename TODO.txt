@@ -4,6 +4,9 @@ Hide locked option for models and player card menus
 Custom chatbox
 Disconnect button on end of match screen
 Add a scoreboard to the main menu (could potentially fix the scoreboard bug due to pre loading)
+Hide Titanmod menus when Garry's Mod menu is opened
+Profanity Filter
+Fix ammo counter with melee
 
 Renaming weapons:
 
