@@ -16,6 +16,7 @@ net.Receive("UpdateClientMapVoteTime", function(len, ply)
 end)
 
 function GM:ScoreboardShow()
+	local LocalPlayer = LocalPlayer()
 	if not IsValid(ScoreboardDerma) then
 		for m, t in pairs(mapArray) do
 			if game.GetMap() == t[1] then
@@ -125,13 +126,13 @@ function GM:ScoreboardShow()
 
 		--Displays information about the current map, the map vote, and the server.
 		LevelingPanel.Paint = function(self, w, h)
-			draw.SimpleText("P" .. LocalPlayer():GetNWInt("playerPrestige") .. " L" .. LocalPlayer():GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, white, TEXT_ALIGN_LEFT)
+			draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, white, TEXT_ALIGN_LEFT)
 
 			surface.SetDrawColor(35, 35, 35, 100)
 			surface.DrawRect(0, 20, 630, 10)
 
 			surface.SetDrawColor(255, 255, 0, 50)
-			if LocalPlayer():GetNWInt("playerLevel") ~= 60 then surface.DrawRect(0, 20, (LocalPlayer():GetNWInt("playerXP") / LocalPlayer():GetNWInt("playerXPToNextLevel")) * 630, 10) end
+			if LocalPlayer:GetNWInt("playerLevel") ~= 60 then surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10) end
 		end
 	end
 
@@ -226,7 +227,7 @@ function GM:ScoreboardShow()
 				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
 				local weaponKills = weaponstatistics:AddSubMenu("Kills")
 
-				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer() then
+				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer then
 					statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
 					statistics:AddOption("Score/XP: " .. v:GetNWInt("playerScore"))
 					statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))

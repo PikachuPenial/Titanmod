@@ -8,6 +8,8 @@ Hide Titanmod menus when Garry's Mod menu is opened
 Profanity Filter
 Fix ammo counter with melee
 
+Run Profiler and DBugR scans (https://github.com/FPtje/FProfiler) (https://github.com/oubliette32/DBugR)
+
 Renaming weapons:
 
 Steyr AUG > AUG A3

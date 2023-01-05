@@ -10,7 +10,7 @@ include("concommands.lua")
 include("config.lua")
 
 function GM:Initialize()
-	print("Titanmod Initialized")
+	print("Titanmod Initialized on " .. game.GetMap())
 end
 
 local randPrimary = {}
@@ -426,9 +426,6 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			table.insert(mapVotes, 0)
 		end
 
-		--Failsafe for empty servers, will skip the map vote if a server has no players.
-		if #player.GetHumans() == 0 then return end
-
 		mapVoteOpen = true
 
 		local mapPool = {}
@@ -442,6 +439,9 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 		firstMap = mapPool[1]
 		secondMap = mapPool[2]
+
+		--Failsafe for empty servers, will skip to a new map if there are no players connected to the server.
+		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", firstMap) return end
 
 		net.Start("MapVoteHUD")
 		net.WriteString(firstMap)
@@ -467,7 +467,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			mapVoteOpen = false
 
 			--If players vote to continue on current map, end the map vote and restart the timer, otherwise, begin the intermission process.
-			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. mapVoteTimer .. " seconds!") return end
+			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. mapVoteTimer - 20 .. " seconds!") return end
 
 			newMap = newMapTable[math.random(#newMapTable)]
 

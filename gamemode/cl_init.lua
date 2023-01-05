@@ -582,7 +582,6 @@ hook.Add("PreGamemodeLoaded", "SmoothScrolling", function()
 	end
 
 	local dermaCtrs = vgui.GetControlTable("DVScrollBar")
-
 	local tScroll = 0
 	local newerT = 0
 
@@ -591,7 +590,6 @@ hook.Add("PreGamemodeLoaded", "SmoothScrolling", function()
 		self.Old_Sign = nil
 
 		local OldScroll = self:GetScroll()
-
 		dlta = dlta * amount
 
 		local anim = self:NewAnimation(length, 0, ease)
@@ -617,7 +615,6 @@ hook.Add("PreGamemodeLoaded", "SmoothScrolling", function()
 		end
 
 		return math.Clamp(self:GetScroll() + tScroll, 0, self.CanvasSize) != self:GetScroll()
-
 	end
 
 	derma.DefineControl("DVScrollBar", "Smooth Scrollbar", dermaCtrs, "Panel")
