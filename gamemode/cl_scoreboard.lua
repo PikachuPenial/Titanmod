@@ -2,6 +2,7 @@
 local white = Color(255, 255, 255, 255)
 
 local ScoreboardDerma
+local PlayerList
 local FiringRangeDerma
 local MapVoteHUD
 

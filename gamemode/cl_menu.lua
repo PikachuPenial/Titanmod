@@ -11,9 +11,9 @@ local transparent = Color(0, 0, 0, 0)
 local MainMenu
 
 function mainMenu()
-    if LocalPlayer():Alive() then return end
-
     local LocalPlayer = LocalPlayer()
+    if LocalPlayer:Alive() then return end
+
     local chosenMusic
     local musicName
     local musicList
@@ -36,12 +36,16 @@ function mainMenu()
 
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPlayer, chosenMusic)
 
     if chosenMusic == "music/sicktwisteddemented_sewerslvt.wav" then
         musicName = "sick, twisted, demented - Sewerslvt"
+    end
+
+    if chosenMusic == "music/chillwave_ragdolluniverseost.wav" then
+        musicName = "Chillwave - Ragdoll Universe OST"
     end
 
     if chosenMusic == "music/takecare_ultrakillost.wav" then
@@ -84,7 +88,7 @@ function mainMenu()
 
     if GetConVar("tm_menumusic"):GetInt() == 1 then
         menuMusic:Play()
-        menuMusic:ChangeVolume(musicVolume * 1.2)
+        menuMusic:ChangeVolume(musicVolume * 1.45)
     end
 
     if not IsValid(MainMenu) then
@@ -226,6 +230,7 @@ function mainMenu()
                 draw.RoundedBox(0, 0, 0, w, h, transparent)
             end
 
+            local PlayerList
             local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
             PatchNotesButton:SetImage("icons/patchnotesicon.png")
             patchNotesAnim = 0
@@ -266,6 +271,83 @@ function mainMenu()
             local PatchScroller = vgui.Create("DScrollPanel", PatchNotesPanel)
             PatchScroller:Dock(FILL)
 
+            local PlayersTextHeader = vgui.Create("DPanel", PatchScroller)
+            PlayersTextHeader:Dock(TOP)
+            PlayersTextHeader:SetSize(0, 65)
+            PlayersTextHeader.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
+                draw.SimpleText("PLAYERS", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+            end
+
+            local PlayerScrollPanel = vgui.Create("DScrollPanel", PatchScroller)
+            PlayerScrollPanel:Dock(TOP)
+            PlayerScrollPanel:SetSize(PatchNotesPanel:GetWide(), 100 * player.GetCount())
+            PlayerScrollPanel:SetPos(0, 0)
+
+            PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
+            PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
+            PlayerList:SetPos(0, 0)
+
+            PlayerList:Clear()
+            local connectedPlayers = player.GetAll()
+            table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+            for k, v in pairs(connectedPlayers) do
+                local PlayerPanel = vgui.Create("DPanel", PlayerList)
+                PlayerPanel:SetSize(PlayerList:GetWide(), 100)
+                PlayerPanel:SetPos(0, 0)
+                PlayerPanel.Paint = function(self, w, h)
+                    if v:GetNWBool("mainmenu") == true then
+                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 100, 100))
+                    elseif not v:Alive() then
+                        draw.RoundedBox(0, 0, 0, w, h, Color(100, 35, 35, 100))
+                    else
+                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
+                    end
+
+                    if v:GetInfo("tm_clantag") ~= "" or v:GetInfo("tm_clantag") == nil then
+                        draw.SimpleText(v:GetName(), "StreakText", 255, 35, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 52.5, white, TEXT_ALIGN_LEFT)
+                    else
+                        draw.SimpleText(v:GetName(), "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 25, white, TEXT_ALIGN_LEFT)
+                    end
+                end
+
+                local PlayerName = vgui.Create("RichText", PlayerPanel)
+                PlayerName:SetPos(252.5, 4)
+                PlayerName:SetSize(400, 32.5)
+                PlayerName:SetVerticalScrollbarEnabled(false)
+
+                function PlayerName:PerformLayout()
+                    self:SetFontInternal("Health")
+                end
+
+                if v:GetInfo("tm_clantag") ~= "" or v:GetInfo("tm_clantag") == nil then
+                    PlayerName:InsertColorChange(255, 255, 255, 255)
+                    PlayerName:AppendText("[")
+                    PlayerName:InsertColorChange(v:GetInfoNum("tm_clantag_color_r", 255), v:GetInfoNum("tm_clantag_color_g", 255), v:GetInfoNum("tm_clantag_color_b", 255), 255)
+                    PlayerName:AppendText(v:GetInfo("tm_clantag", ""))
+                    PlayerName:InsertColorChange(255, 255, 255, 255)
+                    PlayerName:AppendText("] ")
+                end
+
+                --Displays a players calling card and profile picture.
+                local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)
+                PlayerCallingCard:SetPos(10, 10)
+                PlayerCallingCard:SetSize(240, 80)
+
+                if v:GetNWString("chosenPlayercard") ~= nil then
+                    PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+                else
+                    PlayerCallingCard:SetImage("cards/color/black.png")
+                end
+
+                local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
+                PlayerProfilePicture:SetPos(5, 5)
+                PlayerProfilePicture:SetSize(70, 70)
+                PlayerProfilePicture:SetPlayer(v, 184)
+            end
+
             local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
             PatchTextHeader:Dock(TOP)
             PatchTextHeader:SetSize(0, 65)
@@ -276,7 +358,7 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 1110)
+            PatchPreRelease:SetSize(0, 1130)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -328,11 +410,12 @@ function mainMenu()
                 draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed ammo bar being 1 pixel too high", "StreakText", 5, 980, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 1000, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1020, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1040, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Profile picture offset setting", "StreakText", 5, 1080, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed ammo bar text while using melee", "StreakText", 5, 1000, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 1020, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1040, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1080, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1100, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
@@ -2719,7 +2802,6 @@ function mainMenu()
                                 surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (ammo / 30), 30)
                                 draw.SimpleText(ammo, "HUD_Health", ScrW() - 410, ScrH() - 24, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
                             end
-
                             surface.SetDrawColor(50, 50, 50, 80)
                             surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
                             if health <= 66 then
@@ -2733,12 +2815,18 @@ function mainMenu()
                             end
                             surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
                             draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 24 - GetConVar("tm_hud_health_offset_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                            local feedStyle
+                            if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
+                                feedStyle = -20
+                            else
+                                feedStyle = 20
+                            end
                             for k, v in pairs(fakeFeedArray) do
                                 if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
                                 local nameLength = select(1, surface.GetTextSize(v[1]))
 
-                                surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 62.5 + ((k - 1) * -20) + GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
-                                draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 55 + ((k - 1) * -20) + GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
+                                draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
                         end
 
@@ -2990,14 +3078,15 @@ function mainMenu()
 
                         local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                         KillFeedEditor:Dock(TOP)
-                        KillFeedEditor:SetSize(0, 180)
+                        KillFeedEditor:SetSize(0, 215)
                         KillFeedEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Enable Kill Feed", "Health", 55, 50, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed Item Limit", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed X Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText("Feed Y Offset", "Health", 150, 140, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Entry Style", "Health", 125, 85, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Item Limit", "Health", 150, 115, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed X Offset", "Health", 150, 145, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Y Offset", "Health", 150, 175, white, TEXT_ALIGN_LEFT)
                         end
 
                         local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
@@ -3029,8 +3118,24 @@ function mainMenu()
                         EnableKillFeed:SetSize(30, 30)
                         EnableKillFeed:SetTooltip("Enable the kill feed.")
 
+                        local KillFeedStyle = KillFeedEditor:Add("DComboBox")
+                        KillFeedStyle:SetPos(20, 85)
+                        KillFeedStyle:SetSize(100, 30)
+                        KillFeedStyle:SetTooltip("Adjust the style of the kill feed entries.")
+                        if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
+                            KillFeedStyle:SetValue("Ascending")
+                        elseif GetConVar("tm_hud_killfeed_style"):GetInt() == 1 then
+                            KillFeedStyle:SetValue("Descending")
+                        end
+                        KillFeedStyle:AddChoice("Ascending")
+                        KillFeedStyle:AddChoice("Descending")
+                        KillFeedStyle.OnSelect = function(self, value)
+                            surface.PlaySound("tmui/buttonrollover.wav")
+                            RunConsoleCommand("tm_hud_killfeed_style", value - 1)
+                        end
+
                         local KillFeedItemLimit = KillFeedEditor:Add("DNumSlider")
-                        KillFeedItemLimit:SetPos(-85, 80)
+                        KillFeedItemLimit:SetPos(-85, 115)
                         KillFeedItemLimit:SetSize(250, 30)
                         KillFeedItemLimit:SetConVar("tm_hud_killfeed_limit")
                         KillFeedItemLimit:SetMin(1)
@@ -3039,7 +3144,7 @@ function mainMenu()
                         KillFeedItemLimit:SetTooltip("Limit the amount of entries that can be shown on the kill feed.")
 
                         local KillFeedX = KillFeedEditor:Add("DNumSlider")
-                        KillFeedX:SetPos(-85, 110)
+                        KillFeedX:SetPos(-85, 145)
                         KillFeedX:SetSize(250, 30)
                         KillFeedX:SetConVar("tm_hud_killfeed_offset_x")
                         KillFeedX:SetMin(0)
@@ -3048,7 +3153,7 @@ function mainMenu()
                         KillFeedX:SetTooltip("Adjust the X offset of your kill feed.")
 
                         local KillFeedY = KillFeedEditor:Add("DNumSlider")
-                        KillFeedY:SetPos(-85, 140)
+                        KillFeedY:SetPos(-85, 175)
                         KillFeedY:SetSize(250, 30)
                         KillFeedY:SetConVar("tm_hud_killfeed_offset_y")
                         KillFeedY:SetMin(0)
@@ -3269,7 +3374,7 @@ function mainMenu()
                     function menuMusicButton:OnChange(bVal)
                         if (bVal) then
                             menuMusic:Play()
-                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.2)
+                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
                         else
                             menuMusic:FadeOut(2)
                         end
@@ -3285,7 +3390,7 @@ function mainMenu()
                     menuMusicVolume:SetTooltip("Adjust the volume of the menu music.")
 
                     menuMusicVolume.OnValueChanged = function(self, value)
-                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4)
+                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
                     end
 
                     DockViewmodel.Paint = function(self, w, h)
