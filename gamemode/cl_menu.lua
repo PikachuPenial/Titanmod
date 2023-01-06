@@ -36,7 +36,7 @@ function mainMenu()
 
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/shop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPlayer, chosenMusic)
 
@@ -46,6 +46,10 @@ function mainMenu()
 
     if chosenMusic == "music/chillwave_ragdolluniverseost.wav" then
         musicName = "Chillwave - Ragdoll Universe OST"
+    end
+
+    if chosenMusic == "music/shop_battleblocktheaterost.wav" then
+        musicName = "Shop - Battleblock Theater OST"
     end
 
     if chosenMusic == "music/takecare_ultrakillost.wav" then

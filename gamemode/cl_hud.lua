@@ -73,7 +73,6 @@ function HUD()
 
             if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
                 draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-                draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
             elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then
                 draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             end
@@ -83,10 +82,6 @@ function HUD()
         if GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
                 draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            end
-
-            if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
-                draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
             end
 
             if (LocalPlayer():GetActiveWeapon():IsValid()) then
@@ -106,6 +101,10 @@ function HUD()
                     draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
                 end
             end
+        end
+
+        if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
+            draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
         end
 
         --Shows the players health depending on the style they have selected in Options.
@@ -185,7 +184,7 @@ net.Receive("KillFeedUpdate", function(len, ply)
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadFloat()
     local attacker = net.ReadEntity()
-    local streak = attacker:GetNWInt("killStreak")
+    local streak = attacker:GetNWInt("killStreak") --Replace "eventually" to fix the desync
 
     table.insert(feedArray, {playersInAction, victimLastHitIn})
     if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
@@ -590,7 +589,6 @@ net.Receive("NotifyLevelUp", function(len, ply)
 end )
 
 function ShowLoadoutOnSpawn()
-    if GetConVar("tm_hud_loadouthint"):GetInt() != 1 then return end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""

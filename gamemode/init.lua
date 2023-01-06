@@ -48,14 +48,14 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
 
-	ply:Give(ply:GetNWString("loadoutPrimary"))
-	ply:Give(ply:GetNWString("loadoutSecondary"))
-	ply:Give(ply:GetNWString("loadoutMelee"))
+	if usePrimary == true then ply:Give(ply:GetNWString("loadoutPrimary")) end
+	if useSecondary == true then ply:Give(ply:GetNWString("loadoutSecondary")) end
+	if useMelee == true or useGadget == true then ply:Give(ply:GetNWString("loadoutMelee")) end
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	ply:ConCommand("tm_showloadout")
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 then ply:ConCommand("tm_showloadout") end
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -86,9 +86,9 @@ function GM:PlayerInitialSpawn(ply)
 	end
 
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
-	if usePrimary == true then ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
-	if useSecondary == true then  ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
-	if useMelee == true or useGadget == true then ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
+	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
+	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
+	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
 
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
@@ -266,10 +266,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + (10 * attacker:GetNWInt("killStreak") * xpMultiplier))
-
-		if attacker:GetNWInt("killStreak") == 3 then
-			attacker:SetNWInt("playerAccoladeOnStreak", attacker:GetNWInt("playerAccoladeOnStreak") + 1)
-		end
+		if attacker:GetNWInt("killStreak") == 3 then attacker:SetNWInt("playerAccoladeOnStreak", attacker:GetNWInt("playerAccoladeOnStreak") + 1) end
 	end
 
 	if victim:GetNWInt("killStreak") >= 3 then

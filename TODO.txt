@@ -3,10 +3,9 @@ Easter Egg (if you know you know)
 Hide locked option for models and player card menus
 Custom chatbox
 Disconnect button on end of match screen
-Add a scoreboard to the main menu (could potentially fix the scoreboard bug due to pre loading)
 Hide Titanmod menus when Garry's Mod menu is opened
 Profanity Filter
-Fix ammo counter with melee
+Re-add Groves as a map (with a more optimized version)
 
 Run Profiler and DBugR scans (https://github.com/FPtje/FProfiler) (https://github.com/oubliette32/DBugR)
 
