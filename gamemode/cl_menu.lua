@@ -36,7 +36,7 @@ function mainMenu()
 
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/shop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPlayer, chosenMusic)
 
@@ -48,8 +48,8 @@ function mainMenu()
         musicName = "Chillwave - Ragdoll Universe OST"
     end
 
-    if chosenMusic == "music/shop_battleblocktheaterost.wav" then
-        musicName = "Shop - Battleblock Theater OST"
+    if chosenMusic == "music/giftshop_battleblocktheaterost.wav" then
+        musicName = "Gift Shop - Battleblock Theater OST"
     end
 
     if chosenMusic == "music/takecare_ultrakillost.wav" then
@@ -308,31 +308,9 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
                     end
 
-                    if v:GetInfo("tm_clantag") ~= "" or v:GetInfo("tm_clantag") == nil then
-                        draw.SimpleText(v:GetName(), "StreakText", 255, 35, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 52.5, white, TEXT_ALIGN_LEFT)
-                    else
-                        draw.SimpleText(v:GetName(), "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 25, white, TEXT_ALIGN_LEFT)
-                    end
-                end
-
-                local PlayerName = vgui.Create("RichText", PlayerPanel)
-                PlayerName:SetPos(252.5, 4)
-                PlayerName:SetSize(400, 32.5)
-                PlayerName:SetVerticalScrollbarEnabled(false)
-
-                function PlayerName:PerformLayout()
-                    self:SetFontInternal("Health")
-                end
-
-                if v:GetInfo("tm_clantag") ~= "" or v:GetInfo("tm_clantag") == nil then
-                    PlayerName:InsertColorChange(255, 255, 255, 255)
-                    PlayerName:AppendText("[")
-                    PlayerName:InsertColorChange(v:GetInfoNum("tm_clantag_color_r", 255), v:GetInfoNum("tm_clantag_color_g", 255), v:GetInfoNum("tm_clantag_color_b", 255), 255)
-                    PlayerName:AppendText(v:GetInfo("tm_clantag", ""))
-                    PlayerName:InsertColorChange(255, 255, 255, 255)
-                    PlayerName:AppendText("] ")
+                    draw.SimpleText("[" .. v:GetInfo("tm_clantag") .. "]", "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText(v:GetName(), "StreakText", 255, 25, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 45, white, TEXT_ALIGN_LEFT)
                 end
 
                 --Displays a players calling card and profile picture.
@@ -2485,7 +2463,7 @@ function mainMenu()
 
                     local DockAccount = vgui.Create("DPanel", OptionsScroller)
                     DockAccount:Dock(TOP)
-                    DockAccount:SetSize(0, 270)
+                    DockAccount:SetSize(0, 150)
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
@@ -2524,8 +2502,18 @@ function mainMenu()
                     SettingsCog:SetSize(32, 32)
                     SettingsCog:SetImage("icons/settingsicon.png")
 
+                    local AccountJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
+                    AccountJump:SetPos(4, 100)
+                    AccountJump:SetSize(48, 48)
+                    AccountJump:SetTooltip("Account")
+                    AccountJump:SetImage("icons/modelicon.png")
+                    AccountJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        OptionsScroller:ScrollToChild(DockAccount)
+                    end
+
                     local InputsJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    InputsJump:SetPos(4, 100)
+                    InputsJump:SetPos(4, 152)
                     InputsJump:SetSize(48, 48)
                     InputsJump:SetTooltip("Inputs")
                     InputsJump:SetImage("icons/mouseicon.png")
@@ -2534,7 +2522,7 @@ function mainMenu()
                     end
 
                     local UIJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    UIJump:SetPos(4, 152)
+                    UIJump:SetPos(4, 204)
                     UIJump:SetSize(48, 48)
                     UIJump:SetTooltip("UI")
                     UIJump:SetImage("icons/uiicon.png")
@@ -2544,7 +2532,7 @@ function mainMenu()
                     end
 
                     local AudioJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    AudioJump:SetPos(4, 204)
+                    AudioJump:SetPos(4, 256)
                     AudioJump:SetSize(48, 48)
                     AudioJump:SetTooltip("Audio")
                     AudioJump:SetImage("icons/audioicon.png")
@@ -2554,7 +2542,7 @@ function mainMenu()
                     end
 
                     local ModelJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    ModelJump:SetPos(4, 256)
+                    ModelJump:SetPos(4, 308)
                     ModelJump:SetSize(48, 48)
                     ModelJump:SetTooltip("Viewmodel")
                     ModelJump:SetImage("icons/weaponicon.png")
@@ -2564,7 +2552,7 @@ function mainMenu()
                     end
 
                     local CrosshairJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    CrosshairJump:SetPos(4, 308)
+                    CrosshairJump:SetPos(4, 360)
                     CrosshairJump:SetSize(48, 48)
                     CrosshairJump:SetTooltip("Crosshair")
                     CrosshairJump:SetImage("icons/crosshairicon.png")
@@ -2574,7 +2562,7 @@ function mainMenu()
                     end
 
                     local HitmarkerJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    HitmarkerJump:SetPos(4, 360)
+                    HitmarkerJump:SetPos(4, 412)
                     HitmarkerJump:SetSize(48, 48)
                     HitmarkerJump:SetTooltip("Hitmarkers")
                     HitmarkerJump:SetImage("icons/hitmarkericon.png")
@@ -2584,7 +2572,7 @@ function mainMenu()
                     end
 
                     local ScopesJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    ScopesJump:SetPos(4, 412)
+                    ScopesJump:SetPos(4, 464)
                     ScopesJump:SetSize(48, 48)
                     ScopesJump:SetTooltip("Scopes")
                     ScopesJump:SetImage("icons/sighticon.png")
@@ -2594,23 +2582,13 @@ function mainMenu()
                     end
 
                     local PerformanceJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    PerformanceJump:SetPos(4, 464)
+                    PerformanceJump:SetPos(4, 516)
                     PerformanceJump:SetSize(48, 48)
                     PerformanceJump:SetTooltip("Performance")
                     PerformanceJump:SetImage("icons/performanceicon.png")
                     PerformanceJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         OptionsScroller:ScrollToChild(DockPerformance)
-                    end
-
-                    local AccountJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    AccountJump:SetPos(4, 512)
-                    AccountJump:SetSize(48, 48)
-                    AccountJump:SetTooltip("Account")
-                    AccountJump:SetImage("icons/modelicon.png")
-                    AccountJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        OptionsScroller:ScrollToChild(DockAccount)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", OptionsQuickjumpHolder)
@@ -2630,8 +2608,7 @@ function mainMenu()
                         draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Clan Tag", "SettingsLabel", 160, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Clan Tag Color", "SettingsLabel", 245, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                     end
 
                     local ClanTagInput = DockAccount:Add("DTextEntry")
@@ -2644,19 +2621,8 @@ function mainMenu()
                         ClanTagInput:SetValue(self:GetValue())
                     end
 
-                    local ClanTagColor = vgui.Create("DColorMixer", DockAccount)
-                    ClanTagColor:SetPos(20, 110)
-                    ClanTagColor:SetSize(215, 110)
-                    ClanTagColor:SetConVarR("tm_clantag_color_r")
-                    ClanTagColor:SetConVarG("tm_clantag_color_g")
-                    ClanTagColor:SetConVarB("tm_clantag_color_b")
-                    ClanTagColor:SetAlphaBar(false)
-                    ClanTagColor:SetPalette(false)
-                    ClanTagColor:SetWangs(true)
-                    ClanTagColor:SetTooltip("Change the color of your clan tag.")
-
                     local hideStatsFromOthers = DockAccount:Add("DCheckBox")
-                    hideStatsFromOthers:SetPos(20, 230)
+                    hideStatsFromOthers:SetPos(20, 110)
                     hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
                     hideStatsFromOthers:SetValue(true)
                     hideStatsFromOthers:SetSize(30, 30)

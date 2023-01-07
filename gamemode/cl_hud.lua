@@ -135,8 +135,8 @@ function HUD()
             if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
             local nameLength = select(1, surface.GetTextSize(v[1]))
 
-            surface.DrawRect(10 + feedOffsetX, ScrH() - 62.5 + ((k - 1) * feedStyle) + feedOffsetY, nameLength + 5, 20)
-            draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 55 + ((k - 1) * feedStyle) + feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedStyle) - feedOffsetY, nameLength + 5, 20)
+            draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedStyle) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 end
@@ -183,8 +183,8 @@ net.Receive("KillFeedUpdate", function(len, ply)
     if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadFloat()
-    local attacker = net.ReadEntity()
-    local streak = attacker:GetNWInt("killStreak") --Replace "eventually" to fix the desync
+    local attacker = net.ReadString()
+    local streak = net.ReadInt(10)
 
     table.insert(feedArray, {playersInAction, victimLastHitIn})
     if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
@@ -192,10 +192,10 @@ net.Receive("KillFeedUpdate", function(len, ply)
         table.remove(feedArray, 1)
     end)
 
-    if streak == 4 or streak == 9 or streak == 14 or streak == 19 or streak == 24 or streak == 29 then
-        table.insert(feedArray, {attacker:GetName() .. " is on a " .. streak + 1 .. " killstreak", 0})
+    if streak == 5 or streak == 10 or streak == 15 or streak == 20 or streak == 25 or streak == 30 then
+        table.insert(feedArray, {attacker .. " is on a " .. streak .. " killstreak", 0})
         if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
-        timer.Create(attacker:GetName() .. streak, 8, 1, function()
+        timer.Create(attacker .. streak .. math.Round(CurTime()), 8, 1, function()
             table.remove(feedArray, 1)
         end)
     end
@@ -209,6 +209,7 @@ net.Receive("NotifyKill", function(len, ply)
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
     local lastHitIn = net.ReadFloat()
+    local killStreak = net.ReadInt(10)
 
     local seperator = ""
 
@@ -262,8 +263,8 @@ net.Receive("NotifyKill", function(len, ply)
         smackdown = ""
     end
 
-    if LocalPlayer():GetNWInt("killStreak") >= 2 then
-        onstreakScore = 10 * LocalPlayer():GetNWInt("killStreak") + 10
+    if killStreak >= 3 then
+        onstreakScore = 10 * killStreak + 10
         onstreak = "On Streak +" .. onstreakScore .. " | "
         seperator = "| "
     else
@@ -288,8 +289,6 @@ net.Receive("NotifyKill", function(len, ply)
         headshot = ""
         KillIcon:SetImageColor(white)
     end
-
-    local killStreak = LocalPlayer():GetNWInt("killStreak")
 
     --Setting up variables related to colors, mostly for animations or dynamic text color.
     local streakColor

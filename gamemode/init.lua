@@ -86,9 +86,9 @@ function GM:PlayerInitialSpawn(ply)
 	end
 
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
-	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
-	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
-	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
+	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
@@ -206,7 +206,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("KillFeedUpdate")
 		net.WriteString(victim:GetName() .. " commited suicide")
 		net.WriteFloat(0)
-		net.WriteEntity(victim)
+		net.WriteString(victim:GetName())
+		net.WriteInt(1, 10)
 		net.Broadcast()
 		return
 	end
@@ -231,6 +232,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteString(weaponName)
 		net.WriteFloat(distance)
 		net.WriteFloat(victimHitgroup)
+		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Send(attacker)
 
 		net.Start("NotifyDeath")
@@ -243,7 +245,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("KillFeedUpdate")
 		net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
 		net.WriteFloat(victimHitgroup)
-		net.WriteEntity(attacker)
+		net.WriteString(attacker:GetName())
+		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Broadcast()
 
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.

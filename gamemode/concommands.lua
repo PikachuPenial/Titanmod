@@ -129,6 +129,7 @@ function HUDTestKill(ply, cmd, args)
 	net.WriteString("KRISS Vector")
 	net.WriteFloat(69)
 	net.WriteFloat(1)
+	net.WriteInt(1)
 	net.Send(ply)
 end
 concommand.Add("tm_hud_testkill", HUDTestKill)
