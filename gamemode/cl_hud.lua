@@ -547,6 +547,35 @@ net.Receive("EndOfGame", function(len, ply)
         draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 30, white, TEXT_ALIGN_LEFT)
     end
 
+    local ExitButton = vgui.Create("DButton", BottomBlock)
+    ExitButton:SetPos(nextMapThumbImage:GetWide() + 280, BottomBlock:GetTall() - 32.5)
+    ExitButton:SetText("")
+    ExitButton:SetSize(500, 100)
+    local textAnim = 0
+    local disconnectConfirm = 0
+    ExitButton.Paint = function()
+        if ExitButton:IsHovered() then
+            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+        else
+            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+        end
+        if (disconnectConfirm == 0) then
+            draw.DrawText("EXIT GAME", "MainMenuLoadoutWeapons", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+        else
+            draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+        end
+    end
+    ExitButton.DoClick = function()
+        surface.PlaySound("tmui/buttonclick.wav")
+        if (disconnectConfirm == 0) then
+            disconnectConfirm = 1
+        else
+            RunConsoleCommand("disconnect")
+        end
+
+        timer.Simple(3, function() disconnectConfirm = 0 end)
+    end
+
     EndOfGameUI:Show()
     gui.EnableScreenClicker(true)
 end )

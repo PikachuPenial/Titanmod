@@ -151,6 +151,13 @@ function HUDTestLevelUp(ply, cmd, args)
 end
 concommand.Add("tm_hud_testlevelup", HUDTestLevelUp)
 
+function TESTMAP(ply, cmd, args)
+	net.Start("EndOfGame")
+	net.WriteString("tm_nuketown")
+	net.Broadcast()
+end
+concommand.Add("testmap", TESTMAP)
+
 --Allows the player to wipe their account and start fresh.
 function PlayerAccountWipe(ply, cmd, args)
 	ply:SetNWInt("playerKills", 0)
