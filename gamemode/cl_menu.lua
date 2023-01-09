@@ -1471,7 +1471,6 @@ function mainMenu()
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
                             ColorCardList:Clear()
-                            totalCards = table.Count(cardArray)
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
@@ -1493,7 +1492,6 @@ function mainMenu()
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
                             ColorCardList:Clear()
-                            totalCards = table.Count(cardArray)
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
@@ -1652,13 +1650,20 @@ function mainMenu()
 
                     local CustomizeTextHolder = vgui.Create("DPanel", CustomizeScroller)
                     CustomizeTextHolder:Dock(TOP)
-                    CustomizeTextHolder:SetSize(0, 140)
+                    CustomizeTextHolder:SetSize(0, 170)
 
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playermodels", "StreakText", 287.5, 140, white, TEXT_ALIGN_CENTER)
                     end
+
+                    local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
+                    HideLockedModels:SetPos(165, 142.5)
+                    HideLockedModels:SetValue(false)
+                    HideLockedModels:SetSize(20, 20)
+                    HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")    
 
                     --Default Playermodels
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
@@ -1867,55 +1872,20 @@ function mainMenu()
                     local SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                     selectedModelShown = false
 
-                    for k, v in pairs(modelArray) do
-                        if v[4] == "default" then
-                            local icon = vgui.Create("SpawnIcon", DockModels)
-                            icon:SetModel(v[1])
-                            icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(150, 150)
-                            DefaultModelList:Add(icon)
+                    local function FillModelListsAll()
+                        for k, v in pairs(modelArray) do
+                            if v[4] == "default" then
+                                local icon = vgui.Create("SpawnIcon", DockModels)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                DefaultModelList:Add(icon)
 
-                            defaultModelsTotal = defaultModelsTotal + 1
-                            modelsUnlocked = modelsUnlocked + 1
-                            defaultModelsUnlocked = defaultModelsUnlocked + 1
+                                defaultModelsTotal = defaultModelsTotal + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                                defaultModelsUnlocked = defaultModelsUnlocked + 1
 
-                            icon.DoClick = function(icon)
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelDesc = v[3]
-                                newModelUnlockType = v[4]
-                                newModelUnlockValue = v[5]
-
-                                if selectedModelShown == true then
-                                    SelectedModelDisplay:Remove()
-
-                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                else
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                    selectedModelShown = true
-                                end
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "kills" then
-                            local icon = vgui.Create("SpawnIcon", DockModelsKills)
-                            icon:SetModel(v[1])
-                            icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(150, 150)
-                            KillsModelList:Add(icon)
-
-                            killModelsTotal = killModelsTotal + 1
-
-                            if LocalPlayer:GetNWInt("playerKills") < v[5] then
-                                local lockIndicator = vgui.Create("DImageButton", icon)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
                                     newModelDesc = v[3]
@@ -1937,48 +1907,48 @@ function mainMenu()
                                     end
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                killModelsUnlocked = killModelsUnlocked + 1
-                                modelsUnlocked = modelsUnlocked + 1
-                            end
+                            elseif v[4] == "kills" then
+                                local icon = vgui.Create("SpawnIcon", DockModelsKills)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                KillsModelList:Add(icon)
 
-                            icon.DoClick = function(icon)
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelDesc = v[3]
-                                newModelUnlockType = v[4]
-                                newModelUnlockValue = v[5]
+                                killModelsTotal = killModelsTotal + 1
 
-                                if selectedModelShown == true then
-                                    SelectedModelDisplay:Remove()
+                                if LocalPlayer:GetNWInt("playerKills") < v[5] then
+                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(96, 96)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
 
-                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 else
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                    selectedModelShown = true
+                                    killModelsUnlocked = killModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
                                 end
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "streak" then
-                            local icon = vgui.Create("SpawnIcon", DockModelsStreak)
-                            icon:SetModel(v[1])
-                            icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(150, 150)
-                            StreakModelList:Add(icon)
 
-                            streakModelsTotal = streakModelsTotal + 1
-
-                            if LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
-                                local lockIndicator = vgui.Create("DImageButton", icon)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
                                     newModelDesc = v[3]
@@ -2000,48 +1970,48 @@ function mainMenu()
                                     end
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                streakModelsUnlocked = streakModelsUnlocked + 1
-                                modelsUnlocked = modelsUnlocked + 1
-                            end
+                            elseif v[4] == "streak" then
+                                local icon = vgui.Create("SpawnIcon", DockModelsStreak)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                StreakModelList:Add(icon)
 
-                            icon.DoClick = function(icon)
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelDesc = v[3]
-                                newModelUnlockType = v[4]
-                                newModelUnlockValue = v[5]
+                                streakModelsTotal = streakModelsTotal + 1
 
-                                if selectedModelShown == true then
-                                    SelectedModelDisplay:Remove()
+                                if LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
+                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(96, 96)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
 
-                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 else
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                    selectedModelShown = true
+                                    streakModelsUnlocked = streakModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
                                 end
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "special" then
-                            local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
-                            icon:SetModel(v[1])
-                            icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(150, 150)
-                            SpecialModelList:Add(icon)
 
-                            specialModelsTotal = specialModelsTotal + 1
-
-                            if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" then
-                                local lockIndicator = vgui.Create("DImageButton", icon)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
                                     newModelDesc = v[3]
@@ -2063,48 +2033,48 @@ function mainMenu()
                                     end
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                specialModelsUnlocked = specialModelsUnlocked + 1
-                                modelsUnlocked = modelsUnlocked + 1
-                            end
+                            elseif v[4] == "special" then
+                                local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                SpecialModelList:Add(icon)
 
-                            icon.DoClick = function(icon)
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelDesc = v[3]
-                                newModelUnlockType = v[4]
-                                newModelUnlockValue = v[5]
+                                specialModelsTotal = specialModelsTotal + 1
 
-                                if selectedModelShown == true then
-                                    SelectedModelDisplay:Remove()
+                                if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" then
+                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(96, 96)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
 
-                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 else
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                    selectedModelShown = true
+                                    specialModelsUnlocked = specialModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
                                 end
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
-                            local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
-                            icon:SetModel(v[1])
-                            icon:SetTooltip(v[2] .. "\n" .. v[3])
-                            icon:SetSize(150, 150)
-                            AccoladeModelList:Add(icon)
 
-                            accoladeModelsTotal = accoladeModelsTotal + 1
-
-                            if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                local lockIndicator = vgui.Create("DImageButton", icon)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
                                     newModelDesc = v[3]
@@ -2126,35 +2096,256 @@ function mainMenu()
                                     end
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                accoladeModelsUnlocked = accoladeModelsUnlocked + 1
-                                modelsUnlocked = modelsUnlocked + 1
-                            end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                AccoladeModelList:Add(icon)
 
-                            icon.DoClick = function(icon)
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelDesc = v[3]
-                                newModelUnlockType = v[4]
-                                newModelUnlockValue = v[5]
+                                accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if selectedModelShown == true then
-                                    SelectedModelDisplay:Remove()
+                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(96, 96)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
 
-                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 else
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
-                                    SelectedModelDisplay:SetModel(newModel)
-                                    selectedModelShown = true
+                                    accoladeModelsUnlocked = accoladeModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
                                 end
-                                surface.PlaySound("tmui/buttonrollover.wav")
+
+                                icon.DoClick = function(icon)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
                             end
                         end
                     end
+
+                    local function FillModelListsUnlocked()
+                        for k, v in pairs(modelArray) do
+                            if v[4] == "default" then
+                                local icon = vgui.Create("SpawnIcon", DockModels)
+                                icon:SetModel(v[1])
+                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetSize(150, 150)
+                                DefaultModelList:Add(icon)
+
+                                defaultModelsTotal = defaultModelsTotal + 1
+                                modelsUnlocked = modelsUnlocked + 1
+                                defaultModelsUnlocked = defaultModelsUnlocked + 1
+
+                                icon.DoClick = function(icon)
+                                    newModel = v[1]
+                                    newModelName = v[2]
+                                    newModelDesc = v[3]
+                                    newModelUnlockType = v[4]
+                                    newModelUnlockValue = v[5]
+
+                                    if selectedModelShown == true then
+                                        SelectedModelDisplay:Remove()
+
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                    else
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+                                        selectedModelShown = true
+                                    end
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "kills" then
+                                killModelsTotal = killModelsTotal + 1
+                                if LocalPlayer:GetNWInt("playerKills") >= v[5] then
+                                    local icon = vgui.Create("SpawnIcon", DockModelsKills)
+                                    icon:SetModel(v[1])
+                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetSize(150, 150)
+                                    KillsModelList:Add(icon)
+
+                                    killModelsUnlocked = killModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
+
+                                    icon.DoClick = function(icon)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
+
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                end
+                            elseif v[4] == "streak" then
+                                streakModelsTotal = streakModelsTotal + 1
+
+                                if LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
+                                    local icon = vgui.Create("SpawnIcon", DockModelsStreak)
+                                    icon:SetModel(v[1])
+                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetSize(150, 150)
+                                    StreakModelList:Add(icon)
+
+                                    streakModelsUnlocked = streakModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
+
+                                    icon.DoClick = function(icon)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
+
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                end
+                            elseif v[4] == "special" then
+                                specialModelsTotal = specialModelsTotal + 1
+
+                                if v[5] == "name" and ply:SteamID() == "STEAM_0:1:514443768" then
+                                    local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
+                                    icon:SetModel(v[1])
+                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetSize(150, 150)
+                                    SpecialModelList:Add(icon)
+
+                                    specialModelsUnlocked = specialModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
+
+                                    icon.DoClick = function(icon)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
+
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                accoladeModelsTotal = accoladeModelsTotal + 1
+
+                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                    local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
+                                    icon:SetModel(v[1])
+                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetSize(150, 150)
+                                    AccoladeModelList:Add(icon)
+
+                                    accoladeModelsUnlocked = accoladeModelsUnlocked + 1
+                                    modelsUnlocked = modelsUnlocked + 1
+
+                                    icon.DoClick = function(icon)
+                                        newModel = v[1]
+                                        newModelName = v[2]
+                                        newModelDesc = v[3]
+                                        newModelUnlockType = v[4]
+                                        newModelUnlockValue = v[5]
+
+                                        if selectedModelShown == true then
+                                            SelectedModelDisplay:Remove()
+
+                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                        else
+                                            SelectedModelDisplay:SetSize(400, 400)
+                                            SelectedModelDisplay:SetPos(0, -25)
+                                            SelectedModelDisplay:SetModel(newModel)
+                                            selectedModelShown = true
+                                        end
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                    FillModelListsAll()
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -2234,7 +2425,7 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, Color(50, 80, 50, 200))
                     end
 
-                    local ApplyModelButton = vgui.Create( "DButton", ApplyButtonHolder )
+                    local ApplyModelButton = vgui.Create("DButton", ApplyButtonHolder)
                     ApplyModelButton:SetText("APPLY NEW PLAYERMODEL")
                     ApplyModelButton:SetPos(25, 25)
                     ApplyModelButton:SetSize(350, 50)
@@ -2356,6 +2547,46 @@ function mainMenu()
                             else
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             end
+                        end
+                    end
+
+                    function HideLockedModels:OnChange(bVal)
+                        if (bVal) then
+                            DefaultModelList:Clear()
+                            KillsModelList:Clear()
+                            StreakModelList:Clear()
+                            AccoladeModelList:Clear()
+                            SpecialModelList:Clear()
+                            modelsUnlocked = 0
+                            defaultModelsTotal = 0
+                            defaultModelsUnlocked = 0
+                            killModelsTotal = 0
+                            killModelsUnlocked = 0
+                            streakModelsTotal = 0
+                            streakModelsUnlocked = 0
+                            accoladeModelsTotal = 0
+                            accoladeModelsUnlocked = 0
+                            specialModelsTotal = 0
+                            specialModelsUnlocked = 0
+                            FillModelListsUnlocked()
+                        else
+                            DefaultModelList:Clear()
+                            KillsModelList:Clear()
+                            StreakModelList:Clear()
+                            AccoladeModelList:Clear()
+                            SpecialModelList:Clear()
+                            modelsUnlocked = 0
+                            defaultModelsTotal = 0
+                            defaultModelsUnlocked = 0
+                            killModelsTotal = 0
+                            killModelsUnlocked = 0
+                            streakModelsTotal = 0
+                            streakModelsUnlocked = 0
+                            accoladeModelsTotal = 0
+                            accoladeModelsUnlocked = 0
+                            specialModelsTotal = 0
+                            specialModelsUnlocked = 0
+                            FillModelListsAll()
                         end
                     end
 
@@ -3922,66 +4153,78 @@ function mainMenu()
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 1170)
+            PatchPreRelease:SetSize(0, 1390)
             PatchPreRelease.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ G28, G36A1 & Dual Skorpions primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Skorpion secondary weapon", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ File Compression", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Option tooltips", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Credits menu", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Config File", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Hints", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match tracking", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 320, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ HUD Editing and recoloring", "StreakText", 5, 340, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Custom font support", "StreakText", 5, 360, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized arrays", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed AKS-74U, Imbel IA2, SCAR-H", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated many weapon names", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 860, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 880, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 900, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Kill/Death UI now scale properly", "StreakText", 5, 920, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed ammo bar being 1 pixel too high", "StreakText", 5, 980, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed ammo bar text while using melee", "StreakText", 5, 1000, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed UI elements when player disconnects", "StreakText", 5, 1020, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed desync related to kill info and streaks", "StreakText", 5, 1040, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1080, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1100, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1120, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1140, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ G28, G36A1, Dual Skorpions, AK-12,", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ and M4A1 primary weapons", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Skorpion secondary weapon", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ File Compression", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Option tooltips", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Credits menu", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Config File", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hints", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match tracking", "StreakText", 5, 320, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 340, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ HUD Editing and recoloring", "StreakText", 5, 360, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Custom font support", "StreakText", 5, 380, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hide locked option in cuztomization menus", "StreakText", 5, 400, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Clan tags", "StreakText", 5, 420, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized arrays", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed AKS-74U, Imbel IA2, SCAR-H", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated many weapon names", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 860, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 880, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 900, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 920, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Kill/Death UI now scale properly", "StreakText", 5, 980, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 1000, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 1020, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed ammo bar being 1 pixel too high", "StreakText", 5, 1040, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed ammo bar text while using melee", "StreakText", 5, 1060, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed UI elements when player disconnects", "StreakText", 5, 1080, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed desync related to kill info and streaks", "StreakText", 5, 1100, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000, H&K MG36, AK-12 RPK,", "StreakText", 5, 1120, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- and AR-15 primary weapons", "StreakText", 5, 1140, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1160, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1180, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1200, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1220, patchRed, TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("Thanks for playing my shitty gamemode, ", "StreakText", 5, 1260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("I never thought it would end up as", "StreakText", 5, 1280, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("finished product :)", "StreakText", 5, 1300, white, TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("Special thanks to all the testers, ", "StreakText", 5, 1320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("all of their names can be found in the credits. ", "StreakText", 5, 1340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("-penial <3", "StreakText", 5, 1360, white, TEXT_ALIGN_LEFT)
             end
     end
 
