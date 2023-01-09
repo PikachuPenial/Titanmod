@@ -227,179 +227,6 @@ function mainMenu()
                 MapPreview:SetImage(mapThumb)
             end
 
-            local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
-            PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
-            PatchNotesButtonHolder:SetSize(48, 48)
-            PatchNotesButtonHolder.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, transparent)
-            end
-
-            local PlayerList
-            local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
-            PatchNotesButton:SetImage("icons/patchnotesicon.png")
-            patchNotesAnim = 0
-            patchNotesOpen = 0
-            local buttonSize = 32
-            PatchNotesButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
-                if (patchNotesOpen == 0) then
-                    patchNotesOpen = 1
-                else
-                    patchNotesOpen = 0
-                end
-            end
-            PatchNotesButton.Paint = function(self, w, h)
-                if PatchNotesButton:IsHovered() then
-                    buttonSize = math.Clamp(buttonSize + 200 * FrameTime(), 0, 12)
-                else
-                    buttonSize = math.Clamp(buttonSize - 200 * FrameTime(), 0, 12)
-                end
-                if (patchNotesOpen == 1) then
-                    patchNotesAnim = math.Clamp(patchNotesAnim + 4000 * FrameTime(), 0, 400)
-                else
-                    patchNotesAnim = math.Clamp(patchNotesAnim - 4000 * FrameTime(), 0, 400)
-                end
-                PatchNotesButton:SetSize(32 + buttonSize, 32 + buttonSize)
-                PatchNotesButton:Center()
-                PatchNotesButtonHolder:SetPos(ScrW() - 48 - patchNotesAnim, ScrH() / 2 - 28)
-            end
-
-            local PatchNotesPanel = vgui.Create("DPanel", MainPanel)
-            PatchNotesPanel:SetSize(420, 450)
-            PatchNotesPanel:SetPos(ScrW() - 1, ScrH() / 2 - 225)
-            PatchNotesPanel.Paint = function(self, w, h)
-                PatchNotesPanel:SetPos(ScrW() - 1 - patchNotesAnim, ScrH() / 2 - 225)
-                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 0))
-            end
-
-            local PatchScroller = vgui.Create("DScrollPanel", PatchNotesPanel)
-            PatchScroller:Dock(FILL)
-
-            local PlayersTextHeader = vgui.Create("DPanel", PatchScroller)
-            PlayersTextHeader:Dock(TOP)
-            PlayersTextHeader:SetSize(0, 65)
-            PlayersTextHeader.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
-                draw.SimpleText("PLAYERS", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-            end
-
-            local PlayerScrollPanel = vgui.Create("DScrollPanel", PatchScroller)
-            PlayerScrollPanel:Dock(TOP)
-            PlayerScrollPanel:SetSize(PatchNotesPanel:GetWide(), 100 * player.GetCount())
-            PlayerScrollPanel:SetPos(0, 0)
-
-            PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
-            PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
-            PlayerList:SetPos(0, 0)
-
-            PlayerList:Clear()
-            local connectedPlayers = player.GetAll()
-            table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
-            for k, v in pairs(connectedPlayers) do
-                local PlayerPanel = vgui.Create("DPanel", PlayerList)
-                PlayerPanel:SetSize(PlayerList:GetWide(), 100)
-                PlayerPanel:SetPos(0, 0)
-                PlayerPanel.Paint = function(self, w, h)
-                    if v:GetNWBool("mainmenu") == true then
-                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 100, 100))
-                    elseif not v:Alive() then
-                        draw.RoundedBox(0, 0, 0, w, h, Color(100, 35, 35, 100))
-                    else
-                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
-                    end
-
-                    draw.SimpleText("[" .. v:GetInfo("tm_clantag") .. "]", "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText(v:GetName(), "StreakText", 255, 25, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 45, white, TEXT_ALIGN_LEFT)
-                end
-
-                --Displays a players calling card and profile picture.
-                local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)
-                PlayerCallingCard:SetPos(10, 10)
-                PlayerCallingCard:SetSize(240, 80)
-
-                if v:GetNWString("chosenPlayercard") ~= nil then
-                    PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
-                else
-                    PlayerCallingCard:SetImage("cards/color/black.png")
-                end
-
-                local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
-                PlayerProfilePicture:SetPos(5, 5)
-                PlayerProfilePicture:SetSize(70, 70)
-                PlayerProfilePicture:SetPlayer(v, 184)
-            end
-
-            local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
-            PatchTextHeader:Dock(TOP)
-            PatchTextHeader:SetSize(0, 65)
-            PatchTextHeader.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
-                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-            end
-
-            local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
-            PatchPreRelease:Dock(TOP)
-            PatchPreRelease:SetSize(0, 1130)
-            PatchPreRelease.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, gray)
-                draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
-
-                draw.SimpleText("+ G28, G36A1 & Dual Skorpions primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Skorpion secondary weapon", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ File Compression", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Option tooltips", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Credits menu", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Config File", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Hints", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match tracking", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 320, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ HUD Editing and recoloring", "StreakText", 5, 340, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Custom font support", "StreakText", 5, 360, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   New UI animations", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   More UI SFX", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized UI", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Optimized arrays", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Nerfed AKS-74U, Imbel IA2, SCAR-H", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated many weapon names", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 860, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 880, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 900, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Kill/Death UI now scale properly", "StreakText", 5, 920, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed ammo bar being 1 pixel too high", "StreakText", 5, 980, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed ammo bar text while using melee", "StreakText", 5, 1000, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 1020, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1040, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1080, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1100, patchRed, TEXT_ALIGN_LEFT)
-            end
-
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
             StatisticsButton:SetPos(10, 10)
             StatisticsButton:SetImage("icons/statsicon.png")
@@ -843,13 +670,20 @@ function mainMenu()
 
                     local CardTextHolder = vgui.Create("DPanel", CardScroller)
                     CardTextHolder:Dock(TOP)
-                    CardTextHolder:SetSize(0, 140)
+                    CardTextHolder:SetSize(0, 170)
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playercards", "StreakText", 287.5, 140, white, TEXT_ALIGN_CENTER)
                     end
+
+                    local HideLockedCards = CardTextHolder:Add("DCheckBox")
+                    HideLockedCards:SetPos(165, 142.5)
+                    HideLockedCards:SetValue(false)
+                    HideLockedCards:SetSize(20, 20)
+                    HideLockedCards:SetTooltip("Hide playercards that you do not have unlocked.")
 
                     --Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
@@ -1082,43 +916,20 @@ function mainMenu()
                         CallingCard:SetImage(newCard)
                     end
 
-                    for k, v in pairs(cardArray) do
-                        if v[4] == "default" then
-                            local card = vgui.Create("DImageButton", DockDefaultCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            DefaultCardList:Add(card)
+                    local function FillCardListsAll()
+                        for k, v in pairs(cardArray) do
+                            if v[4] == "default" then
+                                local card = vgui.Create("DImageButton", DockDefaultCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                DefaultCardList:Add(card)
 
-                            defaultCardsTotal = defaultCardsTotal + 1
-                            cardsUnlocked = cardsUnlocked + 1
-                            defaultCardsUnlocked = defaultCardsUnlocked + 1
+                                defaultCardsTotal = defaultCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                defaultCardsUnlocked = defaultCardsUnlocked + 1
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "kills" or v[4] == "streak" then
-                            local card = vgui.Create("DImageButton", DockKillCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            KillCardList:Add(card)
-
-                            killCardsTotal = killCardsTotal + 1
-
-                            if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
-                                card:SetColor(Color(100, 100, 100))
-
-                                local lockIndicator = vgui.Create("DImageButton", card)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
@@ -1126,36 +937,36 @@ function mainMenu()
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                cardsUnlocked = cardsUnlocked + 1
-                                killCardsUnlocked = killCardsUnlocked + 1
-                            end
+                            elseif v[4] == "kills" or v[4] == "streak" then
+                                local card = vgui.Create("DImageButton", DockKillCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                KillCardList:Add(card)
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
-                            local card = vgui.Create("DImageButton", DockAccoladeCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            AccoladeCardList:Add(card)
+                                killCardsTotal = killCardsTotal + 1
 
-                            accoladeCardsTotal = accoladeCardsTotal + 1
+                                if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
+                                    card:SetColor(Color(100, 100, 100))
 
-                            if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                card:SetColor(Color(100, 100, 100))
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    killCardsUnlocked = killCardsUnlocked + 1
+                                end
 
-                                local lockIndicator = vgui.Create("DImageButton", card)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
@@ -1163,55 +974,36 @@ function mainMenu()
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                cardsUnlocked = cardsUnlocked + 1
-                                accoladeCardsUnlocked = accoladeCardsUnlocked + 1
-                            end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                local card = vgui.Create("DImageButton", DockAccoladeCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                AccoladeCardList:Add(card)
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "color" then
-                            local card = vgui.Create("DImageButton", DockColorCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            ColorCardList:Add(card)
+                                accoladeCardsTotal = accoladeCardsTotal + 1
 
-                            colorCardsTotal = colorCardsTotal + 1
-                            cardsUnlocked = cardsUnlocked + 1
-                            colorCardsUnlocked = colorCardsUnlocked + 1
+                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                    card:SetColor(Color(100, 100, 100))
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "level" then
-                            local card = vgui.Create("DImageButton", DockLevelCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            LevelCardList:Add(card)
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    accoladeCardsUnlocked = accoladeCardsUnlocked + 1
+                                end
 
-                            levelCardsTotal = levelCardsTotal + 1
-
-                            if v[4] == "level" and playerTotalLevel < v[5] then
-                                card:SetColor(Color(100, 100, 100))
-
-                                local lockIndicator = vgui.Create("DImageButton", card)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
@@ -1219,36 +1011,18 @@ function mainMenu()
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
+                            elseif v[4] == "color" then
+                                local card = vgui.Create("DImageButton", DockColorCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                ColorCardList:Add(card)
+
+                                colorCardsTotal = colorCardsTotal + 1
                                 cardsUnlocked = cardsUnlocked + 1
-                                levelCardsUnlocked = levelCardsUnlocked + 1
-                            end
+                                colorCardsUnlocked = colorCardsUnlocked + 1
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
-                            end
-                        elseif v[4] == "mastery" then
-                            local card = vgui.Create("DImageButton", DockMasteryCards)
-                            card:SetImage(v[1])
-                            card:SetTooltip(v[2] .. "\n" .. v[3])
-                            card:SetSize(240, 80)
-                            MasteryCardList:Add(card)
-
-                            masteryCardsTotal = masteryCardsTotal + 1
-
-                            if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                card:SetColor(Color(100, 100, 100))
-
-                                local lockIndicator = vgui.Create("DImageButton", card)
-                                lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
-                                lockIndicator:Center()
-                                lockIndicator.DoClick = function(lockIndicator)
+                                card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
@@ -1256,21 +1030,259 @@ function mainMenu()
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            else
-                                cardsUnlocked = cardsUnlocked + 1
-                                masteryCardsUnlocked = masteryCardsUnlocked + 1
-                            end
+                            elseif v[4] == "level" then
+                                local card = vgui.Create("DImageButton", DockLevelCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                LevelCardList:Add(card)
 
-                            card.DoClick = function(card)
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
-                                surface.PlaySound("tmui/buttonrollover.wav")
+                                levelCardsTotal = levelCardsTotal + 1
+
+                                if v[4] == "level" and playerTotalLevel < v[5] then
+                                    card:SetColor(Color(100, 100, 100))
+
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    levelCardsUnlocked = levelCardsUnlocked + 1
+                                end
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "mastery" then
+                                local card = vgui.Create("DImageButton", DockMasteryCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                MasteryCardList:Add(card)
+
+                                masteryCardsTotal = masteryCardsTotal + 1
+
+                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) < 50 then
+                                    card:SetColor(Color(100, 100, 100))
+
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    masteryCardsUnlocked = masteryCardsUnlocked + 1
+                                end
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
                             end
                         end
                     end
+
+                    local function FillCardListsUnlocked()
+                        for k, v in pairs(cardArray) do
+                            if v[4] == "default" then
+                                local card = vgui.Create("DImageButton", DockDefaultCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                DefaultCardList:Add(card)
+
+                                defaultCardsTotal = defaultCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                defaultCardsUnlocked = defaultCardsUnlocked + 1
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
+                                local card = vgui.Create("DImageButton", DockKillCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                KillCardList:Add(card)
+
+                                killCardsTotal = killCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                killCardsUnlocked = killCardsUnlocked + 1
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                local card = vgui.Create("DImageButton", DockAccoladeCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                AccoladeCardList:Add(card)
+
+                                accoladeCardsTotal = accoladeCardsTotal + 1
+
+                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                    card:SetColor(Color(100, 100, 100))
+
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    accoladeCardsUnlocked = accoladeCardsUnlocked + 1
+                                end
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "color" then
+                                local card = vgui.Create("DImageButton", DockColorCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                ColorCardList:Add(card)
+
+                                colorCardsTotal = colorCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                colorCardsUnlocked = colorCardsUnlocked + 1
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "level" then
+                                local card = vgui.Create("DImageButton", DockLevelCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                LevelCardList:Add(card)
+
+                                levelCardsTotal = levelCardsTotal + 1
+
+                                if v[4] == "level" and playerTotalLevel < v[5] then
+                                    card:SetColor(Color(100, 100, 100))
+
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    levelCardsUnlocked = levelCardsUnlocked + 1
+                                end
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            elseif v[4] == "mastery" then
+                                local card = vgui.Create("DImageButton", DockMasteryCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                MasteryCardList:Add(card)
+
+                                masteryCardsTotal = masteryCardsTotal + 1
+
+                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) < 50 then
+                                    card:SetColor(Color(100, 100, 100))
+
+                                    local lockIndicator = vgui.Create("DImageButton", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
+                                    lockIndicator.DoClick = function(lockIndicator)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
+                                else
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    masteryCardsUnlocked = masteryCardsUnlocked + 1
+                                end
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
+                            end
+                        end
+                    end
+
+                    FillCardListsAll()
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -1494,6 +1506,54 @@ function mainMenu()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
                             end
+                        end
+                    end
+
+                    function HideLockedCards:OnChange(bVal)
+                        if (bVal) then
+                            DefaultCardList:Clear()
+                            KillCardList:Clear()
+                            AccoladeCardList:Clear()
+                            LevelCardList:Clear()
+                            MasteryCardList:Clear()
+                            ColorCardList:Clear()
+                            totalCards = table.Count(cardArray)
+                            cardsUnlocked = 0
+                            defaultCardsTotal = 0
+                            defaultCardsUnlocked = 0
+                            killCardsTotal = 0
+                            killCardsUnlocked = 0
+                            accoladeCardsTotal = 0
+                            accoladeCardsUnlocked = 0
+                            levelCardsTotal = 0
+                            levelCardsUnlocked = 0
+                            masteryCardsTotal = 0
+                            masteryCardsUnlocked = 0
+                            colorCardsTotal = 0
+                            colorCardsUnlocked = 0
+                            FillCardListsUnlocked()
+                        else
+                            DefaultCardList:Clear()
+                            KillCardList:Clear()
+                            AccoladeCardList:Clear()
+                            LevelCardList:Clear()
+                            MasteryCardList:Clear()
+                            ColorCardList:Clear()
+                            totalCards = table.Count(cardArray)
+                            cardsUnlocked = 0
+                            defaultCardsTotal = 0
+                            defaultCardsUnlocked = 0
+                            killCardsTotal = 0
+                            killCardsUnlocked = 0
+                            accoladeCardsTotal = 0
+                            accoladeCardsUnlocked = 0
+                            levelCardsTotal = 0
+                            levelCardsUnlocked = 0
+                            masteryCardsTotal = 0
+                            masteryCardsUnlocked = 0
+                            colorCardsTotal = 0
+                            colorCardsUnlocked = 0
+                            FillCardListsAll()
                         end
                     end
 
@@ -3789,6 +3849,185 @@ function mainMenu()
                         CreditsSlideoutPanel:Hide()
                     end
                 end
+            end
+
+            local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
+            PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
+            PatchNotesButtonHolder:SetSize(48, 48)
+            PatchNotesButtonHolder.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, transparent)
+            end
+
+            local PlayerList
+            local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
+            PatchNotesButton:SetImage("icons/patchnotesicon.png")
+            patchNotesAnim = 0
+            patchNotesOpen = 0
+            local buttonSize = 32
+            PatchNotesButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
+                if (patchNotesOpen == 0) then
+                    patchNotesOpen = 1
+                else
+                    patchNotesOpen = 0
+                end
+            end
+            PatchNotesButton.Paint = function(self, w, h)
+                if PatchNotesButton:IsHovered() then
+                    buttonSize = math.Clamp(buttonSize + 200 * FrameTime(), 0, 12)
+                else
+                    buttonSize = math.Clamp(buttonSize - 200 * FrameTime(), 0, 12)
+                end
+                if (patchNotesOpen == 1) then
+                    patchNotesAnim = math.Clamp(patchNotesAnim + 4000 * FrameTime(), 0, 400)
+                else
+                    patchNotesAnim = math.Clamp(patchNotesAnim - 4000 * FrameTime(), 0, 400)
+                end
+                PatchNotesButton:SetSize(32 + buttonSize, 32 + buttonSize)
+                PatchNotesButton:Center()
+                PatchNotesButtonHolder:SetPos(ScrW() - 48 - patchNotesAnim, ScrH() / 2 - 28)
+            end
+
+            local PatchNotesPanel = vgui.Create("DPanel", MainPanel)
+            PatchNotesPanel:SetSize(420, 450)
+            PatchNotesPanel:SetPos(ScrW() - 1, ScrH() / 2 - 225)
+            PatchNotesPanel.Paint = function(self, w, h)
+                PatchNotesPanel:SetPos(ScrW() - 1 - patchNotesAnim, ScrH() / 2 - 225)
+                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 0))
+            end
+
+            local PatchScroller = vgui.Create("DScrollPanel", PatchNotesPanel)
+            PatchScroller:Dock(FILL)
+
+            local PlayersTextHeader = vgui.Create("DPanel", PatchScroller)
+            PlayersTextHeader:Dock(TOP)
+            PlayersTextHeader:SetSize(0, 65)
+            PlayersTextHeader.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
+                draw.SimpleText("PLAYERS", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+            end
+
+            local PlayerScrollPanel = vgui.Create("DScrollPanel", PatchScroller)
+            PlayerScrollPanel:Dock(TOP)
+            PlayerScrollPanel:SetSize(PatchNotesPanel:GetWide(), 100 * player.GetCount())
+            PlayerScrollPanel:SetPos(0, 0)
+
+            PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
+            PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
+            PlayerList:SetPos(0, 0)
+
+            PlayerList:Clear()
+            local connectedPlayers = player.GetAll()
+            table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+            for k, v in pairs(connectedPlayers) do
+                local PlayerPanel = vgui.Create("DPanel", PlayerList)
+                PlayerPanel:SetSize(PlayerList:GetWide(), 100)
+                PlayerPanel:SetPos(0, 0)
+                local name = v:GetName()
+                local prestige = v:GetNWInt("playerPrestige")
+                local level = v:GetNWInt("playerLevel")
+                PlayerPanel.Paint = function(self, w, h)
+                    if not IsValid(v) then return end
+                    if v:GetNWBool("mainmenu") == true then
+                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 100, 100))
+                    elseif not v:Alive() then
+                        draw.RoundedBox(0, 0, 0, w, h, Color(100, 35, 35, 100))
+                    else
+                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
+                    end
+
+                    --draw.SimpleText("[" .. v:GetInfo("tm_clantag") .. "]", "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText(name, "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("P" .. prestige .. " L" .. level, "Health", 255, 25, white, TEXT_ALIGN_LEFT)
+                end
+
+                --Displays a players calling card and profile picture.
+                local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)
+                PlayerCallingCard:SetPos(10, 10)
+                PlayerCallingCard:SetSize(240, 80)
+
+                if v:GetNWString("chosenPlayercard") ~= nil then
+                    PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
+                else
+                    PlayerCallingCard:SetImage("cards/color/black.png")
+                end
+
+                local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
+                PlayerProfilePicture:SetPos(5, 5)
+                PlayerProfilePicture:SetSize(70, 70)
+                PlayerProfilePicture:SetPlayer(v, 184)
+            end
+
+            local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
+            PatchTextHeader:Dock(TOP)
+            PatchTextHeader:SetSize(0, 65)
+            PatchTextHeader.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
+                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+            end
+
+            local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
+            PatchPreRelease:Dock(TOP)
+            PatchPreRelease:SetSize(0, 1170)
+            PatchPreRelease.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, gray)
+                draw.SimpleText("Pre Release", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("12/05/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ G28, G36A1 & Dual Skorpions primary weapons", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Skorpion secondary weapon", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ File Compression", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Option tooltips", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Account and Privacy options", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Credits menu", "StreakText", 5, 180, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Level 200-300 and Pride Player Cards", "StreakText", 5, 200, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Config File", "StreakText", 5, 220, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Killstrak notifications in kill feed", "StreakText", 5, 240, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Hints", "StreakText", 5, 260, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Loadout Hints option", "StreakText", 5, 280, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match tracking", "StreakText", 5, 300, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Match win XP bonus", "StreakText", 5, 320, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ HUD Editing and recoloring", "StreakText", 5, 340, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Custom font support", "StreakText", 5, 360, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   New UI animations", "StreakText", 5, 380, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   More UI SFX", "StreakText", 5, 400, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized UI", "StreakText", 5, 420, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized score calculation", "StreakText", 5, 440, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized kill cams", "StreakText", 5, 460, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized player leveling", "StreakText", 5, 480, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Optimized arrays", "StreakText", 5, 500, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed incorrect score distribution", "StreakText", 5, 520, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed BETA patch notes", "StreakText", 5, 540, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Faster loading on model and card menus", "StreakText", 5, 560, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed overlapping menu SFX", "StreakText", 5, 580, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added DOF for main menu and scoreboard", "StreakText", 5, 600, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Primaries no longer fire underwater", "StreakText", 5, 620, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Secondaries and melee now fire underwater", "StreakText", 5, 640, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Buffed Mac 10, Beretta Mx4, MP7", "StreakText", 5, 660, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Nerfed AKS-74U, Imbel IA2, SCAR-H", "StreakText", 5, 680, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated many weapon names", "StreakText", 5, 700, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smoothened level up animation", "StreakText", 5, 720, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Lowered volume of level up SFX", "StreakText", 5, 740, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved statistics menu", "StreakText", 5, 760, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Improved map voting algorithm", "StreakText", 5, 780, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed death cooldown check every frame", "StreakText", 5, 800, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed manually voting on unvotable maps", "StreakText", 5, 820, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added errors during manual map voting", "StreakText", 5, 840, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Added caliber information for weapons", "StreakText", 5, 860, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed unused weapon files", "StreakText", 5, 880, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Removed hooks that run exclusively in Sandbox", "StreakText", 5, 900, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Kill/Death UI now scale properly", "StreakText", 5, 920, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Smooth scrolling across all UI", "StreakText", 5, 940, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated and improved ASh-12", "StreakText", 5, 960, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed ammo bar being 1 pixel too high", "StreakText", 5, 980, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed ammo bar text while using melee", "StreakText", 5, 1000, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed UI elements when player disconnects", "StreakText", 5, 1020, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed desync related to kill info and streaks", "StreakText", 5, 1040, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- WA-2000 and H&K MG36 primary weapon", "StreakText", 5, 1060, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Groves and Rooftops maps", "StreakText", 5, 1080, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Revenge accolade", "StreakText", 5, 1100, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1120, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1140, patchRed, TEXT_ALIGN_LEFT)
             end
     end
 

@@ -264,7 +264,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     if killStreak >= 3 then
-        onstreakScore = 10 * killStreak + 10
+        onstreakScore = 10 * killStreak
         onstreak = "On Streak +" .. onstreakScore .. " | "
         seperator = "| "
     else
@@ -294,20 +294,20 @@ net.Receive("NotifyKill", function(len, ply)
     local streakColor
     local orangeColor = Color(255, 200, 100)
     local redColor = Color(255, 50, 50)
-    local rainbowColor
     local rainbowSpeed = 160
+    local rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
+
+    --Dynamic text color depending on the killstreak of the player.
+    if killStreak <= 2 then
+        streakColor = white
+    elseif killStreak <= 4 then
+        streakColor = orangeColor
+    elseif killStreak <= 6 then
+        streakColor = redColor
+    end
 
     KillNotif.Paint = function(self, w, h)
-        --Dynamic text color depending on the killstreak of the player.
-        if killStreak <= 2 then
-            streakColor = white
-        elseif killStreak <= 4 then
-            streakColor = orangeColor
-        elseif killStreak <= 6 then
-            streakColor = redColor
-        elseif killStreak >= 7 then
-            streakColor = rainbowColor
-        end
+        if killStreak >= 7 then streakColor = rainbowColor end
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
@@ -492,6 +492,7 @@ net.Receive("EndOfGame", function(len, ply)
         local PlayerPanel = vgui.Create("DPanel", PlayerScroller)
         PlayerPanel:SetSize(400, ScrH() * 0.7)
         PlayerPanel.Paint = function(self, w, h)
+            if !IsValid(v) then return end
             draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 30, white, TEXT_ALIGN_CENTER)
             draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, white, TEXT_ALIGN_CENTER)
 
@@ -499,7 +500,7 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText(v:Deaths(), "Health", 230, 150, red, TEXT_ALIGN_CENTER)
             draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, white, TEXT_ALIGN_CENTER)
 
-            if k == 1 then draw.SimpleText("WINNER [+25% XP]", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
+            if k == 1 then draw.SimpleText("WINNER [+1500 XP]", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
         end
 
         KillsIcon = vgui.Create("DImage", PlayerPanel)

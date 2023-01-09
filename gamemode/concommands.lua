@@ -151,12 +151,35 @@ function HUDTestLevelUp(ply, cmd, args)
 end
 concommand.Add("tm_hud_testlevelup", HUDTestLevelUp)
 
-function TESTMAP(ply, cmd, args)
+function ForceEndMatch(ply, cmd, args)
+	if !ply:IsAdmin() then return end
+	if args[1] == nil then return end
+
+	for k, v in pairs(player.GetAll()) do
+		v:KillSilent()
+	end
+
 	net.Start("EndOfGame")
-	net.WriteString("tm_nuketown")
+	net.WriteString(args[1])
 	net.Broadcast()
+
+	local connectedPlayers = player.GetAll()
+	table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+
+	for k, v in pairs(connectedPlayers) do
+		v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
+		if k == 1 then
+			v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
+			v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
+			CheckForPlayerLevel(v)
+		end
+	end
+
+	timer.Create("forceMatchEndCooldown", 30, 1, function()
+		RunConsoleCommand("changelevel", args[1])
+	end)
 end
-concommand.Add("testmap", TESTMAP)
+concommand.Add("tm_forceendmatch", ForceEndMatch)
 
 --Allows the player to wipe their account and start fresh.
 function PlayerAccountWipe(ply, cmd, args)

@@ -486,7 +486,7 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
 				if k == 1 then
 					v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
-					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + (v:GetNWInt("playerScoreMatch") * 1.25))
+					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
 					CheckForPlayerLevel(v)
 				end
 			end

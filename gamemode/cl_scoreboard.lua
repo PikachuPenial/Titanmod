@@ -145,7 +145,12 @@ function GM:ScoreboardShow()
 		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
 
 		for k, v in pairs(connectedPlayers) do
+			local name = v:GetName()
+			local prestige = v:GetNWInt("playerPrestige")
+			local level = v:GetNWInt("playerLevel")
+			local ping = v:Ping()
 			local ratio
+			local score = v:GetNWInt("playerScoreMatch")
 
 			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
@@ -156,11 +161,14 @@ function GM:ScoreboardShow()
 				ratio = v:Frags() / v:Deaths()
 			end
 
+			local ratioRounded = math.Round(ratio, 2)
+
 			--Displays the players statistics.
 			local PlayerPanel = vgui.Create("DPanel", PlayerList)
 			PlayerPanel:SetSize(PlayerList:GetWide(), 100)
 			PlayerPanel:SetPos(0, 0)
 			PlayerPanel.Paint = function(self, w, h)
+				if not IsValid(v) then return end
 				if v:GetNWBool("mainmenu") == true then
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 100, 100))
 				elseif not v:Alive() then
@@ -169,13 +177,13 @@ function GM:ScoreboardShow()
 					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
 				end
 
-				draw.SimpleText("[" .. v:GetInfo("tm_clantag") .. "] " .. v:GetName(), "Health", 255, 5, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"), "Health", 255, 35, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText(v:Ping() .. "ms", "StreakText", 255, 72, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(name, "Health", 255, 5, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("P" .. prestige .. " L" .. level, "Health", 255, 35, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(ping .. "ms", "StreakText", 255, 72, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText(v:Frags(), "Health", 375, 35, Color(0, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(v:Deaths(), "Health", 420, 35, Color(255, 0, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(math.Round(ratio, 2), "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-				draw.SimpleText(v:GetNWInt("playerScoreMatch"), "Health", 540, 35, white, TEXT_ALIGN_CENTER)
+				draw.SimpleText(ratioRounded, "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+				draw.SimpleText(score, "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 			end
 
 			--Displays a players calling card and profile picture.
