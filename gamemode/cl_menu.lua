@@ -1129,42 +1129,19 @@ function mainMenu()
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            elseif v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
-                                local card = vgui.Create("DImageButton", DockKillCards)
-                                card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
-                                card:SetSize(240, 80)
-                                KillCardList:Add(card)
+                            elseif v[4] == "kills" or v[4] == "streak" then
+                                killCardsTotal = killCardsUnlocked + 1
+                                if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
+                                    local card = vgui.Create("DImageButton", DockKillCards)
+                                    card:SetImage(v[1])
+                                    card:SetTooltip(v[2] .. "\n" .. v[3])
+                                    card:SetSize(240, 80)
+                                    KillCardList:Add(card)
 
-                                killCardsTotal = killCardsTotal + 1
-                                cardsUnlocked = cardsUnlocked + 1
-                                killCardsUnlocked = killCardsUnlocked + 1
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    killCardsUnlocked = killCardsUnlocked + 1
 
-                                card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
-                                end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
-                                local card = vgui.Create("DImageButton", DockAccoladeCards)
-                                card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
-                                card:SetSize(240, 80)
-                                AccoladeCardList:Add(card)
-
-                                accoladeCardsTotal = accoladeCardsTotal + 1
-
-                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
+                                    card.DoClick = function(card)
                                         newCard = v[1]
                                         newCardName = v[2]
                                         newCardDesc = v[3]
@@ -1172,12 +1149,20 @@ function mainMenu()
                                         newCardUnlockValue = v[5]
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
-                                else
+                                end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                accoladeCardsTotal = accoladeCardsTotal + 1
+                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                    local card = vgui.Create("DImageButton", DockAccoladeCards)
+                                    card:SetImage(v[1])
+                                    card:SetTooltip(v[2] .. "\n" .. v[3])
+                                    card:SetSize(240, 80)
+                                    AccoladeCardList:Add(card)
+
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
-                                end
 
-                                card.DoClick = function(card)
+                                    card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
@@ -1205,59 +1190,19 @@ function mainMenu()
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "level" then
-                                local card = vgui.Create("DImageButton", DockLevelCards)
-                                card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
-                                card:SetSize(240, 80)
-                                LevelCardList:Add(card)
-
                                 levelCardsTotal = levelCardsTotal + 1
 
-                                if v[4] == "level" and playerTotalLevel < v[5] then
-                                    card:SetColor(Color(100, 100, 100))
+                                if v[4] == "level" and playerTotalLevel >= v[5] then
+                                    local card = vgui.Create("DImageButton", DockLevelCards)
+                                    card:SetImage(v[1])
+                                    card:SetTooltip(v[2] .. "\n" .. v[3])
+                                    card:SetSize(240, 80)
+                                    LevelCardList:Add(card)
 
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
-                                else
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
-                                end
 
-                                card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
-                                end
-                            elseif v[4] == "mastery" then
-                                local card = vgui.Create("DImageButton", DockMasteryCards)
-                                card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
-                                card:SetSize(240, 80)
-                                MasteryCardList:Add(card)
-
-                                masteryCardsTotal = masteryCardsTotal + 1
-
-                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
+                                    card.DoClick = function(card)
                                         newCard = v[1]
                                         newCardName = v[2]
                                         newCardDesc = v[3]
@@ -1265,12 +1210,21 @@ function mainMenu()
                                         newCardUnlockValue = v[5]
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
-                                else
+                                end
+                            elseif v[4] == "mastery" then
+                                masteryCardsTotal = masteryCardsTotal + 1
+
+                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) >= 50 then
+                                    local card = vgui.Create("DImageButton", DockMasteryCards)
+                                    card:SetImage(v[1])
+                                    card:SetTooltip(v[2] .. "\n" .. v[3])
+                                    card:SetSize(240, 80)
+                                    MasteryCardList:Add(card)
+
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
-                                end
 
-                                card.DoClick = function(card)
+                                    card.DoClick = function(card)
                                     newCard = v[1]
                                     newCardName = v[2]
                                     newCardDesc = v[3]
