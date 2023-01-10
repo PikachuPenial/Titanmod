@@ -1163,12 +1163,13 @@ function mainMenu()
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 end
                             elseif v[4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
@@ -1191,7 +1192,6 @@ function mainMenu()
                                 end
                             elseif v[4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
-
                                 if v[4] == "level" and playerTotalLevel >= v[5] then
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(v[1])
@@ -1213,7 +1213,6 @@ function mainMenu()
                                 end
                             elseif v[4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
-
                                 if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) >= 50 then
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(v[1])
@@ -1225,12 +1224,13 @@ function mainMenu()
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                    end
                                 end
                             end
                         end
@@ -1656,11 +1656,11 @@ function mainMenu()
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playermodels", "StreakText", 287.5, 140, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 40, 140, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
-                    HideLockedModels:SetPos(165, 142.5)
+                    HideLockedModels:SetPos(140, 142.5)
                     HideLockedModels:SetValue(false)
                     HideLockedModels:SetSize(20, 20)
                     HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")    
@@ -4218,12 +4218,11 @@ function mainMenu()
                 draw.SimpleText("- Lee-Enfield stripper clip attachment", "StreakText", 5, 1200, patchRed, TEXT_ALIGN_LEFT)
                 draw.SimpleText("- Profile picture offset option", "StreakText", 5, 1220, patchRed, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("Thanks for playing my shitty gamemode, ", "StreakText", 5, 1260, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("I never thought it would end up as", "StreakText", 5, 1280, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("finished product :)", "StreakText", 5, 1300, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("Thanks for playing my shitty gamemode, I never", "StreakText", 5, 1260, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("thought it would end up as a finished product :)", "StreakText", 5, 1280, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("Special thanks to all the testers, ", "StreakText", 5, 1320, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("all of their names can be found in the credits. ", "StreakText", 5, 1340, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("Special thanks to all the testers, their names can", "StreakText", 5, 1320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("found in the credits. ", "StreakText", 5, 1340, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("-penial <3", "StreakText", 5, 1360, white, TEXT_ALIGN_LEFT)
             end
     end
