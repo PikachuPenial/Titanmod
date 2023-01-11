@@ -1130,7 +1130,7 @@ function mainMenu()
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
-                                killCardsTotal = killCardsUnlocked + 1
+                                killCardsTotal = killCardsTotal + 1
                                 if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockKillCards)
                                     card:SetImage(v[1])
@@ -1485,6 +1485,12 @@ function mainMenu()
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
                             FillCardListsUnlocked()
+                            DockDefaultCards:SetSize(0, (defaultCardsUnlocked * 42.5) + 42.5)
+                            DockKillCards:SetSize(0, (killCardsUnlocked * 42.5) + 42.5)
+                            DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
+                            DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
+                            DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 42.5) + 42.5)
+                            DockColorCards:SetSize(0, (colorCardsUnlocked * 42.5) + 42.5)
                         else
                             DefaultCardList:Clear()
                             KillCardList:Clear()
@@ -1506,6 +1512,12 @@ function mainMenu()
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
                             FillCardListsAll()
+                            DockDefaultCards:SetSize(0, 250)
+                            DockKillCards:SetSize(0, 250)
+                            DockAccoladeCards:SetSize(0, 583)
+                            DockLevelCards:SetSize(0, 1280)
+                            DockMasteryCards:SetSize(0, 500)
+                            DockColorCards:SetSize(0, 930)
                         end
                     end
 
@@ -2569,6 +2581,11 @@ function mainMenu()
                             specialModelsTotal = 0
                             specialModelsUnlocked = 0
                             FillModelListsUnlocked()
+                            DockModels:SetSize(0, (defaultModelsTotal * 51.6) + 103.2)
+                            DockModelsKills:SetSize(0, (killModelsUnlocked * 51.6) + 103.2)
+                            DockModelsStreak:SetSize(0, (streakModelsUnlocked * 51.6) + 103.2)
+                            DockModelsAccolade:SetSize(0, (accoladeModelsUnlocked * 51.6) + 103.2)
+                            DockModelsSpecial:SetSize(0, (specialModelsUnlocked * 51.6) + 103.2)
                         else
                             DefaultModelList:Clear()
                             KillsModelList:Clear()
@@ -2587,6 +2604,11 @@ function mainMenu()
                             specialModelsTotal = 0
                             specialModelsUnlocked = 0
                             FillModelListsAll()
+                            DockModels:SetSize(0, 465)
+                            DockModelsKills:SetSize(0, 310)
+                            DockModelsStreak:SetSize(0, 310)
+                            DockModelsAccolade:SetSize(0, 775)
+                            DockModelsSpecial:SetSize(0, 155)
                         end
                     end
 

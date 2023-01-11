@@ -182,7 +182,7 @@ end )
 net.Receive("KillFeedUpdate", function(len, ply)
     if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
     local playersInAction = net.ReadString()
-    local victimLastHitIn = net.ReadFloat()
+    local victimLastHitIn = net.ReadInt(5)
     local attacker = net.ReadString()
     local streak = net.ReadInt(10)
 
@@ -208,7 +208,7 @@ net.Receive("NotifyKill", function(len, ply)
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
-    local lastHitIn = net.ReadFloat()
+    local lastHitIn = net.ReadInt(5)
     local killStreak = net.ReadInt(10)
 
     local seperator = ""
@@ -343,7 +343,7 @@ net.Receive("NotifyDeath", function(len, ply)
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
-    local lastHitIn = net.ReadFloat()
+    local lastHitIn = net.ReadInt(5)
     local respawnTimeLeft = playerRespawnTime
 
     if IsValid(KillNotif) then
@@ -583,7 +583,7 @@ end )
 
 --Displays after a player levels up.
 net.Receive("NotifyLevelUp", function(len, ply)
-    local previousLevel = net.ReadFloat()
+    local previousLevel = net.ReadInt(8)
 
     if IsValid(LevelNotif) then
         LevelNotif:Remove()
