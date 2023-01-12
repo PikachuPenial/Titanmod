@@ -307,6 +307,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     KillNotif.Paint = function(self, w, h)
+        if !IsValid(killedPlayer) then return end
         if killStreak >= 7 then streakColor = rainbowColor end
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
@@ -378,6 +379,7 @@ net.Receive("NotifyDeath", function(len, ply)
     local hint = table.Random(hintArray)
 
     DeathNotif.Paint = function(self, w, h)
+    if !IsValid(killedBy) then return end
     if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 145, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
