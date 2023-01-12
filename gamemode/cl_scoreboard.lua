@@ -191,7 +191,7 @@ function GM:ScoreboardShow()
 			PlayerCallingCard:SetPos(10, 10)
 			PlayerCallingCard:SetSize(240, 80)
 
-			if v:GetNWString("chosenPlayercard") ~= nil then
+			if v:GetNWString("chosenPlayercard") ~= nil and IsValid(v) then
 				PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
 			else
 				PlayerCallingCard:SetImage("cards/color/black.png")

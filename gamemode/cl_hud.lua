@@ -307,7 +307,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     KillNotif.Paint = function(self, w, h)
-        if !IsValid(killedPlayer) then return end
+        if !IsValid(killedPlayer) then KillNotif:Remove() return end
         if killStreak >= 7 then streakColor = rainbowColor end
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
@@ -379,7 +379,7 @@ net.Receive("NotifyDeath", function(len, ply)
     local hint = table.Random(hintArray)
 
     DeathNotif.Paint = function(self, w, h)
-    if !IsValid(killedBy) then return end
+    if !IsValid(killedBy) then DeathNotif:Remove() return end
     if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 145, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
@@ -413,7 +413,11 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
     KilledByCallingCard:SetPos(ScrW() / 2 - 120, 20)
     KilledByCallingCard:SetSize(240, 80)
-    KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
+    if killedBy:GetNWString("chosenPlayercard") ~= nil and IsValid(killedBy) then
+        KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
+    else
+        KilledByCallingCard:SetImage("cards/color/black.png")
+    end
 
     killedByPlayerProfilePicture = vgui.Create("AvatarImage", KilledByCallingCard)
     killedByPlayerProfilePicture:SetPos(5, 5)
