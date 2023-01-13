@@ -69,6 +69,11 @@ hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound
     return true
 end)
 
+--Disable the default HL2 death sound.
+hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
+    return true
+end)
+
 --Sets up the keybind for grenade throwing.
 hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then

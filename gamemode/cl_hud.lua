@@ -402,10 +402,7 @@ net.Receive("NotifyDeath", function(len, ply)
         draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-        draw.SimpleText("Respawning in     ", WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        if respawnTimeLeft != nil or respawnTimeLeft > 4 or respawnTimeLeft < 0 then
-            draw.SimpleText(respawnTimeLeft .. "s", WepFont, w / 2 + 65, 210, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        end
+        draw.SimpleText("Respawning in " .. respawnTimeLeft, WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Press [F1 - F4] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("HINT: " .. hint, ArialFont, w / 2, 257.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
@@ -423,6 +420,8 @@ net.Receive("NotifyDeath", function(len, ply)
     killedByPlayerProfilePicture:SetPos(5, 5)
     killedByPlayerProfilePicture:SetSize(70, 70)
     killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
+
+    LocalPlayer():ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0)
 
     DeathNotif:Show()
     DeathNotif:MakePopup()
@@ -614,6 +613,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     LevelNotif:SetMouseInputEnabled(false)
     LevelNotif:SetKeyboardInputEnabled(false)
 
+    LocalPlayer():ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0)
     surface.PlaySound("tmui/levelup.wav")
 
     timer.Create("LevelNotif", 6, 1, function()
