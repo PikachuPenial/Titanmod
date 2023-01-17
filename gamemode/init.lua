@@ -231,7 +231,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("NotifyKill")
 		net.WriteEntity(victim)
 		net.WriteString(weaponName)
-		net.WriteInt(distance, 32)
+		net.WriteFloat(distance, 32)
 		net.WriteInt(victimHitgroup, 5)
 		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Send(attacker)
@@ -256,11 +256,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		timer.Simple(0.75, function()
 			if not IsValid(victim) or not IsValid(attacker) then return end
-			victim:Spectate(OBS_MODE_FREEZECAM)
+			victim:SetObserverMode(OBS_MODE_FREEZECAM)
 
 			timer.Simple(1.25, function()
 				if not IsValid(victim) or not IsValid(attacker) then return end
-				victim:Spectate(OBS_MODE_IN_EYE)
+				victim:SetObserverMode(OBS_MODE_IN_EYE)
 			end)
 		end)
 	end

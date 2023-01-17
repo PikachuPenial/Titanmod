@@ -2,5 +2,8 @@ Easter Egg (if you know you know)
 Custom chatbox
 Hide Titanmod menus when Garry's Mod menu is opened
 Profanity Filter
+Vote kicking :steamhappy:
+Finish clan tags
+Disallow maps from being in the map pool via the config
 
 Run Profiler and DBugR scans (https://github.com/FPtje/FProfiler) (https://github.com/oubliette32/DBugR)

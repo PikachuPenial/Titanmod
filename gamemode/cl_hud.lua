@@ -375,12 +375,11 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
-
     local hint = table.Random(hintArray)
 
     DeathNotif.Paint = function(self, w, h)
-    if !IsValid(killedBy) then DeathNotif:Remove() return end
-    if lastHitIn == 1 then
+        if !IsValid(killedBy) then DeathNotif:Remove() return end
+        if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 145, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
             draw.SimpleText(killedFrom .. "m", WepFont, w / 2 + 10, 145, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
