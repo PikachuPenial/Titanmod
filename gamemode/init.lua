@@ -137,7 +137,7 @@ end
 hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
 
 --Rocket jumping.
-local function reduceRocketDamage(ent, dmginfo)
+local function ReduceRocketDamage(ent, dmginfo)
 	if rocketJumping == false then return end
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
@@ -152,7 +152,7 @@ local function reduceRocketDamage(ent, dmginfo)
 	ent:SetVelocity(newForce / 70)
 	dmginfo:ScaleDamage(0.3)
 end
-hook.Add("EntityTakeDamage", "rocketjumpsEntityTakeDamage", reduceRocketDamage)
+hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
 
 --Tracking statistics and sending the Kill/Death UI on a players death.
 function GM:PlayerDeath(victim, inflictor, attacker)
@@ -367,9 +367,7 @@ end
 
 --Lets the server know when a player is no longer in the Main Menu.
 function CloseMainMenu(ply)
-	if ply:GetNWBool("mainmenu") == true then
-		ply:SetNWBool("mainmenu", false)
-	end
+	if ply:GetNWBool("mainmenu") == true then ply:SetNWBool("mainmenu", false) end
 end
 concommand.Add("tm_closemainmenu", CloseMainMenu)
 

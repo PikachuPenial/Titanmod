@@ -3992,19 +3992,7 @@ function mainMenu()
 
                     local CreditsTesters = vgui.Create("DPanel", CreditsScroller)
                     CreditsTesters:Dock(TOP)
-                    CreditsTesters:SetSize(0, 450)
-
-                    local CreditsBugs = vgui.Create("DPanel", CreditsScroller)
-                    CreditsBugs:Dock(TOP)
-                    CreditsBugs:SetSize(0, 200)
-
-                    local CreditsMaps = vgui.Create("DPanel", CreditsScroller)
-                    CreditsMaps:Dock(TOP)
-                    CreditsMaps:SetSize(0, 200)
-
-                    local CreditsWeapons = vgui.Create("DPanel", CreditsScroller)
-                    CreditsWeapons:Dock(TOP)
-                    CreditsWeapons:SetSize(0, 200)
+                    CreditsTesters:SetSize(0, 485)
 
                     CreditsTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -4029,21 +4017,7 @@ function mainMenu()
                         draw.SimpleText("RandomSZ", "SettingsLabel", 20, 330, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Checked", "SettingsLabel", 20, 365, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("mooseisrael321", "SettingsLabel", 20, 400, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    CreditsBugs.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Bugs", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    CreditsMaps.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Maps", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    CreditsWeapons.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Weapons", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("JustAMegumin", "SettingsLabel", 20, 435, white, TEXT_ALIGN_LEFT)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CreditsQuickjumpHolder)
@@ -4173,6 +4147,18 @@ function mainMenu()
             PatchTextHeader.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
                 draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+            end
+
+            local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
+            PatchPreRelease2:Dock(TOP)
+            PatchPreRelease2:SetSize(0, 130)
+            PatchPreRelease2.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h - 1, gray)
+                draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("01/23/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
+
+                draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)

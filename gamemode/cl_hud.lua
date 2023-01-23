@@ -54,9 +54,9 @@ if GetConVar("tm_hud_font_death"):GetInt() == 1 then
 end
 
 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
-    feedStyle = -20
+    feedEntryPadding = -20
 else
-    feedStyle = 20
+    feedEntryPadding = 20
 end
 
 function HUD()
@@ -69,21 +69,17 @@ function HUD()
         if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
                 draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-                draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
             end
 
-            if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
-                draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then
-                draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            end
+            if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
         --Bar Style
         if GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
             if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
                 draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-                draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+                if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
             end
 
             if (LocalPlayer():GetActiveWeapon():IsValid()) then
@@ -97,17 +93,12 @@ function HUD()
 
                 surface.SetDrawColor(ammoBarR, ammoBarG, ammoBarB, 175)
                 surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (LocalPlayer():GetActiveWeapon():Clip1() / LocalPlayer():GetActiveWeapon():GetMaxClip1()), 30)
-                if (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then
-                    draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
-                else
-                    draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0)
-                end
+                if (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
             end
         end
 
-        if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then
-            draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
-        end
+        --Displays a reload hint when the player is out of ammo.
+        if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
         --Shows the players health depending on the style they have selected in Options.
         if LocalPlayer():Health() <= 0 then health = 0 else health = LocalPlayer():Health() end
@@ -127,18 +118,16 @@ function HUD()
         surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
         draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
-        --Shooting range disclaimer
-        if playingFiringRange == true then
-            draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
-        end
+        --Shooting range disclaimer.    
+        if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
         --Kill feed
         for k, v in pairs(feedArray) do
             if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
             local nameLength = select(1, surface.GetTextSize(v[1]))
 
-            surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedStyle) - feedOffsetY, nameLength + 5, 20)
-            draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedStyle) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedOffsetY, nameLength + 5, 20)
+            draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 end
@@ -748,8 +737,8 @@ cvars.AddChangeCallback("tm_hud_font_death", function(convar_name, value_old, va
 end)
 cvars.AddChangeCallback("tm_hud_killfeed_style", function(convar_name, value_old, value_new)
     if value_new == 0 then
-        feedStyle = -20
+        feedEntryPadding = -20
     else
-        feedStyle = 20
+        feedEntryPadding = 20
     end
 end)

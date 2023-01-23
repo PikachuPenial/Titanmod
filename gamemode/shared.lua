@@ -61,6 +61,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_reloadhint", 1, true, false, "Enable/disable the reload text when out of ammo", 0, 1)
     CreateClientConVar("tm_hud_loadouthint", 1, true, false, "Enable/disable the loadout info displaying on player spawn", 0, 1)
     CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
+    CreateClientConVar("tm_hud_killtracker", 0, true, false, "Enable/disable the weapon specific kill tracking on the UI", 0, 1)
 end
 
 --Disabling footsteps if a player is crouched.
