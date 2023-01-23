@@ -4151,7 +4151,7 @@ function mainMenu()
 
             local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease2:Dock(TOP)
-            PatchPreRelease2:SetSize(0, 130)
+            PatchPreRelease2:SetSize(0, 150)
             PatchPreRelease2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -4159,6 +4159,7 @@ function mainMenu()
 
                 draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("Map framework changes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)

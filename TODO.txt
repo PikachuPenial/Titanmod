@@ -1,10 +1,10 @@
 Easter Egg (if you know you know)
-Custom chatbox
-Hide Titanmod menus when Garry's Mod menu is opened
 Profanity Filter
 Vote kicking :steamhappy:
 Finish clan tags
-Disallow maps from being in the map pool via the config
+Disable the skip option in the map vote via the config
+Configuration page (lets players see what config settings are enabled/disabled, and maybe allowing administrators to change settings)
+Player profile pages (heavily inspired by bad business profiles)
 
 Use net messages for:
     Main menu
