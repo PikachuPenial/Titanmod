@@ -40,6 +40,11 @@ function GM:ScoreboardShow()
 			end
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
+
+			draw.SimpleText("Kills", "StreakTextMini", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Deaths", "StreakTextMini", 425, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Ratio", "StreakTextMini", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Score", "StreakTextMini", 545, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
@@ -134,6 +139,7 @@ function GM:ScoreboardShow()
 
 			surface.SetDrawColor(255, 255, 0, 50)
 			if LocalPlayer:GetNWInt("playerLevel") ~= 60 then surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10) end
+			draw.SimpleText(LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakTextMini", 320, 24, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 
