@@ -2738,7 +2738,7 @@ function mainMenu()
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 355)
+                    DockUI:SetSize(0, 395)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -2953,6 +2953,7 @@ function mainMenu()
                         draw.SimpleText("Kill Popup Accolades", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Reload Hints", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -2996,8 +2997,15 @@ function mainMenu()
                     loadoutHintsToggle:SetSize(30, 30)
                     loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
 
+                    local killTrackerToggle = DockUI:Add("DCheckBox")
+                    killTrackerToggle:SetPos(20, 310)
+                    killTrackerToggle:SetConVar("tm_hud_killtracker")
+                    killTrackerToggle:SetValue(true)
+                    killTrackerToggle:SetSize(30, 30)
+                    killTrackerToggle:SetTooltip("Enable the weapon specific kill tracking on the HUD.")
+
                     local HUDEditorButton = vgui.Create("DButton", DockUI)
-                    HUDEditorButton:SetPos(20, 310)
+                    HUDEditorButton:SetPos(20, 350)
                     HUDEditorButton:SetText("")
                     HUDEditorButton:SetSize(300, 40)
                     HUDEditorButton:SetTooltip("Adjust the position and size of many HUD elements.")
@@ -4159,7 +4167,7 @@ function mainMenu()
 
                 draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("Map framework changes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Map framework changes", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
