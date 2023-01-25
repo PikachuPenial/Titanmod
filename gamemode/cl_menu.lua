@@ -4137,11 +4137,7 @@ function mainMenu()
                 PlayerCallingCard:SetPos(10, 10)
                 PlayerCallingCard:SetSize(240, 80)
 
-                if v:GetNWString("chosenPlayercard") ~= nil and IsValid(v) then
-                    PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png")
-                else
-                    PlayerCallingCard:SetImage("cards/color/black.png")
-                end
+                if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
 
                 local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
                 PlayerProfilePicture:SetPos(5, 5)

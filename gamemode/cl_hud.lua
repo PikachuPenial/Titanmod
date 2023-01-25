@@ -400,16 +400,12 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
     KilledByCallingCard:SetPos(ScrW() / 2 - 120, 20)
     KilledByCallingCard:SetSize(240, 80)
-    if killedBy:GetNWString("chosenPlayercard") ~= nil and IsValid(killedBy) then
-        KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png")
-    else
-        KilledByCallingCard:SetImage("cards/color/black.png")
-    end
+    if IsValid(killedBy) then KilledByCallingCard:SetImage(killedBy:GetNWString("chosenPlayercard"), "cards/color/black.png") end
 
-    killedByPlayerProfilePicture = vgui.Create("AvatarImage", KilledByCallingCard)
-    killedByPlayerProfilePicture:SetPos(5, 5)
-    killedByPlayerProfilePicture:SetSize(70, 70)
-    killedByPlayerProfilePicture:SetPlayer(killedBy, 184)
+    KilledByPlayerProfilePicture = vgui.Create("AvatarImage", KilledByCallingCard)
+    KilledByPlayerProfilePicture:SetPos(5, 5)
+    KilledByPlayerProfilePicture:SetSize(70, 70)
+    KilledByPlayerProfilePicture:SetPlayer(killedBy, 184)
 
     LocalPlayer():ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0)
 
@@ -422,13 +418,9 @@ end )
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
     local dof
-    if IsValid(EndOfGameUI) then
-        EndOfGameUI:Remove()
-    end
-
-    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
-
     gameEnded = true
+    if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
+    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
     RunConsoleCommand("tm_closemainmenu")
 
     local matchStartsIn = 30
@@ -613,6 +605,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     end)
 end )
 
+--Shows the players loadout on the bottom left hand side of their screen.
 function ShowLoadoutOnSpawn()
     local primaryWeapon = ""
     local secondaryWeapon = ""
@@ -622,7 +615,6 @@ function ShowLoadoutOnSpawn()
         if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then secondaryWeapon = v[2] end
         if v[1] == LocalPlayer():GetNWString("loadoutMelee") then meleeWeapon = v[2] end
     end
-
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
     timer.Simple(2.5, function()
         notification.Kill("LoadoutText")
