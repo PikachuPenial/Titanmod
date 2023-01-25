@@ -183,10 +183,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		if grappleKillReset == true then attacker:SetNWFloat("linat", 0) end
 	end
 
-	if usePrimary == true then victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
-	if useSecondary == true then  victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
-	if useMelee == true or useGadget == true then victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
-
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", playerRespawnTime, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
@@ -195,6 +191,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			victim:UnSpectate()
 		end
 	end)
+
+	if usePrimary == true then victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
+	if useSecondary == true then  victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
+	if useMelee == true or useGadget == true then victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
 
 	if not attacker:IsPlayer() or (attacker == victim) then
 		net.Start("NotifyDeath")
