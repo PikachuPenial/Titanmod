@@ -22,7 +22,6 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
-	print("Save was successful!")
 end
 concommand.Add("tm_forcesave", ForceSave)
 

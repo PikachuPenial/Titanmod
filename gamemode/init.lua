@@ -536,6 +536,12 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 	end)
 end
 
+if forceEnableAutoSaveTime ~= 0 then
+	timer.Create("serverAutoSaveTimer", forceEnableAutoSaveTime, 0, function()
+		for k, v in pairs(player.GetHumans()) do v:ConCommand("tm_forcesave") end
+	end)
+end
+
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end

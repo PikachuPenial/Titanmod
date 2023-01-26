@@ -30,6 +30,7 @@ damageKnockback = false         --Enable or disable knockback from incoming dama
 
 mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
+forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
 mapVoteTimer = GetConVar("tm_mapvotetimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 

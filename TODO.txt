@@ -7,8 +7,7 @@ Configuration page (lets players see what config settings are enabled/disabled, 
 Player profile pages (heavily inspired by bad business profiles)
 
 Use net messages for:
-    Main menu
     Map voting
-    Spectating System
+    Spectating system
 
 Customizable keybind for Main Menu
