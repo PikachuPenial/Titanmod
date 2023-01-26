@@ -98,7 +98,11 @@ function GM:PlayerInitialSpawn(ply)
 	--Opens Main Menu on server connect if enabled by the user.
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
 		ply:KillSilent()
-		timer.Simple(0.25, function() ply:ConCommand("tm_openmainmenu") end) --Delaying by 0.25 because the menu just doesn't open sometimes, might fix, idk.
+		timer.Simple(0.25, function() --Delaying by 0.25 because the menu just doesn't open sometimes, might fix, idk.
+			net.Start("OpenMainMenu")
+			net.Send(ply)
+			ply:SetNWBool("mainmenu", true)
+		end)
 	end)
 end
 
