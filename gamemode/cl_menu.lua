@@ -10,7 +10,7 @@ local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
 
-function mainMenu()
+net.Receive("OpenMainMenu", function(len, ply)
     local LocalPlayer = LocalPlayer()
     if LocalPlayer:Alive() then return end
 
@@ -477,9 +477,10 @@ function mainMenu()
 
                 MainMenu:Remove(false)
                 gui.EnableScreenClicker(false)
-                LocalPlayer:ConCommand("tm_closemainmenu")
+                net.Start("CloseMainMenu")
+                net.SendToServer()
 
-                menuMusic:FadeOut(2)
+                menuMusic:FadeOut(1)
             end
 
             local SpectateButton = vgui.Create("DImageButton", MainPanel)
@@ -550,9 +551,10 @@ function mainMenu()
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
 
-                menuMusic:FadeOut(2)
+                menuMusic:FadeOut(1)
 
-                LocalPlayer:ConCommand("tm_closemainmenu")
+                net.Start("CloseMainMenu")
+                net.SendToServer()
                 LocalPlayer:Spawn()
             end
 
@@ -3623,7 +3625,7 @@ function mainMenu()
                             menuMusic:Play()
                             menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
                         else
-                            menuMusic:FadeOut(2)
+                            menuMusic:FadeOut(1)
                         end
                     end
 
@@ -4155,7 +4157,7 @@ function mainMenu()
 
             local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease2:Dock(TOP)
-            PatchPreRelease2:SetSize(0, 150)
+            PatchPreRelease2:SetSize(0, 170)
             PatchPreRelease2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -4163,7 +4165,8 @@ function mainMenu()
 
                 draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
                 draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Map framework changes", "StreakText", 5, 120, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Moved many systems to net messages", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Map framework changes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
@@ -4260,8 +4263,7 @@ function mainMenu()
             ResWarning:Remove()
         end)
     end
-end
-concommand.Add("tm_openmainmenu", mainMenu)
+end )
 
 PANEL = {}
 function PANEL:Init()

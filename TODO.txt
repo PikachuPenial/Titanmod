@@ -9,3 +9,6 @@ Player profile pages (heavily inspired by bad business profiles)
 Use net messages for:
     Main menu
     Map voting
+    Spectating System
+
+Customizable keybind for Main Menu

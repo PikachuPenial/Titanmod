@@ -102,6 +102,8 @@ function GM:PlayerInitialSpawn(ply)
 	end)
 end
 
+util.AddNetworkString("OpenMainMenu")
+util.AddNetworkString("CloseMainMenu")
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
@@ -339,37 +341,39 @@ end
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
 function GM:ShowHelp(ply)
 	if not ply:Alive() then
-		ply:ConCommand("tm_openmainmenu")
+		net.Start("OpenMainMenu")
+		net.Send(ply)
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowTeam(ply)
 	if not ply:Alive() then
-		ply:ConCommand("tm_openmainmenu")
+		net.Start("OpenMainMenu")
+		net.Send(ply)
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowSpare1(ply)
 	if not ply:Alive() then
-		ply:ConCommand("tm_openmainmenu")
+		net.Start("OpenMainMenu")
+		net.Send(ply)
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
 function GM:ShowSpare2(ply)
 	if not ply:Alive() then
-		ply:ConCommand("tm_openmainmenu")
+		net.Start("OpenMainMenu")
+		net.Send(ply)
 		ply:SetNWBool("mainmenu", true)
 	end
 end
 
---Lets the server know when a player is no longer in the Main Menu.
-function CloseMainMenu(ply)
+net.Receive("CloseMainMenu", function(len, ply)
 	if ply:GetNWBool("mainmenu") == true then ply:SetNWBool("mainmenu", false) end
-end
-concommand.Add("tm_closemainmenu", CloseMainMenu)
+end )
 
 --Overwritting the default respawn mechanics to lock players behind a spwan countdown.
 hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)

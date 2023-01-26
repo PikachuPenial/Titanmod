@@ -1,6 +1,6 @@
 GM.Name = "Titanmod"
 GM.Author = "Penial"
-GM.Email = "pissoff"
+GM.Email = "no :>"
 GM.Website = "https://github.com/PikachuPenial"
 
 --Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
