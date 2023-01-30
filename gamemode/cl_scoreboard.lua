@@ -29,7 +29,7 @@ function GM:ScoreboardShow()
 		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
 		ScoreboardDerma = vgui.Create("DFrame")
-		ScoreboardDerma:SetSize(640, 600)
+		if player.GetCount() < 4 then ScoreboardDerma:SetSize(640, 200 + (player.GetCount() * 100)) else ScoreboardDerma:SetSize(640, 600) end
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:SetDraggable(false)
@@ -82,7 +82,7 @@ function GM:ScoreboardShow()
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
 		PlayerScrollPanel:Dock(TOP)
-		PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 400)
+		if player.GetCount() < 4 then PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), player.GetCount() * 100) else PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 400) end
 		PlayerScrollPanel:SetPos(0, 0)
 
 		local sbar = PlayerScrollPanel:GetVBar()
@@ -144,7 +144,7 @@ function GM:ScoreboardShow()
 	end
 
 	if IsValid(ScoreboardDerma) then
-		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - 300, 0.5, 0, 0.25)
+		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - ScoreboardDerma:GetTall() / 2, 0.5, 0, 0.25)
 		PlayerList:Clear()
 
 		local connectedPlayers = player.GetAll()
@@ -208,7 +208,7 @@ function GM:ScoreboardShow()
 			PlayerProfilePicture.OnMousePressed = function(self)
 				local Menu = DermaMenu()
 
-				local profileButton = Menu:AddOption("View Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
+				local profileButton = Menu:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
 				profileButton:SetIcon("icon16/page_find.png")
 
 				Menu:AddSpacer()
@@ -216,7 +216,9 @@ function GM:ScoreboardShow()
 				local statistics = Menu:AddSubMenu("View Stats")
 				local accolades = Menu:AddSubMenu("View Accolades")
 				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
-				local weaponKills = weaponstatistics:AddSubMenu("Kills")
+				local weaponKills = weaponstatistics:AddSubMenu("Kills With")
+				local weaponDeaths = weaponstatistics:AddSubMenu("Deaths To")
+				local weaponUsed = weaponstatistics:AddSubMenu("Times Used")
 
 				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer then
 					statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
@@ -236,6 +238,8 @@ function GM:ScoreboardShow()
 					accolades:AddOption("Kill Streaks Ended (Buzz Kill): " .. v:GetNWInt("playerAccoladeBuzzkill"))
 					for p, t in pairs(weaponArray) do
 						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+						weaponDeaths:AddOption(t[2] .. ": " .. v:GetNWInt("killedBy_" .. t[1]))
+						weaponUsed:AddOption(t[2] .. ": " .. v:GetNWInt("timesUsed_" .. t[1]))
 					end
 				else
 					statistics:AddOption("This player has their stats hidden.")

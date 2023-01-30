@@ -23,7 +23,7 @@ for k, v in pairs(weaponArray) do
 		table.insert(randPrimary, v[1])
 	elseif v[3] == "secondary" then
 		table.insert(randSecondary, v[1])
-	elseif v[3] == "melee" and useMelee == true or "gadget" and useGadget == true then
+	elseif v[3] == "melee" then
 		table.insert(randMelee, v[1])
 	end
 end
@@ -50,7 +50,7 @@ function GM:PlayerSpawn(ply)
 
 	if usePrimary == true then ply:Give(ply:GetNWString("loadoutPrimary")) end
 	if useSecondary == true then ply:Give(ply:GetNWString("loadoutSecondary")) end
-	if useMelee == true or useGadget == true then ply:Give(ply:GetNWString("loadoutMelee")) end
+	if useMelee == true then ply:Give(ply:GetNWString("loadoutMelee")) end
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 
 	ply:SetNWInt("killStreak", 0)
@@ -83,6 +83,8 @@ function GM:PlayerInitialSpawn(ply)
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
+		if (ply:GetPData("killedBy_" .. v[1]) == nil) then ply:SetNWInt("killedBy_" .. v[1], 0) else ply:SetNWInt("killedBy_" .. v[1], tonumber(ply:GetPData("killedBy_" .. v[1]))) end
+		if (ply:GetPData("timesUsed_" .. v[1]) == nil) then ply:SetNWInt("timesUsed_" .. v[1], 0) else ply:SetNWInt("timesUsed_" .. v[1], tonumber(ply:GetPData("timesUsed_" .. v[1]))) end
 	end
 
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
@@ -183,6 +185,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		if (attacker:GetActiveWeapon():IsValid()) then
 			weaponClassName = attacker:GetActiveWeapon():GetClass()
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
+			victim:SetNWInt("killedBy_" .. weaponClassName, victim:GetNWInt("killedBy_" .. weaponClassName) + 1)
 		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
@@ -198,9 +201,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	if usePrimary == true then victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)]) end
-	if useSecondary == true then  victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)]) end
-	if useMelee == true or useGadget == true then victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)]) end
+	victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+	victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+	victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 
 	if not attacker:IsPlayer() or (attacker == victim) then
 		net.Start("NotifyDeath")
@@ -584,6 +587,8 @@ function GM:PlayerDisconnected(ply)
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
 		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
+		ply:SetPData("killedBy_" .. t[1], ply:GetNWInt("killedBy_" .. t[1]))
+		ply:SetPData("timesUsed_" .. t[1], ply:GetNWInt("timesUsed_" .. t[1]))
 	end
 end
 
@@ -625,6 +630,8 @@ function GM:ShutDown()
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do
 			v:SetPData("killsWith_" .. t[1], v:GetNWInt("killsWith_" .. t[1]))
+			v:SetPData("killedBy_" .. t[1], v:GetNWInt("killedBy_" .. t[1]))
+			v:SetPData("timesUsed_" .. t[1], v:GetNWInt("timesUsed_" .. t[1]))
 		end
 	end
 end

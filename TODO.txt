@@ -11,3 +11,4 @@ Use net messages for:
     Spectating system
 
 Customizable keybind for Main Menu
+Unclosable warning screen if not all content is installed

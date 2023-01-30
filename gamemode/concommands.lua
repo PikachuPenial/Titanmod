@@ -22,6 +22,11 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+	for p, t in pairs(weaponArray) do
+		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
+		ply:SetPData("killedBy_" .. t[1], ply:GetNWInt("killedBy_" .. t[1]))
+		ply:SetPData("timesUsed_" .. t[1], ply:GetNWInt("timesUsed_" .. t[1]))
+	end
 end
 concommand.Add("tm_forcesave", ForceSave)
 

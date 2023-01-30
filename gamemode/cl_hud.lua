@@ -121,6 +121,9 @@ function HUD()
         --Shooting range disclaimer.    
         if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
+        --Grappling hook disclaimer.
+        if (LocalPlayer():GetActiveWeapon():IsValid()) and LocalPlayer():GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+
         --Kill feed
         for k, v in pairs(feedArray) do
             if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end

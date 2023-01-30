@@ -19,8 +19,7 @@ xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades
 
 usePrimary = true               --Enable primary weapons for the players loadout.
 useSecondary = true             --Enable secondary weapons for the players loadout.
-useMelee = true                 --Enable melee weapons for the players loadout.
-useGadget = true                --Enable gadgets for the players loadout.
+useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
 grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
 grappleKillReset = true         --The cooldown (in sceonds) of the grappling hook after being used.
@@ -73,7 +72,7 @@ weaponArray[9] = {"tfa_ins2_ar57", "AR-57", "primary", "5.7x28"}
 weaponArray[10] = {"tfa_blast_ash12", "ASh-12", "primary", "12.7x55"}
 weaponArray[11] = {"tfa_inss_aug", "AUG A3", "primary", "5.56x45"}
 weaponArray[12] = {"tfa_inss_asval", "AS-VAL", "primary", "9x39"}
-weaponArray[13] = {"tfa_ins2_warface_awm", "AWM", "primary", ".338 Lapua"}
+weaponArray[13] = {"tfa_cod_accuracy_international_l115a3", "AWM", "primary", ".338 Lapua"}
 weaponArray[14] = {"tfa_ins2_warface_ax308", "AX-308", "primary", "7.62x51"}
 weaponArray[15] = {"tfa_ins2_barrett_m98_bravo", "Barrett M98B", "primary", ".338 Lapua"}
 weaponArray[16] = {"tfa_ins2_mx4", "Beretta Mx4", "primary", "9x19"}
@@ -347,6 +346,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_hud_hitmarker_3d_shotguns", "1")
     RunConsoleCommand("cl_tfa_hud_hitmarker_fadetime", "0.04")
     RunConsoleCommand("cl_tfa_hud_hitmarker_solidtime", "0.10")
+    RunConsoleCommand("cl_tfa_hud_keybindhints_enabled", "0")
     RunConsoleCommand("cl_tfa_inspect_hide", "0")
     RunConsoleCommand("cl_tfa_inspect_hide_hud", "0")
     RunConsoleCommand("cl_tfa_inspect_hide_in_screenshots", "0")
