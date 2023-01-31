@@ -17,7 +17,6 @@ if CLIENT then
     CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)
     CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
     CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
-    CreateClientConVar("tm_clantag", "", true, true, "Sets the players clan tag.")
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
     CreateClientConVar("tm_hud_enablekill", 1, true, false, "Enable/disable the kill UI", 0, 1)

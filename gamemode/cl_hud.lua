@@ -614,9 +614,9 @@ function ShowLoadoutOnSpawn()
     local secondaryWeapon = ""
     local meleeWeapon = ""
     for k, v in pairs(weaponArray) do
-        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") then primaryWeapon = v[2] end
-        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") then secondaryWeapon = v[2] end
-        if v[1] == LocalPlayer():GetNWString("loadoutMelee") then meleeWeapon = v[2] end
+        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
+        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
+        if v[1] == LocalPlayer():GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
     end
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
     timer.Simple(2.5, function()

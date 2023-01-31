@@ -11,8 +11,8 @@ local transparent = Color(0, 0, 0, 0)
 local MainMenu
 
 net.Receive("OpenMainMenu", function(len, ply)
-    local LocalPlayer = LocalPlayer()
-    if LocalPlayer:Alive() then return end
+    local LocalPly = LocalPlayer()
+    if LocalPly:Alive() then return end
 
     local chosenMusic
     local musicName
@@ -26,23 +26,13 @@ net.Receive("OpenMainMenu", function(len, ply)
     local mapThumb
 
     local canPrestige
-    if LocalPlayer:GetNWInt("playerLevel") ~= 60 then canPrestige = false else canPrestige = true end
-
-    if ScrW() < 1024 and ScrH() < 768 then
-        belowMinimumRes = true
-    else
-        belowMinimumRes = false
-    end
-
+    if LocalPly:GetNWInt("playerLevel") ~= 60 then canPrestige = false else canPrestige = true end
+    if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/sicktwisteddemented_sewerslvt.wav", "music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
-    local menuMusic = CreateSound(LocalPlayer, chosenMusic)
-
-    if chosenMusic == "music/sicktwisteddemented_sewerslvt.wav" then
-        musicName = "sick, twisted, demented - Sewerslvt"
-    end
+    local menuMusic = CreateSound(LocalPly, chosenMusic)
 
     if chosenMusic == "music/chillwave_ragdolluniverseost.wav" then
         musicName = "Chillwave - Ragdoll Universe OST"
@@ -145,25 +135,25 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 50, white, TEXT_ALIGN_RIGHT)
                 end
 
-                draw.SimpleText(LocalPlayer:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
 
-                if LocalPlayer:GetNWInt("playerPrestige") ~= 0 and LocalPlayer:GetNWInt("playerLevel") ~= 60 then
-                    draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
-                elseif LocalPlayer:GetNWInt("playerPrestige") ~= 0 and LocalPlayer:GetNWInt("playerLevel") == 60 then
-                    draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
+                if LocalPly:GetNWInt("playerPrestige") ~= 0 and LocalPly:GetNWInt("playerLevel") ~= 60 then
+                    draw.SimpleText("P" .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
+                elseif LocalPly:GetNWInt("playerPrestige") ~= 0 and LocalPly:GetNWInt("playerLevel") == 60 then
+                    draw.SimpleText("P" .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
                 end
 
-                if LocalPlayer:GetNWInt("playerLevel") ~= 60 then
-                    draw.SimpleText(math.Round(LocalPlayer:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPlayer:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
-                    draw.SimpleText(LocalPlayer:GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
+                if LocalPly:GetNWInt("playerLevel") ~= 60 then
+                    draw.SimpleText(math.Round(LocalPly:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPly:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
 
                     surface.SetDrawColor(30, 30, 30, 200)
                     surface.DrawRect(440, 80, 220, 10)
 
                     surface.SetDrawColor(200, 200, 0, 200)
-                    surface.DrawRect(440, 80, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 220, 10)
+                    surface.DrawRect(440, 80, (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * 220, 10)
                 else
-                    draw.SimpleText("+ " .. math.Round(LocalPlayer:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
             end
 
@@ -182,7 +172,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     if prestigeConfirm == 0 then
-                        draw.DrawText("PRESTIGE TO P" .. LocalPlayer:GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                        draw.DrawText("PRESTIGE TO P" .. LocalPly:GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                     else
                         draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, solidRed, TEXT_ALIGN_LEFT)
                     end
@@ -192,7 +182,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     if (prestigeConfirm == 0) then
                         prestigeConfirm = 1
                     else
-                        LocalPlayer:ConCommand("tm_prestige")
+                        LocalPly:ConCommand("tm_prestige")
                         PrestigeButton:Hide()
                     end
 
@@ -213,12 +203,12 @@ net.Receive("OpenMainMenu", function(len, ply)
             CallingCard = vgui.Create("DImage", MainPanel)
             CallingCard:SetPos(190, 10)
             CallingCard:SetSize(240, 80)
-            CallingCard:SetImage(LocalPlayer:GetNWString("chosenPlayercard"), "cards/color/black.png")
+            CallingCard:SetImage(LocalPly:GetNWString("chosenPlayercard"), "cards/color/black.png")
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
             playerProfilePicture:SetPos(195, 15)
             playerProfilePicture:SetSize(70, 70)
-            playerProfilePicture:SetPlayer(LocalPlayer, 184)
+            playerProfilePicture:SetPlayer(LocalPly, 184)
 
             if mapID ~= nil then
                 MapPreview = vgui.Create("DImage", MainPanel)
@@ -305,12 +295,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     for _, v in pairs(player.GetAll()) do
-                        if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 and v ~= LocalPlayer then
+                        if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 and v ~= LocalPly then
                             comparePlayerStats:AddChoice(v:Name(), v:SteamID())
                         end
                     end
 
-                    local trackingPlayer = LocalPlayer
+                    local trackingPlayer = LocalPly
 
                     StatsCombat.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -402,7 +392,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     localPFP = vgui.Create("AvatarImage", StatsCombat)
                     localPFP:SetPos(436, 15)
                     localPFP:SetSize(64, 64)
-                    localPFP:SetPlayer(LocalPlayer, 184)
+                    localPFP:SetPlayer(LocalPly, 184)
 
                     local StatsIcon = vgui.Create("DImage", StatsQuickjumpHolder)
                     StatsIcon:SetPos(12, 12)
@@ -541,9 +531,9 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 for k, v in pairs(weaponArray) do
-                    if v[1] == LocalPlayer:GetNWString("loadoutPrimary") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
-                    if v[1] == LocalPlayer:GetNWString("loadoutSecondary") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                    if v[1] == LocalPlayer:GetNWString("loadoutMelee") then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                    if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
+                    if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                    if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
                 end
             end
             SpawnButton.DoClick = function()
@@ -555,7 +545,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 net.Start("CloseMainMenu")
                 net.SendToServer()
-                LocalPlayer:Spawn()
+                LocalPly:Spawn()
             end
 
             local CustomizeButton = vgui.Create("DButton", MainPanel)
@@ -599,7 +589,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             CustomizeCardButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
-                local currentCard = LocalPlayer:GetNWString("chosenPlayercard")
+                local currentCard = LocalPly:GetNWString("chosenPlayercard")
 
                 if not IsValid(CardPanel) then
                     local CardPanel = MainMenu:Add("CardPanel")
@@ -640,7 +630,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     local colorCardsTotal = 0
                     local colorCardsUnlocked = 0
 
-                    local playerTotalLevel = (LocalPlayer:GetNWInt("playerPrestige") * 60) + LocalPlayer:GetNWInt("playerLevel")
+                    local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
                     --Checking for the players currently equipped card.
                     for k, v in pairs(cardArray) do
@@ -813,7 +803,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     ProfilePicture = vgui.Create("AvatarImage", CallingCard)
                     ProfilePicture:SetPos(5, 5)
                     ProfilePicture:SetSize(70, 70)
-                    ProfilePicture:SetPlayer(LocalPlayer, 184)
+                    ProfilePicture:SetPlayer(LocalPly, 184)
 
                     PreviewCardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -826,76 +816,76 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if newCardUnlockType == "default" or newCardUnlockType == "color" then
                             draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
                         elseif newCardUnlockType == "kills" then
-                            if LocalPlayer:GetNWInt("playerKills") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPlayer:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPlayer:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText(LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "streak" then
-                            if LocalPlayer:GetNWInt("highestKillStreak") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPlayer:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPlayer:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "headshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPlayer:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPlayer:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "smackdown" then
-                            if LocalPlayer:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPlayer:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPlayer:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "clutch" then
-                            if LocalPlayer:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPlayer:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPlayer:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "longshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPlayer:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPlayer:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "pointblank" then
-                            if LocalPlayer:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "killstreaks" then
-                            if LocalPlayer:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "buzzkills" then
-                            if LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
@@ -906,12 +896,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "mastery" then
-                            if LocalPlayer:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
+                            if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPlayer:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         end
 
@@ -948,7 +938,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 killCardsTotal = killCardsTotal + 1
 
-                                if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
+                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
                                     card:SetColor(Color(100, 100, 100))
 
                                     local lockIndicator = vgui.Create("DImageButton", card)
@@ -985,7 +975,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
-                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
                                     card:SetColor(Color(100, 100, 100))
 
                                     local lockIndicator = vgui.Create("DImageButton", card)
@@ -1078,7 +1068,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 masteryCardsTotal = masteryCardsTotal + 1
 
-                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) < 50 then
+                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
                                     card:SetColor(Color(100, 100, 100))
 
                                     local lockIndicator = vgui.Create("DImageButton", card)
@@ -1133,7 +1123,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
                                 killCardsTotal = killCardsTotal + 1
-                                if v[4] == "kills" and LocalPlayer:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
+                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockKillCards)
                                     card:SetImage(v[1])
                                     card:SetTooltip(v[2] .. "\n" .. v[3])
@@ -1154,7 +1144,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
-                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(v[1])
                                     card:SetTooltip(v[2] .. "\n" .. v[3])
@@ -1215,7 +1205,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 end
                             elseif v[4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
-                                if v[4] == "mastery" and LocalPlayer:GetNWInt("killsWith_" .. v[5]) >= 50 then
+                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) >= 50 then
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(v[1])
                                     card:SetTooltip(v[2] .. "\n" .. v[3])
@@ -1342,7 +1332,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             CardPreviewPanel:Hide()
                             CardSlideoutPanel:Hide()
                         elseif newCardUnlockType == "kills" then
-                            if LocalPlayer:GetNWInt("playerKills") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1353,7 +1343,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "streak" then
-                            if LocalPlayer:GetNWInt("highestKillStreak") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1364,7 +1354,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "headshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1375,7 +1365,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "smackdown" then
-                            if LocalPlayer:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1386,7 +1376,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "clutch" then
-                            if LocalPlayer:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1397,7 +1387,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "longshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1408,7 +1398,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "pointblank" then
-                            if LocalPlayer:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1419,7 +1409,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "killstreaks" then
-                            if LocalPlayer:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1430,7 +1420,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "buzzkills" then
-                            if LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1452,7 +1442,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CardSlideoutPanel:Hide()
                             end
                         elseif newCardUnlockType == "mastery" then
-                            if LocalPlayer:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
+                            if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -1607,7 +1597,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
 
-                local previewModel = LocalPlayer:GetNWString("chosenPlayermodel")
+                local previewModel = LocalPly:GetNWString("chosenPlayermodel")
 
                 if not IsValid(CustomizePanel) then
                     local CustomizePanel = MainMenu:Add("CustomizePanel")
@@ -1808,61 +1798,61 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if newModelUnlockType == "default" then
                             draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                         elseif newModelUnlockType == "kills" then
-                            if LocalPlayer:GetNWInt("playerKills") < newModelUnlockValue then
-                                draw.SimpleText("Total Kills: " .. LocalPlayer:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Total Kills: " .. LocalPlayer:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "streak" then
-                            if LocalPlayer:GetNWInt("highestKillStreak") < newModelUnlockValue then
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPlayer:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "headshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
-                                draw.SimpleText("Headshots: " .. LocalPlayer:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Headshots: " .. LocalPlayer:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "smackdown" then
-                            if LocalPlayer:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
-                                draw.SimpleText("Smackdowns: " .. LocalPlayer:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Smackdowns: " .. LocalPlayer:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "clutch" then
-                            if LocalPlayer:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
-                                draw.SimpleText("Clutches: " .. LocalPlayer:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Clutches: " .. LocalPlayer:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "longshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
-                                draw.SimpleText("Longshots: " .. LocalPlayer:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longshots: " .. LocalPlayer:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "pointblank" then
-                            if LocalPlayer:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Point Blanks: " .. LocalPlayer:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "killstreaks" then
-                            if LocalPlayer:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Killstreaks Started: " .. LocalPlayer:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "buzzkills" then
-                            if LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
+                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Buzzkills: " .. LocalPlayer:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "special" and newModelUnlockValue == "name" then
-                            if LocalPlayer:SteamID() == "STEAM_0:1:514443768" then
+                            if LocalPly:SteamID() == "STEAM_0:1:514443768" then
                                 draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
                             else
                                 draw.SimpleText("[CLASSIFIED]", "Health", w / 2, 130, Color(0, 0, 250, 255), TEXT_ALIGN_CENTER)
@@ -1930,7 +1920,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 killModelsTotal = killModelsTotal + 1
 
-                                if LocalPlayer:GetNWInt("playerKills") < v[5] then
+                                if LocalPly:GetNWInt("playerKills") < v[5] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -1993,7 +1983,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 streakModelsTotal = streakModelsTotal + 1
 
-                                if LocalPlayer:GetNWInt("highestKillStreak") < v[5] then
+                                if LocalPly:GetNWInt("highestKillStreak") < v[5] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -2056,7 +2046,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 specialModelsTotal = specialModelsTotal + 1
 
-                                if v[5] == "name" and ply:SteamID() ~= "STEAM_0:1:514443768" then
+                                if v[5] == "name" and LocalPly:SteamID() ~= "STEAM_0:1:514443768" then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -2119,7 +2109,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -2214,7 +2204,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 end
                             elseif v[4] == "kills" then
                                 killModelsTotal = killModelsTotal + 1
-                                if LocalPlayer:GetNWInt("playerKills") >= v[5] then
+                                if LocalPly:GetNWInt("playerKills") >= v[5] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsKills)
                                     icon:SetModel(v[1])
                                     icon:SetTooltip(v[2] .. "\n" .. v[3])
@@ -2250,7 +2240,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             elseif v[4] == "streak" then
                                 streakModelsTotal = streakModelsTotal + 1
 
-                                if LocalPlayer:GetNWInt("highestKillStreak") >= v[5] then
+                                if LocalPly:GetNWInt("highestKillStreak") >= v[5] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStreak)
                                     icon:SetModel(v[1])
                                     icon:SetTooltip(v[2] .. "\n" .. v[3])
@@ -2286,7 +2276,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             elseif v[4] == "special" then
                                 specialModelsTotal = specialModelsTotal + 1
 
-                                if v[5] == "name" and ply:SteamID() == "STEAM_0:1:514443768" then
+                                if v[5] == "name" and LocalPly:SteamID() == "STEAM_0:1:514443768" then
                                     local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
                                     icon:SetModel(v[1])
                                     icon:SetTooltip(v[2] .. "\n" .. v[3])
@@ -2322,7 +2312,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[4] == "headshot" and LocalPlayer:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPlayer:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPlayer:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPlayer:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPlayer:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPlayer:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPlayer:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(v[1])
                                     icon:SetTooltip(v[2] .. "\n" .. v[3])
@@ -2452,7 +2442,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             CustomizePanel:Hide()
                             PreviewPanel:Hide()
                         elseif newModelUnlockType == "kills" then
-                            if LocalPlayer:GetNWInt("playerKills") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2463,7 +2453,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "streak" then
-                            if LocalPlayer:GetNWInt("highestKillStreak") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2474,7 +2464,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "headshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2485,7 +2475,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "smackdown" then
-                            if LocalPlayer:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2496,7 +2486,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "clutch" then
-                            if LocalPlayer:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2507,7 +2497,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "longshot" then
-                            if LocalPlayer:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2518,7 +2508,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "pointblank" then
-                            if LocalPlayer:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2529,7 +2519,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "killstreaks" then
-                            if LocalPlayer:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2540,7 +2530,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "buzzkills" then
-                            if LocalPlayer:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
+                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("common/wpn_select.wav")
@@ -2551,7 +2541,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 PreviewPanel:Hide()
                             end
                         elseif newModelUnlockType == "special" and newModelUnlockValue == "name" then
-                            if LocalPlayer:SteamID() == "STEAM_0:1:514443768" then
+                            if LocalPly:SteamID() == "STEAM_0:1:514443768" then
                                 surface.PlaySound("common/wpn_select.wav")
                                 RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
                                 MainPanel:Show()
@@ -2732,7 +2722,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockAccount = vgui.Create("DPanel", OptionsScroller)
                     DockAccount:Dock(TOP)
-                    DockAccount:SetSize(0, 150)
+                    DockAccount:SetSize(0, 110)
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
@@ -2876,22 +2866,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Clan Tag", "SettingsLabel", 160, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    local ClanTagInput = DockAccount:Add("DTextEntry")
-                    ClanTagInput:SetPlaceholderText("6 characters max...")
-                    ClanTagInput:SetPos(20, 70)
-                    ClanTagInput:SetSize(135, 30)
-                    ClanTagInput:SetValue(GetConVar("tm_clantag"):GetString())
-                    ClanTagInput.OnEnter = function(self)
-                        RunConsoleCommand("tm_clantag", self:GetValue())
-                        ClanTagInput:SetValue(self:GetValue())
+                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                     end
 
                     local hideStatsFromOthers = DockAccount:Add("DCheckBox")
-                    hideStatsFromOthers:SetPos(20, 110)
+                    hideStatsFromOthers:SetPos(20, 70)
                     hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
                     hideStatsFromOthers:SetValue(true)
                     hideStatsFromOthers:SetSize(30, 30)
@@ -3353,7 +3332,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
                         AddFeedEntryButton.DoClick = function()
                             if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
-                            local playersInAction = LocalPlayer:Name() .. " killed " .. math.random(1, 1000)
+                            local playersInAction = LocalPly:Name() .. " killed " .. math.random(1, 1000)
                             local victimLastHitIn = math.random(0, 1)
 
                             table.insert(fakeFeedArray, {playersInAction, victimLastHitIn})
@@ -4129,7 +4108,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
                     end
 
-                    --draw.SimpleText("[" .. v:GetInfo("tm_clantag") .. "]", "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText(name, "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("P" .. prestige .. " L" .. level, "Health", 255, 25, white, TEXT_ALIGN_LEFT)
                 end
@@ -4157,16 +4135,18 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease2:Dock(TOP)
-            PatchPreRelease2:SetSize(0, 170)
+            PatchPreRelease2:SetSize(0, 210)
             PatchPreRelease2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("01/23/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Moved many systems to net messages", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Map framework changes", "StreakText", 5, 140, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ More trackable statistics", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Moved many systems to net messages", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Map framework changes", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed bugs introduced with new gmod update", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
@@ -4245,7 +4225,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
     end
 
-    if belowMinimumRes == true and LocalPlayer:GetNWBool("seenResWarning") ~= true then
+    if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") ~= true then
         local ResWarning = vgui.Create("DPanel")
         ResWarning:SetPos(0, 0)
         ResWarning:SetSize(ScrW(), ScrH())
@@ -4257,7 +4237,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         ResWarningLabel:SizeToContents()
         ResWarningLabel:SetDark(1)
 
-        LocalPlayer:SetNWBool("seenResWarning", true)
+        LocalPly:SetNWBool("seenResWarning", true)
 
         timer.Create("removeResWarning", 8, 1, function()
             ResWarning:Remove()

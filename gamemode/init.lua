@@ -23,7 +23,7 @@ for k, v in pairs(weaponArray) do
 		table.insert(randPrimary, v[1])
 	elseif v[3] == "secondary" then
 		table.insert(randSecondary, v[1])
-	elseif v[3] == "melee" then
+	elseif v[3] == "melee" or "gadget" then
 		table.insert(randMelee, v[1])
 	end
 end
@@ -48,9 +48,19 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
 
-	if usePrimary == true then ply:Give(ply:GetNWString("loadoutPrimary")) end
-	if useSecondary == true then ply:Give(ply:GetNWString("loadoutSecondary")) end
-	if useMelee == true then ply:Give(ply:GetNWString("loadoutMelee")) end
+	if usePrimary == true then
+		ply:Give(ply:GetNWString("loadoutPrimary"))
+		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
+	end
+	if useSecondary == true then
+		ply:Give(ply:GetNWString("loadoutSecondary"))
+		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrloadoutSecondaryimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
+	end
+	if useMelee == true then
+		ply:Give(ply:GetNWString("loadoutMelee"))
+		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
+	end
+
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 
 	ply:SetNWInt("killStreak", 0)
