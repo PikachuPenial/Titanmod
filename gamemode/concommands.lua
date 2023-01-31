@@ -211,6 +211,8 @@ function PlayerAccountWipe(ply, cmd, args)
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
 		ply:SetNWInt("killsWith_" .. v[1], 0)
+		ply:SetNWInt("killedBy_" .. v[1], 0)
+		ply:SetNWInt("timesUsed_" .. v[1], 0)
 	end
 end
 concommand.Add("tm_wipeplayeraccount_cannotbeundone", PlayerAccountWipe)
@@ -251,7 +253,7 @@ function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_health_color_low_b", 100)
 	RunConsoleCommand("tm_hud_killfeed_limit", 4)
 	RunConsoleCommand("tm_hud_killfeed_offset_x", 0)
-	RunConsoleCommand("tm_hud_killfeed_offset_y", 0)
+	RunConsoleCommand("tm_hud_killfeed_offset_y", 45)
 	RunConsoleCommand("tm_hud_killdeath_offset_x", 0)
 	RunConsoleCommand("tm_hud_killdeath_offset_y", 335)
 	RunConsoleCommand("tm_hud_reloadhint", 1)

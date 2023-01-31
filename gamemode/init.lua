@@ -54,7 +54,7 @@ function GM:PlayerSpawn(ply)
 	end
 	if useSecondary == true then
 		ply:Give(ply:GetNWString("loadoutSecondary"))
-		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrloadoutSecondaryimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
+		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
 	end
 	if useMelee == true then
 		ply:Give(ply:GetNWString("loadoutMelee"))

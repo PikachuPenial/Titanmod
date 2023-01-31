@@ -3019,11 +3019,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                             draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                             if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
                                 draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                                if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
                                 draw.SimpleText(ammo, "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                             elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
                                 draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                                if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
                                 surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
                                 surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
                                 surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
@@ -3571,12 +3571,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                     hitSoundsType:SetPos(20, 150)
                     hitSoundsType:SetSize(100, 30)
                     hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
-                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then
-                        hitSoundsType:SetValue("Rust")
-                    end
+                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") end
                     hitSoundsType:AddChoice("Rust")
+                    hitSoundsType:AddChoice("TABG")
                     hitSoundsType.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        surface.PlaySound("hitsound/hit_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_hitsoundtype", value - 1)
                     end
 
@@ -3584,12 +3583,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                     killSoundsType:SetPos(20, 190)
                     killSoundsType:SetSize(100, 30)
                     killSoundsType:SetTooltip("Adjust the style of the kill confirmation sound.")
-                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then
-                        killSoundsType:SetValue("Call Of Duty")
-                    end
+                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") end
                     killSoundsType:AddChoice("Call Of Duty")
+                    killSoundsType:AddChoice("TABG")
                     killSoundsType.OnSelect = function(self, value)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        surface.PlaySound("hitsound/kill_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_killsoundtype", value - 1)
                     end
 

@@ -160,8 +160,8 @@ end
 --Plays the received hitsound if a player hits another player.
 net.Receive("PlayHitsound", function(len, pl)
     if GetConVar("tm_hitsounds"):GetInt() == 0 then return end
-    local hit_reg = "hitsound/hit_reg.wav"
-    local hit_reg_head = "hitsound/hit_reg_head.wav"
+    local hit_reg = "hitsound/hit_" .. GetConVar("tm_hitsoundtype"):GetInt() .. ".wav"
+    local hit_reg_head = "hitsound/hit_head_" .. GetConVar("tm_hitsoundtype"):GetInt() .. ".wav"
 
     local hitgroup = net.ReadUInt(4)
     local soundfile = hit_reg
@@ -319,7 +319,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:SetMouseInputEnabled(false)
     KillNotif:SetKeyboardInputEnabled(false)
 
-    if GetConVar("tm_killsound"):GetInt() == 1 then surface.PlaySound("hitsound/killsound.wav") end
+    if GetConVar("tm_killsound"):GetInt() == 1 then surface.PlaySound("hitsound/kill_" .. GetConVar("tm_killsoundtype"):GetInt() .. ".wav") end
 
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
