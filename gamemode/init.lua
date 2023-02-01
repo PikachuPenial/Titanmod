@@ -539,7 +539,6 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		end
 
 		if validMapVote == false then print("The map you attempted to vote for does not exist.") return end
-		--if votedMap ~= firstMap or votedMap ~= secondMap then print("The map you attempted to vote for was not picked for this voting phase.") return end
 	end
 	concommand.Add("tm_voteformap", PlayerMapVote)
 

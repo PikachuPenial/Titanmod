@@ -338,17 +338,17 @@ end
 
 --Displays to all players when a map vote begins.
 net.Receive("MapVoteHUD", function(len, ply)
-    local votedOnMap = false
+	local votedOnMap = false
 
-    --Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
-    timer.Create("mapVoteTimeRemaining", 18, 1, function()
-        if votedOnMap == false then
-            RunConsoleCommand("tm_voteformap", "skip")
-            MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-                MapVoteHUD:Remove()
-            end)
-        end
-    end)
+	--Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
+	timer.Create("mapVoteTimeRemaining", 18, 1, function()
+		if votedOnMap == false then
+			RunConsoleCommand("tm_voteformap", "skip")
+			MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
+				MapVoteHUD:Remove()
+			end)
+		end
+	end)
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
@@ -374,14 +374,12 @@ net.Receive("MapVoteHUD", function(len, ply)
     end
 
     MapVoteHUD = vgui.Create("DFrame")
-    MapVoteHUD:SetSize(0, 500)
-    MapVoteHUD:SetX(0)
+    MapVoteHUD:SetSize(200, 500)
+    MapVoteHUD:SetX(-200)
     MapVoteHUD:SetY(ScrH() / 2 - 250)
     MapVoteHUD:SetTitle("")
     MapVoteHUD:SetDraggable(false)
     MapVoteHUD:ShowCloseButton(false)
-    MapVoteHUD:SizeTo(200, 500, 1, 0, 0.25)
-
     MapVoteHUD.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 150))
         draw.RoundedBox(0, 0, 0, 20, h, Color(40, 40, 40, 150))
@@ -391,6 +389,8 @@ net.Receive("MapVoteHUD", function(len, ply)
         draw.SimpleText(firstMapName, "MapName", 110, 188, white, TEXT_ALIGN_CENTER)
         draw.SimpleText(secondMapName, "MapName", 110, 388, white, TEXT_ALIGN_CENTER)
     end
+
+	MapVoteHUD:MoveTo(0, ScrH() / 2 - 250, 1, 0, 0.25)
 
     local MapChoice = vgui.Create("DImageButton", MapVoteHUD)
     MapChoice:SetPos(30, 50)
@@ -416,10 +416,10 @@ net.Receive("MapVoteHUD", function(len, ply)
             notification.Kill("VoteConfirmation")
         end)
 
-        MapVoteHUD:SizeTo(0, 500, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
+        MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
+			MapVoteHUD:Remove()
 			timer.Remove("mapVoteTimeRemaining")
-        end)
+		end)
     end
 
     local MapChoiceTwo = vgui.Create("DImageButton", MapVoteHUD)
@@ -446,7 +446,7 @@ net.Receive("MapVoteHUD", function(len, ply)
             notification.Kill("VoteConfirmation")
         end)
 
-        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
+        MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
 			MapVoteHUD:Remove()
 			timer.Remove("mapVoteTimeRemaining")
 		end)
@@ -477,10 +477,10 @@ net.Receive("MapVoteHUD", function(len, ply)
             notification.Kill("VoteConfirmation")
         end)
 
-        MapVoteHUD:SizeTo(0, 490, 1, 0, 0.25, function()
-            MapVoteHUD:Remove()
+        MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
+			MapVoteHUD:Remove()
 			timer.Remove("mapVoteTimeRemaining")
-        end)
+		end)
     end
 
     MapVoteHUD:Show()
