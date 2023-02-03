@@ -78,6 +78,7 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("matchesPlayed") == nil) then ply:SetNWInt("matchesPlayed", 0) else ply:SetNWInt("matchesPlayed", tonumber(ply:GetPData("matchesPlayed"))) end
 	if (ply:GetPData("matchesWon") == nil) then ply:SetNWInt("matchesWon", 0) else ply:SetNWInt("matchesWon", tonumber(ply:GetPData("matchesWon"))) end
 	if (ply:GetPData("highestKillStreak") == nil) then ply:SetNWInt("highestKillStreak", 0) else ply:SetNWInt("highestKillStreak", tonumber(ply:GetPData("highestKillStreak"))) end
+	if (ply:GetPData("farthestKill") == nil) then ply:SetNWInt("farthestKill", 0) else ply:SetNWInt("farthestKill", tonumber(ply:GetPData("farthestKill"))) end
 	if (ply:GetPData("playerLevel") == nil) then ply:SetNWInt("playerLevel", 1) else ply:SetNWInt("playerLevel", tonumber(ply:GetPData("playerLevel"))) end
 	if (ply:GetPData("playerPrestige") == nil) then ply:SetNWInt("playerPrestige", 0) else ply:SetNWInt("playerPrestige", tonumber(ply:GetPData("playerPrestige"))) end
 	if (ply:GetPData("playerXP") == nil) then ply:SetNWInt("playerXP", 0) else ply:SetNWInt("playerXP", tonumber(ply:GetPData("playerXP"))) end
@@ -284,6 +285,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			end)
 		end)
 	end
+
+	if distance >= attacker:GetNWInt("farthestKill") then attacker:SetNWInt("farthestKill", distance) end
 
 	--This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think.
 	if attacker:GetNWInt("killStreak") >= 3 then
@@ -573,9 +576,8 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
 	ply:SetPData("matchesPlayed", ply:GetNWInt("matchesPlayed"))
 	ply:SetPData("matchesWon", ply:GetNWInt("matchesWon"))
-
-	--Streaks
 	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
+	ply:SetPData("farthestKill", ply:GetNWInt("farthestKill"))
 
 	--Leveling
 	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
@@ -616,9 +618,8 @@ function GM:ShutDown()
 		v:SetPData("playerScore", v:GetNWInt("playerScore"))
 		v:SetPData("matchesPlayed", v:GetNWInt("matchesPlayed"))
 		v:SetPData("matchesWon", v:GetNWInt("matchesWon"))
-
-		--Streaks
 		v:SetPData("highestKillStreak", v:GetNWInt("highestKillStreak"))
+		v:SetPData("farthestKill", v:GetNWInt("farthestKill"))
 
 		--Leveling
 		v:SetPData("playerLevel", v:GetNWInt("playerLevel"))
