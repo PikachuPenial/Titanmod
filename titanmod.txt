@@ -37,5 +37,15 @@
 			"default"	"0"
 			"singleplayer"
 		}
+
+		4
+		{
+			"name"		"tm_experimentalgunplay"
+			"text"		"Experimental Gunplay"
+			"help"		"Enables work in progress gunplay tweaks."
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer"
+		}
 	}
 }

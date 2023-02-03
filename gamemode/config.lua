@@ -64,13 +64,13 @@ weaponArray[1] = {"tfa_ins2_aa12", "AA-12", "primary", "12 Gauge"}
 weaponArray[2] = {"tfa_ins2_acrc", "ACR-C", "primary", "5.56x45"}
 weaponArray[3] = {"tfa_ins2_aek971", "AEK-971", "primary", "5.45x39"}
 weaponArray[4] = {"tfa_ins2_akms", "AKMS", "primary", "7.62x39"}
-weaponArray[5] = {"tfa_inss_aks74u", "AKS-74U", "primary", "5.45x39"}
+weaponArray[5] = {"tfa_ins2_aks_r", "AKS-74U", "primary", "5.45x39"}
 weaponArray[6] = {"tfa_ins2_ak12", "AK-12", "primary", "5.45x39"}
 weaponArray[7] = {"tfa_ins2_ak400", "AK-400", "primary", "5.45x39"}
 weaponArray[8] = {"tfa_ins2_abakan", "AN-94", "primary", "5.45x39"}
 weaponArray[9] = {"tfa_ins2_ar57", "AR-57", "primary", "5.7x28"}
 weaponArray[10] = {"tfa_blast_ash12", "ASh-12", "primary", "12.7x55"}
-weaponArray[11] = {"tfa_inss_aug", "AUG A3", "primary", "5.56x45"}
+weaponArray[11] = {"tfa_fml_csgo_aug", "AUG A3", "primary", "5.56x45"}
 weaponArray[12] = {"tfa_inss_asval", "AS-VAL", "primary", "9x39"}
 weaponArray[13] = {"tfa_cod_accuracy_international_l115a3", "AWM", "primary", ".338 Lapua"}
 weaponArray[14] = {"tfa_ins2_warface_ax308", "AX-308", "primary", "7.62x51"}
@@ -80,7 +80,7 @@ weaponArray[17] = {"tfa_doibren", "Bren", "primary", ".303 British"}
 weaponArray[18] = {"tfa_ins2_warface_bt_mp9", "B&T MP9", "primary", "9x19"}
 weaponArray[19] = {"tfa_ins2_warface_cheytac_m200", "CheyTac M200", "primary", ".408 Cheyenne"}
 weaponArray[20] = {"tfa_ins2_m4_9mm", "Colt 9mm", "primary", "9x19"}
-weaponArray[21] = {"tfa_new_m1911", "Colt M1911", "secondary", ".45 ACP"}
+weaponArray[21] = {"tfa_nam_m1911", "Colt M1911", "secondary", ".45 ACP"}
 weaponArray[22] = {"tfa_ins2_colt_m45", "Colt M45A1", "secondary", ".45 ACP"}
 weaponArray[23] = {"tfa_ins2_cz75", "CZ 75 B", "secondary", "9x19"}
 weaponArray[24] = {"tfa_ins2_cz805", "CZ 805", "primary", "5.56x45"}
@@ -97,47 +97,47 @@ weaponArray[34] = {"tfa_ins2_fn_fal", "FN FAL", "primary", "7.62x51"}
 weaponArray[35] = {"tfa_ins2_fnp45", "FNP-45", "secondary", ".45 ACP"}
 weaponArray[36] = {"tfa_ins2_g28", "G28", "primary", "7.62x51"}
 weaponArray[37] = {"tfa_ins2_g36a1", "G36A1", "primary", "5.56x45"}
-weaponArray[38] = {"tfa_new_inss_galil", "Galil", "primary", "5.56x45"}
-weaponArray[39] = {"tfa_new_glock17", "Glock 17", "secondary", "9x19"}
-weaponArray[40] = {"fres_grapple", "Grappling Hook", "gadget"}
-weaponArray[41] = {"tfa_ins2_gsh18", "GSH-18", "secondary", "9x19"}
+weaponArray[38] = {"tfa_glk_gen4", "Glock 17", "secondary", "9x19"}
+weaponArray[39] = {"fres_grapple", "Grappling Hook", "gadget"}
+weaponArray[40] = {"tfa_ins2_gsh18", "GSH-18", "secondary", "9x19"}
+weaponArray[41] = {"tfa_ins2_fml_hk53", "HK53", "primary", "5.56x45"}
 weaponArray[42] = {"tfa_ins2_cq300", "Honey Badger", "primary", ".300 AAC"}
 weaponArray[43] = {"tfa_howa_type_64", "Howa Type 64", "primary", "7.62x51"}
-weaponArray[44] = {"tfa_inss2_hk_mp5a5", "H&K MP5A5", "primary", "9x19"}
-weaponArray[45] = {"tfa_ins2_imbelia2", "Imbel IA2", "primary", "5.56x45"}
-weaponArray[46] = {"tfa_ararebo_bf1", "Japanese Ararebo", "melee"}
-weaponArray[47] = {"tfa_km2000_knife", "KM-2000", "melee"}
-weaponArray[48] = {"tfa_ins2_krissv", "KRISS Vector", "primary", ".45 ACP"}
-weaponArray[49] = {"tfa_ins2_ksg", "KSG", "primary", "12 Gauge"}
-weaponArray[50] = {"tfa_blast_ksvk_cqb", "KSVK 12.7", "primary", "12.7x108"}
-weaponArray[51] = {"tfa_doi_enfield", "Lee-Enfield No. 4", "primary", ".303 Mk VII"}
-weaponArray[52] = {"tfa_doilewis", "Lewis", "primary", ".303 British"}
-weaponArray[53] = {"tfa_ins2_zm_lr300", "LR-300", "primary", "5.56x45"}
-weaponArray[54] = {"tfa_doi_garand", "M1 Garand", "primary", ".30-06"}
-weaponArray[55] = {"tfa_doim3greasegun", "M3 Grease Gun", "secondary", ".45 ACP"}
-weaponArray[56] = {"tfa_ins2_eftm4a1", "M4A1", "primary", "5.56x45"}
-weaponArray[57] = {"tfa_ins2_m9", "M9", "secondary", "9x19"}
-weaponArray[58] = {"tfa_ins2_m14retro", "M14", "primary", "7.62x51"}
-weaponArray[59] = {"tfa_nam_m79", "M79", "primary", "40x46 Grenade"}
-weaponArray[60] = {"tfa_doim1918", "M1918", "primary", ".30-06"}
-weaponArray[61] = {"tfa_doim1919", "M1919", "primary", ".30-06"}
-weaponArray[62] = {"tfa_ins2_minimi", "M249", "primary", "5.56x45"}
-weaponArray[63] = {"bocw_mac10_alt", "Mac 10", "secondary", ".45 ACP"}
-weaponArray[64] = {"tfa_inss_makarov", "Makarov", "secondary", "9x18"}
-weaponArray[65] = {"tfa_tfre_maresleg", "Mare's Leg", "secondary", ".44-40"}
-weaponArray[66] = {"tfa_fml_lefrench_mas38", "Mas 38", "primary", "7.65"}
-weaponArray[67] = {"tfa_doimg34", "MG 34", "primary", "7.92x57"}
-weaponArray[68] = {"tfa_doimg42", "MG 42", "primary", "7.92x57"}
-weaponArray[69] = {"tfa_ins2_mk23", "MK 23", "secondary", ".45 ACP"}
-weaponArray[70] = {"tfa_fml_inss_mk18", "MK18", "primary", "5.56x45"}
-weaponArray[71] = {"tfa_ins2_mk14ebr", "Mk 14 EBR", "primary", "7.62x51"}
-weaponArray[72] = {"tfa_ins2_swmodel10", "Model 10", "secondary", ".38"}
-weaponArray[73] = {"tfa_ins2_mosin_nagant", "Mosin Nagant", "primary", "7.62x54"}
-weaponArray[74] = {"tfa_doimp40", "MP 40", "primary", "9x19"}
-weaponArray[75] = {"tfa_ins2_mp443", "MP-443", "secondary", "9x19"}
-weaponArray[76] = {"tfa_ins2_mp5k", "MP5K", "secondary", "9x19"}
-weaponArray[77] = {"tfa_inss_mp7_new", "MP7A1", "primary", "4.6x30"}
-weaponArray[78] = {"tfa_ww1_mp18", "MP18", "primary", "9x19"}
+weaponArray[44] = {"tfa_ins2_imbelia2", "Imbel IA2", "primary", "5.56x45"}
+weaponArray[45] = {"tfa_ararebo_bf1", "Japanese Ararebo", "melee"}
+weaponArray[46] = {"tfa_km2000_knife", "KM-2000", "melee"}
+weaponArray[47] = {"tfa_ins2_krissv", "KRISS Vector", "primary", ".45 ACP"}
+weaponArray[48] = {"tfa_ins2_ksg", "KSG", "primary", "12 Gauge"}
+weaponArray[49] = {"tfa_blast_ksvk_cqb", "KSVK 12.7", "primary", "12.7x108"}
+weaponArray[50] = {"tfa_doi_enfield", "Lee-Enfield No. 4", "primary", ".303 Mk VII"}
+weaponArray[51] = {"tfa_doilewis", "Lewis", "primary", ".303 British"}
+weaponArray[52] = {"tfa_ins2_zm_lr300", "LR-300", "primary", "5.56x45"}
+weaponArray[53] = {"tfa_doi_garand", "M1 Garand", "primary", ".30-06"}
+weaponArray[54] = {"tfa_doim3greasegun", "M3 Grease Gun", "secondary", ".45 ACP"}
+weaponArray[55] = {"tfa_ins2_eftm4a1", "M4A1", "primary", "5.56x45"}
+weaponArray[56] = {"tfa_ins2_m9", "M9", "secondary", "9x19"}
+weaponArray[57] = {"tfa_ins2_m14retro", "M14", "primary", "7.62x51"}
+weaponArray[58] = {"tfa_nam_m79", "M79", "primary", "40x46 Grenade"}
+weaponArray[59] = {"tfa_doim1918", "M1918", "primary", ".30-06"}
+weaponArray[60] = {"tfa_doim1919", "M1919", "primary", ".30-06"}
+weaponArray[61] = {"tfa_ins2_minimi", "M249", "primary", "5.56x45"}
+weaponArray[62] = {"bocw_mac10_alt", "Mac 10", "secondary", ".45 ACP"}
+weaponArray[63] = {"tfa_ins2_pm", "Makarov", "secondary", "9x18"}
+weaponArray[64] = {"tfa_tfre_maresleg", "Mare's Leg", "secondary", ".44-40"}
+weaponArray[65] = {"tfa_fml_lefrench_mas38", "Mas 38", "primary", "7.65"}
+weaponArray[66] = {"tfa_doimg34", "MG 34", "primary", "7.92x57"}
+weaponArray[67] = {"tfa_doimg42", "MG 42", "primary", "7.92x57"}
+weaponArray[68] = {"tfa_ins2_mk23", "MK 23", "secondary", ".45 ACP"}
+weaponArray[69] = {"tfa_fml_inss_mk18", "MK18", "primary", "5.56x45"}
+weaponArray[70] = {"tfa_ins2_mk14ebr", "Mk 14 EBR", "primary", "7.62x51"}
+weaponArray[71] = {"tfa_ins2_swmodel10", "Model 10", "secondary", ".38"}
+weaponArray[72] = {"tfa_ins2_mosin_nagant", "Mosin Nagant", "primary", "7.62x54"}
+weaponArray[73] = {"tfa_doimp40", "MP 40", "primary", "9x19"}
+weaponArray[74] = {"tfa_ins2_mp443", "MP-443", "secondary", "9x19"}
+weaponArray[75] = {"tfa_ins2_mp5k", "MP5K", "secondary", "9x19"}
+weaponArray[76] = {"tfa_ins2_mp7", "MP7A1", "primary", "4.6x30"}
+weaponArray[77] = {"tfa_ww1_mp18", "MP18", "primary", "9x19"}
+weaponArray[78] = {"tfa_inss2_hk_mp5a5", "MP5", "primary", "9x19"}
 weaponArray[79] = {"tfa_ins2_mr96", "MR-96", "secondary", ".22"}
 weaponArray[80] = {"tfa_ins2_mc255", "MTs225-12", "primary", "12 Gauge"}
 weaponArray[81] = {"tfa_ins2_nova", "Nova", "primary", "12 Gauge"}
@@ -164,7 +164,7 @@ weaponArray[101] = {"tfa_ins2_l85a2", "SA80", "primary", "5.56x45"}
 weaponArray[102] = {"tfa_ins2_izh43sw", "Sawed Off", "secondary", "12 Gauge"}
 weaponArray[103] = {"tfa_ins2_scar_h_ssr", "SCAR-H", "primary", "5.56x45"}
 weaponArray[104] = {"tfa_ins2_sc_evo", "Scorpion Evo", "primary", "9x19"}
-weaponArray[105] = {"tfa_new_p226", "SIG P226", "secondary", "9x19"}
+weaponArray[105] = {"tfa_ins2_p320_m18", "SIG P320", "secondary", "9x19"}
 weaponArray[106] = {"tfa_l4d2_skorpion", "Skorpion", "secondary", "9x18"}
 weaponArray[107] = {"tfa_ins2_sks", "SKS", "primary", "7.62x39"}
 weaponArray[108] = {"tfa_ins2_spas12", "SPAS-12", "primary", "12 Gauge"}
@@ -211,6 +211,25 @@ if SERVER then
     --Player Acceleration
     RunConsoleCommand("sv_airaccelerate", "1000")
 
+    --Gunplay Specific TFA Configuration
+    if GetConVar("tm_experimentalgunplay"):GetInt() == 1 then
+        RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
+        RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
+        RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
+        RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
+        RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
+        RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1")
+        RunConsoleCommand("sv_tfa_spread_multiplier", "0.55")
+    else
+        RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
+        RunConsoleCommand("sv_tfa_recoil_mul_p", "0.9")
+        RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.9")
+        RunConsoleCommand("sv_tfa_recoil_mul_y", "0.9")
+        RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.9")
+        RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.65")
+        RunConsoleCommand("sv_tfa_spread_multiplier", "0.66")
+    end
+
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
     RunConsoleCommand("sv_tfa_ammo_detonation", "0")
@@ -240,7 +259,6 @@ if SERVER then
     RunConsoleCommand("sv_tfa_crosshair_showplayerteam", "0")
     RunConsoleCommand("sv_tfa_damage_mult_max", "1.05")
     RunConsoleCommand("sv_tfa_damage_mult_min", "0.95")
-    RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
     RunConsoleCommand("sv_tfa_damage_multiplier_npc", "1.05")
     RunConsoleCommand("sv_tfa_default_clip", "1000")
     RunConsoleCommand("sv_tfa_door_respawn", "-1")
@@ -264,15 +282,9 @@ if SERVER then
     RunConsoleCommand("sv_tfa_penetration_hitmarker", "1")
     RunConsoleCommand("sv_tfa_range_modifier", "0.85")
     RunConsoleCommand("sv_tfa_recoil_legacy", "0")
-    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.9")
-    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.9")
-    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.65")
     RunConsoleCommand("sv_tfa_scope_gun_speed_scale", "0")
     RunConsoleCommand("sv_tfa_soundscale", "1")
     RunConsoleCommand("sv_tfa_spread_legacy", "0")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.66")
     RunConsoleCommand("sv_tfa_sprint_enabled", "1")
     RunConsoleCommand("sv_tfa_unique_slots", "1")
     RunConsoleCommand("sv_tfa_weapon_strip", "0")

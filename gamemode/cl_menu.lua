@@ -545,7 +545,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 net.Start("CloseMainMenu")
                 net.SendToServer()
-                LocalPly:Spawn()
             end
 
             local CustomizeButton = vgui.Create("DButton", MainPanel)
@@ -1477,7 +1476,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
                             FillCardListsUnlocked()
-                            DockDefaultCards:SetSize(0, (defaultCardsUnlocked * 42.5) + 42.5)
+                            DockDefaultCards:SetSize(0, 250)
                             DockKillCards:SetSize(0, (killCardsUnlocked * 42.5) + 42.5)
                             DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
                             DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
@@ -1508,7 +1507,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             DockKillCards:SetSize(0, 250)
                             DockAccoladeCards:SetSize(0, 583)
                             DockLevelCards:SetSize(0, 1280)
-                            DockMasteryCards:SetSize(0, 500)
+                            DockMasteryCards:SetSize(0, 5440)
                             DockColorCards:SetSize(0, 930)
                         end
                     end
@@ -2573,7 +2572,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             specialModelsTotal = 0
                             specialModelsUnlocked = 0
                             FillModelListsUnlocked()
-                            DockModels:SetSize(0, (defaultModelsTotal * 51.6) + 103.2)
+                            DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, (killModelsUnlocked * 51.6) + 103.2)
                             DockModelsStreak:SetSize(0, (streakModelsUnlocked * 51.6) + 103.2)
                             DockModelsAccolade:SetSize(0, (accoladeModelsUnlocked * 51.6) + 103.2)
@@ -3571,9 +3570,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                     hitSoundsType:SetPos(20, 150)
                     hitSoundsType:SetSize(100, 30)
                     hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
-                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") end
+                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Bartol") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
+                    hitSoundsType:AddChoice("Bartol")
                     hitSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/hit_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_hitsoundtype", value - 1)
@@ -4133,18 +4133,19 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease2:Dock(TOP)
-            PatchPreRelease2:SetSize(0, 210)
+            PatchPreRelease2:SetSize(0, 230)
             PatchPreRelease2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("01/23/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
 
-                draw.SimpleText("+ More trackable statistics", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("+ Moved many systems to net messages", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Map framework changes", "StreakText", 5, 160, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("   Fixed bugs introduced with new gmod update", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Drastic gunplay refinments", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ More trackable statistics", "StreakText", 5, 100, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Weapon kill tracking HUD option", "StreakText", 5, 120, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Scoreboard improvments", "StreakText", 5, 140, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("+ Moved many systems to net messages", "StreakText", 5, 160, patchGreen, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Map framework changes", "StreakText", 5, 180, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Fixed bugs introduced with new gmod update", "StreakText", 5, 200, white, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
