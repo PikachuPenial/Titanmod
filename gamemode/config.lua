@@ -31,7 +31,8 @@ mapCleanupTime = 30             --The interval (in seconds) at which the map is 
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
-mapVoteTimer = GetConVar("tm_mapvotetimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+mapVoteTimer = 21    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+continueOnMapVote = false        --Enables the player to vote towards the continuation of the map currently being played.
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
