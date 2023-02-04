@@ -5,10 +5,10 @@
 ]]--
 
 playerHealth = 100              --The max health of the player.
-playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and climbing speeds.)
+playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
 playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
 playerJumpMulti = 1             --The multiplier for the strength of the players jump.
-playerDuckStateMulti = 1        --The multuplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
+playerDuckStateMulti = 1        --The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
 playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
 healthRegenSpeed = 0.15         --The speed of the players health regeneration.
 healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
@@ -31,7 +31,7 @@ mapCleanupTime = 30             --The interval (in seconds) at which the map is 
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
-mapVoteTimer = 21    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+mapVoteTimer = GetConVar("tm_mapvotetimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 continueOnMapVote = false        --Enables the player to vote towards the continuation of the map currently being played.
 
 --MAPS
@@ -213,23 +213,13 @@ if SERVER then
     RunConsoleCommand("sv_airaccelerate", "1000")
 
     --Gunplay Specific TFA Configuration
-    if GetConVar("tm_experimentalgunplay"):GetInt() == 1 then
-        RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
-        RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
-        RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
-        RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
-        RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
-        RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1")
-        RunConsoleCommand("sv_tfa_spread_multiplier", "0.55")
-    else
-        RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
-        RunConsoleCommand("sv_tfa_recoil_mul_p", "0.9")
-        RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.9")
-        RunConsoleCommand("sv_tfa_recoil_mul_y", "0.9")
-        RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.9")
-        RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1.65")
-        RunConsoleCommand("sv_tfa_spread_multiplier", "0.66")
-    end
+    RunConsoleCommand("sv_tfa_damage_multiplier", "1.05")
+    RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
+    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
+    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.55")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
