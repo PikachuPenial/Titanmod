@@ -115,11 +115,11 @@ modelArray[28] = {"models/player/darky_m/rust/hazmat.mdl", "Hazmat", "", "longsh
 modelArray[29] = {"models/player/darky_m/rust/nomad.mdl", "Nomad", "", "longshot", 350}
 modelArray[30] = {"models/maxpayne3/ufe/ufepm.mdl", "UFE", "", "pointblank", 240}
 modelArray[31] = {"models/kyo/ghot.mdl", "Ghost", "", "pointblank", 480}
-modelArray[32] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantc.mdl", "General", "", "killstreaks", 160}
-modelArray[33] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantb.mdl", "Guard", "", "killstreaks", 360}
-modelArray[34] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Viper", "", "buzzkills", 160}
-modelArray[35] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "", "buzzkills", 360}
-modelArray[36] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Hatsune Miku", "Easter Egg reward", "special", "name"}
+--modelArray[32] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantc.mdl", "General", "", "killstreaks", 160}
+--modelArray[33] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantb.mdl", "Guard", "", "killstreaks", 360}
+modelArray[32] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Viper", "", "buzzkills", 160}
+modelArray[33] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "", "buzzkills", 360}
+modelArray[34] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Hatsune Miku", "Easter Egg reward", "special", "name"}
 
 --Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
 cardArray = {}
