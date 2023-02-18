@@ -396,7 +396,7 @@ net.Receive("NotifyDeath", function(len, ply)
         draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Press [F1 - F4] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("HINT: " .. hint, ArialFont, w / 2, 257.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 

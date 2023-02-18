@@ -2725,7 +2725,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 240)
+                    DockInputs:SetSize(0, 280)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
@@ -2881,8 +2881,9 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 225, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2901,8 +2902,19 @@ net.Receive("OpenMainMenu", function(len, ply)
                     ironsToggle:SetSize(30, 30)
                     ironsToggle:SetTooltip("Enable click-to-ADS instead of hold-to-ADS.")
 
+                    local mainMenuBind = DockInputs:Add("DBinder")
+                    mainMenuBind:SetPos(22.5, 150)
+                    mainMenuBind:SetSize(100, 30)
+                    mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
+                    mainMenuBind:SetTooltip("Adjust the keybind for opening the main menu.")
+                    function mainMenuBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
+                        selectedMenuBind = mainMenuBind:GetSelectedNumber()
+                        RunConsoleCommand("tm_mainmenubind", selectedMenuBind)
+                    end
+
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 150)
+                    grenadeBind:SetPos(22.5, 190)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     grenadeBind:SetTooltip("Adjust the keybind for throwing a grenade.")
@@ -2913,7 +2925,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 190)
+                    grappleBind:SetPos(22.5, 230)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     grappleBind:SetTooltip("Adjust the keybind for using a grappling hook")

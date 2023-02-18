@@ -16,6 +16,7 @@ if CLIENT then
     CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 1)
     CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)
     CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
+    CreateClientConVar("tm_mainmenubind", KEY_M, true, true, "Determines the keybind that will open the main menu")
     CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
@@ -74,8 +75,13 @@ hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
 end)
 
---Sets up the keybind for grenade throwing.
+--Sets up keybinds.
 hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+    if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
+        net.Start("OpenMainMenu")
+        net.Send(ply)
+        ply:SetNWBool("mainmenu", true)
+    end
     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
     hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
         if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end

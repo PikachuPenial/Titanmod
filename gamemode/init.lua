@@ -119,11 +119,9 @@ function GM:PlayerInitialSpawn(ply)
 
 	--During the case of a weapon replacment and/or a revamp, convert the statistics from the old variant of the weapon to the updated version.
 	for k, v in pairs(revampArray) do
-		if ply:GetPData("killsWith_" .. v[1]) ~= nil and ply:GetPData("killsWith_" .. v[2]) ~= nil then
-			if (ply:GetPData("killsWith_" .. v[1]) > ply:GetPData("killsWith_" .. v[2])) then ply:SetNWInt("killsWith_" .. v[2], ply:GetPData("killsWith_" .. v[1])) end
-			if (ply:GetPData("killedBy_" .. v[1]) > ply:GetPData("killedBy_" .. v[2])) then ply:SetNWInt("killedBy_" .. v[2], ply:GetPData("killedBy_" .. v[1])) end
-			if (ply:GetPData("timesUsed_" .. v[1]) > ply:GetPData("timesUsed_" .. v[2])) then ply:SetNWInt("timesUsed_" .. v[2], ply:GetPData("timesUsed_" .. v[1])) end
-		end
+		if ply:GetPData("killsWith_" .. v[1]) ~= nil and ply:GetPData("killsWith_" .. v[2]) ~= nil and (ply:GetPData("killsWith_" .. v[1]) > ply:GetPData("killsWith_" .. v[2])) then ply:SetNWInt("killsWith_" .. v[2], ply:GetPData("killsWith_" .. v[1])) end
+		if ply:GetPData("killedBy_" .. v[1]) ~= nil and ply:GetPData("killedBy_" .. v[2]) ~= nil and (ply:GetPData("killedBy_" .. v[1]) > ply:GetPData("killedBy_" .. v[2])) then ply:SetNWInt("killedBy_" .. v[2], ply:GetPData("killedBy_" .. v[1])) end
+		if ply:GetPData("timesUsed_" .. v[1]) ~= nil and ply:GetPData("timesUsed_" .. v[2]) ~= nil and (ply:GetPData("timesUsed_" .. v[1]) > ply:GetPData("timesUsed_" .. v[2])) then ply:SetNWInt("timesUsed_" .. v[2], ply:GetPData("timesUsed_" .. v[1])) end
 	end
 
 	--Opens Main Menu on server connect if enabled by the user.
