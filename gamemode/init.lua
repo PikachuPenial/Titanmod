@@ -107,13 +107,6 @@ function GM:PlayerInitialSpawn(ply)
 		if (ply:GetPData("timesUsed_" .. v[1]) == nil) then ply:SetNWInt("timesUsed_" .. v[1], 0) else ply:SetNWInt("timesUsed_" .. v[1], tonumber(ply:GetPData("timesUsed_" .. v[1]))) end
 	end
 
-	--During the case of a weapon replacment and/or a revamp, convert the statistics from the old variant of the weapon to the updated version.
-	for k, v in pairs(revampArray) do
-		if (ply:GetPData("killsWith_" .. v[1]) > ply:GetPData("killsWith_" .. v[2])) then ply:SetNWInt("killsWith_" .. v[2], ply:GetPData("killsWith_" .. v[1])) end
-		if (ply:GetPData("killedBy_" .. v[1]) > ply:GetPData("killedBy_" .. v[2])) then ply:SetNWInt("killedBy_" .. v[2], ply:GetPData("killedBy_" .. v[1])) end
-		if (ply:GetPData("timesUsed_" .. v[1]) > ply:GetPData("timesUsed_" .. v[2])) then ply:SetNWInt("timesUsed_" .. v[2], ply:GetPData("timesUsed_" .. v[1])) end
-	end
-
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
 	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
 	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
@@ -122,6 +115,15 @@ function GM:PlayerInitialSpawn(ply)
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
 		if ply:GetNWInt("playerLevel") == v[1] and v[2] ~= "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+	end
+
+	--During the case of a weapon replacment and/or a revamp, convert the statistics from the old variant of the weapon to the updated version.
+	for k, v in pairs(revampArray) do
+		if ply:GetPData("killsWith_" .. v[1]) ~= nil and ply:GetPData("killsWith_" .. v[2]) ~= nil then
+			if (ply:GetPData("killsWith_" .. v[1]) > ply:GetPData("killsWith_" .. v[2])) then ply:SetNWInt("killsWith_" .. v[2], ply:GetPData("killsWith_" .. v[1])) end
+			if (ply:GetPData("killedBy_" .. v[1]) > ply:GetPData("killedBy_" .. v[2])) then ply:SetNWInt("killedBy_" .. v[2], ply:GetPData("killedBy_" .. v[1])) end
+			if (ply:GetPData("timesUsed_" .. v[1]) > ply:GetPData("timesUsed_" .. v[2])) then ply:SetNWInt("timesUsed_" .. v[2], ply:GetPData("timesUsed_" .. v[1])) end
+		end
 	end
 
 	--Opens Main Menu on server connect if enabled by the user.
