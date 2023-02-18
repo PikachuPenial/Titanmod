@@ -3979,7 +3979,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local CreditsTesters = vgui.Create("DPanel", CreditsScroller)
                     CreditsTesters:Dock(TOP)
-                    CreditsTesters:SetSize(0, 485)
+                    CreditsTesters:SetSize(0, 555)
 
                     CreditsTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -4005,6 +4005,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("Checked", "SettingsLabel", 20, 365, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("mooseisrael321", "SettingsLabel", 20, 400, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("JustAMegumin", "SettingsLabel", 20, 435, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("DEcaf", "SettingsLabel", 20, 470, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("MatKri", "SettingsLabel", 20, 505, white, TEXT_ALIGN_LEFT)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CreditsQuickjumpHolder)
@@ -4133,7 +4135,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             local PatchPreRelease2 = vgui.Create("DPanel", PatchScroller)
             PatchPreRelease2:Dock(TOP)
-            PatchPreRelease2:SetSize(0, 370)
+            PatchPreRelease2:SetSize(0, 390)
             PatchPreRelease2.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h - 1, gray)
                 draw.SimpleText("Pre Release 2", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
@@ -4151,8 +4153,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                 draw.SimpleText("   Config option to disable map vote skip", "StreakText", 5, 260, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Map framework changes", "StreakText", 5, 280, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText("   Fixed bugs introduced with new gmod update", "StreakText", 5, 300, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- Galil primary weapon", "StreakText", 5, 320, patchRed, TEXT_ALIGN_LEFT)
-                draw.SimpleText("- SIG P260 secondary weapon", "StreakText", 5, 340, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("   Updated credit entries", "StreakText", 5, 320, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- Galil primary weapon", "StreakText", 5, 340, patchRed, TEXT_ALIGN_LEFT)
+                draw.SimpleText("- SIG P260 secondary weapon", "StreakText", 5, 360, patchRed, TEXT_ALIGN_LEFT)
             end
 
             local PatchPreRelease = vgui.Create("DPanel", PatchScroller)
