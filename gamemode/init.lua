@@ -16,6 +16,15 @@ end
 local randPrimary = {}
 local randSecondary = {}
 local randMelee = {}
+local revampArray = {} --Revamp Array formatting (old weapon ID, new weapon ID.) This is currently being used to convert statistics over to new weaponry if a weapon is replaced.
+revampArray[1] = {"tfa_inss_aks74u", "tfa_ins2_aks_r"}
+revampArray[2] = {"tfa_inss_aug", "tfa_fml_csgo_aug"}
+revampArray[3] = {"tfa_new_m1911", "tfa_nam_m1911"}
+revampArray[4] = {"tfa_new_inss_galil", "tfa_ins2_fml_hk53"}
+revampArray[5] = {"tfa_new_glock17", "tfa_glk_gen4"}
+revampArray[6] = {"tfa_inss_mp7_new", "tfa_ins2_mp7"}
+revampArray[7] = {"tfa_new_p226", "tfa_ins2_p320_m18"}
+revampArray[8] = {"tfa_inss_makarov", "tfa_ins2_pm"}
 
 --This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
 for k, v in pairs(weaponArray) do
@@ -62,7 +71,6 @@ function GM:PlayerSpawn(ply)
 	end
 
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
-
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
@@ -97,6 +105,13 @@ function GM:PlayerInitialSpawn(ply)
 		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
 		if (ply:GetPData("killedBy_" .. v[1]) == nil) then ply:SetNWInt("killedBy_" .. v[1], 0) else ply:SetNWInt("killedBy_" .. v[1], tonumber(ply:GetPData("killedBy_" .. v[1]))) end
 		if (ply:GetPData("timesUsed_" .. v[1]) == nil) then ply:SetNWInt("timesUsed_" .. v[1], 0) else ply:SetNWInt("timesUsed_" .. v[1], tonumber(ply:GetPData("timesUsed_" .. v[1]))) end
+	end
+
+	--During the case of a weapon replacment and/or a revamp, convert the statistics from the old variant of the weapon to the updated version.
+	for k, v in pairs(revampArray) do
+		if (ply:GetPData("killsWith_" .. v[1]) > ply:GetPData("killsWith_" .. v[2])) then ply:SetNWInt("killsWith_" .. v[2], ply:GetPData("killsWith_" .. v[1])) end
+		if (ply:GetPData("killedBy_" .. v[1]) > ply:GetPData("killedBy_" .. v[2])) then ply:SetNWInt("killedBy_" .. v[2], ply:GetPData("killedBy_" .. v[1])) end
+		if (ply:GetPData("timesUsed_" .. v[1]) > ply:GetPData("timesUsed_" .. v[2])) then ply:SetNWInt("timesUsed_" .. v[2], ply:GetPData("timesUsed_" .. v[1])) end
 	end
 
 	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
