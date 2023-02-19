@@ -1,7 +1,6 @@
 Easter Egg (if you know you know)
 Profanity Filter
 Vote kicking :steamhappy:
-Disable the skip option in the map vote via the config
 Configuration page (lets players see what config settings are enabled/disabled, and maybe allowing administrators to change settings)
 Player profile pages (heavily inspired by bad business profiles)
 
@@ -9,5 +8,4 @@ Use net messages for:
     Map voting
     Spectating system
 
-Customizable keybind for Main Menu
 Unclosable warning screen if not all content is installed

@@ -30,7 +30,7 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav"}
+    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav", "music/nintendo_mariokartchannel.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPly, chosenMusic)
 
@@ -76,6 +76,10 @@ net.Receive("OpenMainMenu", function(len, ply)
         musicName = "System Files - Zedorfski"
         requestedBy = "Zedorfski"
         steamProfile = "https://steamcommunity.com/id/zedorfski"
+    end
+
+    if chosenMusic == "music/nintendo_mariokartchannel.wav" then
+        musicName = "Mario Kart Channel - Nintendo"
     end
 
     musicVolume = GetConVar("tm_menumusicvolume"):GetInt() / 4
