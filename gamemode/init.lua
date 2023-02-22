@@ -145,6 +145,7 @@ util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("UpdateClientMapVoteTime")
+util.AddNetworkString("BeginSpectate")
 
 --Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
 if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
@@ -155,6 +156,13 @@ net.Receive("FiringRangeGiveWeapon", function(len, ply)
 	local selectedWeapon = net.ReadString()
 	ply:StripWeapons()
 	ply:Give(selectedWeapon)
+end )
+
+net.Receive("BeginSpectate", function(len, ply)
+	if ply:Alive() then return end
+	ply:SetNWBool("mainmenu", false)
+	ply:UnSpectate()
+	ply:Spectate(OBS_MODE_ROAMING)
 end )
 
 --Sending a hitsound if a player attacks another player.

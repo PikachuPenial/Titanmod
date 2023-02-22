@@ -467,13 +467,10 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePicker:SetValue("Spectate...")
             SpectatePicker:AddChoice("Freecam")
             SpectatePicker.OnSelect = function(_, _, value, id)
-                RunConsoleCommand("tm_spectate", "free")
-
+                net.Start("BeginSpectate")
+                net.SendToServer()
                 MainMenu:Remove(false)
                 gui.EnableScreenClicker(false)
-                net.Start("CloseMainMenu")
-                net.SendToServer()
-
                 menuMusic:FadeOut(1)
             end
 

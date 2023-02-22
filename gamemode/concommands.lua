@@ -107,15 +107,6 @@ function PlayerCardChange(ply, cmd, args)
 end
 concommand.Add("tm_selectplayercard", PlayerCardChange)
 
---Allows the player to spectate other players or to free roam at will using this command, or from the spectate dropdown in the Main Menu.
-function StartCustomSpectate(ply, cmd, args)
-	if (args[1] == "free") then
-		ply:UnSpectate()
-		ply:Spectate(OBS_MODE_ROAMING)
-	end
-end
-concommand.Add("tm_spectate", StartCustomSpectate)
-
 --Allows the player to prestige if they have hit the max level cap (Level 60).
 function PlayerPrestige(ply, cmd, args)
 	if ply:GetNWInt("playerLevel") == 60 then

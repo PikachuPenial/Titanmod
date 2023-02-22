@@ -6,6 +6,5 @@ Player profile pages (heavily inspired by bad business profiles)
 
 Use net messages for:
     Map voting
-    Spectating system
 
 Unclosable warning screen if not all content is installed
