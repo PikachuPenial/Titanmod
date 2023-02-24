@@ -42,6 +42,10 @@ net.Receive("OpenMainMenu", function(len, ply)
         musicName = "Gift Shop - Battleblock Theater OST"
     end
 
+    if chosenMusic == "music/nintendo_mariokartchannel.wav" then
+        musicName = "Mario Kart Channel - Nintendo"
+    end
+
     if chosenMusic == "music/takecare_ultrakillost.wav" then
         musicName = "Take Care - Ultrakill OST"
         requestedBy = "Unlucky"
@@ -78,10 +82,6 @@ net.Receive("OpenMainMenu", function(len, ply)
         steamProfile = "https://steamcommunity.com/id/zedorfski"
     end
 
-    if chosenMusic == "music/nintendo_mariokartchannel.wav" then
-        musicName = "Mario Kart Channel - Nintendo"
-    end
-
     musicVolume = GetConVar("tm_menumusicvolume"):GetInt() / 4
 
     if GetConVar("tm_menumusic"):GetInt() == 1 then
@@ -109,9 +109,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         end
 
         MainMenu.Paint = function()
-            if dof == true then
-                DrawBokehDOF(4, 1, 0)
-            end
+            if dof == true then DrawBokehDOF(4, 1, 0) end
             surface.SetDrawColor(40, 40, 40, 225)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
         end
