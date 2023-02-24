@@ -427,7 +427,7 @@ hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 	end
 end)
 
---Player health regeneration after not being hit for 3.5 seconds.
+--Player health regeneration after not being hit for a period of time.
 local function Regeneration()
 	for _, ply in pairs(player.GetAll()) do
 		if (ply:Alive()) then

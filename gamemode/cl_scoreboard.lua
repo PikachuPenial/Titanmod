@@ -330,10 +330,7 @@ function GM:ScoreboardHide()
 	if IsValid(ScoreboardDerma) then
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:Remove()
-
-		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
-			FiringRangeDerma:Remove()
-		end
+		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then FiringRangeDerma:Remove() end
 	end
 end
 
