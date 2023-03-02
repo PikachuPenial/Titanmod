@@ -3914,106 +3914,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                 timer.Simple(3, function() disconnectConfirm = 0 end)
             end
 
-            local CreditsButton = vgui.Create("DButton", MainPanel)
-            CreditsButton:SetPos(220, ScrH() - 32)
-            CreditsButton:SetText("")
-            CreditsButton:SetSize(70, 100)
-            local textAnim = 0
-            CreditsButton.Paint = function()
-                draw.DrawText("Credits", "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-                if CreditsButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 10)
-                else
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 10)
-                end
-            end
-            CreditsButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
-                MainPanel:Hide()
-
-                if not IsValid(CreditsPanel) then
-                    local CreditsPanel = MainMenu:Add("CreditsPanel")
-                    local CreditsSlideoutPanel = MainMenu:Add("CreditsSlideoutPanel")
-
-                    local CreditsQuickjumpHolder = vgui.Create("DPanel", CreditsSlideoutPanel)
-                    CreditsQuickjumpHolder:Dock(TOP)
-                    CreditsQuickjumpHolder:SetSize(0, ScrH())
-
-                    CreditsQuickjumpHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                    end
-
-                    local CreditsScroller = vgui.Create("DScrollPanel", CreditsPanel)
-                    CreditsScroller:Dock(FILL)
-
-                    local sbar = CreditsScroller:GetVBar()
-                    function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
-                    end
-
-                    local CreditsTextHolder = vgui.Create("DPanel", CreditsScroller)
-                    CreditsTextHolder:Dock(TOP)
-                    CreditsTextHolder:SetSize(0, 100)
-
-                    local CreditsDev = vgui.Create("DPanel", CreditsScroller)
-                    CreditsDev:Dock(TOP)
-                    CreditsDev:SetSize(0, 50)
-
-                    local CreditsTesters = vgui.Create("DPanel", CreditsScroller)
-                    CreditsTesters:Dock(TOP)
-                    CreditsTesters:SetSize(0, 555)
-
-                    CreditsTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("CREDITS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    CreditsDev.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Created and maintained by Penial.", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    CreditsTesters.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Testing", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-
-                        draw.SimpleText("Portanator", "SettingsLabel", 20, 120, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Seven", "SettingsLabel", 20, 155, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Unlucky", "SettingsLabel", 20, 190, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("suomij (narkotica)", "SettingsLabel", 20, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("theBean", "SettingsLabel", 20, 260, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Zedorfski", "SettingsLabel", 20, 295, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("RandomSZ", "SettingsLabel", 20, 330, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Checked", "SettingsLabel", 20, 365, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("mooseisrael321", "SettingsLabel", 20, 400, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("JustAMegumin", "SettingsLabel", 20, 435, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("DEcaf", "SettingsLabel", 20, 470, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("MatKri", "SettingsLabel", 20, 505, white, TEXT_ALIGN_LEFT)
-                    end
-
-                    local BackButtonSlideout = vgui.Create("DImageButton", CreditsQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, ScrH() - 44)
-                    BackButtonSlideout:SetSize(32, 32)
-                    BackButtonSlideout:SetTooltip("Return to Main Menu")
-                    BackButtonSlideout:SetImage("icons/exiticon.png")
-                    BackButtonSlideout.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        MainPanel:Show()
-                        CreditsPanel:Hide()
-                        CreditsSlideoutPanel:Hide()
-                    end
-                end
-            end
-
             local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
             PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
             PatchNotesButtonHolder:SetSize(48, 48)
@@ -4382,24 +4282,6 @@ function PANEL:Init()
     self:SetSize(56, ScrH())
     self:SetPos(0, 0)
 end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("CreditsSlideoutPanel", PANEL, "Panel")
-
-PANEL = {}
-function PANEL:Init()
-    self:SetSize(600, ScrH())
-    self:SetPos(56, 0)
-end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("CreditsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()

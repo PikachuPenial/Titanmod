@@ -25,6 +25,7 @@ revampArray[5] = {"tfa_new_glock17", "tfa_glk_gen4"}
 revampArray[6] = {"tfa_inss_mp7_new", "tfa_ins2_mp7"}
 revampArray[7] = {"tfa_new_p226", "tfa_ins2_p320_m18"}
 revampArray[8] = {"tfa_inss_makarov", "tfa_ins2_pm"}
+revampArray[9] = {"tfa_ismc_ak12_rpk", "tfa_ins2_ak12"}
 
 --This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
 for k, v in pairs(weaponArray) do
@@ -148,9 +149,7 @@ util.AddNetworkString("UpdateClientMapVoteTime")
 util.AddNetworkString("BeginSpectate")
 
 --Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
-if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
-	util.AddNetworkString("FiringRangeGiveWeapon")
-end
+if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then util.AddNetworkString("FiringRangeGiveWeapon") end
 
 net.Receive("FiringRangeGiveWeapon", function(len, ply)
 	local selectedWeapon = net.ReadString()
@@ -192,7 +191,7 @@ local function ReduceRocketDamage(ent, dmginfo)
 	local dmgForce = dmginfo:GetDamageForce()
 	local newForce = dmgForce * 1.15
 	dmginfo:SetDamageForce(newForce)
-	ent:SetVelocity(newForce / 70)
+	ent:SetVelocity((newForce / 70) * rocketJumpForceMulti)
 	dmginfo:ScaleDamage(0.3)
 end
 hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
@@ -428,30 +427,32 @@ hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 end)
 
 --Player health regeneration after not being hit for a period of time.
-local function Regeneration()
-	for _, ply in pairs(player.GetAll()) do
-		if (ply:Alive()) then
+if healthRegeneration = true then
+	local function Regeneration()
+		for _, ply in pairs(player.GetAll()) do
+			if (ply:Alive()) then
 
-			if (ply:Health() < (ply.LastHealth or 0)) then
-				ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
-			end
+				if (ply:Health() < (ply.LastHealth or 0)) then
+					ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
+				end
 
-			if (CurTime() > (ply.HealthRegenNext or 0)) then
-				ply.HealthRegen = (ply.HealthRegen or 0) + FrameTime()
-			 	if (ply.HealthRegen >= healthRegenSpeed) then
-					local add = math.floor(ply.HealthRegen / healthRegenSpeed)
-					ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
-					if (ply:Health() < playerHealth or healthRegenSpeed < 0) then
-						ply:SetHealth(math.min(ply:Health() + add, playerHealth))
+				if (CurTime() > (ply.HealthRegenNext or 0)) then
+					ply.HealthRegen = (ply.HealthRegen or 0) + FrameTime()
+					if (ply.HealthRegen >= healthRegenSpeed) then
+						local add = math.floor(ply.HealthRegen / healthRegenSpeed)
+						ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
+						if (ply:Health() < playerHealth or healthRegenSpeed < 0) then
+							ply:SetHealth(math.min(ply:Health() + add, playerHealth))
+						end
 					end
 				end
-			end
 
-			ply.LastHealth = ply:Health()
+				ply.LastHealth = ply:Health()
+			end
 		end
 	end
+	hook.Add("Think", "HealthRegen", Regeneration)
 end
-hook.Add("Think", "HealthRegen", Regeneration)
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
 timer.Create("cleanMap", mapCleanupTime, 0, function()

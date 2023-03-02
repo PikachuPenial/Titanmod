@@ -10,6 +10,9 @@ playerGravityMulti = 1          --The multiplier for the strength of gravity aff
 playerJumpMulti = 1             --The multiplier for the strength of the players jump.
 playerDuckStateMulti = 1        --The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
 playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
+playerSlideSpeedMulti = 1.55    --The multiplier of the players speed while sliding.
+playerSlideDuration = 1         --The time (in seconds) that a players slide lasts.
+healthRegeneration = true       --Enable or disable health regeneration on players after not taking damage for a set amount of time.
 healthRegenSpeed = 0.15         --The speed of the players health regeneration.
 healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
 playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
@@ -22,10 +25,12 @@ useSecondary = true             --Enable secondary weapons for the players loado
 useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
 grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
-grappleKillReset = true         --The cooldown (in sceonds) of the grappling hook after being used.
+grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
 grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
 rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
+rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
 damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
+proxChatRange = 750             --The thresehold in distance where players can hear other players over proximity voice chat.
 
 mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
@@ -194,11 +199,11 @@ weaponArray[130] = {"tfa_ins2_xm8", "XM8", "primary", "5.56x45"}
 
 --CONVARS
 if SERVER then
-    --Disabling NoClip/Tinnitus
+    --Noclip
     RunConsoleCommand("sbox_noclip", "0")
 
     --Proximity Voice Chat
-    RunConsoleCommand("sv_maxVoiceAudible", "750")
+    RunConsoleCommand("sv_maxVoiceAudible", proxChatRange)
 
     --Dynamic Height
     RunConsoleCommand("sv_ec2_dynamicheight", "0")
@@ -206,8 +211,8 @@ if SERVER then
     RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
 
     --Sliding
-    RunConsoleCommand("sv_qslide_duration", "1")
-    RunConsoleCommand("sv_qslide_speedmult", "1.55")
+    RunConsoleCommand("sv_qslide_duration", playerSlideDuration)
+    RunConsoleCommand("sv_qslide_speedmult", playerSlideSpeedMulti)
 
     --Player Acceleration
     RunConsoleCommand("sv_airaccelerate", "1000")
@@ -289,11 +294,7 @@ if SERVER then
     RunConsoleCommand("tpf_sv_max_fov", "75")
 
     --Grappling Hook
-    if GetConVar("tm_developermode"):GetInt() == 1 then
-        RunConsoleCommand("frest_Cooldowng", "0")
-    else
-        RunConsoleCommand("frest_Cooldowng", grappleCooldown)
-    end
+    if GetConVar("tm_developermode"):GetInt() == 1 then RunConsoleCommand("frest_Cooldowng", "0") else RunConsoleCommand("frest_Cooldowng", grappleCooldown) end
     RunConsoleCommand("frest_range", grappleRange)
 
     --HL2 Grenades

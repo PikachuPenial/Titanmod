@@ -4,7 +4,7 @@ Profanity Filter (would probably require a custom chat system? sounds cool but a
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Weaponry type for each weapon (things like Pistol/Rifle/Shotgun, allows for more tracking opportunities)
 Unclosable warning screen if not all content is installed
-Spawn reworks on problematic maps (Arctic, Nuketown, )
+Spawn reworks on problematic maps (Arctic, Nuketown)
 Use net messages for:
     Map voting (would allow you to preview the amount of votes on each map)
     Customization (no noticable difference, but its more secure server side)
