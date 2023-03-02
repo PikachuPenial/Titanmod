@@ -1067,6 +1067,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 masteryCardsTotal = masteryCardsTotal + 1
 
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
+                                    print(v[5])
                                     card:SetColor(Color(100, 100, 100))
 
                                     local lockIndicator = vgui.Create("DImageButton", card)
@@ -1622,9 +1623,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
 
-                    local specialModelsTotal = 0
-                    local specialModelsUnlocked = 0
-
                     local ModelQuickjumpHolder = vgui.Create("DPanel", CustomizeSlideoutPanel)
                     ModelQuickjumpHolder:Dock(TOP)
                     ModelQuickjumpHolder:SetSize(0, ScrH())
@@ -1703,15 +1701,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     DockModelsAccolade:Dock(TOP)
                     DockModelsAccolade:SetSize(0, 775)
 
-                    --Special Playermodels
-                    local TextSpecial = vgui.Create("DPanel", CustomizeScroller)
-                    TextSpecial:Dock(TOP)
-                    TextSpecial:SetSize(0, 90)
-
-                    local DockModelsSpecial = vgui.Create("DPanel", CustomizeScroller)
-                    DockModelsSpecial:Dock(TOP)
-                    DockModelsSpecial:SetSize(0, 155)
-
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
@@ -1746,15 +1735,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     AccoladeModelList:SetSpaceX(5)
 
                     AccoladeModelList.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, transparent)
-                    end
-
-                    local SpecialModelList = vgui.Create("DIconLayout", DockModelsSpecial)
-                    SpecialModelList:Dock(TOP)
-                    SpecialModelList:SetSpaceY(5)
-                    SpecialModelList:SetSpaceX(5)
-
-                    SpecialModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
@@ -1848,12 +1828,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
                             else
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "special" and newModelUnlockValue == "name" then
-                            if LocalPly:SteamID() == "STEAM_0:1:514443768" then
-                                draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("[CLASSIFIED]", "Health", w / 2, 130, Color(0, 0, 250, 255), TEXT_ALIGN_CENTER)
                             end
                         end
                     end
@@ -2010,69 +1984,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     end
                                 else
                                     streakModelsUnlocked = streakModelsUnlocked + 1
-                                    modelsUnlocked = modelsUnlocked + 1
-                                end
-
-                                icon.DoClick = function(icon)
-                                    newModel = v[1]
-                                    newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
-
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
-
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
-                                    surface.PlaySound("tmui/buttonrollover.wav")
-                                end
-                            elseif v[4] == "special" then
-                                local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
-                                icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
-                                icon:SetSize(150, 150)
-                                SpecialModelList:Add(icon)
-
-                                specialModelsTotal = specialModelsTotal + 1
-
-                                if v[5] == "name" and LocalPly:SteamID() ~= "STEAM_0:1:514443768" then
-                                    local lockIndicator = vgui.Create("DImageButton", icon)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(96, 96)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
-
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
-
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
-                                else
-                                    specialModelsUnlocked = specialModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
                                 end
 
@@ -2271,42 +2182,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
-                            elseif v[4] == "special" then
-                                specialModelsTotal = specialModelsTotal + 1
-
-                                if v[5] == "name" and LocalPly:SteamID() == "STEAM_0:1:514443768" then
-                                    local icon = vgui.Create("SpawnIcon", DockModelsSpecial)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
-                                    icon:SetSize(150, 150)
-                                    SpecialModelList:Add(icon)
-
-                                    specialModelsUnlocked = specialModelsUnlocked + 1
-                                    modelsUnlocked = modelsUnlocked + 1
-
-                                    icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
-
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
-
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
-                                end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
@@ -2388,17 +2263,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
                     end
 
-                    TextSpecial.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Special", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
-
-                        if specialModelsUnlocked == specialModelsTotal then
-                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
-                        else
-                            draw.SimpleText(specialModelsUnlocked .. " / " .. specialModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
-                        end
-                    end
-
                     DockModels.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
@@ -2412,10 +2276,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     DockModelsAccolade.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-
-                    DockModelsSpecial.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
@@ -2538,17 +2398,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
                             end
-                        elseif newModelUnlockType == "special" and newModelUnlockValue == "name" then
-                            if LocalPly:SteamID() == "STEAM_0:1:514443768" then
-                                surface.PlaySound("common/wpn_select.wav")
-                                RunConsoleCommand("tm_selectplayermodel", newModel, newModelUnlockType, newModelUnlockValue)
-                                MainPanel:Show()
-                                CustomizeSlideoutPanel:Hide()
-                                CustomizePanel:Hide()
-                                PreviewPanel:Hide()
-                            else
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            end
                         end
                     end
 
@@ -2558,7 +2407,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                             KillsModelList:Clear()
                             StreakModelList:Clear()
                             AccoladeModelList:Clear()
-                            SpecialModelList:Clear()
                             modelsUnlocked = 0
                             defaultModelsTotal = 0
                             defaultModelsUnlocked = 0
@@ -2568,20 +2416,16 @@ net.Receive("OpenMainMenu", function(len, ply)
                             streakModelsUnlocked = 0
                             accoladeModelsTotal = 0
                             accoladeModelsUnlocked = 0
-                            specialModelsTotal = 0
-                            specialModelsUnlocked = 0
                             FillModelListsUnlocked()
                             DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, (killModelsUnlocked * 51.6) + 103.2)
                             DockModelsStreak:SetSize(0, (streakModelsUnlocked * 51.6) + 103.2)
                             DockModelsAccolade:SetSize(0, (accoladeModelsUnlocked * 51.6) + 103.2)
-                            DockModelsSpecial:SetSize(0, (specialModelsUnlocked * 51.6) + 103.2)
                         else
                             DefaultModelList:Clear()
                             KillsModelList:Clear()
                             StreakModelList:Clear()
                             AccoladeModelList:Clear()
-                            SpecialModelList:Clear()
                             modelsUnlocked = 0
                             defaultModelsTotal = 0
                             defaultModelsUnlocked = 0
@@ -2591,14 +2435,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                             streakModelsUnlocked = 0
                             accoladeModelsTotal = 0
                             accoladeModelsUnlocked = 0
-                            specialModelsTotal = 0
-                            specialModelsUnlocked = 0
                             FillModelListsAll()
                             DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, 310)
                             DockModelsStreak:SetSize(0, 310)
                             DockModelsAccolade:SetSize(0, 775)
-                            DockModelsSpecial:SetSize(0, 155)
                         end
                     end
 
@@ -2645,16 +2486,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     AccoladeJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextAccolade)
-                    end
-
-                    local SpecialJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    SpecialJump:SetPos(4, 305)
-                    SpecialJump:SetSize(48, 48)
-                    SpecialJump:SetImage("icons/specialicon.png")
-                    SpecialJump:SetTooltip("Special")
-                    SpecialJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        CustomizeScroller:ScrollToChild(TextSpecial)
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)

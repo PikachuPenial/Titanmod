@@ -59,8 +59,6 @@ function PlayerModelChange(ply, cmd, args)
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
-			elseif modelUnlock == "special" and modelValue == "name" and ply:SteamID() == "STEAM_0:1:514443768" then
-				ply:SetNWString("chosenPlayermodel", modelID)
 			end
 		end
 	end

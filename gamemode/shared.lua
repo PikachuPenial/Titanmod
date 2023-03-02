@@ -125,7 +125,6 @@ modelArray[31] = {"models/kyo/ghot.mdl", "Ghost", "", "pointblank", 480}
 --modelArray[33] = {"models/player/custom_player/legacy/ctm_gendarmerie_variantb.mdl", "Guard", "", "killstreaks", 360}
 modelArray[32] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Viper", "", "buzzkills", 160}
 modelArray[33] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "", "buzzkills", 360}
-modelArray[34] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Hatsune Miku", "Easter Egg reward", "special", "name"}
 
 --Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
 cardArray = {}

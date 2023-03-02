@@ -41,7 +41,6 @@ end
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
-
 	ply:SetGravity(.72 * playerGravityMulti)
 	ply:SetHealth(playerHealth)
 	ply:SetMaxHealth(playerHealth)
@@ -427,7 +426,7 @@ hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 end)
 
 --Player health regeneration after not being hit for a period of time.
-if healthRegeneration = true then
+if healthRegeneration == true then
 	local function Regeneration()
 		for _, ply in pairs(player.GetAll()) do
 			if (ply:Alive()) then
