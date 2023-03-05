@@ -666,11 +666,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playercards", "StreakText", 287.5, 140, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playercards", "StreakText", w / 2 + 20, 140, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedCards = CardTextHolder:Add("DCheckBox")
-                    HideLockedCards:SetPos(165, 142.5)
+                    HideLockedCards:SetPos(145, 142.5)
                     HideLockedCards:SetValue(false)
                     HideLockedCards:SetSize(20, 20)
                     HideLockedCards:SetTooltip("Hide playercards that you do not have unlocked.")
@@ -789,9 +789,23 @@ net.Receive("OpenMainMenu", function(len, ply)
                     local CardsPreviewScroller = vgui.Create("DScrollPanel", CardPreviewPanel)
                     CardsPreviewScroller:Dock(FILL)
 
+                    local sbar = CardsPreviewScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
+
                     local PreviewCardTextHolder = vgui.Create("DPanel", CardsPreviewScroller)
                     PreviewCardTextHolder:Dock(TOP)
-                    PreviewCardTextHolder:SetSize(0, 170)
+                    if ScrH() >= 1080 then PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall() - 100) else PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall()) end
 
                     CallingCard = vgui.Create("DImage", PreviewCardTextHolder)
                     CallingCard:SetPos(137.5, 10)
@@ -816,10 +830,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue .. " Kills", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
@@ -888,10 +902,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText(playerTotalLevel .. "/" .. newCardUnlockValue .. " Total Levels", "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
@@ -1067,7 +1081,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 masteryCardsTotal = masteryCardsTotal + 1
 
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    print(v[5])
                                     card:SetColor(Color(100, 100, 100))
 
                                     local lockIndicator = vgui.Create("DImageButton", card)
@@ -1596,7 +1609,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
 
-                local previewModel = LocalPly:GetNWString("chosenPlayermodel")
+                local currentModel = LocalPly:GetNWString("chosenPlayermodel")
 
                 if not IsValid(CustomizePanel) then
                     local CustomizePanel = MainMenu:Add("CustomizePanel")
@@ -1622,6 +1635,17 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
+
+                    --Checking for the players currently equipped model.
+                    for k, v in pairs(modelArray) do
+                        if v[1] == currentModel then
+                            newModel = v[1]
+                            newModelName = v[2]
+                            newModelDesc = v[3]
+                            newModelUnlockType = v[4]
+                            newModelUnlockValue = v[5]
+                        end
+                    end
 
                     local ModelQuickjumpHolder = vgui.Create("DPanel", CustomizeSlideoutPanel)
                     ModelQuickjumpHolder:Dock(TOP)
@@ -1656,11 +1680,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 40, 140, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 20, 140, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
-                    HideLockedModels:SetPos(140, 142.5)
+                    HideLockedModels:SetPos(120, 142.5)
                     HideLockedModels:SetValue(false)
                     HideLockedModels:SetSize(20, 20)
                     HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")    
@@ -1699,7 +1723,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 775)
+                    DockModelsAccolade:SetSize(0, 610)
 
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
@@ -1743,110 +1767,95 @@ net.Receive("OpenMainMenu", function(len, ply)
                     local PreviewScroller = vgui.Create("DScrollPanel", PreviewPanel)
                     PreviewScroller:Dock(FILL)
 
-                    local PreviewTextHolder = vgui.Create("DPanel", PreviewScroller)
-                    PreviewTextHolder:Dock(TOP)
-                    PreviewTextHolder:SetSize(0, 100)
-
-                    PreviewTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.SimpleText("Current playermodel:", "Health", w / 2, 20, white, TEXT_ALIGN_CENTER)
+                    local sbar = PreviewScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
                     end
-
-                    local PreviewModelHolder = vgui.Create("DPanel", PreviewScroller)
-                    PreviewModelHolder:Dock(TOP)
-                    PreviewModelHolder:SetSize(0, 320)
-
-                    PreviewModelHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
-
-                    local NewModelTextHolder = vgui.Create("DPanel", PreviewScroller)
-                    NewModelTextHolder:Dock(TOP)
-                    NewModelTextHolder:SetSize(0, 160)
-
-                    NewModelTextHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-
-                        if newModel ~= nil then
-                            draw.SimpleText("Selected playermodel:", "Health", w / 2, 10, white, TEXT_ALIGN_CENTER)
-                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 50, white, TEXT_ALIGN_CENTER)
-                            draw.SimpleText(newModelDesc, "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
-                        end
-
-                        if newModelUnlockType == "default" then
-                            draw.SimpleText("Unlocked", "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                        elseif newModelUnlockType == "kills" then
-                            if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
-                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "streak" then
-                            if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "headshot" then
-                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "smackdown" then
-                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
-                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "clutch" then
-                            if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "longshot" then
-                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "pointblank" then
-                            if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "killstreaks" then
-                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        elseif newModelUnlockType == "buzzkills" then
-                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidRed, TEXT_ALIGN_CENTER)
-                            else
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 130, solidGreen, TEXT_ALIGN_CENTER)
-                            end
-                        end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
-
-                    local PlayerModelDisplay = vgui.Create("DModelPanel", PreviewModelHolder)
-                    PlayerModelDisplay:SetSize(400, 400)
-                    PlayerModelDisplay:SetPos(0, -50)
-                    PlayerModelDisplay:SetModel(previewModel)
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
 
                     local SelectedModelHolder = vgui.Create("DPanel", PreviewScroller)
                     SelectedModelHolder:Dock(TOP)
-                    SelectedModelHolder:SetSize(0, 400)
+                    if ScrH() >= 1080 then SelectedModelHolder:SetSize(0, PreviewPanel:GetTall() - 100) else SelectedModelHolder:SetSize(0, PreviewPanel:GetTall()) end
 
                     SelectedModelHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
+
+                        if newModel ~= nil then
+                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(newModelDesc, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                        end
+
+                        if newModelUnlockType == "default" then
+                            draw.SimpleText("Unlocked", "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                        elseif newModelUnlockType == "kills" then
+                            if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "streak" then
+                            if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "headshot" then
+                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "smackdown" then
+                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "clutch" then
+                            if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "longshot" then
+                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "pointblank" then
+                            if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "killstreaks" then
+                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        elseif newModelUnlockType == "buzzkills" then
+                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                            else
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            end
+                        end
                     end
 
                     local SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                    selectedModelShown = false
+                    SelectedModelDisplay:SetSize(475, 337.5)
+                    SelectedModelDisplay:SetPos(0, 120)
+                    SelectedModelDisplay:SetModel(newModel)
 
                     local function FillModelListsAll()
                         for k, v in pairs(modelArray) do
@@ -1868,19 +1877,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
 
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
+                                    SelectedModelDisplay:Remove()
 
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(475, 337.5)
+                                    SelectedModelDisplay:SetPos(0, 120)
+                                    SelectedModelDisplay:SetModel(newModel)
+
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "kills" then
@@ -1904,19 +1907,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 else
@@ -1931,19 +1928,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
 
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
+                                    SelectedModelDisplay:Remove()
 
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(475, 337.5)
+                                    SelectedModelDisplay:SetPos(0, 120)
+                                    SelectedModelDisplay:SetModel(newModel)
+
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "streak" then
@@ -1967,19 +1958,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 else
@@ -1994,19 +1979,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
 
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
+                                    SelectedModelDisplay:Remove()
 
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(475, 337.5)
+                                    SelectedModelDisplay:SetPos(0, 120)
+                                    SelectedModelDisplay:SetModel(newModel)
+
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
@@ -2030,19 +2009,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 else
@@ -2057,19 +2030,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
 
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
+                                    SelectedModelDisplay:Remove()
 
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(475, 337.5)
+                                    SelectedModelDisplay:SetPos(0, 120)
+                                    SelectedModelDisplay:SetModel(newModel)
+
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             end
@@ -2096,19 +2063,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     newModelUnlockType = v[4]
                                     newModelUnlockValue = v[5]
 
-                                    if selectedModelShown == true then
-                                        SelectedModelDisplay:Remove()
+                                    SelectedModelDisplay:Remove()
 
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                    else
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
-                                        SelectedModelDisplay:SetModel(newModel)
-                                        selectedModelShown = true
-                                    end
+                                    SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                    SelectedModelDisplay:SetSize(400, 400)
+                                    SelectedModelDisplay:SetPos(0, -25)
+                                    SelectedModelDisplay:SetModel(newModel)
+
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "kills" then
@@ -2130,19 +2091,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
@@ -2166,19 +2121,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
@@ -2202,19 +2151,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         newModelUnlockType = v[4]
                                         newModelUnlockValue = v[5]
 
-                                        if selectedModelShown == true then
-                                            SelectedModelDisplay:Remove()
+                                        SelectedModelDisplay:Remove()
 
-                                            SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                        else
-                                            SelectedModelDisplay:SetSize(400, 400)
-                                            SelectedModelDisplay:SetPos(0, -25)
-                                            SelectedModelDisplay:SetModel(newModel)
-                                            selectedModelShown = true
-                                        end
+                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                        SelectedModelDisplay:SetSize(400, 400)
+                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetModel(newModel)
+
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
@@ -2289,7 +2232,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local ApplyModelButton = vgui.Create("DButton", ApplyButtonHolder)
                     ApplyModelButton:SetText("APPLY NEW PLAYERMODEL")
-                    ApplyModelButton:SetPos(25, 25)
+                    ApplyModelButton:SetPos(62.5, 25)
                     ApplyModelButton:SetSize(350, 50)
                     ApplyModelButton.DoClick = function()
                         if newModelUnlockType == "default" then
@@ -4026,7 +3969,7 @@ vgui.Register("CustomizeSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(475, ScrH())
+    self:SetSize(475, ScrH() * 0.6)
     self:SetPos(56, 0)
 end
 
@@ -4038,8 +3981,8 @@ vgui.Register("CustomizePanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(400, ScrH())
-    self:SetPos(531, 0)
+    self:SetSize(475, ScrH() * 0.4)
+    self:SetPos(56, ScrH() * 0.6)
 end
 
 function PANEL:Paint(w, h)
