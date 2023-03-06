@@ -36,8 +36,7 @@ mapCleanupTime = 30             --The interval (in seconds) at which the map is 
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
-mapVoteTimer = GetConVar("tm_mapvotetimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
-continueOnMapVote = false        --Enables the player to vote towards the continuation of the map currently being played.
+matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
@@ -57,7 +56,7 @@ mapArray[10] = {"tm_rig", "Rig", "Dark and rainy oil rig.", "maps/thumb/tm_rig.p
 mapArray[11] = {"tm_shipment", "Shipment", "Extremely small and chaotic.", "maps/thumb/tm_shipment.png", true}
 mapArray[12] = {"tm_station", "Station", "A vertical and open battleground.", "maps/thumb/tm_station.png", true}
 
-availableMaps = {"skip"} -- "skip" will have the map vote end in a continue if it ties with another map, requiring a majority vote for a new map.
+availableMaps = {}
 for m, v in pairs(mapArray) do
     if v[5] == true then table.insert(availableMaps, v[1]) end
 end

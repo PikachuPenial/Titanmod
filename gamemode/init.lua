@@ -13,6 +13,12 @@ function GM:Initialize()
 	print("Titanmod Initialized on " .. game.GetMap())
 end
 
+--Sets up the global match time variable, makes it easily sharable between server and client. I have been using GLua for over a year and I didn't know this fucking existed...
+SetGlobalInt("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
+
+--Force friendly fire. If it is off, we do not get lag compensation.
+RunConsoleCommand("mp_friendlyfire", "1")
+
 local randPrimary = {}
 local randSecondary = {}
 local randMelee = {}
@@ -142,9 +148,9 @@ util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
 util.AddNetworkString("NotifyLevelUp")
 util.AddNetworkString("KillFeedUpdate")
-util.AddNetworkString("MapVoteHUD")
 util.AddNetworkString("EndOfGame")
-util.AddNetworkString("UpdateClientMapVoteTime")
+util.AddNetworkString("MapVoteCompleted")
+util.AddNetworkString("ReceiveMapVote")
 util.AddNetworkString("BeginSpectate")
 
 --Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
@@ -458,128 +464,127 @@ timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
-local mapVoteOpen = false
-local mapVotes = {}
-local playersVoted = {}
-local firstMap
-local secondMap
-
 if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then
-	--Sets up Map Voting.
-	timer.Create("startMapVote", mapVoteTimer, 0, function()
+	local mapVoteOpen = false
+	local mapVotes = {}
+	local playersVoted = {}
+	local firstMap
+	local secondMap
+	
+	--Begins the process of ending a match.
+	local function EndMatch()
+		timer.Remove("matchStatusCheck")
+	
 		mapVotes = {}
 		playersVoted = {}
-
+	
 		for k, v in RandomPairs(availableMaps) do
 			table.insert(mapVotes, 0)
 		end
-
+	
 		mapVoteOpen = true
-
+	
 		local mapPool = {}
-
+	
 		--Makes sure that the map currently being played is not added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
-			if game.GetMap() ~= v and v ~= "tm_firingrange" and v ~= "skip" then
+			if game.GetMap() ~= v and v ~= "tm_firingrange" then
 				table.insert(mapPool, v)
 			end
 		end
-
+	
 		firstMap = mapPool[1]
 		secondMap = mapPool[2]
-
+	
 		--Failsafe for empty servers, will skip to a new map if there are no players connected to the server.
 		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", firstMap) return end
-
-		net.Start("MapVoteHUD")
+	
+		for k, v in pairs(player.GetAll()) do
+			v:KillSilent()
+		end
+	
+		net.Start("EndOfGame")
 		net.WriteString(firstMap)
 		net.WriteString(secondMap)
 		net.Broadcast()
-
+	
+		local connectedPlayers = player.GetAll()
+		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+	
+		for k, v in pairs(connectedPlayers) do
+			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
+			if k == 1 then
+				v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
+				v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
+				CheckForPlayerLevel(v)
+			end
+		end
+	
 		timer.Create("mapVoteStatus", 20, 1, function()
 			local newMapTable = {}
 			local maxVotes = 0
-
+	
 			for k, v in pairs(mapVotes) do
 				if v > maxVotes then
 					maxVotes = v
 				end
 			end
-
+	
 			for k, v in pairs(availableMaps) do
 				if mapVotes[k] == maxVotes then
 					table.insert(newMapTable, v)
 				end
 			end
-
+	
 			mapVoteOpen = false
-
-			--If players vote to continue on current map, end the map vote and restart the timer, otherwise, begin the intermission process.
-			if maxVotes == 0 or table.HasValue(newMapTable, "skip") == true then PrintMessage(HUD_PRINTTALK, "Play will continue on this map as voted for, a new map vote will commence in " .. mapVoteTimer - 20 .. " seconds!") return end
-
 			newMap = newMapTable[math.random(#newMapTable)]
-
-			for k, v in pairs(player.GetAll()) do
-				v:KillSilent()
-			end
-
-			net.Start("EndOfGame")
+	
+			net.Start("MapVoteCompleted")
 			net.WriteString(newMap)
 			net.Broadcast()
-
-			local connectedPlayers = player.GetAll()
-			table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
-
-			for k, v in pairs(connectedPlayers) do
-				v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
-				if k == 1 then
-					v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
-					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
-					CheckForPlayerLevel(v)
-				end
-			end
-
-			timer.Create("newMapCooldown", 30, 1, function()
-				RunConsoleCommand("changelevel", newMap)
-			end)
 		end)
-	end)
+	
+		timer.Create("newMapCooldown", 30, 1, function()
+			RunConsoleCommand("changelevel", newMap)
+		end)
+	end
 
-	local function PlayerMapVote(ply, cmd, args)
-		if args[1] == nil then return end
+	--Calls for a match end once the match timer has concluded.
+	local function MatchStatusCheck()
+		if CurTime() > GetGlobalInt("tm_matchtime", 0) then EndMatch() end
+	end
 
+	--Checking the match time periodically to determine when a match should end.
+	timer.Create("matchStatusCheck", 1, 0, MatchStatusCheck)
+
+	net.Receive("ReceiveMapVote", function(len, ply)
 		if playersVoted ~= nil then
 			for k, v in pairs(playersVoted) do
 				if v == ply then return end
 			end
 		end
-
-		if mapVoteOpen == false then print("You can not vote for a map, as the map vote is not open yet.") return end
-
-		local votedMap = args[1]
+	
+		if mapVoteOpen == false then return end
+	
+		local votedMap = net.ReadString()
+		local mapIndex = net.ReadUInt(2)
 		local validMapVote = false
-
+	
 		for k, v in pairs(availableMaps) do
 			if v == votedMap then
 				validMapVote = true
 				mapVotes[k] = mapVotes[k] + 1
+				table.insert(playersVoted, ply)
 			end
 		end
+	
+		if validMapVote == false then return end
 
-		if validMapVote == false then print("The map you attempted to vote for does not exist.") return end
-	end
-	concommand.Add("tm_voteformap", PlayerMapVote)
-
-	local clientMapTimeLeft
-	timer.Create("updateClientMapVoteTime", 15, 0, function()
-		clientMapTimeLeft = math.Round(timer.TimeLeft("startMapVote"))
-
-		net.Start("UpdateClientMapVoteTime", true)
-		net.WriteFloat(clientMapTimeLeft)
-		net.Broadcast()
-	end)
+		if mapIndex	== 1 then SetGlobalInt("VotesOnMapOne", GetGlobalInt("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobalInt("VotesOnMapTwo", GetGlobalInt("VotesOnMapTwo", 0) + 1, 0) end
+	end )
 end
 
+--Auto saves player data if enabled by server admin.
 if forceEnableAutoSaveTime ~= 0 then
 	timer.Create("serverAutoSaveTimer", forceEnableAutoSaveTime, 0, function()
 		for k, v in pairs(player.GetHumans()) do v:ConCommand("tm_forcesave") end

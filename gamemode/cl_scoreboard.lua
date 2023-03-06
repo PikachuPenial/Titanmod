@@ -10,11 +10,7 @@ local mapName
 local mapThumb
 local dof
 
-local timeUntilMapVote = GetConVar("tm_mapvotetimer"):GetInt()
-
-net.Receive("UpdateClientMapVoteTime", function(len, ply)
-    timeUntilMapVote = net.ReadFloat()
-end)
+local timeUntilMapVote = GetConVar("tm_matchlengthtimer"):GetInt()
 
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
@@ -111,12 +107,10 @@ function GM:ScoreboardShow()
 		MapInfoPanel.Paint = function(self, w, h)
 			if mapName ~= nil then
 				draw.SimpleText("Playing on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Next map vote in " .. timeUntilMapVote .. "s~", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("Match ends in " .. math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
 			else
 				draw.SimpleText("Playing on " .. game.GetMap(), "StreakText", 2.5, 75, white, TEXT_ALIGN_LEFT)
 			end
-
-			draw.SimpleText("Map uptime: " .. math.Round(CurTime()) .. "s", "StreakText", 630, 80, white, TEXT_ALIGN_RIGHT)
 		end
 
 		if mapName ~= nil then
@@ -151,6 +145,7 @@ function GM:ScoreboardShow()
 		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
 
 		for k, v in pairs(connectedPlayers) do
+			--Constants for basic player information, much more optimized than checking every frame.
 			local name = v:GetName()
 			local prestige = v:GetNWInt("playerPrestige")
 			local level = v:GetNWInt("playerLevel")
@@ -193,7 +188,7 @@ function GM:ScoreboardShow()
 			end
 
 			--Displays a players calling card and profile picture.
-			local PlayerCallingCard = vgui.Create("DImageButton", PlayerPanel)
+			local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
 			PlayerCallingCard:SetPos(10, 10)
 			PlayerCallingCard:SetSize(240, 80)
 
@@ -333,161 +328,3 @@ function GM:ScoreboardHide()
 		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then FiringRangeDerma:Remove() end
 	end
 end
-
---Displays to all players when a map vote begins.
-net.Receive("MapVoteHUD", function(len, ply)
-	local votedOnMap = false
-
-	--Creates a cooldown for the Map Vote UI, having it disappear after 20 seconds.
-	timer.Create("mapVoteTimeRemaining", 18, 1, function()
-		if votedOnMap == false then
-			--RunConsoleCommand("tm_voteformap", "skip")
-			MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
-				MapVoteHUD:Remove()
-			end)
-		end
-	end)
-
-    local firstMap = net.ReadString()
-    local secondMap = net.ReadString()
-
-    local firstMapName
-    local firstMapThumb
-
-    local secondMapName
-    local secondMapThumb
-
-    for o, v in pairs(mapArray) do
-        if game.GetMap() == v[1] then currentMapName = v[2] end
-
-        if firstMap == v[1] then
-            firstMapName = v[2]
-            firstMapThumb = v[4]
-        end
-
-        if secondMap == v[1] then
-            secondMapName = v[2]
-            secondMapThumb = v[4]
-        end
-    end
-
-    MapVoteHUD = vgui.Create("DFrame")
-	if continueOnMapVote == true then
-		MapVoteHUD:SetSize(200, 500)
-		MapVoteHUD:SetY(ScrH() / 2 - 250)
-	else
-		MapVoteHUD:SetSize(200, 420)
-		MapVoteHUD:SetY(ScrH() / 2 - 210)
-	end
-	MapVoteHUD:SetX(-200)
-    MapVoteHUD:SetTitle("")
-    MapVoteHUD:SetDraggable(false)
-    MapVoteHUD:ShowCloseButton(false)
-    MapVoteHUD.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 150))
-        draw.RoundedBox(0, 0, 0, 20, h, Color(40, 40, 40, 150))
-        draw.SimpleText("VOTE FOR NEXT MAP", "StreakText", 110, 0, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Open scoreboard to use mouse", "StreakTextMini", 110, 17.5, white, TEXT_ALIGN_CENTER)
-
-        draw.SimpleText(firstMapName, "MapName", 110, 188, white, TEXT_ALIGN_CENTER)
-        draw.SimpleText(secondMapName, "MapName", 110, 388, white, TEXT_ALIGN_CENTER)
-    end
-
-	if continueOnMapVote == true then MapVoteHUD:MoveTo(0, ScrH() / 2 - 250, 1, 0, 0.25) else MapVoteHUD:MoveTo(0, ScrH() / 2 - 210, 1, 0, 0.25) end
-
-    local MapChoice = vgui.Create("DImageButton", MapVoteHUD)
-    MapChoice:SetPos(30, 50)
-    MapChoice:SetText("")
-    MapChoice:SetSize(160, 160)
-    MapChoice:SetImage(firstMapThumb)
-    local choiceAnim = 0
-    MapChoice.Paint = function()
-        if MapChoice:IsHovered() then
-            choiceAnim = math.Clamp(choiceAnim + 200 * FrameTime(), 0, 20)
-        else
-            choiceAnim = math.Clamp(choiceAnim - 200 * FrameTime(), 0, 20)
-        end
-        MapChoice:SetPos(30, 50 - choiceAnim)
-    end
-    MapChoice.DoClick = function()
-        RunConsoleCommand("tm_voteformap", firstMap)
-        votedOnMap = true
-
-        surface.PlaySound("buttons/button15.wav")
-        notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. firstMapName .. "!")
-        timer.Simple(4, function()
-            notification.Kill("VoteConfirmation")
-        end)
-
-        MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
-			MapVoteHUD:Remove()
-			timer.Remove("mapVoteTimeRemaining")
-		end)
-    end
-
-    local MapChoiceTwo = vgui.Create("DImageButton", MapVoteHUD)
-    MapChoiceTwo:SetPos(30, 250)
-    MapChoiceTwo:SetText("")
-    MapChoiceTwo:SetSize(160, 160)
-    MapChoiceTwo:SetImage(secondMapThumb)
-    local choiceTwoAnim = 0
-    MapChoiceTwo.Paint = function()
-        if MapChoiceTwo:IsHovered() then
-            choiceTwoAnim = math.Clamp(choiceTwoAnim + 200 * FrameTime(), 0, 20)
-        else
-            choiceTwoAnim = math.Clamp(choiceTwoAnim - 200 * FrameTime(), 0, 20)
-        end
-        MapChoiceTwo:SetPos(30, 250 - choiceTwoAnim)
-    end
-    MapChoiceTwo.DoClick = function()
-        RunConsoleCommand("tm_voteformap", secondMap)
-        votedOnMap = true
-
-        surface.PlaySound("buttons/button15.wav")
-        notification.AddProgress("VoteConfirmation", "You have successfully voted to play on " .. secondMapName .. "!")
-        timer.Simple(4, function()
-            notification.Kill("VoteConfirmation")
-        end)
-
-        MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
-			MapVoteHUD:Remove()
-			timer.Remove("mapVoteTimeRemaining")
-		end)
-	end
-
-	if continueOnMapVote == true then
-		local ContinueButton = vgui.Create("DButton", MapVoteHUD)
-		ContinueButton:SetPos(20, 430)
-		ContinueButton:SetText("")
-		ContinueButton:SetSize(180, 60)
-		local textAnim = 0
-		ContinueButton.Paint = function()
-			if ContinueButton:IsHovered() then
-				textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 10)
-			else
-				textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 10)
-			end
-
-			draw.SimpleText("CONTINUE ON", "MapName", 90, 10 - textAnim, white, TEXT_ALIGN_CENTER)
-			draw.SimpleText(currentMapName, "WepNameKill", 90, 27.5 - textAnim, white, TEXT_ALIGN_CENTER)
-		end
-		ContinueButton.DoClick = function()
-			RunConsoleCommand("tm_voteformap", "skip")
-			votedOnMap = true
-
-			surface.PlaySound("buttons/button15.wav")
-			notification.AddProgress("VoteConfirmation", "You have successfully voted to continue playing on " .. currentMapName .. "!")
-			timer.Simple(4, function()
-				notification.Kill("VoteConfirmation")
-			end)
-
-			MapVoteHUD:MoveTo(-200, ScrH() / 2 - 250, 1, 0, 0.25, function()
-				MapVoteHUD:Remove()
-				timer.Remove("mapVoteTimeRemaining")
-			end)
-		end
-	end
-
-    MapVoteHUD:Show()
-    MapVoteHUD:SetKeyboardInputEnabled(false)
-end )

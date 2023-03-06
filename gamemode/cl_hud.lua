@@ -115,7 +115,7 @@ function HUD()
     draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Shooting range disclaimer.    
-    if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, ScrH() - 30, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Grappling hook disclaimer.
     if (LocalPlayer():GetActiveWeapon():IsValid()) and LocalPlayer():GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
@@ -128,6 +128,11 @@ function HUD()
         surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedOffsetY, nameLength + 5, 20)
         draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
+
+    --Remaining match time.
+    local timeText = " ∞"
+    if GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+    draw.SimpleText("FFA |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
@@ -401,51 +406,141 @@ end )
 net.Receive("EndOfGame", function(len, ply)
     local dof
     gameEnded = true
+    local votedOnMap = false
+    local mapPicked
+    local mapDecided = false
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
-    RunConsoleCommand("tm_closemainmenu")
 
-    local matchStartsIn = 30
-    local nextMap = net.ReadString()
-    local nextMapThumbnail = "maps/thumb/" .. nextMap .. ".png"
+    local firstMap = net.ReadString()
+    local secondMap = net.ReadString()
 
-    --Creates a timer so players can see how long it will be until the next match starts.
-    timer.Create("matchStartsIn", 30, 1, function()
-    end)
+    local firstMapName
+    local firstMapThumb
+    local secondMapName
+    local secondMapThumb
+    local decidedMapName
+    local decidedMapThumb
 
-    hook.Add("Think", "ShowNextMatchTime", function()
-        if timer.Exists("matchStartsIn") then matchStartsIn = math.Round(timer.TimeLeft("matchStartsIn")) end
-    end)
+    for m, t in pairs(mapArray) do
+        if game.GetMap() == t[1] then
+            mapPlayedOn = t[2]
+        end
 
-    EndOfGameUI = vgui.Create("DPanel")
-    EndOfGameUI:SetSize(ScrW(), 0)
-    EndOfGameUI:SetPos(0, 0)
-    EndOfGameUI:MakePopup()
-    EndOfGameUI:SizeTo(ScrW(), ScrH(), 1.5, 0, 0.25)
+        if firstMap == t[1] then
+            firstMapName = t[2]
+            firstMapThumb = t[4]
+        end
 
-    EndOfGameUI.Paint = function(self, w, h)
-        if dof == true then DrawBokehDOF(4, 1, 0) end
-        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
+        if secondMap == t[1] then
+            secondMapName = t[2]
+            secondMapThumb = t[4]
+        end
     end
 
-    local TopBlock = vgui.Create("DPanel", EndOfGameUI)
-    TopBlock:Dock(TOP)
-    TopBlock:SetSize(0, ScrH() * 0.15)
-    TopBlock.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
-    end
-
-    local PlayerScroller = vgui.Create("DHorizontalScroller", EndOfGameUI)
-    PlayerScroller:Dock(TOP)
-    PlayerScroller:SetSize(0, ScrH() * 0.7)
+    local timeUntilNextMatch = 30
 
     local connectedPlayers = player.GetAll()
     table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
 
-    for k, v in pairs(connectedPlayers) do
-        local ratio
-        local card = v:GetNWString("chosenPlayercard")
+    --Creates a timer so players can see how long it will be until the next match starts.
+    timer.Create("timeUntilNextMatch", 30, 1, function()
+    end)
 
+    hook.Add("Think", "VotingTimerUpdate", function()
+        if timer.Exists("timeUntilNextMatch") then timeUntilNextMatch = math.Round(timer.TimeLeft("timeUntilNextMatch")) end
+    end)
+
+    EndOfGameUI = vgui.Create("DPanel")
+    EndOfGameUI:SetSize(ScrW(), ScrH())
+    EndOfGameUI:SetPos(0, 0)
+    EndOfGameUI:MakePopup()
+    EndOfGameUI.Paint = function(self, w, h)
+        if dof == true then DrawBokehDOF(4, 1, 0) end
+        draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
+        if timeUntilNextMatch > 10 then
+            draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", 485, ScrH() - 55, white, TEXT_ALIGN_LEFT)
+        else
+            draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", 485, ScrH() - 55, white, TEXT_ALIGN_LEFT)
+        end
+        draw.SimpleText("[+1500XP win bonus]", "MainMenuLoadoutWeapons", 485, 100, white, TEXT_ALIGN_LEFT)
+    end
+
+    local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
+    EndOfGamePanel:SetSize(475, ScrH())
+    EndOfGamePanel.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+    end
+
+    local MatchInformationPanel = vgui.Create("DPanel", EndOfGamePanel)
+    MatchInformationPanel:Dock(TOP)
+    MatchInformationPanel:SetSize(0, 100)
+    MatchInformationPanel.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+        draw.SimpleText("MATCH ENDED", "GunPrintName", 90, 15, white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("FFA on " .. mapPlayedOn .. " | " .. GetConVar("tm_matchlengthtimer"):GetInt() .. "s", "MainMenuLoadoutWeapons", 90, 65, white, TEXT_ALIGN_LEFT)
+    end
+
+    local VictoryImage = vgui.Create("DImage", MatchInformationPanel)
+    VictoryImage:SetPos(0, 10)
+    VictoryImage:SetSize(80, 80)
+    VictoryImage:SetImage("icons/accoladeicon.png")
+
+    local VotingPanel = vgui.Create("DPanel", EndOfGamePanel)
+    VotingPanel:Dock(BOTTOM)
+    VotingPanel:SetSize(0, 275)
+    VotingPanel.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+        if mapDecided == false then
+            if mapPicked == 1 then draw.RoundedBox(0, 10, 70, 175, 175, Color(50, 125, 50, 75)) end
+            if mapPicked == 2 then draw.RoundedBox(0, 290, 70, 175, 175, Color(50, 125, 50, 75)) end
+            draw.SimpleText("MAP VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+
+            draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", 10, 245, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", 465, 245, white, TEXT_ALIGN_RIGHT)
+            draw.SimpleText(GetGlobalInt("VotesOnMapOne", 0) .. " | " .. GetGlobalInt("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
+        else
+            draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
+        end
+    end
+
+    local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
+    PlayerScrollPanel:Dock(FILL)
+    PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
+    PlayerScrollPanel.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+    end
+
+    local sbar = PlayerScrollPanel:GetVBar()
+    function sbar:Paint(w, h)
+        draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
+    end
+    function sbar.btnUp:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+    end
+    function sbar.btnDown:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+    end
+    function sbar.btnGrip:Paint(w, h)
+        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+    end
+
+    PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
+    PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
+
+    for k, v in pairs(connectedPlayers) do
+        --Constants for basic player information, much more optimized than checking every frame.
+        local name = v:GetName()
+        local prestige = v:GetNWInt("playerPrestige")
+        local level = v:GetNWInt("playerLevel")
+        local ping = v:Ping()
+        local frags = v:Frags()
+        local deaths = v:Deaths()
+        local ratio
+        local score = v:GetNWInt("playerScoreMatch")
+
+        --Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
         if v:Frags() <= 0 then
             ratio = 0
         elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -454,67 +549,112 @@ net.Receive("EndOfGame", function(len, ply)
             ratio = v:Frags() / v:Deaths()
         end
 
-        local PlayerPanel = vgui.Create("DPanel", PlayerScroller)
-        PlayerPanel:SetSize(400, ScrH() * 0.7)
+        local ratioRounded = math.Round(ratio, 2)
+
+        local PlayerPanel = vgui.Create("DPanel", PlayerList)
+        PlayerPanel:SetSize(PlayerList:GetWide(), 125)
+        PlayerPanel:SetPos(0, 0)
         PlayerPanel.Paint = function(self, w, h)
-            if !IsValid(v) then return end
-            draw.SimpleText(v:GetNWInt("playerScoreMatch") .. " Score", "StreakText", w / 2, 30, white, TEXT_ALIGN_CENTER)
-            draw.SimpleText(v:GetName(), "GunPrintName", w / 2, h - 160, white, TEXT_ALIGN_CENTER)
+            if not IsValid(v) then return end
+            if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
 
-            draw.SimpleText(v:Frags(), "Health", 170, 150, Color(0, 255, 0), TEXT_ALIGN_CENTER)
-            draw.SimpleText(v:Deaths(), "Health", 230, 150, red, TEXT_ALIGN_CENTER)
-            draw.SimpleText(math.Round(ratio, 2) .. " K/D", "StreakText", 200, 180, white, TEXT_ALIGN_CENTER)
-
-            if k == 1 then draw.SimpleText("WINNER [+1500 XP]", "StreakText", w / 2, 75, Color(255, 255, 0), TEXT_ALIGN_CENTER) end
+            draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level .. " | " .. score .. " Score", "Health", 10, 0, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
+            draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+            draw.SimpleText(ratioRounded, "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
         end
 
-        KillsIcon = vgui.Create("DImage", PlayerPanel)
-        KillsIcon:SetPos(155, 120)
-        KillsIcon:SetSize(30, 30)
-        KillsIcon:SetImage("icons/killicon.png")
+        local KillsIcon = vgui.Create("DImage", PlayerPanel)
+		KillsIcon:SetPos(260, 42)
+		KillsIcon:SetSize(20, 20)
+		KillsIcon:SetImage("icons/killicon.png")
 
-        DeathsIcon = vgui.Create("DImage", PlayerPanel)
-        DeathsIcon:SetPos(215, 120)
-        DeathsIcon:SetSize(30, 30)
-        DeathsIcon:SetImage("icons/deathicon.png")
+		local DeathsIcon = vgui.Create("DImage", PlayerPanel)
+		DeathsIcon:SetPos(260, 67)
+		DeathsIcon:SetSize(20, 20)
+		DeathsIcon:SetImage("icons/deathicon.png")
 
-        local PlayerModelDisplay = vgui.Create("DModelPanel", PlayerPanel)
-        PlayerModelDisplay:SetSize(400, ScrH() * 0.7)
-        PlayerModelDisplay:SetModel(v:GetNWString("chosenPlayermodel"))
-        function PlayerModelDisplay:LayoutEntity(Entity) return end
+		local KDIcon = vgui.Create("DImage", PlayerPanel)
+		KDIcon:SetPos(260, 92)
+		KDIcon:SetSize(20, 20)
+		KDIcon:SetImage("icons/ratioicon.png")
 
         --Displays a players calling card and profile picture.
-        playerMenuCallingCard = vgui.Create("DImage", PlayerPanel)
-        playerMenuCallingCard:SetPos(PlayerPanel:GetWide() / 2 - 120, PlayerPanel:GetTall() - 100)
-        playerMenuCallingCard:SetSize(240, 80)
-        playerMenuCallingCard:SetImage(card, "cards/color/black.png")
+        local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
+        PlayerCallingCard:SetPos(10, 35)
+        PlayerCallingCard:SetSize(240, 80)
 
-        playerMenuProfilePicture = vgui.Create("AvatarImage", playerMenuCallingCard)
-        playerMenuProfilePicture:SetPos(5, 5)
-        playerMenuProfilePicture:SetSize(70, 70)
-        playerMenuProfilePicture:SetPlayer(v, 184)
+        if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
 
-        PlayerScroller:AddPanel(PlayerPanel)
+        local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
+        PlayerProfilePicture:SetPos(5, 5)
+        PlayerProfilePicture:SetSize(70, 70)
+        PlayerProfilePicture:SetPlayer(v, 184)
     end
 
+    local MapChoice = vgui.Create("DImageButton", VotingPanel)
+    local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
 
-    local BottomBlock = vgui.Create("DPanel", EndOfGameUI)
-    BottomBlock:Dock(TOP)
-    BottomBlock:SetSize(0, ScrH() * 0.15)
+    MapChoice:SetPos(10, 70)
+    MapChoice:SetText("")
+    MapChoice:SetSize(175, 175)
+    MapChoice:SetImage(firstMapThumb)
+    MapChoice.DoClick = function()
+        net.Start("ReceiveMapVote")
+        net.WriteString(firstMap)
+        net.WriteUInt(1, 2)
+        net.SendToServer()
+        votedOnMap = true
+        mapPicked = 1
+        surface.PlaySound("buttons/button15.wav")
 
-    nextMapThumbImage = vgui.Create("DImage", BottomBlock)
-    nextMapThumbImage:SetPos(5, 5)
-    nextMapThumbImage:SetSize(BottomBlock:GetTall() - 10, BottomBlock:GetTall() - 10)
-    nextMapThumbImage:SetImage(nextMapThumbnail)
-
-    BottomBlock.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 255))
-        draw.SimpleText(nextMap, "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 55, white, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Next match starts in " .. matchStartsIn .. "s", "MainMenuLoadoutWeapons", nextMapThumbImage:GetWide() + 15, h - 30, white, TEXT_ALIGN_LEFT)
+        MapChoice:SetPos(20, 80)
+        MapChoice:SetSize(155, 155)
+        MapChoice:SetEnabled(false)
+        MapChoiceTwo:SetEnabled(false)
     end
 
-    local ExitButton = vgui.Create("DButton", BottomBlock)
-    ExitButton:SetPos(nextMapThumbImage:GetWide() + 280, BottomBlock:GetTall() - 32.5)
+    MapChoiceTwo:SetPos(290, 70)
+    MapChoiceTwo:SetText("")
+    MapChoiceTwo:SetSize(175, 175)
+    MapChoiceTwo:SetImage(secondMapThumb)
+    MapChoiceTwo.DoClick = function()
+        net.Start("ReceiveMapVote")
+        net.WriteString(secondMap)
+        net.WriteUInt(2, 2)
+        net.SendToServer()
+        votedOnMap = true
+        mapPicked = 2
+        surface.PlaySound("buttons/button15.wav")
+
+        MapChoiceTwo:SetPos(300, 80)
+        MapChoiceTwo:SetSize(155, 155)
+        MapChoice:SetEnabled(false)
+        MapChoiceTwo:SetEnabled(false)
+	end
+
+    net.Receive("MapVoteCompleted", function(len, ply)
+        local decidedMap = net.ReadString()
+        for u, p in pairs(mapArray) do
+            if decidedMap == p[1] then
+                decidedMapName = p[2]
+                decidedMapThumb = p[4]
+            end
+        end
+
+        mapDecided = true
+        MapChoice:Remove()
+        MapChoiceTwo:Remove()
+
+        local DecidedMapThumb = vgui.Create("DImage", VotingPanel)
+        DecidedMapThumb:SetPos(150, 70)
+        DecidedMapThumb:SetText("")
+        DecidedMapThumb:SetSize(175, 175)
+        DecidedMapThumb:SetImage(decidedMapThumb)
+    end )
+
+    local ExitButton = vgui.Create("DButton", EndOfGameUI)
+    ExitButton:SetPos(485, ScrH() - 35)
     ExitButton:SetText("")
     ExitButton:SetSize(500, 100)
     local textAnim = 0
@@ -526,9 +666,9 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
         end
         if (disconnectConfirm == 0) then
-            draw.DrawText("EXIT GAME", "MainMenuLoadoutWeapons", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+            draw.DrawText("EXIT GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
         else
-            draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+            draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
         end
     end
     ExitButton.DoClick = function()

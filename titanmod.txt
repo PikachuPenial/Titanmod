@@ -10,9 +10,9 @@
 	{
 		1
 		{
-			"name"		"tm_mapvotetimer"
-			"text"		"Map Vote Timer"
-			"help"		"Changes the Map Vote timers length to the set value in seconds."
+			"name"		"tm_matchlengthtimer"
+			"text"		"Match Length (in seconds)"
+			"help"		"Changes the matches length to the selected value in seconds."
 			"type"		"Numeric"
 			"default"	"900"
 			"singleplayer"
