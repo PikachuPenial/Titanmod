@@ -103,8 +103,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             if game.GetMap() == t[1] then
                 mapID = t[1]
                 mapName = t[2]
-                mapDesc = t[3]
-                mapThumb = t[4]
+                mapThumb = t[3]
             end
         end
 
@@ -129,8 +128,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
 
                 if mapID ~= nil then
-                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 50, white, TEXT_ALIGN_RIGHT)
-                    draw.SimpleText(mapDesc, "StreakText", ScrW() - 210, ScrH() - 25, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
                     draw.SimpleText("Match ends in " .. math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, white, TEXT_ALIGN_RIGHT)
                 else
                     draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, white, TEXT_ALIGN_RIGHT)

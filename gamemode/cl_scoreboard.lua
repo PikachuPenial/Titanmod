@@ -18,7 +18,7 @@ function GM:ScoreboardShow()
 		for m, t in pairs(mapArray) do
 			if game.GetMap() == t[1] then
 				mapName = t[2]
-				mapThumb = t[4]
+				mapThumb = t[3]
 			end
 		end
 

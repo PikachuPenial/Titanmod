@@ -115,7 +115,7 @@ function HUD()
     draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Shooting range disclaimer.    
-    if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, ScrH() - 30, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, ScrH() - 25, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Grappling hook disclaimer.
     if (LocalPlayer():GetActiveWeapon():IsValid()) and LocalPlayer():GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
@@ -429,12 +429,12 @@ net.Receive("EndOfGame", function(len, ply)
 
         if firstMap == t[1] then
             firstMapName = t[2]
-            firstMapThumb = t[4]
+            firstMapThumb = t[3]
         end
 
         if secondMap == t[1] then
             secondMapName = t[2]
-            secondMapThumb = t[4]
+            secondMapThumb = t[3]
         end
     end
 
@@ -638,7 +638,7 @@ net.Receive("EndOfGame", function(len, ply)
         for u, p in pairs(mapArray) do
             if decidedMap == p[1] then
                 decidedMapName = p[2]
-                decidedMapThumb = p[4]
+                decidedMapThumb = p[3]
             end
         end
 
