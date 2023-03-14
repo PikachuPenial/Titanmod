@@ -475,47 +475,47 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 	local playersVoted = {}
 	local firstMap
 	local secondMap
-	
+
 	--Begins the process of ending a match.
 	local function EndMatch()
 		timer.Remove("matchStatusCheck")
-	
+
 		mapVotes = {}
 		playersVoted = {}
-	
+
 		for k, v in RandomPairs(availableMaps) do
 			table.insert(mapVotes, 0)
 		end
-	
+
 		mapVoteOpen = true
-	
+
 		local mapPool = {}
-	
+
 		--Makes sure that the map currently being played is not added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
 			if game.GetMap() ~= v and v ~= "tm_firingrange" then
 				table.insert(mapPool, v)
 			end
 		end
-	
+
 		firstMap = mapPool[1]
 		secondMap = mapPool[2]
-	
+
 		--Failsafe for empty servers, will skip to a new map if there are no players connected to the server.
 		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", firstMap) return end
-	
+
 		for k, v in pairs(player.GetAll()) do
 			v:KillSilent()
 		end
-	
+
 		net.Start("EndOfGame")
 		net.WriteString(firstMap)
 		net.WriteString(secondMap)
 		net.Broadcast()
-	
+
 		local connectedPlayers = player.GetAll()
 		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
-	
+
 		for k, v in pairs(connectedPlayers) do
 			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
 			if k == 1 then
@@ -524,31 +524,31 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				CheckForPlayerLevel(v)
 			end
 		end
-	
+
 		timer.Create("mapVoteStatus", 20, 1, function()
 			local newMapTable = {}
 			local maxVotes = 0
-	
+
 			for k, v in pairs(mapVotes) do
 				if v > maxVotes then
 					maxVotes = v
 				end
 			end
-	
+
 			for k, v in pairs(availableMaps) do
 				if mapVotes[k] == maxVotes then
 					table.insert(newMapTable, v)
 				end
 			end
-	
+
 			mapVoteOpen = false
 			newMap = newMapTable[math.random(#newMapTable)]
-	
+
 			net.Start("MapVoteCompleted")
 			net.WriteString(newMap)
 			net.Broadcast()
 		end)
-	
+
 		timer.Create("newMapCooldown", 30, 1, function()
 			RunConsoleCommand("changelevel", newMap)
 		end)
@@ -568,13 +568,13 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				if v == ply then return end
 			end
 		end
-	
+
 		if mapVoteOpen == false then return end
-	
+
 		local votedMap = net.ReadString()
 		local mapIndex = net.ReadUInt(2)
 		local validMapVote = false
-	
+
 		for k, v in pairs(availableMaps) do
 			if v == votedMap then
 				validMapVote = true
@@ -582,11 +582,15 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 				table.insert(playersVoted, ply)
 			end
 		end
-	
-		if validMapVote == false then return end
 
+		if validMapVote == false then return end
 		if mapIndex	== 1 then SetGlobalInt("VotesOnMapOne", GetGlobalInt("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobalInt("VotesOnMapTwo", GetGlobalInt("VotesOnMapTwo", 0) + 1, 0) end
 	end )
+
+	function ForceEndMatchCommand(ply, cmd, args)
+		if ply:IsSuperAdmin() then EndMatch() end
+	end
+	concommand.Add("tm_forceendmatch", ForceEndMatchCommand)
 end
 
 --Auto saves player data if enabled by server admin.
