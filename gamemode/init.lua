@@ -157,6 +157,8 @@ util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
 util.AddNetworkString("ReceiveMapVote")
 util.AddNetworkString("BeginSpectate")
+util.AddNetworkString("PlayerModelChange")
+util.AddNetworkString("PlayerCardChange")
 
 --Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
 if playingFiringRange == true or forceEnableWepSpawner == true then util.AddNetworkString("FiringRangeGiveWeapon") end
@@ -435,6 +437,80 @@ hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
 		return false
 	end
 end)
+
+--Allows the Main Menu to change the players current playermodel.
+net.Receive("PlayerModelChange", function(len, ply)
+	local selectedModel = net.ReadString()
+	for k, v in pairs(modelArray) do
+		if selectedModel == v[1] then
+			local modelID = v[1]
+			local modelUnlock = v[4]
+			local modelValue = v[5]
+
+			if modelUnlock == "default" then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "kills" and ply:GetNWInt("playerKills") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			end
+		end
+	end
+end )
+
+--Allows the Main Menu to change the players current playercard.
+net.Receive("PlayerCardChange", function(len, ply)
+	local selectedCard = net.ReadString()
+	local masteryUnlockReq = 50
+	for k, v in pairs(cardArray) do
+		if selectedCard == v[1] then
+			local cardID = v[1]
+			local cardUnlock = v[4]
+			local cardValue = v[5]
+			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
+
+			if cardUnlock == "default" or cardUnlock == "color" then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "clutch" and ply:GetNWInt("playerAccoladeClutch") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "longshot" and ply:GetNWInt("playerAccoladeLongshot") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "pointblank" and ply:GetNWInt("playerAccoladePointblank") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "killstreaks" and ply:GetNWInt("playerAccoladeOnStreak") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "buzzkills" and ply:GetNWInt("playerAccoladeBuzzkill") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "level" and playerTotalLevel >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "mastery" and ply:GetNWInt("killsWith_" .. cardValue) >= masteryUnlockReq then
+				ply:SetNWString("chosenPlayercard", cardID)
+			end
+		end
+	end
+end )
 
 --Player health regeneration after not being hit for a period of time.
 if healthRegeneration == true then

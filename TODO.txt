@@ -2,19 +2,13 @@ HIGH PRIORItY | Currently working on or is being focused
 
 Profanity Filter (would probably require a custom chat system? sounds cool but also extremely tedious)
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
-Weaponry type for each weapon (things like Pistol/Rifle/Shotgun, allows for more tracking opportunities)
 Unclosable warning screen if not all content is installed
 Spawn reworks on problematic maps (Arctic, Nuketown)
-Use net messages for:
-    Map voting (would allow you to preview the amount of votes on each map)
-    Customization (no noticable difference, but its more secure server side)
-    (net messages are prone to being exploited by bad actors so securing the already existing ones will happen)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
-Easter Egg (if you know you know) (if i dont get around to this in time ill still keep the skin in for the meantime, dont worry Unlucky)
 Daily challenges (would reset 4-6pm CST for all users, need to learn cookies to utilize this) (kills with weapon category/kills beyond # meters/headshot kills/sliding kills)
 More cosmetics (three models per accolade, potentially double the playermodel count)
 1-2 new maps (more large scale maps specifically)
