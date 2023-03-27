@@ -248,6 +248,7 @@ function GM:ScoreboardShow()
 				local copyMenu = Menu:AddSubMenu("Copy...")
 				copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
 				copyMenu:AddOption("Copy SteamID", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+				copyMenu:AddOption("Copy UniqueID", function() SetClipboardText(v:UniqueID()) end):SetIcon("icon16/cut.png")
 
 				Menu:Open()
 			end

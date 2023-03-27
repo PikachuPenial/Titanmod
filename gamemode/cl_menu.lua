@@ -1744,7 +1744,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 610)
+                    DockModelsAccolade:SetSize(0, 765)
 
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
@@ -1810,65 +1810,64 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
                         if newModel ~= nil then
-                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                            draw.SimpleText(newModelDesc, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 2.5, white, TEXT_ALIGN_CENTER)
                         end
 
                         if newModelUnlockType == "default" then
-                            draw.SimpleText("Unlocked", "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText("Unlocked", "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                         elseif newModelUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
-                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Total Kills: " .. LocalPly:GetNWInt("playerKills") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longest Kill Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
-                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Smackdowns: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         elseif newModelUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidRed, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidRed, TEXT_ALIGN_CENTER)
                             else
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 75, solidGreen, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. " / " .. newModelUnlockValue, "Health", w / 2, 52.5, solidGreen, TEXT_ALIGN_CENTER)
                             end
                         end
                     end
@@ -2087,8 +2086,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     SelectedModelDisplay:Remove()
 
                                     SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                    SelectedModelDisplay:SetSize(400, 400)
-                                    SelectedModelDisplay:SetPos(0, -25)
+                                    SelectedModelDisplay:SetSize(475, 337.5)
+                                    SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
                                     surface.PlaySound("tmui/buttonrollover.wav")
@@ -2115,8 +2114,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         SelectedModelDisplay:Remove()
 
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
                                         surface.PlaySound("tmui/buttonrollover.wav")
@@ -2145,8 +2144,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         SelectedModelDisplay:Remove()
 
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
                                         surface.PlaySound("tmui/buttonrollover.wav")
@@ -2175,8 +2174,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         SelectedModelDisplay:Remove()
 
                                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(400, 400)
-                                        SelectedModelDisplay:SetPos(0, -25)
+                                        SelectedModelDisplay:SetSize(475, 337.5)
+                                        SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
                                         surface.PlaySound("tmui/buttonrollover.wav")
@@ -2423,7 +2422,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, 310)
                             DockModelsStreak:SetSize(0, 310)
-                            DockModelsAccolade:SetSize(0, 775)
+                            DockModelsAccolade:SetSize(0, 765)
                         end
                     end
 
