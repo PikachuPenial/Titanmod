@@ -45,16 +45,15 @@ matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in sec
 mapArray = {}
 mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true}
 mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true}
-mapArray[3] = {"tm_cradle", "Cradle", "maps/thumb/tm_cradle.png", true}
-mapArray[4] = {"tm_disequilibrium_test", "Disequilibrium", "maps/thumb/tm_disequilibrium_test.png", true}
-mapArray[5] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false} --Do not set this to true, that would be very retarded.
-mapArray[6] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true}
-mapArray[7] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true}
-mapArray[8] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true}
-mapArray[9] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true}
-mapArray[10] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true}
-mapArray[11] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true}
-mapArray[12] = {"tm_station", "Station", "maps/thumb/tm_station.png", true}
+mapArray[3] = {"tm_disequilibrium_test", "Disequilibrium", "maps/thumb/tm_disequilibrium_test.png", true}
+mapArray[4] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false} --Do not set this to true, that would be very retarded.
+mapArray[5] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true}
+mapArray[6] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true}
+mapArray[7] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true}
+mapArray[8] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true}
+mapArray[9] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true}
+mapArray[10] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true}
+mapArray[11] = {"tm_station", "Station", "maps/thumb/tm_station.png", true}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
