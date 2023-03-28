@@ -133,6 +133,29 @@ function HUD()
     local timeText = " ∞"
     if GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
     draw.SimpleText("FFA | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+    --Equipment
+    if LocalPlayer():HasWeapon("fres_grapple") then
+        local grappleMat = Material("icons/grapplehudicon.png")
+        surface.SetMaterial(grappleMat)
+
+        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then surface.SetDrawColor(255,255,255,255) else surface.SetDrawColor(255,200,200,100) end
+        surface.DrawTexturedRect(ScrW() / 2 - 55, ScrH() - 50, 35, 40)
+
+        if LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime() > 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
+            draw.SimpleText(math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5), "HUD_StreakText", ScrW() / 2 - 37.5, ScrH() - 75, color_white, TEXT_ALIGN_CENTER )
+        end
+
+        local nadeMat = Material("icons/grenadehudicon.png")
+        surface.SetMaterial(nadeMat)
+
+        if LocalPlayer():GetAmmoCount("Grenade") > 0 then surface.SetDrawColor(255,255,255,255) else surface.SetDrawColor(255,200,200,100) end
+        surface.DrawTexturedRect(ScrW() / 2 + 22.5, ScrH() - 50, 35, 40)
+
+        if LocalPlayer():GetAmmoCount("Grenade") > 0 then
+            draw.SimpleText(LocalPlayer():GetAmmoCount("Grenade"), "HUD_StreakText", ScrW() / 2 + 37.5, ScrH() - 75, color_white, TEXT_ALIGN_CENTER)
+        end
+    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
