@@ -36,6 +36,10 @@ mapCleanupTime = 30             --The interval (in seconds) at which the map is 
 forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
+killFeed = true                 --Enables the kill feed.
+suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
+allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
+
 matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 
 --MAPS
