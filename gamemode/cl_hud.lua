@@ -5,6 +5,7 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local feedArray = {}
 local health
+local voiceActive = false
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
 local healthSize = GetConVar("tm_hud_health_size"):GetInt()
@@ -33,7 +34,6 @@ local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
 local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
 local equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
 local equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
-local equipAnchor = GetConVar("tm_hud_equipment_anchor"):GetInt()
 local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
 local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
 local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
@@ -57,6 +57,7 @@ if GetConVar("tm_hud_font_death"):GetInt() == 1 then
 end
 
 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
+if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
 
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
@@ -167,29 +168,34 @@ function HUD()
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
-        if equipAnchor == 0 then
+        if equipAnchor == "left" then
             surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
-        elseif equipAnchor == 1 then
+        elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipOffsetX - 17.5, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
-        elseif equipAnchor == 2 then
+        else
             surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
         end
     elseif LocalPlayer():GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
-        if equipAnchor == 0 then
+        if equipAnchor == "left" then
             surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
-        elseif equipAnchor == 1 then
+        elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipOffsetX - 17.5, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
-        elseif equipAnchor == 2 then
+        else
             surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
         end
+    end
+
+    --Voice chat indicator
+    if voiceActive == true then
+        draw.SimpleText("Transmitting voice...", "HUD_Health", ScrW() / 2, 225, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
@@ -208,9 +214,14 @@ function HideHud(name)
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
---Hides the default voice chat HUD.
+--Hides the default voice chat HUD and shows a custom message.
 function GM:PlayerStartVoice(ply)
+    voiceActive = true
     return
+end
+
+function GM:PlayerEndVoice(ply)
+    voiceActive = false
 end
 
 --Plays the received hitsound if a player hits another player.
@@ -875,9 +886,6 @@ end)
 cvars.AddChangeCallback("tm_hud_equipment_offset_y", function(convar_name, value_old, value_new)
     equipOffsetY = value_new
 end)
-cvars.AddChangeCallback("tm_hud_equipment_anchor", function(convar_name, value_old, value_new)
-    equipAnchor = value_new
-end)
 cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_old, value_new)
     feedOffsetX = value_new
 end)
@@ -915,5 +923,14 @@ cvars.AddChangeCallback("tm_hud_killfeed_style", function(convar_name, value_old
         feedEntryPadding = -20
     else
         feedEntryPadding = 20
+    end
+end)
+cvars.AddChangeCallback("tm_hud_equipment_anchor", function(convar_name, value_old, value_new)
+    if value_new == 0 then
+        equipAnchor = "left"
+    elseif value_new == 1 then
+        equipAnchor = "center"
+    elseif value_new == 2 then
+        equipAnchor = "right"
     end
 end)
