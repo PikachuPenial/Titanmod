@@ -4,6 +4,11 @@ include("cl_scoreboard.lua")
 include("cl_menu.lua")
 include("config.lua")
 
+--Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
+timer.Create("cleanMap", mapCleanupTime, 0, function()
+	RunConsoleCommand("r_cleardecals")
+end)
+
 --Custom fonts for the gamemode are created here.
 surface.CreateFont("GunPrintName", {
 	font = "Arial",

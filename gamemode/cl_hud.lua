@@ -31,6 +31,8 @@ local hpMidB = GetConVar("tm_hud_health_color_mid_b"):GetInt()
 local hpLowR = GetConVar("tm_hud_health_color_low_r"):GetInt()
 local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
 local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
+local equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
+local equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
 local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
 local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
 local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
@@ -135,26 +137,43 @@ function HUD()
     draw.SimpleText("FFA | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     --Equipment
-    if LocalPlayer():HasWeapon("fres_grapple") then
-        local grappleMat = Material("icons/grapplehudicon.png")
+    local grappleMat = Material("icons/grapplehudicon.png")
+    local nadeMat = Material("icons/grenadehudicon.png")
+    local grappleText
+
+    if LocalPlayer():HasWeapon("fres_grapple") and LocalPlayer():GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(grappleMat)
-
-        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then surface.SetDrawColor(255,255,255,255) else surface.SetDrawColor(255,200,200,100) end
-        surface.DrawTexturedRect(ScrW() / 2 - 55, ScrH() - 50, 35, 40)
-
-        if LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime() > 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
-            draw.SimpleText(math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5), "HUD_StreakText", ScrW() / 2 - 37.5, ScrH() - 75, color_white, TEXT_ALIGN_CENTER )
+        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
+            surface.SetDrawColor(255,255,255,255)
+            grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
+        else
+            surface.SetDrawColor(255,200,200,100)
+            grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
+        surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
+        draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
 
-        local nadeMat = Material("icons/grenadehudicon.png")
+
         surface.SetMaterial(nadeMat)
-
-        if LocalPlayer():GetAmmoCount("Grenade") > 0 then surface.SetDrawColor(255,255,255,255) else surface.SetDrawColor(255,200,200,100) end
-        surface.DrawTexturedRect(ScrW() / 2 + 22.5, ScrH() - 50, 35, 40)
-
-        if LocalPlayer():GetAmmoCount("Grenade") > 0 then
-            draw.SimpleText(LocalPlayer():GetAmmoCount("Grenade"), "HUD_StreakText", ScrW() / 2 + 37.5, ScrH() - 75, color_white, TEXT_ALIGN_CENTER)
+        surface.SetDrawColor(255,255,255,255)
+        surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
+        draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+    elseif LocalPlayer():HasWeapon("fres_grapple") then
+        surface.SetMaterial(grappleMat)
+        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
+            surface.SetDrawColor(255,255,255,255)
+            grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
+        else
+            surface.SetDrawColor(255,200,200,100)
+            grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
+        surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
+        draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+    elseif LocalPlayer():GetAmmoCount("Grenade") > 0 then
+        surface.SetMaterial(nadeMat)
+        surface.SetDrawColor(255,255,255,255)
+        surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
+        draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
@@ -833,6 +852,12 @@ cvars.AddChangeCallback("tm_hud_health_color_low_g", function(convar_name, value
 end)
 cvars.AddChangeCallback("tm_hud_health_color_low_b", function(convar_name, value_old, value_new)
     hpLowB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_equipment_offset_x", function(convar_name, value_old, value_new)
+    equipOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_equipment_offset_y", function(convar_name, value_old, value_new)
+    equipOffsetY = value_new
 end)
 cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_old, value_new)
     feedOffsetX = value_new
