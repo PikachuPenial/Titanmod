@@ -548,11 +548,13 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 		local mapPool = {}
 
-		--Makes sure that the map currently being played is not added to the map pool.
+		--Makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
-			if game.GetMap() ~= v and v ~= "tm_firingrange" then
-				table.insert(mapPool, v)
-			end
+			if game.GetMap() ~= v then table.insert(mapPool, v) end
+		end
+
+		for p, v in pairs(mapArray) do
+			if v[5] ~= 0 and player.GetCount() > v[5] then table.RemoveByValue(mapPool, v[1]) end
 		end
 
 		firstMap = mapPool[1]

@@ -44,20 +44,21 @@ matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in sec
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
---Map Array Formatting (map ID, map name, map description, map thumbnail image)
---The fifth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
+--Map Array Formatting (map ID, map name, map thumbnail image)
+--The fourth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
+--The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will make a map always be available in the map pool.
 mapArray = {}
-mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true}
-mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true}
-mapArray[3] = {"tm_disequilibrium_test", "Disequilibrium", "maps/thumb/tm_disequilibrium_test.png", true}
-mapArray[4] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false} --Do not set this to true, that would be very retarded.
-mapArray[5] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true}
-mapArray[6] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true}
-mapArray[7] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true}
-mapArray[8] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true}
-mapArray[9] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true}
-mapArray[10] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true}
-mapArray[11] = {"tm_station", "Station", "maps/thumb/tm_station.png", true}
+mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true, 0}
+mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
+mapArray[3] = {"tm_disequilibrium_test", "Disequilibrium", "maps/thumb/tm_disequilibrium_test.png", true, 0}
+mapArray[4] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false, 0} --Do not set the fourth key to true, that would be very retarded.
+mapArray[5] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true, 0}
+mapArray[6] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
+mapArray[7] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
+mapArray[8] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
+mapArray[9] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
+mapArray[10] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[11] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
