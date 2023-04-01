@@ -1,10 +1,6 @@
 HIGH PRIORItY | Currently working on or is being focused
 
-Profanity Filter (would probably require a custom chat system? sounds cool but also extremely tedious)
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
-Unclosable warning screen if not all content is installed
-Spawn reworks on problematic maps (Arctic, Nuketown)
-Voice indicator
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

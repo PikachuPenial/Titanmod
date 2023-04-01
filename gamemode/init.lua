@@ -657,6 +657,13 @@ if forceEnableAutoSaveTime ~= 0 then
 	end)
 end
 
+--Chat filter
+function ChatFilter(pl, text, team, death)
+	for k,v in pairs(chatFilterArray) do text = string.gsub(text, k, v) end
+	return text
+end
+hook.Add("PlayerSay", "FilterHook", ChatFilter)
+
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
