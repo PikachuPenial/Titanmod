@@ -33,6 +33,7 @@ local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
 local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
 local equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
 local equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
+local equipAnchor = GetConVar("tm_hud_equipment_anchor"):GetInt()
 local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
 local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
 local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
@@ -153,7 +154,6 @@ function HUD()
         surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
         draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
 
-
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
@@ -167,13 +167,29 @@ function HUD()
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
-        surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
-        draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        if equipAnchor == 0 then
+            surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        elseif equipAnchor == 1 then
+            surface.DrawTexturedRect(equipOffsetX - 17.5, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        elseif equipAnchor == 2 then
+            surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        end
     elseif LocalPlayer():GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
-        surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
-        draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        if equipAnchor == 0 then
+            surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        elseif equipAnchor == 1 then
+            surface.DrawTexturedRect(equipOffsetX - 17.5, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        elseif equipAnchor == 2 then
+            surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
+            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
+        end
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
@@ -858,6 +874,9 @@ cvars.AddChangeCallback("tm_hud_equipment_offset_x", function(convar_name, value
 end)
 cvars.AddChangeCallback("tm_hud_equipment_offset_y", function(convar_name, value_old, value_new)
     equipOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_equipment_anchor", function(convar_name, value_old, value_new)
+    equipAnchor = value_new
 end)
 cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_old, value_new)
     feedOffsetX = value_new

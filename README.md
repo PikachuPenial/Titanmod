@@ -11,7 +11,7 @@ Titanmod has support for any Garry's Mod map, but I highly recommend playing on 
 While you can just pull this repository and run the gamemode yourself, I do not recommend this. For a playable, and hopefully enjoyable experience, please wait for an official workshop release before playing and/or hosting a server for Titanmod.
 
 # Credits:
-Zedorfski (Disequilibrium map)  
+Zedorfski (Disequilibrium map, System Files menu song)  
 Portanator (code contributions)  
 Unlucky (various player cards)  
 

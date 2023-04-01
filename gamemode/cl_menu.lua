@@ -2819,6 +2819,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                         local ammo = 30
                         local wep = "KRISS Vector"
                         local fakeFeedArray = {}
+                        local grappleMat = Material("icons/grapplehudicon.png")
+                        local nadeMat = Material("icons/grenadehudicon.png")
+                        local timeText = " ∞"
                         timer.Create("previewLoop", 1, 0, function()
                             health = math.random(1, 100)
                             ammo = math.random(1, 30)
@@ -2867,10 +2870,20 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
                                 draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
+                            if GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+                            draw.SimpleText("FFA | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                            surface.SetMaterial(grappleMat)
+                            surface.SetDrawColor(255,255,255,255)
+                            surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45, ScrH() - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
+                            draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5, ScrH() - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                            surface.SetMaterial(nadeMat)
+                            surface.SetDrawColor(255,255,255,255)
+                            surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10, ScrH() - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
+                            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5, ScrH() - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
                         end
 
                         local EditorPanel = vgui.Create("DFrame", FakeHUD)
-                        EditorPanel:SetSize(435, 550)
+                        EditorPanel:SetSize(435, ScrH() * 0.7)
                         EditorPanel:MakePopup()
                         EditorPanel:SetTitle("HUD Editor")
                         EditorPanel:Center()
@@ -3114,6 +3127,54 @@ net.Receive("OpenMainMenu", function(len, ply)
                         HealthLowColor:SetPalette(false)
                         HealthLowColor:SetWangs(true)
                         HealthLowColor:SetTooltip("Adjusts your health bar color while on 33% or less HP.")
+
+                        local EquipmentEditor = vgui.Create("DPanel", EditorScroller)
+                        EquipmentEditor:Dock(TOP)
+                        EquipmentEditor:SetSize(0, 150)
+                        EquipmentEditor.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("EQUIPMENT UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Equipment X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Equipment Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Equipment Anchoring", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local EquipmentX = EquipmentEditor:Add("DNumSlider")
+                        EquipmentX:SetPos(-85, 50)
+                        EquipmentX:SetSize(250, 30)
+                        EquipmentX:SetConVar("tm_hud_equipment_offset_x")
+                        EquipmentX:SetMin(0)
+                        EquipmentX:SetMax(ScrW())
+                        EquipmentX:SetDecimals(0)
+                        EquipmentX:SetTooltip("Adjust the X offset of your equipment UI.")
+
+                        local EquipmentY = EquipmentEditor:Add("DNumSlider")
+                        EquipmentY:SetPos(-85, 80)
+                        EquipmentY:SetSize(250, 30)
+                        EquipmentY:SetConVar("tm_hud_equipment_offset_y")
+                        EquipmentY:SetMin(0)
+                        EquipmentY:SetMax(ScrH())
+                        EquipmentY:SetDecimals(0)
+                        EquipmentY:SetTooltip("Adjust the Y offset of your equipment UI.")
+
+                        local EquipmentAnchor = EquipmentEditor:Add("DComboBox")
+                        EquipmentAnchor:SetPos(20, 115)
+                        EquipmentAnchor:SetSize(100, 30)
+                        EquipmentAnchor:SetTooltip("Adjust the anchoring of your equipment UI.")
+                        if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then
+                            EquipmentAnchor:SetValue("Left")
+                        elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then
+                            EquipmentAnchor:SetValue("Center")
+                        elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then
+                            EquipmentAnchor:SetValue("Right")
+                        end
+                        EquipmentAnchor:AddChoice("Left")
+                        EquipmentAnchor:AddChoice("Center")
+                        EquipmentAnchor:AddChoice("Right")
+                        EquipmentAnchor.OnSelect = function(self, value)
+                            surface.PlaySound("tmui/buttonrollover.wav")
+                            RunConsoleCommand("tm_hud_equipment_anchor", value - 1)
+                        end
 
                         local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                         KillFeedEditor:Dock(TOP)
