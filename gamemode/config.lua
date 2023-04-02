@@ -413,7 +413,6 @@ end
 --This is the list of words blocked from being used in the in-game chat.
 --Formatting (Word to block, replacment in chat)
 chatFilterArray = {}
-chatFilterArray["9mm"] = ".45 ACP"
 chatFilterArray["niger"] = "cutie"
 chatFilterArray["n1ger"] = "nice guy"
 chatFilterArray["nig3r"] = "great guy"
@@ -430,3 +429,5 @@ chatFilterArray["f4ggot"] = "incredible individual"
 chatFilterArray["fagg0t"] = "incredible individual"
 chatFilterArray["tranny"] = "amazing person"
 chatFilterArray["tr4nny"] = "amazing person"
+chatFilterArray["kike"] = "swag individual"
+chatFilterArray["dyke"] = "swag individual"

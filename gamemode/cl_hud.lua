@@ -194,9 +194,9 @@ function HUD()
     end
 
     --Voice chat indicator
-    if voiceActive == true then
-        draw.SimpleText("Transmitting voice...", "HUD_Health", ScrW() / 2, 225, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-    end
+    --if voiceActive == true then
+        --draw.SimpleText("Transmitting voice...", "HUD_Health", ScrW() / 2, 225, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    --end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 

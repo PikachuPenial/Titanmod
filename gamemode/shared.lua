@@ -78,19 +78,6 @@ hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
 end)
 
---Sets up keybinds.
-hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
-    if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
-        net.Start("OpenMainMenu")
-        net.Send(ply)
-        ply:SetNWBool("mainmenu", true)
-    end
-    if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
-    hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
-        if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
-    end)
-end)
-
 --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
 modelArray = {}
 modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}
