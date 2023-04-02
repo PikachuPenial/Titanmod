@@ -5,6 +5,7 @@
 	"maps"		"^tm_"
 	"category"	"pvp"
 	"menusystem"	"1"
+	"workshopid"	"2863062354"
 
 	"settings"
 	{
@@ -14,7 +15,7 @@
 			"text"		"Match Length (in seconds)"
 			"help"		"Changes the matches length to the selected value in seconds."
 			"type"		"Numeric"
-			"default"	"900"
+			"default"	"600"
 			"singleplayer"
 		}
 

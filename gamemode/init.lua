@@ -70,6 +70,7 @@ function GM:PlayerSpawn(ply)
 		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
 	end
 
+	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
