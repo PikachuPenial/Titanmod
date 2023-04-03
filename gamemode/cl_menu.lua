@@ -22,7 +22,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local mapID
     local mapName
-    local mapDesc
     local mapThumb
 
     local canPrestige
@@ -72,7 +71,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     if chosenMusic == "music/waster_bladee.wav" then
         musicName = "Waster - Bladee"
-        requestedBy = "Suomij (narkotica)"
+        requestedBy = "Suomij"
         steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
     end
 
@@ -189,13 +188,39 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
             end
 
+            local ProfileButton
             if requestedBy ~= nil and GetConVar("tm_menumusic"):GetInt() == 1 then
-                local ProfileButton = vgui.Create("DImageButton", MainPanel)
-                ProfileButton:SetPos(ScrW() - 37, 45)
+                ProfileButton = vgui.Create("DImageButton", MainPanel)
+                ProfileButton:SetPos(ScrW() - 72, 45)
                 ProfileButton:SetSize(32, 32)
                 ProfileButton:SetImage("icons/steamicon.png")
                 ProfileButton.DoClick = function()
                     gui.OpenURL(steamProfile)
+                end
+            end
+
+            local MuteMusicButton = vgui.Create("DImageButton", MainPanel)
+            if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
+            MuteMusicButton:SetSize(32, 32)
+            if GetConVar("tm_menumusic"):GetInt() == 1 then MuteMusicButton:SetImage("icons/speakericon.png") else MuteMusicButton:SetImage("icons/speakermutedicon.png") end
+            MuteMusicButton.DoClick = function()
+                if GetConVar("tm_menumusic"):GetInt() == 0 then
+                    menuMusic:Play()
+                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
+                    MuteMusicButton:SetImage("icons/speakericon.png")
+                    if requestedBy ~= nil then
+                        MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25)
+                        ProfileButton:Show()
+                    end
+                    RunConsoleCommand("tm_menumusic", 1)
+                else
+                    menuMusic:FadeOut(1)
+                    MuteMusicButton:SetImage("icons/speakermutedicon.png")
+                    MuteMusicButton:SetPos(ScrW() - 37, 25)
+                    if requestedBy ~= nil then
+                        ProfileButton:Hide()
+                    end
+                    RunConsoleCommand("tm_menumusic", 0)
                 end
             end
 
@@ -487,8 +512,17 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
             end
 
+            local DiscordButton = vgui.Create("DImageButton", MainPanel)
+            DiscordButton:SetPos(8, ScrH() - 72)
+            DiscordButton:SetImage("icons/discordicon.png")
+            DiscordButton:SetSize(64, 64)
+            DiscordButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
+                gui.OpenURL("https://discord.gg/GRfvt27uGF")
+            end
+
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(8, ScrH() - 72)
+            WorkshopButton:SetPos(80, ScrH() - 72)
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton.DoClick = function()
@@ -497,16 +531,16 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(80, ScrH() - 72)
+            YouTubeButton:SetPos(152, ScrH() - 72)
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
-                gui.OpenURL("https://www.youtube.com/channel/UC1aCX3i4L6TyEv_rmo_HeRA")
+                gui.OpenURL("https://youtube.com/@penial_")
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(152, ScrH() - 72)
+            GithubButton:SetPos(224, ScrH() - 72)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton.DoClick = function()
