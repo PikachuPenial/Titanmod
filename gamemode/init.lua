@@ -70,13 +70,13 @@ function GM:PlayerSpawn(ply)
 		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
 	end
 
-	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
 	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 then ply:ConCommand("tm_showloadout") end
 	if playingFiringRange == true then ply:GodEnable() end
+	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -160,7 +160,7 @@ net.Receive("BeginSpectate", function(len, ply)
 	ply:Spectate(OBS_MODE_ROAMING)
 end )
 
---Sending a hitsound if a player attacks another player.
+--Calculate how much damage should be done to a player based on the hitgroup that was damaged, and send a hitsound to the inflictor of the damage.
 local function TestEntityForPlayer(ent)
 	return IsValid(ent) and ent:IsPlayer()
 end
@@ -181,6 +181,24 @@ local function DamageProfileAndHitSounds(target, hitgroup, dmginfo)
 	end
 end
 hook.Add("ScalePlayerDamage", "DamageProfileAndHitSounds", DamageProfileAndHitSounds)
+
+--Check if a spawn point is suitable to spawn in (if another player is within proximity of this spawn point, do not spawn the player there.)
+hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
+	local pos = spawnpointent:GetPos()
+
+	local entities = ents.FindInBox(pos + Vector(-112, -112, 0), pos + Vector(112, 112, 72))
+	if (ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED) then return true end
+	local entsBlocking = 0
+
+	for _, v in ipairs(entities) do
+		if (v:IsPlayer() and v:Alive()) then
+			entsBlocking = entsBlocking + 1
+		end
+	end
+
+	if (entsBlocking > 0) then return false end
+	return true
+end )
 
 --Rocket jumping.
 local function ReduceRocketDamage(ent, dmginfo)

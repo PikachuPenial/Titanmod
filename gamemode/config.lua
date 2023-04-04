@@ -359,7 +359,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_inspect_hide", "0")
     RunConsoleCommand("cl_tfa_inspect_hide_hud", "0")
     RunConsoleCommand("cl_tfa_inspect_hide_in_screenshots", "0")
-    RunConsoleCommand("cl_tfa_inspect_newbars", "1")
+    RunConsoleCommand("cl_tfa_inspect_newbars", "0")
     RunConsoleCommand("cl_tfa_inspect_spreadinmoa", "1")
     RunConsoleCommand("cl_tfa_inspection_bokeh_radius", "0.010")
     RunConsoleCommand("cl_tfa_ironsights_resight", "1")
