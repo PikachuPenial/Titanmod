@@ -165,14 +165,22 @@ local function TestEntityForPlayer(ent)
 	return IsValid(ent) and ent:IsPlayer()
 end
 
-local function HitSound(target, hitgroup, dmginfo)
+local function DamageProfileAndHitSounds(target, hitgroup, dmginfo)
+	if (hitgroup == HITGROUP_HEAD) then
+		dmginfo:ScaleDamage(1.4)
+	elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then
+		dmginfo:ScaleDamage(1)
+	elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then
+		dmginfo:ScaleDamage(0.8)
+	end
+
 	if (TestEntityForPlayer(dmginfo:GetAttacker())) then
 		net.Start("PlayHitsound", true)
 			net.WriteUInt(hitgroup, 4)
 		net.Send(dmginfo:GetAttacker())
 	end
 end
-hook.Add("ScalePlayerDamage", "HitSoundOnPlayerHit", HitSound)
+hook.Add("ScalePlayerDamage", "DamageProfileAndHitSounds", DamageProfileAndHitSounds)
 
 --Rocket jumping.
 local function ReduceRocketDamage(ent, dmginfo)
