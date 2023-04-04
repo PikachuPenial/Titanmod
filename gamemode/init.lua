@@ -186,7 +186,7 @@ hook.Add("ScalePlayerDamage", "DamageProfileAndHitSounds", DamageProfileAndHitSo
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-112, -112, 0), pos + Vector(112, 112, 72))
+	local entities = ents.FindInBox(pos + Vector(-152, -152, 0), pos + Vector(152, 152, 72))
 	if (ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED) then return true end
 	local entsBlocking = 0
 
