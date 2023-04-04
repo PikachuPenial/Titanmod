@@ -49,9 +49,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetJumpPower(150 * playerJumpMulti)
 	ply:SetLadderClimbSpeed(155 * playerSpeedMulti)
 	ply:SetSlowWalkSpeed(78 * playerSpeedMulti)
-	ply:SetCrouchedWalkSpeed(0.5 * playerCrouchWalkSpeedMulti)
-	ply:SetDuckSpeed(0.65 * playerDuckStateMulti)
-	ply:SetUnDuckSpeed(0.65 * playerDuckStateMulti)
+	ply:SetCrouchedWalkSpeed(0.6 * playerCrouchWalkSpeedMulti)
+	ply:SetDuckSpeed(0.575 * playerDuckStateMulti)
+	ply:SetUnDuckSpeed(0.575 * playerDuckStateMulti)
 
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
@@ -186,7 +186,7 @@ hook.Add("ScalePlayerDamage", "DamageProfileAndHitSounds", DamageProfileAndHitSo
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-152, -152, 0), pos + Vector(152, 152, 72))
+	local entities = ents.FindInBox(pos + Vector(-192, -192, 0), pos + Vector(192, 192, 72))
 	if (ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED) then return true end
 	local entsBlocking = 0
 
