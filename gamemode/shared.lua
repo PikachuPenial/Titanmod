@@ -59,6 +59,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_killfeed_limit", 4, true, false, "Limit the amount of kill feed entries that are shown at one time", 1, 10)
     CreateClientConVar("tm_hud_killfeed_offset_x", 0, true, false, "Adjusts the X offset of the kill feed", 0, ScrW())
     CreateClientConVar("tm_hud_killfeed_offset_y", 45, true, false, "Adjusts the Y offset of the kill feed", 0, ScrH())
+    CreateClientConVar("tm_hud_killfeed_opacity", 80, true, false, "Adjusts the background opacity of a kill feed entry", 0, 255)
     CreateClientConVar("tm_hud_killdeath_offset_x", 0, true, false, "Adjusts the X offset of the kill and death UI", ScrW() / -2, ScrW() / 2)
     CreateClientConVar("tm_hud_killdeath_offset_y", 335, true, false, "Adjusts the Y offset of the kill and death UI", 0, ScrH())
     CreateClientConVar("tm_hud_reloadhint", 1, true, false, "Enable/disable the reload text when out of ammo", 0, 1)

@@ -36,6 +36,7 @@ local equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
 local equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
 local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
 local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
+local feedOpacity = GetConVar("tm_hud_killfeed_opacity"):GetInt()
 local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
 local kdOffsetY = GetConVar("tm_hud_killdeath_offset_y"):GetInt()
 
@@ -126,7 +127,7 @@ function HUD()
 
     --Kill feed
     for k, v in pairs(feedArray) do
-        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
+        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedOpacity) else surface.SetDrawColor(50, 50, 50, feedOpacity) end
         local nameLength = select(1, surface.GetTextSize(v[1]))
 
         surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedOffsetY, nameLength + 5, 20)
@@ -891,6 +892,9 @@ cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_
 end)
 cvars.AddChangeCallback("tm_hud_killfeed_offset_y", function(convar_name, value_old, value_new)
     feedOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_opacity", function(convar_name, value_old, value_new)
+    feedOpacity = value_new
 end)
 cvars.AddChangeCallback("tm_hud_killdeath_offset_x", function(convar_name, value_old, value_new)
     kdOffsetX = value_new
