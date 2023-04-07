@@ -79,6 +79,22 @@ hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
 end)
 
+--Disable muzzle flash
+hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon)
+    return false
+end)
+
+--Disable UBGLs
+hook.Add("TFABase_ShouldLoadAttachment", "DisableUBGL", function(id, path)
+    if id and (id == "ins2_fg_gp25" or id == "ins2_fg_m203") then
+        return false
+    end
+end)
+
+hook.Add("TFA_AnimationRate", "AnimOverride", function(Weapon, sequence)
+    if sequence != 570 and sequence != 181 and sequence != 174 and sequence != 579 and sequence != 13 and sequence != 14 and sequence != 15 then return 1.4 end --Globally increase reload speeds by 40%
+end)
+
 --Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
 modelArray = {}
 modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "The default male character.", "default", "default"}

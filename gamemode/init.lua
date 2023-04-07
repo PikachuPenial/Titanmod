@@ -168,7 +168,7 @@ end
 local function DamageProfileAndHitSounds(target, hitgroup, dmginfo)
 	if (hitgroup == HITGROUP_HEAD) then
 		dmginfo:ScaleDamage(1.4)
-	elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then
+	elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) or (hitgroup == HITGROUP_GEAR) or (hitgroup == HITGROUP_GENERIC) then
 		dmginfo:ScaleDamage(1)
 	elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then
 		dmginfo:ScaleDamage(0.8)
@@ -186,8 +186,8 @@ hook.Add("ScalePlayerDamage", "DamageProfileAndHitSounds", DamageProfileAndHitSo
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-192, -192, 0), pos + Vector(192, 192, 72))
-	if (ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED) then return true end
+	local entities = ents.FindInBox(pos + Vector(-512, -512, -384), pos + Vector(512, 512, 384))
+	if (ply:Team() == TEAM_SPECTATOR) then return true end
 	local entsBlocking = 0
 
 	for _, v in ipairs(entities) do
