@@ -5,7 +5,6 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local feedArray = {}
 local health
-local voiceActive = false
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
 local healthSize = GetConVar("tm_hud_health_size"):GetInt()
@@ -193,11 +192,6 @@ function HUD()
             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
         end
     end
-
-    --Voice chat indicator
-    --if voiceActive == true then
-        --draw.SimpleText("Transmitting voice...", "HUD_Health", ScrW() / 2, 225, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-    --end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 

@@ -1673,7 +1673,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local newModel
                     local newModelName
-                    local newModelDesc
                     local newModelUnlockType
                     local newModelUnlockValue
 
@@ -1697,9 +1696,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if v[1] == currentModel then
                             newModel = v[1]
                             newModelName = v[2]
-                            newModelDesc = v[3]
-                            newModelUnlockType = v[4]
-                            newModelUnlockValue = v[5]
+                            newModelUnlockType = v[3]
+                            newModelUnlockValue = v[4]
                         end
                     end
 
@@ -1779,7 +1777,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 765)
+                    DockModelsAccolade:SetSize(0, 1085)
 
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
@@ -1914,10 +1912,10 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local function FillModelListsAll()
                         for k, v in pairs(modelArray) do
-                            if v[4] == "default" then
+                            if v[3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetTooltip(v[2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -1928,9 +1926,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
+                                    newModelUnlockType = v[3]
+                                    newModelUnlockValue = v[4]
 
                                     SelectedModelDisplay:Remove()
 
@@ -1941,16 +1938,16 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            elseif v[4] == "kills" then
+                            elseif v[3] == "kills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsKills)
                                 icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetTooltip(v[2])
                                 icon:SetSize(150, 150)
                                 KillsModelList:Add(icon)
 
                                 killModelsTotal = killModelsTotal + 1
 
-                                if LocalPly:GetNWInt("playerKills") < v[5] then
+                                if LocalPly:GetNWInt("playerKills") < v[4] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -1958,9 +1955,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     lockIndicator.DoClick = function(lockIndicator)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -1979,9 +1975,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
+                                    newModelUnlockType = v[3]
+                                    newModelUnlockValue = v[4]
 
                                     SelectedModelDisplay:Remove()
 
@@ -1992,16 +1987,16 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            elseif v[4] == "streak" then
+                            elseif v[3] == "streak" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStreak)
                                 icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetTooltip(v[2])
                                 icon:SetSize(150, 150)
                                 StreakModelList:Add(icon)
 
                                 streakModelsTotal = streakModelsTotal + 1
 
-                                if LocalPly:GetNWInt("highestKillStreak") < v[5] then
+                                if LocalPly:GetNWInt("highestKillStreak") < v[4] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -2009,9 +2004,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     lockIndicator.DoClick = function(lockIndicator)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -2030,9 +2024,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
+                                    newModelUnlockType = v[3]
+                                    newModelUnlockValue = v[4]
 
                                     SelectedModelDisplay:Remove()
 
@@ -2043,16 +2036,16 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                            elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                 icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetTooltip(v[2])
                                 icon:SetSize(150, 150)
                                 AccoladeModelList:Add(icon)
 
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
+                                if v[3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[4] or v[3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[4] or v[3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[4] or v[3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[4] or v[3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[4] or v[3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[4] or v[3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[4] then
                                     local lockIndicator = vgui.Create("DImageButton", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
@@ -2060,9 +2053,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     lockIndicator.DoClick = function(lockIndicator)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -2081,9 +2073,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
+                                    newModelUnlockType = v[3]
+                                    newModelUnlockValue = v[4]
 
                                     SelectedModelDisplay:Remove()
 
@@ -2100,10 +2091,10 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local function FillModelListsUnlocked()
                         for k, v in pairs(modelArray) do
-                            if v[4] == "default" then
+                            if v[3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(v[1])
-                                icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                icon:SetTooltip(v[2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -2114,9 +2105,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 icon.DoClick = function(icon)
                                     newModel = v[1]
                                     newModelName = v[2]
-                                    newModelDesc = v[3]
-                                    newModelUnlockType = v[4]
-                                    newModelUnlockValue = v[5]
+                                    newModelUnlockType = v[3]
+                                    newModelUnlockValue = v[4]
 
                                     SelectedModelDisplay:Remove()
 
@@ -2127,12 +2117,12 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
-                            elseif v[4] == "kills" then
+                            elseif v[3] == "kills" then
                                 killModelsTotal = killModelsTotal + 1
-                                if LocalPly:GetNWInt("playerKills") >= v[5] then
+                                if LocalPly:GetNWInt("playerKills") >= v[4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsKills)
                                     icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetTooltip(v[2])
                                     icon:SetSize(150, 150)
                                     KillsModelList:Add(icon)
 
@@ -2142,9 +2132,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     icon.DoClick = function(icon)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -2156,13 +2145,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
-                            elseif v[4] == "streak" then
+                            elseif v[3] == "streak" then
                                 streakModelsTotal = streakModelsTotal + 1
 
-                                if LocalPly:GetNWInt("highestKillStreak") >= v[5] then
+                                if LocalPly:GetNWInt("highestKillStreak") >= v[4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStreak)
                                     icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetTooltip(v[2])
                                     icon:SetSize(150, 150)
                                     StreakModelList:Add(icon)
 
@@ -2172,9 +2161,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     icon.DoClick = function(icon)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -2186,13 +2174,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                                         surface.PlaySound("tmui/buttonrollover.wav")
                                     end
                                 end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                            elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                if v[3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[4] or v[3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[4] or v[3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[4] or v[3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[4] or v[3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[4] or v[3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[4] or v[3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2] .. "\n" .. v[3])
+                                    icon:SetTooltip(v[2])
                                     icon:SetSize(150, 150)
                                     AccoladeModelList:Add(icon)
 
@@ -2202,9 +2190,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     icon.DoClick = function(icon)
                                         newModel = v[1]
                                         newModelName = v[2]
-                                        newModelDesc = v[3]
-                                        newModelUnlockType = v[4]
-                                        newModelUnlockValue = v[5]
+                                        newModelUnlockType = v[3]
+                                        newModelUnlockValue = v[4]
 
                                         SelectedModelDisplay:Remove()
 
@@ -2457,7 +2444,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, 310)
                             DockModelsStreak:SetSize(0, 310)
-                            DockModelsAccolade:SetSize(0, 765)
+                            DockModelsAccolade:SetSize(0, 1085)
                         end
                     end
 

@@ -492,8 +492,8 @@ net.Receive("PlayerCardChange", function(len, ply)
 	for k, v in pairs(cardArray) do
 		if selectedCard == v[1] then
 			local cardID = v[1]
-			local cardUnlock = v[4]
-			local cardValue = v[5]
+			local cardUnlock = v[3]
+			local cardValue = v[4]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
 			if cardUnlock == "default" or cardUnlock == "color" then

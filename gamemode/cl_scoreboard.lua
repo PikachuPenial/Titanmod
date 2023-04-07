@@ -4,13 +4,10 @@ local white = Color(255, 255, 255, 255)
 local ScoreboardDerma
 local PlayerList
 local FiringRangeDerma
-local MapVoteHUD
 
 local mapName
 local mapThumb
 local dof
-
-local timeUntilMapVote = GetConVar("tm_matchlengthtimer"):GetInt()
 
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
