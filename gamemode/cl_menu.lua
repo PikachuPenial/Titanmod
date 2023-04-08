@@ -13,6 +13,9 @@ local MainMenu
 net.Receive("OpenMainMenu", function(len, ply)
     local LocalPly = LocalPlayer()
     if LocalPly:Alive() then return end
+    local respawnTimeLeft = net.ReadFloat()
+    timer.Create("respawnTimeLeft", respawnTimeLeft, 1, function()
+    end)
 
     local chosenMusic
     local musicName
@@ -554,20 +557,26 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpawnButton:SetSize(535, 100)
             local textAnim = 0
             SpawnButton.Paint = function()
-                if SpawnButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                else
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                end
+                if not timer.Exists("respawnTimeLeft") then
+                    if SpawnButton:IsHovered() then
+                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                    else
+                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                    end
 
-                draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-                for k, v in pairs(weaponArray) do
-                    if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
-                    if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                    if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                    for k, v in pairs(weaponArray) do
+                        if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
+                        if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                        if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                    end
+                else
+                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, patchRed, TEXT_ALIGN_LEFT)
+                    draw.DrawText(math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                 end
             end
             SpawnButton.DoClick = function()
+                if timer.Exists("respawnTimeLeft") then return end
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
@@ -3785,30 +3794,22 @@ net.Receive("OpenMainMenu", function(len, ply)
             local ExitButton = vgui.Create("DButton", MainPanel)
             ExitButton:SetPos(0, ScrH() / 2 + 100)
             ExitButton:SetText("")
-            ExitButton:SetSize(500, 100)
+            ExitButton:SetSize(600, 100)
             local textAnim = 0
-            local disconnectConfirm = 0
             ExitButton.Paint = function()
                 if ExitButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
-                if (disconnectConfirm == 0) then
-                    draw.DrawText("EXIT GAME", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-                else
-                    draw.DrawText("CONFIRM?", "AmmoCountSmall", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-                end
+                draw.DrawText("PAUSE MENU", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
             ExitButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
-                if (disconnectConfirm == 0) then
-                    disconnectConfirm = 1
-                else
-                    RunConsoleCommand("disconnect")
-                end
-
-                timer.Simple(3, function() disconnectConfirm = 0 end)
+                gui.ActivateGameUI()
+                net.Start("CloseMainMenu")
+                net.SendToServer()
+                MainMenu:Remove()
+                gui.EnableScreenClicker(false)
             end
 
             local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)

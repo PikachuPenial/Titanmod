@@ -406,39 +406,6 @@ function CheckForPlayerLevel(ply)
 	end
 end
 
---Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
-function GM:ShowHelp(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
-end
-
-function GM:ShowTeam(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
-end
-
-function GM:ShowSpare1(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
-end
-
-function GM:ShowSpare2(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
-end
-
 net.Receive("CloseMainMenu", function(len, ply)
 	ply:SetNWBool("mainmenu", false)
 	if not timer.Exists(ply:SteamID() .. "respawnTime") then ply:Spawn() end
@@ -683,6 +650,7 @@ end
 hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
     if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
         net.Start("OpenMainMenu")
+		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
         net.Send(ply)
         ply:SetNWBool("mainmenu", true)
     end
@@ -691,6 +659,43 @@ hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
         if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
     end)
 end)
+
+--Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
+function GM:ShowHelp(ply)
+	if not ply:Alive() then
+		net.Start("OpenMainMenu")
+		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+		net.Send(ply)
+		ply:SetNWBool("mainmenu", true)
+	end
+end
+
+function GM:ShowTeam(ply)
+	if not ply:Alive() then
+		net.Start("OpenMainMenu")
+		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+		net.Send(ply)
+		ply:SetNWBool("mainmenu", true)
+	end
+end
+
+function GM:ShowSpare1(ply)
+	if not ply:Alive() then
+		net.Start("OpenMainMenu")
+		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+		net.Send(ply)
+		ply:SetNWBool("mainmenu", true)
+	end
+end
+
+function GM:ShowSpare2(ply)
+	if not ply:Alive() then
+		net.Start("OpenMainMenu")
+		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+		net.Send(ply)
+		ply:SetNWBool("mainmenu", true)
+	end
+end
 
 
 --Auto saves player data if enabled by server admin.
