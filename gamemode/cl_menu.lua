@@ -211,10 +211,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     menuMusic:Play()
                     menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
                     MuteMusicButton:SetImage("icons/speakericon.png")
-                    if requestedBy ~= nil then
-                        MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25)
-                        ProfileButton:Show()
-                    end
+                    if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
                     RunConsoleCommand("tm_menumusic", 1)
                 else
                     menuMusic:FadeOut(1)

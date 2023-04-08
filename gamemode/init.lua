@@ -124,6 +124,7 @@ function GM:PlayerInitialSpawn(ply)
 		ply:KillSilent()
 		timer.Simple(0.75, function() --Delaying by 0.75 because the menu just doesn't open sometimes, might fix, idk.
 			net.Start("OpenMainMenu")
+			net.WriteFloat(0)
 			net.Send(ply)
 			ply:SetNWBool("mainmenu", true)
 		end)
@@ -424,8 +425,8 @@ net.Receive("PlayerModelChange", function(len, ply)
 	for k, v in pairs(modelArray) do
 		if selectedModel == v[1] then
 			local modelID = v[1]
-			local modelUnlock = v[4]
-			local modelValue = v[5]
+			local modelUnlock = v[3]
+			local modelValue = v[4]
 
 			if modelUnlock == "default" then
 				ply:SetNWString("chosenPlayermodel", modelID)
@@ -459,8 +460,8 @@ net.Receive("PlayerCardChange", function(len, ply)
 	for k, v in pairs(cardArray) do
 		if selectedCard == v[1] then
 			local cardID = v[1]
-			local cardUnlock = v[3]
-			local cardValue = v[4]
+			local cardUnlock = v[4]
+			local cardValue = v[5]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
 			if cardUnlock == "default" or cardUnlock == "color" then
