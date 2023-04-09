@@ -2926,6 +2926,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                             OptionsSlideoutPanel:Show()
                             OptionsPanel:Show()
                             timer.Remove("previewLoop")
+                            UpdateHUDConVars()
+                            UpdateHUDFont()
                         end
 
                         local EditorScroller = vgui.Create("DScrollPanel", EditorPanel)
