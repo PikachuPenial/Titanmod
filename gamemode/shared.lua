@@ -3,9 +3,13 @@ GM.Author = "Penial"
 GM.Email = "smile"
 GM.Website = "https://github.com/PikachuPenial"
 
+--Creating server ConVars
+if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds") end
+if !ConVarExists("tm_endless") then CreateConVar("tm_endless", "0", FCVAR_NOTIFY, "Disables the periodic map voting, resulting in an endless match.") end
+if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players") end
+
 --Creating client ConVars, mostly for use in the Options menu.
 if CLIENT then
-    print("Setting up client ConVars")
     CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
     CreateClientConVar("tm_killsound", 1, true, false, "Enable/disable the kill confirmation sound", 0, 1)
     CreateClientConVar("tm_menumusic", 1, true, false, "Enable/disable the Main Menu music", 0, 1)
