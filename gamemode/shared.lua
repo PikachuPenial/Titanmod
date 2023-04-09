@@ -4,70 +4,67 @@ GM.Email = "smile"
 GM.Website = "https://github.com/PikachuPenial"
 
 --Creating client ConVars, mostly for use in the Options menu.
-if !ConVarExists("tm_hitsounds") then CreateConVar("tm_hitsounds", "1", FCVAR_ARCHIVE, "Enable/disable the hitsounds", 0, 1) end
-if !ConVarExists("tm_killsound") then CreateConVar("tm_killsound", "1", FCVAR_ARCHIVE, "Enable/disable the kill confirmation sound", 0, 1) end
-if !ConVarExists("tm_menumusic") then CreateConVar("tm_menumusic", "1", FCVAR_ARCHIVE, "Enable/disable the Main Menu music", 0, 1) end
-if !ConVarExists("tm_menumusicvolume") then CreateConVar("tm_menumusicvolume", "0.90", FCVAR_ARCHIVE, "Increase or lower the volume of the Main Menu music", 0, 1) end
-if !ConVarExists("tm_hitsoundtype") then CreateConVar("tm_hitsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of hitsounds", 0, 3) end
-if !ConVarExists("tm_killsoundtype") then CreateConVar("tm_killsoundtype", "0", FCVAR_ARCHIVE, "Switch between the multiple styles of kill sounds", 0, 2) end
-if !ConVarExists("tm_menudof") then CreateConVar("tm_menudof", "1", FCVAR_ARCHIVE, "Enable or disable Depth Of Field on certain in game menus", 0, 1) end
-if !ConVarExists("tm_nadebind") then CreateConVar("tm_nadebind", "KEY_4", {FCVAR_ARCHIVE, FCVAR_USERINFO}, "Determines the keybind that will begin cocking a grenade") end
-if !ConVarExists("tm_mainmenubind") then CreateConVar("tm_mainmenubind", "KEY_M", {FCVAR_ARCHIVE, FCVAR_USERINFO}, "Determines the keybind that will open the main menu") end
-if !ConVarExists("tm_hidestatsfromothers") then CreateConVar("tm_hidestatsfromothers", "0", {FCVAR_ARCHIVE, FCVAR_USERINFO}, "Determines if other players can see and/or compare your stats", 0, 1) end
+if CLIENT then
+    print("Setting up client ConVars")
+    CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
+    CreateClientConVar("tm_killsound", 1, true, false, "Enable/disable the kill confirmation sound", 0, 1)
+    CreateClientConVar("tm_menumusic", 1, true, false, "Enable/disable the Main Menu music", 0, 1)
+    CreateClientConVar("tm_menumusicvolume", 0.90, true, false, "Increase or lower the volume of the Main Menu music", 0, 1)
+    CreateClientConVar("tm_hitsoundtype", 0, true, false, "Switch between the multiple styles of hitsounds", 0, 3)
+    CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 2)
+    CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)
+    CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
+    CreateClientConVar("tm_mainmenubind", KEY_M, true, true, "Determines the keybind that will open the main menu")
+    CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
 
-if !ConVarExists("tm_hud_enable") then CreateConVar("tm_hud_enable", "1", FCVAR_ARCHIVE, "Enable/disable any custom HUD elements created by the gamemode", 0, 1) end
-if !ConVarExists("tm_hud_enablekill") then CreateConVar("tm_hud_enablekill", "1", FCVAR_ARCHIVE, "Enable/disable the kill UI", 0, 1) end
-if !ConVarExists("tm_hud_enabledeath") then CreateConVar("tm_hud_enabledeath", "1", FCVAR_ARCHIVE, "Enable/disable the death UI", 0, 1) end
-if !ConVarExists("tm_hud_enablekillfeed") then CreateConVar("tm_hud_enablekillfeed", "1", FCVAR_ARCHIVE, "Enable/disable the kill feed", 0, 1) end
-if !ConVarExists("tm_hud_font") then CreateConVar("tm_hud_font", "Arial", FCVAR_ARCHIVE, "Change the font that is used by custom HUD elements") end
-if !ConVarExists("tm_hud_font_scale") then CreateConVar("tm_hud_font_scale", "1", FCVAR_ARCHIVE, "Change the scale of the font that is used by custom HUD elements", 0.5, 1.5) end
-if !ConVarExists("tm_hud_font_kill") then CreateConVar("tm_hud_font_kill", "0", FCVAR_ARCHIVE, "Enable/disable the use of your custom font for the kill UI", 0, 1) end
-if !ConVarExists("tm_hud_font_death") then CreateConVar("tm_hud_font_death", "0", FCVAR_ARCHIVE, "Enable/disable the use of your custom font for the death UI", 0, 1) end
-if !ConVarExists("tm_hud_ammo_style") then CreateConVar("tm_hud_ammo_style", "0", FCVAR_ARCHIVE, "Adjusts the style and look of the ammo counter", 0, 1) end
-if !ConVarExists("tm_hud_ammo_wep_text_color_r") then CreateConVar("tm_hud_ammo_wep_text_color_r", "255", FCVAR_ARCHIVE, "Adjusts the red coloring for the weapon name text", 0, 255) end
-if !ConVarExists("tm_hud_ammo_wep_text_color_g") then CreateConVar("tm_hud_ammo_wep_text_color_g", "255", FCVAR_ARCHIVE, "Adjusts the green coloring for the weapon name text", 0, 255) end
-if !ConVarExists("tm_hud_ammo_wep_text_color_b") then CreateConVar("tm_hud_ammo_wep_text_color_b", "255", FCVAR_ARCHIVE, "Adjusts the blue coloring for the weapon name text", 0, 255) end
-if !ConVarExists("tm_hud_ammo_bar_color_r") then CreateConVar("tm_hud_ammo_bar_color_r", "150", FCVAR_ARCHIVE, "Adjusts the red coloring for the ammo bar", 0, 255) end
-if !ConVarExists("tm_hud_ammo_bar_color_g") then CreateConVar("tm_hud_ammo_bar_color_g", "100", FCVAR_ARCHIVE, "Adjusts the green coloring for the ammo bar", 0, 255) end
-if !ConVarExists("tm_hud_ammo_bar_color_b") then CreateConVar("tm_hud_ammo_bar_color_b", "50", FCVAR_ARCHIVE, "Adjusts the blue coloring for the ammo bar", 0, 255) end
-if !ConVarExists("tm_hud_ammo_text_color_r") then CreateConVar("tm_hud_ammo_text_color_r", "255", FCVAR_ARCHIVE, "Adjusts the red coloring for the ammo text", 0, 255) end
-if !ConVarExists("tm_hud_ammo_text_color_g") then CreateConVar("tm_hud_ammo_text_color_g", "255", FCVAR_ARCHIVE, "Adjusts the green coloring for the ammo text", 0, 255) end
-if !ConVarExists("tm_hud_ammo_text_color_b") then CreateConVar("tm_hud_ammo_text_color_b", "255", FCVAR_ARCHIVE, "Adjusts the blue coloring for the ammo text", 0, 255) end
-if !ConVarExists("tm_hud_health_size") then CreateConVar("tm_hud_health_size", "450", FCVAR_ARCHIVE, "Adjusts the size of the players health bar", 100, 1000) end
-if !ConVarExists("tm_hud_health_text_color_r") then CreateConVar("tm_hud_health_text_color_r", "255", FCVAR_ARCHIVE, "Adjusts the red coloring for the health text", 0, 255) end
-if !ConVarExists("tm_hud_health_text_color_g") then CreateConVar("tm_hud_health_text_color_g", "255", FCVAR_ARCHIVE, "Adjusts the green coloring for the health text", 0, 255) end
-if !ConVarExists("tm_hud_health_text_color_b") then CreateConVar("tm_hud_health_text_color_b", "255", FCVAR_ARCHIVE, "Adjusts the blue coloring for the health text", 0, 255) end
-if !ConVarExists("tm_hud_health_color_high_r") then CreateConVar("tm_hud_health_color_high_r", "100", FCVAR_ARCHIVE, "Adjusts the red coloring for the health bar while on high health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_high_g") then CreateConVar("tm_hud_health_color_high_g", "180", FCVAR_ARCHIVE, "Adjusts the green coloring for the health bar while on high health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_high_b") then CreateConVar("tm_hud_health_color_high_b", "100", FCVAR_ARCHIVE, "Adjusts the blue coloring for the health bar while on high health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_mid_r") then CreateConVar("tm_hud_health_color_mid_r", "180", FCVAR_ARCHIVE, "Adjusts the red coloring for the health bar while on medium health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_mid_g") then CreateConVar("tm_hud_health_color_mid_g", "180", FCVAR_ARCHIVE, "Adjusts the green coloring for the health bar while on medium health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_mid_b") then CreateConVar("tm_hud_health_color_mid_b", "100", FCVAR_ARCHIVE, "Adjusts the blue coloring for the health bar while on medium health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_low_r") then CreateConVar("tm_hud_health_color_low_r", "180", FCVAR_ARCHIVE, "Adjusts the red coloring for the health bar while on low health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_low_g") then CreateConVar("tm_hud_health_color_low_g", "100", FCVAR_ARCHIVE, "Adjusts the green coloring for the health bar while on low health", 0, 255) end
-if !ConVarExists("tm_hud_health_color_low_b") then CreateConVar("tm_hud_health_color_low_b", "100", FCVAR_ARCHIVE, "Adjusts the blue coloring for the health bar while on low health", 0, 255) end
-if !ConVarExists("tm_hud_equipment_anchor") then CreateConVar("tm_hud_equipment_anchor", "0", FCVAR_ARCHIVE, "Adjusts the anchoring of the players equipment UI", 0, 2) end
-if !ConVarExists("tm_hud_killfeed_style") then CreateConVar("tm_hud_killfeed_style", "0", FCVAR_ARCHIVE, "Switch the killfeed entries between ascending and descending", 0, 1) end
-if !ConVarExists("tm_hud_killfeed_limit") then CreateConVar("tm_hud_killfeed_limit", "4", FCVAR_ARCHIVE, "Limit the amount of kill feed entries that are shown at one time", 4, 10) end
-if !ConVarExists("tm_hud_killfeed_opacity") then CreateConVar("tm_hud_killfeed_opacity", "80", FCVAR_ARCHIVE, "Adjusts the background opacity of a kill feed entry", 0, 255) end
-if !ConVarExists("tm_hud_reloadhint") then CreateConVar("tm_hud_reloadhint", "1", FCVAR_ARCHIVE, "Enable/disable the reload text when out of ammo", 0, 1) end
-if !ConVarExists("tm_hud_loadouthint") then CreateConVar("tm_hud_loadouthint", "1", FCVAR_ARCHIVE, "Enable/disable the loadout info displaying on player spawn", 0, 1) end
-if !ConVarExists("tm_hud_killaccolades") then CreateConVar("tm_hud_killaccolades", "1", FCVAR_ARCHIVE, "Enable/disable the accolade text on the kill UI", 0, 1) end
-if !ConVarExists("tm_hud_killtracker") then CreateConVar("tm_hud_killtracker", "0", FCVAR_ARCHIVE, "Enable/disable the weapon specific kill tracking on the UI", 0, 1) end
-
-if CLIENT then --It needs to be in the client state to track screen width and height, for some reason, leaving the ConVars above in this if statement caused a lot of issues for new players joining a server, so uh, they won't go here for now.
-    if !ConVarExists("tm_hud_health_offset_x") then CreateConVar("tm_hud_health_offset_x", "0", FCVAR_ARCHIVE, "Adjusts the X offset of the players health bar", 0, ScrW()) end
-    if !ConVarExists("tm_hud_health_offset_y") then CreateConVar("tm_hud_health_offset_y", "0", FCVAR_ARCHIVE, "Adjusts the Y offset of the players health bar", 0, ScrH()) end
-    if !ConVarExists("tm_hud_equipment_offset_x") then CreateConVar("tm_hud_equipment_offset_x", "525", FCVAR_ARCHIVE, "Adjusts the X offset of the players equipment UI", 0, ScrW()) end
-    if !ConVarExists("tm_hud_equipment_offset_y") then CreateConVar("tm_hud_equipment_offset_y", "0", FCVAR_ARCHIVE, "Adjusts the Y offset of the players equipment UI", 0, ScrH()) end
-    if !ConVarExists("tm_hud_killfeed_offset_x") then CreateConVar("tm_hud_killfeed_offset_x", "0", FCVAR_ARCHIVE, "Adjusts the X offset of the kill feed", 0, ScrW()) end
-    if !ConVarExists("tm_hud_killfeed_offset_y") then CreateConVar("tm_hud_killfeed_offset_y", "45", FCVAR_ARCHIVE, "Adjusts the Y offset of the kill feed", 0, ScrH()) end
-    if !ConVarExists("tm_hud_killdeath_offset_x") then CreateConVar("tm_hud_killdeath_offset_x", "0", FCVAR_ARCHIVE, "Adjusts the X offset of the kill and death UI", ScrW() / -2, ScrW() / 2) end
-    if !ConVarExists("tm_hud_killdeath_offset_y") then CreateConVar("tm_hud_killdeath_offset_y", "335", FCVAR_ARCHIVE, "Adjusts the Y offset of the kill and death UI", 0, ScrH()) end
+    CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
+    CreateClientConVar("tm_hud_enablekill", 1, true, false, "Enable/disable the kill UI", 0, 1)
+    CreateClientConVar("tm_hud_enabledeath", 1, true, false, "Enable/disable the death UI", 0, 1)
+    CreateClientConVar("tm_hud_enablekillfeed", 1, true, false, "Enable/disable the kill feed", 0, 1)
+    CreateClientConVar("tm_hud_font", "Arial", true, false, "Enable/disable any custom HUD elements created by the gamemode")
+    CreateClientConVar("tm_hud_font_scale", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0.5, 1.5)
+    CreateClientConVar("tm_hud_font_kill", 0, true, false, "Enable/disable the use of your custom font for the kill UI", 0, 1)
+    CreateClientConVar("tm_hud_font_death", 0, true, false, "Enable/disable the use of your custom font for the death UI", 0, 1)
+    CreateClientConVar("tm_hud_ammo_style", 0, true, false, "Adjusts the style and look of the ammo counter", 0, 1)
+    CreateClientConVar("tm_hud_ammo_wep_text_color_r", 255, true, false, "Adjusts the red coloring for the weapon name text", 0, 255)
+    CreateClientConVar("tm_hud_ammo_wep_text_color_g", 255, true, false, "Adjusts the green coloring for the weapon name text", 0, 255)
+    CreateClientConVar("tm_hud_ammo_wep_text_color_b", 255, true, false, "Adjusts the blue coloring for the weapon name text", 0, 255)
+    CreateClientConVar("tm_hud_ammo_bar_color_r", 150, true, false, "Adjusts the red coloring for the ammo bar", 0, 255)
+    CreateClientConVar("tm_hud_ammo_bar_color_g", 100, true, false, "Adjusts the green coloring for the ammo bar", 0, 255)
+    CreateClientConVar("tm_hud_ammo_bar_color_b", 50, true, false, "Adjusts the blue coloring for the ammo bar", 0, 255)
+    CreateClientConVar("tm_hud_ammo_text_color_r", 255, true, false, "Adjusts the red coloring for the ammo text", 0, 255)
+    CreateClientConVar("tm_hud_ammo_text_color_g", 255, true, false, "Adjusts the green coloring for the ammo text", 0, 255)
+    CreateClientConVar("tm_hud_ammo_text_color_b", 255, true, false, "Adjusts the blue coloring for the ammo text", 0, 255)
+    CreateClientConVar("tm_hud_health_size", 450, true, false, "Adjusts the size of the players health bar", 100, 1000)
+    CreateClientConVar("tm_hud_health_offset_x", 0, true, false, "Adjusts the X offset of the players health bar", 0, ScrW())
+    CreateClientConVar("tm_hud_health_offset_y", 0, true, false, "Adjusts the Y offset of the players health bar", 0, ScrH())
+    CreateClientConVar("tm_hud_health_text_color_r", 255, true, false, "Adjusts the red coloring for the health text", 0, 255)
+    CreateClientConVar("tm_hud_health_text_color_g", 255, true, false, "Adjusts the green coloring for the health text", 0, 255)
+    CreateClientConVar("tm_hud_health_text_color_b", 255, true, false, "Adjusts the blue coloring for the health text", 0, 255)
+    CreateClientConVar("tm_hud_health_color_high_r", 100, true, false, "Adjusts the red coloring for the health bar while on high health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_high_g", 180, true, false, "Adjusts the green coloring for the health bar while on high health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_high_b", 100, true, false, "Adjusts the blue coloring for the health bar while on high health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_mid_r", 180, true, false, "Adjusts the red coloring for the health bar while on medium health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_mid_g", 180, true, false, "Adjusts the green coloring for the health bar while on medium health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_mid_b", 100, true, false, "Adjusts the blue coloring for the health bar while on medium health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_low_r", 180, true, false, "Adjusts the red coloring for the health bar while on low health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_low_g", 100, true, false, "Adjusts the green coloring for the health bar while on low health", 0, 255)
+    CreateClientConVar("tm_hud_health_color_low_b", 100, true, false, "Adjusts the blue coloring for the health bar while on low health", 0, 255)
+    CreateClientConVar("tm_hud_equipment_offset_x", 525, true, false, "Adjusts the X offset of the players equipment UI", 0, ScrW())
+    CreateClientConVar("tm_hud_equipment_offset_y", 0, true, false, "Adjusts the Y offset of the players equipment UI", 0, ScrH())
+    CreateClientConVar("tm_hud_equipment_anchor", 0, true, false, "Adjusts the anchoring of the players equipment UI", 0, 2)
+    CreateClientConVar("tm_hud_killfeed_style", 0, true, false, "Switch the killfeed entries between ascending and descending", 0, 1)
+    CreateClientConVar("tm_hud_killfeed_limit", 4, true, false, "Limit the amount of kill feed entries that are shown at one time", 1, 10)
+    CreateClientConVar("tm_hud_killfeed_offset_x", 0, true, false, "Adjusts the X offset of the kill feed", 0, ScrW())
+    CreateClientConVar("tm_hud_killfeed_offset_y", 45, true, false, "Adjusts the Y offset of the kill feed", 0, ScrH())
+    CreateClientConVar("tm_hud_killfeed_opacity", 80, true, false, "Adjusts the background opacity of a kill feed entry", 0, 255)
+    CreateClientConVar("tm_hud_killdeath_offset_x", 0, true, false, "Adjusts the X offset of the kill and death UI", ScrW() / -2, ScrW() / 2)
+    CreateClientConVar("tm_hud_killdeath_offset_y", 335, true, false, "Adjusts the Y offset of the kill and death UI", 0, ScrH())
+    CreateClientConVar("tm_hud_reloadhint", 1, true, false, "Enable/disable the reload text when out of ammo", 0, 1)
+    CreateClientConVar("tm_hud_loadouthint", 1, true, false, "Enable/disable the loadout info displaying on player spawn", 0, 1)
+    CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
+    CreateClientConVar("tm_hud_killtracker", 0, true, false, "Enable/disable the weapon specific kill tracking on the UI", 0, 1)
 end
-
---Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
-if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
 
 --Disabling footsteps if a player is crouched.
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
@@ -452,3 +449,6 @@ hook.Add("Initialize", "Optimization", function()
         hook.Remove("PostDrawEffects", "RenderHalos")
     end
 end)
+
+--Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
+if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
