@@ -100,7 +100,7 @@ function UpdateHUDConVars()
 end
 
 function UpdateHUDFont()
-	surface.CreateFont("HUD_GunPrintName", {
+    surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
 		size = 56 * GetConVar("tm_hud_font_scale"):GetFloat(),

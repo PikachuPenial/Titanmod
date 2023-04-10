@@ -13,12 +13,10 @@ While you can just pull this repository and run the gamemode yourself, I do not 
 # Credits:
 Zedorfski (Disequilibrium map, System Files menu song)  
 Portanator (code contributions)  
-Unlucky (various player cards)  
 
 # Playtesters:
 Portanator  
 Seven  
-Unlucky  
 suomij  
 theBean  
 Zedorfski  

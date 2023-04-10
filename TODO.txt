@@ -7,10 +7,7 @@ Reworked player profile pages (heavily inspired by bad business profiles) (would
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
 Daily challenges (would reset 4-6pm CST for all users, need to learn cookies to utilize this) (kills with weapon category/kills beyond # meters/headshot kills/sliding kills)
-More cosmetics (three models per accolade, potentially double the playermodel count)
 1-2 new maps (more large scale maps specifically)
 Encyclopedia (menu for information on each weapon)
 New players greeting screen (also would serve as a small tutorial of sorts)
 Leaderboards (would need to pull the database file, would still be cool but would take a while to implement)
-Leaning? (did not play well last time it was tested, might refine and try again)
-Zedorfski finishing his map (please dude it needs textures if you want it in by release)

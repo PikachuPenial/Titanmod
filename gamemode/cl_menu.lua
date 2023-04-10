@@ -32,7 +32,7 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/takecare_ultrakillost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav", "music/nintendo_mariokartchannel.wav"}
+    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav", "music/nintendo_mariokartchannel.wav"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPly, chosenMusic)
 
@@ -46,12 +46,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     if chosenMusic == "music/nintendo_mariokartchannel.wav" then
         musicName = "Mario Kart Channel - Nintendo"
-    end
-
-    if chosenMusic == "music/takecare_ultrakillost.wav" then
-        musicName = "Take Care - Ultrakill OST"
-        requestedBy = "Unlucky"
-        steamProfile = "https://steamcommunity.com/id/UnluckyGamer49"
     end
 
     if chosenMusic == "music/immaculate_visage.wav" then
@@ -720,7 +714,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockDefaultCards = vgui.Create("DPanel", CardScroller)
                     DockDefaultCards:Dock(TOP)
-                    DockDefaultCards:SetSize(0, 250)
+                    DockDefaultCards:SetSize(0, 416)
 
                     --Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
@@ -1551,7 +1545,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
                             FillCardListsUnlocked()
-                            DockDefaultCards:SetSize(0, 250)
+                            DockDefaultCards:SetSize(0, 416)
                             DockKillCards:SetSize(0, (killCardsUnlocked * 42.5) + 42.5)
                             DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
                             DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
@@ -1578,7 +1572,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
                             FillCardListsAll()
-                            DockDefaultCards:SetSize(0, 250)
+                            DockDefaultCards:SetSize(0, 416)
                             DockKillCards:SetSize(0, 250)
                             DockAccoladeCards:SetSize(0, 583)
                             DockLevelCards:SetSize(0, 1280)
@@ -1650,6 +1644,25 @@ net.Receive("OpenMainMenu", function(len, ply)
                     PaletteJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextColor)
+                    end
+
+                    local RandomizeButton = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    RandomizeButton:SetPos(12, ScrH() - 96)
+                    RandomizeButton:SetSize(32, 32)
+                    RandomizeButton:SetImage("icons/diceicon.png")
+                    RandomizeButton:SetTooltip("Choose random model")
+                    RandomizeButton.DoClick = function()
+                        local rand = math.random(1, totalCards)
+
+                        for k, v in pairs(cardArray) do
+                            if k == rand then
+                                newCard = v[1]
+                                newCardName = v[2]
+                                newCardDesc = v[3]
+                                newCardUnlockType = v[4]
+                                newCardUnlockValue = v[5]
+                            end
+                        end
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -2497,6 +2510,31 @@ net.Receive("OpenMainMenu", function(len, ply)
                     AccoladeJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CustomizeScroller:ScrollToChild(TextAccolade)
+                    end
+
+                    local RandomizeButton = vgui.Create("DImageButton", ModelQuickjumpHolder)
+                    RandomizeButton:SetPos(12, ScrH() - 96)
+                    RandomizeButton:SetSize(32, 32)
+                    RandomizeButton:SetImage("icons/diceicon.png")
+                    RandomizeButton:SetTooltip("Choose random model")
+                    RandomizeButton.DoClick = function()
+                        local rand = math.random(1, totalModels)
+
+                        for k, v in pairs(modelArray) do
+                            if k == rand then
+                                newModel = v[1]
+                                newModelName = v[2]
+                                newModelUnlockType = v[3]
+                                newModelUnlockValue = v[4]
+
+                                SelectedModelDisplay:Remove()
+
+                                SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                                SelectedModelDisplay:SetSize(475, 337.5)
+                                SelectedModelDisplay:SetPos(0, 120)
+                                SelectedModelDisplay:SetModel(newModel)
+                            end
+                        end
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)
