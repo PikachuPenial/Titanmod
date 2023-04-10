@@ -150,6 +150,9 @@ function GM:ScoreboardShow()
 			local ratio
 			local score = v:GetNWInt("playerScoreMatch")
 
+			local usergroup
+			if v:IsUserGroup("superadmin") then usergroup = "dev" elseif v:IsUserGroup("admin") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
+
 			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
 				ratio = 0
@@ -182,6 +185,8 @@ function GM:ScoreboardShow()
 				draw.SimpleText(v:Deaths(), "Health", 420, 35, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(ratioRounded, "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(score, "Health", 540, 35, white, TEXT_ALIGN_CENTER)
+
+				if usergroup == "dev" then draw.SimpleText("Developer", "StreakText", 315, 72, Color(205, 255, 0), TEXT_ALIGN_LEFT) elseif usergroup == "mod" then draw.SimpleText("Moderator", "StreakText", 315, 72, Color(255, 0, 100), TEXT_ALIGN_LEFT) elseif usergroup == "contributor" then draw.SimpleText("Contributor", "StreakText", 315, 72, Color(0, 110, 255), TEXT_ALIGN_LEFT) end
 			end
 
 			--Displays a players calling card and profile picture.
