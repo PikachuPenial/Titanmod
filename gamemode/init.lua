@@ -168,7 +168,7 @@ end
 
 local function DamageProfileAndHitSounds(target, hitgroup, dmginfo)
 	if (hitgroup == HITGROUP_HEAD) then
-		dmginfo:ScaleDamage(1.4)
+		dmginfo:ScaleDamage(1.3)
 	elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) or (hitgroup == HITGROUP_GEAR) or (hitgroup == HITGROUP_GENERIC) then
 		dmginfo:ScaleDamage(1)
 	elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then

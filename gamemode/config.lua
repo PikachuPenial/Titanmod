@@ -58,8 +58,9 @@ mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.pn
 mapArray[8] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
 mapArray[9] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
 mapArray[10] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
-mapArray[11] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[12] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
+mapArray[11] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
+mapArray[12] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[13] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
