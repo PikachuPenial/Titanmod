@@ -22,7 +22,7 @@ function GM:ScoreboardShow()
 		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
 		ScoreboardDerma = vgui.Create("DFrame")
-		if player.GetCount() < 4 then ScoreboardDerma:SetSize(640, 200 + (player.GetCount() * 100)) else ScoreboardDerma:SetSize(640, 600) end
+		if player.GetCount() < 5 then ScoreboardDerma:SetSize(640, 200 + (player.GetCount() * 100)) else ScoreboardDerma:SetSize(640, 700) end
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:SetDraggable(false)

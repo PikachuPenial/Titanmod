@@ -649,16 +649,16 @@ end
 
 --Sets up keybinds.
 hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
-    if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
-        net.Start("OpenMainMenu")
+	if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
+		net.Start("OpenMainMenu")
 		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-        net.Send(ply)
-        ply:SetNWBool("mainmenu", true)
-    end
-    if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
-    hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
-        if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
-    end)
+		net.Send(ply)
+		ply:SetNWBool("mainmenu", true)
+	end
+	if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
+	hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
+		if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+	end)
 end)
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.

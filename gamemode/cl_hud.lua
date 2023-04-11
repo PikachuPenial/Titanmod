@@ -7,245 +7,60 @@ local feedArray = {}
 local health
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
-local healthSize
-local healthOffsetX
-local healthOffsetY
-local wepTextR
-local wepTextG
-local wepTextB
-local ammoBarR
-local ammoBarG
-local ammoBarB
-local ammoTextR
-local ammoTextG
-local ammoTextB
-local hpTextR
-local hpTextG
-local hpTextB
-local hpHighR
-local hpHighG
-local hpHighB
-local hpMidR
-local hpMidG
-local hpMidB
-local hpLowR
-local hpLowG
-local hpLowB
-local equipOffsetX
-local equipOffsetY
-local feedOffsetX
-local feedOffsetY
-local feedOpacity
-local kdOffsetX
-local kdOffsetY
+local healthSize = GetConVar("tm_hud_health_size"):GetInt()
+local healthOffsetX = GetConVar("tm_hud_health_offset_x"):GetInt()
+local healthOffsetY = GetConVar("tm_hud_health_offset_y"):GetInt()
+local wepTextR = GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt()
+local wepTextG = GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt()
+local wepTextB = GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()
+local ammoBarR = GetConVar("tm_hud_ammo_bar_color_r"):GetInt()
+local ammoBarG = GetConVar("tm_hud_ammo_bar_color_g"):GetInt()
+local ammoBarB = GetConVar("tm_hud_ammo_bar_color_b"):GetInt()
+local ammoTextR = GetConVar("tm_hud_ammo_text_color_r"):GetInt()
+local ammoTextG = GetConVar("tm_hud_ammo_text_color_g"):GetInt()
+local ammoTextB = GetConVar("tm_hud_ammo_text_color_b"):GetInt()
+local hpTextR = GetConVar("tm_hud_health_text_color_r"):GetInt()
+local hpTextG = GetConVar("tm_hud_health_text_color_g"):GetInt()
+local hpTextB = GetConVar("tm_hud_health_text_color_b"):GetInt()
+local hpHighR = GetConVar("tm_hud_health_color_high_r"):GetInt()
+local hpHighG = GetConVar("tm_hud_health_color_high_g"):GetInt()
+local hpHighB = GetConVar("tm_hud_health_color_high_b"):GetInt()
+local hpMidR = GetConVar("tm_hud_health_color_mid_r"):GetInt()
+local hpMidG = GetConVar("tm_hud_health_color_mid_g"):GetInt()
+local hpMidB = GetConVar("tm_hud_health_color_mid_b"):GetInt()
+local hpLowR = GetConVar("tm_hud_health_color_low_r"):GetInt()
+local hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
+local hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
+local equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
+local equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
+local feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
+local feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
+local feedOpacity = GetConVar("tm_hud_killfeed_opacity"):GetInt()
+local kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
+local kdOffsetY = GetConVar("tm_hud_killdeath_offset_y"):GetInt()
+local kIconR = GetConVar("tm_hud_kill_iconcolor_r"):GetInt()
+local kIconG = GetConVar("tm_hud_kill_iconcolor_g"):GetInt()
+local kIconB = GetConVar("tm_hud_kill_iconcolor_b"):GetInt()
+
 local StreakFont = "StreakText"
 local NameFont = "PlayerNotiName"
 local ArialFont = "Arial18"
 local DeathFont = "PlayerDeathName"
 local WepFont = "WepNameKill"
 
-function UpdateHUDConVars()
-    healthSize = GetConVar("tm_hud_health_size"):GetInt()
-    healthOffsetX = GetConVar("tm_hud_health_offset_x"):GetInt()
-    healthOffsetY = GetConVar("tm_hud_health_offset_y"):GetInt()
-    wepTextR = GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt()
-    wepTextG = GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt()
-    wepTextB = GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()
-    ammoBarR = GetConVar("tm_hud_ammo_bar_color_r"):GetInt()
-    ammoBarG = GetConVar("tm_hud_ammo_bar_color_g"):GetInt()
-    ammoBarB = GetConVar("tm_hud_ammo_bar_color_b"):GetInt()
-    ammoTextR = GetConVar("tm_hud_ammo_text_color_r"):GetInt()
-    ammoTextG = GetConVar("tm_hud_ammo_text_color_g"):GetInt()
-    ammoTextB = GetConVar("tm_hud_ammo_text_color_b"):GetInt()
-    hpTextR = GetConVar("tm_hud_health_text_color_r"):GetInt()
-    hpTextG = GetConVar("tm_hud_health_text_color_g"):GetInt()
-    hpTextB = GetConVar("tm_hud_health_text_color_b"):GetInt()
-    hpHighR = GetConVar("tm_hud_health_color_high_r"):GetInt()
-    hpHighG = GetConVar("tm_hud_health_color_high_g"):GetInt()
-    hpHighB = GetConVar("tm_hud_health_color_high_b"):GetInt()
-    hpMidR = GetConVar("tm_hud_health_color_mid_r"):GetInt()
-    hpMidG = GetConVar("tm_hud_health_color_mid_g"):GetInt()
-    hpMidB = GetConVar("tm_hud_health_color_mid_b"):GetInt()
-    hpLowR = GetConVar("tm_hud_health_color_low_r"):GetInt()
-    hpLowG = GetConVar("tm_hud_health_color_low_g"):GetInt()
-    hpLowB = GetConVar("tm_hud_health_color_low_b"):GetInt()
-    equipOffsetX = GetConVar("tm_hud_equipment_offset_x"):GetInt()
-    equipOffsetY = GetConVar("tm_hud_equipment_offset_y"):GetInt()
-    feedOffsetX = GetConVar("tm_hud_killfeed_offset_x"):GetInt()
-    feedOffsetY = GetConVar("tm_hud_killfeed_offset_y"):GetInt()
-    feedOpacity = GetConVar("tm_hud_killfeed_opacity"):GetInt()
-    kdOffsetX = GetConVar("tm_hud_killdeath_offset_x"):GetInt()
-    kdOffsetY = GetConVar("tm_hud_killdeath_offset_y"):GetInt()
-
-    if GetConVar("tm_hud_font_kill"):GetInt() == 1 then
-        StreakFont = "HUD_StreakText"
-        NameFont = "HUD_PlayerNotiName"
-    else
-        StreakFont = "StreakText"
-        NameFont = "PlayerNotiName"
-    end
-
-    if GetConVar("tm_hud_font_death"):GetInt() == 1 then
-        ArialFont = "HUD_Arial18"
-        DeathFont = "HUD_PlayerDeathName"
-        WepFont = "HUD_WepNameKill"
-    else
-        ArialFont = "Arial18"
-        DeathFont = "PlayerDeathName"
-        WepFont = "WepNameKill"
-    end
-
-    if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
-    if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
+if GetConVar("tm_hud_font_kill"):GetInt() == 1 then
+    StreakFont = "HUD_StreakText"
+    NameFont = "HUD_PlayerNotiName"
 end
 
-function UpdateHUDFont()
-    surface.CreateFont("HUD_GunPrintName", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 56 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_AmmoCount", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 128 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_WepNameKill", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 28 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_Health", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 30 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_StreakText", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 22 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_PlayerNotiName", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 52 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_PlayerDeathName", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 36 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_Arial18", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 18 * GetConVar("tm_hud_font_scale"):GetFloat(),
-		weight = 750,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
+if GetConVar("tm_hud_font_death"):GetInt() == 1 then
+    ArialFont = "HUD_Arial18"
+    DeathFont = "HUD_PlayerDeathName"
+    WepFont = "HUD_WepNameKill"
 end
 
-UpdateHUDConVars()
+if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
+if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
 
 function HUD()
     --Disables the HUD if the player has it disabled in Options.
@@ -524,7 +339,7 @@ net.Receive("NotifyKill", function(len, ply)
         KillIcon:SetImageColor(red)
     else
         headshot = ""
-        KillIcon:SetImageColor(white)
+        KillIcon:SetImageColor(Color(kIconR, kIconG, kIconB))
     end
 
     --Setting up variables related to colors, mostly for animations or dynamic text color.
@@ -989,3 +804,143 @@ function ShowLoadoutOnSpawn()
     end)
 end
 concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
+
+--ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings.
+cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)
+    healthSize = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_offset_x", function(convar_name, value_old, value_new)
+    healthOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_offset_y", function(convar_name, value_old, value_new)
+    healthOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_r", function(convar_name, value_old, value_new)
+    wepTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_g", function(convar_name, value_old, value_new)
+    wepTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_b", function(convar_name, value_old, value_new)
+    wepTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_r", function(convar_name, value_old, value_new)
+    ammoBarR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_g", function(convar_name, value_old, value_new)
+    ammoBarG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_bar_color_b", function(convar_name, value_old, value_new)
+    ammoBarB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_r", function(convar_name, value_old, value_new)
+    ammoTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_g", function(convar_name, value_old, value_new)
+    ammoTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_text_color_b", function(convar_name, value_old, value_new)
+    ammoTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_r", function(convar_name, value_old, value_new)
+    hpTextR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_g", function(convar_name, value_old, value_new)
+    hpTextG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_text_color_b", function(convar_name, value_old, value_new)
+    hpTextB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_r", function(convar_name, value_old, value_new)
+    hpHighR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_g", function(convar_name, value_old, value_new)
+    hpHighG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_high_b", function(convar_name, value_old, value_new)
+    hpHighB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_r", function(convar_name, value_old, value_new)
+    hpMidR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_g", function(convar_name, value_old, value_new)
+    hpMidG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_mid_b", function(convar_name, value_old, value_new)
+    hpMidB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_r", function(convar_name, value_old, value_new)
+    hpLowR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_g", function(convar_name, value_old, value_new)
+    hpLowG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_health_color_low_b", function(convar_name, value_old, value_new)
+    hpLowB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_equipment_offset_x", function(convar_name, value_old, value_new)
+    equipOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_equipment_offset_y", function(convar_name, value_old, value_new)
+    equipOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_offset_x", function(convar_name, value_old, value_new)
+    feedOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_offset_y", function(convar_name, value_old, value_new)
+    feedOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_opacity", function(convar_name, value_old, value_new)
+    feedOpacity = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killdeath_offset_x", function(convar_name, value_old, value_new)
+    kdOffsetX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killdeath_offset_y", function(convar_name, value_old, value_new)
+    kdOffsetY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_kill_iconcolor_r", function(convar_name, value_old, value_new)
+    kIconR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_kill_iconcolor_g", function(convar_name, value_old, value_new)
+    kIconG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_kill_iconcolor_b", function(convar_name, value_old, value_new)
+    kIconB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
+    if value_new == "1" then
+        StreakFont = "HUD_StreakText"
+        NameFont = "HUD_PlayerNotiName"
+    else
+        StreakFont = "StreakText"
+        NameFont = "PlayerNotiName"
+    end
+end)
+cvars.AddChangeCallback("tm_hud_font_death", function(convar_name, value_old, value_new)
+    if value_new == "1" then
+        ArialFont = "HUD_Arial18"
+        DeathFont = "HUD_PlayerDeathName"
+        WepFont = "HUD_WepNameKill"
+    else
+        ArialFont = "Arial18"
+        DeathFont = "PlayerDeathName"
+        WepFont = "WepNameKill"
+    end
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_style", function(convar_name, value_old, value_new)
+    if value_new == 0 then
+        feedEntryPadding = -20
+    else
+        feedEntryPadding = 20
+    end
+end)
+cvars.AddChangeCallback("tm_hud_equipment_anchor", function(convar_name, value_old, value_new)
+    if value_new == 0 then
+        equipAnchor = "left"
+    elseif value_new == 1 then
+        equipAnchor = "center"
+    elseif value_new == 2 then
+        equipAnchor = "right"
+    end
+end)

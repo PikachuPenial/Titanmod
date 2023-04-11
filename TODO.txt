@@ -1,13 +1,13 @@
 HIGH PRIORItY | Currently working on or is being focused
 
-Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
+End map vote early if every player voted
+Warn players when match is close to ending in intervals
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
-Daily challenges (would reset 4-6pm CST for all users, need to learn cookies to utilize this) (kills with weapon category/kills beyond # meters/headshot kills/sliding kills)
-1-2 new maps (more large scale maps specifically)
+Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Encyclopedia (menu for information on each weapon)
 New players greeting screen (also would serve as a small tutorial of sorts)
 Leaderboards (would need to pull the database file, would still be cool but would take a while to implement)

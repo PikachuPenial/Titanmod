@@ -2929,7 +2929,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 feedStyle = 20
                             end
                             for k, v in pairs(fakeFeedArray) do
-                                if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, 80) else surface.SetDrawColor(50, 50, 50, 80) end
+                                if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) else surface.SetDrawColor(50, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) end
                                 local nameLength = select(1, surface.GetTextSize(v[1]))
 
                                 surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
@@ -3245,7 +3245,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                         local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                         KillFeedEditor:Dock(TOP)
-                        KillFeedEditor:SetSize(0, 215)
+                        KillFeedEditor:SetSize(0, 245)
                         KillFeedEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
@@ -3254,6 +3254,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             draw.SimpleText("Feed Item Limit", "Health", 150, 115, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Feed X Offset", "Health", 150, 145, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("Feed Y Offset", "Health", 150, 175, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Feed Opacity", "Health", 150, 205, white, TEXT_ALIGN_LEFT)
                         end
 
                         local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
@@ -3328,14 +3329,24 @@ net.Receive("OpenMainMenu", function(len, ply)
                         KillFeedY:SetDecimals(0)
                         KillFeedY:SetTooltip("Adjust the Y offset of your kill feed.")
 
+                        local KillFeedOpacity = KillFeedEditor:Add("DNumSlider")
+                        KillFeedOpacity:SetPos(-85, 205)
+                        KillFeedOpacity:SetSize(250, 30)
+                        KillFeedOpacity:SetConVar("tm_hud_killfeed_opacity")
+                        KillFeedOpacity:SetMin(0)
+                        KillFeedOpacity:SetMax(255)
+                        KillFeedOpacity:SetDecimals(0)
+                        KillFeedOpacity:SetTooltip("Adjust the opacity of a feed entries background.")
+
                         local KillDeathEditor = vgui.Create("DPanel", EditorScroller)
                         KillDeathEditor:Dock(TOP)
-                        KillDeathEditor:SetSize(0, 120)
+                        KillDeathEditor:SetSize(0, 200)
                         KillDeathEditor.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                             draw.SimpleText("KILL/DEATH UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("UI X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText("UI Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Kill Icon Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
                         end
 
                         local KillDeathX = KillDeathEditor:Add("DNumSlider")
@@ -3356,9 +3367,20 @@ net.Receive("OpenMainMenu", function(len, ply)
                         KillDeathY:SetDecimals(0)
                         KillDeathY:SetTooltip("Adjust the Y offset of your kill and death UI.")
 
+                        local KillColor = vgui.Create("DColorMixer", KillDeathEditor)
+                        KillColor:SetPos(20, 120)
+                        KillColor:SetSize(185, 70)
+                        KillColor:SetConVarR("tm_hud_kill_iconcolor_r")
+                        KillColor:SetConVarG("tm_hud_kill_iconcolor_g")
+                        KillColor:SetConVarB("tm_hud_kill_iconcolor_b")
+                        KillColor:SetAlphaBar(false)
+                        KillColor:SetPalette(false)
+                        KillColor:SetWangs(true)
+                        KillColor:SetTooltip("Adjusts the color of the skull icon on a kill.")
+
                         local EditorButtons = vgui.Create("DPanel", EditorScroller)
                         EditorButtons:Dock(TOP)
-                        EditorButtons:SetSize(0, 210)
+                        EditorButtons:SetSize(0, 160)
                         EditorButtons.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                         end
@@ -3417,42 +3439,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                             RunConsoleCommand("tm_hud_testlevelup")
                         end
 
-                        local ExportProfileButton = vgui.Create("DButton", EditorButtons)
-                        ExportProfileButton:SetPos(20, 105)
-                        ExportProfileButton:SetText("")
-                        ExportProfileButton:SetSize(300, 40)
-                        local textAnim = 0
-                        ExportProfileButton.Paint = function()
-                            if ExportProfileButton:IsHovered() then
-                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
-                            else
-                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
-                            end
-                            draw.DrawText("Export HUD Profile Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
-                        end
-                        ExportProfileButton.DoClick = function()
-                            surface.PlaySound("tmui/buttonclick.wav")
-                        end
-
-                        local ImportProfileButton = vgui.Create("DButton", EditorButtons)
-                        ImportProfileButton:SetPos(20, 135)
-                        ImportProfileButton:SetText("")
-                        ImportProfileButton:SetSize(300, 40)
-                        local textAnim = 0
-                        ImportProfileButton.Paint = function()
-                            if ImportProfileButton:IsHovered() then
-                                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
-                            else
-                                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
-                            end
-                            draw.DrawText("Import HUD Profile Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
-                        end
-                        ImportProfileButton.DoClick = function()
-                            surface.PlaySound("tmui/buttonclick.wav")
-                        end
-
                         local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
-                        ResetToDefaultButton:SetPos(20, 165)
+                        ResetToDefaultButton:SetPos(20, 120)
                         ResetToDefaultButton:SetText("")
                         ResetToDefaultButton:SetSize(360, 40)
                         local textAnim = 0
