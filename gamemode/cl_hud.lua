@@ -138,7 +138,7 @@ function HUD()
 
     --Remaining match time.
     local timeText = " ∞"
-    if GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+    if GetConVar("tm_endless"):GetInt() != 1 and game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
     draw.SimpleText("FFA | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     --Equipment
@@ -206,7 +206,7 @@ hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
 --Hides default HL2 HUD elements.
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHudCrosshair"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator"}) do
         if name == v then return false end
     end
 end
@@ -755,9 +755,8 @@ end )
 
 --Displays after a player levels up.
 net.Receive("NotifyLevelUp", function(len, ply)
+    if IsValid(LevelNotif) then LevelNotif:Remove() end
     local previousLevel = net.ReadInt(8)
-
-    if IsValid(LevelNotif) then LevelNotif:Remove() end 
 
     LevelNotif = vgui.Create("DFrame")
     LevelNotif:SetSize(600, 100)
@@ -786,6 +785,66 @@ net.Receive("NotifyLevelUp", function(len, ply)
             LevelNotif:Remove()
         end)
     end)
+end )
+
+--Displays after a player levels up.
+net.Receive("NotifyMatchTime", function(len, ply)
+    if IsValid(TimeNotif) then TimeNotif:Remove() end
+    matchTime = math.Round(net.ReadInt(16))
+    matchTimeFormatted = string.FormattedTime(matchTime, "%i:%02i")
+
+    if matchTime > 10 then
+        TimeNotif = vgui.Create("DFrame")
+        TimeNotif:SetSize(600, 100)
+        TimeNotif:SetX(ScrW() / 2 - 300)
+        TimeNotif:SetY(ScrH())
+        TimeNotif:SetTitle("")
+        TimeNotif:SetDraggable(false)
+        TimeNotif:ShowCloseButton(false)
+        TimeNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 400, 0.5, 0, 0.25)
+
+        TimeNotif.Paint = function(self, w, h)
+            draw.SimpleText(matchTimeFormatted, "HUD_PlayerNotiName", 300, 25, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Remaining", "HUD_WepNameKill", 300, 60, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+
+        TimeNotif:Show()
+        TimeNotif:MakePopup()
+        TimeNotif:SetMouseInputEnabled(false)
+        TimeNotif:SetKeyboardInputEnabled(false)
+
+        --surface.PlaySound("tmui/levelup.wav")
+
+        timer.Create("TimeNotif", 4, 1, function()
+            TimeNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
+                TimeNotif:Remove()
+            end)
+        end)
+    else
+        TimeNotif = vgui.Create("DFrame")
+        TimeNotif:SetSize(600, 100)
+        TimeNotif:SetX(ScrW() / 2 - 300)
+        TimeNotif:SetY(ScrH())
+        TimeNotif:SetTitle("")
+        TimeNotif:SetDraggable(false)
+        TimeNotif:ShowCloseButton(false)
+        TimeNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 400, 0.5, 0, 0.25)
+
+        TimeNotif.Paint = function(self, w, h)
+            draw.SimpleText(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "HUD_AmmoCount", 300, 45, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+
+        TimeNotif:Show()
+        TimeNotif:MakePopup()
+        TimeNotif:SetMouseInputEnabled(false)
+        TimeNotif:SetKeyboardInputEnabled(false)
+
+        --surface.PlaySound("tmui/levelup.wav")
+
+        timer.Create("TimeNotif", 10, 1, function()
+            TimeNotif:Remove()
+        end)
+    end
 end )
 
 --Shows the players loadout on the bottom left hand side of their screen.

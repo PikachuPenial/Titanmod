@@ -137,6 +137,7 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
 util.AddNetworkString("NotifyLevelUp")
+util.AddNetworkString("NotifyMatchTime")
 util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
@@ -610,7 +611,14 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 	--Calls for a match end once the match timer has concluded.
 	local function MatchStatusCheck()
+		local currentTime = math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime())
 		if CurTime() > GetGlobalInt("tm_matchtime", 0) then EndMatch() end
+
+		if currentTime == 300 or currentTime == 60 or currentTime == 10 then
+			net.Start("NotifyMatchTime")
+			net.WriteInt(currentTime, 16)
+			net.Broadcast()
+		end
 	end
 
 	--Checking the match time periodically to determine when a match should end.

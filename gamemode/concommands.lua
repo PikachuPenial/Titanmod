@@ -71,6 +71,13 @@ function HUDTestLevelUp(ply, cmd, args)
 end
 concommand.Add("tm_hud_testlevelup", HUDTestLevelUp)
 
+function HUDTestTimeWarning(ply, cmd, args)
+	net.Start("NotifyMatchTime")
+	net.WriteInt(300, 16)
+	net.Send(ply)
+end
+concommand.Add("tm_hud_testtimewarning", HUDTestTimeWarning)
+
 --Allows the player to wipe their account and start fresh.
 function PlayerAccountWipe(ply, cmd, args)
 	ply:SetNWInt("playerKills", 0)
