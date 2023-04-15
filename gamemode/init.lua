@@ -698,7 +698,6 @@ function GM:ShowSpare2(ply)
 	end
 end
 
-
 --Auto saves player data if enabled by server admin.
 if forceEnableAutoSaveTime ~= 0 then
 	timer.Create("serverAutoSaveTimer", forceEnableAutoSaveTime, 0, function()
@@ -712,6 +711,15 @@ function ChatFilter(pl, text, team, death)
 	return text
 end
 hook.Add("PlayerSay", "FilterHook", ChatFilter)
+
+--Modifies base game voice chat to be proximity based.
+hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
+	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) and not timer.Exists("newMapCooldown") then
+		return false, false
+	else
+		return true, true
+	end
+end )
 
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)

@@ -53,15 +53,17 @@ mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
 mapArray[3] = {"tm_devtown", "Devtown", "maps/thumb/tm_devtown.png", true, 0}
 mapArray[4] = {"tm_disequilibrium_test", "Disequilibrium", "maps/thumb/tm_disequilibrium_test.png", true, 0}
 mapArray[5] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false, 0} --Do not set the fourth key to true, that would be very retarded.
-mapArray[6] = {"tm_initial", "Initial", "maps/thumb/tm_initial.png", true, 5}
-mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true, 0}
-mapArray[8] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
-mapArray[9] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
-mapArray[10] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
-mapArray[11] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
-mapArray[12] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
-mapArray[13] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[14] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
+mapArray[6] = {"tm_hydro", "Hydro", "maps/thumb/tm_hydro.png", true, 0}
+mapArray[7] = {"tm_initial", "Initial", "maps/thumb/tm_initial.png", true, 5}
+mapArray[8] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true, 0}
+mapArray[9] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
+mapArray[10] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
+mapArray[11] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
+mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
+mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
+mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[15] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
+mapArray[16] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
@@ -210,9 +212,6 @@ weaponArray[133] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
 if SERVER then
     --Noclip
     RunConsoleCommand("sbox_noclip", "0")
-
-    --Proximity Voice Chat
-    RunConsoleCommand("sv_maxVoiceAudible", proxChatRange)
 
     --Dynamic Height
     RunConsoleCommand("sv_ec2_dynamicheight", "0")
