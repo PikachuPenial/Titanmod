@@ -1,6 +1,5 @@
 HIGH PRIORItY | Currently working on or is being focused
 
-Audio cues for time remaining warnings
 End map vote early if every player voted
 Allow for Voice Chat on match end
 Allow for Text Chat on match end

@@ -813,7 +813,7 @@ net.Receive("NotifyMatchTime", function(len, ply)
         TimeNotif:SetMouseInputEnabled(false)
         TimeNotif:SetKeyboardInputEnabled(false)
 
-        --surface.PlaySound("tmui/levelup.wav")
+        surface.PlaySound("tmui/timenotif.wav")
 
         timer.Create("TimeNotif", 4, 1, function()
             TimeNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
@@ -839,7 +839,7 @@ net.Receive("NotifyMatchTime", function(len, ply)
         TimeNotif:SetMouseInputEnabled(false)
         TimeNotif:SetKeyboardInputEnabled(false)
 
-        --surface.PlaySound("tmui/levelup.wav")
+        surface.PlaySound("tmui/timenotif.wav")
 
         timer.Create("TimeNotif", 10, 1, function()
             TimeNotif:Remove()
