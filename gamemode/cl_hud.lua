@@ -62,31 +62,49 @@ end
 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
 if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
 
+local keyMat = Material("icons/keyicon.png")
+local keyMatMed = Material("icons/keyiconmedium.png")
+local keyMatLong = Material("icons/keyiconlong.png")
+
+local fColor = Color(255, 255, 255)
+local lColor = Color(255, 255, 255)
+local bColor = Color(255, 255, 255)
+local rColor = Color(255, 255, 255)
+local jColor = Color(255, 255, 255)
+local sColor = Color(255, 255, 255)
+local cColor = Color(255, 255, 255)
+
+local actuatedColor = Color(255, 0, 0)
+local inactiveColor = Color(255, 255, 255)
+
+local LocalPly
+
 function HUD()
+    if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
-    if !LocalPlayer():Alive() or LocalPlayer():GetNWBool("mainmenu") == true or gameEnded == true then return end
+    if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
     --Numeric Style
     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
-        if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-            draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
+            draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
     end
 
     --Bar Style
     if GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
-        if (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():GetPrintName() != nil) then
-            draw.SimpleText(LocalPlayer():GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPlayer():GetNWInt("killsWith_" .. LocalPlayer():GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
+            draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if (LocalPlayer():GetActiveWeapon():IsValid()) then
-            if (LocalPlayer():GetActiveWeapon():Clip1() != 0) then
+        if (LocalPly:GetActiveWeapon():IsValid()) then
+            if (LocalPly:GetActiveWeapon():Clip1() != 0) then
                 surface.SetDrawColor(ammoBarR - 205, ammoBarG - 205, ammoBarB - 205, 80)
                 surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
             else
@@ -95,21 +113,21 @@ function HUD()
             end
 
             surface.SetDrawColor(ammoBarR, ammoBarG, ammoBarB, 175)
-            surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (LocalPlayer():GetActiveWeapon():Clip1() / LocalPlayer():GetActiveWeapon():GetMaxClip1()), 30)
-            if (LocalPlayer():GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPlayer():GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
+            surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (LocalPly:GetActiveWeapon():Clip1() / LocalPly:GetActiveWeapon():GetMaxClip1()), 30)
+            if (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(ammoTextR, ammoTextG, ammoTextB, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
         end
     end
 
     --Displays a reload hint when the player is out of ammo.
-    if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPlayer():GetActiveWeapon():IsValid()) and (LocalPlayer():GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Shows the players health depending on the style they have selected in Options.
-    if LocalPlayer():Health() <= 0 then health = 0 else health = LocalPlayer():Health() end
+    if LocalPly:Health() <= 0 then health = 0 else health = LocalPly:Health() end
     surface.SetDrawColor(50, 50, 50, 80)
     surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize, 30)
 
-    if LocalPlayer():Health() <= 66 then
-        if LocalPlayer():Health() <= 33 then
+    if LocalPly:Health() <= 66 then
+        if LocalPly:Health() <= 33 then
             surface.SetDrawColor(hpLowR, hpLowG, hpLowB, 120)
         else
             surface.SetDrawColor(hpMidR, hpMidG, hpMidB, 120)
@@ -118,14 +136,14 @@ function HUD()
         surface.SetDrawColor(hpHighR, hpHighG, hpHighB, 120)
     end
 
-    surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPlayer():Health() / LocalPlayer():GetMaxHealth()), 30)
+    surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPly:Health() / LocalPly:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Shooting range disclaimer.    
     if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, ScrH() - 25, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Grappling hook disclaimer.
-    if (LocalPlayer():GetActiveWeapon():IsValid()) and LocalPlayer():GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Kill feed
     for k, v in pairs(feedArray) do
@@ -146,14 +164,14 @@ function HUD()
     local nadeMat = Material("icons/grenadehudicon.png")
     local grappleText
 
-    if LocalPlayer():HasWeapon("fres_grapple") and LocalPlayer():GetAmmoCount("Grenade") > 0 then
+    if LocalPly:HasWeapon("fres_grapple") and LocalPly:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(grappleMat)
-        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
+        if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
             grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
         surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
         draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX - 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
@@ -162,14 +180,14 @@ function HUD()
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
         draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
-    elseif LocalPlayer():HasWeapon("fres_grapple") then
+    elseif LocalPly:HasWeapon("fres_grapple") then
         surface.SetMaterial(grappleMat)
-        if Lerp((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPlayer():SetNWEntity("lina",stando)) then
+        if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
             grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((LocalPlayer():GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipOffsetX - 45, ScrH() - 47.5 - equipOffsetY, 35, 40)
@@ -181,7 +199,7 @@ function HUD()
             surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
         end
-    elseif LocalPlayer():GetAmmoCount("Grenade") > 0 then
+    elseif LocalPly:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         if equipAnchor == "left" then
@@ -194,6 +212,45 @@ function HUD()
             surface.DrawTexturedRect(equipOffsetX + 10, ScrH() - 47.5 - equipOffsetY, 35, 40)
             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipOffsetX + 27.5, ScrH() - 75 - equipOffsetY, color_white, TEXT_ALIGN_CENTER)
         end
+    end
+
+    --Keypress Overlay
+    if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
+        hook.Add("Tick", "KeyOverlayTracking", function()
+            if LocalPly:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
+            if LocalPly:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
+            if LocalPly:KeyDown(IN_BACK) then bColor = actuatedColor else bColor = inactiveColor end
+            if LocalPly:KeyDown(IN_MOVERIGHT) then rColor = actuatedColor else rColor = inactiveColor end
+            if LocalPly:KeyDown(IN_JUMP) then jColor = actuatedColor else jColor = inactiveColor end
+            if LocalPly:KeyDown(IN_SPEED) then sColor = actuatedColor else sColor = inactiveColor end
+            if LocalPly:KeyDown(IN_DUCK) then cColor = actuatedColor else cColor = inactiveColor end
+        end )
+
+        surface.SetMaterial(keyMat)
+        surface.SetDrawColor(fColor)
+        surface.DrawTexturedRect(58, 10, 42, 42)
+        surface.SetDrawColor(lColor)
+        surface.DrawTexturedRect(10, 58, 42, 42)
+        surface.SetDrawColor(bColor)
+        surface.DrawTexturedRect(58, 58, 42, 42)
+        surface.SetDrawColor(rColor)
+        surface.DrawTexturedRect(106, 58, 42, 42)
+        surface.SetMaterial(keyMatLong)
+        surface.SetDrawColor(jColor)
+        surface.DrawTexturedRect(10, 106, 138, 42)
+        surface.SetMaterial(keyMatMed)
+        surface.SetDrawColor(sColor)
+        surface.DrawTexturedRect(10, 154, 66, 42)
+        surface.SetDrawColor(cColor)
+        surface.DrawTexturedRect(82, 154, 66, 42)
+
+        draw.SimpleText("W", "HUD_StreakText", 79, 31, fColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("A", "HUD_StreakText", 31, 79, lColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("S", "HUD_StreakText", 79, 79, bColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("D", "HUD_StreakText", 127, 79, rColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("JUMP", "HUD_StreakText", 79, 127, jColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("RUN", "HUD_StreakText", 43, 175, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("DUCK", "HUD_StreakText", 115, 175, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
@@ -287,7 +344,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillIcon:SetImage("icons/killicon.png")
 
     --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
-    if LocalPlayer():Health() <= 15 then
+    if LocalPly:Health() <= 15 then
         clutch = "Clutch +20 | "
         seperator = "| "
     else
@@ -391,6 +448,7 @@ end )
 
 --Displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
+    hook.Remove("Tick", "KeyOverlayTracking")
     if GetConVar("tm_hud_enabledeath"):GetInt() == 0 then return end
 
     local killedBy = net.ReadEntity()
@@ -443,8 +501,8 @@ net.Receive("NotifyDeath", function(len, ply)
         else
             draw.SimpleText(killedBy:Health() .. "HP", WepFont, w / 2 - 10, 145, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
-        draw.SimpleText("YOU " .. LocalPlayer():GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetNWInt(LocalPlayer():SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("YOU " .. LocalPly:GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetNWInt(LocalPly:SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -461,7 +519,7 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByPlayerProfilePicture:SetSize(70, 70)
     KilledByPlayerProfilePicture:SetPlayer(killedBy, 184)
 
-    LocalPlayer():ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0)
+    LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0)
 
     DeathNotif:Show()
     DeathNotif:MakePopup()
@@ -777,7 +835,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     LevelNotif:SetMouseInputEnabled(false)
     LevelNotif:SetKeyboardInputEnabled(false)
 
-    LocalPlayer():ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0)
+    LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0)
     surface.PlaySound("tmui/levelup.wav")
 
     timer.Create("LevelNotif", 6, 1, function()
@@ -849,13 +907,14 @@ end )
 
 --Shows the players loadout on the bottom left hand side of their screen.
 function ShowLoadoutOnSpawn()
+    if LocalPly == nil then LocalPly = LocalPlayer() end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""
     for k, v in pairs(weaponArray) do
-        if v[1] == LocalPlayer():GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
-        if v[1] == LocalPlayer():GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
-        if v[1] == LocalPlayer():GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
+        if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
+        if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
+        if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
     end
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
     timer.Simple(2.5, function()
