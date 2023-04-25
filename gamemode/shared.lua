@@ -72,6 +72,8 @@ if CLIENT then
     CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
     CreateClientConVar("tm_hud_killtracker", 0, true, false, "Enable/disable the weapon specific kill tracking on the UI", 0, 1)
     CreateClientConVar("tm_hud_keypressoverlay", 0, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0, 1)
+    CreateClientConVar("tm_hud_fpscounter", 0, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0, 1)
+    CreateClientConVar("tm_hud_fpscounter_updaterate", 1, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0.5, 3)
 end
 
 --Disabling footsteps if a player is crouched.

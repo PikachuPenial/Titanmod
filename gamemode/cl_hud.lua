@@ -78,6 +78,8 @@ local actuatedColor = Color(255, 0, 0)
 local inactiveColor = Color(255, 255, 255)
 
 local LocalPly
+local fps = 0
+local ping = 0
 
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
@@ -252,8 +254,19 @@ function HUD()
         draw.SimpleText("RUN", "HUD_StreakText", 43, 175, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("DUCK", "HUD_StreakText", 115, 175, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
+
+    --FPS and ping counter
+    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - 10, 5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - 10, 30, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
+
+timer.Create("CounterUpdate", 0.25, 0, function()
+    fps = tostring(math.floor(1 / RealFrameTime()))
+    ping = LocalPly:Ping()
+end)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
