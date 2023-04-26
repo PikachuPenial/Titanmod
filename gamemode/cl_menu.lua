@@ -749,7 +749,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 5523)
+                    DockMasteryCards:SetSize(0, 5607)
 
                     --Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1575,7 +1575,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             DockKillCards:SetSize(0, 250)
                             DockAccoladeCards:SetSize(0, 583)
                             DockLevelCards:SetSize(0, 1280)
-                            DockMasteryCards:SetSize(0, 5523)
+                            DockMasteryCards:SetSize(0, 5607)
                             DockColorCards:SetSize(0, 930)
                         end
                     end
