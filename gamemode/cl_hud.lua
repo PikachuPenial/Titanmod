@@ -278,9 +278,14 @@ function DrawTarget()
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
+function DrawWeaponInfo()
+    return false
+end
+hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
+
 --Hides default HL2 HUD elements.
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo"}) do
         if name == v then return false end
     end
 end
@@ -438,7 +443,7 @@ net.Receive("NotifyKill", function(len, ply)
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
-        draw.SimpleText(killStreak .. " Kills", StreakFont, w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", StreakFont, w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
         draw.SimpleText(killedPlayer:GetName(), NameFont, w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         if GetConVar("tm_hud_killaccolades"):GetInt() == 1 then
             --Please ignore the code below, pretend it does not exist.
