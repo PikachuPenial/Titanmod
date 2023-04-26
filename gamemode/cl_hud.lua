@@ -80,12 +80,22 @@ local inactiveColor = Color(255, 255, 255)
 local LocalPly
 local fps = 0
 local ping = 0
+local updateRate
 
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
     if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
+
+    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
+        updateRate = GetConVar("tm_hud_fpscounter_updaterate"):GetFloat()
+        timer.Create("CounterUpdate", updateRate, 0, function()
+            print("HI")
+            fps = tostring(math.floor(1 / RealFrameTime()))
+            ping = LocalPly:Ping()
+        end)
+    end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
     --Numeric Style
@@ -262,11 +272,6 @@ function HUD()
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
-
-timer.Create("CounterUpdate", 0.25, 0, function()
-    fps = tostring(math.floor(1 / RealFrameTime()))
-    ping = LocalPly:Ping()
-end)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
@@ -462,6 +467,7 @@ end )
 --Displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
+    if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if GetConVar("tm_hud_enabledeath"):GetInt() == 0 then return end
 
     local killedBy = net.ReadEntity()

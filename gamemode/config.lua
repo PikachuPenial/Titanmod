@@ -202,11 +202,13 @@ weaponArray[125] = {"tfa_ins2_type81", "Type 81", "primary", "rifle"}
 weaponArray[126] = {"tfa_ins2_typhoon12", "Typhoon F12", "primary", "shotgun"}
 weaponArray[127] = {"tfa_ins2_ump45", "UMP .45", "primary", "smg"}
 weaponArray[128] = {"tfa_ins2_ump9", "UMP9", "primary", "smg"}
-weaponArray[129] = {"tfa_ins2_imi_uzi", "Uzi", "secondary", "smg"}
-weaponArray[130] = {"tfa_ins2_br99", "UZK-BR99", "primary", "shotgun"}
-weaponArray[131] = {"tfa_ins2_vhsd2", "VHS-D2", "primary", "rifle"}
-weaponArray[132] = {"tfa_ins2_walther_p99", "Walther P99", "secondary", "pistol"}
-weaponArray[133] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
+weaponArray[129] = {"tfa_ins2_usp_match", "USP", "secondary", "pistol"}
+weaponArray[130] = {"tfa_ins2_imi_uzi", "Uzi", "secondary", "smg"}
+weaponArray[131] = {"tfa_ins2_br99", "UZK-BR99", "primary", "shotgun"}
+weaponArray[132] = {"tfa_ins2_vhsd2", "VHS-D2", "primary", "rifle"}
+weaponArray[133] = {"tfa_ins2_walther_p99", "Walther P99", "secondary", "pistol"}
+weaponArray[134] = {"tfa_doi_webley", "Webley", "secondary", "pistol"}
+weaponArray[135] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
 
 --CONVARS
 if SERVER then

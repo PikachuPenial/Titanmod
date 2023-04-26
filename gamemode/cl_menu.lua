@@ -295,7 +295,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local StatsWeapons = vgui.Create("DPanel", StatsScroller)
                     StatsWeapons:Dock(TOP)
-                    StatsWeapons:SetSize(0, 6410)
+                    StatsWeapons:SetSize(0, 6500)
 
                     local comparePlayerStats = StatsTextHolder:Add("DComboBox")
                     comparePlayerStats:SetPos(524, 113)
