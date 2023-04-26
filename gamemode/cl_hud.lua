@@ -168,7 +168,7 @@ function HUD()
     --Remaining match time.
     local timeText = " ∞"
     if GetConVar("tm_endless"):GetInt() != 1 and game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
-    draw.SimpleText("FFA | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -626,7 +626,7 @@ net.Receive("EndOfGame", function(len, ply)
     MatchInformationPanel.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
         draw.SimpleText("MATCH ENDED", "GunPrintName", 90, 15, white, TEXT_ALIGN_LEFT)
-        draw.SimpleText("FFA on " .. mapPlayedOn .. " | " .. GetConVar("tm_matchlengthtimer"):GetInt() .. "s", "MainMenuLoadoutWeapons", 90, 65, white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(activeGamemode .. " on " .. mapPlayedOn .. " | " .. GetConVar("tm_matchlengthtimer"):GetInt() .. "s", "MainMenuLoadoutWeapons", 90, 65, white, TEXT_ALIGN_LEFT)
     end
 
     local VictoryImage = vgui.Create("DImage", MatchInformationPanel)

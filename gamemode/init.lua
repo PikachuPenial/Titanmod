@@ -8,9 +8,10 @@ AddCSLuaFile("config.lua")
 include("shared.lua")
 include("concommands.lua")
 include("config.lua")
+include("sv_gamemode_handler.lua")
 
 function GM:Initialize()
-	print("Titanmod Initialized on " .. game.GetMap())
+	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 
 --Sets up the global match time variable, makes it easily sharable between server and client. I have been using GLua for over a year and I didn't know this fucking existed...
@@ -22,21 +23,6 @@ RunConsoleCommand("mp_friendlyfire", "1")
 --Detects if the server is currently running the Firing Range map.
 local playingFiringRange = false
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true end
-
-local randPrimary = {}
-local randSecondary = {}
-local randMelee = {}
-
---This sets the players loadout for their next spawn. I would do this on player spawn if it weren't for loadout previewing on the Main Menu.
-for k, v in pairs(weaponArray) do
-	if v[3] == "primary" then
-		table.insert(randPrimary, v[1])
-	elseif v[3] == "secondary" then
-		table.insert(randSecondary, v[1])
-	elseif v[3] == "melee" or "gadget" then
-		table.insert(randMelee, v[1])
-	end
-end
 
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
@@ -57,20 +43,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
 
-	if usePrimary == true then
-		ply:Give(ply:GetNWString("loadoutPrimary"))
-		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
-	end
-	if useSecondary == true then
-		ply:Give(ply:GetNWString("loadoutSecondary"))
-		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
-	end
-	if useMelee == true then
-		ply:Give(ply:GetNWString("loadoutMelee"))
-		ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
-	end
+	HandlePlayerSpawn(ply)
 
-	ply:SetAmmo(grenadesOnSpawn, "Grenade")
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
@@ -109,10 +83,7 @@ function GM:PlayerInitialSpawn(ply)
 		if (ply:GetPData("timesUsed_" .. v[1]) == nil) then ply:SetNWInt("timesUsed_" .. v[1], 0) else ply:SetNWInt("timesUsed_" .. v[1], tonumber(ply:GetPData("timesUsed_" .. v[1]))) end
 	end
 
-	--This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu.
-	ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+	HandlePlayerInitialSpawn(ply)
 
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
@@ -259,9 +230,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	victim:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
-	victim:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-	victim:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+	HandlePlayerKill(attacker)
+	HandlePlayerDeath(victim)
 
 	if not attacker:IsPlayer() or (attacker == victim) then
 		net.Start("NotifyDeath")
