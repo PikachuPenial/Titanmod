@@ -91,7 +91,6 @@ function HUD()
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
         updateRate = GetConVar("tm_hud_fpscounter_updaterate"):GetFloat()
         timer.Create("CounterUpdate", updateRate, 0, function()
-            print("HI")
             fps = tostring(math.floor(1 / RealFrameTime()))
             ping = LocalPly:Ping()
         end)

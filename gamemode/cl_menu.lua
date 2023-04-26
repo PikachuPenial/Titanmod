@@ -2606,7 +2606,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 435)
+                    DockUI:SetSize(0, 515)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -2808,6 +2808,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FPS/Ping Counter", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Counter Update Rate", "SettingsLabel", 155, 425, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -2858,8 +2860,23 @@ net.Receive("OpenMainMenu", function(len, ply)
                     keypressOverlayToggle:SetSize(30, 30)
                     keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
 
+                    local FPSPingCounterToggle = DockUI:Add("DCheckBox")
+                    FPSPingCounterToggle:SetPos(20, 390)
+                    FPSPingCounterToggle:SetConVar("tm_hud_fpscounter")
+                    FPSPingCounterToggle:SetSize(30, 30)
+                    FPSPingCounterToggle:SetTooltip("Enable a HUD element that shows your FPS and ping.")
+
+                    local FPSPingCounterUpdateRate = DockUI:Add("DNumSlider")
+                    FPSPingCounterUpdateRate:SetPos(-85, 430)
+                    FPSPingCounterUpdateRate:SetSize(250, 30)
+                    FPSPingCounterUpdateRate:SetConVar("tm_hud_fpscounter_updaterate")
+                    FPSPingCounterUpdateRate:SetMin(0.3)
+                    FPSPingCounterUpdateRate:SetMax(2)
+                    FPSPingCounterUpdateRate:SetDecimals(2)
+                    FPSPingCounterUpdateRate:SetTooltip("Adjust the time in seconds at which your FPS and ping is refreshed on the FPS / Ping counter.")
+
                     local HUDEditorButton = vgui.Create("DButton", DockUI)
-                    HUDEditorButton:SetPos(20, 390)
+                    HUDEditorButton:SetPos(20, 470)
                     HUDEditorButton:SetText("")
                     HUDEditorButton:SetSize(300, 40)
                     HUDEditorButton:SetTooltip("Adjust the position and size of many HUD elements.")
@@ -2876,6 +2893,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         surface.PlaySound("tmui/buttonclick.wav")
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
+                        local ShowHiddenOptions = false
 
                         local health = 100
                         local ammo = 30
@@ -2942,6 +2960,43 @@ net.Receive("OpenMainMenu", function(len, ply)
                             surface.SetDrawColor(255,255,255,255)
                             surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10, ScrH() - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
                             draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5, ScrH() - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                            if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
+                                local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt()
+                                local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt()
+                                local actuatedColor = Color(GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt())
+                                local inactiveColor = Color(GetConVar("tm_hud_keypressoverlay_inactive_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt())
+                                local keyMat = Material("icons/keyicon.png")
+                                local keyMatMed = Material("icons/keyiconmedium.png")
+                                local keyMatLong = Material("icons/keyiconlong.png")
+                                surface.SetMaterial(keyMat)
+                                surface.SetDrawColor(actuatedColor)
+                                surface.DrawTexturedRect(48 + keyX, 0 + keyY, 42, 42)
+                                surface.SetDrawColor(actuatedColor)
+                                surface.DrawTexturedRect(0 + keyX, 48 + keyY, 42, 42)
+                                surface.SetDrawColor(inactiveColor)
+                                surface.DrawTexturedRect(48 + keyX, 48 + keyY, 42, 42)
+                                surface.SetDrawColor(inactiveColor)
+                                surface.DrawTexturedRect(96 + keyX, 48 + keyY, 42, 42)
+                                surface.SetMaterial(keyMatLong)
+                                surface.SetDrawColor(actuatedColor)
+                                surface.DrawTexturedRect(0 + keyX, 96 + keyY, 138, 42)
+                                surface.SetMaterial(keyMatMed)
+                                surface.SetDrawColor(inactiveColor)
+                                surface.DrawTexturedRect(0 + keyX, 144 + keyY, 66, 42)
+                                surface.SetDrawColor(actuatedColor)
+                                surface.DrawTexturedRect(72 + keyX, 144 + keyY, 66, 42)
+                                draw.SimpleText("W", "HUD_StreakText", 69 + keyX, 21 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("A", "HUD_StreakText", 21 + keyX, 69 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("S", "HUD_StreakText", 69 + keyX, 69 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("D", "HUD_StreakText", 117 + keyX, 69 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("JUMP", "HUD_StreakText", 69 + keyX, 117 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("RUN", "HUD_StreakText", 33 + keyX, 165 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                draw.SimpleText("DUCK", "HUD_StreakText", 105 + keyX, 165 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                            end
+                            if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+                                draw.SimpleText("420 FPS", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt(), Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                                draw.SimpleText("69 PING", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt() + 25, Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                            end
                         end
 
                         local EditorPanel = vgui.Create("DFrame", FakeHUD)
@@ -2961,8 +3016,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                             OptionsSlideoutPanel:Show()
                             OptionsPanel:Show()
                             timer.Remove("previewLoop")
-                            UpdateHUDConVars()
-                            UpdateHUDFont()
+                            hook.Remove("Tick", "KeyOverlayTracking")
                         end
 
                         local EditorScroller = vgui.Create("DScrollPanel", EditorPanel)
@@ -2980,6 +3034,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
                         function sbar.btnGrip:Paint(w, h)
                             draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+                        end
+
+                        local HiddenOptionsScroller = vgui.Create("DPanel", EditorPanel)
+                        HiddenOptionsScroller:Dock(FILL)
+
+                        HiddenOptionsScroller.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(255, 0, 0, 5))
                         end
 
                         local GeneralEditor = vgui.Create("DPanel", EditorScroller)
@@ -3332,7 +3393,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                         KillFeedOpacity:SetDecimals(0)
                         KillFeedOpacity:SetTooltip("Adjust the opacity of a feed entries background.")
 
-                        local KillDeathEditor = vgui.Create("DPanel", EditorScroller)
+                        local KillDeathEditor
+                        if GetConVar("tm_hud_enablekill"):GetInt() == 1 or GetConVar("tm_hud_enabledeath"):GetInt() == 1 then KillDeathEditor = vgui.Create("DPanel", EditorScroller) else
+                            KillDeathEditor = vgui.Create("DPanel", HiddenOptionsScroller)
+                            ShowHiddenOptions = true
+                        end
                         KillDeathEditor:Dock(TOP)
                         KillDeathEditor:SetSize(0, 200)
                         KillDeathEditor.Paint = function(self, w, h)
@@ -3372,15 +3437,124 @@ net.Receive("OpenMainMenu", function(len, ply)
                         KillColor:SetWangs(true)
                         KillColor:SetTooltip("Adjusts the color of the skull icon on a kill.")
 
+                        local KeypressOverlay
+                        if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then KeypressOverlay = vgui.Create("DPanel", EditorScroller) else
+                            KeypressOverlay = vgui.Create("DPanel", HiddenOptionsScroller)
+                            ShowHiddenOptions = true
+                        end
+                        KeypressOverlay:Dock(TOP)
+                        KeypressOverlay:SetSize(0, 280)
+                        KeypressOverlay.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("KEYPRESS OVERLAY", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Overlay X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Overlay Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Unpressed Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Actuated Color", "Health", 210, 195, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local KeypressOverlayX = KeypressOverlay:Add("DNumSlider")
+                        KeypressOverlayX:SetPos(-85, 50)
+                        KeypressOverlayX:SetSize(250, 30)
+                        KeypressOverlayX:SetConVar("tm_hud_keypressoverlay_x")
+                        KeypressOverlayX:SetMin(0)
+                        KeypressOverlayX:SetMax(ScrW())
+                        KeypressOverlayX:SetDecimals(0)
+                        KeypressOverlayX:SetTooltip("Adjust the X offset of your keypress overlay.")
+
+                        local KeypressOverlayY = KeypressOverlay:Add("DNumSlider")
+                        KeypressOverlayY:SetPos(-85, 80)
+                        KeypressOverlayY:SetSize(250, 30)
+                        KeypressOverlayY:SetConVar("tm_hud_keypressoverlay_y")
+                        KeypressOverlayY:SetMin(0)
+                        KeypressOverlayY:SetMax(ScrH())
+                        KeypressOverlayY:SetDecimals(0)
+                        KeypressOverlayY:SetTooltip("Adjust the Y offset of your keypress overlay.")
+
+                        local KeypressInactiveColor = vgui.Create("DColorMixer", KeypressOverlay)
+                        KeypressInactiveColor:SetPos(20, 120)
+                        KeypressInactiveColor:SetSize(185, 70)
+                        KeypressInactiveColor:SetConVarR("tm_hud_keypressoverlay_inactive_r")
+                        KeypressInactiveColor:SetConVarG("tm_hud_keypressoverlay_inactive_g")
+                        KeypressInactiveColor:SetConVarB("tm_hud_keypressoverlay_inactive_b")
+                        KeypressInactiveColor:SetAlphaBar(false)
+                        KeypressInactiveColor:SetPalette(false)
+                        KeypressInactiveColor:SetWangs(true)
+                        KeypressInactiveColor:SetTooltip("Adjusts the color of an inactive key on your keypress overlay.")
+
+                        local KeypressActuatedColor = vgui.Create("DColorMixer", KeypressOverlay)
+                        KeypressActuatedColor:SetPos(20, 200)
+                        KeypressActuatedColor:SetSize(185, 70)
+                        KeypressActuatedColor:SetConVarR("tm_hud_keypressoverlay_actuated_r")
+                        KeypressActuatedColor:SetConVarG("tm_hud_keypressoverlay_actuated_g")
+                        KeypressActuatedColor:SetConVarB("tm_hud_keypressoverlay_actuated_b")
+                        KeypressActuatedColor:SetAlphaBar(false)
+                        KeypressActuatedColor:SetPalette(false)
+                        KeypressActuatedColor:SetWangs(true)
+                        KeypressActuatedColor:SetTooltip("Adjusts the color of an actuated key on your keypress overlay.")
+
+                        local FPSPingCounter
+                        if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then FPSPingCounter = vgui.Create("DPanel", EditorScroller) else
+                            FPSPingCounter = vgui.Create("DPanel", HiddenOptionsScroller)
+                            ShowHiddenOptions = true
+                        end
+                        FPSPingCounter:Dock(TOP)
+                        FPSPingCounter:SetSize(0, 200)
+                        FPSPingCounter.Paint = function(self, w, h)
+                            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                            draw.SimpleText("FPS/PING COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Counter X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Counter Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Text Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
+                        end
+
+                        local FPSPingCounterX = FPSPingCounter:Add("DNumSlider")
+                        FPSPingCounterX:SetPos(-85, 50)
+                        FPSPingCounterX:SetSize(250, 30)
+                        FPSPingCounterX:SetConVar("tm_hud_fpscounter_x")
+                        FPSPingCounterX:SetMin(0)
+                        FPSPingCounterX:SetMax(ScrW())
+                        FPSPingCounterX:SetDecimals(0)
+                        FPSPingCounterX:SetTooltip("Adjust the X offset of your FPS and ping counter.")
+
+                        local FPSPingCounterY = FPSPingCounter:Add("DNumSlider")
+                        FPSPingCounterY:SetPos(-85, 80)
+                        FPSPingCounterY:SetSize(250, 30)
+                        FPSPingCounterY:SetConVar("tm_hud_fpscounter_y")
+                        FPSPingCounterY:SetMin(0)
+                        FPSPingCounterY:SetMax(ScrH())
+                        FPSPingCounterY:SetDecimals(0)
+                        FPSPingCounterY:SetTooltip("Adjust the Y offset of your FPS and ping counter")
+
+                        local FPSPingCounterColor = vgui.Create("DColorMixer", FPSPingCounter)
+                        FPSPingCounterColor:SetPos(20, 120)
+                        FPSPingCounterColor:SetSize(185, 70)
+                        FPSPingCounterColor:SetConVarR("tm_hud_fpscounter_r")
+                        FPSPingCounterColor:SetConVarG("tm_hud_fpscounter_g")
+                        FPSPingCounterColor:SetConVarB("tm_hud_fpscounter_b")
+                        FPSPingCounterColor:SetAlphaBar(false)
+                        FPSPingCounterColor:SetPalette(false)
+                        FPSPingCounterColor:SetWangs(true)
+                        FPSPingCounterColor:SetTooltip("Adjusts the color of the text on the FPS and ping counter.")
+
+                        local HiddenOptionsCollapse = vgui.Create("DCollapsibleCategory", EditorScroller)
+                        HiddenOptionsCollapse:SetLabel("Show options for disabled HUD elements")
+                        HiddenOptionsCollapse:Dock(TOP)
+                        HiddenOptionsCollapse:SetSize(250, 200)
+                        HiddenOptionsCollapse:SetExpanded(false)
+                        HiddenOptionsCollapse:SetContents(HiddenOptionsScroller)
+
+                        if ShowHiddenOptions == false then HiddenOptionsCollapse:Remove() end
+
                         local EditorButtons = vgui.Create("DPanel", EditorScroller)
                         EditorButtons:Dock(TOP)
-                        EditorButtons:SetSize(0, 160)
+                        EditorButtons:SetSize(0, 190)
                         EditorButtons.Paint = function(self, w, h)
                             draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                         end
 
                         local TestKillButton = vgui.Create("DButton", EditorButtons)
-                        TestKillButton:SetPos(20, 0)
+                        TestKillButton:SetPos(20, 30)
                         TestKillButton:SetText("")
                         TestKillButton:SetSize(145, 40)
                         local textAnim = 0
@@ -3398,7 +3572,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
 
                         local TestDeathButton = vgui.Create("DButton", EditorButtons)
-                        TestDeathButton:SetPos(20, 30)
+                        TestDeathButton:SetPos(20, 60)
                         TestDeathButton:SetText("")
                         TestDeathButton:SetSize(165, 40)
                         local textAnim = 0
@@ -3416,7 +3590,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
 
                         local TestLevelUpButton = vgui.Create("DButton", EditorButtons)
-                        TestLevelUpButton:SetPos(20, 60)
+                        TestLevelUpButton:SetPos(20, 90)
                         TestLevelUpButton:SetText("")
                         TestLevelUpButton:SetSize(200, 40)
                         local textAnim = 0
@@ -3434,7 +3608,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
 
                         local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
-                        ResetToDefaultButton:SetPos(20, 120)
+                        ResetToDefaultButton:SetPos(20, 150)
                         ResetToDefaultButton:SetText("")
                         ResetToDefaultButton:SetSize(360, 40)
                         local textAnim = 0

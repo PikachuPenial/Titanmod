@@ -72,8 +72,21 @@ if CLIENT then
     CreateClientConVar("tm_hud_killaccolades", 1, true, false, "Enable/disable the accolade text on the kill UI", 0, 1)
     CreateClientConVar("tm_hud_killtracker", 0, true, false, "Enable/disable the weapon specific kill tracking on the UI", 0, 1)
     CreateClientConVar("tm_hud_keypressoverlay", 0, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0, 1)
+    CreateClientConVar("tm_hud_keypressoverlay_x", 10, true, false, "Adjusts the X offset of the keypress overlay", 0, ScrW())
+    CreateClientConVar("tm_hud_keypressoverlay_y", 10, true, false, "Adjusts the Y offset of the keypress overlay", 0, ScrH())
+    CreateClientConVar("tm_hud_keypressoverlay_inactive_r", 255, true, false, "Adjusts the red coloring for a inactive key on the keypress overlay", 0, 255)
+    CreateClientConVar("tm_hud_keypressoverlay_inactive_g", 255, true, false, "Adjusts the green coloring for a inactive key on the keypress overlay", 0, 255)
+    CreateClientConVar("tm_hud_keypressoverlay_inactive_b", 255, true, false, "Adjusts the blue coloring for a inactive key on the keypress overlay", 0, 255)
+    CreateClientConVar("tm_hud_keypressoverlay_actuated_r", 255, true, false, "Adjusts the red coloring for a actuated key on the keypress overlay", 0, 255)
+    CreateClientConVar("tm_hud_keypressoverlay_actuated_g", 0, true, false, "Adjusts the green coloring for a actuated key on the keypress overlay", 0, 255)
+    CreateClientConVar("tm_hud_keypressoverlay_actuated_b", 0, true, false, "Adjusts the blue coloring for a actuated key on the keypress overlay", 0, 255)
     CreateClientConVar("tm_hud_fpscounter", 0, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0, 1)
-    CreateClientConVar("tm_hud_fpscounter_updaterate", 1, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0.5, 3)
+    CreateClientConVar("tm_hud_fpscounter_updaterate", 1, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0.3, 2)
+    CreateClientConVar("tm_hud_fpscounter_x", 10, true, false, "Adjusts the X offset of the FPS and ping counter", 0, ScrW())
+    CreateClientConVar("tm_hud_fpscounter_y", 5, true, false, "Adjusts the Y offset of the FPS and ping counter", 0, ScrH())
+    CreateClientConVar("tm_hud_fpscounter_r", 255, true, false, "Adjusts the red coloring for the FPS and ping counter", 0, 255)
+    CreateClientConVar("tm_hud_fpscounter_g", 255, true, false, "Adjusts the green coloring for the FPS and ping counter", 0, 255)
+    CreateClientConVar("tm_hud_fpscounter_b", 255, true, false, "Adjusts the blue coloring for the FPS and ping counter", 0, 255)
 end
 
 --Disabling footsteps if a player is crouched.
