@@ -70,10 +70,6 @@ for m, v in pairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
 
---Determine the gamemode currently being played and distinguish it nicely with a string.
-activeGamemode = "FFA"
-if GetConVar("tm_gamemode"):GetInt() <= 0 then activeGamemode = "FFA" elseif GetConVar("tm_gamemode"):GetInt() == 1 then activeGamemode = "Fiesta" elseif GetConVar("tm_gamemode"):GetInt() >= 1 then activeGamemode = "Gun Game" end
-
 --WEAPONS
 --If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
 --Formatting (Item ID, print name, category.)
@@ -213,6 +209,10 @@ weaponArray[132] = {"tfa_ins2_vhsd2", "VHS-D2", "primary", "rifle"}
 weaponArray[133] = {"tfa_ins2_walther_p99", "Walther P99", "secondary", "pistol"}
 weaponArray[134] = {"tfa_doi_webley", "Webley", "secondary", "pistol"}
 weaponArray[135] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
+
+--Determine the gamemode currently being played and distinguish it nicely with a string.
+activeGamemode = "FFA"
+if GetConVar("tm_gamemode"):GetInt() <= 0 then activeGamemode = "FFA" elseif GetConVar("tm_gamemode"):GetInt() == 1 then activeGamemode = "Fiesta" elseif GetConVar("tm_gamemode"):GetInt() >= 1 then activeGamemode = "Gun Game" end
 
 --CONVARS
 if SERVER then

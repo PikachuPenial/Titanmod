@@ -41,6 +41,19 @@ local kdOffsetY = GetConVar("tm_hud_killdeath_offset_y"):GetInt()
 local kIconR = GetConVar("tm_hud_kill_iconcolor_r"):GetInt()
 local kIconG = GetConVar("tm_hud_kill_iconcolor_g"):GetInt()
 local kIconB = GetConVar("tm_hud_kill_iconcolor_b"):GetInt()
+local kpoX = GetConVar("tm_hud_keypressoverlay_x"):GetInt()
+local kpoY = GetConVar("tm_hud_keypressoverlay_x"):GetInt()
+local kpoInactiveR = GetConVar("tm_hud_keypressoverlay_inactive_r"):GetInt()
+local kpoInactiveG = GetConVar("tm_hud_keypressoverlay_inactive_g"):GetInt()
+local kpoInactiveB = GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt()
+local kpoActuatedR = GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt()
+local kpoActuatedG = GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt()
+local kpoActuatedB = GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt()
+local fpsX = GetConVar("tm_hud_fpscounter_x"):GetInt()
+local fpsY = GetConVar("tm_hud_fpscounter_y"):GetInt()
+local fpsR = GetConVar("tm_hud_fpscounter_r"):GetInt()
+local fpsG = GetConVar("tm_hud_fpscounter_g"):GetInt()
+local fpsB = GetConVar("tm_hud_fpscounter_b"):GetInt()
 
 local StreakFont = "StreakText"
 local NameFont = "PlayerNotiName"
@@ -74,8 +87,8 @@ local jColor = Color(255, 255, 255)
 local sColor = Color(255, 255, 255)
 local cColor = Color(255, 255, 255)
 
-local actuatedColor = Color(255, 0, 0)
-local inactiveColor = Color(255, 255, 255)
+local actuatedColor = Color(kpoActuatedR, kpoActuatedG, kpoActuatedB)
+local inactiveColor = Color(kpoInactiveR, kpoInactiveG, kpoInactiveB)
 
 local LocalPly
 local fps = 0
@@ -239,35 +252,35 @@ function HUD()
 
         surface.SetMaterial(keyMat)
         surface.SetDrawColor(fColor)
-        surface.DrawTexturedRect(58, 10, 42, 42)
+        surface.DrawTexturedRect(48 + kpoX, 0 + kpoY, 42, 42)
         surface.SetDrawColor(lColor)
-        surface.DrawTexturedRect(10, 58, 42, 42)
+        surface.DrawTexturedRect(0 + kpoX, 48 + kpoY, 42, 42)
         surface.SetDrawColor(bColor)
-        surface.DrawTexturedRect(58, 58, 42, 42)
+        surface.DrawTexturedRect(48 + kpoX, 48 + kpoY, 42, 42)
         surface.SetDrawColor(rColor)
-        surface.DrawTexturedRect(106, 58, 42, 42)
+        surface.DrawTexturedRect(96 + kpoX, 48 + kpoY, 42, 42)
         surface.SetMaterial(keyMatLong)
         surface.SetDrawColor(jColor)
-        surface.DrawTexturedRect(10, 106, 138, 42)
+        surface.DrawTexturedRect(0 + kpoX, 96 + kpoY, 138, 42)
         surface.SetMaterial(keyMatMed)
         surface.SetDrawColor(sColor)
-        surface.DrawTexturedRect(10, 154, 66, 42)
+        surface.DrawTexturedRect(0 + kpoX, 144 + kpoY, 66, 42)
         surface.SetDrawColor(cColor)
-        surface.DrawTexturedRect(82, 154, 66, 42)
+        surface.DrawTexturedRect(72 + kpoX, 144 + kpoY, 66, 42)
 
-        draw.SimpleText("W", "HUD_StreakText", 79, 31, fColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("A", "HUD_StreakText", 31, 79, lColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("S", "HUD_StreakText", 79, 79, bColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("D", "HUD_StreakText", 127, 79, rColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("JUMP", "HUD_StreakText", 79, 127, jColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("RUN", "HUD_StreakText", 43, 175, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("DUCK", "HUD_StreakText", 115, 175, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("W", "HUD_StreakText", 69 + kpoX, 21 + kpoY, fColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("A", "HUD_StreakText", 21 + kpoX, 69 + kpoY, lColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("S", "HUD_StreakText", 69 + kpoX, 69 + kpoY, bColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("D", "HUD_StreakText", 117 + kpoX, 69 + kpoY, rColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("JUMP", "HUD_StreakText", 69 + kpoX, 117 + kpoY, jColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("RUN", "HUD_StreakText", 33 + kpoX, 165 + kpoY, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("DUCK", "HUD_StreakText", 105 + kpoX, 165 + kpoY, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     --FPS and ping counter
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
-        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - 10, 5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - 10, 30, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - fpsX, fpsY, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsX, fpsY + 25, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
     end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
@@ -1048,6 +1061,45 @@ cvars.AddChangeCallback("tm_hud_kill_iconcolor_g", function(convar_name, value_o
 end)
 cvars.AddChangeCallback("tm_hud_kill_iconcolor_b", function(convar_name, value_old, value_new)
     kIconB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_x", function(convar_name, value_old, value_new)
+    kpoX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_y", function(convar_name, value_old, value_new)
+    kpoY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_inactive_r", function(convar_name, value_old, value_new)
+    kpoInactiveR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_inactive_g", function(convar_name, value_old, value_new)
+    kpoInactiveG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_inactive_b", function(convar_name, value_old, value_new)
+    kpoInactiveB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_r", function(convar_name, value_old, value_new)
+    kpoActuatedR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_g", function(convar_name, value_old, value_new)
+    kpoActuatedG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_b", function(convar_name, value_old, value_new)
+    kpoActuatedB = value_new
+end)
+cvars.AddChangeCallback("tm_hud_fpscounter_x", function(convar_name, value_old, value_new)
+    fpsX = value_new
+end)
+cvars.AddChangeCallback("tm_hud_fpscounter_y", function(convar_name, value_old, value_new)
+    fpsY = value_new
+end)
+cvars.AddChangeCallback("tm_hud_fpscounter_r", function(convar_name, value_old, value_new)
+    fpsR = value_new
+end)
+cvars.AddChangeCallback("tm_hud_fpscounter_g", function(convar_name, value_old, value_new)
+    fpsG = value_new
+end)
+cvars.AddChangeCallback("tm_hud_fpscounter_b", function(convar_name, value_old, value_new)
+    fpsB = value_new
 end)
 cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
     if value_new == "1" then
