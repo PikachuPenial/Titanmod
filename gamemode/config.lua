@@ -62,8 +62,7 @@ mapArray[11] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5
 mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
 mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
 mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[15] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
-mapArray[16] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[15] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
