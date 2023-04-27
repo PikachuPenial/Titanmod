@@ -139,14 +139,7 @@ local function TestEntityForPlayer(ent)
 end
 
 local function DamageProfileAndHitSounds(target, hitgroup, dmginfo)
-	if (hitgroup == HITGROUP_HEAD) then
-		dmginfo:ScaleDamage(1.3)
-	elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) or (hitgroup == HITGROUP_GEAR) or (hitgroup == HITGROUP_GENERIC) then
-		dmginfo:ScaleDamage(1)
-	elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then
-		dmginfo:ScaleDamage(0.8)
-	end
-
+	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.30) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.80) end --Custom gamemode damage profile
 	if (TestEntityForPlayer(dmginfo:GetAttacker())) then
 		net.Start("PlayHitsound", true)
 			net.WriteUInt(hitgroup, 4)
