@@ -4,6 +4,7 @@ GM.Email = "smile"
 GM.Website = "https://github.com/PikachuPenial"
 
 --Creating server ConVars
+if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually") end
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds") end
 if !ConVarExists("tm_endless") then CreateConVar("tm_endless", "0", FCVAR_NOTIFY, "Disables the periodic map voting, resulting in an endless match.") end
 if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players") end

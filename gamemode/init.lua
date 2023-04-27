@@ -1,13 +1,13 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("config.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_menu.lua")
-AddCSLuaFile("config.lua")
 
 include("shared.lua")
-include("concommands.lua")
 include("config.lua")
+include("concommands.lua")
 include("sv_gamemode_handler.lua")
 
 function GM:Initialize()
