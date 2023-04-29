@@ -48,7 +48,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 then ply:ConCommand("tm_showloadout") end
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" then ply:ConCommand("tm_showloadout") end
 	if playingFiringRange == true then ply:GodEnable() end
 	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end
@@ -113,6 +113,7 @@ util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
 util.AddNetworkString("ReceiveMapVote")
+util.AddNetworkString("ReceiveModeVote")
 util.AddNetworkString("BeginSpectate")
 util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
@@ -212,6 +213,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 		if grappleKillReset == true then attacker:SetNWFloat("linat", 0) end
+		attacker.HealthRegenNext = 0
 	end
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
@@ -223,7 +225,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	HandlePlayerKill(attacker)
+	HandlePlayerKill(attacker, victim)
 	HandlePlayerDeath(victim)
 
 	if not attacker:IsPlayer() or (attacker == victim) then
@@ -485,27 +487,38 @@ if healthRegeneration == true then
 	hook.Add("Think", "HealthRegen", Regeneration)
 end
 
-if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then
+if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingrange" then
 	local mapVoteOpen = false
 	local mapVotes = {}
+	local modeVotes = {}
 	local playersVoted = {}
+	local playersVotedMode = {}
 	local firstMap
 	local secondMap
+	local firstMode
+	local secondMode
 
 	--Begins the process of ending a match.
-	local function EndMatch()
+	function EndMatch()
 		timer.Remove("matchStatusCheck")
 
 		mapVotes = {}
 		playersVoted = {}
+		modeVotes = {}
+		playersVotedMode = {}
 
 		for k, v in RandomPairs(availableMaps) do
 			table.insert(mapVotes, 0)
 		end
 
+		for k, v in RandomPairs(gamemodeArray) do
+			table.insert(modeVotes, 0)
+		end
+
 		mapVoteOpen = true
 
 		local mapPool = {}
+		local modePool = {}
 
 		--Makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
@@ -516,8 +529,14 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 			if v[5] ~= 0 and player.GetCount() > v[5] then table.RemoveByValue(mapPool, v[1]) end
 		end
 
+		for g, v in RandomPairs(gamemodeArray) do
+			table.insert(modePool, v[1])
+		end
+
 		firstMap = mapPool[1]
 		secondMap = mapPool[2]
+		firstMode = modePool[1]
+		secondMode = modePool[2]
 
 		--Failsafe for empty servers, will skip to a new map if there are no players connected to the server.
 		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", firstMap) return end
@@ -529,10 +548,12 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 		net.Start("EndOfGame")
 		net.WriteString(firstMap)
 		net.WriteString(secondMap)
+		net.WriteInt(firstMode, 4)
+		net.WriteInt(secondMode, 4)
 		net.Broadcast()
 
 		local connectedPlayers = player.GetAll()
-		table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+		if activeGamemode == "FFA" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
 			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
@@ -545,30 +566,47 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 		timer.Create("mapVoteStatus", 20, 1, function()
 			local newMapTable = {}
-			local maxVotes = 0
+			local newModeTable = {}
+			local maxMapVotes = 0
+			local maxModeVotes = 0
 
 			for k, v in pairs(mapVotes) do
-				if v > maxVotes then
-					maxVotes = v
+				if v > maxMapVotes then
+					maxMapVotes = v
 				end
 			end
 
 			for k, v in pairs(availableMaps) do
-				if mapVotes[k] == maxVotes then
+				if mapVotes[k] == maxMapVotes then
 					table.insert(newMapTable, v)
+				end
+			end
+
+			for k, v in pairs(modeVotes) do
+				if v > maxModeVotes then
+					maxModeVotes = v
+				end
+			end
+
+			for k, v in pairs(gamemodeArray) do
+				if modeVotes[k] == maxModeVotes then
+					table.insert(newModeTable, v[1])
 				end
 			end
 
 			mapVoteOpen = false
 			newMap = newMapTable[math.random(#newMapTable)]
+			newMode = newModeTable[math.random(#newModeTable)]
 
 			net.Start("MapVoteCompleted")
 			net.WriteString(newMap)
+			net.WriteInt(newMode, 4)
 			net.Broadcast()
 		end)
 
 		timer.Create("newMapCooldown", 30, 1, function()
 			RunConsoleCommand("changelevel", newMap)
+			RunConsoleCommand("tm_gamemode", newMode)
 		end)
 	end
 
@@ -610,6 +648,31 @@ if table.HasValue(availableMaps, game.GetMap()) and GetConVar("tm_endless"):GetI
 
 		if validMapVote == false then return end
 		if mapIndex	== 1 then SetGlobalInt("VotesOnMapOne", GetGlobalInt("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobalInt("VotesOnMapTwo", GetGlobalInt("VotesOnMapTwo", 0) + 1, 0) end
+	end )
+
+	net.Receive("ReceiveModeVote", function(len, ply)
+		if playersVotedMode ~= nil then
+			for k, v in pairs(playersVotedMode) do
+				if v == ply then return end
+			end
+		end
+
+		if mapVoteOpen == false then return end
+
+		local votedMode = net.ReadInt(4)
+		local modeIndex = net.ReadUInt(2)
+		local validModeVote = false
+
+		for k, v in pairs(gamemodeArray) do
+			if v[1] == votedMode then
+				validModeVote = true
+				modeVotes[k] = modeVotes[k] + 1
+				table.insert(playersVotedMode, ply)
+			end
+		end
+
+		if validModeVote == false then return end
+		if modeIndex == 1 then SetGlobalInt("VotesOnModeOne", GetGlobalInt("VotesOnModeOne", 0) + 1, 0) elseif modeIndex == 2 then SetGlobalInt("VotesOnModeTwo", GetGlobalInt("VotesOnModeTwo", 0) + 1, 0) end
 	end )
 
 	function ForceEndMatchCommand(ply, cmd, args)

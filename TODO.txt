@@ -1,8 +1,5 @@
 HIGH PRIORItY | Currently working on or is being focused
 
-Instantly begin health regeneration after a kill
-Replace blue flash on stim pistol with green flash (makes more sense)
-End map vote early if every player voted
 Allow for Voice Chat on match end
 Allow for Text Chat on match end
 
@@ -12,7 +9,6 @@ LOW PRIORITY | Backlog for new features and adjustments that are not important
 
 Assists system
 Sudden death on match end (requires match system refactor)
-Additional gamemodes (gun game is the priority)
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Encyclopedia (menu for information on each weapon)
 New players greeting screen (also would serve as a small tutorial of sorts)

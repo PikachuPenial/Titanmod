@@ -20,11 +20,16 @@ playerRespawnTime = 4           --The time (in seconds) that it takes for a play
 forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
 xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
 
+--FFA settings
 usePrimary = true               --Enable primary weapons for the players loadout.
 useSecondary = true             --Enable secondary weapons for the players loadout.
 useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
 grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
+
+--Gun Game settings
+ggLadderSize = 24                 --Sets the amount of weapons a player needs to get kills with to win a match.
+
 grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
 grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
 rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
@@ -68,6 +73,10 @@ availableMaps = {}
 for m, v in pairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
+
+gamemodeArray = {}
+gamemodeArray[1] = {0, "FFA"}
+gamemodeArray[2] = {2, "Gun Game"}
 
 --WEAPONS
 --If you want to use custom weapons, or want to add or remove certain weapons, edit this array.

@@ -99,7 +99,7 @@ function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
-    if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
+    if LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
         updateRate = GetConVar("tm_hud_fpscounter_updaterate"):GetFloat()
@@ -108,6 +108,30 @@ function HUD()
             ping = LocalPly:Ping()
         end)
     end
+
+    --Remaining match time.
+    local timeText = " ∞"
+    if game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+
+    --Kill feed
+    for k, v in pairs(feedArray) do
+        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedOpacity) else surface.SetDrawColor(50, 50, 50, feedOpacity) end
+        local nameLength = select(1, surface.GetTextSize(v[1]))
+
+        surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedOffsetY, nameLength + 5, 20)
+        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    end
+
+    --FPS and ping counter
+    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - fpsX, fpsY, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsX, fpsY + 25, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+    end
+
+    if !LocalPly:Alive() then return end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
     --Numeric Style
@@ -168,20 +192,6 @@ function HUD()
 
     --Grappling hook disclaimer.
     if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
-
-    --Kill feed
-    for k, v in pairs(feedArray) do
-        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedOpacity) else surface.SetDrawColor(50, 50, 50, feedOpacity) end
-        local nameLength = select(1, surface.GetTextSize(v[1]))
-
-        surface.DrawRect(10 + feedOffsetX, ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedOffsetY, nameLength + 5, 20)
-        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedOffsetX, ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedOffsetY, Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    end
-
-    --Remaining match time.
-    local timeText = " ∞"
-    if GetConVar("tm_endless"):GetInt() != 1 and game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
-    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -276,12 +286,6 @@ function HUD()
         draw.SimpleText("RUN", "HUD_StreakText", 33 + kpoX, 165 + kpoY, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("DUCK", "HUD_StreakText", 105 + kpoX, 165 + kpoY, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
-
-    --FPS and ping counter
-    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
-        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - fpsX, fpsY, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsX, fpsY + 25, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
@@ -291,10 +295,20 @@ function DrawTarget()
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
+function DrawAmmoInfo()
+    return false
+end
+hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
+
 function DrawWeaponInfo()
     return false
 end
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
+
+function DrawItemInfo()
+    return false
+end
+hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 --Hides default HL2 HUD elements.
 function HideHud(name)
@@ -568,13 +582,18 @@ net.Receive("EndOfGame", function(len, ply)
     local dof
     gameEnded = true
     local votedOnMap = false
+    local votedOnGamemode = false
     local mapPicked
+    local gamemodePicked
     local mapDecided = false
+    local gamemodeDecided = false
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
+    local firstMode = net.ReadInt(4)
+    local secondMode = net.ReadInt(4)
 
     local firstMapName
     local firstMapThumb
@@ -582,6 +601,9 @@ net.Receive("EndOfGame", function(len, ply)
     local secondMapThumb
     local decidedMapName
     local decidedMapThumb
+    local firstModeName
+    local secondModeName
+    local decidedModeName
 
     for m, t in pairs(mapArray) do
         if game.GetMap() == t[1] then
@@ -599,10 +621,15 @@ net.Receive("EndOfGame", function(len, ply)
         end
     end
 
+    for g, t in pairs(gamemodeArray) do
+        if firstMode == t[1] then firstModeName = tostring(t[2]) end
+        if secondMode == t[1] then secondModeName = tostring(t[2]) end
+    end
+
     local timeUntilNextMatch = 30
 
     local connectedPlayers = player.GetAll()
-    table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
+    if activeGamemode == "FFA" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
     --Creates a timer so players can see how long it will be until the next match starts.
     timer.Create("timeUntilNextMatch", 30, 1, function()
@@ -663,6 +690,22 @@ net.Receive("EndOfGame", function(len, ply)
         else
             draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
             draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
+        end
+    end
+
+    local GamemodePanel = vgui.Create("DPanel", EndOfGamePanel)
+    GamemodePanel:Dock(BOTTOM)
+    GamemodePanel:SetSize(0, 100)
+    GamemodePanel.Paint = function(self, w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+        if gamemodeDecided == false then
+            if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
+            if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
+            draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(GetGlobalInt("VotesOnModeOne", 0) .. " | " .. GetGlobalInt("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
+        else
+            draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, 65, white, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -755,6 +798,8 @@ net.Receive("EndOfGame", function(len, ply)
 
     local MapChoice = vgui.Create("DImageButton", VotingPanel)
     local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
+    local ModeChoice = vgui.Create("DButton", GamemodePanel)
+    local ModeChoiceTwo = vgui.Create("DButton", GamemodePanel)
 
     MapChoice:SetPos(10, 70)
     MapChoice:SetText("")
@@ -792,10 +837,43 @@ net.Receive("EndOfGame", function(len, ply)
         MapChoiceTwo:SetSize(155, 155)
         MapChoice:SetEnabled(false)
         MapChoiceTwo:SetEnabled(false)
-	end
+    end
+
+    ModeChoice:SetPos(10, 70)
+    ModeChoice:SetText(firstModeName)
+    ModeChoice:SetSize(175, 30)
+    ModeChoice.DoClick = function()
+        net.Start("ReceiveModeVote")
+        net.WriteInt(firstMode, 4)
+        net.WriteUInt(1, 2)
+        net.SendToServer()
+        votedOnGamemode = true
+        gamemodePicked = 1
+        surface.PlaySound("buttons/button15.wav")
+
+        ModeChoice:SetEnabled(false)
+        ModeChoiceTwo:SetEnabled(false)
+    end
+
+    ModeChoiceTwo:SetPos(290, 70)
+    ModeChoiceTwo:SetText(secondModeName)
+    ModeChoiceTwo:SetSize(175, 30)
+    ModeChoiceTwo.DoClick = function()
+        net.Start("ReceiveModeVote")
+        net.WriteInt(secondMode, 4)
+        net.WriteUInt(2, 2)
+        net.SendToServer()
+        votedOnGamemode = true
+        gamemodePicked = 2
+        surface.PlaySound("buttons/button15.wav")
+
+        ModeChoice:SetEnabled(false)
+        ModeChoiceTwo:SetEnabled(false)
+    end
 
     net.Receive("MapVoteCompleted", function(len, ply)
         local decidedMap = net.ReadString()
+        local decidedMode = net.ReadInt(4)
         for u, p in pairs(mapArray) do
             if decidedMap == p[1] then
                 decidedMapName = p[2]
@@ -803,9 +881,18 @@ net.Receive("EndOfGame", function(len, ply)
             end
         end
 
+        for u, m in pairs(gamemodeArray) do
+            if decidedMode == m[1] then
+                decidedModeName = m[2]
+            end
+        end
+
         mapDecided = true
+        gamemodeDecided = true
         MapChoice:Remove()
         MapChoiceTwo:Remove()
+        ModeChoice:Remove()
+        ModeChoiceTwo:Remove()
 
         local DecidedMapThumb = vgui.Create("DImage", VotingPanel)
         DecidedMapThumb:SetPos(150, 70)
@@ -939,6 +1026,39 @@ net.Receive("NotifyMatchTime", function(len, ply)
             TimeNotif:Remove()
         end)
     end
+end )
+
+--Displays after a player reaches the final weapon in Gun Game.
+net.Receive("NotifyGGThreat", function(len, ply)
+    if IsValid(GGThreatNotif) then GGThreatNotif:Remove() end
+    playerName = net.ReadString()
+
+    GGThreatNotif = vgui.Create("DFrame")
+    GGThreatNotif:SetSize(600, 100)
+    GGThreatNotif:SetX(ScrW() / 2 - 300)
+    GGThreatNotif:SetY(ScrH())
+    GGThreatNotif:SetTitle("")
+    GGThreatNotif:SetDraggable(false)
+    GGThreatNotif:ShowCloseButton(false)
+    GGThreatNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 400, 0.5, 0, 0.25)
+
+    GGThreatNotif.Paint = function(self, w, h)
+        draw.SimpleText(playerName, "HUD_PlayerNotiName", 300, 25, Color(255, 255, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("has reached the Knife", "HUD_WepNameKill", 300, 60, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+
+    GGThreatNotif:Show()
+    GGThreatNotif:MakePopup()
+    GGThreatNotif:SetMouseInputEnabled(false)
+    GGThreatNotif:SetKeyboardInputEnabled(false)
+
+    surface.PlaySound("tmui/timenotif.wav")
+
+    timer.Create("GGThreatNotif", 3, 1, function()
+        GGThreatNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
+            GGThreatNotif:Remove()
+        end)
+    end)
 end )
 
 --Shows the players loadout on the bottom left hand side of their screen.

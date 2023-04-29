@@ -29,15 +29,6 @@
 		}
 		3
 		{
-			"name"		"tm_endless"
-			"text"		"Endless (disable map voting)"
-			"help"		"Disables the periodic map voting, resulting in an endless match"
-			"type"		"CheckBox"
-			"default"	"0"
-			"singleplayer"
-		}
-		4
-		{
 			"name"		"tm_developermode"
 			"text"		"Developer Mode (enable spawn menu, disable progression)"
 			"help"		"Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players"

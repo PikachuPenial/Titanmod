@@ -124,7 +124,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
 
                 if mapID ~= nil then
-                    draw.SimpleText(mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(activeGamemode .. " on " .. mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
                     draw.SimpleText("Match ends in " .. math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, white, TEXT_ALIGN_RIGHT)
                 else
                     draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
@@ -557,9 +557,13 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                     for k, v in pairs(weaponArray) do
-                        if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
-                        if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                        if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                        if activeGamemode == "FFA" then
+                            if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
+                            if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                            if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                        elseif activeGamemode == "Gun Game" then
+                            draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT)
+                        end
                     end
                 else
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, patchRed, TEXT_ALIGN_LEFT)
@@ -2950,7 +2954,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
                                 draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
-                            if GetConVar("tm_endless"):GetInt() ~= 1 and game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+                            if game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
                             draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                             surface.SetMaterial(grappleMat)
                             surface.SetDrawColor(255,255,255,255)
