@@ -1,5 +1,6 @@
 HIGH PRIORItY | Currently working on or is being focused
 
+New players greeting screen (also would serve as a small tutorial of sorts)
 Allow for Voice Chat on match end
 Allow for Text Chat on match end
 
@@ -8,8 +9,6 @@ Allow for Text Chat on match end
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
 Assists system
-Sudden death on match end (requires match system refactor)
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Encyclopedia (menu for information on each weapon)
-New players greeting screen (also would serve as a small tutorial of sorts)
 Leaderboards (would need to pull the database file, would still be cool but would take a while to implement)
