@@ -75,7 +75,7 @@ function GM:ScoreboardShow()
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
 		PlayerScrollPanel:Dock(TOP)
-		if player.GetCount() < 4 then PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), player.GetCount() * 100) else PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 400) end
+		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), player.GetCount() * 100) else PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 500) end
 		PlayerScrollPanel:SetPos(0, 0)
 
 		local sbar = PlayerScrollPanel:GetVBar()

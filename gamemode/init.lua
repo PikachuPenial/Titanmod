@@ -75,6 +75,7 @@ function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
 	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
 	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
+	if (ply:GetPData("seenTutorial") == nil) then ply:SetNWBool("seenTutorial", false) else ply:SetNWInt("seenTutorial", ply:GetPData("seenTutorial")) end
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
@@ -788,6 +789,8 @@ function GM:PlayerDisconnected(ply)
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
 
+	ply:SetPData("seenTutorial", ply:GetNWBool("seenTutorial"))
+
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
 		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
@@ -828,6 +831,8 @@ function GM:ShutDown()
 		v:SetPData("playerAccoladeSmackdown", v:GetNWInt("playerAccoladeSmackdown"))
 		v:SetPData("playerAccoladeHeadshot", v:GetNWInt("playerAccoladeHeadshot"))
 		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
+
+		v:SetPData("seenTutorial", v:GetNWBool("seenTutorial"))
 
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do

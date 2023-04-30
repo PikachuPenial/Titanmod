@@ -33,14 +33,12 @@ if activeGamemode == "Gun Game" then
     table.Shuffle(ggWeaponArray)
 
     for k, v in pairs(ggWeaponArray) do
-        if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and itemsAdded < (ggLadderSize - 1) then
+        if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and v[1] != "tfa_ins2_ak400" and v[1] != "tfa_ins2_cq300" and itemsAdded < (ggLadderSize - 1) then
             table.insert(gungameLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
             itemsAdded = itemsAdded + 1
         end
     end
     table.insert(gungameLadder, {"tfa_km2000_knife", "fres_grapple"})
-
-    PrintTable(gungameLadder)
 end
 
 function HandlePlayerInitialSpawn(ply)
@@ -106,8 +104,6 @@ function HandlePlayerDeath(ply, weaponName)
     end
 
     if activeGamemode == "Gun Game" then
-        if weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" then
-            ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1)
-        end
+        if (weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
     end
 end

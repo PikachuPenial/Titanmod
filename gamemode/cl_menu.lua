@@ -4145,6 +4145,10 @@ net.Receive("OpenMainMenu", function(len, ply)
             ResWarning:Remove()
         end)
     end
+
+    if LocalPly:GetNWBool("seenTutorial") == false then
+        print("SHOW TUT")
+    end
 end )
 
 PANEL = {}
