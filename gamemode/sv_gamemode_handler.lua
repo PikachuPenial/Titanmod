@@ -3,6 +3,7 @@ local randSecondary = {}
 local randMelee = {}
 
 local gungameLadder = {}
+local ggRandMelee = {}
 
 util.AddNetworkString("NotifyGGThreat")
 
@@ -21,17 +22,25 @@ end
 
 --Generate weapon ladder if the gamemode is set to Gun Game.
 if activeGamemode == "Gun Game" then
+    for k, v in pairs(weaponArray) do
+        if v[3] == "melee" or v[3] == "gadget" then
+            table.insert(ggRandMelee, v[1])
+        end
+    end
+
     local ggWeaponArray = weaponArray
     local itemsAdded = 0
     table.Shuffle(ggWeaponArray)
 
     for k, v in pairs(ggWeaponArray) do
         if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and itemsAdded < (ggLadderSize - 1) then
-            table.insert(gungameLadder, v[1])
+            table.insert(gungameLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
             itemsAdded = itemsAdded + 1
         end
     end
-    table.insert(gungameLadder, "tfa_km2000_knife")
+    table.insert(gungameLadder, {"tfa_km2000_knife", "fres_grapple"})
+
+    PrintTable(gungameLadder)
 end
 
 function HandlePlayerInitialSpawn(ply)
@@ -65,28 +74,40 @@ function HandlePlayerSpawn(ply)
     end
 
     if activeGamemode == "Gun Game" then
-        ply:Give(gungameLadder[ply:GetNWInt("ladderPosition") + 1])
+        local wepToGive = gungameLadder[ply:GetNWInt("ladderPosition") + 1]
+        ply:Give(wepToGive[1])
+        ply:Give(wepToGive[2])
     end
 end
 
 function HandlePlayerKill(ply, victim)
-    if not ply:IsPlayer() or (ply == victim) then return end
-    ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") + 1)
-    ply:StripWeapons()
-    if ply:GetNWInt("ladderPosition") >= ggLadderSize then EndMatch() return end
+    if activeGamemode == "Gun Game" then
+        if not ply:IsPlayer() or (ply == victim) then return end
+        ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") + 1)
+        ply:StripWeapons()
+        if ply:GetNWInt("ladderPosition") >= ggLadderSize then EndMatch() return end
 
-    ply:Give(gungameLadder[ply:GetNWInt("ladderPosition") + 1])
-    if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
-        net.Start("NotifyGGThreat")
-        net.WriteString(ply:GetName())
-        net.Broadcast()
+        local wepToGive = gungameLadder[ply:GetNWInt("ladderPosition") + 1]
+        ply:Give(wepToGive[1])
+        ply:Give(wepToGive[2])
+        if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
+            net.Start("NotifyGGThreat")
+            net.WriteString(ply:GetName())
+            net.Broadcast()
+        end
     end
 end
 
-function HandlePlayerDeath(ply)
+function HandlePlayerDeath(ply, weaponName)
     if activeGamemode == "FFA" then
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
         ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+    end
+
+    if activeGamemode == "Gun Game" then
+        if weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" then
+            ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1)
+        end
     end
 end

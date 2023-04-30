@@ -225,9 +225,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		end
 	end)
 
-	HandlePlayerKill(attacker, victim)
-	HandlePlayerDeath(victim)
-
 	if not attacker:IsPlayer() or (attacker == victim) then
 		net.Start("NotifyDeath")
 		net.WriteEntity(victim)
@@ -299,6 +296,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			end)
 		end)
 	end
+
+	HandlePlayerDeath(victim, weaponName)
+	HandlePlayerKill(attacker, victim)
 
 	if distance >= attacker:GetNWInt("farthestKill") then attacker:SetNWInt("farthestKill", distance) end
 

@@ -99,7 +99,7 @@ function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
-    if LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
+    if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
         updateRate = GetConVar("tm_hud_fpscounter_updaterate"):GetFloat()
@@ -130,8 +130,6 @@ function HUD()
         draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - fpsX, fpsY, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
         draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsX, fpsY + 25, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
     end
-
-    if !LocalPly:Alive() then return end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
     --Numeric Style
