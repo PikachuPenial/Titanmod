@@ -310,7 +310,7 @@ hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 --Hides default HL2 HUD elements.
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
         if name == v then return false end
     end
 end

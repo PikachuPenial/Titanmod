@@ -4146,8 +4146,88 @@ net.Receive("OpenMainMenu", function(len, ply)
         end)
     end
 
-    if LocalPly:GetNWBool("seenTutorial") == false then
-        print("SHOW TUT")
+    if LocalPly:GetNWBool("seenTutorial") == false or LocalPly:GetNWBool("seenTutorial") == "false" then --Checking as a string because PData saves it this way, this is so awesome.
+        local TutorialPanel = vgui.Create("DFrame", MainMenu)
+        TutorialPanel:SetSize(864, 768)
+        TutorialPanel:MakePopup()
+        TutorialPanel:SetTitle("Titanmod Tutorial")
+        TutorialPanel:Center()
+        TutorialPanel:SetScreenLock(true)
+        TutorialPanel:GetBackgroundBlur(false)
+        TutorialPanel:SetDraggable(false)
+        TutorialPanel:SetDeleteOnClose(true)
+        MainMenu:SetMouseInputEnabled(false)
+        TutorialPanel.Paint = function(self, w, h)
+            DrawBokehDOF(4, 1, 0)
+            draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
+        end
+        TutorialPanel.OnClose = function()
+            surface.PlaySound("tmui/buttonclick.wav")
+            MainMenu:SetMouseInputEnabled(true)
+        end
+
+        local TutorialScroller = vgui.Create("DScrollPanel", TutorialPanel)
+        TutorialScroller:Dock(FILL)
+
+        local sbar = TutorialScroller:GetVBar()
+        function sbar:Paint(w, h)
+            draw.RoundedBox(5, 0, 0, w, h, gray)
+        end
+        function sbar.btnUp:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, gray)
+        end
+        function sbar.btnDown:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, gray)
+        end
+        function sbar.btnGrip:Paint(w, h)
+            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+        end
+
+        local TitleText = vgui.Create("DPanel", TutorialScroller)
+        TitleText:Dock(TOP)
+        TitleText:SetSize(0, 175)
+        TitleText.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+            draw.SimpleText("Welcome to", "SettingsLabel", w / 2, 10, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Titanmod", "OptionsHeader", w / 2, 40, Color(165, 55, 155), TEXT_ALIGN_CENTER)
+            draw.SimpleText("Here are some things you should know before jumping in:", "SettingsLabel", w / 2, 110, white, TEXT_ALIGN_CENTER)
+        end
+
+        local WeaponrySection = vgui.Create("DPanel", TutorialScroller)
+        WeaponrySection:Dock(TOP)
+        WeaponrySection:SetSize(0, 280)
+        WeaponrySection.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+        end
+
+        local WeaponryImage = vgui.Create("DImage", WeaponrySection)
+        WeaponryImage:SetPos(10, 10)
+        WeaponryImage:SetSize(260, 260)
+        WeaponryImage:SetImage("images/attach.png")
+
+        local MovementSection = vgui.Create("DPanel", TutorialScroller)
+        MovementSection:Dock(TOP)
+        MovementSection:SetSize(0, 280)
+        MovementSection.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+        end
+
+        local MovementImage = vgui.Create("DImage", MovementSection)
+        MovementImage:SetPos(10, 10)
+        MovementImage:SetSize(260, 260)
+        MovementImage:SetImage("images/movement.png")
+
+        local PersonalizeSection = vgui.Create("DPanel", TutorialScroller)
+        PersonalizeSection:Dock(TOP)
+        PersonalizeSection:SetSize(0, 280)
+        PersonalizeSection.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+        end
+
+        local PersonalizeImage = vgui.Create("DImage", PersonalizeSection)
+        PersonalizeImage:SetPos(10, 10)
+        PersonalizeImage:SetSize(260, 260)
+        PersonalizeImage:SetImage("images/personalize.png")
     end
 end )
 
