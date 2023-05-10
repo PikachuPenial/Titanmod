@@ -1,8 +1,9 @@
 HIGH PRIORItY | Currently working on or is being focused
 
-New players greeting screen (also would serve as a small tutorial of sorts)
 Allow for Voice Chat on match end
 Allow for Text Chat on match end
+A suite of PostFX settings in a new menu
+Custom Titanmod FOV profile that players can use
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

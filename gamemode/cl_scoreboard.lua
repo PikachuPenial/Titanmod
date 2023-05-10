@@ -130,7 +130,7 @@ function GM:ScoreboardShow()
 
 			surface.SetDrawColor(255, 255, 0, 50)
 			if LocalPlayer:GetNWInt("playerLevel") ~= 60 then surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10) end
-			draw.SimpleText(LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakTextMini", 320, 24, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakTextMini", 320, 25, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 

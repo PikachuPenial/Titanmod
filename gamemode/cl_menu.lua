@@ -211,7 +211,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     menuMusic:FadeOut(1)
                     MuteMusicButton:SetImage("icons/speakermutedicon.png")
                     MuteMusicButton:SetPos(ScrW() - 37, 25)
-                    if requestedBy ~= nil then
+                    if requestedBy ~= nil and ProfileButton ~= nil then
                         ProfileButton:Hide()
                     end
                     RunConsoleCommand("tm_menumusic", 0)
@@ -506,37 +506,175 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
             end
 
+            local function ShowTutorial()
+                local TutorialPanel = vgui.Create("DFrame", MainMenu)
+                TutorialPanel:SetSize(864, 768)
+                TutorialPanel:MakePopup()
+                TutorialPanel:SetTitle("Titanmod Tutorial")
+                TutorialPanel:Center()
+                TutorialPanel:SetScreenLock(true)
+                TutorialPanel:GetBackgroundBlur(false)
+                TutorialPanel:SetDraggable(false)
+                TutorialPanel:SetDeleteOnClose(true)
+                MainMenu:SetMouseInputEnabled(false)
+                TutorialPanel.Paint = function(self, w, h)
+                    DrawBokehDOF(4, 1, 0)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
+                end
+                TutorialPanel.OnClose = function()
+                    surface.PlaySound("tmui/buttonclick.wav")
+                    MainMenu:SetMouseInputEnabled(true)
+                end
+
+                local TutorialScroller = vgui.Create("DScrollPanel", TutorialPanel)
+                TutorialScroller:Dock(FILL)
+
+                local sbar = TutorialScroller:GetVBar()
+                function sbar:Paint(w, h)
+                    draw.RoundedBox(5, 0, 0, w, h, gray)
+                end
+                function sbar.btnUp:Paint(w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                end
+                function sbar.btnDown:Paint(w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                end
+                function sbar.btnGrip:Paint(w, h)
+                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+                end
+
+                local TitleText = vgui.Create("DPanel", TutorialScroller)
+                TitleText:Dock(TOP)
+                TitleText:SetSize(0, 175)
+                TitleText.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.SimpleText("Welcome to", "SettingsLabel", w / 2, 10, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("Titanmod", "OptionsHeader", w / 2, 40, Color(165, 55, 155), TEXT_ALIGN_CENTER)
+                    draw.SimpleText("Here are some things you should know before jumping in:", "SettingsLabel", w / 2, 110, white, TEXT_ALIGN_CENTER)
+                end
+
+                local WeaponrySection = vgui.Create("DPanel", TutorialScroller)
+                WeaponrySection:Dock(TOP)
+                WeaponrySection:SetSize(0, 280)
+                WeaponrySection.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.SimpleText("WEAPONS", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                end
+
+                local WeaponryLabel = vgui.Create("DLabel", WeaponrySection)
+                WeaponryLabel:SetPos(280, 30)
+                WeaponryLabel:SetSize(554, 230)
+                WeaponryLabel:SetFont("GModNotify")
+                WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
+        You can use your Context Menu key []] .. input.LookupBinding("+menu_context") .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
+        Each weapon has its own unique recoil pattern to learn.
+        Bullets are hitscan and can penetrate through surfaces.
+        ]])
+                WeaponryLabel:SetWrap(true)
+
+                local WeaponryImage = vgui.Create("DImage", WeaponrySection)
+                WeaponryImage:SetPos(10, 10)
+                WeaponryImage:SetSize(260, 260)
+                WeaponryImage:SetImage("images/attach.png")
+
+                local MovementSection = vgui.Create("DPanel", TutorialScroller)
+                MovementSection:Dock(TOP)
+                MovementSection:SetSize(0, 280)
+                MovementSection.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.SimpleText("MOVEMENT", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                end
+
+                local MovementLabel = vgui.Create("DLabel", MovementSection)
+                MovementLabel:SetPos(280, 35)
+                MovementLabel:SetSize(554, 230)
+                MovementLabel:SetFont("GModNotify")
+                MovementLabel:SetText([[Titanmod has an assortment of movement mechanics to learn and use on your opponents!
+        Here are a few things to look out for:
+            Sliding                     Air Strafing
+            Wall Running          Wall Jumping
+            Rocket Jumping      Grappling
+            + More to discover on your own
+        ]])
+                MovementLabel:SetWrap(true)
+
+                local MovementImage = vgui.Create("DImage", MovementSection)
+                MovementImage:SetPos(10, 10)
+                MovementImage:SetSize(260, 260)
+                MovementImage:SetImage("images/movement.png")
+
+                local PersonalizeSection = vgui.Create("DPanel", TutorialScroller)
+                PersonalizeSection:Dock(TOP)
+                PersonalizeSection:SetSize(0, 280)
+                PersonalizeSection.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.SimpleText("CUSTOMIZATION", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                end
+
+                local PersonalizeLabel = vgui.Create("DLabel", PersonalizeSection)
+                PersonalizeLabel:SetPos(280, 45)
+                PersonalizeLabel:SetSize(554, 230)
+                PersonalizeLabel:SetFont("GModNotify")
+                PersonalizeLabel:SetText([[There are over 250+ items to unlock in Titanmod!
+        There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
+        Check out the CUSTOMIZE page to see what is on offer.
+        Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.
+        ]])
+        PersonalizeLabel:SetWrap(true)
+
+                local PersonalizeImage = vgui.Create("DImage", PersonalizeSection)
+                PersonalizeImage:SetPos(10, 10)
+                PersonalizeImage:SetSize(260, 260)
+                PersonalizeImage:SetImage("images/personalize.png")
+            end
+
+            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end --Force shows the Tutorial is a player joins for the first time
+
+            local TutorialButton = vgui.Create("DImageButton", MainPanel)
+            TutorialButton:SetPos(8, ScrH() - 72)
+            TutorialButton:SetImage("icons/tutorialicon.png")
+            TutorialButton:SetSize(64, 64)
+            TutorialButton:SetTooltip("Tutorial")
+            TutorialButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
+                ShowTutorial()
+            end
+
             local DiscordButton = vgui.Create("DImageButton", MainPanel)
-            DiscordButton:SetPos(8, ScrH() - 72)
+            DiscordButton:SetPos(108, ScrH() - 72)
             DiscordButton:SetImage("icons/discordicon.png")
             DiscordButton:SetSize(64, 64)
+            DiscordButton:SetTooltip("Discord")
             DiscordButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://discord.gg/GRfvt27uGF")
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(80, ScrH() - 72)
+            WorkshopButton:SetPos(180, ScrH() - 72)
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
+            WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(152, ScrH() - 72)
+            YouTubeButton:SetPos(252, ScrH() - 72)
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
+            YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://youtube.com/@penial_")
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(224, ScrH() - 72)
+            GithubButton:SetPos(324, ScrH() - 72)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
+            GithubButton:SetTooltip("GitHub")
             GithubButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
@@ -4156,90 +4294,6 @@ net.Receive("OpenMainMenu", function(len, ply)
         timer.Create("removeResWarning", 8, 1, function()
             ResWarning:Remove()
         end)
-    end
-
-    if LocalPly:GetNWBool("seenTutorial") == false or LocalPly:GetNWBool("seenTutorial") == "false" then --Checking as a string because PData saves it this way, this is so awesome.
-        local TutorialPanel = vgui.Create("DFrame", MainMenu)
-        TutorialPanel:SetSize(864, 768)
-        TutorialPanel:MakePopup()
-        TutorialPanel:SetTitle("Titanmod Tutorial")
-        TutorialPanel:Center()
-        TutorialPanel:SetScreenLock(true)
-        TutorialPanel:GetBackgroundBlur(false)
-        TutorialPanel:SetDraggable(false)
-        TutorialPanel:SetDeleteOnClose(true)
-        MainMenu:SetMouseInputEnabled(false)
-        TutorialPanel.Paint = function(self, w, h)
-            DrawBokehDOF(4, 1, 0)
-            draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
-        end
-        TutorialPanel.OnClose = function()
-            surface.PlaySound("tmui/buttonclick.wav")
-            MainMenu:SetMouseInputEnabled(true)
-        end
-
-        local TutorialScroller = vgui.Create("DScrollPanel", TutorialPanel)
-        TutorialScroller:Dock(FILL)
-
-        local sbar = TutorialScroller:GetVBar()
-        function sbar:Paint(w, h)
-            draw.RoundedBox(5, 0, 0, w, h, gray)
-        end
-        function sbar.btnUp:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, gray)
-        end
-        function sbar.btnDown:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, gray)
-        end
-        function sbar.btnGrip:Paint(w, h)
-            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
-        end
-
-        local TitleText = vgui.Create("DPanel", TutorialScroller)
-        TitleText:Dock(TOP)
-        TitleText:SetSize(0, 175)
-        TitleText.Paint = function(self, w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-            draw.SimpleText("Welcome to", "SettingsLabel", w / 2, 10, white, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Titanmod", "OptionsHeader", w / 2, 40, Color(165, 55, 155), TEXT_ALIGN_CENTER)
-            draw.SimpleText("Here are some things you should know before jumping in:", "SettingsLabel", w / 2, 110, white, TEXT_ALIGN_CENTER)
-        end
-
-        local WeaponrySection = vgui.Create("DPanel", TutorialScroller)
-        WeaponrySection:Dock(TOP)
-        WeaponrySection:SetSize(0, 280)
-        WeaponrySection.Paint = function(self, w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-        end
-
-        local WeaponryImage = vgui.Create("DImage", WeaponrySection)
-        WeaponryImage:SetPos(10, 10)
-        WeaponryImage:SetSize(260, 260)
-        WeaponryImage:SetImage("images/attach.png")
-
-        local MovementSection = vgui.Create("DPanel", TutorialScroller)
-        MovementSection:Dock(TOP)
-        MovementSection:SetSize(0, 280)
-        MovementSection.Paint = function(self, w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-        end
-
-        local MovementImage = vgui.Create("DImage", MovementSection)
-        MovementImage:SetPos(10, 10)
-        MovementImage:SetSize(260, 260)
-        MovementImage:SetImage("images/movement.png")
-
-        local PersonalizeSection = vgui.Create("DPanel", TutorialScroller)
-        PersonalizeSection:Dock(TOP)
-        PersonalizeSection:SetSize(0, 280)
-        PersonalizeSection.Paint = function(self, w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-        end
-
-        local PersonalizeImage = vgui.Create("DImage", PersonalizeSection)
-        PersonalizeImage:SetPos(10, 10)
-        PersonalizeImage:SetSize(260, 260)
-        PersonalizeImage:SetImage("images/personalize.png")
     end
 end )
 
