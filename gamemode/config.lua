@@ -59,8 +59,6 @@ gamemodeArray[1] = {0, "FFA"}
 --gamemodeArray[2] = {1, "Fiesta"}
 gamemodeArray[2] = {2, "Gun Game"}
 
-if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobalString("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobalString("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() >= 1 then SetGlobalString("ActiveGamemode", "Gun Game") else SetGlobalString("ActiveGamemode", "FFA") end
-
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
 --Map Array Formatting (map ID, map name, map thumbnail image)
