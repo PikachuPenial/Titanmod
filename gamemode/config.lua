@@ -4,6 +4,7 @@
     If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
+--Player settings
 playerHealth = 100              --The max health of the player.
 playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
 playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
@@ -17,6 +18,7 @@ healthRegenSpeed = 0.15         --The speed of the players health regeneration.
 healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
 playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
 
+--Progression settings
 forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
 xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
 
@@ -30,6 +32,7 @@ grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hoo
 --Gun Game settings
 ggLadderSize = 24                 --Sets the amount of weapons a player needs to get kills with to win a match.
 
+--Mechanic settings
 grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
 grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
 rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
@@ -37,15 +40,26 @@ rocketJumpForceMulti = 1        --The multiplier of the force applied on a playe
 damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
 proxChatRange = 750             --The thresehold in distance where players can hear other players over proximity voice chat.
 
-mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
-forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
-forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
-
+--Feature settings
 killFeed = true                 --Enables the kill feed.
 suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
 allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
+forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
+
+--Optimization settings
+mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
+forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
 matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+
+--GAMEMODES
+--Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
+gamemodeArray = {}
+gamemodeArray[1] = {0, "FFA"}
+--gamemodeArray[2] = {1, "Fiesta"}
+gamemodeArray[2] = {2, "Gun Game"}
+
+if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobalString("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobalString("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() >= 1 then SetGlobalString("ActiveGamemode", "Gun Game") end
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
@@ -74,10 +88,6 @@ availableMaps = {}
 for m, v in pairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
-
-gamemodeArray = {}
-gamemodeArray[1] = {0, "FFA"}
-gamemodeArray[2] = {2, "Gun Game"}
 
 --WEAPONS
 --If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
@@ -218,10 +228,6 @@ weaponArray[132] = {"tfa_ins2_vhsd2", "VHS-D2", "primary", "rifle"}
 weaponArray[133] = {"tfa_ins2_walther_p99", "Walther P99", "secondary", "pistol"}
 weaponArray[134] = {"tfa_doi_webley", "Webley", "secondary", "pistol"}
 weaponArray[135] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
-
---Determine the gamemode currently being played and distinguish it nicely with a string.
-activeGamemode = "FFA"
-if GetConVar("tm_gamemode"):GetInt() <= 0 then activeGamemode = "FFA" elseif GetConVar("tm_gamemode"):GetInt() == 1 then activeGamemode = "Fiesta" elseif GetConVar("tm_gamemode"):GetInt() >= 1 then activeGamemode = "Gun Game" end
 
 --CONVARS
 if SERVER then

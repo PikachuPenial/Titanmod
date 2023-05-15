@@ -95,6 +95,8 @@ local fps = 0
 local ping = 0
 local updateRate
 
+local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.

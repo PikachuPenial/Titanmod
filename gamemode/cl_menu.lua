@@ -10,6 +10,8 @@ local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
 
+local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+
 net.Receive("OpenMainMenu", function(len, ply)
     local LocalPly = LocalPlayer()
     if LocalPly:Alive() then return end

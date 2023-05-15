@@ -1,8 +1,10 @@
+local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+
 local randPrimary = {}
 local randSecondary = {}
 local randMelee = {}
 
-local gungameLadder = {}
+local ggLadder = {}
 local ggRandMelee = {}
 
 util.AddNetworkString("NotifyGGThreat")
@@ -34,11 +36,11 @@ if activeGamemode == "Gun Game" then
 
     for k, v in pairs(ggWeaponArray) do
         if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and v[1] != "tfa_ins2_ak400" and v[1] != "tfa_ins2_cq300" and itemsAdded < (ggLadderSize - 1) then
-            table.insert(gungameLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
+            table.insert(ggLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
             itemsAdded = itemsAdded + 1
         end
     end
-    table.insert(gungameLadder, {"tfa_km2000_knife", "fres_grapple"})
+    table.insert(ggLadder, {"tfa_km2000_knife", "fres_grapple"})
 end
 
 function HandlePlayerInitialSpawn(ply)
@@ -72,7 +74,7 @@ function HandlePlayerSpawn(ply)
     end
 
     if activeGamemode == "Gun Game" then
-        local wepToGive = gungameLadder[ply:GetNWInt("ladderPosition") + 1]
+        local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
     end
@@ -85,7 +87,7 @@ function HandlePlayerKill(ply, victim)
         ply:StripWeapons()
         if ply:GetNWInt("ladderPosition") >= ggLadderSize then EndMatch() return end
 
-        local wepToGive = gungameLadder[ply:GetNWInt("ladderPosition") + 1]
+        local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
         if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then

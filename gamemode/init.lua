@@ -10,6 +10,8 @@ include("config.lua")
 include("concommands.lua")
 include("sv_gamemode_handler.lua")
 
+local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+
 function GM:Initialize()
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end

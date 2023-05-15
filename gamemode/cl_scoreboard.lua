@@ -9,6 +9,8 @@ local mapName
 local mapThumb
 local dof
 
+local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
 	if not IsValid(ScoreboardDerma) then
