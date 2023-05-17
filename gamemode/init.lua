@@ -50,7 +50,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" then ply:ConCommand("tm_showloadout") end
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" then ply:ConCommand("tm_showloadout") end
 	if playingFiringRange == true then ply:GodEnable() end
 	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end

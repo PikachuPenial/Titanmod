@@ -4,11 +4,13 @@ Allow for Voice Chat on match end
 Allow for Text Chat on match end
 A suite of PostFX settings in a new menu
 Custom Titanmod FOV profile that players can use
+Fix main menu not always opening on initial spawn
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
+Shotty Snipers gamemode
 Assists system
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Encyclopedia (menu for information on each weapon)

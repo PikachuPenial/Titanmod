@@ -29,8 +29,11 @@ useMelee = true                 --Enable melee weapons/gadgets  for the players 
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
 grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
 
+--Fiesta settings
+fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
+
 --Gun Game settings
-ggLadderSize = 24                 --Sets the amount of weapons a player needs to get kills with to win a match.
+ggLadderSize = 24               --Sets the amount of weapons a player needs to get kills with to win a match.
 
 --Mechanic settings
 grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
@@ -56,7 +59,7 @@ matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in sec
 --Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
 gamemodeArray = {}
 gamemodeArray[1] = {0, "FFA"}
---gamemodeArray[2] = {1, "Fiesta"}
+gamemodeArray[2] = {1, "Fiesta"}
 gamemodeArray[2] = {2, "Gun Game"}
 
 --MAPS

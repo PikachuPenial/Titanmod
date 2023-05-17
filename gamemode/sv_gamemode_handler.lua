@@ -7,7 +7,35 @@ local randMelee = {}
 local ggLadder = {}
 local ggRandMelee = {}
 
+local fiestaPrimary
+local fiestaSecondary
+local fiestaMelee
+
 util.AddNetworkString("NotifyGGThreat")
+
+function ShuffleFiestaLoadout()
+    fiestaPrimary = randPrimary[math.random(#randPrimary)]
+    fiestaSecondary = randSecondary[math.random(#randSecondary)]
+    fiestaMelee = randMelee[math.random(#randMelee)]
+
+    for k, v in pairs(player.GetHumans()) do
+        v:SetNWString("loadoutPrimary", fiestaPrimary)
+        v:SetNWString("loadoutSecondary", fiestaSecondary)
+        v:SetNWString("loadoutMelee", fiestaMelee)
+
+        if v:Alive() then
+            v:StripWeapons()
+            v:Give(v:GetNWString("loadoutPrimary"))
+            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutPrimary"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutPrimary")) + 1)
+            v:Give(v:GetNWString("loadoutSecondary"))
+            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutSecondary"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutSecondary")) + 1)
+            v:Give(v:GetNWString("loadoutMelee"))
+            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee")) + 1)
+            v:SetAmmo(grenadesOnSpawn, "Grenade")
+            if v:GetInfoNum("tm_hud_loadouthint", 1) == 1 then v:ConCommand("tm_showloadout") end
+        end
+    end
+end
 
 --Generate the table of available weapons if the gamemode is set to FFA.
 if activeGamemode == "FFA" then
@@ -20,6 +48,23 @@ if activeGamemode == "FFA" then
             table.insert(randMelee, v[1])
         end
     end
+end
+
+if activeGamemode == "Fiesta" then
+    for k, v in pairs(weaponArray) do
+        if v[3] == "primary" then
+            table.insert(randPrimary, v[1])
+        elseif v[3] == "secondary" then
+            table.insert(randSecondary, v[1])
+        elseif v[3] == "melee" or "gadget" then
+            table.insert(randMelee, v[1])
+        end
+    end
+
+    fiestaPrimary = randPrimary[math.random(#randPrimary)]
+    fiestaSecondary = randSecondary[math.random(#randSecondary)]
+    fiestaMelee = randMelee[math.random(#randMelee)]
+    timer.Create("FiestaShuffle", fiestaShuffleTime, 0, ShuffleFiestaLoadout)
 end
 
 --Generate weapon ladder if the gamemode is set to Gun Game.
@@ -51,6 +96,12 @@ function HandlePlayerInitialSpawn(ply)
         ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
     end
 
+    if activeGamemode == "Fiesta" then
+        ply:SetNWString("loadoutPrimary", fiestaPrimary)
+        ply:SetNWString("loadoutSecondary", fiestaSecondary)
+        ply:SetNWString("loadoutMelee", fiestaMelee)
+    end
+
     if activeGamemode == "Gun Game" then
         ply:SetNWInt("ladderPosition", 0)
     end
@@ -73,10 +124,25 @@ function HandlePlayerSpawn(ply)
         ply:SetAmmo(grenadesOnSpawn, "Grenade")
     end
 
+    if activeGamemode == "Fiesta" then
+        ply:Give(ply:GetNWString("loadoutPrimary"))
+        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
+
+        ply:Give(ply:GetNWString("loadoutSecondary"))
+        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
+
+        ply:Give(ply:GetNWString("loadoutMelee"))
+        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
+
+        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+    end
+
     if activeGamemode == "Gun Game" then
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
+        ply:SetNWInt("timesUsed_" .. wepToGive[1], ply:GetNWInt("timesUsed_" .. wepToGive[1]) + 1)
+        ply:SetNWInt("timesUsed_" .. wepToGive[2], ply:GetNWInt("timesUsed_" .. wepToGive[2]) + 1)
     end
 end
 
@@ -90,6 +156,8 @@ function HandlePlayerKill(ply, victim)
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
+        ply:SetNWInt("timesUsed_" .. wepToGive[1], ply:GetNWInt("timesUsed_" .. wepToGive[1]) + 1)
+        ply:SetNWInt("timesUsed_" .. wepToGive[2], ply:GetNWInt("timesUsed_" .. wepToGive[2]) + 1)
         if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
             net.Start("NotifyGGThreat")
             net.WriteString(ply:GetName())

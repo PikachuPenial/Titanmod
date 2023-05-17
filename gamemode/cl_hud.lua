@@ -117,6 +117,7 @@ function HUD()
     draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+    if activeGamemode == "Fiesta" and timer.Exists("FiestaShuffle") then draw.SimpleText(math.Round(timer.TimeLeft("timeUntilNextMatch")), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
 
     --Kill feed
     for k, v in pairs(feedArray) do
