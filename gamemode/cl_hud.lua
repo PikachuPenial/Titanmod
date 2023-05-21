@@ -623,8 +623,15 @@ net.Receive("EndOfGame", function(len, ply)
     end
 
     for g, t in pairs(gamemodeArray) do
-        if firstMode == t[1] then firstModeName = tostring(t[2]) end
-        if secondMode == t[1] then secondModeName = tostring(t[2]) end
+        if firstMode == t[1] then
+            firstModeName = tostring(t[2])
+            firstModeDesc = tostring(t[3])
+        end
+
+        if secondMode == t[1] then
+            secondModeName = tostring(t[2])
+            secondModeDesc = tostring(t[3])
+        end
     end
 
     local timeUntilNextMatch = 30
@@ -843,6 +850,7 @@ net.Receive("EndOfGame", function(len, ply)
     ModeChoice:SetPos(10, 70)
     ModeChoice:SetText(firstModeName)
     ModeChoice:SetSize(175, 30)
+    ModeChoice:SetTooltip(firstModeDesc)
     ModeChoice.DoClick = function()
         net.Start("ReceiveModeVote")
         net.WriteInt(firstMode, 4)
@@ -859,6 +867,7 @@ net.Receive("EndOfGame", function(len, ply)
     ModeChoiceTwo:SetPos(290, 70)
     ModeChoiceTwo:SetText(secondModeName)
     ModeChoiceTwo:SetSize(175, 30)
+    ModeChoiceTwo:SetTooltip(secondModeDesc)
     ModeChoiceTwo.DoClick = function()
         net.Start("ReceiveModeVote")
         net.WriteInt(secondMode, 4)

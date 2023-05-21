@@ -58,10 +58,10 @@ matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in sec
 --GAMEMODES
 --Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
 gamemodeArray = {}
-gamemodeArray[1] = {0, "FFA"}
-gamemodeArray[2] = {1, "Fiesta"}
-gamemodeArray[3] = {2, "Gun Game"}
-gamemodeArray[4] = {3, "Shotty Snipers"}
+gamemodeArray[1] = {0, "FFA", "Kill others with randomly generated loadouts."}
+gamemodeArray[2] = {1, "Fiesta", "FFA with every player sharing the same loadout, with a new loadout being generated every " .. fiestaShuffleTime .. " seconds."}
+gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladder of " .. ggLadderSize .. " weapons."}
+gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun."}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
