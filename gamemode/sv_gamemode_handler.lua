@@ -14,6 +14,7 @@ local fiestaMelee
 util.AddNetworkString("NotifyGGThreat")
 
 function ShuffleFiestaLoadout()
+    SetGlobalInt("FiestaTime", fiestaShuffleTime + GetGlobalInt("FiestaTime"))
     fiestaPrimary = randPrimary[math.random(#randPrimary)]
     fiestaSecondary = randSecondary[math.random(#randSecondary)]
     fiestaMelee = randMelee[math.random(#randMelee)]
@@ -32,7 +33,6 @@ function ShuffleFiestaLoadout()
             v:Give(v:GetNWString("loadoutMelee"))
             v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee")) + 1)
             v:SetAmmo(grenadesOnSpawn, "Grenade")
-            if v:GetInfoNum("tm_hud_loadouthint", 1) == 1 then v:ConCommand("tm_showloadout") end
         end
     end
 end
@@ -44,19 +44,20 @@ if activeGamemode == "FFA" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or "gadget" then
+        elseif v[3] == "melee" or v[3] == "gadget" then
             table.insert(randMelee, v[1])
         end
     end
 end
 
+--Generate the table of available weapons if the gamemode is set to Fiesta.
 if activeGamemode == "Fiesta" then
     for k, v in pairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or "gadget" then
+        elseif v[3] == "melee" or v[3] == "gadget" then
             table.insert(randMelee, v[1])
         end
     end
@@ -64,6 +65,7 @@ if activeGamemode == "Fiesta" then
     fiestaPrimary = randPrimary[math.random(#randPrimary)]
     fiestaSecondary = randSecondary[math.random(#randSecondary)]
     fiestaMelee = randMelee[math.random(#randMelee)]
+    SetGlobalInt("FiestaTime", fiestaShuffleTime)
     timer.Create("FiestaShuffle", fiestaShuffleTime, 0, ShuffleFiestaLoadout)
 end
 
@@ -88,8 +90,21 @@ if activeGamemode == "Gun Game" then
     table.insert(ggLadder, {"tfa_km2000_knife", "fres_grapple"})
 end
 
+--Generate the table of available weapons if the gamemode is set to Shotty Snipers.
+if activeGamemode == "Shotty Snipers" then
+    for k, v in pairs(weaponArray) do
+        if v[4] == "sniper" then
+            table.insert(randPrimary, v[1])
+        elseif v[4] == "shotgun" then
+            table.insert(randSecondary, v[1])
+        elseif v[3] == "melee" or v[3] == "gadget" then
+            table.insert(randMelee, v[1])
+        end
+    end
+end
+
 function HandlePlayerInitialSpawn(ply)
-    if activeGamemode == "FFA" then
+    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
@@ -108,7 +123,7 @@ function HandlePlayerInitialSpawn(ply)
 end
 
 function HandlePlayerSpawn(ply)
-    if activeGamemode == "FFA" then
+    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
         if usePrimary == true then
             ply:Give(ply:GetNWString("loadoutPrimary"))
             ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
@@ -167,7 +182,7 @@ function HandlePlayerKill(ply, victim)
 end
 
 function HandlePlayerDeath(ply, weaponName)
-    if activeGamemode == "FFA" then
+    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
         ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])

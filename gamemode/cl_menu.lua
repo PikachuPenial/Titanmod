@@ -568,10 +568,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                 WeaponryLabel:SetSize(554, 230)
                 WeaponryLabel:SetFont("GModNotify")
                 WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
-        You can use your Context Menu key []] .. input.LookupBinding("+menu_context") .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
-        Each weapon has its own unique recoil pattern to learn.
-        Bullets are hitscan and can penetrate through surfaces.
-        ]])
+You can use your Context Menu key []] .. input.LookupBinding("+menu_context") .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
+Each weapon has its own unique recoil pattern to learn.
+Bullets are hitscan and can penetrate through surfaces.
+]])
                 WeaponryLabel:SetWrap(true)
 
                 local WeaponryImage = vgui.Create("DImage", WeaponrySection)
@@ -592,12 +592,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                 MovementLabel:SetSize(554, 230)
                 MovementLabel:SetFont("GModNotify")
                 MovementLabel:SetText([[Titanmod has an assortment of movement mechanics to learn and use on your opponents!
-        Here are a few things to look out for:
-            Sliding                     Air Strafing
-            Wall Running          Wall Jumping
-            Rocket Jumping      Grappling
-            + More to discover on your own
-        ]])
+Here are a few things to look out for:
+Sliding                     Air Strafing
+Wall Running          Wall Jumping
+Rocket Jumping      Grappling
++ More to discover on your own
+]])
                 MovementLabel:SetWrap(true)
 
                 local MovementImage = vgui.Create("DImage", MovementSection)
@@ -618,16 +618,36 @@ net.Receive("OpenMainMenu", function(len, ply)
                 PersonalizeLabel:SetSize(554, 230)
                 PersonalizeLabel:SetFont("GModNotify")
                 PersonalizeLabel:SetText([[There are over 250+ items to unlock in Titanmod!
-        There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
-        Check out the CUSTOMIZE page to see what is on offer.
-        Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.
-        ]])
-        PersonalizeLabel:SetWrap(true)
+There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
+Check out the CUSTOMIZE page to see what is on offer.
+Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.
+]])
+                PersonalizeLabel:SetWrap(true)
 
                 local PersonalizeImage = vgui.Create("DImage", PersonalizeSection)
                 PersonalizeImage:SetPos(10, 10)
                 PersonalizeImage:SetSize(260, 260)
                 PersonalizeImage:SetImage("images/personalize.png")
+
+                local EndingLabel = vgui.Create("DPanel", TutorialScroller)
+                EndingLabel:Dock(TOP)
+                EndingLabel:SetSize(0, 115)
+                EndingLabel.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.SimpleText("Join our Discord server!", "SettingsLabel", 90, 8, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Find people to play with or keep up wtih new updates and leaks", "GModNotify", 90, 48, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("^   click me please :)", "GModNotify", 44, 80, white, TEXT_ALIGN_LEFT)
+                end
+
+                local DiscordButton = vgui.Create("DImageButton", EndingLabel)
+                DiscordButton:SetPos(15, 8)
+                DiscordButton:SetImage("icons/discordicon.png")
+                DiscordButton:SetSize(64, 64)
+                DiscordButton:SetTooltip("Discord")
+                DiscordButton.DoClick = function()
+                    surface.PlaySound("tmui/buttonclick.wav")
+                    gui.OpenURL("https://discord.gg/GRfvt27uGF")
+                end
             end
 
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end --Force shows the Tutorial is a player joins for the first time
@@ -697,7 +717,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
                     for k, v in pairs(weaponArray) do
-                        if activeGamemode == "FFA" or activeGamemode == "Fiesta" then
+                        if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then
                             if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
                             if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
                             if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end

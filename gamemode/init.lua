@@ -26,6 +26,13 @@ RunConsoleCommand("mp_friendlyfire", "1")
 local playingFiringRange = false
 if game.GetMap() == "tm_firingrange" then playingFiringRange = true end
 
+function OpenMainMenu(ply)
+	net.Start("OpenMainMenu")
+	if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+	net.Send(ply)
+	ply:SetNWBool("mainmenu", true)
+end
+
 --Player setup, things like player movement and their loadout.
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
@@ -50,7 +57,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" then ply:ConCommand("tm_showloadout") end
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then ply:ConCommand("tm_showloadout") end
 	if playingFiringRange == true then ply:GodEnable() end
 	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end
@@ -97,10 +104,7 @@ function GM:PlayerInitialSpawn(ply)
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
 		ply:KillSilent()
 		timer.Simple(0.75, function() --Delaying by 0.75 because the menu just doesn't open sometimes, might fix, idk.
-			net.Start("OpenMainMenu")
-			net.WriteFloat(0)
-			net.Send(ply)
-			ply:SetNWBool("mainmenu", true)
+			OpenMainMenu(ply)
 		end)
 	end)
 end
@@ -556,7 +560,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		net.Broadcast()
 
 		local connectedPlayers = player.GetAll()
-		if activeGamemode == "FFA" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
+		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
 			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
@@ -700,39 +704,19 @@ end)
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
 function GM:ShowHelp(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
+	if not ply:Alive() then OpenMainMenu() end
 end
 
 function GM:ShowTeam(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
+	if not ply:Alive() then OpenMainMenu() end
 end
 
 function GM:ShowSpare1(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
+	if not ply:Alive() then OpenMainMenu() end
 end
 
 function GM:ShowSpare2(ply)
-	if not ply:Alive() then
-		net.Start("OpenMainMenu")
-		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
+	if not ply:Alive() then OpenMainMenu() end
 end
 
 --Auto saves player data if enabled by server admin.

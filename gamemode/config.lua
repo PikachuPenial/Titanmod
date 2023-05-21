@@ -60,7 +60,8 @@ matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in sec
 gamemodeArray = {}
 gamemodeArray[1] = {0, "FFA"}
 gamemodeArray[2] = {1, "Fiesta"}
-gamemodeArray[2] = {2, "Gun Game"}
+gamemodeArray[3] = {2, "Gun Game"}
+gamemodeArray[4] = {3, "Shotty Snipers"}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
