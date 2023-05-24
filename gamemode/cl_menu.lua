@@ -34,36 +34,47 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/chillwave_ragdolluniverseost.wav", "music/giftshop_battleblocktheaterost.wav", "music/immaculate_visage.wav", "music/tabgmenumusic.wav", "music/sneakysnitch_kevinmacleod.wav", "music/waster_bladee.wav", "music/systemfiles_zedorfski.wav", "music/nintendo_mariokartchannel.wav"}
+    musicList = {"music/chillwave_ragdolluniverseost.mp3", "music/giftshop_battleblocktheaterost.mp3", "music/tabg_landfall.mp3", "music/waster_bladee.mp3", "music/systemfiles_zedorfski.mp3", "music/systemfiles_zedorfski.mp3", "music/drift_eightiesheadachetape.mp3"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPly, chosenMusic)
 
-    if chosenMusic == "music/chillwave_ragdolluniverseost.wav" then
+    if chosenMusic == "music/chillwave_ragdolluniverseost.mp3" then
         musicName = "Chillwave - Ragdoll Universe OST"
+        musicLink = "https://youtu.be/0Y1xiG8cYnY"
     end
 
-    if chosenMusic == "music/giftshop_battleblocktheaterost.wav" then
+    if chosenMusic == "music/giftshop_battleblocktheaterost.mp3" then
         musicName = "Gift Shop - Battleblock Theater OST"
+        musicLink = "https://youtu.be/GOkQrRn9434"
     end
 
-    if chosenMusic == "music/nintendo_mariokartchannel.wav" then
+    if chosenMusic == "music/mariokartchannel_nintendo.mp3" then
         musicName = "Mario Kart Channel - Nintendo"
+        musicLink = "https://youtu.be/HOylSnC340I"
     end
 
-    if chosenMusic == "music/tabgmenumusic.wav" then
+    if chosenMusic == "music/drift_eightiesheadachetape.mp3" then
+        musicName = "Drift - eightiesheadachetape"
+        musicLink = "https://youtu.be/Q-NaB8W2934"
+    end
+
+    if chosenMusic == "music/tabg_landfall.mp3" then
         musicName = "TABG Main Theme"
+        musicLink = "https://youtu.be/ofG5Uc47uVY"
         requestedBy = "Portanator"
         steamProfile = "https://steamcommunity.com/id/portmens/"
     end
 
-    if chosenMusic == "music/waster_bladee.wav" then
+    if chosenMusic == "music/waster_bladee.mp3" then
         musicName = "Waster - Bladee"
+        musicLink = "https://youtu.be/sLWeSsxk5GE"
         requestedBy = "Suomij"
         steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
     end
 
-    if chosenMusic == "music/systemfiles_zedorfski.wav" then
+    if chosenMusic == "music/systemfiles_zedorfski.mp3" then
         musicName = "System Files - Zedorfski"
+        musicLink = "https://www.youtube.com/c/Zedorfski"
         requestedBy = "Zedorfski"
         steamProfile = "https://steamcommunity.com/id/zedorfski"
     end
@@ -72,7 +83,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     if GetConVar("tm_menumusic"):GetInt() == 1 then
         menuMusic:Play()
-        menuMusic:ChangeVolume(musicVolume * 1.45)
+        menuMusic:ChangeVolume(musicVolume * 1.55)
     end
 
     if not IsValid(MainMenu) then
@@ -176,7 +187,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local ProfileButton
-            if requestedBy ~= nil and GetConVar("tm_menumusic"):GetInt() == 1 then
+            if requestedBy ~= nil then
                 ProfileButton = vgui.Create("DImageButton", MainPanel)
                 ProfileButton:SetPos(ScrW() - 72, 45)
                 ProfileButton:SetSize(32, 32)
@@ -186,6 +197,22 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
             end
 
+            local LinkButton
+            if musicLink ~= nil then
+                LinkButton = vgui.Create("DImageButton", MainPanel)
+                if requestedBy ~= nil then LinkButton:SetPos(ScrW() - 107, 45) else LinkButton:SetPos(ScrW() - 72, 25) end
+                LinkButton:SetSize(32, 32)
+                LinkButton:SetImage("icons/musicicon.png")
+                LinkButton.DoClick = function()
+                    gui.OpenURL(musicLink)
+                end
+            end
+
+            if GetConVar("tm_menumusic"):GetInt() == 0 then
+                if requestedBy ~= nil then ProfileButton:Hide() end
+                if musicLink ~= nil then LinkButton:Hide() end
+            end
+
             local MuteMusicButton = vgui.Create("DImageButton", MainPanel)
             if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
             MuteMusicButton:SetSize(32, 32)
@@ -193,17 +220,18 @@ net.Receive("OpenMainMenu", function(len, ply)
             MuteMusicButton.DoClick = function()
                 if GetConVar("tm_menumusic"):GetInt() == 0 then
                     menuMusic:Play()
-                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
+                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
                     MuteMusicButton:SetImage("icons/speakericon.png")
                     if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
+                    if ProfileButton ~= nil then ProfileButton:Show() end
+                    if LinkButton ~= nil then LinkButton:Show() end
                     RunConsoleCommand("tm_menumusic", 1)
                 else
                     menuMusic:FadeOut(1)
                     MuteMusicButton:SetImage("icons/speakermutedicon.png")
                     MuteMusicButton:SetPos(ScrW() - 37, 25)
-                    if requestedBy ~= nil and ProfileButton ~= nil then
-                        ProfileButton:Hide()
-                    end
+                    if requestedBy ~= nil and ProfileButton ~= nil then ProfileButton:Hide() end
+                    if musicLink ~= nil and LinkButton ~= nil then LinkButton:Hide() end
                     RunConsoleCommand("tm_menumusic", 0)
                 end
             end
@@ -3862,7 +3890,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function menuMusicButton:OnChange(bVal)
                         if (bVal) then
                             menuMusic:Play()
-                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
+                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
                         else
                             menuMusic:FadeOut(1)
                         end
@@ -3878,7 +3906,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuMusicVolume:SetTooltip("Adjust the volume of the menu music.")
 
                     menuMusicVolume.OnValueChanged = function(self, value)
-                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.45)
+                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
                     end
 
                     DockWeaponry.Paint = function(self, w, h)
