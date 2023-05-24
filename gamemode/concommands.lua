@@ -23,7 +23,6 @@ function ForceSave(ply, cmd, args)
 	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
 	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
 	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
-	ply:SetPData("seenTutorial", ply:GetNWBool("seenTutorial"))
 	for p, t in pairs(weaponArray) do
 		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
 		ply:SetPData("killedBy_" .. t[1], ply:GetNWInt("killedBy_" .. t[1]))
@@ -102,7 +101,6 @@ function PlayerAccountWipe(ply, cmd, args)
 	ply:SetNWInt("playerAccoladeOnStreak", 0)
 	ply:SetNWInt("playerAccoladeBuzzkill", 0)
 	ply:SetNWInt("playerAccoladeClutch", 0)
-	ply:SetNWBool("seenTutorial", false)
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do

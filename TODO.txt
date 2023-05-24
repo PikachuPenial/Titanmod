@@ -9,6 +9,7 @@ Custom Titanmod FOV profile that players can use
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
+Main Menu refactor
 VIP gamemode (you can select a loadout?)
 Assists system
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)

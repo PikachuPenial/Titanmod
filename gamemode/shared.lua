@@ -14,7 +14,7 @@ if CLIENT then
     CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
     CreateClientConVar("tm_killsound", 1, true, false, "Enable/disable the kill confirmation sound", 0, 1)
     CreateClientConVar("tm_menumusic", 1, true, false, "Enable/disable the Main Menu music", 0, 1)
-    CreateClientConVar("tm_menumusicvolume", 0.90, true, false, "Increase or lower the volume of the Main Menu music", 0, 1)
+    CreateClientConVar("tm_menumusicvolume", 1, true, false, "Increase or lower the volume of the Main Menu music", 0, 1)
     CreateClientConVar("tm_hitsoundtype", 0, true, false, "Switch between the multiple styles of hitsounds", 0, 3)
     CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 2)
     CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)

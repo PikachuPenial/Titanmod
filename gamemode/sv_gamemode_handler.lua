@@ -189,6 +189,6 @@ function HandlePlayerDeath(ply, weaponName)
     end
 
     if activeGamemode == "Gun Game" then
-        if (weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
+        if (weaponName == "Tanto" or weaponName == "Japanese Ararebo" or weaponName == "KM-2000" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
     end
 end

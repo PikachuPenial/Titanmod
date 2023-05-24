@@ -34,7 +34,7 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/chillwave_ragdolluniverseost.mp3", "music/giftshop_battleblocktheaterost.mp3", "music/tabg_landfall.mp3", "music/waster_bladee.mp3", "music/systemfiles_zedorfski.mp3", "music/systemfiles_zedorfski.mp3", "music/drift_eightiesheadachetape.mp3"}
+    musicList = {"music/chillwave_ragdolluniverseost.mp3", "music/giftshop_battleblocktheaterost.mp3", "music/tabg_landfall.mp3", "music/waster_bladee.mp3", "music/systemfiles_zedorfski.mp3", "music/systemfiles_zedorfski.mp3", "music/drift_eightiesheadachetape.mp3", "music/highstakes_worldcorp.mp3"}
     chosenMusic = (musicList[math.random(#musicList)])
     local menuMusic = CreateSound(LocalPly, chosenMusic)
 
@@ -58,6 +58,11 @@ net.Receive("OpenMainMenu", function(len, ply)
         musicLink = "https://youtu.be/Q-NaB8W2934"
     end
 
+    if chosenMusic == "music/highstakes_worldcorp.mp3" then
+        musicName = "High Stakes - worldcorp"
+        musicLink = "https://youtu.be/4dXLpJcSu8w"
+    end
+
     if chosenMusic == "music/tabg_landfall.mp3" then
         musicName = "TABG Main Theme"
         musicLink = "https://youtu.be/ofG5Uc47uVY"
@@ -79,11 +84,11 @@ net.Receive("OpenMainMenu", function(len, ply)
         steamProfile = "https://steamcommunity.com/id/zedorfski"
     end
 
-    musicVolume = GetConVar("tm_menumusicvolume"):GetInt() / 4
+    musicVolume = GetConVar("tm_menumusicvolume"):GetInt()
 
     if GetConVar("tm_menumusic"):GetInt() == 1 then
         menuMusic:Play()
-        menuMusic:ChangeVolume(musicVolume * 1.55)
+        menuMusic:ChangeVolume(musicVolume)
     end
 
     if not IsValid(MainMenu) then
@@ -220,7 +225,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             MuteMusicButton.DoClick = function()
                 if GetConVar("tm_menumusic"):GetInt() == 0 then
                     menuMusic:Play()
-                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
+                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                     MuteMusicButton:SetImage("icons/speakericon.png")
                     if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
                     if ProfileButton ~= nil then ProfileButton:Show() end
@@ -3890,7 +3895,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function menuMusicButton:OnChange(bVal)
                         if (bVal) then
                             menuMusic:Play()
-                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
+                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                         else
                             menuMusic:FadeOut(1)
                         end
@@ -3906,7 +3911,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuMusicVolume:SetTooltip("Adjust the volume of the menu music.")
 
                     menuMusicVolume.OnValueChanged = function(self, value)
-                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat() / 4 * 1.55)
+                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                     end
 
                     DockWeaponry.Paint = function(self, w, h)
@@ -4191,127 +4196,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 net.SendToServer()
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
-            end
-
-            local PatchNotesButtonHolder = vgui.Create("DPanel", MainPanel)
-            PatchNotesButtonHolder:SetPos(ScrW() - 49, ScrH() / 2 - 28)
-            PatchNotesButtonHolder:SetSize(48, 48)
-            PatchNotesButtonHolder.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, transparent)
-            end
-
-            local PlayerList
-            local PatchNotesButton = vgui.Create("DImageButton", PatchNotesButtonHolder)
-            PatchNotesButton:SetImage("icons/patchnotesicon.png")
-            patchNotesAnim = 0
-            patchNotesOpen = 0
-            local buttonSize = 32
-            PatchNotesButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
-                if (patchNotesOpen == 0) then
-                    patchNotesOpen = 1
-                else
-                    patchNotesOpen = 0
-                end
-            end
-            PatchNotesButton.Paint = function(self, w, h)
-                if PatchNotesButton:IsHovered() then
-                    buttonSize = math.Clamp(buttonSize + 200 * FrameTime(), 0, 12)
-                else
-                    buttonSize = math.Clamp(buttonSize - 200 * FrameTime(), 0, 12)
-                end
-                if (patchNotesOpen == 1) then
-                    patchNotesAnim = math.Clamp(patchNotesAnim + 4000 * FrameTime(), 0, 400)
-                else
-                    patchNotesAnim = math.Clamp(patchNotesAnim - 4000 * FrameTime(), 0, 400)
-                end
-                PatchNotesButton:SetSize(32 + buttonSize, 32 + buttonSize)
-                PatchNotesButton:Center()
-                PatchNotesButtonHolder:SetPos(ScrW() - 48 - patchNotesAnim, ScrH() / 2 - 28)
-            end
-
-            local PatchNotesPanel = vgui.Create("DPanel", MainPanel)
-            PatchNotesPanel:SetSize(420, 450)
-            PatchNotesPanel:SetPos(ScrW() - 1, ScrH() / 2 - 225)
-            PatchNotesPanel.Paint = function(self, w, h)
-                PatchNotesPanel:SetPos(ScrW() - 1 - patchNotesAnim, ScrH() / 2 - 225)
-                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 0))
-            end
-
-            local PatchScroller = vgui.Create("DScrollPanel", PatchNotesPanel)
-            PatchScroller:Dock(FILL)
-
-            local PlayersTextHeader = vgui.Create("DPanel", PatchScroller)
-            PlayersTextHeader:Dock(TOP)
-            PlayersTextHeader:SetSize(0, 65)
-            PlayersTextHeader.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
-                draw.SimpleText("PLAYERS", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-            end
-
-            local PlayerScrollPanel = vgui.Create("DScrollPanel", PatchScroller)
-            PlayerScrollPanel:Dock(TOP)
-            PlayerScrollPanel:SetSize(PatchNotesPanel:GetWide(), 100 * player.GetCount())
-            PlayerScrollPanel:SetPos(0, 0)
-
-            PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
-            PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
-            PlayerList:SetPos(0, 0)
-
-            PlayerList:Clear()
-            local connectedPlayers = player.GetAll()
-            table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end)
-            for k, v in pairs(connectedPlayers) do
-                local PlayerPanel = vgui.Create("DPanel", PlayerList)
-                PlayerPanel:SetSize(PlayerList:GetWide(), 100)
-                PlayerPanel:SetPos(0, 0)
-                local name = v:GetName()
-                local prestige = v:GetNWInt("playerPrestige")
-                local level = v:GetNWInt("playerLevel")
-                PlayerPanel.Paint = function(self, w, h)
-                    if not IsValid(v) then return end
-                    if v:GetNWBool("mainmenu") == true then
-                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 100, 100))
-                    elseif not v:Alive() then
-                        draw.RoundedBox(0, 0, 0, w, h, Color(100, 35, 35, 100))
-                    else
-                        draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
-                    end
-
-                    draw.SimpleText(name, "StreakText", 255, 5, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("P" .. prestige .. " L" .. level, "Health", 255, 25, white, TEXT_ALIGN_LEFT)
-                end
-
-                --Displays a players calling card and profile picture.
-                local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
-                PlayerCallingCard:SetPos(10, 10)
-                PlayerCallingCard:SetSize(240, 80)
-
-                if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
-
-                local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
-                PlayerProfilePicture:SetPos(5, 5)
-                PlayerProfilePicture:SetSize(70, 70)
-                PlayerProfilePicture:SetPlayer(v, 184)
-            end
-
-            local PatchTextHeader = vgui.Create("DPanel", PatchScroller)
-            PatchTextHeader:Dock(TOP)
-            PatchTextHeader:SetSize(0, 65)
-            PatchTextHeader.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, lightGray)
-                draw.SimpleText("PATCH NOTES", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-            end
-
-            local PatchBETA = vgui.Create("DPanel", PatchScroller)
-            PatchBETA:Dock(TOP)
-            PatchBETA:SetSize(0, 110)
-            PatchBETA.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h - 1, gray)
-                draw.SimpleText("BETA", "OptionsHeader", 3, 0, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText("03/29/22", "Health", 5, 50, white, TEXT_ALIGN_LEFT)
-
-                draw.SimpleText("+ Stuff", "StreakText", 5, 80, patchGreen, TEXT_ALIGN_LEFT)
             end
     end
 
