@@ -50,22 +50,10 @@ net.Receive("OpenMainMenu", function(len, ply)
         musicName = "Mario Kart Channel - Nintendo"
     end
 
-    if chosenMusic == "music/immaculate_visage.wav" then
-        musicName = "Immaculate - Visage"
-        requestedBy = "Seven"
-        steamProfile = "https://steamcommunity.com/profiles/76561199121652527"
-    end
-
     if chosenMusic == "music/tabgmenumusic.wav" then
         musicName = "TABG Main Theme"
         requestedBy = "Portanator"
         steamProfile = "https://steamcommunity.com/id/portmens/"
-    end
-
-    if chosenMusic == "music/sneakysnitch_kevinmacleod.wav" then
-        musicName = "Sneaky Snitch - Kevin MacLeod"
-        requestedBy = "Checked"
-        steamProfile = "https://steamcommunity.com/profiles/76561198853717083"
     end
 
     if chosenMusic == "music/waster_bladee.wav" then
