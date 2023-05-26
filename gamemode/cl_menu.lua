@@ -27,7 +27,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local mapID
     local mapName
-    local mapThumb
 
     local canPrestige
     if LocalPly:GetNWInt("playerLevel") ~= 60 then canPrestige = false else canPrestige = true end
@@ -105,7 +104,6 @@ net.Receive("OpenMainMenu", function(len, ply)
             if game.GetMap() == t[1] then
                 mapID = t[1]
                 mapName = t[2]
-                mapThumb = t[3]
             end
         end
 
@@ -118,6 +116,8 @@ net.Receive("OpenMainMenu", function(len, ply)
         gui.EnableScreenClicker(true)
 
         local MainPanel = MainMenu:Add("MainPanel")
+            local pushSpawnItems = 100
+            local spawnTextAnim = 0
             MainPanel.Paint = function()
                 if GetConVar("tm_menumusic"):GetInt() == 1 then
                     draw.SimpleText("Listening to: " .. musicName, "StreakText", ScrW() - 5, 0, white, TEXT_ALIGN_RIGHT)
@@ -127,13 +127,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
                 else
                     draw.SimpleText("Listening to nothing, peace and quiet :)", "StreakText", ScrW() - 5, 0, white, TEXT_ALIGN_RIGHT)
-                end
-
-                if mapID ~= nil then
-                    draw.SimpleText(activeGamemode .. " on " .. mapName, "MainMenuMusicName", ScrW() - 210, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
-                    draw.SimpleText("Match ends in " .. math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", ScrW() - 5, ScrH() - 230, white, TEXT_ALIGN_RIGHT)
-                else
-                    draw.SimpleText("Playing on " .. game.GetMap(), "MainMenuMusicName", ScrW() - 5, ScrH() - 35, white, TEXT_ALIGN_RIGHT)
                 end
 
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
@@ -156,6 +149,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                 else
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
+
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
             end
 
             if canPrestige == true then
@@ -250,13 +245,6 @@ net.Receive("OpenMainMenu", function(len, ply)
             playerProfilePicture:SetPos(195, 15)
             playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPly, 184)
-
-            if mapID ~= nil then
-                MapPreview = vgui.Create("DImage", MainPanel)
-                MapPreview:SetPos(ScrW() - 205, ScrH() - 205)
-                MapPreview:SetSize(200, 200)
-                MapPreview:SetImage(mapThumb)
-            end
 
             local StatisticsButton = vgui.Create("DImageButton", MainPanel)
             StatisticsButton:SetPos(10, 10)
@@ -724,31 +712,31 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
-            SpawnButton:SetPos(0, ScrH() / 2 - 200)
+            SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushSpawnItems)
             SpawnButton:SetText("")
             SpawnButton:SetSize(535, 100)
-            local textAnim = 0
             SpawnButton.Paint = function()
+                SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushSpawnItems)
                 if not timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                        spawnTextAnim = math.Clamp(spawnTextAnim + 200 * FrameTime(), 0, 20)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                        spawnTextAnim = math.Clamp(spawnTextAnim - 200 * FrameTime(), 0, 20)
                     end
 
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                     for k, v in pairs(weaponArray) do
                         if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then
-                            if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT) end
-                            if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                            if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + textAnim, 65, white, TEXT_ALIGN_LEFT) end
+                            if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT) end
+                            if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                            if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 65, white, TEXT_ALIGN_LEFT) end
                         elseif activeGamemode == "Gun Game" then
-                            draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + textAnim, 15, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT)
                         end
                     end
                 else
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + textAnim, 5, patchRed, TEXT_ALIGN_LEFT)
-                    draw.DrawText(math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, patchRed, TEXT_ALIGN_LEFT)
+                    draw.DrawText(math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                 end
             end
             SpawnButton.DoClick = function()
@@ -770,21 +758,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeButton:SetText("")
             CustomizeButton:SetSize(530, 100)
             local textAnim = 0
-            local pushButtonsAbove = 100
             CustomizeButton.Paint = function()
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                    pushButtonsAbove = math.Clamp(pushButtonsAbove + 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
+                    pushSpawnItems = math.Clamp(pushSpawnItems + 600 * FrameTime(), 100, 150)
+                    CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                    pushButtonsAbove = math.Clamp(pushButtonsAbove - 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, ScrH() / 2 - pushButtonsAbove)
+                    pushSpawnItems = math.Clamp(pushSpawnItems - 600 * FrameTime(), 100, 150)
+                    CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-                SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushButtonsAbove)
             end
 
             CustomizeModelButton:SetPos(0, 100)
