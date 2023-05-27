@@ -150,7 +150,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
             end
 
             if canPrestige == true then
@@ -203,6 +203,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 if requestedBy ~= nil then LinkButton:SetPos(ScrW() - 107, 45) else LinkButton:SetPos(ScrW() - 72, 25) end
                 LinkButton:SetSize(32, 32)
                 LinkButton:SetImage("icons/musicicon.png")
+                LinkButton:SetTooltip("Open song on YouTube")
                 LinkButton.DoClick = function()
                     gui.OpenURL(musicLink)
                 end
@@ -214,14 +215,21 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local MuteMusicButton = vgui.Create("DImageButton", MainPanel)
-            if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
+            if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) elseif requestedBy == nil or GetConVar("tm_menumusic"):GetInt() == 0 then MuteMusicButton:SetPos(ScrW() - 37, 25) end
             MuteMusicButton:SetSize(32, 32)
-            if GetConVar("tm_menumusic"):GetInt() == 1 then MuteMusicButton:SetImage("icons/speakericon.png") else MuteMusicButton:SetImage("icons/speakermutedicon.png") end
+            if GetConVar("tm_menumusic"):GetInt() == 1 then
+                MuteMusicButton:SetImage("icons/speakericon.png")
+                MuteMusicButton:SetTooltip("Disable music")
+            else
+                MuteMusicButton:SetImage("icons/speakermutedicon.png")
+                MuteMusicButton:SetTooltip("Enable music")
+            end
             MuteMusicButton.DoClick = function()
                 if GetConVar("tm_menumusic"):GetInt() == 0 then
                     menuMusic:Play()
                     menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                     MuteMusicButton:SetImage("icons/speakericon.png")
+                    MuteMusicButton:SetTooltip("Disable music")
                     if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
                     if ProfileButton ~= nil then ProfileButton:Show() end
                     if LinkButton ~= nil then LinkButton:Show() end
@@ -229,6 +237,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 else
                     menuMusic:FadeOut(1)
                     MuteMusicButton:SetImage("icons/speakermutedicon.png")
+                    MuteMusicButton:SetTooltip("Enable music")
                     MuteMusicButton:SetPos(ScrW() - 37, 25)
                     if requestedBy ~= nil and ProfileButton ~= nil then ProfileButton:Hide() end
                     if musicLink ~= nil and LinkButton ~= nil then LinkButton:Hide() end
@@ -250,6 +259,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             StatisticsButton:SetPos(10, 10)
             StatisticsButton:SetImage("icons/statsicon.png")
             StatisticsButton:SetSize(80, 80)
+            StatisticsButton:SetTooltip("Statistics")
             StatisticsButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
@@ -504,6 +514,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectateButton:SetPos(100, 10)
             SpectateButton:SetImage("icons/spectateicon.png")
             SpectateButton:SetSize(80, 80)
+            SpectateButton:SetTooltip("Spectate")
             local spectatePanelOpen = 0
             SpectateButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
