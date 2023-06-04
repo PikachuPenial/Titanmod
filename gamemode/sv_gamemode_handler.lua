@@ -82,7 +82,7 @@ if activeGamemode == "Gun Game" then
     table.Shuffle(ggWeaponArray)
 
     for k, v in pairs(ggWeaponArray) do
-        if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and v[1] != "tfa_ins2_ak400" and v[1] != "tfa_ins2_cq300" and itemsAdded < (ggLadderSize - 1) then
+        if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and v[1] != "tfa_ins2_ak400" and v[1] != "tfa_ins2_cq300" and v[1] != "tfa_ins2_ump45" and itemsAdded < (ggLadderSize - 1) then
             table.insert(ggLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
             itemsAdded = itemsAdded + 1
         end
@@ -93,7 +93,7 @@ end
 --Generate the table of available weapons if the gamemode is set to Shotty Snipers.
 if activeGamemode == "Shotty Snipers" then
     for k, v in pairs(weaponArray) do
-        if v[4] == "sniper" then
+        if v[4] == "sniper" and v[1] != "rust_bow" and v[1] != "rust_crossbow" then
             table.insert(randPrimary, v[1])
         elseif v[4] == "shotgun" then
             table.insert(randSecondary, v[1])
