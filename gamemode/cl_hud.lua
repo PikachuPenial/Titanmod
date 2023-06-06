@@ -93,7 +93,7 @@ local inactiveColor = Color(kpoInactiveR, kpoInactiveG, kpoInactiveB)
 local LocalPly
 local fps = 0
 local ping = 0
-local updateRate
+local updateRate = 0.66
 
 local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
 
@@ -104,7 +104,6 @@ function HUD()
     if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
-        updateRate = GetConVar("tm_hud_fpscounter_updaterate"):GetFloat()
         timer.Create("CounterUpdate", updateRate, 0, function()
             fps = tostring(math.floor(1 / RealFrameTime()))
             ping = LocalPly:Ping()
