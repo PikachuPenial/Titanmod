@@ -2841,7 +2841,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 435)
+                    DockUI:SetSize(0, 315)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -2849,7 +2849,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockWeaponry = vgui.Create("DPanel", OptionsScroller)
                     DockWeaponry:Dock(TOP)
-                    DockWeaponry:SetSize(0, 395)
+                    DockWeaponry:SetSize(0, 375)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
@@ -3036,14 +3036,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INTERFACE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable UI", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill Popup", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Death Popup", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Popup Accolades", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("FPS/Ping Counter", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FPS/Ping Counter", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -3052,50 +3049,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     enableUIButton:SetSize(30, 30)
                     enableUIButton:SetTooltip("Enable the UI.")
 
-                    local enableKillUIButton = DockUI:Add("DCheckBox")
-                    enableKillUIButton:SetPos(20, 110)
-                    enableKillUIButton:SetConVar("tm_hud_enablekill")
-                    enableKillUIButton:SetSize(30, 30)
-                    enableKillUIButton:SetTooltip("Enable the kill UI.")
-
-                    local enableDeathUIButton = DockUI:Add("DCheckBox")
-                    enableDeathUIButton:SetPos(20, 150)
-                    enableDeathUIButton:SetConVar("tm_hud_enabledeath")
-                    enableDeathUIButton:SetSize(30, 30)
-                    enableDeathUIButton:SetTooltip("Enable the death UI.")
-
-                    local accoladeToggle = DockUI:Add("DCheckBox")
-                    accoladeToggle:SetPos(20, 190)
-                    accoladeToggle:SetConVar("tm_hud_killaccolades")
-                    accoladeToggle:SetSize(30, 30)
-                    accoladeToggle:SetTooltip("Enable accolades displaying on the kill UI.")
-
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 230)
+                    reloadHintsToggle:SetPos(20, 110)
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetSize(30, 30)
                     reloadHintsToggle:SetTooltip("Enable visual cues when you need to reload.")
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
-                    loadoutHintsToggle:SetPos(20, 270)
+                    loadoutHintsToggle:SetPos(20, 150)
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetSize(30, 30)
                     loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
-                    killTrackerToggle:SetPos(20, 310)
+                    killTrackerToggle:SetPos(20, 190)
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
                     killTrackerToggle:SetSize(30, 30)
                     killTrackerToggle:SetTooltip("Enable the weapon specific kill tracking on the HUD.")
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
-                    keypressOverlayToggle:SetPos(20, 350)
+                    keypressOverlayToggle:SetPos(20, 230)
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
                     keypressOverlayToggle:SetSize(30, 30)
                     keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
 
                     local FPSPingCounterToggle = DockUI:Add("DCheckBox")
-                    FPSPingCounterToggle:SetPos(20, 390)
+                    FPSPingCounterToggle:SetPos(20, 270)
                     FPSPingCounterToggle:SetConVar("tm_hud_fpscounter")
                     FPSPingCounterToggle:SetSize(30, 30)
                     FPSPingCounterToggle:SetTooltip("Enable a HUD element that shows your FPS and ping.")
@@ -3183,29 +3162,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("WEAPONRY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("VM FOV Multiplier", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reticle Color", "SettingsLabel", 245, 275, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reticle Color", "SettingsLabel", 245, 235, white, TEXT_ALIGN_LEFT)
                     end
 
-                    local viewmodelFOV = DockWeaponry:Add("DNumSlider")
-                    viewmodelFOV:SetPos(-85, 70)
-                    viewmodelFOV:SetSize(250, 30)
-                    viewmodelFOV:SetConVar("cl_tfa_viewmodel_multiplier_fov")
-                    viewmodelFOV:SetMin(0.75)
-                    viewmodelFOV:SetMax(2)
-                    viewmodelFOV:SetDecimals(2)
-                    viewmodelFOV:SetTooltip("Adjust the multiplier of your weapons FOV.")
-
                     local centeredVM = DockWeaponry:Add("DCheckBox")
-                    centeredVM:SetPos(20, 110)
+                    centeredVM:SetPos(20, 70)
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
                     centeredVM:SetSize(30, 30)
                     centeredVM:SetTooltip("Centeres your viewmodel towards the middle of your screen.")
 
                     local flashlightMixer = vgui.Create("DColorMixer", DockWeaponry)
-                    flashlightMixer:SetPos(20, 150)
+                    flashlightMixer:SetPos(20, 110)
                     flashlightMixer:SetSize(215, 110)
                     flashlightMixer:SetConVarR("tpf_cl_color_red")
                     flashlightMixer:SetConVarG("tpf_cl_color_green")
@@ -3216,7 +3185,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     flashlightMixer:SetTooltip("Change the color of your flashlight.")
 
                     local reticleMixer = vgui.Create("DColorMixer", DockWeaponry)
-                    reticleMixer:SetPos(20, 280)
+                    reticleMixer:SetPos(20, 250)
                     reticleMixer:SetSize(215, 110)
                     reticleMixer:SetConVarR("cl_tfa_reticule_color_r")
                     reticleMixer:SetConVarG("cl_tfa_reticule_color_g")
@@ -3945,10 +3914,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedOpacity:SetTooltip("Adjust the opacity of a feed entries background.")
 
                 local KillDeathEditor
-                if GetConVar("tm_hud_enablekill"):GetInt() == 1 or GetConVar("tm_hud_enabledeath"):GetInt() == 1 then KillDeathEditor = vgui.Create("DPanel", EditorScroller) else
-                    KillDeathEditor = vgui.Create("DPanel", HiddenOptionsScroller)
-                    ShowHiddenOptions = true
-                end
+                KillDeathEditor = vgui.Create("DPanel", EditorScroller)
                 KillDeathEditor:Dock(TOP)
                 KillDeathEditor:SetSize(0, 200)
                 KillDeathEditor.Paint = function(self, w, h)

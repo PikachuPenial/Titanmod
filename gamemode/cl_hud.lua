@@ -113,7 +113,7 @@ function HUD()
     --Remaining match time.
     local timeText = " ∞"
     if game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
-    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
     if activeGamemode == "Fiesta" and (GetGlobalInt("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
@@ -365,8 +365,7 @@ end )
 
 --Displays after a player kills another player.
 net.Receive("NotifyKill", function(len, ply)
-    if GetConVar("tm_hud_enablekill"):GetInt() == 0 then return end
-
+    if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
@@ -472,10 +471,7 @@ net.Receive("NotifyKill", function(len, ply)
         --Displays information about the player you killed, as well as the Accolades you achived.
         if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", StreakFont, w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
         draw.SimpleText(killedPlayer:GetName(), NameFont, w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        if GetConVar("tm_hud_killaccolades"):GetInt() == 1 then
-            --Please ignore the code below, pretend it does not exist.
-            draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, StreakFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        end
+        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, StreakFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KillNotif:Show()
@@ -499,7 +495,7 @@ end )
 net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
-    if GetConVar("tm_hud_enabledeath"):GetInt() == 0 then return end
+    if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
 
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -528,7 +524,6 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
-    local hint = table.Random(hintArray)
 
     DeathNotif.Paint = function(self, w, h)
         if !IsValid(killedBy) then DeathNotif:Remove() return end
@@ -540,7 +535,7 @@ net.Receive("NotifyDeath", function(len, ply)
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-        draw.SimpleText("Killed by", ArialFont, w / 2, 10, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Killed by", ArialFont, w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", DeathFont, w / 2, 115.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", DeathFont, w / 2, 140, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", DeathFont, w / 2, 165, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -554,9 +549,8 @@ net.Receive("NotifyDeath", function(len, ply)
         draw.SimpleText("YOU " .. LocalPly:GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedBy:GetNWInt(LocalPly:SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", WepFont, w / 2 - 10, 210, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 235, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("HINT: " .. hint, ArialFont, w / 2, 257.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", ArialFont, w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
