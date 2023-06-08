@@ -5,6 +5,7 @@ AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_menu.lua")
 
+include("sv_save_manager.lua")
 include("shared.lua")
 include("config.lua")
 include("concommands.lua")
@@ -47,7 +48,6 @@ function GM:PlayerSpawn(ply)
 	ply:SetCrouchedWalkSpeed(0.6 * playerCrouchWalkSpeedMulti)
 	ply:SetDuckSpeed(0.575 * playerDuckStateMulti)
 	ply:SetUnDuckSpeed(0.575 * playerDuckStateMulti)
-
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
@@ -64,32 +64,33 @@ end
 
 function GM:PlayerInitialSpawn(ply)
 	--Checking if PData exists for the player. If the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player.
-	if (ply:GetPData("playerKills") == nil) then ply:SetNWInt("playerKills", 0) else ply:SetNWInt("playerKills", tonumber(ply:GetPData("playerKills"))) end
-	if (ply:GetPData("playerDeaths") == nil) then ply:SetNWInt("playerDeaths", 0) else ply:SetNWInt("playerDeaths", tonumber(ply:GetPData("playerDeaths"))) end
-	if (ply:GetPData("playerKDR") == nil) then ply:SetNWInt("playerKDR", 1) else ply:SetNWInt("playerKDR", tonumber(ply:GetPData("playerKDR"))) end
-	if (ply:GetPData("playerScore") == nil) then ply:SetNWInt("playerScore", 0) else ply:SetNWInt("playerScore", tonumber(ply:GetPData("playerScore"))) end
-	if (ply:GetPData("matchesPlayed") == nil) then ply:SetNWInt("matchesPlayed", 0) else ply:SetNWInt("matchesPlayed", tonumber(ply:GetPData("matchesPlayed"))) end
-	if (ply:GetPData("matchesWon") == nil) then ply:SetNWInt("matchesWon", 0) else ply:SetNWInt("matchesWon", tonumber(ply:GetPData("matchesWon"))) end
-	if (ply:GetPData("highestKillStreak") == nil) then ply:SetNWInt("highestKillStreak", 0) else ply:SetNWInt("highestKillStreak", tonumber(ply:GetPData("highestKillStreak"))) end
-	if (ply:GetPData("farthestKill") == nil) then ply:SetNWInt("farthestKill", 0) else ply:SetNWInt("farthestKill", tonumber(ply:GetPData("farthestKill"))) end
-	if (ply:GetPData("playerLevel") == nil) then ply:SetNWInt("playerLevel", 1) else ply:SetNWInt("playerLevel", tonumber(ply:GetPData("playerLevel"))) end
-	if (ply:GetPData("playerPrestige") == nil) then ply:SetNWInt("playerPrestige", 0) else ply:SetNWInt("playerPrestige", tonumber(ply:GetPData("playerPrestige"))) end
-	if (ply:GetPData("playerXP") == nil) then ply:SetNWInt("playerXP", 0) else ply:SetNWInt("playerXP", tonumber(ply:GetPData("playerXP"))) end
-	if (ply:GetPData("chosenPlayermodel") == nil) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") else ply:SetNWString("chosenPlayermodel", ply:GetPData("chosenPlayermodel")) end
-	if (ply:GetPData("chosenPlayercard") == nil) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") else ply:SetNWString("chosenPlayercard", ply:GetPData("chosenPlayercard")) end
-	if (ply:GetPData("playerAccoladeHeadshot") == nil) then ply:SetNWInt("playerAccoladeHeadshot", 0) else ply:SetNWInt("playerAccoladeHeadshot", tonumber(ply:GetPData("playerAccoladeHeadshot"))) end
-	if (ply:GetPData("playerAccoladeSmackdown") == nil) then ply:SetNWInt("playerAccoladeSmackdown", 0) else ply:SetNWInt("playerAccoladeSmackdown", tonumber(ply:GetPData("playerAccoladeSmackdown"))) end
-	if (ply:GetPData("playerAccoladeLongshot") == nil) then ply:SetNWInt("playerAccoladeLongshot", 0) else ply:SetNWInt("playerAccoladeLongshot", tonumber(ply:GetPData("playerAccoladeLongshot"))) end
-	if (ply:GetPData("playerAccoladePointblank") == nil) then ply:SetNWInt("playerAccoladePointblank", 0) else ply:SetNWInt("playerAccoladePointblank", tonumber(ply:GetPData("playerAccoladePointblank"))) end
-	if (ply:GetPData("playerAccoladeOnStreak") == nil) then ply:SetNWInt("playerAccoladeOnStreak", 0) else ply:SetNWInt("playerAccoladeOnStreak", tonumber(ply:GetPData("playerAccoladeOnStreak"))) end
-	if (ply:GetPData("playerAccoladeBuzzkill") == nil) then ply:SetNWInt("playerAccoladeBuzzkill", 0) else ply:SetNWInt("playerAccoladeBuzzkill", tonumber(ply:GetPData("playerAccoladeBuzzkill"))) end
-	if (ply:GetPData("playerAccoladeClutch") == nil) then ply:SetNWInt("playerAccoladeClutch", 0) else ply:SetNWInt("playerAccoladeClutch", tonumber(ply:GetPData("playerAccoladeClutch"))) end
+	InitializeNetworkString(ply, "playerSteamName", ply:GetName())
+	InitializeNetworkInt(ply, "playerKills", 0)
+	InitializeNetworkInt(ply, "playerDeaths", 0)
+	InitializeNetworkInt(ply, "playerScore", 0)
+	InitializeNetworkInt(ply, "matchesPlayed", 0)
+	InitializeNetworkInt(ply, "matchesWon", 0)
+	InitializeNetworkInt(ply, "highestKillStreak", 0)
+	InitializeNetworkInt(ply, "highestKillGame", 0)
+	InitializeNetworkInt(ply, "farthestKill", 0)
+	InitializeNetworkInt(ply, "playerLevel", 1)
+	InitializeNetworkInt(ply, "playerPrestige", 0)
+	InitializeNetworkInt(ply, "playerXP", 0)
+	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
+	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
+	InitializeNetworkInt(ply, "playerAccoladeHeadshot", 0)
+	InitializeNetworkInt(ply, "playerAccoladeSmackdown", 0)
+	InitializeNetworkInt(ply, "playerAccoladeLongshot", 0)
+	InitializeNetworkInt(ply, "playerAccoladePointblank", 0)
+	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
+	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
+	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
+	ply:SetNWString("playerSteamName", ply:GetName())
+	ply:SetNWInt("playerID64", ply:SteamID64())
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
-		if (ply:GetPData("killsWith_" .. v[1]) == nil) then ply:SetNWInt("killsWith_" .. v[1], 0) else ply:SetNWInt("killsWith_" .. v[1], tonumber(ply:GetPData("killsWith_" .. v[1]))) end
-		if (ply:GetPData("killedBy_" .. v[1]) == nil) then ply:SetNWInt("killedBy_" .. v[1], 0) else ply:SetNWInt("killedBy_" .. v[1], tonumber(ply:GetPData("killedBy_" .. v[1]))) end
-		if (ply:GetPData("timesUsed_" .. v[1]) == nil) then ply:SetNWInt("timesUsed_" .. v[1], 0) else ply:SetNWInt("timesUsed_" .. v[1], tonumber(ply:GetPData("timesUsed_" .. v[1]))) end
+		InitializeNetworkInt(ply, "killsWith_" .. v[1], 0)
 	end
 
 	HandlePlayerInitialSpawn(ply)
@@ -194,26 +195,20 @@ hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
-		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 	else
 		attacker:SetNWInt("playerKills", attacker:GetNWInt("playerKills") + 1)
-		attacker:SetNWInt("playerKDR", attacker:GetNWInt("playerKills") / attacker:GetNWInt("playerDeaths"))
 		attacker:SetNWInt("killStreak", attacker:GetNWInt("killStreak") + 1)
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 100)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 100)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + (100 * xpMultiplier))
 
-		if attacker:GetNWInt("killStreak") >= attacker:GetNWInt("highestKillStreak") then
-			attacker:SetNWInt("highestKillStreak", attacker:GetNWInt("killStreak"))
-		end
+		if attacker:GetNWInt("killStreak") >= attacker:GetNWInt("highestKillStreak") then attacker:SetNWInt("highestKillStreak", attacker:GetNWInt("killStreak")) end
 
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
-		victim:SetNWInt("playerKDR", victim:GetNWInt("playerKills") / victim:GetNWInt("playerDeaths"))
 
 		if (attacker:GetActiveWeapon():IsValid()) then
 			weaponClassName = attacker:GetActiveWeapon():GetClass()
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
-			victim:SetNWInt("killedBy_" .. weaponClassName, victim:GetNWInt("killedBy_" .. weaponClassName) + 1)
 		end
 
 		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
@@ -567,6 +562,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 			if k == 1 then
 				v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
 				v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
+				if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
 				CheckForPlayerLevel(v)
 			end
 		end
@@ -748,38 +744,37 @@ function GM:PlayerDisconnected(ply)
 	if playingFiringRange == true or forceDisableProgression == true then return end
 
 	--Statistics
-	ply:SetPData("playerKills", ply:GetNWInt("playerKills"))
-	ply:SetPData("playerDeaths", ply:GetNWInt("playerDeaths"))
-	ply:SetPData("playerKDR", ply:GetNWInt("playerKDR"))
-	ply:SetPData("playerScore", ply:GetNWInt("playerScore"))
-	ply:SetPData("matchesPlayed", ply:GetNWInt("matchesPlayed"))
-	ply:SetPData("matchesWon", ply:GetNWInt("matchesWon"))
-	ply:SetPData("highestKillStreak", ply:GetNWInt("highestKillStreak"))
-	ply:SetPData("farthestKill", ply:GetNWInt("farthestKill"))
+	UninitializeNetworkString(ply, "playerSteamName")
+	UninitializeNetworkInt(ply, "playerKills")
+	UninitializeNetworkInt(ply, "playerDeaths")
+	UninitializeNetworkInt(ply, "playerScore")
+	UninitializeNetworkInt(ply, "matchesPlayed")
+	UninitializeNetworkInt(ply, "matchesWon")
+	UninitializeNetworkInt(ply, "highestKillStreak")
+	UninitializeNetworkInt(ply, "highestKillGame")
+	UninitializeNetworkInt(ply, "farthestKill")
 
 	--Leveling
-	ply:SetPData("playerLevel", ply:GetNWInt("playerLevel"))
-	ply:SetPData("playerPrestige", ply:GetNWInt("playerPrestige"))
-	ply:SetPData("playerXP", ply:GetNWInt("playerXP"))
+	UninitializeNetworkInt(ply, "playerLevel")
+	UninitializeNetworkInt(ply, "playerPrestige")
+	UninitializeNetworkInt(ply, "playerXP")
 
 	--Customizatoin
-	ply:SetPData("chosenPlayermodel", ply:GetNWString("chosenPlayermodel"))
-	ply:SetPData("chosenPlayercard", ply:GetNWString("chosenPlayercard"))
+	UninitializeNetworkString(ply, "chosenPlayermodel")
+	UninitializeNetworkString(ply, "chosenPlayercard")
 
 	--Accolades
-	ply:SetPData("playerAccoladeOnStreak", ply:GetNWInt("playerAccoladeOnStreak"))
-	ply:SetPData("playerAccoladeBuzzkill", ply:GetNWInt("playerAccoladeBuzzkill"))
-	ply:SetPData("playerAccoladeLongshot", ply:GetNWInt("playerAccoladeLongshot"))
-	ply:SetPData("playerAccoladePointblank", ply:GetNWInt("playerAccoladePointblank"))
-	ply:SetPData("playerAccoladeSmackdown", ply:GetNWInt("playerAccoladeSmackdown"))
-	ply:SetPData("playerAccoladeHeadshot", ply:GetNWInt("playerAccoladeHeadshot"))
-	ply:SetPData("playerAccoladeClutch", ply:GetNWInt("playerAccoladeClutch"))
+	UninitializeNetworkInt(ply, "playerAccoladeOnStreak")
+	UninitializeNetworkInt(ply, "playerAccoladeBuzzkill")
+	UninitializeNetworkInt(ply, "playerAccoladeLongshot")
+	UninitializeNetworkInt(ply, "playerAccoladePointblank")
+	UninitializeNetworkInt(ply, "playerAccoladeSmackdown")
+	UninitializeNetworkInt(ply, "playerAccoladeHeadshot")
+	UninitializeNetworkInt(ply, "playerAccoladeClutch")
 
 	--Weapon Statistics
 	for p, t in pairs(weaponArray) do
-		ply:SetPData("killsWith_" .. t[1], ply:GetNWInt("killsWith_" .. t[1]))
-		ply:SetPData("killedBy_" .. t[1], ply:GetNWInt("killedBy_" .. t[1]))
-		ply:SetPData("timesUsed_" .. t[1], ply:GetNWInt("timesUsed_" .. t[1]))
+		UninitializeNetworkInt(ply, "killsWith_" .. t[1])
 	end
 end
 
@@ -789,38 +784,37 @@ function GM:ShutDown()
 
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics
-		v:SetPData("playerKills", v:GetNWInt("playerKills"))
-		v:SetPData("playerDeaths", v:GetNWInt("playerDeaths"))
-		v:SetPData("playerKDR", v:GetNWInt("playerKDR"))
-		v:SetPData("playerScore", v:GetNWInt("playerScore"))
-		v:SetPData("matchesPlayed", v:GetNWInt("matchesPlayed"))
-		v:SetPData("matchesWon", v:GetNWInt("matchesWon"))
-		v:SetPData("highestKillStreak", v:GetNWInt("highestKillStreak"))
-		v:SetPData("farthestKill", v:GetNWInt("farthestKill"))
+		UninitializeNetworkString(v, "playerSteamName")
+		UninitializeNetworkInt(v, "playerKills")
+		UninitializeNetworkInt(v, "playerDeaths")
+		UninitializeNetworkInt(v, "playerScore")
+		UninitializeNetworkInt(v, "matchesPlayed")
+		UninitializeNetworkInt(v, "matchesWon")
+		UninitializeNetworkInt(v, "highestKillStreak")
+		UninitializeNetworkInt(v, "highestKillGame")
+		UninitializeNetworkInt(v, "farthestKill")
 
 		--Leveling
-		v:SetPData("playerLevel", v:GetNWInt("playerLevel"))
-		v:SetPData("playerPrestige", v:GetNWInt("playerPrestige"))
-		v:SetPData("playerXP", v:GetNWInt("playerXP"))
+		UninitializeNetworkInt(v, "playerLevel")
+		UninitializeNetworkInt(v, "playerPrestige")
+		UninitializeNetworkInt(v, "playerXP")
 
 		--Customizatoin
-		v:SetPData("chosenPlayermodel", v:GetNWString("chosenPlayermodel"))
-		v:SetPData("chosenPlayercard", v:GetNWString("chosenPlayercard"))
+		UninitializeNetworkString(v, "chosenPlayermodel")
+		UninitializeNetworkString(v, "chosenPlayercard")
 
 		--Accolades
-		v:SetPData("playerAccoladeOnStreak", v:GetNWInt("playerAccoladeOnStreak"))
-		v:SetPData("playerAccoladeBuzzkill", v:GetNWInt("playerAccoladeBuzzkill"))
-		v:SetPData("playerAccoladeLongshot", v:GetNWInt("playerAccoladeLongshot"))
-		v:SetPData("playerAccoladePointblank", v:GetNWInt("playerAccoladePointblank"))
-		v:SetPData("playerAccoladeSmackdown", v:GetNWInt("playerAccoladeSmackdown"))
-		v:SetPData("playerAccoladeHeadshot", v:GetNWInt("playerAccoladeHeadshot"))
-		v:SetPData("playerAccoladeClutch", v:GetNWInt("playerAccoladeClutch"))
+		UninitializeNetworkInt(v, "playerAccoladeOnStreak")
+		UninitializeNetworkInt(v, "playerAccoladeBuzzkill")
+		UninitializeNetworkInt(v, "playerAccoladeLongshot")
+		UninitializeNetworkInt(v, "playerAccoladePointblank")
+		UninitializeNetworkInt(v, "playerAccoladeSmackdown")
+		UninitializeNetworkInt(v, "playerAccoladeHeadshot")
+		UninitializeNetworkInt(v, "playerAccoladeClutch")
 
 		--Weapon Statistics
 		for p, t in pairs(weaponArray) do
-			v:SetPData("killsWith_" .. t[1], v:GetNWInt("killsWith_" .. t[1]))
-			v:SetPData("killedBy_" .. t[1], v:GetNWInt("killedBy_" .. t[1]))
-			v:SetPData("timesUsed_" .. t[1], v:GetNWInt("timesUsed_" .. t[1]))
+			UninitializeNetworkInt(v, "killsWith_" .. t[1])
 		end
 	end
 end

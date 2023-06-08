@@ -3,7 +3,6 @@ HIGH PRIORItY | Currently working on or is being focused
 Keybindable weapon quick switching
 Hook and Riot Shield cards
 More player cards for accolades/kills/streaks
-Fix Statistics quick jump
 Hint bar in menu
 Flash accessability setting
 A suite of PostFX settings in a new menu
@@ -19,7 +18,6 @@ LOW PRIORITY | Backlog for new features and adjustments that are not important
 
 Main Menu refactor
 VIP gamemode (you can select a loadout?)
-Assists system
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Encyclopedia (menu for information on each weapon)
 Leaderboards (would need to pull the database file, would still be cool but would take a while to implement)

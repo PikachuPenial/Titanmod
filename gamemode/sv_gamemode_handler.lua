@@ -27,11 +27,8 @@ function ShuffleFiestaLoadout()
         if v:Alive() then
             v:StripWeapons()
             v:Give(v:GetNWString("loadoutPrimary"))
-            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutPrimary"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutPrimary")) + 1)
             v:Give(v:GetNWString("loadoutSecondary"))
-            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutSecondary"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutSecondary")) + 1)
             v:Give(v:GetNWString("loadoutMelee"))
-            v:SetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee"), v:GetNWInt("timesUsed_" .. v:GetNWString("loadoutMelee")) + 1)
             v:SetAmmo(grenadesOnSpawn, "Grenade")
         end
     end
@@ -126,29 +123,20 @@ function HandlePlayerSpawn(ply)
     if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
         if usePrimary == true then
             ply:Give(ply:GetNWString("loadoutPrimary"))
-            ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
         end
         if useSecondary == true then
             ply:Give(ply:GetNWString("loadoutSecondary"))
-            ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
         end
         if useMelee == true then
             ply:Give(ply:GetNWString("loadoutMelee"))
-            ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
         end
         ply:SetAmmo(grenadesOnSpawn, "Grenade")
     end
 
     if activeGamemode == "Fiesta" then
         ply:Give(ply:GetNWString("loadoutPrimary"))
-        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutPrimary")) + 1)
-
         ply:Give(ply:GetNWString("loadoutSecondary"))
-        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutSecondary")) + 1)
-
         ply:Give(ply:GetNWString("loadoutMelee"))
-        ply:SetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee"), ply:GetNWInt("timesUsed_" .. ply:GetNWString("loadoutMelee")) + 1)
-
         ply:SetAmmo(grenadesOnSpawn, "Grenade")
     end
 
@@ -156,8 +144,6 @@ function HandlePlayerSpawn(ply)
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
-        ply:SetNWInt("timesUsed_" .. wepToGive[1], ply:GetNWInt("timesUsed_" .. wepToGive[1]) + 1)
-        ply:SetNWInt("timesUsed_" .. wepToGive[2], ply:GetNWInt("timesUsed_" .. wepToGive[2]) + 1)
     end
 end
 
@@ -171,8 +157,6 @@ function HandlePlayerKill(ply, victim)
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
-        ply:SetNWInt("timesUsed_" .. wepToGive[1], ply:GetNWInt("timesUsed_" .. wepToGive[1]) + 1)
-        ply:SetNWInt("timesUsed_" .. wepToGive[2], ply:GetNWInt("timesUsed_" .. wepToGive[2]) + 1)
         if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
             net.Start("NotifyGGThreat")
             net.WriteString(ply:GetName())
