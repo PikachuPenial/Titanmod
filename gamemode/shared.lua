@@ -21,6 +21,7 @@ if CLIENT then
     CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
     CreateClientConVar("tm_mainmenubind", KEY_M, true, true, "Determines the keybind that will open the main menu")
     CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
+    CreateClientConVar("tm_screenflashes", 1, true, false, "Enable/disable sudden screen flashes on certain occasions (mainly dying and leveling up)", 0, 1)
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
     CreateClientConVar("tm_hud_enablekillfeed", 1, true, false, "Enable/disable the kill feed", 0, 1)
@@ -364,16 +365,16 @@ cardArray[197] = {"cards/leveling/290.png", "Superpowers", "", "level", 290}
 cardArray[198] = {"cards/leveling/300.png", "Shocked", "", "level", 300}
 
 --Pride cards
-cardArray[199] = {"cards/pride/pride.png", "Pride", "Pride flag", "color", "color"}
-cardArray[200] = {"cards/pride/trans.png", "Trans", "Trans flag", "color", "color"}
-cardArray[201] = {"cards/pride/gay.png", "Gay", "Gay flag", "color", "color"}
-cardArray[202] = {"cards/pride/lesbian.png", "Lesbian", "Lesbian flag", "color", "color"}
-cardArray[203] = {"cards/pride/bi.png", "Bi", "Bi flag", "color", "color"}
-cardArray[204] = {"cards/pride/pan.png", "Pan", "Pan flag", "color", "color"}
-cardArray[205] = {"cards/pride/ace.png", "Ace", "Ace flag", "color", "color"}
-cardArray[206] = {"cards/pride/nonbinary.png", "Nonbinary", "Nonbinary flag", "color", "color"}
-cardArray[207] = {"cards/pride/genderfluid.png", "Genderfluid", "Genderfluid flag", "color", "color"}
-cardArray[208] = {"cards/pride/zedo.png", "Zedo", "What's his name?", "color", "color"}
+cardArray[199] = {"cards/pride/pride.png", "Pride", "Pride flag", "pride", "pride"}
+cardArray[200] = {"cards/pride/trans.png", "Trans", "Trans flag", "pride", "pride"}
+cardArray[201] = {"cards/pride/gay.png", "Gay", "Gay flag", "pride", "pride"}
+cardArray[202] = {"cards/pride/lesbian.png", "Lesbian", "Lesbian flag", "pride", "pride"}
+cardArray[203] = {"cards/pride/bi.png", "Bi", "Bi flag", "pride", "pride"}
+cardArray[204] = {"cards/pride/pan.png", "Pan", "Pan flag", "pride", "pride"}
+cardArray[205] = {"cards/pride/ace.png", "Ace", "Ace flag", "pride", "pride"}
+cardArray[206] = {"cards/pride/nonbinary.png", "Nonbinary", "Nonbinary flag", "pride", "pride"}
+cardArray[207] = {"cards/pride/genderfluid.png", "Genderfluid", "Genderfluid flag", "pride", "pride"}
+cardArray[208] = {"cards/pride/zedo.png", "Zedo", "What's her name?", "pride", "pride"}
 
 --Creating a leveling array, this removes the consistency of the leveling, using developer set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro.
 levelArray = {}

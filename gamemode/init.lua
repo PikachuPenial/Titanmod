@@ -442,7 +442,7 @@ net.Receive("PlayerCardChange", function(len, ply)
 			local cardValue = v[5]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
-			if cardUnlock == "default" or cardUnlock == "color" then
+			if cardUnlock == "default" or cardUnlock == "color" or cardUnlock == "pride" then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)

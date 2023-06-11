@@ -323,23 +323,22 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("Entries update on match start/player disconnect", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
                     end
 
-                    local SpectatePicker = LeaderboardTextHolder:Add("DComboBox")
-                    SpectatePicker:SetPos(25, 130)
-                    SpectatePicker:SetSize(170, 30)
-                    SpectatePicker:SetValue("Select Stat")
+                    local LeaderboardPicker = LeaderboardTextHolder:Add("DComboBox")
+                    LeaderboardPicker:SetPos(25, 130)
+                    LeaderboardPicker:SetSize(170, 30)
 
-                    SpectatePicker:AddChoice("Level", "playerKills")
-                    SpectatePicker:AddChoice("Kills", "playerKills")
-                    SpectatePicker:AddChoice("Deaths", "playerDeaths")
-                    SpectatePicker:AddChoice("K/D Ratio", "playerKills")
-                    SpectatePicker:AddChoice("Matches Played", "matchesPlayed")
-                    SpectatePicker:AddChoice("Matches Won", "matchesWon")
-                    SpectatePicker:AddChoice("W/L Ratio", "playerKills")
-                    SpectatePicker:AddChoice("Highest Killstreak", "highestKillStreak")
-                    SpectatePicker:AddChoice("Highest Kill Game", "highestKillGame")
-                    SpectatePicker:AddChoice("Farthest Kill", "farthestKill")
+                    LeaderboardPicker:AddChoice("Level", "playerKills")
+                    LeaderboardPicker:AddChoice("Kills", "playerKills", true)
+                    LeaderboardPicker:AddChoice("Deaths", "playerDeaths")
+                    LeaderboardPicker:AddChoice("K/D Ratio", "playerKills")
+                    LeaderboardPicker:AddChoice("Matches Played", "matchesPlayed")
+                    LeaderboardPicker:AddChoice("Matches Won", "matchesWon")
+                    LeaderboardPicker:AddChoice("W/L Ratio", "playerKills")
+                    LeaderboardPicker:AddChoice("Highest Killstreak", "highestKillStreak")
+                    LeaderboardPicker:AddChoice("Highest Kill Game", "highestKillGame")
+                    LeaderboardPicker:AddChoice("Farthest Kill", "farthestKill")
 
-                    function SpectatePicker:OnSelect(index, text, data)
+                    function LeaderboardPicker:OnSelect(index, text, data)
                         surface.PlaySound("tmui/buttonclick.wav")
                         net.Start("GrabLeaderboardData")
                         net.WriteString(data)
@@ -370,19 +369,29 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     LeaderboardContents.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT) end
+                        if SelectedBoardName ~= nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 20, -5, white, TEXT_ALIGN_LEFT) end
                         draw.SimpleText("#", "StreakText", 20, 60, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Name", "StreakText", 85, 60, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Value", "StreakText", 710, 60, white, TEXT_ALIGN_RIGHT)
+                        draw.SimpleText("Stat", "StreakText", 710, 60, white, TEXT_ALIGN_RIGHT)
 
-                        if SelectedBoard != nil then
-                            for p, t in pairs(SelectedBoard) do
+                        if SelectedBoard ~= nil then for p, t in pairs(SelectedBoard) do
+                            if t.SteamName != LocalPly:GetName() then
                                 draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
                                 draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
                                 draw.SimpleText(t.Value, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                            else
+                                draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(t.Value, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                             end
                         end
                     end
+                    end
+
+                    net.Start("GrabLeaderboardData")
+                    net.WriteString("playerKills")
+                    net.SendToServer()
+                    SelectedBoardName = "Kills"
                 end
             end
 
@@ -432,7 +441,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                 else
                     spectatePanelOpen = 0
                     SpectatePanel:SizeTo(-1, 0, 1, 0, 0.1)
-
                 end
             end
 
@@ -750,6 +758,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local colorCardsTotal = 0
                     local colorCardsUnlocked = 0
 
+                    local prideCardsTotal = 0
+                    local prideCardsUnlocked = 0
+
                     local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
                     --Checking for the players currently equipped card.
@@ -839,7 +850,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 5607)
+                    DockMasteryCards:SetSize(0, 5357)
 
                     --Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -848,7 +859,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockColorCards = vgui.Create("DPanel", CardScroller)
                     DockColorCards:Dock(TOP)
-                    DockColorCards:SetSize(0, 930)
+                    DockColorCards:SetSize(0, 500)
+
+                    --Pride related Playercards
+                    local TextPride = vgui.Create("DPanel", CardScroller)
+                    TextPride:Dock(TOP)
+                    TextPride:SetSize(0, 90)
+
+                    local DockPrideCards = vgui.Create("DPanel", CardScroller)
+                    DockPrideCards:Dock(TOP)
+                    DockPrideCards:SetSize(0, 416)
 
                     --Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
@@ -881,6 +901,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ColorCardList:SetSpaceY(5)
                     ColorCardList:SetSpaceX(20)
 
+                    local PrideCardList = vgui.Create("DIconLayout", DockPrideCards)
+                    PrideCardList:Dock(TOP)
+                    PrideCardList:SetSpaceY(5)
+                    PrideCardList:SetSpaceX(20)
+
                     DefaultCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -902,6 +927,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     ColorCardList.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
+                    end
+
+                    PrideCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
@@ -946,7 +975,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             draw.SimpleText(newCardDesc, "Health", 5, 135, white, TEXT_ALIGN_LEFT)
                         end
 
-                        if newCardUnlockType == "default" or newCardUnlockType == "color" then
+                        if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
                             draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
@@ -1155,6 +1184,25 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
+                            elseif v[4] == "pride" then
+                                local card = vgui.Create("DImageButton", DockPrideCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                PrideCardList:Add(card)
+
+                                prideCardsTotal = prideCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                prideCardsUnlocked = prideCardsUnlocked + 1
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
                             elseif v[4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
                                 card:SetImage(v[1])
@@ -1315,6 +1363,25 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardUnlockValue = v[5]
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
+                            elseif v[4] == "pride" then
+                                local card = vgui.Create("DImageButton", DockPrideCards)
+                                card:SetImage(v[1])
+                                card:SetTooltip(v[2] .. "\n" .. v[3])
+                                card:SetSize(240, 80)
+                                PrideCardList:Add(card)
+
+                                prideCardsTotal = prideCardsTotal + 1
+                                cardsUnlocked = cardsUnlocked + 1
+                                prideCardsUnlocked = prideCardsUnlocked + 1
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                end
                             elseif v[4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
                                 if v[4] == "level" and playerTotalLevel >= v[5] then
@@ -1415,8 +1482,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     TextColor.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Colors and Pride", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Colors", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                    end
+
+                    TextPride.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.SimpleText("Pride", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(prideCardsUnlocked .. " / " .. prideCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     DockDefaultCards.Paint = function(self, w, h)
@@ -1443,6 +1516,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
+                    DockPrideCards.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                    end
+
                     local ApplyButtonHolder = vgui.Create("DPanel", CardsPreviewScroller)
                     ApplyButtonHolder:Dock(TOP)
                     ApplyButtonHolder:SetSize(0, 100)
@@ -1457,7 +1534,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ApplyCardButton:SetSize(350, 50)
                     ApplyCardButton.DoClick = function()
                         local masteryUnlock = 50
-                        if newCardUnlockType == "default" or newCardUnlockType == "color" then
+                        if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
                             surface.PlaySound("common/wpn_select.wav")
                             net.Start("PlayerCardChange")
                             net.WriteString(newCard)
@@ -1632,6 +1709,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
                             ColorCardList:Clear()
+                            PrideCardList:Clear()
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
@@ -1645,13 +1723,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             masteryCardsUnlocked = 0
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
+                            prideCardsTotal = 0
+                            prideCardsUnlocked = 0
                             FillCardListsUnlocked()
                             DockDefaultCards:SetSize(0, 416)
                             DockKillCards:SetSize(0, (killCardsUnlocked * 42.5) + 42.5)
                             DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
                             DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
                             DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 42.5) + 42.5)
-                            DockColorCards:SetSize(0, (colorCardsUnlocked * 42.5) + 42.5)
+                            DockColorCards:SetSize(0, 500)
+                            DockPrideCards:SetSize(0, 416)
                         else
                             DefaultCardList:Clear()
                             KillCardList:Clear()
@@ -1659,6 +1740,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
                             ColorCardList:Clear()
+                            PrideCardList:Clear()
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
@@ -1672,13 +1754,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             masteryCardsUnlocked = 0
                             colorCardsTotal = 0
                             colorCardsUnlocked = 0
+                            prideCardsTotal = 0
+                            prideCardsUnlocked = 0
                             FillCardListsAll()
                             DockDefaultCards:SetSize(0, 416)
                             DockKillCards:SetSize(0, 250)
                             DockAccoladeCards:SetSize(0, 583)
                             DockLevelCards:SetSize(0, 1280)
-                            DockMasteryCards:SetSize(0, 5607)
-                            DockColorCards:SetSize(0, 930)
+                            DockMasteryCards:SetSize(0, 5357)
+                            DockColorCards:SetSize(0, 500)
+                            DockPrideCards:SetSize(0, 416)
                         end
                     end
 
@@ -1737,14 +1822,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         CardScroller:ScrollToChild(TextMastery)
                     end
 
-                    local PaletteJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    PaletteJump:SetPos(4, 360)
-                    PaletteJump:SetSize(48, 48)
-                    PaletteJump:SetImage("icons/paletteicon.png")
-                    PaletteJump:SetTooltip("Colors and Pride")
-                    PaletteJump.DoClick = function()
+                    local ColorJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    ColorJump:SetPos(4, 360)
+                    ColorJump:SetSize(48, 48)
+                    ColorJump:SetImage("icons/paletteicon.png")
+                    ColorJump:SetTooltip("Colors")
+                    ColorJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextColor)
+                    end
+
+                    local PrideJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    PrideJump:SetPos(4, 412)
+                    PrideJump:SetSize(48, 48)
+                    PrideJump:SetImage("icons/scoreicon.png")
+                    PrideJump:SetTooltip("Pride")
+                    PrideJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        CardScroller:ScrollToChild(TextPride)
                     end
 
                     local RandomizeButton = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -2725,7 +2820,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 280)
+                    DockInputs:SetSize(0, 240)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
@@ -2749,7 +2844,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 320)
+                    DockPerformance:SetSize(0, 360)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -2865,10 +2960,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Toggle ADS", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2880,14 +2974,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     adsSensitivity:SetDecimals(0)
                     adsSensitivity:SetTooltip("Adjust the sensitivity while aiming down sights.")
 
-                    local ironsToggle = DockInputs:Add("DCheckBox")
-                    ironsToggle:SetPos(20, 110)
-                    ironsToggle:SetConVar("cl_tfa_ironsights_toggle")
-                    ironsToggle:SetSize(30, 30)
-                    ironsToggle:SetTooltip("Enable click-to-ADS instead of hold-to-ADS.")
-
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 150)
+                    mainMenuBind:SetPos(22.5, 110)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     mainMenuBind:SetTooltip("Adjust the keybind for opening the main menu.")
@@ -2898,7 +2986,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 190)
+                    grenadeBind:SetPos(22.5, 150)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     grenadeBind:SetTooltip("Adjust the keybind for throwing a grenade.")
@@ -2909,7 +2997,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 230)
+                    grappleBind:SetPos(22.5, 190)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     grappleBind:SetTooltip("Adjust the keybind for using a grappling hook")
@@ -3241,6 +3329,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
                     end
 
                     local menuDOF = DockPerformance:Add("DCheckBox")
@@ -3267,8 +3356,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     vignetteDOF:SetSize(30, 30)
                     vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
 
+                    local screenFlashing = DockPerformance:Add("DCheckBox")
+                    screenFlashing:SetPos(20, 230)
+                    screenFlashing:SetConVar("tm_screenflashes")
+                    screenFlashing:SetSize(30, 30)
+                    screenFlashing:SetTooltip("Enables sudden screen effects on certain events (mainly dying and leveling up)")
+
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(20, 270)
+                    WipeAccountButton:SetPos(17.5, 310)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0
@@ -3294,7 +3389,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             wipeConfirm = 0
                         end
 
-                        timer.Simple(3, function() wipeConfirm = 0 end)
+                        timer.Simple(1, function() wipeConfirm = 0 end)
                     end
                 end
             end
@@ -3477,6 +3572,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDFont:AddChoice("Trebuchet MS")
                 HUDFont:AddChoice("VCR OSD Mono")
                 HUDFont:AddChoice("Bender")
+                HUDFont:AddChoice("Source Sans Pro Semibold")
                 HUDFont.OnSelect = function(self, index, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_font", value)

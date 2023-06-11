@@ -581,6 +581,7 @@ net.Receive("EndOfGame", function(len, ply)
     local gamemodePicked
     local mapDecided = false
     local gamemodeDecided = false
+    local VOIPActive = false
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
@@ -652,7 +653,7 @@ net.Receive("EndOfGame", function(len, ply)
         else
             draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", 485, ScrH() - 55, white, TEXT_ALIGN_LEFT)
         end
-        draw.SimpleText("[+1500XP win bonus]", "MainMenuLoadoutWeapons", 485, 100, white, TEXT_ALIGN_LEFT)
+        if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
     end
 
     local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
@@ -739,7 +740,6 @@ net.Receive("EndOfGame", function(len, ply)
         local name = v:GetName()
         local prestige = v:GetNWInt("playerPrestige")
         local level = v:GetNWInt("playerLevel")
-        local ping = v:Ping()
         local frags = v:Frags()
         local deaths = v:Deaths()
         local ratio
@@ -760,29 +760,30 @@ net.Receive("EndOfGame", function(len, ply)
         PlayerPanel:SetSize(PlayerList:GetWide(), 125)
         PlayerPanel:SetPos(0, 0)
         PlayerPanel.Paint = function(self, w, h)
-            if not IsValid(v) then return end
+            if !IsValid(v) then return end
             if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
 
-            draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level .. " | " .. score .. " Score", "Health", 10, 0, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level, "Health", 10, 0, white, TEXT_ALIGN_LEFT)
             draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
             draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-            draw.SimpleText(ratioRounded, "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+            draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+            draw.SimpleText(score .. " Score", "Health", 472, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
         end
 
         local KillsIcon = vgui.Create("DImage", PlayerPanel)
-		KillsIcon:SetPos(260, 42)
-		KillsIcon:SetSize(20, 20)
-		KillsIcon:SetImage("icons/killicon.png")
+        KillsIcon:SetPos(260, 42)
+        KillsIcon:SetSize(20, 20)
+        KillsIcon:SetImage("icons/killicon.png")
 
-		local DeathsIcon = vgui.Create("DImage", PlayerPanel)
-		DeathsIcon:SetPos(260, 67)
-		DeathsIcon:SetSize(20, 20)
-		DeathsIcon:SetImage("icons/deathicon.png")
+        local DeathsIcon = vgui.Create("DImage", PlayerPanel)
+        DeathsIcon:SetPos(260, 67)
+        DeathsIcon:SetSize(20, 20)
+        DeathsIcon:SetImage("icons/deathicon.png")
 
-		local KDIcon = vgui.Create("DImage", PlayerPanel)
-		KDIcon:SetPos(260, 92)
-		KDIcon:SetSize(20, 20)
-		KDIcon:SetImage("icons/ratioicon.png")
+        local KDIcon = vgui.Create("DImage", PlayerPanel)
+        KDIcon:SetPos(260, 92)
+        KDIcon:SetSize(20, 20)
+        KDIcon:SetImage("icons/ratioicon.png")
 
         --Displays a players calling card and profile picture.
         local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
@@ -917,7 +918,7 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
         end
         if (disconnectConfirm == 0) then
-            draw.DrawText("EXIT GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
+            draw.DrawText("LEAVE GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
         else
             draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
         end
@@ -930,7 +931,25 @@ net.Receive("EndOfGame", function(len, ply)
             RunConsoleCommand("disconnect")
         end
 
-        timer.Simple(3, function() disconnectConfirm = 0 end)
+        timer.Simple(1, function() disconnectConfirm = 0 end)
+    end
+
+    local VOIPButton = vgui.Create("DImageButton", EndOfGameUI)
+    VOIPButton:SetPos(485, ScrH() - 205)
+    VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
+    VOIPButton:SetSize(80, 80)
+    VOIPButton:SetTooltip("Toggle Microphone")
+    VOIPButton.DoClick = function()
+        surface.PlaySound("tmui/buttonclick.wav")
+        if (VOIPActive == false) then
+            VOIPActive = true
+            VOIPButton:SetImage("icons/microphoneicon.png")
+            permissions.EnableVoiceChat(true)
+        else
+            VOIPActive = false
+            VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
+            permissions.EnableVoiceChat(false)
+        end
     end
 
     EndOfGameUI:Show()

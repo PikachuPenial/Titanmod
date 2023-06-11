@@ -249,7 +249,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_recoil_mul_y", "0.80")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.80")
     RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.80")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.75")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.80")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
@@ -385,6 +385,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_ironsights_resight", "1")
     RunConsoleCommand("cl_tfa_ironsights_responsive", "0")
     RunConsoleCommand("cl_tfa_ironsights_responsive_timer", "0.1750")
+    RunConsoleCommand("cl_tfa_ironsights_toggle", "0")
     RunConsoleCommand("cl_tfa_laser_color_b", "0")
     RunConsoleCommand("cl_tfa_laser_color_g", "0")
     RunConsoleCommand("cl_tfa_laser_color_r", "255")
