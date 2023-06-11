@@ -244,12 +244,12 @@ if SERVER then
 
     --Gunplay Specific TFA Configuration
     RunConsoleCommand("sv_tfa_damage_multiplier", "1.00")
-    RunConsoleCommand("sv_tfa_recoil_mul_p", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_y", "1")
-    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "1")
-    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "1")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.55")
+    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.80")
+    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.80")
+    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.80")
+    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.80")
+    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.80")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.75")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")

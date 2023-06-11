@@ -3,7 +3,6 @@ function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	if game.GetMap() == "tm_firingrange" then return end
 	if forceDisableProgression == true then return end
-	UninitializeNetworkString(ply, "playerSteamName")
 	UninitializeNetworkInt(ply, "playerKills")
 	UninitializeNetworkInt(ply, "playerDeaths")
 	UninitializeNetworkInt(ply, "playerScore")

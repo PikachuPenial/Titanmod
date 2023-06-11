@@ -9,7 +9,6 @@ local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
-
 local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
 
 net.Receive("OpenMainMenu", function(len, ply)
@@ -274,6 +273,8 @@ net.Receive("OpenMainMenu", function(len, ply)
             playerProfilePicture:SetSize(70, 70)
             playerProfilePicture:SetPlayer(LocalPly, 184)
 
+            local SelectedBoard
+            local SelectedBoardName
             local LeaderboardButton = vgui.Create("DImageButton", MainPanel)
             LeaderboardButton:SetPos(10, 10)
             LeaderboardButton:SetImage("icons/statsicon.png")
@@ -281,7 +282,113 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton:SetTooltip("Leaderboards (not available)")
             LeaderboardButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
+                MainPanel:Hide()
+
+                if not IsValid(LeaderboardPanel) then
+                    local LeaderboardPanel = MainMenu:Add("LeaderboardPanel")
+                    local LeaderboardSlideoutPanel = MainMenu:Add("LeaderboardSlideoutPanel")
+
+                    local LeaderboardQuickjumpHolder = vgui.Create("DPanel", LeaderboardSlideoutPanel)
+                    LeaderboardQuickjumpHolder:Dock(TOP)
+                    LeaderboardQuickjumpHolder:SetSize(0, ScrH())
+
+                    LeaderboardQuickjumpHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    end
+
+                    local LeaderboardScroller = vgui.Create("DScrollPanel", LeaderboardPanel)
+                    LeaderboardScroller:Dock(FILL)
+
+                    local sbar = LeaderboardScroller:GetVBar()
+                    function sbar:Paint(w, h)
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
+                    end
+                    function sbar.btnUp:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                    end
+                    function sbar.btnDown:Paint(w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                    end
+                    function sbar.btnGrip:Paint(w, h)
+                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    end
+
+                    local LeaderboardTextHolder = vgui.Create("DPanel", LeaderboardScroller)
+                    LeaderboardTextHolder:Dock(TOP)
+                    LeaderboardTextHolder:SetSize(0, 180)
+
+                    LeaderboardTextHolder.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Entries update on match start/player disconnect", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
+                    end
+
+                    local SpectatePicker = LeaderboardTextHolder:Add("DComboBox")
+                    SpectatePicker:SetPos(25, 130)
+                    SpectatePicker:SetSize(170, 30)
+                    SpectatePicker:SetValue("Select Stat")
+
+                    SpectatePicker:AddChoice("Level", "playerKills")
+                    SpectatePicker:AddChoice("Kills", "playerKills")
+                    SpectatePicker:AddChoice("Deaths", "playerDeaths")
+                    SpectatePicker:AddChoice("K/D Ratio", "playerKills")
+                    SpectatePicker:AddChoice("Matches Played", "matchesPlayed")
+                    SpectatePicker:AddChoice("Matches Won", "matchesWon")
+                    SpectatePicker:AddChoice("W/L Ratio", "playerKills")
+                    SpectatePicker:AddChoice("Highest Killstreak", "highestKillStreak")
+                    SpectatePicker:AddChoice("Highest Kill Game", "highestKillGame")
+                    SpectatePicker:AddChoice("Farthest Kill", "farthestKill")
+
+                    function SpectatePicker:OnSelect(index, text, data)
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        net.Start("GrabLeaderboardData")
+                        net.WriteString(data)
+                        net.SendToServer()
+                        SelectedBoardName = text
+                    end
+
+                    local StatsIcon = vgui.Create("DImage", LeaderboardQuickjumpHolder)
+                    StatsIcon:SetPos(12, 12)
+                    StatsIcon:SetSize(32, 32)
+                    StatsIcon:SetImage("icons/statsslideouticon.png")
+
+                    local BackButtonSlideout = vgui.Create("DImageButton", LeaderboardQuickjumpHolder)
+                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetTooltip("Return to Main Menu")
+                    BackButtonSlideout:SetImage("icons/exiticon.png")
+                    BackButtonSlideout.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        MainPanel:Show()
+                        LeaderboardPanel:Hide()
+                        LeaderboardSlideoutPanel:Hide()
+                    end
+
+                    local LeaderboardContents = vgui.Create("DPanel", LeaderboardScroller)
+                    LeaderboardContents:Dock(TOP)
+                    LeaderboardContents:SetSize(0, 2172.5)
+
+                    LeaderboardContents.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT) end
+                        draw.SimpleText("#", "StreakText", 20, 60, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Name", "StreakText", 85, 60, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Value", "StreakText", 710, 60, white, TEXT_ALIGN_RIGHT)
+
+                        if SelectedBoard != nil then
+                            for p, t in pairs(SelectedBoard) do
+                                draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                draw.SimpleText(t.Value, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                            end
+                        end
+                    end
+                end
             end
+
+            net.Receive("SendLeaderboardData", function(len, ply)
+                SelectedBoard = net.ReadTable()
+            end )
 
             local SpectatePanel = vgui.Create("DPanel", MainPanel)
             SpectatePanel:SetSize(170, 0)
@@ -4097,7 +4204,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 0)
     surface.DrawRect(0, 0, w, h)
 end
-vgui.Register("StatsSlideoutPanel", PANEL, "Panel")
+vgui.Register("LeaderboardSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
@@ -4109,7 +4216,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 0)
     surface.DrawRect(0, 0, w, h)
 end
-vgui.Register("StatsPanel", PANEL, "Panel")
+vgui.Register("LeaderboardPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()

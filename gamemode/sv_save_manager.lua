@@ -1,5 +1,5 @@
 hook.Add("Initialize", "InitPlayerNetworking", function()
-    sql.Query("CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);")
+    sql.Query("CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT, SteamName TEXT);")
 end )
 
 --IMPORTANT FUNCTIONS

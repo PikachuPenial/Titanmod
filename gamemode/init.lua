@@ -64,7 +64,6 @@ end
 
 function GM:PlayerInitialSpawn(ply)
 	--Checking if PData exists for the player. If the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player.
-	InitializeNetworkString(ply, "playerSteamName", ply:GetName())
 	InitializeNetworkInt(ply, "playerKills", 0)
 	InitializeNetworkInt(ply, "playerDeaths", 0)
 	InitializeNetworkInt(ply, "playerScore", 0)
@@ -85,7 +84,7 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
-	ply:SetNWString("playerSteamName", ply:GetName())
+	sql.Query("UPDATE PlayerData64 SET SteamName = ".. SQLStr(ply:Name()) .." WHERE SteamID = ".. ply:SteamID64() ..";")
 	ply:SetNWInt("playerID64", ply:SteamID64())
 
 	--Checking if PData exists for every single fucking weapon, GG.
@@ -124,6 +123,8 @@ util.AddNetworkString("ReceiveModeVote")
 util.AddNetworkString("BeginSpectate")
 util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
+util.AddNetworkString("GrabLeaderboardData")
+util.AddNetworkString("SendLeaderboardData")
 
 --Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
 if playingFiringRange == true or forceEnableWepSpawner == true then util.AddNetworkString("FiringRangeGiveWeapon") end
@@ -139,6 +140,15 @@ net.Receive("BeginSpectate", function(len, ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:UnSpectate()
 	ply:Spectate(OBS_MODE_ROAMING)
+end )
+
+net.Receive("GrabLeaderboardData", function(len, ply)
+	local key = net.ReadString()
+	local tbl = sql.Query("SELECT SteamID, Value, SteamName FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
+
+	net.Start("SendLeaderboardData", true)
+	net.WriteTable(tbl)
+	net.Send(ply)
 end )
 
 --Calculate how much damage should be done to a player based on the hitgroup that was damaged, and send a hitsound to the inflictor of the damage.
@@ -559,10 +569,10 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 
 		for k, v in pairs(connectedPlayers) do
 			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
+			if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
 			if k == 1 then
 				v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
 				v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
-				if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
 				CheckForPlayerLevel(v)
 			end
 		end
@@ -744,7 +754,6 @@ function GM:PlayerDisconnected(ply)
 	if playingFiringRange == true or forceDisableProgression == true then return end
 
 	--Statistics
-	UninitializeNetworkString(ply, "playerSteamName")
 	UninitializeNetworkInt(ply, "playerKills")
 	UninitializeNetworkInt(ply, "playerDeaths")
 	UninitializeNetworkInt(ply, "playerScore")
@@ -784,7 +793,6 @@ function GM:ShutDown()
 
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics
-		UninitializeNetworkString(v, "playerSteamName")
 		UninitializeNetworkInt(v, "playerKills")
 		UninitializeNetworkInt(v, "playerDeaths")
 		UninitializeNetworkInt(v, "playerScore")
