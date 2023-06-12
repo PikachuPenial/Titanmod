@@ -941,14 +941,18 @@ net.Receive("EndOfGame", function(len, ply)
     VOIPButton:SetTooltip("Toggle Microphone")
     VOIPButton.DoClick = function()
         surface.PlaySound("tmui/buttonclick.wav")
-        if (VOIPActive == false) then
-            VOIPActive = true
-            VOIPButton:SetImage("icons/microphoneicon.png")
-            permissions.EnableVoiceChat(true)
+        if permissions.IsGranted("voicerecord") == true then
+            if (VOIPActive == false) then
+                VOIPActive = true
+                VOIPButton:SetImage("icons/microphoneicon.png")
+                permissions.EnableVoiceChat(true)
+            else
+                VOIPActive = false
+                VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
+                permissions.EnableVoiceChat(false)
+            end
         else
-            VOIPActive = false
-            VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
-            permissions.EnableVoiceChat(false)
+            permissions.EnableVoiceChat(true)
         end
     end
 

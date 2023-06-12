@@ -41,7 +41,7 @@ grappleRange = 850              --The length (in units) that the grappling hook 
 rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
 rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
 damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
-proxChatRange = 750             --The thresehold in distance where players can hear other players over proximity voice chat.
+proxChatRange = 1000             --The thresehold in distance where players can hear other players over proximity voice chat.
 
 --Feature settings
 killFeed = true                 --Enables the kill feed.
@@ -249,7 +249,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_recoil_mul_y", "0.80")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.80")
     RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.80")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.80")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.85")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")

@@ -143,6 +143,10 @@ net.Receive("BeginSpectate", function(len, ply)
 end )
 
 net.Receive("GrabLeaderboardData", function(len, ply)
+	if timer.Exists(ply:SteamID64() .. "_GrabBoardDataCooldown") then return end
+	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 1.25, 1, function()
+	end)
+
 	local key = net.ReadString()
 	local tbl = sql.Query("SELECT SteamID, Value, SteamName FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
 
@@ -741,10 +745,14 @@ hook.Add("PlayerSay", "FilterHook", ChatFilter)
 
 --Modifies base game voice chat to be proximity based.
 hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
-	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) and not timer.Exists("newMapCooldown") then
-		return false, false
+	if not timer.Exists("newMapCooldown") then
+		if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then
+			return false, false
+		else
+			return true, true
+		end
 	else
-		return true, true
+		return true, false
 	end
 end )
 
