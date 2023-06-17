@@ -563,7 +563,7 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByPlayerProfilePicture:SetSize(70, 70)
     KilledByPlayerProfilePicture:SetPlayer(killedBy, 184)
 
-    LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0)
+    if GetConVar("tm_screenflashes"):GetInt() == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0) end
 
     DeathNotif:Show()
     DeathNotif:MakePopup()
@@ -984,7 +984,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     LevelNotif:SetMouseInputEnabled(false)
     LevelNotif:SetKeyboardInputEnabled(false)
 
-    LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0)
+    if GetConVar("tm_screenflashes"):GetInt() == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0) end
     surface.PlaySound("tmui/levelup.wav")
 
     timer.Create("LevelNotif", 6, 1, function()
