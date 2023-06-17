@@ -107,6 +107,10 @@ net.Receive("OpenMainMenu", function(len, ply)
         menuMusic:ChangeVolume(musicVolume)
     end
 
+    local hintList = hintArray
+    table.Shuffle(hintList)
+    local hintText = table.concat(hintList, " / ")
+
     if not IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
         MainMenu:SetSize(ScrW(), ScrH())
@@ -136,6 +140,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             local pushSpawnItems = 100
             local pushExitItems = -100
             local spawnTextAnim = 0
+            local hintTextAnim = 0
             MainPanel.Paint = function()
                 if GetConVar("tm_menumusic"):GetInt() == 1 then
                     draw.SimpleText("Listening to: " .. musicName, "StreakText", ScrW() - 5, 0, white, TEXT_ALIGN_RIGHT)
@@ -169,6 +174,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
 
                 if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+
+                hintTextAnim = math.Clamp(hintTextAnim + 25 * FrameTime(), 0, 10000)
+                surface.SetDrawColor(30, 30, 30, 200)
+                surface.DrawRect(0, ScrH() - 24, ScrW(), 24)
+                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, ScrH() - 12, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             if canPrestige == true then
@@ -598,7 +608,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end --Force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
-            TutorialButton:SetPos(8, ScrH() - 72)
+            TutorialButton:SetPos(8, ScrH() - 96)
             TutorialButton:SetImage("icons/tutorialicon.png")
             TutorialButton:SetSize(64, 64)
             TutorialButton:SetTooltip("Tutorial")
@@ -608,7 +618,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local DiscordButton = vgui.Create("DImageButton", MainPanel)
-            DiscordButton:SetPos(108, ScrH() - 72)
+            DiscordButton:SetPos(108, ScrH() - 96)
             DiscordButton:SetImage("icons/discordicon.png")
             DiscordButton:SetSize(64, 64)
             DiscordButton:SetTooltip("Discord")
@@ -618,7 +628,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(180, ScrH() - 72)
+            WorkshopButton:SetPos(180, ScrH() - 96)
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton:SetTooltip("Steam Workshop")
@@ -628,7 +638,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(252, ScrH() - 72)
+            YouTubeButton:SetPos(252, ScrH() - 96)
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton:SetTooltip("YouTube")
@@ -638,7 +648,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(324, ScrH() - 72)
+            GithubButton:SetPos(324, ScrH() - 96)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton:SetTooltip("GitHub")
