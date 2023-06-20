@@ -148,7 +148,17 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 	end)
 
 	local key = net.ReadString()
-	local tbl = sql.Query("SELECT SteamID, Value, SteamName FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
+	local tbl
+
+	if key == "level" then
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 50;")
+	elseif key == "kd" then
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
+	elseif key == "wl" then
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
+	else
+		tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
+	end
 
 	net.Start("SendLeaderboardData", true)
 	net.WriteTable(tbl)
@@ -572,6 +582,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
+			if player.GetCount() <= 1 then return end
 			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
 			if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
 			if k == 1 then

@@ -178,7 +178,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 hintTextAnim = math.Clamp(hintTextAnim + 25 * FrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 200)
                 surface.DrawRect(0, ScrH() - 24, ScrW(), 24)
-                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, ScrH() - 12, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, ScrH() - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             if canPrestige == true then
@@ -330,7 +330,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     LeaderboardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Entries update on match start/player disconnect", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Entries update on match start/player disconnect | Only top 50 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
                     end
 
                     local LeaderboardPicker = LeaderboardTextHolder:Add("DComboBox")
@@ -338,19 +338,18 @@ net.Receive("OpenMainMenu", function(len, ply)
                     LeaderboardPicker:SetSize(170, 30)
                     LeaderboardPicker:SetSortItems(false)
 
-                    --LeaderboardPicker:AddChoice("Level", "playerKills")
+                    LeaderboardPicker:AddChoice("Level", "level")
                     LeaderboardPicker:AddChoice("Kills", "playerKills", true)
                     LeaderboardPicker:AddChoice("Deaths", "playerDeaths")
-                    --LeaderboardPicker:AddChoice("K/D Ratio", "playerKills")
+                    LeaderboardPicker:AddChoice("K/D Ratio", "kd")
                     LeaderboardPicker:AddChoice("Matches Played", "matchesPlayed")
                     LeaderboardPicker:AddChoice("Matches Won", "matchesWon")
-                    --LeaderboardPicker:AddChoice("W/L Ratio", "playerKills")
+                    LeaderboardPicker:AddChoice("W/L Ratio", "wl")
                     LeaderboardPicker:AddChoice("Highest Killstreak", "highestKillStreak")
                     LeaderboardPicker:AddChoice("Highest Kill Game", "highestKillGame")
                     LeaderboardPicker:AddChoice("Farthest Kill", "farthestKill")
                     LeaderboardPicker:AddSpacer()
                     for p, t in pairs(weaponArray) do
-                        --weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
                         LeaderboardPicker:AddChoice("Kills with " .. t[2], "killsWith_" .. t[1])
                     end
 
@@ -393,18 +392,43 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("Name", "StreakText", 85, 60, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Stat", "StreakText", 710, 60, white, TEXT_ALIGN_RIGHT)
 
-                        if SelectedBoard ~= nil then for p, t in pairs(SelectedBoard) do
-                            if t.SteamName != LocalPly:GetName() then
-                                draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
-                                draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
-                                draw.SimpleText(t.Value, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                        if SelectedBoard == nil then return end
+                        for p, t in pairs(SelectedBoard) do
+                            if SelectedBoardName == "Level" then
+                                if t.Value == "NULL" or t.level == nil or t.prestige == nil then return end
+                                if t.SteamName != LocalPly:GetName() then
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                                else
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                end
+                            elseif SelectedBoardName == "W/L Ratio" then
+                                if t.Value == "NULL" or t.Value == nil then return end
+                                if t.SteamName != LocalPly:GetName() then
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                                else
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                end
                             else
-                                draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                draw.SimpleText(t.Value, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                if t.Value == "NULL" or t.Value == nil then return end
+                                if t.SteamName != LocalPly:GetName() then
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
+                                else
+                                    draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                end
                             end
                         end
-                    end
                     end
 
                     net.Start("GrabLeaderboardData")
