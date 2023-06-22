@@ -202,10 +202,11 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
                 end
                 PrestigeButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
                     if (prestigeConfirm == 0) then
+                        surface.PlaySound("tmui/buttonclick.wav")
                         prestigeConfirm = 1
                     else
+                        surface.PlaySound("tmui/prestige.wav")
                         LocalPly:ConCommand("tm_prestige")
                         PrestigeButton:Hide()
                     end
@@ -402,7 +403,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
                                     draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             elseif SelectedBoardName == "W/L Ratio" then
@@ -413,7 +414,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
                                     draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             else
@@ -424,7 +425,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                     draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName .. " (you)", "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
                                     draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             end

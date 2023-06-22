@@ -578,7 +578,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		net.WriteInt(secondMode, 4)
 		net.Broadcast()
 
-		local connectedPlayers = player.GetAll()
+		local connectedPlayers = player.GetHumans()
 		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
@@ -632,7 +632,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 			net.Broadcast()
 		end)
 
-		timer.Create("newMapCooldown", 30, 1, function()
+		timer.Create("newMapCooldown", 38, 1, function()
 			RunConsoleCommand("changelevel", newMap)
 			RunConsoleCommand("tm_gamemode", newMode)
 		end)

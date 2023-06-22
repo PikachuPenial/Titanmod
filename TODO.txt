@@ -2,8 +2,9 @@ HIGH PRIORItY | Currently working on or is being focused
 
 Hook and Riot Shield cards
 More player cards for accolades/kills/streaks
-Hint bar in menu
 Allow for Text Chat on match end
+Community written quotes in italics on the rewritten End Of Game screen
+Make voting menu properly function if player connects during voting, skips the animation if they join during that
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,5 +16,3 @@ Reworked player profile pages (heavily inspired by bad business profiles) (would
 Show amount of connecting players on scoreboard
 Keybindable weapon quick switching
 Item unlock tracking through scoreboard
-A suite of PostFX settings in a new menu
-Custom Titanmod FOV profile that players can use

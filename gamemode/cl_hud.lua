@@ -575,6 +575,8 @@ end )
 net.Receive("EndOfGame", function(len, ply)
     local dof
     gameEnded = true
+    local winningPlayer
+    local wonMatch = false
     local votedOnMap = false
     local votedOnGamemode = false
     local mapPicked
@@ -628,14 +630,38 @@ net.Receive("EndOfGame", function(len, ply)
         end
     end
 
-    local timeUntilNextMatch = 30
+    local timeUntilNextMatch = 38
+    local VotingActive = false
 
-    local connectedPlayers = player.GetAll()
+    local connectedPlayers = player.GetHumans()
     if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
     --Creates a timer so players can see how long it will be until the next match starts.
-    timer.Create("timeUntilNextMatch", 30, 1, function()
+    timer.Create("timeUntilNextMatch", 38, 1, function()
     end)
+
+    timer.Create("ShowVotingMenu", 8, 1, function()
+        StartVotingPhase()
+    end)
+
+    --Determine who won the match.
+    for k, v in pairs(connectedPlayers) do
+        if k == 1 then winningPlayer = v end
+    end
+    if winningPlayer == LocalPly then wonMatch = true end
+
+    local MatchEndMusic
+    if wonMatch == true then
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(200, 200, 0, 40), 1.5, 6)
+        MatchEndMusic = CreateSound(LocalPly, "music/ui/matchvictory.mp3")
+        MatchEndMusic:Play()
+        MatchEndMusic:ChangeVolume(1)
+    else
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(200, 0, 0, 40), 1.5, 6)
+        MatchEndMusic = CreateSound(LocalPly, "music/ui/matchdefeat.mp3")
+        MatchEndMusic:Play()
+        MatchEndMusic:ChangeVolume(1)
+    end
 
     hook.Add("Think", "VotingTimerUpdate", function()
         if timer.Exists("timeUntilNextMatch") then timeUntilNextMatch = math.Round(timer.TimeLeft("timeUntilNextMatch")) end
@@ -646,6 +672,7 @@ net.Receive("EndOfGame", function(len, ply)
     EndOfGameUI:SetPos(0, 0)
     EndOfGameUI:MakePopup()
     EndOfGameUI.Paint = function(self, w, h)
+        if VotingActive == false then return end
         if dof == true then DrawBokehDOF(4, 1, 0) end
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
         if timeUntilNextMatch > 10 then
@@ -656,303 +683,301 @@ net.Receive("EndOfGame", function(len, ply)
         if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
     end
 
-    local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
-    EndOfGamePanel:SetSize(475, ScrH())
-    EndOfGamePanel.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
-    end
-
-    local MatchInformationPanel = vgui.Create("DPanel", EndOfGamePanel)
-    MatchInformationPanel:Dock(TOP)
-    MatchInformationPanel:SetSize(0, 100)
-    MatchInformationPanel.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
-        draw.SimpleText("MATCH ENDED", "GunPrintName", 90, 15, white, TEXT_ALIGN_LEFT)
-        draw.SimpleText(activeGamemode .. " on " .. mapPlayedOn .. " | " .. GetConVar("tm_matchlengthtimer"):GetInt() .. "s", "MainMenuLoadoutWeapons", 90, 65, white, TEXT_ALIGN_LEFT)
-    end
-
-    local VictoryImage = vgui.Create("DImage", MatchInformationPanel)
-    VictoryImage:SetPos(0, 10)
-    VictoryImage:SetSize(80, 80)
-    VictoryImage:SetImage("icons/accoladeicon.png")
-
-    local VotingPanel = vgui.Create("DPanel", EndOfGamePanel)
-    VotingPanel:Dock(BOTTOM)
-    VotingPanel:SetSize(0, 275)
-    VotingPanel.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
-        if mapDecided == false then
-            if mapPicked == 1 then draw.RoundedBox(0, 10, 70, 175, 175, Color(50, 125, 50, 75)) end
-            if mapPicked == 2 then draw.RoundedBox(0, 290, 70, 175, 175, Color(50, 125, 50, 75)) end
-            draw.SimpleText("MAP VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-
-            draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", 10, 245, white, TEXT_ALIGN_LEFT)
-            draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", 465, 245, white, TEXT_ALIGN_RIGHT)
-            draw.SimpleText(GetGlobalInt("VotesOnMapOne", 0) .. " | " .. GetGlobalInt("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
-        else
-            draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-            draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
-        end
-    end
-
-    local GamemodePanel = vgui.Create("DPanel", EndOfGamePanel)
-    GamemodePanel:Dock(BOTTOM)
-    GamemodePanel:SetSize(0, 100)
-    GamemodePanel.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
-        if gamemodeDecided == false then
-            if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
-            if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
-            draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-            draw.SimpleText(GetGlobalInt("VotesOnModeOne", 0) .. " | " .. GetGlobalInt("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
-        else
-            draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-            draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, 65, white, TEXT_ALIGN_CENTER)
-        end
-    end
-
-    local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
-    PlayerScrollPanel:Dock(FILL)
-    PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
-    PlayerScrollPanel.Paint = function(self, w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-    end
-
-    local sbar = PlayerScrollPanel:GetVBar()
-    function sbar:Paint(w, h)
-        draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
-    end
-    function sbar.btnUp:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-    end
-    function sbar.btnDown:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-    end
-    function sbar.btnGrip:Paint(w, h)
-        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
-    end
-
-    PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
-    PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
-
-    for k, v in pairs(connectedPlayers) do
-        --Constants for basic player information, much more optimized than checking every frame.
-        local name = v:GetName()
-        local prestige = v:GetNWInt("playerPrestige")
-        local level = v:GetNWInt("playerLevel")
-        local frags = v:Frags()
-        local deaths = v:Deaths()
-        local ratio
-        local score = v:GetNWInt("playerScoreMatch")
-
-        --Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
-        if v:Frags() <= 0 then
-            ratio = 0
-        elseif v:Frags() >= 1 and v:Deaths() == 0 then
-            ratio = v:Frags()
-        else
-            ratio = v:Frags() / v:Deaths()
+    function StartVotingPhase()
+        MatchEndMusic:ChangeVolume(0.2)
+        VotingActive = true
+        local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
+        EndOfGamePanel:SetSize(475, ScrH())
+        EndOfGamePanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
         end
 
-        local ratioRounded = math.Round(ratio, 2)
-
-        local PlayerPanel = vgui.Create("DPanel", PlayerList)
-        PlayerPanel:SetSize(PlayerList:GetWide(), 125)
-        PlayerPanel:SetPos(0, 0)
-        PlayerPanel.Paint = function(self, w, h)
-            if !IsValid(v) then return end
-            if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
-
-            draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level, "Health", 10, 0, white, TEXT_ALIGN_LEFT)
-            draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
-            draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-            draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-            draw.SimpleText(score .. " Score", "Health", 472, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+        local MatchInformationPanel = vgui.Create("DPanel", EndOfGamePanel)
+        MatchInformationPanel:Dock(TOP)
+        MatchInformationPanel:SetSize(0, 50)
+        MatchInformationPanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+            draw.SimpleText("MATCH RESULTS", "GunPrintName", 237.5, -3, white, TEXT_ALIGN_CENTER)
         end
 
-        local KillsIcon = vgui.Create("DImage", PlayerPanel)
-        KillsIcon:SetPos(260, 42)
-        KillsIcon:SetSize(20, 20)
-        KillsIcon:SetImage("icons/killicon.png")
+        local VotingPanel = vgui.Create("DPanel", EndOfGamePanel)
+        VotingPanel:Dock(BOTTOM)
+        VotingPanel:SetSize(0, 275)
+        VotingPanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+            if mapDecided == false then
+                if mapPicked == 1 then draw.RoundedBox(0, 10, 70, 175, 175, Color(50, 125, 50, 75)) end
+                if mapPicked == 2 then draw.RoundedBox(0, 290, 70, 175, 175, Color(50, 125, 50, 75)) end
+                draw.SimpleText("MAP VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
 
-        local DeathsIcon = vgui.Create("DImage", PlayerPanel)
-        DeathsIcon:SetPos(260, 67)
-        DeathsIcon:SetSize(20, 20)
-        DeathsIcon:SetImage("icons/deathicon.png")
-
-        local KDIcon = vgui.Create("DImage", PlayerPanel)
-        KDIcon:SetPos(260, 92)
-        KDIcon:SetSize(20, 20)
-        KDIcon:SetImage("icons/ratioicon.png")
-
-        --Displays a players calling card and profile picture.
-        local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
-        PlayerCallingCard:SetPos(10, 35)
-        PlayerCallingCard:SetSize(240, 80)
-
-        if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
-
-        local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
-        PlayerProfilePicture:SetPos(5, 5)
-        PlayerProfilePicture:SetSize(70, 70)
-        PlayerProfilePicture:SetPlayer(v, 184)
-    end
-
-    local MapChoice = vgui.Create("DImageButton", VotingPanel)
-    local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
-    local ModeChoice = vgui.Create("DButton", GamemodePanel)
-    local ModeChoiceTwo = vgui.Create("DButton", GamemodePanel)
-
-    MapChoice:SetPos(10, 70)
-    MapChoice:SetText("")
-    MapChoice:SetSize(175, 175)
-    MapChoice:SetImage(firstMapThumb)
-    MapChoice.DoClick = function()
-        net.Start("ReceiveMapVote")
-        net.WriteString(firstMap)
-        net.WriteUInt(1, 2)
-        net.SendToServer()
-        votedOnMap = true
-        mapPicked = 1
-        surface.PlaySound("buttons/button15.wav")
-
-        MapChoice:SetPos(20, 80)
-        MapChoice:SetSize(155, 155)
-        MapChoice:SetEnabled(false)
-        MapChoiceTwo:SetEnabled(false)
-    end
-
-    MapChoiceTwo:SetPos(290, 70)
-    MapChoiceTwo:SetText("")
-    MapChoiceTwo:SetSize(175, 175)
-    MapChoiceTwo:SetImage(secondMapThumb)
-    MapChoiceTwo.DoClick = function()
-        net.Start("ReceiveMapVote")
-        net.WriteString(secondMap)
-        net.WriteUInt(2, 2)
-        net.SendToServer()
-        votedOnMap = true
-        mapPicked = 2
-        surface.PlaySound("buttons/button15.wav")
-
-        MapChoiceTwo:SetPos(300, 80)
-        MapChoiceTwo:SetSize(155, 155)
-        MapChoice:SetEnabled(false)
-        MapChoiceTwo:SetEnabled(false)
-    end
-
-    ModeChoice:SetPos(10, 70)
-    ModeChoice:SetText(firstModeName)
-    ModeChoice:SetSize(175, 30)
-    ModeChoice:SetTooltip(firstModeDesc)
-    ModeChoice.DoClick = function()
-        net.Start("ReceiveModeVote")
-        net.WriteInt(firstMode, 4)
-        net.WriteUInt(1, 2)
-        net.SendToServer()
-        votedOnGamemode = true
-        gamemodePicked = 1
-        surface.PlaySound("buttons/button15.wav")
-
-        ModeChoice:SetEnabled(false)
-        ModeChoiceTwo:SetEnabled(false)
-    end
-
-    ModeChoiceTwo:SetPos(290, 70)
-    ModeChoiceTwo:SetText(secondModeName)
-    ModeChoiceTwo:SetSize(175, 30)
-    ModeChoiceTwo:SetTooltip(secondModeDesc)
-    ModeChoiceTwo.DoClick = function()
-        net.Start("ReceiveModeVote")
-        net.WriteInt(secondMode, 4)
-        net.WriteUInt(2, 2)
-        net.SendToServer()
-        votedOnGamemode = true
-        gamemodePicked = 2
-        surface.PlaySound("buttons/button15.wav")
-
-        ModeChoice:SetEnabled(false)
-        ModeChoiceTwo:SetEnabled(false)
-    end
-
-    net.Receive("MapVoteCompleted", function(len, ply)
-        local decidedMap = net.ReadString()
-        local decidedMode = net.ReadInt(4)
-        for u, p in pairs(mapArray) do
-            if decidedMap == p[1] then
-                decidedMapName = p[2]
-                decidedMapThumb = p[3]
-            end
-        end
-
-        for u, m in pairs(gamemodeArray) do
-            if decidedMode == m[1] then
-                decidedModeName = m[2]
-            end
-        end
-
-        mapDecided = true
-        gamemodeDecided = true
-        MapChoice:Remove()
-        MapChoiceTwo:Remove()
-        ModeChoice:Remove()
-        ModeChoiceTwo:Remove()
-
-        local DecidedMapThumb = vgui.Create("DImage", VotingPanel)
-        DecidedMapThumb:SetPos(150, 70)
-        DecidedMapThumb:SetText("")
-        DecidedMapThumb:SetSize(175, 175)
-        DecidedMapThumb:SetImage(decidedMapThumb)
-    end )
-
-    local ExitButton = vgui.Create("DButton", EndOfGameUI)
-    ExitButton:SetPos(485, ScrH() - 35)
-    ExitButton:SetText("")
-    ExitButton:SetSize(500, 100)
-    local textAnim = 0
-    local disconnectConfirm = 0
-    ExitButton.Paint = function()
-        if ExitButton:IsHovered() then
-            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-        else
-            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-        end
-        if (disconnectConfirm == 0) then
-            draw.DrawText("LEAVE GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
-        else
-            draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-        end
-    end
-    ExitButton.DoClick = function()
-        surface.PlaySound("tmui/buttonclick.wav")
-        if (disconnectConfirm == 0) then
-            disconnectConfirm = 1
-        else
-            RunConsoleCommand("disconnect")
-        end
-
-        timer.Simple(1, function() disconnectConfirm = 0 end)
-    end
-
-    local VOIPButton = vgui.Create("DImageButton", EndOfGameUI)
-    VOIPButton:SetPos(485, ScrH() - 205)
-    VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
-    VOIPButton:SetSize(80, 80)
-    VOIPButton:SetTooltip("Toggle Microphone")
-    VOIPButton.DoClick = function()
-        surface.PlaySound("tmui/buttonclick.wav")
-        if permissions.IsGranted("voicerecord") == true then
-            if (VOIPActive == false) then
-                VOIPActive = true
-                VOIPButton:SetImage("icons/microphoneicon.png")
-                permissions.EnableVoiceChat(true)
+                draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", 10, 245, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", 465, 245, white, TEXT_ALIGN_RIGHT)
+                draw.SimpleText(GetGlobalInt("VotesOnMapOne", 0) .. " | " .. GetGlobalInt("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
             else
-                VOIPActive = false
-                VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
-                permissions.EnableVoiceChat(false)
+                draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
             end
-        else
-            permissions.EnableVoiceChat(true)
+        end
+
+        local GamemodePanel = vgui.Create("DPanel", EndOfGamePanel)
+        GamemodePanel:Dock(BOTTOM)
+        GamemodePanel:SetSize(0, 100)
+        GamemodePanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
+            if gamemodeDecided == false then
+                if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
+                if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
+                draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(GetGlobalInt("VotesOnModeOne", 0) .. " | " .. GetGlobalInt("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
+            else
+                draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, 65, white, TEXT_ALIGN_CENTER)
+            end
+        end
+
+        local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
+        PlayerScrollPanel:Dock(FILL)
+        PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
+        PlayerScrollPanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+        end
+
+        local sbar = PlayerScrollPanel:GetVBar()
+        function sbar:Paint(w, h)
+            draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
+        end
+        function sbar.btnUp:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+        end
+        function sbar.btnDown:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+        end
+        function sbar.btnGrip:Paint(w, h)
+            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+        end
+
+        PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
+        PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
+
+        for k, v in pairs(connectedPlayers) do
+            --Constants for basic player information, much more optimized than checking every frame.
+            local name = v:GetName()
+            local prestige = v:GetNWInt("playerPrestige")
+            local level = v:GetNWInt("playerLevel")
+            local frags = v:Frags()
+            local deaths = v:Deaths()
+            local ratio
+            local score = v:GetNWInt("playerScoreMatch")
+
+            --Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
+            if v:Frags() <= 0 then
+                ratio = 0
+            elseif v:Frags() >= 1 and v:Deaths() == 0 then
+                ratio = v:Frags()
+            else
+                ratio = v:Frags() / v:Deaths()
+            end
+
+            local ratioRounded = math.Round(ratio, 2)
+
+            local PlayerPanel = vgui.Create("DPanel", PlayerList)
+            PlayerPanel:SetSize(PlayerList:GetWide(), 125)
+            PlayerPanel:SetPos(0, 0)
+            PlayerPanel.Paint = function(self, w, h)
+                if !IsValid(v) then return end
+                if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
+
+                draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level, "Health", 10, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(score .. " Score", "Health", 472, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            end
+
+            local KillsIcon = vgui.Create("DImage", PlayerPanel)
+            KillsIcon:SetPos(260, 42)
+            KillsIcon:SetSize(20, 20)
+            KillsIcon:SetImage("icons/killicon.png")
+
+            local DeathsIcon = vgui.Create("DImage", PlayerPanel)
+            DeathsIcon:SetPos(260, 67)
+            DeathsIcon:SetSize(20, 20)
+            DeathsIcon:SetImage("icons/deathicon.png")
+
+            local KDIcon = vgui.Create("DImage", PlayerPanel)
+            KDIcon:SetPos(260, 92)
+            KDIcon:SetSize(20, 20)
+            KDIcon:SetImage("icons/ratioicon.png")
+
+            --Displays a players calling card and profile picture.
+            local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
+            PlayerCallingCard:SetPos(10, 35)
+            PlayerCallingCard:SetSize(240, 80)
+
+            if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
+
+            local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
+            PlayerProfilePicture:SetPos(5, 5)
+            PlayerProfilePicture:SetSize(70, 70)
+            PlayerProfilePicture:SetPlayer(v, 184)
+        end
+
+        local MapChoice = vgui.Create("DImageButton", VotingPanel)
+        local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
+        local ModeChoice = vgui.Create("DButton", GamemodePanel)
+        local ModeChoiceTwo = vgui.Create("DButton", GamemodePanel)
+
+        MapChoice:SetPos(10, 70)
+        MapChoice:SetText("")
+        MapChoice:SetSize(175, 175)
+        MapChoice:SetImage(firstMapThumb)
+        MapChoice.DoClick = function()
+            net.Start("ReceiveMapVote")
+            net.WriteString(firstMap)
+            net.WriteUInt(1, 2)
+            net.SendToServer()
+            votedOnMap = true
+            mapPicked = 1
+            surface.PlaySound("buttons/button15.wav")
+
+            MapChoice:SetPos(20, 80)
+            MapChoice:SetSize(155, 155)
+            MapChoice:SetEnabled(false)
+            MapChoiceTwo:SetEnabled(false)
+        end
+
+        MapChoiceTwo:SetPos(290, 70)
+        MapChoiceTwo:SetText("")
+        MapChoiceTwo:SetSize(175, 175)
+        MapChoiceTwo:SetImage(secondMapThumb)
+        MapChoiceTwo.DoClick = function()
+            net.Start("ReceiveMapVote")
+            net.WriteString(secondMap)
+            net.WriteUInt(2, 2)
+            net.SendToServer()
+            votedOnMap = true
+            mapPicked = 2
+            surface.PlaySound("buttons/button15.wav")
+
+            MapChoiceTwo:SetPos(300, 80)
+            MapChoiceTwo:SetSize(155, 155)
+            MapChoice:SetEnabled(false)
+            MapChoiceTwo:SetEnabled(false)
+        end
+
+        ModeChoice:SetPos(10, 70)
+        ModeChoice:SetText(firstModeName)
+        ModeChoice:SetSize(175, 30)
+        ModeChoice:SetTooltip(firstModeDesc)
+        ModeChoice.DoClick = function()
+            net.Start("ReceiveModeVote")
+            net.WriteInt(firstMode, 4)
+            net.WriteUInt(1, 2)
+            net.SendToServer()
+            votedOnGamemode = true
+            gamemodePicked = 1
+            surface.PlaySound("buttons/button15.wav")
+
+            ModeChoice:SetEnabled(false)
+            ModeChoiceTwo:SetEnabled(false)
+        end
+
+        ModeChoiceTwo:SetPos(290, 70)
+        ModeChoiceTwo:SetText(secondModeName)
+        ModeChoiceTwo:SetSize(175, 30)
+        ModeChoiceTwo:SetTooltip(secondModeDesc)
+        ModeChoiceTwo.DoClick = function()
+            net.Start("ReceiveModeVote")
+            net.WriteInt(secondMode, 4)
+            net.WriteUInt(2, 2)
+            net.SendToServer()
+            votedOnGamemode = true
+            gamemodePicked = 2
+            surface.PlaySound("buttons/button15.wav")
+
+            ModeChoice:SetEnabled(false)
+            ModeChoiceTwo:SetEnabled(false)
+        end
+
+        net.Receive("MapVoteCompleted", function(len, ply)
+            local decidedMap = net.ReadString()
+            local decidedMode = net.ReadInt(4)
+            for u, p in pairs(mapArray) do
+                if decidedMap == p[1] then
+                    decidedMapName = p[2]
+                    decidedMapThumb = p[3]
+                end
+            end
+
+            for u, m in pairs(gamemodeArray) do
+                if decidedMode == m[1] then
+                    decidedModeName = m[2]
+                end
+            end
+
+            mapDecided = true
+            gamemodeDecided = true
+            MapChoice:Remove()
+            MapChoiceTwo:Remove()
+            ModeChoice:Remove()
+            ModeChoiceTwo:Remove()
+
+            local DecidedMapThumb = vgui.Create("DImage", VotingPanel)
+            DecidedMapThumb:SetPos(150, 70)
+            DecidedMapThumb:SetText("")
+            DecidedMapThumb:SetSize(175, 175)
+            DecidedMapThumb:SetImage(decidedMapThumb)
+        end )
+
+        local ExitButton = vgui.Create("DButton", EndOfGameUI)
+        ExitButton:SetPos(485, ScrH() - 35)
+        ExitButton:SetText("")
+        ExitButton:SetSize(500, 100)
+        local textAnim = 0
+        local disconnectConfirm = 0
+        ExitButton.Paint = function()
+            if ExitButton:IsHovered() then
+                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+            else
+                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+            end
+            if (disconnectConfirm == 0) then
+                draw.DrawText("LEAVE GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
+            else
+                draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+            end
+        end
+        ExitButton.DoClick = function()
+            surface.PlaySound("tmui/buttonclick.wav")
+            if (disconnectConfirm == 0) then
+                disconnectConfirm = 1
+            else
+                RunConsoleCommand("disconnect")
+            end
+
+            timer.Simple(1, function() disconnectConfirm = 0 end)
+        end
+
+        local VOIPButton = vgui.Create("DImageButton", EndOfGameUI)
+        VOIPButton:SetPos(485, ScrH() - 205)
+        VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
+        VOIPButton:SetSize(80, 80)
+        VOIPButton:SetTooltip("Toggle Microphone")
+        VOIPButton.DoClick = function()
+            surface.PlaySound("tmui/buttonclick.wav")
+            if permissions.IsGranted("voicerecord") == true then
+                if (VOIPActive == false) then
+                    VOIPActive = true
+                    VOIPButton:SetImage("icons/microphoneicon.png")
+                    permissions.EnableVoiceChat(true)
+                else
+                    VOIPActive = false
+                    VOIPButton:SetImage("icons/mutedmicrophoneicon.png")
+                    permissions.EnableVoiceChat(false)
+                end
+            else
+                permissions.EnableVoiceChat(true)
+            end
         end
     end
 
