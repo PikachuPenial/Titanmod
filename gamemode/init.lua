@@ -1,5 +1,7 @@
 AddCSLuaFile("performance/sh_optimization.lua")
+AddCSLuaFile("performance/cl_rewrite_entity_index.lua")
 AddCSLuaFile("performance/cl_rewrite_player_index.lua")
+AddCSLuaFile("performance/cl_rewrite_weapon_index.lua")
 
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("config.lua")
@@ -13,7 +15,7 @@ include("shared.lua")
 include("sv_gamemode_handler.lua")
 include("concommands.lua")
 
-hook.Remove("PlayerTick", "TickWidgets")
+hook.Remove("PlayerTick", "TickWidgets") --Frames per second my beloved.
 local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
 
 function GM:Initialize()

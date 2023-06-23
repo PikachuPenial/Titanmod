@@ -12,6 +12,14 @@
 *REMOVED MAPS*
 - Hydro
 
+**>BALANCE**
+*Mac 10*
+- Reduced horizontal recoil to 10 (previously 30)
+
+*Mare's Leg*
+- Increased damage to 99 (previously 95)
+- Removed Ammunition attachments
+
 **>QOL & BUG FIXES**
 *A bunch of optimization has been implemented, expect more consistent frame rates*
 
