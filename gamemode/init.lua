@@ -567,8 +567,15 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		firstMode = modePool[1]
 		secondMode = modePool[2]
 
+		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
+			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.
+				print(player.GetCount())
+				if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) end
+			end)
+		end )
+
 		--Failsafe for empty servers, will skip to a new map if there are no players connected to the server.
-		if #player.GetHumans() == 0 then RunConsoleCommand("changelevel", firstMap) return end
+		if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) return end
 
 		for k, v in pairs(player.GetAll()) do
 			v:KillSilent()
