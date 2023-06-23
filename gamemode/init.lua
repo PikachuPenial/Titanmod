@@ -721,7 +721,7 @@ end
 
 --Sets up keybinds.
 hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
-	if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and !ply:Alive() then
+	if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
 		net.Start("OpenMainMenu")
 		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
 		net.Send(ply)

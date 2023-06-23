@@ -31,69 +31,68 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"music/chillwave_ragdolluniverseost.mp3", "music/giftshop_battleblocktheaterost.mp3", "music/tabg_landfall.mp3", "music/waster_bladee.mp3", "music/systemfiles_zedorfski.mp3", "music/systemfiles_zedorfski.mp3", "music/drift_eightiesheadachetape.mp3", "music/highstakes_worldcorp.mp3", "music/bald_jpegmafia.mp3", "music/away_vivada.mp3", "music/bmciabaeilrd_limppumpo.mp3"}
+    musicList = {"sound/music/chillwave_ragdolluniverseost.mp3", "sound/music/giftshop_battleblocktheaterost.mp3", "sound/music/tabg_landfall.mp3", "sound/music/waster_bladee.mp3", "sound/music/systemfiles_zedorfski.mp3", "sound/music/systemfiles_zedorfski.mp3", "sound/music/drift_eightiesheadachetape.mp3", "sound/music/highstakes_worldcorp.mp3", "sound/music/bald_jpegmafia.mp3", "sound/music/away_vivada.mp3", "sound/music/bmciabaeilrd_limppumpo.mp3"}
     chosenMusic = (musicList[math.random(#musicList)])
-    local menuMusic = CreateSound(LocalPly, chosenMusic)
 
-    if chosenMusic == "music/chillwave_ragdolluniverseost.mp3" then
+    if chosenMusic == "sound/music/chillwave_ragdolluniverseost.mp3" then
         musicName = "Chillwave - Ragdoll Universe OST"
         musicLink = "https://youtu.be/0Y1xiG8cYnY"
     end
 
-    if chosenMusic == "music/giftshop_battleblocktheaterost.mp3" then
+    if chosenMusic == "sound/music/giftshop_battleblocktheaterost.mp3" then
         musicName = "Gift Shop - Battleblock Theater OST"
         musicLink = "https://youtu.be/GOkQrRn9434"
     end
 
-    if chosenMusic == "music/mariokartchannel_nintendo.mp3" then
+    if chosenMusic == "sound/music/mariokartchannel_nintendo.mp3" then
         musicName = "Mario Kart Channel - Nintendo"
         musicLink = "https://youtu.be/HOylSnC340I"
     end
 
-    if chosenMusic == "music/drift_eightiesheadachetape.mp3" then
+    if chosenMusic == "sound/music/drift_eightiesheadachetape.mp3" then
         musicName = "Drift - eightiesheadachetape"
         musicLink = "https://youtu.be/Q-NaB8W2934"
     end
 
-    if chosenMusic == "music/highstakes_worldcorp.mp3" then
+    if chosenMusic == "sound/music/highstakes_worldcorp.mp3" then
         musicName = "High Stakes - worldcorp"
         musicLink = "https://youtu.be/4dXLpJcSu8w"
     end
 
-    if chosenMusic == "music/bald_jpegmafia.mp3" then
+    if chosenMusic == "sound/music/bald_jpegmafia.mp3" then
         musicName = "BALD! - JPEGMAFIA"
         musicLink = "https://youtu.be/BjFI9hFEHHY"
     end
 
-    if chosenMusic == "music/tabg_landfall.mp3" then
+    if chosenMusic == "sound/music/tabg_landfall.mp3" then
         musicName = "TABG Main Theme"
         musicLink = "https://youtu.be/ofG5Uc47uVY"
         requestedBy = "Portanator"
         steamProfile = "http://steamcommunity.com/profiles/76561198355588760 "
     end
 
-    if chosenMusic == "music/waster_bladee.mp3" then
+    if chosenMusic == "sound/music/waster_bladee.mp3" then
         musicName = "Waster - Bladee"
         musicLink = "https://youtu.be/sLWeSsxk5GE"
         requestedBy = "Suomij"
         steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
     end
 
-    if chosenMusic == "music/systemfiles_zedorfski.mp3" then
+    if chosenMusic == "sound/music/systemfiles_zedorfski.mp3" then
         musicName = "System Files - Zedorfski"
         musicLink = "https://www.youtube.com/c/Zedorfski"
         requestedBy = "Zedorfski"
         steamProfile = "http://steamcommunity.com/profiles/76561198313962855"
     end
 
-    if chosenMusic == "music/away_vivada.mp3" then
+    if chosenMusic == "sound/music/away_vivada.mp3" then
         musicName = "Away - Vivada"
         musicLink = "https://youtu.be/6yqYGqlIzcI"
         requestedBy = "Vivada"
         steamProfile = "http://steamcommunity.com/profiles/76561198799277183"
     end
 
-    if chosenMusic == "music/bmciabaeilrd_limppumpo.mp3" then
+    if chosenMusic == "sound/music/bmciabaeilrd_limppumpo.mp3" then
         musicName = "Brampton men Charged in Amen Breaking - LIMP PUMPO"
         musicLink = "https://youtu.be/t7URVeFx5s8"
         requestedBy = "färməsəst"
@@ -102,10 +101,33 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     musicVolume = GetConVar("tm_menumusicvolume"):GetInt()
 
-    if GetConVar("tm_menumusic"):GetInt() == 1 then
-        menuMusic:Play()
-        menuMusic:ChangeVolume(musicVolume)
-    end
+    sound.PlayFile(chosenMusic, "noplay", function(menuMusic)
+        if IsValid(menuMusic) then
+            function StartMusic()
+                menuMusic:Play()
+                menuMusic:EnableLooping(true)
+                menuMusic:SetVolume(musicVolume)
+            end
+
+            function PauseMusic()
+                menuMusic:Pause()
+            end
+
+            function ResumeMusic()
+                menuMusic:Play()
+            end
+
+            function SetMusicVolume(vol)
+                menuMusic:SetVolume(vol)
+            end
+
+            function StopMusic()
+                menuMusic:Stop()
+            end
+
+            if GetConVar("tm_menumusic"):GetInt() == 1 then StartMusic() end
+        end
+    end )
 
     local hintList = hintArray
     table.Shuffle(hintList)
@@ -255,8 +277,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
             MuteMusicButton.DoClick = function()
                 if GetConVar("tm_menumusic"):GetInt() == 0 then
-                    menuMusic:Play()
-                    menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
+                    ResumeMusic()
                     MuteMusicButton:SetImage("icons/speakericon.png")
                     MuteMusicButton:SetTooltip("Disable music")
                     if requestedBy ~= nil then MuteMusicButton:SetPos(ScrW() - 37, 45) else MuteMusicButton:SetPos(ScrW() - 37, 25) end
@@ -264,7 +285,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     if LinkButton ~= nil then LinkButton:Show() end
                     RunConsoleCommand("tm_menumusic", 1)
                 else
-                    menuMusic:FadeOut(1)
+                    PauseMusic()
                     MuteMusicButton:SetImage("icons/speakermutedicon.png")
                     MuteMusicButton:SetTooltip("Enable music")
                     MuteMusicButton:SetPos(ScrW() - 37, 25)
@@ -294,6 +315,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
+                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat() * 0.2)
 
                 if not IsValid(LeaderboardPanel) then
                     local LeaderboardPanel = MainMenu:Add("LeaderboardPanel")
@@ -378,6 +400,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     BackButtonSlideout.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
+                        SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                         LeaderboardPanel:Hide()
                         LeaderboardSlideoutPanel:Hide()
                     end
@@ -468,7 +491,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 net.SendToServer()
                 MainMenu:Remove(false)
                 gui.EnableScreenClicker(false)
-                menuMusic:FadeOut(1)
+                StopMusic()
             end
 
             local SpectateButton = vgui.Create("DImageButton", MainPanel)
@@ -715,9 +738,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
-
-                menuMusic:FadeOut(1)
-
+                StopMusic()
                 net.Start("CloseMainMenu")
                 net.SendToServer()
             end
@@ -761,6 +782,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeCardButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
+                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat() * 0.2)
                 local currentCard = LocalPly:GetNWString("chosenPlayercard")
 
                 if not IsValid(CardPanel) then
@@ -1585,6 +1607,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             net.SendToServer()
                             plyCallingCard:SetImage(newCard)
                             MainPanel:Show()
+                            SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                             CardPanel:Hide()
                             CardPreviewPanel:Hide()
                             CardSlideoutPanel:Hide()
@@ -1598,6 +1621,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1612,6 +1636,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1626,6 +1651,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1640,6 +1666,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1654,6 +1681,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1668,6 +1696,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1682,6 +1711,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1696,6 +1726,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1710,6 +1741,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1724,6 +1756,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1738,6 +1771,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CardPanel:Hide()
                                 CardPreviewPanel:Hide()
                                 CardSlideoutPanel:Hide()
@@ -1913,6 +1947,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
+                        SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                         CardPanel:Hide()
                         CardPreviewPanel:Hide()
                         CardSlideoutPanel:Hide()
@@ -1923,6 +1958,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeModelButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
                 MainPanel:Hide()
+                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat() * 0.2)
 
                 local currentModel = LocalPly:GetNWString("chosenPlayermodel")
 
@@ -2541,6 +2577,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             net.WriteString(newModel)
                             net.SendToServer()
                             MainPanel:Show()
+                            SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                             CustomizeSlideoutPanel:Hide()
                             CustomizePanel:Hide()
                             PreviewPanel:Hide()
@@ -2553,6 +2590,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2566,6 +2604,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2579,6 +2618,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2592,6 +2632,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2605,6 +2646,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2618,6 +2660,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2631,6 +2674,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2644,6 +2688,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2657,6 +2702,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newModel)
                                 net.SendToServer()
                                 MainPanel:Show()
+                                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                                 CustomizeSlideoutPanel:Hide()
                                 CustomizePanel:Hide()
                                 PreviewPanel:Hide()
@@ -2784,6 +2830,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         MainPanel:Show()
+                        SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                         CustomizeSlideoutPanel:Hide()
                         CustomizePanel:Hide()
                         PreviewPanel:Hide()
@@ -3158,10 +3205,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     function menuMusicButton:OnChange(bVal)
                         if (bVal) then
-                            menuMusic:Play()
-                            menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
+                            ResumeMusic()
                         else
-                            menuMusic:FadeOut(1)
+                            PauseMusic()
                         end
                     end
 
@@ -3170,12 +3216,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuMusicVolume:SetSize(250, 30)
                     menuMusicVolume:SetConVar("tm_menumusicvolume")
                     menuMusicVolume:SetMin(0)
-                    menuMusicVolume:SetMax(1)
+                    menuMusicVolume:SetMax(2)
                     menuMusicVolume:SetDecimals(2)
                     menuMusicVolume:SetTooltip("Adjust the volume of the menu music.")
 
                     menuMusicVolume.OnValueChanged = function(self, value)
-                        menuMusic:ChangeVolume(GetConVar("tm_menumusicvolume"):GetFloat())
+                        SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                     end
 
                     DockWeaponry.Paint = function(self, w, h)
@@ -3440,6 +3486,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
             OptionsHUDButton.DoClick = function()
                 MainPanel:Hide()
+                SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat() * 0.2)
                 surface.PlaySound("tmui/buttonclick.wav")
                 local ShowHiddenOptions = false
 
@@ -3562,6 +3609,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     MainMenu:SetMouseInputEnabled(true)
                     FakeHUD:Hide()
                     MainPanel:Show()
+                    SetMusicVolume(GetConVar("tm_menumusicvolume"):GetFloat())
                     timer.Remove("previewLoop")
                     hook.Remove("Tick", "KeyOverlayTracking")
                 end
