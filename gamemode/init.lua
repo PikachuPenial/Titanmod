@@ -1,16 +1,19 @@
-AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("performance/sh_optimization.lua")
+AddCSLuaFile("performance/cl_rewrite_player_index.lua")
+
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("config.lua")
+AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_menu.lua")
+AddCSLuaFile("cl_scoreboard.lua")
 
 include("sv_save_manager.lua")
 include("shared.lua")
-include("config.lua")
-include("concommands.lua")
 include("sv_gamemode_handler.lua")
+include("concommands.lua")
 
+hook.Remove("PlayerTick", "TickWidgets")
 local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
 
 function GM:Initialize()

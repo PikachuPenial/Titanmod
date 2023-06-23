@@ -2,7 +2,6 @@ include("shared.lua")
 include("cl_hud.lua")
 include("cl_scoreboard.lua")
 include("cl_menu.lua")
-include("config.lua")
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
 timer.Create("cleanMap", mapCleanupTime, 0, function()

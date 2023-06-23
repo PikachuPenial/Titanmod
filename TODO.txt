@@ -5,6 +5,7 @@ More player cards for accolades/kills/streaks
 Allow for Text Chat on match end
 Community written quotes in italics on the rewritten End Of Game screen
 Make voting menu properly function if player connects during voting, skips the animation if they join during that
+Improve readability of code because my autistic ass writes this in such a messy way
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

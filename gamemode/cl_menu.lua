@@ -707,7 +707,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
                 else
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, patchRed, TEXT_ALIGN_LEFT)
-                    draw.DrawText(math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("" .. math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                 end
             end
             SpawnButton.DoClick = function()
