@@ -9,7 +9,7 @@ local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
 
 local MainMenu
-local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 net.Receive("OpenMainMenu", function(len, ply)
     local LocalPly = LocalPlayer()
@@ -195,7 +195,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 25 * FrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 200)
@@ -3545,7 +3545,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
                         draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
-                    if game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+                    if game.GetMap() ~= "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
                     draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)

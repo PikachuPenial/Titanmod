@@ -16,14 +16,15 @@ include("sv_gamemode_handler.lua")
 include("concommands.lua")
 
 hook.Remove("PlayerTick", "TickWidgets") --Frames per second my beloved.
-local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+SetGlobal2Bool("tm_matchended", false)
 
 function GM:Initialize()
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 
 --Sets up the global match time variable, makes it easily sharable between server and client. I have been using GLua for over a year and I didn't know this fucking existed...
-SetGlobalInt("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
+SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
 
 --Force friendly fire. If it is off, we do not get lag compensation.
 RunConsoleCommand("mp_friendlyfire", "1")
@@ -249,6 +250,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	timer.Create(victim:SteamID() .. "respawnTime", playerRespawnTime, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
 			if not IsValid(victim) then return end
+			if GetGlobal2Bool("tm_matchended") == true then return end
 			victim:Spawn()
 			victim:UnSpectate()
 		end
@@ -410,11 +412,11 @@ net.Receive("CloseMainMenu", function(len, ply)
 end )
 
 --Overwritting the default respawn mechanics to lock players behind a spwan countdown.
-hook.Add("PlayerDeathThink", "DisableNormalRespawn", function(ply)
-	if timer.Exists(ply:SteamID() .. "respawnTime") or timer.Exists("newMapCooldown") then
+function GM:PlayerDeathThink(ply)
+	if timer.Exists(ply:SteamID() .. "respawnTime") then
 		return false
 	end
-end)
+end
 
 --Allows the Main Menu to change the players current playermodel.
 net.Receive("PlayerModelChange", function(len, ply)
@@ -531,6 +533,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 
 	--Begins the process of ending a match.
 	function EndMatch()
+		SetGlobal2Bool("tm_matchended", true)
 		timer.Remove("matchStatusCheck")
 
 		mapVotes = {}
@@ -580,7 +583,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) return end
 
 		for k, v in pairs(player.GetAll()) do
-			v:KillSilent()
+			v:SetLaggedMovementValue(0.2)
 		end
 
 		net.Start("EndOfGame")
@@ -590,21 +593,28 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		net.WriteInt(secondMode, 4)
 		net.Broadcast()
 
+		timer.Create("killAfterDelay", 8, 1, function()
+			for k, v in pairs(player.GetAll()) do
+				v:KillSilent()
+			end
+		end)
+
 		local connectedPlayers = player.GetHumans()
 		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
-			if player.GetCount() <= 1 then return end
-			v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
-			if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
-			if k == 1 then
-				v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
-				v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
-				CheckForPlayerLevel(v)
+			if player.GetCount() > 1 then
+				v:SetNWInt("matchesPlayed", v:GetNWInt("matchesPlayed") + 1)
+				if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
+				if k == 1 then
+					v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
+					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
+					CheckForPlayerLevel(v)
+				end
 			end
 		end
 
-		timer.Create("mapVoteStatus", 20, 1, function()
+		timer.Create("mapVoteStatus", 23, 1, function()
 			local newMapTable = {}
 			local newModeTable = {}
 			local maxMapVotes = 0
@@ -644,7 +654,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 			net.Broadcast()
 		end)
 
-		timer.Create("newMapCooldown", 38, 1, function()
+		timer.Create("newMapCooldown", 33, 1, function()
 			RunConsoleCommand("changelevel", newMap)
 			RunConsoleCommand("tm_gamemode", newMode)
 		end)
@@ -652,8 +662,8 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 
 	--Calls for a match end once the match timer has concluded.
 	local function MatchStatusCheck()
-		local currentTime = math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime())
-		if CurTime() > GetGlobalInt("tm_matchtime", 0) then EndMatch() end
+		local currentTime = math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime())
+		if CurTime() > GetGlobal2Int("tm_matchtime", 0) then EndMatch() end
 
 		if currentTime == 300 or currentTime == 60 or currentTime == 10 then
 			net.Start("NotifyMatchTime")
@@ -687,7 +697,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		end
 
 		if validMapVote == false then return end
-		if mapIndex	== 1 then SetGlobalInt("VotesOnMapOne", GetGlobalInt("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobalInt("VotesOnMapTwo", GetGlobalInt("VotesOnMapTwo", 0) + 1, 0) end
+		if mapIndex	== 1 then SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) end
 	end )
 
 	net.Receive("ReceiveModeVote", function(len, ply)
@@ -712,7 +722,7 @@ if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingr
 		end
 
 		if validModeVote == false then return end
-		if modeIndex == 1 then SetGlobalInt("VotesOnModeOne", GetGlobalInt("VotesOnModeOne", 0) + 1, 0) elseif modeIndex == 2 then SetGlobalInt("VotesOnModeTwo", GetGlobalInt("VotesOnModeTwo", 0) + 1, 0) end
+		if modeIndex == 1 then SetGlobal2Int("VotesOnModeOne", GetGlobal2Int("VotesOnModeOne", 0) + 1, 0) elseif modeIndex == 2 then SetGlobal2Int("VotesOnModeTwo", GetGlobal2Int("VotesOnModeTwo", 0) + 1, 0) end
 	end )
 
 	function ForceEndMatchCommand(ply, cmd, args)

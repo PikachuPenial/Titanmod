@@ -95,7 +95,7 @@ local fps = 0
 local ping = 0
 local updateRate = 0.66
 
-local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
@@ -112,11 +112,11 @@ function HUD()
 
     --Remaining match time.
     local timeText = " ∞"
-    if game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+    if game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
-    if activeGamemode == "Fiesta" and (GetGlobalInt("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobalInt("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+    if activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
 
     --Kill feed
     for k, v in pairs(feedArray) do
@@ -286,6 +286,12 @@ function HUD()
         draw.SimpleText("RUN", "HUD_StreakText", 33 + kpoX, 165 + kpoY, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("DUCK", "HUD_StreakText", 105 + kpoX, 165 + kpoY, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
+
+    --Disclaimer for players connecting during an active gamemode and map vote.
+    if GetGlobal2Bool("tm_matchended") == true then
+        draw.SimpleText("Match has ended", "HUD_GunPrintName", ScrW() / 2, ScrH() / 2 - 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
+        draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", ScrW() / 2, ScrH() / 2 - 120, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
+    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
@@ -312,7 +318,7 @@ hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 --Hides default HL2 HUD elements.
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo"}) do
         if name == v then return false end
     end
 end
@@ -573,8 +579,8 @@ end )
 
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
-    local dof
     gameEnded = true
+    local dof
     local winningPlayer
     local wonMatch = false
     local votedOnMap = false
@@ -584,7 +590,11 @@ net.Receive("EndOfGame", function(len, ply)
     local mapDecided = false
     local gamemodeDecided = false
     local VOIPActive = false
+
+    if IsValid(KillNotif) then KillNotif:Remove() end
+    if IsValid(DeathNotif) then DeathNotif:Remove() end
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
+
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     local firstMap = net.ReadString()
@@ -630,37 +640,145 @@ net.Receive("EndOfGame", function(len, ply)
         end
     end
 
-    local timeUntilNextMatch = 38
+    local timeUntilNextMatch = 33
     local VotingActive = false
 
     local connectedPlayers = player.GetHumans()
     if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
     --Creates a timer so players can see how long it will be until the next match starts.
-    timer.Create("timeUntilNextMatch", 38, 1, function()
+    timer.Create("timeUntilNextMatch", 33, 1, function()
     end)
 
     timer.Create("ShowVotingMenu", 8, 1, function()
         StartVotingPhase()
     end)
-
     --Determine who won the match.
     for k, v in pairs(connectedPlayers) do
         if k == 1 then winningPlayer = v end
     end
     if winningPlayer == LocalPly then wonMatch = true end
 
+    local expandTime = 4
+    if !wonMatch then expandTime = 3.5 end
+
+    local anchorAnim = ScrH() / 2 - 110
+    timer.Create("ExpandDetails", expandTime, 1, function()
+        anchorAnim = ScrH() / 2 - 220
+        ExpandDetails()
+    end)
+
     local MatchEndMusic
+    local textAnim = ScrH()
+    local textAnimTwo = ScrH()
+
     if wonMatch == true then
-        LocalPly:ScreenFade(SCREENFADE.OUT, Color(200, 200, 0, 40), 1.5, 6)
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(105, 105, 0, 80), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/ui/matchvictory.mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(1)
+
+        MatchWinLoseText = vgui.Create("DPanel")
+        MatchWinLoseText:SetSize(800, 220)
+        MatchWinLoseText:SetPos(ScrW() / 2 - 400, ScrH())
+        MatchWinLoseText:MakePopup()
+        MatchWinLoseText.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+            textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, ScrH())
+            MatchWinLoseText:SetY(textAnim)
+
+            draw.DrawText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.DrawText("(insert witty community sumbitted quote here)", "QuoteText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        end
+
+        local ratio
+        local score = LocalPly:GetNWInt("playerScoreMatch")
+
+        if LocalPly:Frags() <= 0 then
+            ratio = 0
+        elseif LocalPly:Frags() >= 1 and v:Deaths() == 0 then
+            ratio = LocalPly:Frags()
+        else
+            ratio = LocalPly:Frags() / LocalPly:Deaths()
+        end
+        local ratioRounded = math.Round(ratio, 2)
+
+        function ExpandDetails()
+            DetailsPanel = vgui.Create("DPanel")
+            DetailsPanel:SetSize(800, 220)
+            DetailsPanel:SetPos(ScrW() / 2 - 400, ScrH())
+            DetailsPanel:MakePopup()
+            DetailsPanel.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+                textAnimTwo = math.Clamp(textAnimTwo - 3000 * FrameTime(), ScrH() / 2, ScrH())
+                DetailsPanel:SetY(textAnimTwo)
+
+                draw.SimpleText(LocalPly:Name(), "Health", 400, 0, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(LocalPly:Frags(), "Health", 315, 138, Color(0, 255, 0), TEXT_ALIGN_CENTER)
+                draw.SimpleText(LocalPly:Deaths(), "Health", 400, 138, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+                draw.SimpleText(ratioRounded, "Health", 485, 138, Color(255, 255, 0), TEXT_ALIGN_CENTER)
+                draw.SimpleText(score, "Health", 400, 195, white, TEXT_ALIGN_CENTER)
+            end
+
+            CallingCard = vgui.Create("DImage", DetailsPanel)
+            CallingCard:SetPos(280, 30)
+            CallingCard:SetSize(240, 80)
+            CallingCard:SetImage(LocalPly:GetNWString("chosenPlayercard"), "cards/color/black.png")
+
+            ProfilePicture = vgui.Create("AvatarImage", CallingCard)
+            ProfilePicture:SetPos(5, 5)
+            ProfilePicture:SetSize(70, 70)
+            ProfilePicture:SetPlayer(LocalPly, 184)
+
+            local KillsIcon = vgui.Create("DImage", DetailsPanel)
+            KillsIcon:SetPos(300, 112)
+            KillsIcon:SetSize(30, 30)
+            KillsIcon:SetImage("icons/killicon.png")
+
+            local DeathsIcon = vgui.Create("DImage", DetailsPanel)
+            DeathsIcon:SetPos(385, 112)
+            DeathsIcon:SetSize(30, 30)
+            DeathsIcon:SetImage("icons/deathicon.png")
+
+            local KDIcon = vgui.Create("DImage", DetailsPanel)
+            KDIcon:SetPos(470, 112)
+            KDIcon:SetSize(30, 30)
+            KDIcon:SetImage("icons/ratioicon.png")
+
+            local ScoreIcon = vgui.Create("DImage", DetailsPanel)
+            ScoreIcon:SetPos(385, 167)
+            ScoreIcon:SetSize(30, 30)
+            ScoreIcon:SetImage("icons/scoreicon.png")
+        end
     else
-        LocalPly:ScreenFade(SCREENFADE.OUT, Color(200, 0, 0, 40), 1.5, 6)
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(255, 0, 0, 80), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/ui/matchdefeat.mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(1)
+
+        MatchWinLoseText = vgui.Create("DPanel")
+        MatchWinLoseText:SetSize(800, 220)
+        MatchWinLoseText:SetPos(ScrW() / 2 - 400, ScrH())
+        MatchWinLoseText:MakePopup()
+        MatchWinLoseText.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+            textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, ScrH())
+            MatchWinLoseText:SetY(textAnim)
+
+            draw.DrawText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+        end
+
+        function ExpandDetails()
+            DetailsPanel = vgui.Create("DPanel")
+            DetailsPanel:SetSize(800, 220)
+            DetailsPanel:SetPos(ScrW() / 2 - 400, ScrH())
+            DetailsPanel:MakePopup()
+            DetailsPanel.Paint = function(self, w, h)
+                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 55))
+                textAnimTwo = math.Clamp(textAnimTwo - 3000 * FrameTime(), ScrH() / 2, ScrH())
+                DetailsPanel:SetY(textAnimTwo)
+            end
+        end
     end
 
     hook.Add("Think", "VotingTimerUpdate", function()
@@ -684,6 +802,8 @@ net.Receive("EndOfGame", function(len, ply)
     end
 
     function StartVotingPhase()
+        if IsValid(MatchWinLoseText) then MatchWinLoseText:Remove() end
+        if IsValid(DetailsPanel) then DetailsPanel:Remove() end
         MatchEndMusic:ChangeVolume(0.2)
         VotingActive = true
         local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
@@ -712,7 +832,7 @@ net.Receive("EndOfGame", function(len, ply)
 
                 draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", 10, 245, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", 465, 245, white, TEXT_ALIGN_RIGHT)
-                draw.SimpleText(GetGlobalInt("VotesOnMapOne", 0) .. " | " .. GetGlobalInt("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(GetGlobal2Int("VotesOnMapOne", 0) .. " | " .. GetGlobal2Int("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
@@ -728,7 +848,7 @@ net.Receive("EndOfGame", function(len, ply)
                 if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
                 if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
                 draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                draw.SimpleText(GetGlobalInt("VotesOnModeOne", 0) .. " | " .. GetGlobalInt("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(GetGlobal2Int("VotesOnModeOne", 0) .. " | " .. GetGlobal2Int("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, 65, white, TEXT_ALIGN_CENTER)
@@ -1063,7 +1183,7 @@ net.Receive("NotifyMatchTime", function(len, ply)
         TimeNotif:MoveTo(ScrW() / 2 - 300, ScrH() - 400, 0.5, 0, 0.25)
 
         TimeNotif.Paint = function(self, w, h)
-            draw.SimpleText(math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()), "HUD_AmmoCount", 300, 45, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "HUD_AmmoCount", 300, 45, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
         TimeNotif:Show()

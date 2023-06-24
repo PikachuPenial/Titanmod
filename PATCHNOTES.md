@@ -1,4 +1,7 @@
 **>GAMEPLAY**
+*MOVEMENT*
+- A missed grapple shot will no longer trigger a grappling hook cooldown
+
 *MUSIC REWORK*
 - The backend for music in the Main Menu has been completely overhauled
 - Music will now be paused and resumed when toggling the setting in the menu
@@ -31,7 +34,11 @@
 
 *Fixed ammo bar going out of bounds when chambering a extra round into a weapon*
 
+*Players who are on a respawn timer when the End Of Game phase begin no longer respawn*
+
 *Servers with hibernation enabled no longer get stuck on the same map and gamemode if all players disconnect during the End Of Match phase*
+
+*Players that connect to the server during the End Of Game phase will now have a disclaimer shown on their HUD*
 
 *Functions that gather all player entities no longer grab bots (I don't know why bots would be on a Titanmod server but this is just in case someone does something funky)*
 

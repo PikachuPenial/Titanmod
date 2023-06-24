@@ -42,10 +42,8 @@ local surface = surface
 local Color = Color
 local color_white = color_white
 
---local TEXT_ALIGN_LEFT = 0
 local TEXT_ALIGN_CENTER	= 1
 local TEXT_ALIGN_RIGHT = 2
---local TEXT_ALIGN_TOP = 3
 local TEXT_ALIGN_BOTTOM	= 4
 
 local surface_SetFont = surface.SetFont

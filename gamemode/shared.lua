@@ -13,7 +13,7 @@ GM.Website = "https://github.com/PikachuPenial"
 if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually") end
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds") end
 if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players") end
-if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobalString("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobalString("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobalString("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() >= 3 then SetGlobalString("ActiveGamemode", "Shotty Snipers") end
+if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() >= 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") end
 
 --Creating client ConVars, mostly for use in the Options menu.
 if CLIENT then

@@ -9,7 +9,7 @@ local mapName
 local mapThumb
 local dof
 
-local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
@@ -106,7 +106,7 @@ function GM:ScoreboardShow()
 		MapInfoPanel.Paint = function(self, w, h)
 			if mapName ~= nil then
 				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Match ends in " .. math.Round(GetGlobalInt("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
 			else
 				draw.SimpleText("Playing " .. activeGamemode .. " on " .. game.GetMap(), "StreakText", 2.5, 75, white, TEXT_ALIGN_LEFT)
 			end

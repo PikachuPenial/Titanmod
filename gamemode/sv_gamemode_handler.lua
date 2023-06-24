@@ -1,4 +1,4 @@
-local activeGamemode = GetGlobalString("ActiveGamemode", "FFA")
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 local randPrimary = {}
 local randSecondary = {}
@@ -14,7 +14,7 @@ local fiestaMelee
 util.AddNetworkString("NotifyGGThreat")
 
 function ShuffleFiestaLoadout()
-    SetGlobalInt("FiestaTime", fiestaShuffleTime + GetGlobalInt("FiestaTime"))
+    SetGlobal2Int("FiestaTime", fiestaShuffleTime + GetGlobal2Int("FiestaTime"))
     fiestaPrimary = randPrimary[math.random(#randPrimary)]
     fiestaSecondary = randSecondary[math.random(#randSecondary)]
     fiestaMelee = randMelee[math.random(#randMelee)]
@@ -62,7 +62,7 @@ if activeGamemode == "Fiesta" then
     fiestaPrimary = randPrimary[math.random(#randPrimary)]
     fiestaSecondary = randSecondary[math.random(#randSecondary)]
     fiestaMelee = randMelee[math.random(#randMelee)]
-    SetGlobalInt("FiestaTime", fiestaShuffleTime)
+    SetGlobal2Int("FiestaTime", fiestaShuffleTime)
     timer.Create("FiestaShuffle", fiestaShuffleTime, 0, ShuffleFiestaLoadout)
 end
 
