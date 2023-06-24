@@ -372,6 +372,7 @@ end )
 --Displays after a player kills another player.
 net.Receive("NotifyKill", function(len, ply)
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+    if gameEnded then return end
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
@@ -502,6 +503,7 @@ net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+    if gameEnded then return end
 
     local killedBy = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -671,6 +673,8 @@ net.Receive("EndOfGame", function(len, ply)
     local MatchEndMusic
     local textAnim = ScrH()
     local textAnimTwo = ScrH()
+    local levelAnim = 0
+    local xpCountUp = 0
 
     if wonMatch == true then
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(105, 105, 0, 80), 1, 7)
@@ -687,71 +691,11 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, ScrH())
             MatchWinLoseText:SetY(textAnim)
 
-            draw.DrawText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.DrawText("(insert witty community sumbitted quote here)", "QuoteText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-        end
-
-        local ratio
-        local score = LocalPly:GetNWInt("playerScoreMatch")
-
-        if LocalPly:Frags() <= 0 then
-            ratio = 0
-        elseif LocalPly:Frags() >= 1 and v:Deaths() == 0 then
-            ratio = LocalPly:Frags()
-        else
-            ratio = LocalPly:Frags() / LocalPly:Deaths()
-        end
-        local ratioRounded = math.Round(ratio, 2)
-
-        function ExpandDetails()
-            DetailsPanel = vgui.Create("DPanel")
-            DetailsPanel:SetSize(800, 220)
-            DetailsPanel:SetPos(ScrW() / 2 - 400, ScrH())
-            DetailsPanel:MakePopup()
-            DetailsPanel.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-                textAnimTwo = math.Clamp(textAnimTwo - 3000 * FrameTime(), ScrH() / 2, ScrH())
-                DetailsPanel:SetY(textAnimTwo)
-
-                draw.SimpleText(LocalPly:Name(), "Health", 400, 0, white, TEXT_ALIGN_CENTER)
-                draw.SimpleText(LocalPly:Frags(), "Health", 315, 138, Color(0, 255, 0), TEXT_ALIGN_CENTER)
-                draw.SimpleText(LocalPly:Deaths(), "Health", 400, 138, Color(255, 0, 0), TEXT_ALIGN_CENTER)
-                draw.SimpleText(ratioRounded, "Health", 485, 138, Color(255, 255, 0), TEXT_ALIGN_CENTER)
-                draw.SimpleText(score, "Health", 400, 195, white, TEXT_ALIGN_CENTER)
-            end
-
-            CallingCard = vgui.Create("DImage", DetailsPanel)
-            CallingCard:SetPos(280, 30)
-            CallingCard:SetSize(240, 80)
-            CallingCard:SetImage(LocalPly:GetNWString("chosenPlayercard"), "cards/color/black.png")
-
-            ProfilePicture = vgui.Create("AvatarImage", CallingCard)
-            ProfilePicture:SetPos(5, 5)
-            ProfilePicture:SetSize(70, 70)
-            ProfilePicture:SetPlayer(LocalPly, 184)
-
-            local KillsIcon = vgui.Create("DImage", DetailsPanel)
-            KillsIcon:SetPos(300, 112)
-            KillsIcon:SetSize(30, 30)
-            KillsIcon:SetImage("icons/killicon.png")
-
-            local DeathsIcon = vgui.Create("DImage", DetailsPanel)
-            DeathsIcon:SetPos(385, 112)
-            DeathsIcon:SetSize(30, 30)
-            DeathsIcon:SetImage("icons/deathicon.png")
-
-            local KDIcon = vgui.Create("DImage", DetailsPanel)
-            KDIcon:SetPos(470, 112)
-            KDIcon:SetSize(30, 30)
-            KDIcon:SetImage("icons/ratioicon.png")
-
-            local ScoreIcon = vgui.Create("DImage", DetailsPanel)
-            ScoreIcon:SetPos(385, 167)
-            ScoreIcon:SetSize(30, 30)
-            ScoreIcon:SetImage("icons/scoreicon.png")
+            draw.SimpleText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("(insert witty community sumbitted quote here)", "QuoteText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     else
-        LocalPly:ScreenFade(SCREENFADE.OUT, Color(255, 0, 0, 80), 1, 7)
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(255, 0, 0, 60), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/ui/matchdefeat.mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(1)
@@ -765,18 +709,39 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, ScrH())
             MatchWinLoseText:SetY(textAnim)
 
-            draw.DrawText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
+    end
 
-        function ExpandDetails()
-            DetailsPanel = vgui.Create("DPanel")
-            DetailsPanel:SetSize(800, 220)
-            DetailsPanel:SetPos(ScrW() / 2 - 400, ScrH())
-            DetailsPanel:MakePopup()
-            DetailsPanel.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, Color(100, 100, 100, 55))
-                textAnimTwo = math.Clamp(textAnimTwo - 3000 * FrameTime(), ScrH() / 2, ScrH())
-                DetailsPanel:SetY(textAnimTwo)
+    function ExpandDetails()
+        DetailsPanel = vgui.Create("DPanel")
+        DetailsPanel:SetSize(800, 220)
+        DetailsPanel:SetPos(ScrW() / 2 - 400, ScrH())
+        DetailsPanel:MakePopup()
+        DetailsPanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+            textAnimTwo = math.Clamp(textAnimTwo - 3000 * FrameTime(), ScrH() / 2, ScrH())
+            DetailsPanel:SetY(textAnimTwo)
+            if LocalPly:GetNWInt("playerLevel") != 60 then
+                levelAnim = math.Clamp(levelAnim + (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * FrameTime(), 0, LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel"))
+                xpCountUp = math.Clamp(xpCountUp + LocalPly:GetNWInt("playerXP") * FrameTime(), 0, LocalPly:GetNWInt("playerXP"))
+
+                surface.SetDrawColor(30, 30, 30, 200)
+                surface.DrawRect(w / 2 - 300, 50, 600, 15)
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
+                draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "StreakText", w / 2 - 300, 25, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", w / 2 + 300, 25, white, TEXT_ALIGN_RIGHT)
+                draw.SimpleText(math.Round(xpCountUp) .. " / " .. LocalPly:GetNWInt("playerXPToNextLevel") .. "XP  ^", "StreakText", (w / 2 - 295) + (levelAnim * 600), 75, white, TEXT_ALIGN_RIGHT)
+            else
+                levelAnim = math.Clamp(levelAnim + (1 / 1) * FrameTime(), 0, 1)
+
+                surface.SetDrawColor(30, 30, 30, 200)
+                surface.DrawRect(w / 2 - 300, 50, 600, 15)
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
+                draw.SimpleText("MAX LEVEL", "StreakText", w / 2, 25, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText("Prestige at the Main Menu", "StreakText", w / 2, 65, white, TEXT_ALIGN_CENTER)
             end
         end
     end
@@ -911,7 +876,7 @@ net.Receive("EndOfGame", function(len, ply)
                 draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                draw.SimpleText(score .. " Score", "Health", 472, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText(score, "Health", 427, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
             end
 
             local KillsIcon = vgui.Create("DImage", PlayerPanel)
@@ -928,6 +893,11 @@ net.Receive("EndOfGame", function(len, ply)
             KDIcon:SetPos(260, 92)
             KDIcon:SetSize(20, 20)
             KDIcon:SetImage("icons/ratioicon.png")
+
+            local ScoreIcon = vgui.Create("DImage", PlayerPanel)
+            ScoreIcon:SetPos(432, 92)
+            ScoreIcon:SetSize(20, 20)
+            ScoreIcon:SetImage("icons/scoreicon.png")
 
             --Displays a players calling card and profile picture.
             local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)

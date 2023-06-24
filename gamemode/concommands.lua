@@ -155,3 +155,9 @@ function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_loadouthint", 1)
 end
 concommand.Add("tm_resethudtodefault_cannotbeundone", PlayerHUDReset)
+
+function Cheating(ply, cmd, args)
+	ply:SetNWInt("playerXP", ply:GetNWInt("playerXP") + 3000)
+	ply:CheckForPlayerLevel()
+end
+concommand.Add("tm_cheating", Cheating)
