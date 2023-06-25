@@ -85,7 +85,6 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
-	sql.Query("UPDATE PlayerData64 SET SteamName = ".. SQLStr(ply:Name()) .." WHERE SteamID = ".. ply:SteamID64() ..";")
 	ply:SetNWInt("playerID64", ply:SteamID64())
 
 	--Checking if PData exists for every single fucking weapon, GG.
@@ -105,6 +104,7 @@ function GM:PlayerInitialSpawn(ply)
 		ply:KillSilent()
 		timer.Simple(0.75, function() --Delaying by 0.75 because the menu just doesn't open sometimes, might fix, idk.
 			OpenMainMenu(ply)
+			sql.Query("UPDATE PlayerData64 SET SteamName = ".. SQLStr(ply:Name()) .." WHERE SteamID = ".. ply:SteamID64() ..";")
 		end)
 	end)
 end
