@@ -29,10 +29,6 @@ SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
 --Force friendly fire. If it is off, we do not get lag compensation.
 RunConsoleCommand("mp_friendlyfire", "1")
 
---Detects if the server is currently running the Firing Range map.
-local playingFiringRange = false
-if game.GetMap() == "tm_firingrange" then playingFiringRange = true end
-
 function OpenMainMenu(ply)
 	net.Start("OpenMainMenu")
 	if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
@@ -64,7 +60,6 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
 	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then ply:ConCommand("tm_showloadout") end
-	if playingFiringRange == true then ply:GodEnable() end
 	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end
 
@@ -131,15 +126,6 @@ util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
 util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
-
---Enables the weapon spawner if its turned on in the config, or if playing on the Firing Range map.
-if playingFiringRange == true or forceEnableWepSpawner == true then util.AddNetworkString("FiringRangeGiveWeapon") end
-
-net.Receive("FiringRangeGiveWeapon", function(len, ply)
-	local selectedWeapon = net.ReadString()
-	ply:StripWeapons()
-	ply:Give(selectedWeapon)
-end )
 
 net.Receive("BeginSpectate", function(len, ply)
 	if ply:Alive() then return end
@@ -520,7 +506,7 @@ if healthRegeneration == true then
 	hook.Add("Think", "HealthRegen", Regeneration)
 end
 
-if table.HasValue(availableMaps, game.GetMap()) and game.GetMap() ~= "tm_firingrange" then
+if table.HasValue(availableMaps, game.GetMap()) then
 	local mapVoteOpen = false
 	local mapVotes = {}
 	local modeVotes = {}
@@ -792,8 +778,6 @@ end )
 --Saves the players statistics when they leave, or when the server shuts down.
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-	if playingFiringRange == true or forceDisableProgression == true then return end
-
 	--Statistics
 	UninitializeNetworkInt(ply, "playerKills")
 	UninitializeNetworkInt(ply, "playerDeaths")
@@ -830,8 +814,6 @@ end
 
 function GM:ShutDown()
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-	if playingFiringRange == true or forceDisableProgression == true then return end
-
 	for k, v in pairs(player.GetHumans()) do
 		--Statistics
 		UninitializeNetworkInt(v, "playerKills")

@@ -1,7 +1,6 @@
 --Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-	if game.GetMap() == "tm_firingrange" then return end
 	if forceDisableProgression == true then return end
 	UninitializeNetworkInt(ply, "playerKills")
 	UninitializeNetworkInt(ply, "playerDeaths")
@@ -155,9 +154,3 @@ function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_loadouthint", 1)
 end
 concommand.Add("tm_resethudtodefault_cannotbeundone", PlayerHUDReset)
-
-function Cheating(ply, cmd, args)
-	ply:SetNWInt("playerXP", ply:GetNWInt("playerXP") + 3000)
-	ply:CheckForPlayerLevel()
-end
-concommand.Add("tm_cheating", Cheating)

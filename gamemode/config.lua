@@ -47,7 +47,6 @@ proxChatRange = 1000             --The thresehold in distance where players can 
 killFeed = true                 --Enables the kill feed.
 suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
 allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
-forceEnableWepSpawner = false   --Enables the Firing Range scoreboard weapon spawner for all maps.
 
 --Optimization settings
 mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
@@ -74,17 +73,16 @@ mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
 mapArray[3] = {"tm_corrugated", "Corrugated", "maps/thumb/tm_corrugated.png", true, 0}
 mapArray[4] = {"tm_devtown", "Devtown", "maps/thumb/tm_devtown.png", true, 0}
 mapArray[5] = {"tm_disequilibrium", "Disequilibrium", "maps/thumb/tm_disequilibrium.png", true, 0}
-mapArray[6] = {"tm_firingrange", "Firing Range", "maps/thumb/tm_firingrange.png", false, 0} --Do not set the fourth key to true, that would be very retarded.
-mapArray[7] = {"tm_initial", "Initial", "maps/thumb/tm_initial.png", true, 5}
-mapArray[8] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true, 0}
-mapArray[9] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
-mapArray[10] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
-mapArray[11] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
-mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
-mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
-mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[15] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
-mapArray[16] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
+mapArray[6] = {"tm_initial", "Initial", "maps/thumb/tm_initial.png", true, 5}
+mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.png", true, 0}
+mapArray[8] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
+mapArray[9] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
+mapArray[10] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
+mapArray[11] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
+mapArray[12] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
+mapArray[13] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[14] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[15] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do

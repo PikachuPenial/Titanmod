@@ -2,12 +2,6 @@
 *MOVEMENT*
 - A missed grapple shot will no longer trigger a grappling hook cooldown
 
-*MUSIC REWORK*
-- The backend for music in the Main Menu has been completely overhauled
-- Music will now be paused and resumed when toggling the setting in the menu
-- Music now dynamically changes volume when navigating to different parts of the menu
-- Music now properly loops again
-
 **>MAPS**
 *NEW MAPS*
 - Wreck
@@ -24,6 +18,15 @@
 - Removed Ammunition attachments
 
 **>QOL & BUG FIXES**
+*End of match Rework*
+- The end of match and voting process has been overhauled to be more visually appealing and to provide more functionality
+
+*Music Rework*
+- The backend for music in the Main Menu has been completely overhauled
+- Music will now be paused and resumed when toggling the setting in the menu
+- Music now dynamically changes volume when navigating to different parts of the menu
+- Music now properly loops again
+
 *A bunch of optimization has been implemented, expect more consistent frame rates*
 
 *Added SFX after a successful prestige*
@@ -41,5 +44,7 @@
 *Players that connect to the server during the End Of Game phase will now have a disclaimer shown on their HUD*
 
 *Functions that gather all player entities no longer grab bots (I don't know why bots would be on a Titanmod server but this is just in case someone does something funky)*
+
+*Removed Firing Range map and the special functions that accompanied it*
 
 *A Hatsune Miku player model is no longer installed when joining a server running the gamemode (lmao)*

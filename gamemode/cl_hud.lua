@@ -5,7 +5,6 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local feedArray = {}
 local health
-if game.GetMap() == "tm_firingrange" then playingFiringRange = true else playingFiringRange = false end
 
 local healthSize = GetConVar("tm_hud_health_size"):GetInt()
 local healthOffsetX = GetConVar("tm_hud_health_offset_x"):GetInt()
@@ -112,7 +111,7 @@ function HUD()
 
     --Remaining match time.
     local timeText = " ∞"
-    if game.GetMap() != "tm_firingrange" then timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i") end
+    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
@@ -186,9 +185,6 @@ function HUD()
 
     surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPly:Health() / LocalPly:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-
-    --Shooting range disclaimer.    
-    if playingFiringRange == true then draw.SimpleText("Use the scoreboard to spawn weapons.", "HUD_Health", ScrW() / 2, ScrH() - 25, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Grappling hook disclaimer.
     if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
@@ -662,7 +658,6 @@ net.Receive("EndOfGame", function(len, ply)
     if winningPlayer == LocalPly then wonMatch = true end
 
     local expandTime = 4
-    if !wonMatch then expandTime = 3.5 end
 
     local anchorAnim = ScrH() / 2 - 110
     timer.Create("ExpandDetails", expandTime, 1, function()
@@ -670,14 +665,22 @@ net.Receive("EndOfGame", function(len, ply)
         ExpandDetails()
     end)
 
+    function HideHudPostGame(name)
+        for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
+            if name == v then return false end
+        end
+    end
+    hook.Add("HUDShouldDraw", "HideDefaultHudPostGame", HideHudPostGame)
+
     local MatchEndMusic
     local textAnim = ScrH()
     local textAnimTwo = ScrH()
     local levelAnim = 0
     local xpCountUp = 0
+    local quote = quoteArray[math.random(#quoteArray)]
 
     if wonMatch == true then
-        LocalPly:ScreenFade(SCREENFADE.OUT, Color(105, 105, 0, 80), 1, 7)
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/ui/matchvictory.mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(1)
@@ -692,10 +695,10 @@ net.Receive("EndOfGame", function(len, ply)
             MatchWinLoseText:SetY(textAnim)
 
             draw.SimpleText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText("(insert witty community sumbitted quote here)", "QuoteText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     else
-        LocalPly:ScreenFade(SCREENFADE.OUT, Color(255, 0, 0, 60), 1, 7)
+        LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 0, 0, 190), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/ui/matchdefeat.mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(1)
@@ -710,6 +713,7 @@ net.Receive("EndOfGame", function(len, ply)
             MatchWinLoseText:SetY(textAnim)
 
             draw.SimpleText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
@@ -726,7 +730,7 @@ net.Receive("EndOfGame", function(len, ply)
                 levelAnim = math.Clamp(levelAnim + (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * FrameTime(), 0, LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel"))
                 xpCountUp = math.Clamp(xpCountUp + LocalPly:GetNWInt("playerXP") * FrameTime(), 0, LocalPly:GetNWInt("playerXP"))
 
-                surface.SetDrawColor(30, 30, 30, 200)
+                surface.SetDrawColor(30, 30, 30, 150)
                 surface.DrawRect(w / 2 - 300, 50, 600, 15)
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
@@ -736,7 +740,7 @@ net.Receive("EndOfGame", function(len, ply)
             else
                 levelAnim = math.Clamp(levelAnim + (1 / 1) * FrameTime(), 0, 1)
 
-                surface.SetDrawColor(30, 30, 30, 200)
+                surface.SetDrawColor(30, 30, 30, 150)
                 surface.DrawRect(w / 2 - 300, 50, 600, 15)
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
@@ -764,6 +768,7 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", 485, ScrH() - 55, white, TEXT_ALIGN_LEFT)
         end
         if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
+        draw.SimpleText("Had fun?", "MainMenuLoadoutWeapons", 700, ScrH() - 55, white, TEXT_ALIGN_LEFT)
     end
 
     function StartVotingPhase()
@@ -1022,7 +1027,7 @@ net.Receive("EndOfGame", function(len, ply)
         local ExitButton = vgui.Create("DButton", EndOfGameUI)
         ExitButton:SetPos(485, ScrH() - 35)
         ExitButton:SetText("")
-        ExitButton:SetSize(500, 100)
+        ExitButton:SetSize(185, 100)
         local textAnim = 0
         local disconnectConfirm = 0
         ExitButton.Paint = function()
@@ -1046,6 +1051,24 @@ net.Receive("EndOfGame", function(len, ply)
             end
 
             timer.Simple(1, function() disconnectConfirm = 0 end)
+        end
+
+        local DiscordButton = vgui.Create("DButton", EndOfGameUI)
+        DiscordButton:SetPos(700, ScrH() - 35)
+        DiscordButton:SetText("")
+        DiscordButton:SetSize(255, 100)
+        local textAnim = 0
+        DiscordButton.Paint = function()
+            if DiscordButton:IsHovered() then
+                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+            else
+                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+            end
+            draw.DrawText("JOIN OUR DISCORD", "MainMenuLoadoutWeapons", textAnim, 5, Color(114, 137, 218), TEXT_ALIGN_LEFT)
+        end
+        DiscordButton.DoClick = function()
+            surface.PlaySound("tmui/buttonclick.wav")
+            gui.OpenURL("https://discord.gg/GRfvt27uGF")
         end
 
         local VOIPButton = vgui.Create("DImageButton", EndOfGameUI)

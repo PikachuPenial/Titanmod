@@ -3,7 +3,6 @@ local white = Color(255, 255, 255, 255)
 
 local ScoreboardDerma
 local PlayerList
-local FiringRangeDerma
 
 local mapName
 local mapThumb
@@ -30,7 +29,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
-			if dof == true and forceEnableWepSpawner == false and game.GetMap() ~= "tm_firingrange" and not timer.Exists("mapVoteTimeRemaining") then
+			if dof == true then
 				DrawBokehDOF(4, 1, 0)
 			end
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
@@ -260,68 +259,6 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:Show()
 		ScoreboardDerma:MakePopup()
 		ScoreboardDerma:SetKeyboardInputEnabled(false)
-
-		--If playing on the Firing Range, a special menu will appear to the right of the scoreboard which allows weapon spawning.
-		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then
-			FiringRangeDerma = vgui.Create("DFrame")
-			FiringRangeDerma:SetSize(200, 530)
-			FiringRangeDerma:SetPos(ScrW() / 2 + 325, 0)
-			FiringRangeDerma:SetTitle("")
-			FiringRangeDerma:SetDraggable(false)
-			FiringRangeDerma:ShowCloseButton(false)
-			FiringRangeDerma.Paint = function()
-				if dof == true and forceEnableWepSpawner == true or game.GetMap() == "tm_firingrange" then
-					DrawBokehDOF(4, 1, 0)
-				end
-				draw.RoundedBox(5, 0, 0, FiringRangeDerma:GetWide(), FiringRangeDerma:GetTall(), Color(35, 35, 35, 150))
-				draw.SimpleText("Weapon Spawner", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
-			end
-
-			FiringRangeDerma:MoveTo(ScrW() / 2 + 325, ScrH() / 2 - 265, 0.5, 0, 0.25)
-
-			local FiringRangeScroller = vgui.Create("DScrollPanel", FiringRangeDerma)
-			FiringRangeScroller:Dock(FILL)
-
-			local sbar = FiringRangeScroller:GetVBar()
-			function sbar:Paint(w, h)
-				draw.RoundedBox(5, 0, 0, w, h, Color(40, 40, 40, 200))
-			end
-			function sbar.btnUp:Paint(w, h)
-				draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-			end
-			function sbar.btnDown:Paint(w, h)
-				draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-			end
-			function sbar.btnGrip:Paint(w, h)
-				draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
-			end
-
-			local WeaponList = vgui.Create("DIconLayout", FiringRangeScroller)
-			WeaponList:Dock(TOP)
-			WeaponList:SetSpaceY(5)
-			WeaponList:SetSpaceX(20)
-
-			WeaponList.Paint = function(self, w, h)
-				draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-			end
-
-			for k, v in pairs(weaponArray) do
-				local weapon = vgui.Create("DButton", DockDefaultCards)
-				weapon:SetSize(170, 42.5)
-				weapon:SetText("")
-				weapon.Paint = function()
-					draw.DrawText(v[2], "StreakText", 5, 5, white, TEXT_ALIGN_LEFT)
-					if v[4] ~= nil then draw.DrawText(v[3] .. " | " .. v[4], "CaliberText", 5, 25, white, TEXT_ALIGN_LEFT) else draw.DrawText(v[3], "StreakTextMini", 5, 25, white, TEXT_ALIGN_LEFT) end
-				end
-				WeaponList:Add(weapon)
-
-				weapon.DoClick = function(weapon)
-					net.Start("FiringRangeGiveWeapon")
-					net.WriteString(v[1])
-					net.SendToServer()
-				end
-			end
-		end
 	end
 end
 
@@ -329,6 +266,5 @@ function GM:ScoreboardHide()
 	if IsValid(ScoreboardDerma) then
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:Remove()
-		if game.GetMap() == "tm_firingrange" or forceEnableWepSpawner == true then FiringRangeDerma:Remove() end
 	end
 end
