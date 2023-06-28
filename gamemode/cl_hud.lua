@@ -851,6 +851,7 @@ net.Receive("EndOfGame", function(len, ply)
 
         for k, v in pairs(connectedPlayers) do
             --Constants for basic player information, much more optimized than checking every frame.
+            if !IsValid(v) then return end
             local name = v:GetName()
             local prestige = v:GetNWInt("playerPrestige")
             local level = v:GetNWInt("playerLevel")

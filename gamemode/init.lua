@@ -86,6 +86,7 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
 	ply:SetNWInt("playerID64", ply:SteamID64())
+	ply:SetNWString("playerName", ply:Name())
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
@@ -104,7 +105,7 @@ function GM:PlayerInitialSpawn(ply)
 		ply:KillSilent()
 		timer.Simple(0.75, function() --Delaying by 0.75 because the menu just doesn't open sometimes, might fix, idk.
 			OpenMainMenu(ply)
-			sql.Query("UPDATE PlayerData64 SET SteamName = ".. SQLStr(ply:Name()) .." WHERE SteamID = ".. ply:SteamID64() ..";")
+			sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:Name()) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
 		end)
 	end)
 end
@@ -810,6 +811,8 @@ function GM:PlayerDisconnected(ply)
 	for p, t in pairs(weaponArray) do
 		UninitializeNetworkInt(ply, "killsWith_" .. t[1])
 	end
+
+	sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:GetNWString("playerName")) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
 end
 
 function GM:ShutDown()
@@ -847,5 +850,7 @@ function GM:ShutDown()
 		for p, t in pairs(weaponArray) do
 			UninitializeNetworkInt(v, "killsWith_" .. t[1])
 		end
+
+		sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(v:GetNWString("playerName")) .. " WHERE SteamID = " .. v:SteamID64() .. ";")
 	end
 end

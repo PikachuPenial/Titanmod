@@ -3,16 +3,18 @@ HIGH PRIORItY | Currently working on or is being focused
 Hook and Riot Shield cards
 More player cards for accolades/kills/streaks
 Allow for Text Chat on match end
-Improve readability of code because my autistic ass writes this in such a messy way
-Font refactor (improved performance and less chance of font related crashes)
+Improve visibility on Rig
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important
 
+Drowning system
 Main Menu refactor
 VIP gamemode (you can select a loadout?)
 Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
 Show amount of connecting players on scoreboard
 Keybindable weapon quick switching
 Item unlock tracking through scoreboard
+Improve readability of code because my autistic ass writes this in such a messy way
+Font refactor (improved performance and less chance of font related crashes)

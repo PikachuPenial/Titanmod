@@ -78,11 +78,12 @@ mapArray[7] = {"tm_liminal_pool", "Liminal Pool", "maps/thumb/tm_liminal_pool.pn
 mapArray[8] = {"tm_mall", "Mall", "maps/thumb/tm_mall.png", true, 0}
 mapArray[9] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
 mapArray[10] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
-mapArray[11] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
-mapArray[12] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
-mapArray[13] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[14] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
-mapArray[15] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
+mapArray[11] = {"tm_oxide", "Oxide", "maps/thumb/tm_oxide.png", true, 0}
+mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
+mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
+mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[15] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[16] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
@@ -247,7 +248,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_recoil_mul_y", "0.80")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.80")
     RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.80")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.85")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.60")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
