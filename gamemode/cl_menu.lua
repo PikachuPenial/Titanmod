@@ -422,7 +422,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 if t.Value == "NULL" or t.level == nil or t.prestige == nil then return end
                                 if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) end
                                     draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
@@ -433,7 +433,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 if t.Value == "NULL" or t.Value == nil then return end
                                 if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) end
                                     draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
@@ -444,7 +444,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                                 if t.Value == "NULL" or t.Value == nil then return end
                                 if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT)
+                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_LEFT) end
                                     draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, 85 + ((p - 1) * 41.25), white, TEXT_ALIGN_RIGHT)
                                 else
                                     draw.SimpleText(p, "SettingsLabel", 20, 85 + ((p - 1) * 41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
@@ -3601,6 +3601,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EditorPanel:Center()
                 EditorPanel:SetScreenLock(true)
                 EditorPanel:GetBackgroundBlur(false)
+                EditorPanel:SetSizable(true)
+                EditorPanel:SetMinWidth(EditorPanel:GetWide())
+                EditorPanel:SetMinHeight(EditorPanel:GetTall())
                 EditorPanel.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                 end

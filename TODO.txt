@@ -18,3 +18,4 @@ Keybindable weapon quick switching
 Item unlock tracking through scoreboard
 Improve readability of code because my autistic ass writes this in such a messy way
 Font refactor (improved performance and less chance of font related crashes)
+Unique sliding sounds
