@@ -33,12 +33,18 @@
 
 - A player will now always spawn with their sniper equipped when playing the Shotty Snipers gamemode
 
+- Canceling a Grappling Hook shot now resets your cooldown
+
+- Playermodel and Playercard menus have been improved visually
+
+- Improved visual for scroll bars
+
 - Fixed End Of Game stage breaking if a player leaves the match before the voting phase begins
 
 - Actually fixed players steam names not being correctly set in the save database, resulting in player names being NULL on the Leaderboard
 
 - NULL names on Leaderboards are now shown as the players SteamID
 
-- Canceling a Grappling Hook shot now resets your cooldown
+- Decreased Depth Of Field strength on scoreboard
 
 - Fixed various bugs with Grappling Hook

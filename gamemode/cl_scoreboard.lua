@@ -30,7 +30,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma.Paint = function()
 			if dof == true then
-				DrawBokehDOF(4, 1, 0)
+				DrawBokehDOF(2.5, 1, 0)
 			end
 			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)

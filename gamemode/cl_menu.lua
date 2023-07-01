@@ -355,15 +355,18 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Entries update on match start/player disconnect | Only top 50 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
 
-                        if SelectedBoardName ~= nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 70, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
+                        if SelectedBoardName ~= nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
                         draw.SimpleText("#", "StreakText", 20, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Name", "StreakText", 85, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Stat", "StreakText", 710, 185, white, TEXT_ALIGN_RIGHT)
                     end
 
+                    local LeaderboardPickerButton
                     function LeaderboardSelected(text, data)
-                        if timer.Exists("SendBoardDataRequestCooldown") then return end
+                        if SelectedBoardName == text then return end
+                        LeaderboardPickerButton:Hide()
                         timer.Create("SendBoardDataRequestCooldown", 1.25, 1, function()
+                            LeaderboardPickerButton:Show()
                         end)
                         surface.PlaySound("tmui/buttonclick.wav")
                         net.Start("GrabLeaderboardData")
@@ -372,7 +375,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         SelectedBoardName = text
                     end
 
-                    local LeaderboardPickerButton = vgui.Create("DImageButton", LeaderboardTextHolder)
+                    LeaderboardPickerButton = vgui.Create("DImageButton", LeaderboardTextHolder)
                     LeaderboardPickerButton:SetPos(25, 140)
                     LeaderboardPickerButton:SetSize(32, 32)
                     LeaderboardPickerButton:SetTooltip("Switch shown Leaderboard")
@@ -564,7 +567,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
                 end
 
                 local TitleText = vgui.Create("DPanel", TutorialScroller)
@@ -864,31 +867,31 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local sbar = CardScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                        draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
                     end
 
-                    local CardTextHolder = vgui.Create("DPanel", CardScroller)
+                    local CardTextHolder = vgui.Create("DPanel", CardPanel)
                     CardTextHolder:Dock(TOP)
-                    CardTextHolder:SetSize(0, 170)
+                    CardTextHolder:SetSize(0, 160)
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 20, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 100, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playercards", "StreakText", w / 2 + 20, 140, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playercards", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedCards = CardTextHolder:Add("DCheckBox")
-                    HideLockedCards:SetPos(145, 142.5)
+                    HideLockedCards:SetPos(145, 122.5)
                     HideLockedCards:SetSize(20, 20)
                     HideLockedCards:SetTooltip("Hide playercards that you do not have unlocked.")
 
@@ -899,7 +902,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockDefaultCards = vgui.Create("DPanel", CardScroller)
                     DockDefaultCards:Dock(TOP)
-                    DockDefaultCards:SetSize(0, 416)
+                    DockDefaultCards:SetSize(0, 500)
 
                     --Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
@@ -2028,7 +2031,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local sbar = CustomizeScroller:GetVBar()
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
+                        draw.RoundedBox(5, 0, 0, w, h, gray)
                     end
                     function sbar.btnUp:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -2040,19 +2043,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
                     end
 
-                    local CustomizeTextHolder = vgui.Create("DPanel", CustomizeScroller)
+                    local CustomizeTextHolder = vgui.Create("DPanel", CustomizePanel)
                     CustomizeTextHolder:Dock(TOP)
-                    CustomizeTextHolder:SetSize(0, 170)
+                    CustomizeTextHolder:SetSize(0, 160)
 
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 20, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 100, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 20, 140, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
-                    HideLockedModels:SetPos(120, 142.5)
+                    HideLockedModels:SetPos(120, 122.5)
                     HideLockedModels:SetSize(20, 20)
                     HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")    
 
@@ -2139,10 +2142,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(5, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
+                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
                     function sbar.btnGrip:Paint(w, h)
                         draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
@@ -3620,9 +3623,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EditorPanel:Center()
                 EditorPanel:SetScreenLock(true)
                 EditorPanel:GetBackgroundBlur(false)
-                EditorPanel:SetSizable(true)
-                EditorPanel:SetMinWidth(EditorPanel:GetWide())
-                EditorPanel:SetMinHeight(EditorPanel:GetTall())
                 EditorPanel.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                 end
@@ -3641,16 +3641,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local sbar = EditorScroller:GetVBar()
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(5, 0, 0, w, h, gray)
+                    draw.RoundedBox(5, 0, 0, w, h, lightGray)
                 end
                 function sbar.btnUp:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.RoundedBox(0, 0, 0, w, h, lightGray)
                 end
                 function sbar.btnDown:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.RoundedBox(0, 0, 0, w, h, lightGray)
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 50))
+                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
                 end
 
                 local HiddenOptionsScroller = vgui.Create("DPanel", EditorPanel)
@@ -4182,7 +4182,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.DrawText("Test Kill", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestKillButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
                     RunConsoleCommand("tm_hud_testkill")
                 end
 
@@ -4200,7 +4199,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.DrawText("Test Death", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestDeathButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
                     RunConsoleCommand("tm_hud_testdeath")
                 end
 
@@ -4218,7 +4216,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.DrawText("Test Level Up", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestLevelUpButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
                     RunConsoleCommand("tm_hud_testlevelup")
                 end
 
