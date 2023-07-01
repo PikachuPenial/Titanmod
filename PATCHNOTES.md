@@ -3,12 +3,17 @@
 - Hip fire spread has been reduced globally by 20%
 - Standardized knife damage profiles (read BALANCE for more details)
 
+*MOVEMENT CHANGES*
+- Sliding now has a cooldown of 0.9 seconds, player not being grounded will remove this cooldown, allowing for consecutive slide jumps
+- Reduced crouch enter/exit time by 7.5%
+
 *LEADERBOARD ADJUSTMENT*
 - Added all Accolades as selectable options
 - Visual overhaul of the Leaderboard menu
 
 **>MAPS**
 *NEW MAPS*
+- Legacy
 - Oxide
 
 *REMOVED MAPS*
@@ -38,6 +43,8 @@
 - Playermodel and Playercard menus have been improved visually
 
 - Improved visual for scroll bars
+
+- Reduced intensity of sliding blur when Motion Blur is enabled
 
 - Fixed End Of Game stage breaking if a player leaves the match before the voting phase begins
 
