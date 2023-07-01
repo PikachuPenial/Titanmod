@@ -37,7 +37,7 @@ function GM:ScoreboardShow()
 
 			draw.SimpleText("Kills", "StreakTextMini", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			draw.SimpleText("Deaths", "StreakTextMini", 425, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Ratio", "StreakTextMini", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("K/D", "StreakTextMini", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			draw.SimpleText("Score", "StreakTextMini", 545, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
@@ -217,6 +217,7 @@ function GM:ScoreboardShow()
 				local accolades = Menu:AddSubMenu("View Accolades")
 				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
 				local weaponKills = weaponstatistics:AddSubMenu("Kills With")
+				weaponKills:SetMaxHeight(ScrH() / 1.5)
 
 				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer then
 					statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))

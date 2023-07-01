@@ -248,7 +248,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_recoil_mul_y", "0.80")
     RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.80")
     RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.80")
-    RunConsoleCommand("sv_tfa_spread_multiplier", "0.60")
+    RunConsoleCommand("sv_tfa_spread_multiplier", "0.65")
 
     --Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")

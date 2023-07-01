@@ -1,10 +1,18 @@
 **>GAMEPLAY**
 *GUNPLAY CHANGES*
-- Hip fire spread has been reduced globally by 25%
+- Hip fire spread has been reduced globally by 20%
+
+*LEADERBOARD ADJUSTMENT*
+- Added all Accolades as selectable options
+- Visual overhaul of the Leaderboard menu
 
 **>MAPS**
 *NEW MAPS*
 - Oxide
+
+**>BALANCE**
+*Glock 17*
+- Reduced spread to 6 (previously 15)
 
 **>QOL & BUG FIXES**
 - Fixed End Of Game stage breaking if a player leaves the match before the voting phase begins
