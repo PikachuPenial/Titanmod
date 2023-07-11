@@ -904,6 +904,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockDefaultCards:Dock(TOP)
                     DockDefaultCards:SetSize(0, 500)
 
+                    --Leveling related Playercards
+                    local TextLevel = vgui.Create("DPanel", CardScroller)
+                    TextLevel:Dock(TOP)
+                    TextLevel:SetSize(0, 90)
+
+                    local DockLevelCards = vgui.Create("DPanel", CardScroller)
+                    DockLevelCards:Dock(TOP)
+                    DockLevelCards:SetSize(0, 1280)
+
                     --Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
                     TextKill:Dock(TOP)
@@ -920,16 +929,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockAccoladeCards = vgui.Create("DPanel", CardScroller)
                     DockAccoladeCards:Dock(TOP)
-                    DockAccoladeCards:SetSize(0, 583)
-
-                    --Leveling related Playercards
-                    local TextLevel = vgui.Create("DPanel", CardScroller)
-                    TextLevel:Dock(TOP)
-                    TextLevel:SetSize(0, 90)
-
-                    local DockLevelCards = vgui.Create("DPanel", CardScroller)
-                    DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 1280)
+                    DockAccoladeCards:SetSize(0, 1198)
 
                     --Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
@@ -1059,98 +1059,98 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
                         if currentCard ~= nil then
-                            draw.SimpleText(newCardName, "PlayerNotiName", 5, 90, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(newCardName, "PlayerNotiName", 5, 88, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText(newCardDesc, "Health", 5, 135, white, TEXT_ALIGN_LEFT)
                         end
 
                         if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 90, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 90, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
                                 draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
                             end
                         end
@@ -1859,7 +1859,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             FillCardListsAll()
                             DockDefaultCards:SetSize(0, 416)
                             DockKillCards:SetSize(0, 250)
-                            DockAccoladeCards:SetSize(0, 583)
+                            DockAccoladeCards:SetSize(0, 1166)
                             DockLevelCards:SetSize(0, 1280)
                             DockMasteryCards:SetSize(0, 5357)
                             DockColorCards:SetSize(0, 500)
@@ -1882,8 +1882,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         CardScroller:ScrollToChild(TextDefault)
                     end
 
+                    local LevelJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    LevelJump:SetPos(4, 152)
+                    LevelJump:SetSize(48, 48)
+                    LevelJump:SetImage("icons/performanceicon.png")
+                    LevelJump:SetTooltip("Leveling")
+                    LevelJump.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
+                        CardScroller:ScrollToChild(TextLevel)
+                    end
+
                     local KillsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    KillsJump:SetPos(4, 152)
+                    KillsJump:SetPos(4, 204)
                     KillsJump:SetSize(48, 48)
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
@@ -1893,23 +1903,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local AccoladeJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    AccoladeJump:SetPos(4, 204)
+                    AccoladeJump:SetPos(4, 256)
                     AccoladeJump:SetSize(48, 48)
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
                         surface.PlaySound("tmui/buttonclick.wav")
                         CardScroller:ScrollToChild(TextAccolade)
-                    end
-
-                    local LevelJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    LevelJump:SetPos(4, 256)
-                    LevelJump:SetSize(48, 48)
-                    LevelJump:SetImage("icons/performanceicon.png")
-                    LevelJump:SetTooltip("Leveling")
-                    LevelJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
-                        CardScroller:ScrollToChild(TextLevel)
                     end
 
                     local WeaponJump = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -1946,8 +1946,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RandomizeButton:SetPos(12, ScrH() - 96)
                     RandomizeButton:SetSize(32, 32)
                     RandomizeButton:SetImage("icons/diceicon.png")
-                    RandomizeButton:SetTooltip("Choose random model")
+                    RandomizeButton:SetTooltip("Choose random card")
                     RandomizeButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         local rand = math.random(1, totalCards)
 
                         for k, v in pairs(cardArray) do
@@ -2825,6 +2826,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RandomizeButton:SetImage("icons/diceicon.png")
                     RandomizeButton:SetTooltip("Choose random model")
                     RandomizeButton.DoClick = function()
+                        surface.PlaySound("tmui/buttonclick.wav")
                         local rand = math.random(1, totalModels)
 
                         for k, v in pairs(modelArray) do

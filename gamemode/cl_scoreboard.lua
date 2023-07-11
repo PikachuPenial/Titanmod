@@ -154,7 +154,7 @@ function GM:ScoreboardShow()
 			local score = v:GetNWInt("playerScoreMatch")
 
 			local usergroup
-			if v:IsUserGroup("superadmin") then usergroup = "dev" elseif v:IsUserGroup("admin") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
+			if v:IsUserGroup("dev") then usergroup = "dev" elseif v:IsUserGroup("mod") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
 
 			--Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
 			if v:Frags() <= 0 then
