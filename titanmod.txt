@@ -5,7 +5,7 @@
 	"maps"		"^tm_"
 	"category"	"pvp"
 	"menusystem"	"1"
-	"workshopid"	"2863062354"
+	"workshopid"	"3002938569"
 
 	"settings"
 	{

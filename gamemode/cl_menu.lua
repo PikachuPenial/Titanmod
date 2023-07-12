@@ -88,8 +88,6 @@ net.Receive("OpenMainMenu", function(len, ply)
     if chosenMusic == "sound/music/away_vivada.mp3" then
         musicName = "Away - Vivada"
         musicLink = "https://youtu.be/6yqYGqlIzcI"
-        requestedBy = "Vivada"
-        steamProfile = "http://steamcommunity.com/profiles/76561198799277183"
     end
 
     if chosenMusic == "sound/music/bmciabaeilrd_limppumpo.mp3" then
@@ -704,7 +702,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
                 surface.PlaySound("tmui/buttonclick.wav")
-                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2863062354")
+                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
