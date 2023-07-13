@@ -1,13 +1,35 @@
-# Titanmod
-Join the official [Titanmod Discord server](https://discord.gg/GRfvt27uGF) to keep up to date with updates and to find others to play with.
 
-A [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense encounters consisting of snappy aim duels and fluid movement. The game is played in a Randomizer format, giving the player a random loadout each and every spawn. With over 130+ unique weapons, every loadout is different from the last. And with over 16+ maps and played-led map votes after each round, everything stays fresh and exciting.
+# Titanmod | PvP Movement Shooter
+![Titanmod Banner](https://imgur.com/X6Lndd4.png)
+Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.
 
-Almost every aspact of Titanmod is configurable. Not only does it boast a wide array of settings for players to change at will, but Titanmod also comes with a config file, allowing server creators to change the experience to their liking.
+With over 4 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
 
-Players can express themselves by choosing between countless player skins and player cards. Most of these are unlockable via accomplishments in game, giving players something to grind for. Players can also progress through Titanmod's leveling system, unlocking exclusive player cards along the way.
+> Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)
+> Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)
+> Play on the Titanmod dedicated server: **connect 45.88.228.52:27065**
 
-Titanmod has support for any Garry's Mod map, but I highly recommend playing on a map that is either included in the gamemode (doing this also enables Map Voting support), or one that has multiple spawns and allows for players to take advantage of Titanmod's movement systems.
+Here are a few of Titanmods features:
+--
+- Responsive and skill-based gunplay w/ an assortment of attachments
+- Simple and complex movement mechanics to master  
+- Map and Gamemode voting (FFA, Gun Game, Fiesta, and Shotty Snipers)  
+- Deep player customization and unlocks (40+ player models, 220+ player cards)  
+- Endless player progression (60 levels w/ prestiging, no prestige cap)  
+- In-depth settings  
+- HUD Editor  
+- Statistics (over 150+ being tracked)  
+- Leaderboards  
+- Proximity Voice Chat  
+- Kill accolades  
+- Deep optimization (stable and high framerates)  
+- Config File (for server operators)
+
+Players fight it out across multiple gamemodes and maps using a vast array of fun and unique weapons. Movement is key, with Titanmod allowing players to wall run, wall jump, slide, rocket jump, and more. With the skill-based gunplay and movement mechanics, players are rewarded for their individual skill.  
+  
+Almost every aspact of Titanmod is configurable. Not only does it boast a wide array of settings for players to change at will, but Titanmod also comes with a config file, allowing server operators to change the experience to their liking.
+
+*Thank you to everyone who have created content, playtested, found bugs, or simply those who have taken the time out of their day to check out my passion project, I love you guys <3*
 
 # Credits:
 > Gamemode
@@ -45,19 +67,19 @@ Portanator (code contributions)
 
 > Playtesters
 
-Portanator  
-Seven  
-suomij  
-theBean  
-Zedorfski  
-RandomSZ  
+_P0w    
 afiais  
-Plat  
-JustAMegumin  
-mooseisrael321  
-Vivada  
-DEcaf  
+DEcaf   
+JustAMegumin    
 MatKri  
-_P0w  
+mooseisrael321  
+Plat    
+Portanator  
+RandomSZ    
+Seven   
+suomij  
+theBean 
+Vertex  
+Zedorfska   
 
-If credit for you or your creation is missing, please reach out to me on Discord (penial)
+*If credit for you or your creation is missing, please reach out to me on Discord (penial)*

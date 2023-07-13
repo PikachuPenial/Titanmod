@@ -2,8 +2,8 @@
 {
 	"base"		"base"
 	"title"		"Titanmod"
-	"maps"		"^tm_"
 	"category"	"pvp"
+	"maps"		"^tm_"
 	"menusystem"	"1"
 	"workshopid"	"3002938569"
 
@@ -13,28 +13,28 @@
 		{
 			"name"		"tm_gamemode"
 			"text"		"Gamemode (0 = FFA, 1 = Fiesta, 2 = Gun Game, 3 = Shotty Snipers)"
-			"help"		"Changes the desired gamemode, will be replaced with gamemode voting eventually"
 			"type"		"Numeric"
 			"default"	"0"
-			"singleplayer"
+			"singleplayer"	"true"
 		}
+		
 		2
 		{
 			"name"		"tm_matchlengthtimer"
 			"text"		"Match Length (in seconds)"
-			"help"		"Changes the matches length to the selected value in seconds"
 			"type"		"Numeric"
 			"default"	"600"
-			"singleplayer"
+			"singleplayer"	"true"
 		}
+		
 		3
 		{
 			"name"		"tm_developermode"
 			"text"		"Developer Mode (enable spawn menu, disable progression)"
-			"help"		"Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players"
 			"type"		"CheckBox"
 			"default"	"0"
-			"singleplayer"
+			"singleplayer"	"true"
 		}
+
 	}
 }

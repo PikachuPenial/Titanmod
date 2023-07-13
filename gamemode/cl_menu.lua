@@ -31,7 +31,7 @@ net.Receive("OpenMainMenu", function(len, ply)
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
-    musicList = {"sound/music/chillwave_ragdolluniverseost.mp3", "sound/music/giftshop_battleblocktheaterost.mp3", "sound/music/tabg_landfall.mp3", "sound/music/waster_bladee.mp3", "sound/music/systemfiles_zedorfski.mp3", "sound/music/systemfiles_zedorfski.mp3", "sound/music/drift_eightiesheadachetape.mp3", "sound/music/highstakes_worldcorp.mp3", "sound/music/bald_jpegmafia.mp3", "sound/music/away_vivada.mp3", "sound/music/bmciabaeilrd_limppumpo.mp3"}
+    musicList = {"sound/music/chillwave_ragdolluniverseost.mp3", "sound/music/giftshop_battleblocktheaterost.mp3", "sound/music/tabg_landfall.mp3", "sound/music/waster_bladee.mp3", "sound/music/systemfiles_zedorfska.mp3", "sound/music/systemfiles_zedorfska.mp3", "sound/music/drift_eightiesheadachetape.mp3", "sound/music/highstakes_worldcorp.mp3", "sound/music/bald_jpegmafia.mp3", "sound/music/bmciabaeilrd_limppumpo.mp3"}
     chosenMusic = (musicList[math.random(#musicList)])
 
     if chosenMusic == "sound/music/chillwave_ragdolluniverseost.mp3" then
@@ -78,16 +78,11 @@ net.Receive("OpenMainMenu", function(len, ply)
         steamProfile = "https://steamcommunity.com/profiles/76561199027666260"
     end
 
-    if chosenMusic == "sound/music/systemfiles_zedorfski.mp3" then
-        musicName = "System Files - Zedorfski"
-        musicLink = "https://www.youtube.com/c/Zedorfski"
-        requestedBy = "Zedorfski"
+    if chosenMusic == "sound/music/systemfiles_zedorfska.mp3" then
+        musicName = "System Files - Zedorfska"
+        musicLink = "https://www.youtube.com/c/Zedorfska"
+        requestedBy = "Zedorfska"
         steamProfile = "http://steamcommunity.com/profiles/76561198313962855"
-    end
-
-    if chosenMusic == "sound/music/away_vivada.mp3" then
-        musicName = "Away - Vivada"
-        musicLink = "https://youtu.be/6yqYGqlIzcI"
     end
 
     if chosenMusic == "sound/music/bmciabaeilrd_limppumpo.mp3" then
