@@ -4266,6 +4266,25 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
             end
+
+            local CreditsButton = vgui.Create("DButton", MainPanel)
+            CreditsButton:SetPos(ScrW() - 110, ScrH() - 52)
+            CreditsButton:SetText("")
+            CreditsButton:SetSize(110, 32)
+            local textAnim = 20
+            CreditsButton.Paint = function()
+                CreditsButton:SetPos(ScrW() - 110, ScrH() - 52)
+                if CreditsButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                end
+                draw.DrawText("CREDITS", "StreakText", 85 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
+            end
+            CreditsButton.DoClick = function()
+                surface.PlaySound("tmui/buttonclick.wav")
+                gui.OpenURL("https://github.com/PikachuPenial/Titanmod#credits")
+            end
     end
 
     if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") ~= true then

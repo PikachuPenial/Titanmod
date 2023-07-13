@@ -1,19 +1,19 @@
-HIGH PRIORItY | Currently working on or is being focused
+HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
 Hook and Riot Shield cards
-More player cards for accolades/kills/streaks
+More player cards for kills/streaks
 Allow for Text Chat on match end
 Improve visibility on Rig
 Shotgun Jumping
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-LOW PRIORITY | Backlog for new features and adjustments that are not important
+LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
 Drowning system
 Main Menu refactor
 VIP gamemode (you can select a loadout?)
-Reworked player profile pages (heavily inspired by bad business profiles) (would replace the current statistics menu)
+Reworked player profile pages (heavily inspired by bad business profiles)
 Show amount of connecting players on scoreboard
 Keybindable weapon quick switching
 Item unlock tracking through scoreboard

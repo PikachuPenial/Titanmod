@@ -951,3 +951,8 @@ cvars.AddChangeCallback("tm_hud_font_scale", function(convar_name, value_old, va
 		outline = false,
 	} )
 end)
+
+--Precache player models
+for k, v in pairs(modelArray) do
+	util.PrecacheModel(v[1])
+end

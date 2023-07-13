@@ -1,8 +1,8 @@
 
 # Titanmod | PvP Movement Shooter
 ![Titanmod Banner](https://imgur.com/X6Lndd4.png)
-Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.
 
+Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.  
 With over 4 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
 
 > Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)
@@ -60,6 +60,7 @@ Portanator (code contributions)
 [TFA Blitz Sight Pack](https://steamcommunity.com/sharedfiles/filedetails/?id=1387617320) by tools guy-kun  
 [TFA Insurgency Shared Parts](https://steamcommunity.com/sharedfiles/filedetails/?id=2840032487) by YuRaNnNnZZ & DBot  
 [TFA Yanky's Sights Extension Pack](https://steamcommunity.com/sharedfiles/filedetails/?id=2217411806) by YanKy03  
+[Titanfall Grappling Hook](https://steamcommunity.com/sharedfiles/filedetails/?id=2818193469) by frestylek    
 [VManip Base by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2155366756) by datæ  
 [VManip Contextual Animations by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2155841271) by datæ  
 [VManip Quick Nades by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2157021399) by datæ  
