@@ -414,7 +414,7 @@ net.Receive("NotifyKill", function(len, ply)
         pointblank = ""
     end
 
-    if killedWith == "Tanto" or killedWith == "Japanese Ararebo" or killedWith == "KM-2000" then
+    if killedWith == "Tanto" or killedWith == "Mace" or killedWith == "KM-2000" then
         smackdown = "Smackdown +20 |"
         seperator = "| "
     else

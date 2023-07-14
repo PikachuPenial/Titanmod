@@ -11,6 +11,7 @@ Experiment with vaulting changes
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
 Custom crosshair system (seperate from TFA, allows for preview while editing, allows for crosshair while sprinting)
+Option for music during gameplay
 Drowning system
 Main Menu refactor
 VIP gamemode (you can select a loadout?)
