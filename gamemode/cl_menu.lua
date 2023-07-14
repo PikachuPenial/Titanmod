@@ -4261,6 +4261,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
             ExitButton.DoClick = function()
                 gui.ActivateGameUI()
+                StopMusic()
                 net.Start("CloseMainMenu")
                 net.SendToServer()
                 MainMenu:Remove()

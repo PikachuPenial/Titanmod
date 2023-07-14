@@ -133,18 +133,16 @@ function HUD()
     end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    --Numeric Style
     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
+        --Numeric Style
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(ammoTextR, ammoTextG, ammoTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
-    end
-
-    --Bar Style
-    if GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
+    else
+        --Bar Style
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
             if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(wepTextR, wepTextG, wepTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
