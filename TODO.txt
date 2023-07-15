@@ -1,16 +1,18 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
+Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
 Hook and Riot Shield cards
 More player cards for kills/streaks
 Allow for Text Chat on match end
 Shotgun Jumping
 Experiment with vaulting changes
+New hitsounds from community requested games
+RESEARCH METHODS OF REDUCING STUTTERS WHEN WEAPONS ARE GIVEN TO A PLAYER (THE STUTTERS ON GUN GAME AND FIESTA ARE SO HORRIBLE I WANT THIS DONE ASAP IM WRITING THIS IN ALL CAPS SO MY AUTISTIC ASS SEES THIS AND DOESNT DISMISS IT)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
-Custom crosshair system (seperate from TFA, allows for preview while editing, allows for crosshair while sprinting)
 Option for music during gameplay
 Drowning system
 Main Menu refactor

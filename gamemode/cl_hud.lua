@@ -530,26 +530,23 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif.Paint = function(self, w, h)
         if !IsValid(killedBy) then DeathNotif:Remove() return end
         if lastHitIn == 1 then
-            draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 145, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 165, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedFrom .. "m", WepFont, w / 2 + 10, 145, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedFrom .. "m", WepFont, w / 2 + 10, 165, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
         draw.SimpleText("Killed by", ArialFont, w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", DeathFont, w / 2, 115.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", DeathFont, w / 2, 140, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", DeathFont, w / 2, 165, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetName(), DeathFont, w / 2 - 10, 117.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedWith, DeathFont, w / 2 + 10, 117.5, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", DeathFont, w / 2, 135.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", DeathFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetName(), DeathFont, w / 2 - 10, 137.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedWith, DeathFont, w / 2 + 10, 137.5, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         if killedBy:Health() <= 0 then
-            draw.SimpleText("DEAD", WepFont, w / 2 - 10, 145, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw.SimpleText("DEAD", WepFont, w / 2 - 10, 165, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedBy:Health() .. "HP", WepFont, w / 2 - 10, 145, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedBy:Health() .. "HP", WepFont, w / 2 - 10, 165, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
-        draw.SimpleText("YOU " .. LocalPly:GetNWInt(killedBy:SteamID() .. "youKilled"), WepFont, w / 2 - 10, 170, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetNWInt(LocalPly:SteamID() .. "youKilled") .. " FOE", WepFont, w / 2 + 10, 170, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", ArialFont, w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

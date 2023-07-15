@@ -228,7 +228,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
 		end
 
-		attacker:SetNWInt(victim:SteamID() .. "youKilled", attacker:GetNWInt(victim:SteamID() .. "youKilled") + 1)
 		if grappleKillReset == true then attacker:SetNWFloat("linat", 0) end
 		attacker.HealthRegenNext = 0
 	end
