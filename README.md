@@ -3,7 +3,7 @@
 ![Titanmod Banner](https://imgur.com/X6Lndd4.png)
 
 Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.  
-With over 4 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
+With over 5 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
 
 > Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)  
 > Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)  
@@ -13,7 +13,7 @@ Here are a few of Titanmods features:
 --
 - Responsive and skill-based gunplay w/ an assortment of attachments
 - Simple and complex movement mechanics to master  
-- Map and Gamemode voting (FFA, Gun Game, Fiesta, and Shotty Snipers)  
+- Map and Gamemode voting (FFA, Gun Game, Fiesta, Shotty Snipers, and Cranked)  
 - Deep player customization and unlocks (40+ player models, 220+ player cards)  
 - Endless player progression (60 levels w/ prestiging, no prestige cap)  
 - In-depth settings  
@@ -32,15 +32,10 @@ Almost every aspact of Titanmod is configurable. Not only does it boast a wide a
 *Thank you to everyone who have created content, playtested, found bugs, or simply those who have taken the time out of their day to check out my passion project, I love you guys <3*
 
 # Credits:
-> Gamemode
-
-Zedorfski (Disequilibrium map)  
-Portanator (code contributions)
-
 > Maps
 
-[Bridge](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by TFfan92  
-[Corrugated](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by TFfan92  
+[Bridge](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by nyko_18   
+[Corrugated](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by heyo  
 [Disequilibrium](http://steamcommunity.com/profiles/76561198313962855) by Zedorfska  
 [Initial](https://steamcommunity.com/sharedfiles/filedetails/?id=2847368960) by wittepizza  
 [Legacy](https://steamcommunity.com/sharedfiles/filedetails/?id=2475123859) by Portanator  
@@ -48,11 +43,11 @@ Portanator (code contributions)
 [Mall](https://steamcommunity.com/sharedfiles/filedetails/?id=2722750107) by AkAvery  
 [Mephitic](https://steamcommunity.com/sharedfiles/filedetails/?id=2851253418) by wittepizza  
 [Nuketown](https://steamcommunity.com/sharedfiles/filedetails/?id=1812043945) by Timka Kidala  
-[Oxide](https://steamcommunity.com/sharedfiles/filedetails/?id=1759937246) by anvi  
+[Oxide](https://steamcommunity.com/sharedfiles/filedetails/?id=1759937246) by von*ferret     
 [Rig](https://steamcommunity.com/sharedfiles/filedetails/?id=1814169158) by Doxx Mulder & Sam  
 [Shipment](https://steamcommunity.com/sharedfiles/filedetails/?id=2682557992) by snake eyes  
 [Villa](https://steamcommunity.com/sharedfiles/filedetails/?id=1623087187) by BallFondler06  
-[Wreck](https://steamcommunity.com/sharedfiles/filedetails/?id=442985393) by MonarchMonk  
+[Wreck](https://steamcommunity.com/sharedfiles/filedetails/?id=442985393) by slipi & Pyroquantre    
 
 > Addons
 

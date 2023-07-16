@@ -59,7 +59,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then ply:ConCommand("tm_showloadout") end
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then ply:ConCommand("tm_showloadout") end
 	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
 end
 
@@ -586,7 +586,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end)
 
 		local connectedPlayers = player.GetHumans()
-		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
+		if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
 		for k, v in pairs(connectedPlayers) do
 			if player.GetCount() > 1 then

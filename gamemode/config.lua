@@ -35,6 +35,10 @@ fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to g
 --Gun Game settings
 ggLadderSize = 24               --Sets the amount of weapons a player needs to get kills with to win a match.
 
+--Cranked settings
+crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
+crankedBuffMultiplier = 1.33           --The multiplier for the buffs that being Cranked gives to a player
+
 --Mechanic settings
 grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
 grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
@@ -61,6 +65,7 @@ gamemodeArray[1] = {0, "FFA", "Kill others with randomly generated loadouts."}
 gamemodeArray[2] = {1, "Fiesta", "FFA with every player sharing the same loadout, with a new loadout being generated every " .. fiestaShuffleTime .. " seconds."}
 gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladder of " .. ggLadderSize .. " weapons."}
 gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun."}
+gamemodeArray[5] = {4, "Cranked", "FFA with kills granting the player increased movement capabilities."}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.

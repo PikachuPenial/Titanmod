@@ -12,6 +12,7 @@ local fiestaSecondary
 local fiestaMelee
 
 util.AddNetworkString("NotifyGGThreat")
+util.AddNetworkString("NotifyCranked")
 
 function ShuffleFiestaLoadout()
     SetGlobal2Int("FiestaTime", fiestaShuffleTime + GetGlobal2Int("FiestaTime"))
@@ -100,8 +101,21 @@ if activeGamemode == "Shotty Snipers" then
     end
 end
 
+--Generate the table of available weapons if the gamemode is set to Cranked.
+if activeGamemode == "Cranked" then
+    for k, v in pairs(weaponArray) do
+        if v[3] == "primary" then
+            table.insert(randPrimary, v[1])
+        elseif v[3] == "secondary" then
+            table.insert(randSecondary, v[1])
+        elseif v[3] == "melee" or v[3] == "gadget" then
+            table.insert(randMelee, v[1])
+        end
+    end
+end
+
 function HandlePlayerInitialSpawn(ply)
-    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
+    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
@@ -120,7 +134,7 @@ function HandlePlayerInitialSpawn(ply)
 end
 
 function HandlePlayerSpawn(ply)
-    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" then
+    if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then
         if usePrimary == true then
             ply:Give(ply:GetNWString("loadoutPrimary"))
         end
@@ -163,6 +177,24 @@ function HandlePlayerKill(ply, victim)
             net.Broadcast()
         end
     end
+
+    if activeGamemode == "Cranked" then
+        --Player buffs once they become "cranked".
+        if ply:GetRunSpeed() <= (275 * playerSpeedMulti) then
+            ply:SetRunSpeed(ply:GetRunSpeed() * crankedBuffMultiplier)
+            ply:SetWalkSpeed(ply:GetWalkSpeed() * crankedBuffMultiplier)
+            ply:SetLadderClimbSpeed(ply:GetLadderClimbSpeed() * crankedBuffMultiplier)
+            ply:SetSlowWalkSpeed(ply:GetSlowWalkSpeed() * crankedBuffMultiplier)
+            ply:SetCrouchedWalkSpeed(ply:GetCrouchedWalkSpeed() * crankedBuffMultiplier)
+        end
+
+        net.Start("NotifyCranked")
+        net.Send(ply)
+        timer.Create(ply:SteamID() .. "CrankedTimer", crankedSelfDestructTime, 1, function()
+            if GetGlobal2Bool("tm_matchended") == true then return end
+            ply:Kill()
+        end)
+    end
 end
 
 function HandlePlayerDeath(ply, weaponName)
@@ -174,5 +206,13 @@ function HandlePlayerDeath(ply, weaponName)
 
     if activeGamemode == "Gun Game" then
         if (weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
+    end
+
+    if activeGamemode == "Cranked" then
+        ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+        ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+
+        if timer.Exists(ply:SteamID() .. "CrankedTimer") then timer.Remove(ply:SteamID() .. "CrankedTimer") end
     end
 end

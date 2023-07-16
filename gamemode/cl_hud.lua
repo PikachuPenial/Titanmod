@@ -95,6 +95,7 @@ local ping = 0
 local updateRate = 0.66
 
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+local timeUntilSelfDestruct = 0
 
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
@@ -114,8 +115,7 @@ function HUD()
     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
-    if activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
 
     --Kill feed
     for k, v in pairs(feedArray) do
@@ -496,6 +496,7 @@ end )
 net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
+    if timer.Exists("CrankedTimeUntilDeath") then hook.Remove("Think", "CrankedTimeLeft") end
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
     if gameEnded then return end
 
@@ -1218,6 +1219,18 @@ net.Receive("NotifyGGThreat", function(len, ply)
         GGThreatNotif:MoveTo(ScrW() / 2 - 300, ScrH(), 1, 0, 0.25, function()
             GGThreatNotif:Remove()
         end)
+    end)
+end )
+
+--Displays after a player reaches the final weapon in Gun Game.
+net.Receive("NotifyCranked", function(len, ply)
+    timeUntilSelfDestruct = crankedSelfDestructTime
+    timer.Create("CrankedTimeUntilDeath", crankedSelfDestructTime, 1, function()
+        hook.Remove("Think", "CrankedTimeLeft")
+    end)
+
+    hook.Add("Think", "CrankedTimeLeft", function()
+        if timer.Exists("CrankedTimeUntilDeath") then timeUntilSelfDestruct = math.Round(timer.TimeLeft("CrankedTimeUntilDeath")) end
     end)
 end )
 
