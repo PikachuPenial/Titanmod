@@ -1,4 +1,5 @@
 AddCSLuaFile("performance/sh_optimization.lua")
+AddCSLuaFile("performance/cl_precacher.lua")
 AddCSLuaFile("performance/cl_rewrite_entity_index.lua")
 AddCSLuaFile("performance/cl_rewrite_player_index.lua")
 AddCSLuaFile("performance/cl_rewrite_weapon_index.lua")
@@ -59,8 +60,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then ply:ConCommand("tm_showloadout") end
-	ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
+	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode != "Gun Game" then ply:ConCommand("tm_showloadout") end
 end
 
 function GM:PlayerInitialSpawn(ply)

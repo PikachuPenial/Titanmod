@@ -1,3 +1,4 @@
+include("performance/cl_precacher.lua")
 include("performance/cl_rewrite_entity_index.lua")
 include("performance/cl_rewrite_player_index.lua")
 include("performance/cl_rewrite_weapon_index.lua")

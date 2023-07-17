@@ -10,6 +10,11 @@ New hitsounds from community requested games
 Gamemode priority (most gamemode votes will contain FFA, with a small chance to have two special modes)
 RESEARCH METHODS OF REDUCING STUTTERS WHEN WEAPONS ARE GIVEN TO A PLAYER (THE STUTTERS ON GUN GAME AND FIESTA ARE SO HORRIBLE I WANT THIS DONE ASAP IM WRITING THIS IN ALL CAPS SO MY AUTISTIC ASS SEES THIS AND DOESNT DISMISS IT)
 
+fix s&w reload on deploy
+fix spawning inside players
+server side Optimization
+player explosion when cranked timer ends
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen

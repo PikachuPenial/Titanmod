@@ -497,6 +497,7 @@ net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if timer.Exists("CrankedTimeUntilDeath") then hook.Remove("Think", "CrankedTimeLeft") end
+    timeUntilSelfDestruct = 0
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
     if gameEnded then return end
 
