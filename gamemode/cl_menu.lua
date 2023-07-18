@@ -527,6 +527,9 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local function ShowTutorial()
+                local ContextBind = "Context Menu Bind"
+                if input.LookupBinding("+menu_context") != nil then ContextBind = input.LookupBinding("+menu_context") end
+
                 local TutorialPanel = vgui.Create("DFrame", MainMenu)
                 TutorialPanel:SetSize(864, 768)
                 TutorialPanel:MakePopup()
@@ -586,7 +589,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 WeaponryLabel:SetSize(554, 230)
                 WeaponryLabel:SetFont("GModNotify")
                 WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
-You can use your Context Menu key []] .. input.LookupBinding("+menu_context") .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
+You can use your Context Menu key []] .. ContextBind .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
 Each weapon has its own unique recoil pattern to learn.
 Bullets are hitscan and can penetrate through surfaces.
 ]])
