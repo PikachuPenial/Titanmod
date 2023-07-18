@@ -639,7 +639,7 @@ net.Receive("EndOfGame", function(len, ply)
     local VotingActive = false
 
     local connectedPlayers = player.GetHumans()
-    if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
+    if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
 
     --Creates a timer so players can see how long it will be until the next match starts.
     timer.Create("timeUntilNextMatch", 33, 1, function()
@@ -822,99 +822,6 @@ net.Receive("EndOfGame", function(len, ply)
             end
         end
 
-        local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
-        PlayerScrollPanel:Dock(FILL)
-        PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
-        PlayerScrollPanel.Paint = function(self, w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
-        end
-
-        local sbar = PlayerScrollPanel:GetVBar()
-        function sbar:Paint(w, h)
-            draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
-        end
-        function sbar.btnUp:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-        end
-        function sbar.btnDown:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-        end
-        function sbar.btnGrip:Paint(w, h)
-            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
-        end
-
-        PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
-        PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
-
-        for k, v in pairs(connectedPlayers) do
-            --Constants for basic player information, much more optimized than checking every frame.
-            if !IsValid(v) then return end
-            local name = v:GetName()
-            local prestige = v:GetNWInt("playerPrestige")
-            local level = v:GetNWInt("playerLevel")
-            local frags = v:Frags()
-            local deaths = v:Deaths()
-            local ratio
-            local score = v:GetNWInt("playerScoreMatch")
-
-            --Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
-            if v:Frags() <= 0 then
-                ratio = 0
-            elseif v:Frags() >= 1 and v:Deaths() == 0 then
-                ratio = v:Frags()
-            else
-                ratio = v:Frags() / v:Deaths()
-            end
-
-            local ratioRounded = math.Round(ratio, 2)
-
-            local PlayerPanel = vgui.Create("DPanel", PlayerList)
-            PlayerPanel:SetSize(PlayerList:GetWide(), 125)
-            PlayerPanel:SetPos(0, 0)
-            PlayerPanel.Paint = function(self, w, h)
-                if !IsValid(v) then return end
-                if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
-
-                draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level, "Health", 10, 0, white, TEXT_ALIGN_LEFT)
-                draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
-                draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-                draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                draw.SimpleText(score, "Health", 427, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-            end
-
-            local KillsIcon = vgui.Create("DImage", PlayerPanel)
-            KillsIcon:SetPos(260, 42)
-            KillsIcon:SetSize(20, 20)
-            KillsIcon:SetImage("icons/killicon.png")
-
-            local DeathsIcon = vgui.Create("DImage", PlayerPanel)
-            DeathsIcon:SetPos(260, 67)
-            DeathsIcon:SetSize(20, 20)
-            DeathsIcon:SetImage("icons/deathicon.png")
-
-            local KDIcon = vgui.Create("DImage", PlayerPanel)
-            KDIcon:SetPos(260, 92)
-            KDIcon:SetSize(20, 20)
-            KDIcon:SetImage("icons/ratioicon.png")
-
-            local ScoreIcon = vgui.Create("DImage", PlayerPanel)
-            ScoreIcon:SetPos(432, 92)
-            ScoreIcon:SetSize(20, 20)
-            ScoreIcon:SetImage("icons/scoreicon.png")
-
-            --Displays a players calling card and profile picture.
-            local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
-            PlayerCallingCard:SetPos(10, 35)
-            PlayerCallingCard:SetSize(240, 80)
-
-            if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
-
-            local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
-            PlayerProfilePicture:SetPos(5, 5)
-            PlayerProfilePicture:SetSize(70, 70)
-            PlayerProfilePicture:SetPlayer(v, 184)
-        end
-
         local MapChoice = vgui.Create("DImageButton", VotingPanel)
         local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
         local ModeChoice = vgui.Create("DButton", GamemodePanel)
@@ -1089,6 +996,99 @@ net.Receive("EndOfGame", function(len, ply)
             else
                 permissions.EnableVoiceChat(true)
             end
+        end
+
+        local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
+        PlayerScrollPanel:Dock(FILL)
+        PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
+        PlayerScrollPanel.Paint = function(self, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+        end
+
+        local sbar = PlayerScrollPanel:GetVBar()
+        function sbar:Paint(w, h)
+            draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
+        end
+        function sbar.btnUp:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+        end
+        function sbar.btnDown:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+        end
+        function sbar.btnGrip:Paint(w, h)
+            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+        end
+
+        PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
+        PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
+
+        for k, v in pairs(connectedPlayers) do
+            --Constants for basic player information, much more optimized than checking every frame.
+            if !IsValid(v) then return end
+            local name = v:GetName()
+            local prestige = v:GetNWInt("playerPrestige")
+            local level = v:GetNWInt("playerLevel")
+            local frags = v:Frags()
+            local deaths = v:Deaths()
+            local ratio
+            local score = v:GetNWInt("playerScoreMatch")
+
+            --Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
+            if v:Frags() <= 0 then
+                ratio = 0
+            elseif v:Frags() >= 1 and v:Deaths() == 0 then
+                ratio = v:Frags()
+            else
+                ratio = v:Frags() / v:Deaths()
+            end
+
+            local ratioRounded = math.Round(ratio, 2)
+
+            local PlayerPanel = vgui.Create("DPanel", PlayerList)
+            PlayerPanel:SetSize(PlayerList:GetWide(), 125)
+            PlayerPanel:SetPos(0, 0)
+            PlayerPanel.Paint = function(self, w, h)
+                if !IsValid(v) then return end
+                if k == 1 then draw.RoundedBox(0, 0, 0, w, h, Color(150, 150, 35, 40)) else draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 40)) end
+
+                draw.SimpleText(name .. " | " .. "P" .. prestige .. " L" .. level, "Health", 10, 0, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText(score, "Health", 427, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+            end
+
+            local KillsIcon = vgui.Create("DImage", PlayerPanel)
+            KillsIcon:SetPos(260, 42)
+            KillsIcon:SetSize(20, 20)
+            KillsIcon:SetImage("icons/killicon.png")
+
+            local DeathsIcon = vgui.Create("DImage", PlayerPanel)
+            DeathsIcon:SetPos(260, 67)
+            DeathsIcon:SetSize(20, 20)
+            DeathsIcon:SetImage("icons/deathicon.png")
+
+            local KDIcon = vgui.Create("DImage", PlayerPanel)
+            KDIcon:SetPos(260, 92)
+            KDIcon:SetSize(20, 20)
+            KDIcon:SetImage("icons/ratioicon.png")
+
+            local ScoreIcon = vgui.Create("DImage", PlayerPanel)
+            ScoreIcon:SetPos(432, 92)
+            ScoreIcon:SetSize(20, 20)
+            ScoreIcon:SetImage("icons/scoreicon.png")
+
+            --Displays a players calling card and profile picture.
+            local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
+            PlayerCallingCard:SetPos(10, 35)
+            PlayerCallingCard:SetSize(240, 80)
+
+            if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
+
+            local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
+            PlayerProfilePicture:SetPos(5, 5)
+            PlayerProfilePicture:SetSize(70, 70)
+            PlayerProfilePicture:SetPlayer(v, 184)
         end
     end
 

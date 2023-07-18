@@ -8,7 +8,6 @@ function PrecacheDir(dir)
 
     for k,v in pairs(files) do
         local fname = string.lower(dir..v)
-            print(fname)
         local ismodel = -1
         local ismaterial = -1
         local isparticle = -1
@@ -397,4 +396,3 @@ function PrecacheAll()
 end
 
 PrecacheAll()
-print("BEGAN PRECACHER")
