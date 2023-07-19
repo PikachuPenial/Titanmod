@@ -7,7 +7,9 @@ With over 5 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the
 
 > Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)  
 > Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)  
-> Play on the Titanmod dedicated server: **connect 45.88.228.52:27065**  
+> Play on the Titanmod dedicated server:    
+> US: **connect 45.88.228.52:27065**    
+> EU: **connect 45.88.228.52:27065**  
 
 Here are a few of Titanmods features:
 --
@@ -67,6 +69,7 @@ Almost every aspact of Titanmod is configurable. Not only does it boast a wide a
 
 _P0w    
 afiais  
+CaptainBear     
 DEcaf   
 JustAMegumin    
 MatKri  
@@ -74,6 +77,7 @@ mooseisrael321
 Plat    
 Portanator  
 RandomSZ    
+RubberBalls     
 Seven   
 suomij  
 theBean     
