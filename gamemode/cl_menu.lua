@@ -2090,7 +2090,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 1085)
+                    DockModelsAccolade:SetSize(0, 1550)
 
                     --Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
@@ -2767,7 +2767,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockModels:SetSize(0, 465)
                             DockModelsKills:SetSize(0, 310)
                             DockModelsStreak:SetSize(0, 310)
-                            DockModelsAccolade:SetSize(0, 1085)
+                            DockModelsAccolade:SetSize(0, 1550)
                         end
                     end
 
