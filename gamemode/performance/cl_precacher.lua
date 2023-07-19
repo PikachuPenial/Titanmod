@@ -391,8 +391,6 @@ function PrecacheAll()
     PrecacheDir("sound/weapons/tfa_tannenberg_type30/")
     PrecacheDir("sound/weapons/tfa_ww2_pzb39/")
     PrecacheDir("sound/weapons/tfre/winchester/")
-
-    print("Titanmod Precahcer Finished")
 end
 
 PrecacheAll()
