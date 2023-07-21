@@ -176,7 +176,7 @@ end
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-512, -512, -384), pos + Vector(512, 512, 384))
+	local entities = ents.FindInBox(pos + Vector(-640, -640, -384), pos + Vector(640, 640, 384))
 	if (ply:Team() == TEAM_SPECTATOR) then return true end
 	local entsBlocking = 0
 

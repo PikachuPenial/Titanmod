@@ -86,12 +86,18 @@ if CLIENT then
     CreateClientConVar("tm_hud_keypressoverlay_actuated_r", 255, true, false, "Adjusts the red coloring for a actuated key on the keypress overlay", 0, 255)
     CreateClientConVar("tm_hud_keypressoverlay_actuated_g", 0, true, false, "Adjusts the green coloring for a actuated key on the keypress overlay", 0, 255)
     CreateClientConVar("tm_hud_keypressoverlay_actuated_b", 0, true, false, "Adjusts the blue coloring for a actuated key on the keypress overlay", 0, 255)
-    CreateClientConVar("tm_hud_fpscounter", 0, true, false, "Enable/disable the keypress overlay (shows which keys are being pressed on your screen)", 0, 1)
+    CreateClientConVar("tm_hud_fpscounter", 0, true, false, "Enable/disable a FPS counter", 0, 1)
     CreateClientConVar("tm_hud_fpscounter_x", 10, true, false, "Adjusts the X offset of the FPS and ping counter", 0, ScrW())
     CreateClientConVar("tm_hud_fpscounter_y", 5, true, false, "Adjusts the Y offset of the FPS and ping counter", 0, ScrH())
     CreateClientConVar("tm_hud_fpscounter_r", 255, true, false, "Adjusts the red coloring for the FPS and ping counter", 0, 255)
     CreateClientConVar("tm_hud_fpscounter_g", 255, true, false, "Adjusts the green coloring for the FPS and ping counter", 0, 255)
     CreateClientConVar("tm_hud_fpscounter_b", 255, true, false, "Adjusts the blue coloring for the FPS and ping counter", 0, 255)
+    CreateClientConVar("tm_hud_velocitycounter", 0, true, false, "Enable/disable a velocity counter", 0, 1)
+    CreateClientConVar("tm_hud_velocitycounter_x", 10, true, false, "Adjusts the X offset of the FPS and ping counter", 0, ScrW())
+    CreateClientConVar("tm_hud_velocitycounter_y", 200, true, false, "Adjusts the Y offset of the FPS and ping counter", 0, ScrH())
+    CreateClientConVar("tm_hud_velocitycounter_r", 255, true, false, "Adjusts the red coloring for the FPS and ping counter", 0, 255)
+    CreateClientConVar("tm_hud_velocitycounter_g", 255, true, false, "Adjusts the green coloring for the FPS and ping counter", 0, 255)
+    CreateClientConVar("tm_hud_velocitycounter_b", 255, true, false, "Adjusts the blue coloring for the FPS and ping counter", 0, 255)
 end
 
 --Disabling footsteps if a player is crouched.
@@ -164,7 +170,7 @@ modelArray[42] = {"models/Krueger_PlayerModel/Zaper/Krueger_Body.mdl", "Krueger"
 modelArray[43] = {"models/player/tabspeasant.mdl", "Wobbler", "killstreaks", 160}
 modelArray[44] = {"models/captainbigbutt/vocaloid/miku_classic.mdl", "Miku", "killstreaks", 320}
 modelArray[45] = {"models/Fate_Extella_Link/Astolfo/Astolfo.mdl", "Astolfo", "killstreaks", 480}
-modelArray[46] = {"models/player/voikanaa/snoop_dogg.mdl", "Snoop Dog", "buzzkills", 60}
+modelArray[46] = {"models/player/voikanaa/snoop_dogg.mdl", "Snoop Dogg", "buzzkills", 60}
 modelArray[47] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Viper", "buzzkills", 120}
 modelArray[48] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "buzzkills", 200}
 modelArray[49] = {"models/auditor/re2/chr_hunk_pmrig.mdl", "Hunk", "buzzkills", 320}
@@ -359,36 +365,36 @@ cardArray[183] = {"cards/mastery/webley.png", "Bear Witness", "Webley mastery", 
 cardArray[184] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
 --Leveling Cards
-cardArray[185] = {"cards/leveling/10.png", "Mist", "", "level", 10}
-cardArray[186] = {"cards/leveling/20.png", "Shift", "", "level", 20}
-cardArray[187] = {"cards/leveling/30.png", "Powerhouse", "", "level", 30}
-cardArray[188] = {"cards/leveling/40.png", "Drainer", "", "level", 40}
-cardArray[189] = {"cards/leveling/50.png", "Kitty", "", "level", 50}
-cardArray[190] = {"cards/leveling/60.png", "Kill Yourself", "", "level", 60}
-cardArray[191] = {"cards/leveling/70.png", "Arctic", "", "level", 70}
-cardArray[192] = {"cards/leveling/80.png", "Shark", "", "level", 80}
-cardArray[193] = {"cards/leveling/90.png", "Boss Up", "", "level", 90}
-cardArray[194] = {"cards/leveling/100.png", "Rig", "", "level", 100}
-cardArray[195] = {"cards/leveling/110.png", "Station", "", "level", 110}
-cardArray[196] = {"cards/leveling/120.png", "Ray", "", "level", 120}
-cardArray[197] = {"cards/leveling/130.png", "Dunes", "", "level", 130}
-cardArray[198] = {"cards/leveling/140.png", "Pyro", "", "level", 140}
-cardArray[199] = {"cards/leveling/150.png", "Table", "", "level", 150}
-cardArray[200] = {"cards/leveling/160.png", "Critters", "", "level", 160}
-cardArray[201] = {"cards/leveling/170.png", "Sweat", "", "level", 170}
-cardArray[202] = {"cards/leveling/180.png", "Walls", "", "level", 180}
-cardArray[203] = {"cards/leveling/190.png", "Dinner", "", "level", 190}
-cardArray[204] = {"cards/leveling/200.png", "Thunder", "", "level", 200}
-cardArray[205] = {"cards/leveling/210.png", "David", "", "level", 210}
-cardArray[206] = {"cards/leveling/220.png", "Ohio", "", "level", 220}
-cardArray[207] = {"cards/leveling/230.png", "Eyepatch", "", "level", 230}
-cardArray[208] = {"cards/leveling/240.png", "Pro", "", "level", 240}
-cardArray[209] = {"cards/leveling/250.png", "Stare", "", "level", 250}
-cardArray[210] = {"cards/leveling/260.png", "Death", "", "level", 260}
-cardArray[211] = {"cards/leveling/270.png", "Monstor", "", "level", 270}
-cardArray[212] = {"cards/leveling/280.png", "Meep", "", "level", 280}
-cardArray[213] = {"cards/leveling/290.png", "Superpowers", "", "level", 290}
-cardArray[214] = {"cards/leveling/300.png", "Shocked", "", "level", 300}
+cardArray[185] = {"cards/leveling/5.png", "Mist", "", "level", 5}
+cardArray[186] = {"cards/leveling/10.png", "Shift", "", "level", 10}
+cardArray[187] = {"cards/leveling/15.png", "Powerhouse", "", "level", 15}
+cardArray[188] = {"cards/leveling/20.png", "Drainer", "", "level", 20}
+cardArray[189] = {"cards/leveling/25.png", "Kitty", "", "level", 25}
+cardArray[190] = {"cards/leveling/30.png", "Kill Yourself", "", "level", 30}
+cardArray[191] = {"cards/leveling/35.png", "Arctic", "", "level", 35}
+cardArray[192] = {"cards/leveling/40.png", "Shark", "", "level", 49}
+cardArray[193] = {"cards/leveling/45.png", "Bath", "", "level", 45}
+cardArray[194] = {"cards/leveling/50.png", "Rig", "", "level", 50}
+cardArray[195] = {"cards/leveling/55.png", "Station", "", "level", 55}
+cardArray[196] = {"cards/leveling/60.png", "Scenic", "", "level", 60}
+cardArray[197] = {"cards/leveling/65.png", "Dunes", "", "level", 65}
+cardArray[198] = {"cards/leveling/70.png", "Pyro", "", "level", 70}
+cardArray[199] = {"cards/leveling/75.png", "Toxicity", "", "level", 75}
+cardArray[200] = {"cards/leveling/80.png", "Scott Up", "", "level", 80}
+cardArray[201] = {"cards/leveling/85.png", "Sweat", "", "level", 85}
+cardArray[202] = {"cards/leveling/90.png", "Walls", "", "level", 90}
+cardArray[203] = {"cards/leveling/95.png", "Dinner", "", "level", 95}
+cardArray[204] = {"cards/leveling/100.png", "Thunder", "", "level", 100}
+cardArray[205] = {"cards/leveling/105.png", "David", "", "level", 105}
+cardArray[206] = {"cards/leveling/110.png", "Ohio", "", "level", 110}
+cardArray[207] = {"cards/leveling/115.png", "Eyepatch", "", "level", 115}
+cardArray[208] = {"cards/leveling/120.png", "Pro", "", "level", 120}
+cardArray[209] = {"cards/leveling/125.png", "Stare", "", "level", 125}
+cardArray[210] = {"cards/leveling/130.png", "Death", "", "level", 130}
+cardArray[211] = {"cards/leveling/135.png", "Monstor", "", "level", 135}
+cardArray[212] = {"cards/leveling/140.png", "Meep", "", "level", 140}
+cardArray[213] = {"cards/leveling/145.png", "Superpowers", "", "level", 145}
+cardArray[214] = {"cards/leveling/150.png", "Shocked", "", "level", 150}
 
 --Pride cards
 cardArray[215] = {"cards/pride/pride.png", "Pride", "Pride flag", "pride", "pride"}
@@ -458,18 +464,18 @@ levelArray[51] = {51, 7250}
 levelArray[52] = {52, 7450}
 levelArray[53] = {53, 7650}
 levelArray[54] = {54, 7850}
-levelArray[55] = {55, 8075} -- +225 XP
-levelArray[56] = {56, 8300}
-levelArray[57] = {57, 8525}
-levelArray[58] = {58, 8750}
-levelArray[59] = {59, 8975}
+levelArray[55] = {55, 8050}
+levelArray[56] = {56, 8250}
+levelArray[57] = {57, 8450}
+levelArray[58] = {58, 8650}
+levelArray[59] = {59, 8850}
 levelArray[60] = {60, "prestige"}
 
 --Hints, are displayed at the bottom of the Main Menu.
 hintArray = {"Ball Torture is $0.39 on Steam", "Winning the match nets you bonus XP", "Suppressors might make your gun sound badass, but it will also lower your damage", "Be vigilant with the acidic flood while playing on the Mephitic map", "Match Ammunition is a good choice for low accuracy weapons", "Follow CaptainBear on the Steam Workshop", "Switching to your secondary is 'usually' faster than reloading", "To win a match, a player must have more score than the rest of the competing players", "Voice chat is proximity based, do with this information as you see fit", "Magnum ammunition pairs extremely well with low damage weapons", "Slug ammunition turns your traditional shotgun into a marksman rifle", "Try personalizing yourself in the cuztomization menus", "Crouching completely eliminates your footstep audio, embrace the sneaky", "Underbarrel grenade launchers can be used by pressing Interact + Left Click", "You can cycle through firing modes by using your Interact + Reload keys", "All melee weapons can be thrown with the reload key", "Air strafing is extremely useful, try to incorperate it into your playstyle", "G.I.B ammunition is a good choice if you want to slow down hit opponents", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed", "Explosive barrels can be used as a funny distraction", "Players can not shoot most weapons while submerged in water, use this to your advantage", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others", "The grappling hook can easily be used to start favorable engagments", "Jumping and/or being in mid air gives your weapons less accuracy", "Sliding provides the same accuracy and recoil benefits as crouching", "Chaining multiple accolades together can give a big score/XP boost", "Accolades award good amounts of score and XP", "Running any optic lowers your weapons ADS speed", "There are over 125+ weapons, try to get consistent with many different loadouts", "There is no scope glint, hardscope all you want", "Hip fire is an effective strategy while on the move", "Other players can see your flashlight, be cautious", "Certain playermodels may shine or stand out in dark enviroments", "Combine wall running and jumping for extremely unpredictable movement", "Wall running through a chokepoint can catch opponents off guard", "Wall jumping constantly allows for continuous climbing of said wall", "All melee weapons have a left and right click attack, learn how effective each are", "Attachments save throughout play sessions, tweak your guns once and you are done", "Some snipers and hand cannons can one shot to the torso", "Explosives hurt, don't aim downwards if you want to stay alive", "Crouching drastically increases your accuracy and recoil control", "Each weapon has its own distinct recoil pattern to master", "Your grappling hook cooldown refreshes on each kill", "Shooting the torso and/or head will guarintee good damage per shot", "You can sprint and/or slide in any direction, not just forwards", "Don't stand still, potshotters will have an easy time killing you", "The vehicles can be mounted and surfed on while playing the Bridge map", "Bunny hopping will help perserve velocity after landing from a grapple/slide"}
 
 --Quotes, are displayed on the victory/defeat screeen.
-quoteArray = {'"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"i may be im i may i have autism" -Penial', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls'}
+quoteArray = {'"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"i may be im i may i have autism" -Penial', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls', '"im like that" -Homeless', '"i need about tree fiddy" -Random Films', '"bring out the whole ocean" -Robo'}
 
 --Derives the gamemode with Sandbox if Developer Mode is enabled on server start.
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end

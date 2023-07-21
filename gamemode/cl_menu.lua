@@ -2931,11 +2931,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 240)
+                    DockInputs:SetSize(0, 280)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 315)
+                    DockUI:SetSize(0, 355)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -3071,9 +3071,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 225, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -3085,8 +3086,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     adsSensitivity:SetDecimals(0)
                     adsSensitivity:SetTooltip("Adjust the sensitivity while aiming down sights.")
 
+                    local compensateSensWithFOV = DockInputs:Add("DCheckBox")
+                    compensateSensWithFOV:SetPos(20, 110)
+                    compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
+                    compensateSensWithFOV:SetSize(30, 30)
+                    compensateSensWithFOV:SetTooltip("Change the ADS sensitivity depending on the weapons FOV.")
+
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 110)
+                    mainMenuBind:SetPos(22.5, 150)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     mainMenuBind:SetTooltip("Adjust the keybind for opening the main menu.")
@@ -3097,7 +3104,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 150)
+                    grenadeBind:SetPos(22.5, 190)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     grenadeBind:SetTooltip("Adjust the keybind for throwing a grenade.")
@@ -3108,7 +3115,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 190)
+                    grappleBind:SetPos(22.5, 230)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     grappleBind:SetTooltip("Adjust the keybind for using a grappling hook")
@@ -3128,6 +3135,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("FPS/Ping Counter", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -3165,6 +3173,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     FPSPingCounterToggle:SetConVar("tm_hud_fpscounter")
                     FPSPingCounterToggle:SetSize(30, 30)
                     FPSPingCounterToggle:SetTooltip("Enable a HUD element that shows your FPS and ping.")
+
+                    local VelocityCounterToggle = DockUI:Add("DCheckBox")
+                    VelocityCounterToggle:SetPos(20, 310)
+                    VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
+                    VelocityCounterToggle:SetSize(30, 30)
+                    VelocityCounterToggle:SetTooltip("Enable a HUD element that shows your velocity.")
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3512,6 +3526,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local health = 100
                 local ammo = 30
+                local velocity = 350
                 local wep = "KRISS Vector"
                 local fakeFeedArray = {}
                 local grappleMat = Material("icons/grapplehudicon.png")
@@ -3520,6 +3535,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 timer.Create("previewLoop", 1, 0, function()
                     health = math.random(1, 100)
                     ammo = math.random(1, 30)
+                    velocity = math.random(0, 400)
                 end)
 
                 local FakeHUD = MainMenu:Add("HUDEditorPanel")
@@ -3611,6 +3627,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
                         draw.SimpleText("420 FPS", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt(), Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                         draw.SimpleText("69 PING", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt() + 25, Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    end
+                    if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
+                        draw.SimpleText(velocity, "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 end
 
@@ -4149,6 +4168,50 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 FPSPingCounterColor:SetPalette(false)
                 FPSPingCounterColor:SetWangs(true)
                 FPSPingCounterColor:SetTooltip("Adjusts the color of the text on the FPS and ping counter.")
+
+                local VelocityCounter
+                if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then VelocityCounter = vgui.Create("DPanel", EditorScroller) else
+                    VelocityCounter = vgui.Create("DPanel", HiddenOptionsScroller)
+                    ShowHiddenOptions = true
+                end
+                VelocityCounter:Dock(TOP)
+                VelocityCounter:SetSize(0, 200)
+                VelocityCounter.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                    draw.SimpleText("VELOCITY COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Text Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
+                end
+
+                local VelocityCounterX = VelocityCounter:Add("DNumSlider")
+                VelocityCounterX:SetPos(-85, 50)
+                VelocityCounterX:SetSize(250, 30)
+                VelocityCounterX:SetConVar("tm_hud_velocitycounter_x")
+                VelocityCounterX:SetMin(0)
+                VelocityCounterX:SetMax(ScrW())
+                VelocityCounterX:SetDecimals(0)
+                VelocityCounterX:SetTooltip("Adjust the X offset of your velocity counter.")
+
+                local VelocityCounterY = VelocityCounter:Add("DNumSlider")
+                VelocityCounterY:SetPos(-85, 80)
+                VelocityCounterY:SetSize(250, 30)
+                VelocityCounterY:SetConVar("tm_hud_velocitycounter_y")
+                VelocityCounterY:SetMin(0)
+                VelocityCounterY:SetMax(ScrH())
+                VelocityCounterY:SetDecimals(0)
+                VelocityCounterY:SetTooltip("Adjust the Y offset of your velocity counter")
+
+                local VelocityCounterColor = vgui.Create("DColorMixer", VelocityCounter)
+                VelocityCounterColor:SetPos(20, 120)
+                VelocityCounterColor:SetSize(185, 70)
+                VelocityCounterColor:SetConVarR("tm_hud_velocitycounter_r")
+                VelocityCounterColor:SetConVarG("tm_hud_velocitycounter_g")
+                VelocityCounterColor:SetConVarB("tm_hud_velocitycounter_b")
+                VelocityCounterColor:SetAlphaBar(false)
+                VelocityCounterColor:SetPalette(false)
+                VelocityCounterColor:SetWangs(true)
+                VelocityCounterColor:SetTooltip("Adjusts the color of the text on the velocity counter.")
 
                 local HiddenOptionsCollapse = vgui.Create("DCollapsibleCategory", EditorScroller)
                 HiddenOptionsCollapse:SetLabel("Show options for disabled HUD elements")

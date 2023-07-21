@@ -14,6 +14,9 @@ fix spawning inside players
 server side Optimization
 player explosion when cranked timer ends
 
+optimize HUD variables with tables
+update hud reset console command with new options
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
@@ -25,7 +28,6 @@ GUN MENU
 - attachment editing (if possible)
 - unique music 
 
-Drowning system
 Main Menu refactor
 VIP gamemode (you can select a loadout?)
 Item unlock tracking through scoreboard

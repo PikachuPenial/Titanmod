@@ -6,9 +6,12 @@ local gameEnded = false
 local feedArray = {}
 local health
 
-local healthSize = GetConVar("tm_hud_health_size"):GetInt()
-local healthOffsetX = GetConVar("tm_hud_health_offset_x"):GetInt()
-local healthOffsetY = GetConVar("tm_hud_health_offset_y"):GetInt()
+local healthHUD = {
+    ["size"] = GetConVar("tm_hud_health_size"):GetInt(),
+    ["x"] = GetConVar("tm_hud_health_offset_x"):GetInt(),
+    ["y"] = GetConVar("tm_hud_health_offset_y"):GetInt()
+}
+
 local wepTextR = GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt()
 local wepTextG = GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt()
 local wepTextB = GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()
@@ -48,11 +51,22 @@ local kpoInactiveB = GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt()
 local kpoActuatedR = GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt()
 local kpoActuatedG = GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt()
 local kpoActuatedB = GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt()
-local fpsX = GetConVar("tm_hud_fpscounter_x"):GetInt()
-local fpsY = GetConVar("tm_hud_fpscounter_y"):GetInt()
-local fpsR = GetConVar("tm_hud_fpscounter_r"):GetInt()
-local fpsG = GetConVar("tm_hud_fpscounter_g"):GetInt()
-local fpsB = GetConVar("tm_hud_fpscounter_b"):GetInt()
+
+local fpsHUD = {
+    ["x"] = GetConVar("tm_hud_fpscounter_x"):GetInt(),
+    ["y"] = GetConVar("tm_hud_fpscounter_y"):GetInt(),
+    ["r"] = GetConVar("tm_hud_fpscounter_r"):GetInt(),
+    ["g"] = GetConVar("tm_hud_fpscounter_g"):GetInt(),
+    ["b"] = GetConVar("tm_hud_fpscounter_b"):GetInt()
+}
+
+local velocityHUD = {
+    ["x"] = GetConVar("tm_hud_velocitycounter_x"):GetInt(),
+    ["y"] = GetConVar("tm_hud_velocitycounter_y"):GetInt(),
+    ["r"] = GetConVar("tm_hud_velocitycounter_r"):GetInt(),
+    ["g"] = GetConVar("tm_hud_velocitycounter_g"):GetInt(),
+    ["b"] = GetConVar("tm_hud_velocitycounter_b"):GetInt()
+}
 
 local StreakFont = "StreakText"
 local NameFont = "PlayerNotiName"
@@ -90,7 +104,7 @@ local actuatedColor = Color(kpoActuatedR, kpoActuatedG, kpoActuatedB)
 local inactiveColor = Color(kpoInactiveR, kpoInactiveG, kpoInactiveB)
 
 local LocalPly
-local fps = 0
+local clientFPS = 0
 local ping = 0
 local updateRate = 0.66
 
@@ -105,7 +119,7 @@ function HUD()
 
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
         timer.Create("CounterUpdate", updateRate, 0, function()
-            fps = tostring(math.floor(1 / RealFrameTime()))
+            clientFPS = tostring(math.floor(1 / RealFrameTime()))
             ping = LocalPly:Ping()
         end)
     end
@@ -128,8 +142,8 @@ function HUD()
 
     --FPS and ping counter
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
-        draw.SimpleText(fps .. " FPS", "HUD_Health", ScrW() - fpsX, fpsY, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsX, fpsY + 25, Color(fpsR, fpsG, fpsB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(clientFPS .. " FPS", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"], Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"] + 25, Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
     end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
@@ -169,7 +183,7 @@ function HUD()
     --Shows the players health depending on the style they have selected in Options.
     if LocalPly:Health() <= 0 then health = 0 else health = LocalPly:Health() end
     surface.SetDrawColor(50, 50, 50, 80)
-    surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize, 30)
+    surface.DrawRect(10 + healthHUD["x"], ScrH() - 38 - healthHUD["y"], healthHUD["size"], 30)
 
     if LocalPly:Health() <= 66 then
         if LocalPly:Health() <= 33 then
@@ -181,8 +195,8 @@ function HUD()
         surface.SetDrawColor(hpHighR, hpHighG, hpHighB, 120)
     end
 
-    surface.DrawRect(10 + healthOffsetX, ScrH() - 38 - healthOffsetY, healthSize * (LocalPly:Health() / LocalPly:GetMaxHealth()), 30)
-    draw.SimpleText(health, "HUD_Health", healthSize + healthOffsetX, ScrH() - 24 - healthOffsetY, Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+    surface.DrawRect(10 + healthHUD["x"], ScrH() - 38 - healthHUD["y"], healthHUD["size"] * (LocalPly:Health() / LocalPly:GetMaxHealth()), 30)
+    draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"], ScrH() - 24 - healthHUD["y"], Color(hpTextR, hpTextG, hpTextB), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Grappling hook disclaimer.
     if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
@@ -280,6 +294,9 @@ function HUD()
         draw.SimpleText("RUN", "HUD_StreakText", 33 + kpoX, 165 + kpoY, sColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("DUCK", "HUD_StreakText", 105 + kpoX, 165 + kpoY, cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
+
+    --Velocity counter
+    if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())), "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
     --Disclaimer for players connecting during an active gamemode and map vote.
     if GetGlobal2Bool("tm_matchended") == true then
@@ -1255,13 +1272,13 @@ concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
 
 --ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings.
 cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)
-    healthSize = value_new
+    healthHUD["size"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_health_offset_x", function(convar_name, value_old, value_new)
-    healthOffsetX = value_new
+    healthHUD["x"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_health_offset_y", function(convar_name, value_old, value_new)
-    healthOffsetY = value_new
+    healthHUD["y"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_r", function(convar_name, value_old, value_new)
     wepTextR = value_new
@@ -1381,19 +1398,34 @@ cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_b", function(convar_nam
     kpoActuatedB = value_new
 end)
 cvars.AddChangeCallback("tm_hud_fpscounter_x", function(convar_name, value_old, value_new)
-    fpsX = value_new
+    fpsHUD["x"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_fpscounter_y", function(convar_name, value_old, value_new)
-    fpsY = value_new
+    fpsHUD["y"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_fpscounter_r", function(convar_name, value_old, value_new)
-    fpsR = value_new
+    fpsHUD["r"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_fpscounter_g", function(convar_name, value_old, value_new)
-    fpsG = value_new
+    fpsHUD["g"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_fpscounter_b", function(convar_name, value_old, value_new)
-    fpsB = value_new
+    fpsHUD["b"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter_x", function(convar_name, value_old, value_new)
+    velocityHUD["x"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter_y", function(convar_name, value_old, value_new)
+    velocityHUD["y"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter_r", function(convar_name, value_old, value_new)
+    velocityHUD["r"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter_g", function(convar_name, value_old, value_new)
+    velocityHUD["g"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter_b", function(convar_name, value_old, value_new)
+    velocityHUD["b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
     if value_new == "1" then

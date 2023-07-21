@@ -27,7 +27,7 @@ usePrimary = true               --Enable primary weapons for the players loadout
 useSecondary = true             --Enable secondary weapons for the players loadout.
 useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
 grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
-grappleCooldown = 18            --The cooldown (in sceonds) of the grappling hook after being used.
+grappleCooldown = 15            --The cooldown (in sceonds) of the grappling hook after being used.
 
 --Fiesta settings
 fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
@@ -396,7 +396,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_laser_trails", "1")
     RunConsoleCommand("cl_tfa_legacy_shells", "0")
     RunConsoleCommand("cl_tfa_scope_sensitivity_3d", "2")
-    RunConsoleCommand("cl_tfa_scope_sensitivity_autoscale", "1")
     RunConsoleCommand("cl_tfa_viewbob_animated", "1")
     RunConsoleCommand("cl_tfa_viewbob_intensity", "1.00")
     RunConsoleCommand("cl_tfa_viewmodel_flip", "0")
