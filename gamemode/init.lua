@@ -550,7 +550,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		for g, v in RandomPairs(gamemodeArray) do
-			table.insert(modePool, v[1])
+			if activeGamemode ~= v then table.insert(modePool, v[1]) end
 		end
 
 		firstMap = mapPool[1]
