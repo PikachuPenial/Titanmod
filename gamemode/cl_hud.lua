@@ -623,6 +623,7 @@ net.Receive("EndOfGame", function(len, ply)
     local mapDecided = false
     local gamemodeDecided = false
     local VOIPActive = false
+    local bonusXP = 750
 
     if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
@@ -690,7 +691,11 @@ net.Receive("EndOfGame", function(len, ply)
     for k, v in pairs(connectedPlayers) do
         if k == 1 then winningPlayer = v end
     end
-    if winningPlayer == LocalPly then wonMatch = true end
+
+    if winningPlayer == LocalPly then
+        wonMatch = true
+        bonusXP = 1500
+    end
 
     local expandTime = 4
 
@@ -772,6 +777,7 @@ net.Receive("EndOfGame", function(len, ply)
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "StreakText", w / 2 - 300, 25, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", w / 2 + 300, 25, white, TEXT_ALIGN_RIGHT)
                 draw.SimpleText(math.Round(xpCountUp) .. " / " .. LocalPly:GetNWInt("playerXPToNextLevel") .. "XP  ^", "StreakText", (w / 2 - 295) + (levelAnim * 600), 75, white, TEXT_ALIGN_RIGHT)
+                draw.SimpleText("Earned " .. LocalPly:GetNWInt("playerScoreMatch") .. "XP + " .. bonusXP .. "XP Bonus", "StreakText", w / 2, 100, white, TEXT_ALIGN_CENTER)
             else
                 levelAnim = math.Clamp(levelAnim + (1 / 1) * FrameTime(), 0, 1)
 

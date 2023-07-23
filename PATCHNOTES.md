@@ -3,6 +3,7 @@
 **>MAPS**
 
 **>BALANCE**
+- Increased reload speed across all revolver-based weapons
 
 **>QOL & BUG FIXES**
 - On match end, the played gamemode will no longer appear in the next gamemode vote
