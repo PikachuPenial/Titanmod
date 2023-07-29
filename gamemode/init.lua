@@ -598,6 +598,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 					CheckForPlayerLevel(v)
 				else
 					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 750)
+					CheckForPlayerLevel(v)
 				end
 			end
 		end
