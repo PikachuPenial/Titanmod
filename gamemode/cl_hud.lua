@@ -324,6 +324,15 @@ function HUD()
         draw.SimpleText("Match has ended", "HUD_GunPrintName", ScrW() / 2, ScrH() / 2 - 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
         draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", ScrW() / 2, ScrH() / 2 - 120, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0)
     end
+
+    --Cranked bar
+    if activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then
+        surface.SetDrawColor(50, 50, 50, 80)
+        surface.DrawRect(ScrW() / 2 - 75, 70, 150, 10)
+
+        surface.SetDrawColor(255, 0, 0, 80)
+        surface.DrawRect(ScrW() / 2 - 75, 70, 150 * (timeUntilSelfDestruct / crankedSelfDestructTime), 10)
+    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 

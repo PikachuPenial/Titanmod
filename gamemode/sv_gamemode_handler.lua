@@ -183,7 +183,7 @@ function HandlePlayerKill(ply, victim)
             crankedExplosion:SetPos(ply:GetPos())
             crankedExplosion:Spawn()
             crankedExplosion:Fire("Explode")
-            crankedExplosion:SetKeyValue("IMagnitude", 20)
+            crankedExplosion:SetKeyValue("IMagnitude", 50)
             ply:Kill()
         end)
     end
