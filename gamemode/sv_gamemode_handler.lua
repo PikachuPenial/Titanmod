@@ -179,6 +179,11 @@ function HandlePlayerKill(ply, victim)
         net.Send(ply)
         timer.Create(ply:SteamID() .. "CrankedTimer", crankedSelfDestructTime, 1, function()
             if GetGlobal2Bool("tm_matchended") == true then return end
+            local crankedExplosion = ents.Create( "env_explosion" )
+            crankedExplosion:SetPos(ply:GetPos())
+            crankedExplosion:Spawn()
+            crankedExplosion:Fire("Explode")
+            crankedExplosion:SetKeyValue("IMagnitude", 20)
             ply:Kill()
         end)
     end
