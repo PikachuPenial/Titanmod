@@ -3,15 +3,8 @@
 **>MAPS**
 
 **>BALANCE**
-- Increased reload speed across all revolver-based weapons
 
 **>QOL & BUG FIXES**
-- On match end, the played gamemode will no longer appear in the next gamemode vote
+- Removed Bow and Crossbow from Gun Game weapon rotation
 
-- HUD functions have been refactored
-
-- Optimized hit and kill sounds
-
-- Reset HUD To Default now resets new HUD element settings
-
-- New end of match quotes from community members
+- Fixed bug with player levels not being calculated on match end
