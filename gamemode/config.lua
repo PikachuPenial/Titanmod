@@ -4,59 +4,97 @@
     If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
---Player settings
-playerHealth = 100              --The max health of the player.
-playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
-playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
-playerJumpMulti = 1             --The multiplier for the strength of the players jump.
-playerDuckStateMulti = 1        --The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
-playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
-playerSlideSpeedMulti = 1.55    --The multiplier of the players speed while sliding.
-playerSlideDuration = 1         --The time (in seconds) that a players slide lasts.
-healthRegeneration = true       --Enable or disable health regeneration on players after not taking damage for a set amount of time.
-healthRegenSpeed = 0.15         --The speed of the players health regeneration.
-healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
-playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
+local UseConfigConvars = true   --Disables the legacy Config, and allows sv_ ConVars to adjust the Titanmod Config.
 
---Progression settings
-forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
-xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
+if UseConfigConvars then
+    playerHealth = GetConVar("sv_tm_player_health"):GetInt()
+    playerSpeedMulti = GetConVar("sv_tm_player_speed_multi"):GetFloat()
+    playerGravityMulti = GetConVar("sv_tm_player_gravity_multi"):GetFloat()
+    playerJumpMulti = GetConVar("sv_tm_player_jump_multi"):GetFloat()
+    playerDuckStateMulti = GetConVar("sv_tm_player_duckstate_multi"):GetFloat()
+    playerCrouchWalkSpeedMulti = GetConVar("sv_tm_player_crouchwalkspeed_multi"):GetFloat()
+    playerSlideSpeedMulti = GetConVar("sv_tm_player_slide_speed_multi"):GetFloat()
+    playerSlideDuration = GetConVar("sv_tm_player_slide_duration"):GetFloat()
+    healthRegeneration = GetConVar("sv_tm_player_healthregen_enable"):GetBool()
+    healthRegenSpeed = GetConVar("sv_tm_player_healthregen_speed"):GetFloat()
+    healthRegenDamageDelay = GetConVar("sv_tm_player_healthregen_damagedelay"):GetFloat()
+    playerRespawnTime = GetConVar("sv_tm_player_respawntime"):GetInt()
+    forceDisableProgression = GetConVar("sv_tm_progression_forcedisable"):GetBool()
+    xpMultiplier = GetConVar("sv_tm_progression_xp_multi"):GetFloat()
+    usePrimary = GetConVar("sv_tm_ffa_use_primary"):GetBool()
+    useSecondary = GetConVar("sv_tm_ffa_use_secondary"):GetBool()
+    useMelee = GetConVar("sv_tm_ffa_use_melee"):GetBool()
+    grenadesOnSpawn = GetConVar("sv_tm_ffa_grenade_count"):GetInt()
+    fiestaShuffleTime = GetConVar("sv_tm_fiesta_shuffle_time"):GetInt()
+    ggLadderSize = GetConVar("sv_tm_gungame_ladder_size"):GetInt()
+    crankedSelfDestructTime = GetConVar("sv_tm_cranked_selfdestruct_time"):GetInt()
+    crankedBuffMultiplier = GetConVar("sv_tm_cranked_buff_multi"):GetFloat()
+    grappleCooldown = GetConVar("sv_tm_grapple_cooldown"):GetInt()
+    grappleKillReset = GetConVar("sv_tm_grapple_killreset"):GetBool()
+    grappleRange = GetConVar("sv_tm_grapple_range"):GetInt()
+    rocketJumping = GetConVar("sv_tm_rocketjump_enable"):GetBool()
+    rocketJumpForceMulti = GetConVar("sv_tm_rocketjump_force_multi"):GetFloat()
+    damageKnockback = GetConVar("sv_tm_damage_knockback_enable"):GetBool()
+    proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
+    allowSpectating = GetConVar("sv_tm_spectating_allow"):GetBool()
+    mapCleanupTime = GetConVar("sv_tm_optimization_mapcleanup_time"):GetInt()
+    forceEnableAutoSaveTime = GetConVar("sv_tm_optimization_force_autosave"):GetInt()
+    matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
+else
+    --Player settings
+    playerHealth = 100              --The max health of the player.
+    playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
+    playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
+    playerJumpMulti = 1             --The multiplier for the strength of the players jump.
+    playerDuckStateMulti = 1        --The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
+    playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
+    playerSlideSpeedMulti = 1.55    --The multiplier of the players speed while sliding.
+    playerSlideDuration = 1         --The time (in seconds) that a players slide lasts.
+    healthRegeneration = true       --Enable or disable health regeneration on players after not taking damage for a set amount of time.
+    healthRegenSpeed = 0.15         --The speed of the players health regeneration.
+    healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
+    playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
 
---FFA settings
-usePrimary = true               --Enable primary weapons for the players loadout.
-useSecondary = true             --Enable secondary weapons for the players loadout.
-useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
-grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
-grappleCooldown = 15            --The cooldown (in sceonds) of the grappling hook after being used.
+    --Progression settings
+    forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
+    xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
 
---Fiesta settings
-fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
+    --FFA settings
+    usePrimary = true               --Enable primary weapons for the players loadout.
+    useSecondary = true             --Enable secondary weapons for the players loadout.
+    useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
+    grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
+    grappleCooldown = 15            --The cooldown (in sceonds) of the grappling hook after being used.
 
---Gun Game settings
-ggLadderSize = 24               --Sets the amount of weapons a player needs to get kills with to win a match.
+    --Fiesta settings
+    fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
 
---Cranked settings
-crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
-crankedBuffMultiplier = 1.33           --The multiplier for the buffs that being Cranked gives to a player
+    --Gun Game settings
+    ggLadderSize = 24               --Sets the amount of weapons a player needs to get kills with to win a match.
 
---Mechanic settings
-grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
-grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
-rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
-rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
-damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
-proxChatRange = 1000             --The thresehold in distance where players can hear other players over proximity voice chat.
+    --Cranked settings
+    crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
+    crankedBuffMultiplier = 1.33           --The multiplier for the buffs that being Cranked gives to a player
 
---Feature settings
-killFeed = true                 --Enables the kill feed.
-suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
-allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
+    --Mechanic settings
+    grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
+    grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
+    rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
+    rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
+    damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
+    proxChatRange = 1000             --The thresehold in distance where players can hear other players over proximity voice chat.
 
---Optimization settings
-mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
-forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
+    --Feature settings
+    killFeed = true                 --Enables the kill feed.
+    suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
+    allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
 
-matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+    --Optimization settings
+    mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
+    forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
+
+    matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+end
 
 --GAMEMODES
 --Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.

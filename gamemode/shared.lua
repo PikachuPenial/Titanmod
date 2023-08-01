@@ -10,9 +10,43 @@ GM.Email = "smile"
 GM.Website = "https://github.com/PikachuPenial"
 
 --Creating server ConVars and initializing the config.
-if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually") end
-if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds") end
-if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players") end
+if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 4) end
+if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
+if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
+
+if !ConVarExists("sv_tm_player_health") then CreateConVar("sv_tm_player_health", "100", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The max health of the player (100 by default)") end
+if !ConVarExists("sv_tm_player_speed_multi") then CreateConVar("sv_tm_player_speed_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds) (1 by default)") end
+if !ConVarExists("sv_tm_player_gravity_multi") then CreateConVar("sv_tm_player_gravity_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the strength of gravity affecting the player (1 by default)") end
+if !ConVarExists("sv_tm_player_jump_multi") then CreateConVar("sv_tm_player_jump_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the strength of the players jump (1 by default)") end
+if !ConVarExists("sv_tm_player_duckstate_multi") then CreateConVar("sv_tm_player_duckstate_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released (1 by default)") end
+if !ConVarExists("sv_tm_player_crouchwalkspeed_multi") then CreateConVar("sv_tm_player_crouchwalkspeed_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the players wakling speed while crouched (1 by default)") end
+if !ConVarExists("sv_tm_player_slide_speed_multi") then CreateConVar("sv_tm_player_slide_speed_multi", "1.55", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the players speed while sliding (1.55 by default)") end
+if !ConVarExists("sv_tm_player_slide_duration") then CreateConVar("sv_tm_player_slide_duration", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) that a players slide lasts (1 by default)") end
+if !ConVarExists("sv_tm_player_healthregen") then CreateConVar("sv_tm_player_healthregen_enable", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable health regeneration on players (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_player_healthregen_speed") then CreateConVar("sv_tm_player_healthregen_speed", "0.15", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The speed of the players health regeneration (0.15 by default)") end
+if !ConVarExists("sv_tm_player_healthregen_damagedelay") then CreateConVar("sv_tm_player_healthregen_damagedelay", "3.5", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) from when the player was last hit to begin health regeneration (3.5 by default)") end
+if !ConVarExists("sv_tm_player_respawntime") then CreateConVar("sv_tm_player_respawntime", "4", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) that it takes for a player to respawn (4 by default)") end
+if !ConVarExists("sv_tm_progression_forcedisable") then CreateConVar("sv_tm_progression_forcedisable", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Any progress or unlocks made during a play session will be reset upon leaving (0 by default)", 0, 1) end
+if !ConVarExists("sv_tm_progression_xp_multi") then CreateConVar("sv_tm_progression_xp_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Multiplies all sources of XP (kills, accolades, and more) (1 by default)") end
+if !ConVarExists("sv_tm_ffa_use_primary") then CreateConVar("sv_tm_ffa_use_primary", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable primary weapons for the players loadout (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_ffa_use_secondary") then CreateConVar("sv_tm_ffa_use_secondary", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable secondary weapons for the players loadout (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_ffa_use_melee") then CreateConVar("sv_tm_ffa_use_melee", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable melee weapons/gadgets for the players loadout (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_ffa_grenade_count") then CreateConVar("sv_tm_ffa_grenade_count", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The amount of grenades that a player is given on spawn (1 by default)") end
+if !ConVarExists("sv_tm_fiesta_shuffle_time") then CreateConVar("sv_tm_fiesta_shuffle_time", "30", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) between each loadout swap (30 by default)") end
+if !ConVarExists("sv_tm_gungame_ladder_size") then CreateConVar("sv_tm_gungame_ladder_size", "24", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The amount of weapons a player needs to get kills with to win a match (24 by default)", 2) end
+if !ConVarExists("sv_tm_cranked_selfdestruct_time") then CreateConVar("sv_tm_cranked_selfdestruct_time", "25", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) that it takes for a player to explode after being Cranked (25 by default)", 10) end
+if !ConVarExists("sv_tm_cranked_buff_multi") then CreateConVar("sv_tm_cranked_buff_multi", "1.33", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the buffs that being Cranked gives to a player (1.33 by default)", 1) end
+if !ConVarExists("sv_tm_grapple_cooldown") then CreateConVar("sv_tm_grapple_cooldown", "15", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The cooldown (in sceonds) of the grappling hook after being used (15 by default)") end
+if !ConVarExists("sv_tm_grapple_killreset") then CreateConVar("sv_tm_grapple_killreset", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable the grapple cooldown reset on a player kill (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_grapple_range") then CreateConVar("sv_tm_grapple_range", "850", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The length (in units) that the grappling hook can travel too before despawning (850 by default)") end
+if !ConVarExists("sv_tm_rocketjump_enable") then CreateConVar("sv_tm_rocketjump_enable", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage) (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_rocketjump_force_multi") then CreateConVar("sv_tm_rocketjump_force_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the force applied on a player during a rocket jump (1 by default)") end
+if !ConVarExists("sv_tm_damage_knockback") then CreateConVar("sv_tm_damage_knockback_enable", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable knockback from incoming damage (being moved from other players bullets) (0 by default)", 0, 1) end
+if !ConVarExists("sv_tm_voip_range") then CreateConVar("sv_tm_voip_range", "1000", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The thresehold in distance where players can hear other players over proximity voice chat (1000 by default)") end
+if !ConVarExists("sv_tm_spectating_allow") then CreateConVar("sv_tm_spectating_allow", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables the ability for players to enter a free-cam spectating state through the Main Menu (1 by default)", 0, 1) end
+if !ConVarExists("sv_tm_optimization_mapcleanup_time") then CreateConVar("sv_tm_optimization_mapcleanup_time", "30", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) Not recommended going below 30 seconds (30 by default)") end
+if !ConVarExists("sv_tm_optimization_force_autosave") then CreateConVar("sv_tm_optimization_force_autosave", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving (0 by default)", 0, 1) end
+
 if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() >= 4 then SetGlobal2String("ActiveGamemode", "Cranked") end
 include("config.lua")
 

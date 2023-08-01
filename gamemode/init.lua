@@ -250,7 +250,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteBool(false)
 		net.Send(victim)
 
-		if killFeed == true and suicideInFeed == false then return end
 		net.Start("KillFeedUpdate")
 		net.WriteString(victim:GetName() .. " commited suicide")
 		net.WriteFloat(0)
@@ -292,14 +291,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(victimHitgroup, 5)
 		net.Send(victim)
 
-		if killFeed == true then
-			net.Start("KillFeedUpdate")
-			net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
-			net.WriteInt(victimHitgroup, 5)
-			net.WriteString(attacker:GetName())
-			net.WriteInt(attacker:GetNWInt("killStreak"), 10)
-			net.Broadcast()
-		end
+		net.Start("KillFeedUpdate")
+		net.WriteString(attacker:GetName() .. " [" .. weaponName .. "] " .. victim:GetName())
+		net.WriteInt(victimHitgroup, 5)
+		net.WriteString(attacker:GetName())
+		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
+		net.Broadcast()
 
 		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
 		victim:SpectateEntity(attacker)
