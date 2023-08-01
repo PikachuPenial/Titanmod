@@ -1,17 +1,13 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
 Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
-Hook and Riot Shield cards
-More player cards for kills/streaks
 Allow for Text Chat on match end
 Shotgun Jumping via attachment
-Experiment with vaulting changes
 New hitsounds from community requested games
 Gamemode priority (most gamemode votes will contain FFA, with a small chance to have two special modes)
-RESEARCH METHODS OF REDUCING STUTTERS WHEN WEAPONS ARE GIVEN TO A PLAYER (THE STUTTERS ON GUN GAME AND FIESTA ARE SO HORRIBLE I WANT THIS DONE ASAP IM WRITING THIS IN ALL CAPS SO MY AUTISTIC ASS SEES THIS AND DOESNT DISMISS IT)
-
-fix spawning inside players
-server side Optimization
+Settings Menu redesign
+Fix spawning inside players
+Server side Optimization
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +20,6 @@ GUN MENU
 - attachment editing (if possible)
 - unique music 
 
-Main Menu refactor
 VIP gamemode (you can select a loadout?)
 Item unlock tracking through scoreboard
 Improve readability of code because my autistic ass writes this in such a messy way
