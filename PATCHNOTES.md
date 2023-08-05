@@ -1,4 +1,7 @@
 **>GAMEPLAY**
+*KNOCKBACK*
+- RPG-7 now knocks the player back after shooting, performing a rocket jump also has extra upwards velocity due to this change
+
 *GRENADE CHANGES*
 - Grenades now do **significantly** more damage, being able to one shot if a player is close enough to the impact
 - The animation for throwing a grenade has been improved
@@ -24,3 +27,5 @@
 
 **>QOL & BUG FIXES**
 - Adjusted text on the Velocity counter
+
+- Fixed Health Bar coloring not matching the proper color settings

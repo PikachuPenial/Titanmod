@@ -19,9 +19,9 @@ local healthHUD = {
     ["barmid_r"] = GetConVar("tm_hud_health_color_mid_r"):GetInt(),
     ["barmid_g"] = GetConVar("tm_hud_health_color_mid_g"):GetInt(),
     ["barmid_b"] = GetConVar("tm_hud_health_color_mid_b"):GetInt(),
-    ["barmid_r"] = GetConVar("tm_hud_health_color_low_r"):GetInt(),
-    ["barmid_g"] = GetConVar("tm_hud_health_color_low_g"):GetInt(),
-    ["barmid_b"] = GetConVar("tm_hud_health_color_low_b"):GetInt()
+    ["barlow_r"] = GetConVar("tm_hud_health_color_low_r"):GetInt(),
+    ["barlow_g"] = GetConVar("tm_hud_health_color_low_g"):GetInt(),
+    ["barlow_b"] = GetConVar("tm_hud_health_color_low_b"):GetInt()
 }
 
 local weaponHUD = {
@@ -208,7 +208,7 @@ function HUD()
 
     if LocalPly:Health() <= 66 then
         if LocalPly:Health() <= 33 then
-            surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
+            surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
         else
             surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
         end
@@ -1371,13 +1371,13 @@ cvars.AddChangeCallback("tm_hud_health_color_mid_b", function(convar_name, value
     healthHUD["barmid_b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_health_color_low_r", function(convar_name, value_old, value_new)
-    healthHUD["barmid_r"] = value_new
+    healthHUD["barlow_r"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_health_color_low_g", function(convar_name, value_old, value_new)
-    healthHUD["barmid_g"] = value_new
+    healthHUD["barlow_g"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_health_color_low_b", function(convar_name, value_old, value_new)
-    healthHUD["barmid_b"] = value_new
+    healthHUD["barlow_b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_equipment_offset_x", function(convar_name, value_old, value_new)
     equipmentHUD["x"] = value_new
