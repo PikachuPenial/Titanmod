@@ -2,7 +2,6 @@ HIGH PRIORItY | Currently working on or is being focused, will most likely make 
 
 Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
 Allow for Text Chat on match end
-Shotgun Jumping via attachment
 New hitsounds from community requested games
 Gamemode priority (most gamemode votes will contain FFA, with a small chance to have two special modes)
 Settings Menu redesign
