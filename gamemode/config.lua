@@ -222,7 +222,7 @@ weaponArray[82] = {"tfa_ins2_ots_33_pernach", "OTs-33 Pernach", "secondary", "pi
 weaponArray[83] = {"tfa_doiowen", "Owen Gun", "primary", "smg"}
 weaponArray[84] = {"tfa_fml_p90_tac", "P90", "primary", "smg"}
 weaponArray[85] = {"tfa_blast_pindadss2", "PINDAD SS2", "primary", "rifle"}
-weaponArray[86] = {"tfa_ins2_pm9", "PM-9", "primary", "smg"}
+weaponArray[86] = {"tfa_ins2_pm9", "PM-9", "secondary", "smg"}
 weaponArray[87] = {"tfa_nam_ppsh41", "PPSH", "primary", "smg"}
 weaponArray[88] = {"tfa_fas2_ppbizon", "PP-19 Bizon", "primary", "smg"}
 weaponArray[89] = {"tfa_ww2_pbz39", "PzB 39", "primary", "sniper"}
@@ -365,9 +365,10 @@ if SERVER then
     RunConsoleCommand("frest_range", grappleRange)
 
     --HL2 Grenades
-    RunConsoleCommand("sk_fraggrenade_radius", "350")
-    RunConsoleCommand("sk_plr_dmg_grenade", "250")
-    RunConsoleCommand("sk_npc_dmg_grenade", "250")
+    timer.Simple(5, function() --Delaying by 5 seconds because it literally just doesn't work unless I delay the ConVar, thanks a lot Source.
+        RunConsoleCommand("sk_fraggrenade_radius", "400")
+        RunConsoleCommand("sk_npc_dmg_fraggrenade", "160")
+    end)
 end
 
 --Client Side

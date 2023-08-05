@@ -3629,7 +3629,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("69 PING", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt() + 25, Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
-                        draw.SimpleText(velocity, "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 end
 

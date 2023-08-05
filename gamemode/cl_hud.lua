@@ -317,7 +317,7 @@ function HUD()
     end
 
     --Velocity counter
-    if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())), "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
+    if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
     --Disclaimer for players connecting during an active gamemode and map vote.
     if GetGlobal2Bool("tm_matchended") == true then
