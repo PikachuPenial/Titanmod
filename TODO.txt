@@ -8,6 +8,9 @@ Settings Menu redesign
 Fix spawning inside players
 Server side Optimization
 
+lower sun intensity on disq
+remove outside spawns on mall
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen

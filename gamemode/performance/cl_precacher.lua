@@ -393,4 +393,4 @@ function PrecacheAll()
     PrecacheDir("sound/weapons/tfre/winchester/")
 end
 
---PrecacheAll()
+if GetConVar("tm_developermode"):GetInt() == 0 then PrecacheAll() end
