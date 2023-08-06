@@ -8,9 +8,9 @@ timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
-hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
+hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
+	--Weapon bob
 	local vector_origin = Vector()
-
 	SWEP.ti = 0
 	SWEP.LastCalcBob = 0
 	SWEP.tiView = 0
@@ -97,8 +97,8 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 		xVelocitySmooth = l_Lerp(delta * 5 * rateScaleFac, xVelocitySmooth, xVelocity)
 
 		--multipliers
-		breathIntensity = breathIntensitySmooth * gunbob_intensity * 0.5
-		walkIntensity = walkIntensitySmooth * gunbob_intensity * 1.5
+		breathIntensity = breathIntensitySmooth * gunbob_intensity * 0.45
+		walkIntensity = walkIntensitySmooth * gunbob_intensity * 1.45
 
 		--breathing / walking while ADS
 		local breatheMult2 = math.Clamp((self2.IronSightsProgressUnpredicted2 or self:GetIronSightsProgress()), 0, 1)
@@ -110,7 +110,7 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 		pos:Add(riLocal * math.cos(self2.ti * walkRate / 2) * flip_v * breathIntensity * 0.2 * breatheMult2)
 		pos:Add(upLocal * math.sin(self2.ti * walkRate) * breathIntensity * 0.1 * breatheMult2)
 
-		ang:RotateAroundAxis(ri, math.sin(self2.ti * walkRate) * breathIntensity * breatheMult2 * .01)
+		ang:RotateAroundAxis(ri, math.sin(self2.ti * walkRate) * breathIntensity * breatheMult2 * .75)
 		ang:RotateAroundAxis(up, math.sin(self2.ti * walkRate / 2) * breathIntensity * breatheMult2 * -1.0)
 		ang:RotateAroundAxis(fw, math.sin(self2.ti * walkRate / 2) * breathIntensity * breatheMult2 * 2.0)
 
@@ -228,6 +228,74 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 
 		self2.BobScale = bscale
 		self2.SwayScale = fac
+	end
+end )
+
+hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
+	local function Lerp(t, a, b)
+		return a + (b - a) * t
+	end
+
+	local function Clamp(a, b, c)
+		if a < b then return b end
+		if a > c then return c end
+		return a
+	end
+
+	local function GetClampedCVarFloat(cvar)
+		return Clamp(cvar:GetFloat(), cvar:GetMin(), cvar:GetMax())
+	end
+
+	local gunswaycvar = GetConVar("cl_tfa_gunbob_intensity")
+	local gunswayinvertcvar = GetConVar("cl_tfa_gunbob_invertsway")
+	local sv_tfa_weapon_weight = GetConVar("sv_tfa_weapon_weight")
+
+	function SWEP:Sway(pos, ang, ftv)
+		local self2 = self:GetTable()
+		--sanity check
+		if not self:OwnerIsValid() then return pos, ang end
+		--convar
+		fac = GetClampedCVarFloat(gunswaycvar) * 3 * ((1 - ((self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) or 0)) * 0.85 + 0.015)
+		if gunswayinvertcvar:GetBool() then fac = -fac end
+		flipFactor = (self2.ViewModelFlip and -1 or 1)
+		--init vars
+		delta = delta or Angle()
+		motion = motion or Angle()
+		counterMotion = counterMotion or Angle()
+		compensation = compensation or Angle()
+
+		if ftv then
+			--grab eye angles
+			eyeAngles = self:GetOwner():EyeAngles()
+			viewPunch = self:GetOwner():GetViewPunchAngles()
+			eyeAngles.p = eyeAngles.p - viewPunch.p
+			eyeAngles.y = eyeAngles.y - viewPunch.y
+			oldEyeAngles = oldEyeAngles or eyeAngles
+			--calculate delta
+			wiggleFactor = (1 - (sv_tfa_weapon_weight:GetBool() and self2.GetStatL(self, "RegularMoveSpeedMultiplier") or 1)) / 0.6 + 0.15
+			swayRate = math.pow(sv_tfa_weapon_weight:GetBool() and self2.GetStatL(self, "RegularMoveSpeedMultiplier") or 1, 1.5) * 10
+			rft = math.Clamp(ftv, 0.001, 1 / 20)
+			local clampFac = 1.1 - math.min((math.abs(motion.p) + math.abs(motion.y) + math.abs(motion.r)) / 20, 1)
+			delta.p = math.AngleDifference(eyeAngles.p, oldEyeAngles.p) / rft / 120 * clampFac
+			delta.y = math.AngleDifference(eyeAngles.y, oldEyeAngles.y) / rft / 120 * clampFac
+			delta.r = math.AngleDifference(eyeAngles.r, oldEyeAngles.r) / rft / 120 * clampFac
+			oldEyeAngles = eyeAngles
+			--calculate motions, based on Juckey's methods
+			counterMotion = LerpAngle(rft * (swayRate * (0.75 + math.max(0, 0.5 - wiggleFactor))), counterMotion, -motion)
+			compensation.p = math.AngleDifference(motion.p, -counterMotion.p)
+			compensation.y = math.AngleDifference(motion.y, -counterMotion.y)
+			motion = LerpAngle(rft * swayRate, motion, delta + compensation)
+		end
+
+		--modify position/angle
+		positionCompensation = 0.2 + 0.2 * ((self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) or 0)
+		pos:Add(-motion.y * positionCompensation * 0.66 * fac * ang:Right() * flipFactor) --compensate position for yaw
+		pos:Add(-motion.p * positionCompensation * fac * ang:Up()) --compensate position for pitch
+		ang:RotateAroundAxis(ang:Right(), motion.p * fac)
+		ang:RotateAroundAxis(ang:Up(), -motion.y * 0.66 * fac * flipFactor)
+		ang:RotateAroundAxis(ang:Forward(), counterMotion.r * 0.5 * fac * flipFactor)
+
+		return pos, ang
 	end
 end )
 
