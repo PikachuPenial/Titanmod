@@ -10,6 +10,10 @@
 - Removed outdoor spawns
 - Added additional interior spawns
 
+*Mephitic*
+- Removed spawn that was exposed to acid
+- Added additional player spawns
+
 **>BALANCE**
 *Crossbow*
 - Increased reload speed
@@ -36,6 +40,10 @@
 **>QOL & BUG FIXES**
 - Tightened firing animations across multiple weapons
 
+- Player cards for levels 155 - 180
+
 - Removed Spike X1S from Shotty Snipers weapon rotation
+
+- Adjusted some Leveling player cards
 
 - Precacher is now skipped if Developer Mode is on
