@@ -179,7 +179,7 @@ function HandlePlayerKill(ply, victim)
         net.Send(ply)
         timer.Create(ply:SteamID() .. "CrankedTimer", crankedSelfDestructTime, 1, function()
             if GetGlobal2Bool("tm_matchended") == true then return end
-            local crankedExplosion = ents.Create( "env_explosion" )
+            local crankedExplosion = ents.Create("env_explosion")
             crankedExplosion:SetPos(ply:GetPos())
             crankedExplosion:Spawn()
             crankedExplosion:Fire("Explode")
@@ -188,6 +188,7 @@ function HandlePlayerKill(ply, victim)
         end)
     end
 end
+concommand.Add("testcracnked", HandlePlayerKill)
 
 function HandlePlayerDeath(ply, weaponName)
     if activeGamemode == "Shotty Snipers" then

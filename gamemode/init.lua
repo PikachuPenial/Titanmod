@@ -712,7 +712,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 	end )
 
 	function ForceEndMatchCommand(ply, cmd, args)
-		if ply:IsSuperAdmin() then EndMatch() end
+		if ply:IsAdmin() then EndMatch() end
 	end
 	concommand.Add("tm_forceendmatch", ForceEndMatchCommand)
 end
