@@ -255,7 +255,7 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 		--sanity check
 		if not self:OwnerIsValid() then return pos, ang end
 		--convar
-		fac = GetClampedCVarFloat(gunswaycvar) * 3 * ((1 - ((self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) or 0)) * 0.85 + 0.015)
+		fac = GetClampedCVarFloat(gunswaycvar) * 3 * ((1 - ((self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) or 0)) * 0.85 + 0.012)
 		if gunswayinvertcvar:GetBool() then fac = -fac end
 		flipFactor = (self2.ViewModelFlip and -1 or 1)
 		--init vars
@@ -275,7 +275,7 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 			wiggleFactor = (1 - (sv_tfa_weapon_weight:GetBool() and self2.GetStatL(self, "RegularMoveSpeedMultiplier") or 1)) / 0.6 + 0.15
 			swayRate = math.pow(sv_tfa_weapon_weight:GetBool() and self2.GetStatL(self, "RegularMoveSpeedMultiplier") or 1, 1.5) * 10
 			rft = math.Clamp(ftv, 0.001, 1 / 20)
-			local clampFac = 1.1 - math.min((math.abs(motion.p) + math.abs(motion.y) + math.abs(motion.r)) / 20, 1)
+			local clampFac = 1.1 - math.min((math.abs(motion.p) + math.abs(motion.y) + math.abs(motion.r)) / 16, 1)
 			delta.p = math.AngleDifference(eyeAngles.p, oldEyeAngles.p) / rft / 120 * clampFac
 			delta.y = math.AngleDifference(eyeAngles.y, oldEyeAngles.y) / rft / 120 * clampFac
 			delta.r = math.AngleDifference(eyeAngles.r, oldEyeAngles.r) / rft / 120 * clampFac

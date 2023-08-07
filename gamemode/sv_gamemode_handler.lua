@@ -91,7 +91,7 @@ end
 --Generate the table of available weapons if the gamemode is set to Shotty Snipers.
 if activeGamemode == "Shotty Snipers" then
     for k, v in pairs(weaponArray) do
-        if v[4] == "sniper" and v[1] != "rust_bow" and v[1] != "rust_crossbow" then
+        if v[4] == "sniper" and v[1] != "rust_bow" and v[1] != "rust_crossbow" and v[1] != "tfa_ins2_saiga_spike" then
             table.insert(randPrimary, v[1])
         elseif v[4] == "shotgun" then
             table.insert(randSecondary, v[1])
