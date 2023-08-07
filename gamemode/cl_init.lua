@@ -97,7 +97,7 @@ hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 		xVelocitySmooth = l_Lerp(delta * 5 * rateScaleFac, xVelocitySmooth, xVelocity)
 
 		--multipliers
-		breathIntensity = breathIntensitySmooth * gunbob_intensity * 0.45
+		breathIntensity = breathIntensitySmooth * gunbob_intensity * 0.525
 		walkIntensity = walkIntensitySmooth * gunbob_intensity * 1.45
 
 		--breathing / walking while ADS
@@ -134,9 +134,9 @@ hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 		--jumping
 		local trigX = -math.Clamp(zVelocitySmooth / 200, -1, 1) * math.pi / 2
 		local jumpIntensity = (3 + math.Clamp(math.abs(zVelocitySmooth) - 100, 0, 200) / 200 * 4) * (1 - (self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) * 0.8)
-		pos:Add(ri * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * flip_v * 0.4)
-		pos:Add(-up * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * 0.4)
-		ang:RotateAroundAxis(ang:Forward(), math.sin(trigX) * scale_r * jumpIntensity * flip_v * 0.4)
+		pos:Add(ri * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * flip_v * 0.25)
+		pos:Add(-up * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * 0.25)
+		ang:RotateAroundAxis(ang:Forward(), math.sin(trigX) * scale_r * jumpIntensity * flip_v * 0.25)
 
 		--rolling with horizontal motion
 		local xVelocityClamped = xVelocitySmooth
