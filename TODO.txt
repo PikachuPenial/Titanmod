@@ -8,8 +8,11 @@ Settings Menu redesign
 Fix spawning inside players
 Server side Optimization
 
+fix cranked explosions not occuring on game servers
 fix cranked timers on suicides
 italitize text when hovered in main menu
+
+space map with low gravity
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
