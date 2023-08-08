@@ -336,6 +336,30 @@ function HUD()
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
+--KOTH rendering (the hill outline and the distance text)
+if activeGamemode == "KOTH" then
+    local KOTHCords = KOTHPos[game.GetMap()]
+    local origin = KOTHCords.Origin
+    local size = KOTHCords.BrushSize
+    local playerAngle
+
+    hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
+        render.SetColorMaterial()
+        render.DrawBox(origin, angle_zero, -size, size, Color(255, 255, 0, 10))
+
+        playerAngle = LocalPlayer():EyeAngles()
+        playerAngle:RotateAroundAxis(playerAngle:Forward(), 90)
+        playerAngle:RotateAroundAxis(playerAngle:Right(), 90)
+
+        cam.IgnoreZ(true)
+            cam.Start3D2D(origin, playerAngle, 1)
+                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            cam.End3D2D()
+        cam.IgnoreZ(false)
+    end )
+end
+
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
     return false
@@ -687,7 +711,7 @@ net.Receive("EndOfGame", function(len, ply)
     local VotingActive = false
 
     local connectedPlayers = player.GetHumans()
-    if activeGamemode == "FFA" or activeGamemode == "Fiesta" or activeGamemode == "Shotty Snipers" or activeGamemode == "Cranked" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) elseif activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) end
+    if activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) else table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) end
 
     --Creates a timer so players can see how long it will be until the next match starts.
     timer.Create("timeUntilNextMatch", 33, 1, function()

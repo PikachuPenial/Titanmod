@@ -104,6 +104,7 @@ gamemodeArray[2] = {1, "Fiesta", "FFA with every player sharing the same loadout
 gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladder of " .. ggLadderSize .. " weapons."}
 gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun."}
 gamemodeArray[5] = {4, "Cranked", "FFA with kills granting the player increased movement capabilities."}
+gamemodeArray[6] = {5, "KOTH", "FFA with a specific part of the map giving score if inside of said area."}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
@@ -132,6 +133,76 @@ availableMaps = {}
 for m, v in pairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
+
+--KOTH/King Of The Hill positioning array
+--This is REQUIRED for any map listed in the mapArray above, the map WILL break when being played on KOTH if this is not filled out correctly.
+--KOTH Array Formatting (Origin (the center of the hill), BrushSize (adjusts size of hill, self explanitory)
+--Hills can be created easily by creating a brush in Hammer, getting the brushes origin, and by getting the size (divide each sides size by 2 as Titanmod automatically expands the brush out across both sides).
+KOTHPos = {}
+KOTHPos.tm_arctic = {
+    Origin = Vector(504, 384, 320),
+    BrushSize = Vector(120, 112, 64)
+}
+KOTHPos.tm_bridge = {
+    Origin = Vector(-3552, 96, 484),
+    BrushSize = Vector(224, 288, 64)
+}
+KOTHPos.tm_corrugated = {
+    Origin = Vector(192, 516, 188),
+    BrushSize = Vector(64, 252, 60)
+}
+KOTHPos.tm_disequilibrium = {
+    Origin = Vector(-280, 1940, 1064),
+    BrushSize = Vector(96, 100, 72)
+}
+KOTHPos.tm_initial = {
+    Origin = Vector(-136, 0, 68),
+    BrushSize = Vector(104, 128, 68)
+}
+KOTHPos.tm_legacy = {
+    Origin = Vector(-352, -416, 512),
+    BrushSize = Vector(148, 148, 64)
+}
+KOTHPos.tm_liminal_pool = {
+    Origin = Vector(0, 1184, 144),
+    BrushSize = Vector(128, 176, 80)
+}
+KOTHPos.tm_mall = {
+    Origin = Vector(2180, 1544, 72),
+    BrushSize = Vector(108, 216, 64)
+}
+KOTHPos.tm_mephitic = {
+    Origin = Vector(960, -320, 2748),
+    BrushSize = Vector(96, 96, 60)
+}
+KOTHPos.tm_nuketown = {
+    Origin = Vector(-89, 238, 128),
+    BrushSize = Vector(108, 120, 64)
+}
+KOTHPos.tm_oxide = {
+    Origin = Vector(550, 1800, -176),
+    BrushSize = Vector(192, 144, 64)
+}
+KOTHPos.tm_rig = {
+    Origin = Vector(-1024, -1024, -584),
+    BrushSize = Vector(256, 256, 128)
+}
+KOTHPos.tm_sanctuary = {
+    Origin = Vector(-472, 888, 10),
+    BrushSize = Vector(152, 168, 90)
+}
+KOTHPos.tm_shipment = {
+    Origin = Vector(0, 0, 64),
+    BrushSize = Vector(64, 64, 64)
+}
+KOTHPos.tm_villa = {
+    Origin = Vector(128, -880, -64),
+    BrushSize = Vector(128, 112, 64)
+}
+KOTHPos.tm_wreck = {
+    Origin = Vector(244, -192, 8),
+    BrushSize = Vector(140, 112, 80)
+}
 
 --WEAPONS
 --If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
