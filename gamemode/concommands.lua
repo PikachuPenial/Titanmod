@@ -77,6 +77,7 @@ concommand.Add("tm_hud_testtimewarning", HUDTestTimeWarning)
 
 --Allows the player to wipe their account and start fresh.
 function PlayerAccountWipe(ply, cmd, args)
+	if ply:GetNWBool("mainmenu") == false then return end
 	ply:SetNWInt("playerKills", 0)
 	ply:SetNWInt("playerDeaths", 0)
 	ply:SetNWInt("playerScore", 0)
@@ -169,5 +170,12 @@ function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_velocitycounter_r", 255)
 	RunConsoleCommand("tm_hud_velocitycounter_g", 255)
 	RunConsoleCommand("tm_hud_velocitycounter_b", 255)
+	RunConsoleCommand("tm_hud_obj_scale", 1)
+	RunConsoleCommand("tm_hud_obj_color_r", 255)
+	RunConsoleCommand("tm_hud_obj_color_g", 255)
+	RunConsoleCommand("tm_hud_obj_color_b", 0)
+	RunConsoleCommand("tm_hud_obj_text_color_r", 255)
+	RunConsoleCommand("tm_hud_obj_text_color_g", 255)
+	RunConsoleCommand("tm_hud_obj_text_color_b", 255)
 end
 concommand.Add("tm_resethudtodefault_cannotbeundone", PlayerHUDReset)

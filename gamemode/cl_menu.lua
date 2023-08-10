@@ -4069,6 +4069,49 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillColor:SetWangs(true)
                 KillColor:SetTooltip("Adjusts the color of the skull icon on a kill.")
 
+                local ObjectiveEditor
+                ObjectiveEditor = vgui.Create("DPanel", EditorScroller)
+                ObjectiveEditor:Dock(TOP)
+                ObjectiveEditor:SetSize(0, 280)
+                ObjectiveEditor.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                    draw.SimpleText("OBJECTIVE UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI Text Scale", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Objective Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
+                end
+
+                local ObjScale = ObjectiveEditor:Add("DNumSlider")
+                ObjScale:SetPos(-85, 50)
+                ObjScale:SetSize(250, 30)
+                ObjScale:SetConVar("tm_hud_obj_scale")
+                ObjScale:SetMin(0.5)
+                ObjScale:SetMax(3.0)
+                ObjScale:SetDecimals(2)
+                ObjScale:SetTooltip("Adjust the X offset of your keypress overlay.")
+
+                local ObjBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
+                ObjBrushColor:SetPos(20, 90)
+                ObjBrushColor:SetSize(185, 70)
+                ObjBrushColor:SetConVarR("tm_hud_obj_color_r")
+                ObjBrushColor:SetConVarG("tm_hud_obj_color_g")
+                ObjBrushColor:SetConVarB("tm_hud_obj_color_b")
+                ObjBrushColor:SetAlphaBar(false)
+                ObjBrushColor:SetPalette(false)
+                ObjBrushColor:SetWangs(true)
+                ObjBrushColor:SetTooltip("Adjusts the color of the objective indicator.")
+
+                local ObjTextColor = vgui.Create("DColorMixer", ObjectiveEditor)
+                ObjTextColor:SetPos(20, 170)
+                ObjTextColor:SetSize(185, 70)
+                ObjTextColor:SetConVarR("tm_hud_obj_text_color_r")
+                ObjTextColor:SetConVarG("tm_hud_obj_text_color_g")
+                ObjTextColor:SetConVarB("tm_hud_obj_text_color_b")
+                ObjTextColor:SetAlphaBar(false)
+                ObjTextColor:SetPalette(false)
+                ObjTextColor:SetWangs(true)
+                ObjTextColor:SetTooltip("Adjusts the color of the objective text indicator.")
+
                 local KeypressOverlay
                 if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then KeypressOverlay = vgui.Create("DPanel", EditorScroller) else
                     KeypressOverlay = vgui.Create("DPanel", HiddenOptionsScroller)

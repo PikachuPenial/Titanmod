@@ -82,6 +82,16 @@ local velocityHUD = {
     ["b"] = GetConVar("tm_hud_velocitycounter_b"):GetInt()
 }
 
+local objHUD = {
+    ["scale"] = GetConVar("tm_hud_obj_scale"):GetInt(),
+    ["obj_r"] = GetConVar("tm_hud_obj_text_color_r"):GetInt(),
+    ["obj_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
+    ["obj_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt(),
+    ["text_r"] = GetConVar("tm_hud_obj_color_r"):GetInt(),
+    ["text_g"] = GetConVar("tm_hud_obj_color_g"):GetInt(),
+    ["text_b"] = GetConVar("tm_hud_obj_color_b"):GetInt()
+}
+
 local sounds = {
     ["hit_enabled"] = GetConVar("tm_hitsounds"):GetInt(),
     ["kill_enabled"] = GetConVar("tm_killsound"):GetInt(),
@@ -345,16 +355,16 @@ if activeGamemode == "KOTH" then
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
         render.SetColorMaterial()
-        render.DrawBox(origin, angle_zero, -size, size, Color(255, 255, 0, 10))
+        render.DrawBox(origin, angle_zero, -size, size, Color(objHUD["obj_r"], objHUD["obj_g"], objHUD["obj_b"], 10))
 
         playerAngle = LocalPlayer():EyeAngles()
         playerAngle:RotateAroundAxis(playerAngle:Forward(), 90)
         playerAngle:RotateAroundAxis(playerAngle:Right(), 90)
 
         cam.IgnoreZ(true)
-            cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015)
-                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
+                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             cam.End3D2D()
         cam.IgnoreZ(false)
     end )
@@ -1486,6 +1496,27 @@ cvars.AddChangeCallback("tm_hud_velocitycounter_g", function(convar_name, value_
 end)
 cvars.AddChangeCallback("tm_hud_velocitycounter_b", function(convar_name, value_old, value_new)
     velocityHUD["b"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_scale", function(convar_name, value_old, value_new)
+    objHUD["scale"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_r", function(convar_name, value_old, value_new)
+    objHUD["obj_r"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_g", function(convar_name, value_old, value_new)
+    objHUD["obj_g"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_b", function(convar_name, value_old, value_new)
+    objHUD["obj_b"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_text_color_r", function(convar_name, value_old, value_new)
+    objHUD["text_r"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_text_color_g", function(convar_name, value_old, value_new)
+    objHUD["text_g"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_text_color_b", function(convar_name, value_old, value_new)
+    objHUD["text_b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
     if value_new == "1" then
