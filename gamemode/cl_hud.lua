@@ -352,9 +352,9 @@ if activeGamemode == "KOTH" then
         playerAngle:RotateAroundAxis(playerAngle:Right(), 90)
 
         cam.IgnoreZ(true)
-            cam.Start3D2D(origin, playerAngle, 1)
-                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015)
+                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             cam.End3D2D()
         cam.IgnoreZ(false)
     end )
