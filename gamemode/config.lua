@@ -29,6 +29,8 @@ if UseConfigConvars then
     ggLadderSize = GetConVar("sv_tm_gungame_ladder_size"):GetInt()
     crankedSelfDestructTime = GetConVar("sv_tm_cranked_selfdestruct_time"):GetInt()
     crankedBuffMultiplier = GetConVar("sv_tm_cranked_buff_multi"):GetFloat()
+    kothScoringInterval = GetConVar("sv_tm_koth_scoring_interval"):GetInt()
+    kothScore = GetConVar("sv_tm_koth_score"):GetFloat()
     grappleCooldown = GetConVar("sv_tm_grapple_cooldown"):GetInt()
     grappleKillReset = GetConVar("sv_tm_grapple_killreset"):GetBool()
     grappleRange = GetConVar("sv_tm_grapple_range"):GetInt()
@@ -74,7 +76,11 @@ else
 
     --Cranked settings
     crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
-    crankedBuffMultiplier = 1.33           --The multiplier for the buffs that being Cranked gives to a player
+    crankedBuffMultiplier = 1.33    --The multiplier for the buffs that being Cranked gives to a player
+
+    --King Of The Hill settings
+    kothScoringInterval = 1         --The time (in seconds) that a hill check is done, this is repeating (obviously).
+    kothScore = 25                  --Sets the amount of score that is given to a player standing on the hill.
 
     --Mechanic settings
     grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
@@ -82,7 +88,7 @@ else
     rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
     rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
     damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
-    proxChatRange = 1000             --The thresehold in distance where players can hear other players over proximity voice chat.
+    proxChatRange = 1000            --The thresehold in distance where players can hear other players over proximity voice chat.
 
     --Feature settings
     killFeed = true                 --Enables the kill feed.
