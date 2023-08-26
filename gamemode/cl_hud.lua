@@ -84,12 +84,12 @@ local velocityHUD = {
 
 local objHUD = {
     ["scale"] = GetConVar("tm_hud_obj_scale"):GetInt(),
-    ["obj_r"] = GetConVar("tm_hud_obj_text_color_r"):GetInt(),
-    ["obj_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
-    ["obj_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt(),
-    ["text_r"] = GetConVar("tm_hud_obj_color_r"):GetInt(),
-    ["text_g"] = GetConVar("tm_hud_obj_color_g"):GetInt(),
-    ["text_b"] = GetConVar("tm_hud_obj_color_b"):GetInt()
+    ["obj_r"] = GetConVar("tm_hud_obj_color_r"):GetInt(),
+    ["obj_g"] = GetConVar("tm_hud_obj_color_g"):GetInt(),
+    ["obj_b"] = GetConVar("tm_hud_obj_color_b"):GetInt(),
+    ["text_r"] = GetConVar("tm_hud_obj_text_color_r"):GetInt(),
+    ["text_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
+    ["text_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt()
 }
 
 local sounds = {
