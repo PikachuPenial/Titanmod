@@ -80,7 +80,7 @@ else
 
     --King Of The Hill settings
     kothScoringInterval = 1         --The time (in seconds) that a hill check is done, this is repeating (obviously).
-    kothScore = 25                  --Sets the amount of score that is given to a player standing on the hill.
+    kothScore = 15                  --Sets the amount of score that is given to a player standing on the hill.
 
     --Mechanic settings
     grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.

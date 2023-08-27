@@ -116,6 +116,11 @@ end
 
 --Generate the table of available weapons if the gamemode is set to KOTH.
 if activeGamemode == "KOTH" then
+    hook.Add("InitPostEntity", "KOTHSpawn", function()
+        local kothOBJ = ents.Create("tm_koth_obj")
+        kothOBJ:Spawn()
+    end )
+
     for k, v in pairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
@@ -125,6 +130,14 @@ if activeGamemode == "KOTH" then
             table.insert(randMelee, v[1])
         end
     end
+
+    hillOccupants = {}
+    timer.Create("HillScoring", kothScoringInterval, 0, function()
+        if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 then return end
+        hillOccupants[1]:SetNWInt("playerScore", hillOccupants[1]:GetNWInt("playerScore") + kothScore)
+        hillOccupants[1]:SetNWInt("playerScoreMatch", hillOccupants[1]:GetNWInt("playerScoreMatch") + kothScore)
+        hillOccupants[1]:SetNWInt("playerXP", hillOccupants[1]:GetNWInt("playerXP") + (kothScore * xpMultiplier))
+    end)
 end
 
 --Setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played.
@@ -220,11 +233,6 @@ end
 
 --Cranked
 if activeGamemode == "Cranked" then
-    hook.Add("InitPostEntity", "KOTHSpawn", function()
-        local kothOBJ = ents.Create("tm_koth_obj")
-        kothOBJ:Spawn()
-    end )
-
     function HandlePlayerInitialSpawn(ply)
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])

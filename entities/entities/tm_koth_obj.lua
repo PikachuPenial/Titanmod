@@ -11,15 +11,17 @@ if SERVER then
         self:SetCollisionBounds(self.Origin + self.Size, self.Origin - self.Size)
     end
 
-    function ENT:StartTouch()
+    function ENT:StartTouch(ent)
         print("PLAYER IS INSIDE HILL")
+        table.insert(hillOccupants, ent)
     end
 
-    function ENT:EndTouch()
+    function ENT:EndTouch(ent)
         print("PLAYER IS NO LONGER INSIDE HILL")
+        table.RemoveByValue(hillOccupants, ent)
     end
 
-    function ENT:Touch()
+    function ENT:Touch(ent)
 
     end
 end

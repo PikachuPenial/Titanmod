@@ -557,7 +557,6 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
 			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.
-				print(player.GetCount())
 				if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) end
 			end)
 		end )
