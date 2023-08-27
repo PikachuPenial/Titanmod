@@ -174,7 +174,7 @@ KOTHPos.tm_liminal_pool = {
     BrushSize = Vector(128, 176, 80)
 }
 KOTHPos.tm_mall = {
-    Origin = Vector(2180, 1544, 72),
+    Origin = Vector(2180, 1536, 72),
     BrushSize = Vector(108, 216, 64)
 }
 KOTHPos.tm_mephitic = {

@@ -220,6 +220,11 @@ end
 
 --Cranked
 if activeGamemode == "Cranked" then
+    hook.Add("InitPostEntity", "KOTHSpawn", function()
+        local kothOBJ = ents.Create("tm_koth_obj")
+        kothOBJ:Spawn()
+    end )
+
     function HandlePlayerInitialSpawn(ply)
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
