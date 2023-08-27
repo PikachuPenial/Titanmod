@@ -14,11 +14,13 @@ if SERVER then
     function ENT:StartTouch(ent)
         table.insert(hillOccupants, ent)
         ent:SetNWBool("onOBJ", true)
+        HillStatusCheck()
     end
 
     function ENT:EndTouch(ent)
         table.RemoveByValue(hillOccupants, ent)
         ent:SetNWBool("onOBJ", false)
+        HillStatusCheck()
     end
 
     function ENT:Touch(ent)

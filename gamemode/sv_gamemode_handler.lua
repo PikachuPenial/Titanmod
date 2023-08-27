@@ -140,6 +140,20 @@ if activeGamemode == "KOTH" then
     end)
 end
 
+function HillStatusCheck()
+    if table.Count(hillOccupants) == 1 then
+        SetGlobal2String("tm_hillstatus", "Occupied")
+        SetGlobal2Entity("tm_entonhill", hillOccupants[1])
+    elseif table.Count(hillOccupants) > 1 then
+        SetGlobal2String("tm_hillstatus", "Contested")
+    else
+        SetGlobal2String("tm_hillstatus", "Empty")
+    end
+
+    print(GetGlobal2String("tm_hillstatus"))
+    print(GetGlobal2Entity("tm_entonhill"))
+end
+
 --Setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played.
 --FFA, Shotty Snipers & KOTH
 if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "KOTH" then
