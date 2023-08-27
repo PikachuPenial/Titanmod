@@ -12,12 +12,14 @@ if SERVER then
     end
 
     function ENT:StartTouch(ent)
+        if !ent:IsPlayer() then return end
         table.insert(hillOccupants, ent)
         ent:SetNWBool("onOBJ", true)
         HillStatusCheck()
     end
 
     function ENT:EndTouch(ent)
+        if !ent:IsPlayer() then return end
         table.RemoveByValue(hillOccupants, ent)
         ent:SetNWBool("onOBJ", false)
         HillStatusCheck()

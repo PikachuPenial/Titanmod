@@ -401,8 +401,11 @@ if activeGamemode == "KOTH" then
     local playerAngle
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
-        if LocalPly:GetNWBool("onOBJ") then return end
         render.SetColorMaterial()
+        if LocalPly:GetNWBool("onOBJ") then
+            render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
+            return
+        end
         render.DrawBox(origin, angle_zero, -size, size, hillColor)
 
         playerAngle = LocalPlayer():EyeAngles()
@@ -417,6 +420,7 @@ if activeGamemode == "KOTH" then
         cam.IgnoreZ(false)
     end )
 
+    if IsValid(KOTHPFP) then KOTHPFP:Remove() end
     KOTHPFP = vgui.Create("AvatarImage", PlayerPanel)
     KOTHPFP:SetPos(ScrW() / 2 - 21, 70)
     KOTHPFP:SetSize(42, 42)
