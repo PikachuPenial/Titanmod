@@ -131,6 +131,7 @@ if activeGamemode == "KOTH" then
         end
     end
 
+    SetGlobal2Bool("tm_hillstatus", "Empty")
     hillOccupants = {}
     timer.Create("HillScoring", kothScoringInterval, 0, function()
         if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 then return end
@@ -149,9 +150,6 @@ function HillStatusCheck()
     else
         SetGlobal2String("tm_hillstatus", "Empty")
     end
-
-    print(GetGlobal2String("tm_hillstatus"))
-    print(GetGlobal2Entity("tm_entonhill"))
 end
 
 --Setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played.

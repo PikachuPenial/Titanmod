@@ -84,9 +84,15 @@ local velocityHUD = {
 
 local objHUD = {
     ["scale"] = GetConVar("tm_hud_obj_scale"):GetInt(),
-    ["obj_r"] = GetConVar("tm_hud_obj_color_r"):GetInt(),
-    ["obj_g"] = GetConVar("tm_hud_obj_color_g"):GetInt(),
-    ["obj_b"] = GetConVar("tm_hud_obj_color_b"):GetInt(),
+    ["obj_empty_r"] = GetConVar("tm_hud_obj_color_empty_r"):GetInt(),
+    ["obj_empty_g"] = GetConVar("tm_hud_obj_color_empty_g"):GetInt(),
+    ["obj_empty_b"] = GetConVar("tm_hud_obj_color_empty_b"):GetInt(),
+    ["obj_occupied_r"] = GetConVar("tm_hud_obj_color_occupied_r"):GetInt(),
+    ["obj_occupied_g"] = GetConVar("tm_hud_obj_color_occupied_g"):GetInt(),
+    ["obj_occupied_b"] = GetConVar("tm_hud_obj_color_occupied_b"):GetInt(),
+    ["obj_contested_r"] = GetConVar("tm_hud_obj_color_contested_r"):GetInt(),
+    ["obj_contested_g"] = GetConVar("tm_hud_obj_color_contested_g"):GetInt(),
+    ["obj_contested_b"] = GetConVar("tm_hud_obj_color_contested_b"):GetInt(),
     ["text_r"] = GetConVar("tm_hud_obj_text_color_r"):GetInt(),
     ["text_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
     ["text_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt()
@@ -134,6 +140,12 @@ local cColor = Color(255, 255, 255)
 local actuatedColor = Color(kpoHUD["actuated_r"], kpoHUD["actuated_g"], kpoHUD["actuated_b"])
 local inactiveColor = Color(kpoHUD["inactive_r"], kpoHUD["inactive_g"], kpoHUD["inactive_b"])
 
+local hillColor
+local objIndicatorColor
+local hillEmptyMat = Material("icons/kothempty.png")
+local hillContestedMat = Material("icons/kothcontested.png")
+local showEntitiesPFP
+
 local LocalPly
 local clientFPS = 0
 local ping = 0
@@ -149,9 +161,20 @@ function HUD()
     if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
     --Objective indicator
+    if GetGlobal2String("tm_hillstatus") == "Empty" then
+        hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 10)
+        objIndicatorColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 175)
+    elseif GetGlobal2String("tm_hillstatus") == "Occupied" then
+        hillColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 10)
+        objIndicatorColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
+    else
+        hillColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 10)
+        objIndicatorColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 175)
+    end
+
     local border = Material("overlay/objborder.png")
     surface.SetMaterial(border)
-    surface.SetDrawColor(objHUD["obj_r"], objHUD["obj_g"], objHUD["obj_b"], 175)
+    surface.SetDrawColor(objIndicatorColor)
     if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
 
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
@@ -166,7 +189,13 @@ function HUD()
     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
+        if GetGlobal2String("tm_hillstatus") == "Occupied" then
+            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        else
+            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        end
+    end
 
     --Kill feed
     for k, v in pairs(feedArray) do
@@ -349,6 +378,18 @@ function HUD()
         surface.SetDrawColor(255, 0, 0, 80)
         surface.DrawRect(ScrW() / 2 - 75, 70, 150 * (timeUntilSelfDestruct / crankedSelfDestructTime), 10)
     end
+
+    --KOTH status icons
+    if activeGamemode == "KOTH" then
+        if GetGlobal2String("tm_hillstatus") == "Empty" then
+            surface.SetDrawColor(255, 255, 255, 100)
+            surface.SetMaterial(hillEmptyMat)
+        else
+            surface.SetDrawColor(255, 255, 255, 100)
+            surface.SetMaterial(hillContestedMat)
+        end
+        surface.DrawTexturedRect(ScrW() / 2 - 21, 70, 42, 42)
+    end
 end
 hook.Add("HUDPaint", "TestHud", HUD)
 
@@ -362,7 +403,7 @@ if activeGamemode == "KOTH" then
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
         if LocalPly:GetNWBool("onOBJ") then return end
         render.SetColorMaterial()
-        render.DrawBox(origin, angle_zero, -size, size, Color(objHUD["obj_r"], objHUD["obj_g"], objHUD["obj_b"], 10))
+        render.DrawBox(origin, angle_zero, -size, size, hillColor)
 
         playerAngle = LocalPlayer():EyeAngles()
         playerAngle:RotateAroundAxis(playerAngle:Forward(), 90)
@@ -375,7 +416,25 @@ if activeGamemode == "KOTH" then
             cam.End3D2D()
         cam.IgnoreZ(false)
     end )
+
+    KOTHPFP = vgui.Create("AvatarImage", PlayerPanel)
+    KOTHPFP:SetPos(ScrW() / 2 - 21, 70)
+    KOTHPFP:SetSize(42, 42)
+    KOTHPFP:Hide()
 end
+
+local pfpUpdated = false
+local function UpdateKOTHPFP()
+    if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
+        KOTHPFP:Hide()
+        pfpUpdated = false
+    else
+        KOTHPFP:Show()
+        if !pfpUpdated then KOTHPFP:SetPlayer(GetGlobal2Entity("tm_entonhill"), 184) end
+        pfpUpdated = true
+    end
+end
+hook.Add("Think", "UpdateKOTHPFP", UpdateKOTHPFP)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()
@@ -1507,14 +1566,32 @@ end)
 cvars.AddChangeCallback("tm_hud_obj_scale", function(convar_name, value_old, value_new)
     objHUD["scale"] = value_new
 end)
-cvars.AddChangeCallback("tm_hud_obj_color_r", function(convar_name, value_old, value_new)
-    objHUD["obj_r"] = value_new
+cvars.AddChangeCallback("tm_hud_obj_color_empty_r", function(convar_name, value_old, value_new)
+    objHUD["obj_empty_r"] = value_new
 end)
-cvars.AddChangeCallback("tm_hud_obj_color_g", function(convar_name, value_old, value_new)
-    objHUD["obj_g"] = value_new
+cvars.AddChangeCallback("tm_hud_obj_color_empty_g", function(convar_name, value_old, value_new)
+    objHUD["obj_empty_g"] = value_new
 end)
-cvars.AddChangeCallback("tm_hud_obj_color_b", function(convar_name, value_old, value_new)
-    objHUD["obj_b"] = value_new
+cvars.AddChangeCallback("tm_hud_obj_color_empty_b", function(convar_name, value_old, value_new)
+    objHUD["obj_empty_b"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_occupied_r", function(convar_name, value_old, value_new)
+    objHUD["obj_occupied_r"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_occupied_g", function(convar_name, value_old, value_new)
+    objHUD["obj_occupied_g"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_occupied_b", function(convar_name, value_old, value_new)
+    objHUD["obj_occupied_b"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_contested_r", function(convar_name, value_old, value_new)
+    objHUD["obj_contested_r"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_contested_g", function(convar_name, value_old, value_new)
+    objHUD["obj_contested_g"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_obj_color_contested_b", function(convar_name, value_old, value_new)
+    objHUD["obj_contested_b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_obj_text_color_r", function(convar_name, value_old, value_new)
     objHUD["text_r"] = value_new
