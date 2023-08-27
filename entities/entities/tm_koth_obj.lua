@@ -12,13 +12,13 @@ if SERVER then
     end
 
     function ENT:StartTouch(ent)
-        print("PLAYER IS INSIDE HILL")
         table.insert(hillOccupants, ent)
+        ent:SetNWBool("onOBJ", true)
     end
 
     function ENT:EndTouch(ent)
-        print("PLAYER IS NO LONGER INSIDE HILL")
         table.RemoveByValue(hillOccupants, ent)
+        ent:SetNWBool("onOBJ", false)
     end
 
     function ENT:Touch(ent)

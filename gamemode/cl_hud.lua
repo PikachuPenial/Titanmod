@@ -148,6 +148,12 @@ function HUD()
     if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
     if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
 
+    --Objective indicator
+    local border = Material("overlay/objborder.png")
+    surface.SetMaterial(border)
+    surface.SetDrawColor(objHUD["obj_r"], objHUD["obj_g"], objHUD["obj_b"], 175)
+    if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
         timer.Create("CounterUpdate", updateRate, 0, function()
             clientFPS = tostring(math.floor(1 / RealFrameTime()))
@@ -354,6 +360,7 @@ if activeGamemode == "KOTH" then
     local playerAngle
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
+        if LocalPly:GetNWBool("onOBJ") then return end
         render.SetColorMaterial()
         render.DrawBox(origin, angle_zero, -size, size, Color(objHUD["obj_r"], objHUD["obj_g"], objHUD["obj_b"], 10))
 
