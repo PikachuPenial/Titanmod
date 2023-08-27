@@ -425,20 +425,20 @@ if activeGamemode == "KOTH" then
     KOTHPFP:SetPos(ScrW() / 2 - 21, 70)
     KOTHPFP:SetSize(42, 42)
     KOTHPFP:Hide()
-end
 
-local pfpUpdated = false
-local function UpdateKOTHPFP()
-    if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
-        KOTHPFP:Hide()
-        pfpUpdated = false
-    else
-        KOTHPFP:Show()
-        if !pfpUpdated then KOTHPFP:SetPlayer(GetGlobal2Entity("tm_entonhill"), 184) end
-        pfpUpdated = true
+    local pfpUpdated = false
+    local function UpdateKOTHPFP()
+        if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
+            KOTHPFP:Hide()
+            pfpUpdated = false
+        else
+            KOTHPFP:Show()
+            if !pfpUpdated then KOTHPFP:SetPlayer(GetGlobal2Entity("tm_entonhill"), 184) end
+            pfpUpdated = true
+        end
     end
+    hook.Add("Think", "UpdateKOTHPFP", UpdateKOTHPFP)
 end
-hook.Add("Think", "UpdateKOTHPFP", UpdateKOTHPFP)
 
 --Hides the players info that shows up when aiming at another player.
 function DrawTarget()

@@ -3208,10 +3208,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitSoundsType:SetPos(20, 150)
                     hitSoundsType:SetSize(100, 30)
                     hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
-                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Bartol") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") end
+                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
-                    hitSoundsType:AddChoice("Bartol")
+                    hitSoundsType:AddChoice("Apex Legends")
                     hitSoundsType:AddChoice("Bad Business")
                     hitSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/hit_" .. value - 1 .. ".wav")
@@ -3222,10 +3222,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     killSoundsType:SetPos(20, 190)
                     killSoundsType:SetSize(100, 30)
                     killSoundsType:SetTooltip("Adjust the style of the kill confirmation sound.")
-                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") end
+                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType:AddChoice("TABG")
                     killSoundsType:AddChoice("Bad Business")
+                    killSoundsType:AddChoice("Apex Legends")
                     killSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/kill_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_killsoundtype", value - 1)
