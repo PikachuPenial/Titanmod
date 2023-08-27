@@ -834,9 +834,9 @@ net.Receive("EndOfGame", function(len, ply)
 
     if wonMatch == true then
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
-        MatchEndMusic = CreateSound(LocalPly, "music/ui/matchvictory.mp3")
+        MatchEndMusic = CreateSound(LocalPly, "music/matchvictory.mp3")
         MatchEndMusic:Play()
-        MatchEndMusic:ChangeVolume(1)
+        MatchEndMusic:ChangeVolume(GetConVar("tm_musicvolume"):GetFloat())
 
         MatchWinLoseText = vgui.Create("DPanel")
         MatchWinLoseText:SetSize(800, 220)
@@ -852,9 +852,9 @@ net.Receive("EndOfGame", function(len, ply)
         end
     else
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 0, 0, 190), 1, 7)
-        MatchEndMusic = CreateSound(LocalPly, "music/ui/matchdefeat.mp3")
+        MatchEndMusic = CreateSound(LocalPly, "music/matchdefeat.mp3")
         MatchEndMusic:Play()
-        MatchEndMusic:ChangeVolume(1)
+        MatchEndMusic:ChangeVolume(GetConVar("tm_musicvolume"):GetFloat())
 
         MatchWinLoseText = vgui.Create("DPanel")
         MatchWinLoseText:SetSize(800, 220)

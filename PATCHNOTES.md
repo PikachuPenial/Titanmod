@@ -13,14 +13,18 @@ KOTH is now in Titanmod! Fight for control over a specific part of the map to ga
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- Removed Main Menu music (was disliked by players)
+
 - Added various HUD editor options related to objective-based gamemodes
 
-- Removed obselete gamemode code
-
 - Optimized gamemode checks
+
+- Music Volume setting now affects End Of Match music
 
 - Adjusted various ConVar descriptions
 
 - Players save data can no longer be wiped via the console while not in Main Menu
+
+- Removed obselete gamemode code
 
 - New end of match quotes from community members
