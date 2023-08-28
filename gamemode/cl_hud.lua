@@ -144,7 +144,6 @@ local hillColor
 local objIndicatorColor
 local hillEmptyMat = Material("icons/kothempty.png")
 local hillContestedMat = Material("icons/kothcontested.png")
-local showEntitiesPFP
 
 local LocalPly
 local clientFPS = 0
@@ -402,7 +401,7 @@ if activeGamemode == "KOTH" then
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
         render.SetColorMaterial()
-        if LocalPly:GetNWBool("onOBJ") then
+        if LocalPlayer():GetNWBool("onOBJ") then
             render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
             return
         end
@@ -741,6 +740,8 @@ net.Receive("EndOfGame", function(len, ply)
     if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
+    if IsValid(KOTHPFP) then KOTHPFP:Remove() end
+    hook.Remove("Think", "UpdateKOTHPFP")
 
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 

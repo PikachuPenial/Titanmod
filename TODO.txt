@@ -6,13 +6,13 @@ New hitsounds from community requested games
 Gamemode priority (most gamemode votes will contain FFA, with a small chance to have two special modes)
 Settings Menu redesign
 Fix spawning inside players
-Server side Optimization
 
 fix cranked explosions not occuring on game servers
 fix cranked timers on suicides
 italitize text when hovered in main menu
 
 space map with low gravity
+hide stats from others option removing player from leaderboards
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

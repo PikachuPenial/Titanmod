@@ -4,7 +4,7 @@ local randPrimary = {}
 local randSecondary = {}
 local randMelee = {}
 
-local ggLadder = {}
+ggLadder = {}
 local ggRandMelee = {}
 
 local fiestaPrimary
@@ -134,7 +134,7 @@ if activeGamemode == "KOTH" then
     SetGlobal2Bool("tm_hillstatus", "Empty")
     hillOccupants = {}
     timer.Create("HillScoring", kothScoringInterval, 0, function()
-        if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 then return end
+        if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 or GetGlobal2Bool("tm_matchended") then return end
         hillOccupants[1]:SetNWInt("playerScore", hillOccupants[1]:GetNWInt("playerScore") + kothScore)
         hillOccupants[1]:SetNWInt("playerScoreMatch", hillOccupants[1]:GetNWInt("playerScoreMatch") + kothScore)
         hillOccupants[1]:SetNWInt("playerXP", hillOccupants[1]:GetNWInt("playerXP") + (kothScore * xpMultiplier))
@@ -211,6 +211,7 @@ if activeGamemode == "Fiesta" then
 end
 
 --Gun Game
+PrintTable(ggLadder)
 if activeGamemode == "Gun Game" then
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWInt("ladderPosition", 0)

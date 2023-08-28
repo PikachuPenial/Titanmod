@@ -87,6 +87,7 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
 	ply:SetNWInt("playerID64", ply:SteamID64())
 	ply:SetNWString("playerName", ply:Name())
+	ply:SetCanZoom(false)
 
 	--Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
@@ -717,18 +718,59 @@ if table.HasValue(availableMaps, game.GetMap()) then
 end
 
 --Sets up keybinds.
-hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
-	if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
-		net.Start("OpenMainMenu")
-		if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
-		net.Send(ply)
-		ply:SetNWBool("mainmenu", true)
-	end
-	if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
-	hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
-		if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+if activeGamemode ~= "Gun Game" then
+	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+		--Main Menu
+		if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+			net.Start("OpenMainMenu")
+			if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+			net.Send(ply)
+			ply:SetNWBool("mainmenu", true)
+		end
+		--Grenade
+		if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
+		hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
+			if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+		end)
+		--Weapon quick switching
+		if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
+		if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+			ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
+		end
+		if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+			ply:SelectWeapon(ply:GetNWString("loadoutSecondary"))
+		end
+		if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+			ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
+		end
 	end)
-end)
+else
+	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+		--Main Menu
+		if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+			net.Start("OpenMainMenu")
+			if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+			net.Send(ply)
+			ply:SetNWBool("mainmenu", true)
+		end
+		--Grenade
+		if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
+		hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
+			if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+		end)
+		--Weapon quick switching
+		if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
+		if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+			ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
+		end
+		if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+			ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+		end
+		if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+			ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+		end
+	end)
+end
 
 --Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
 function GM:ShowHelp(ply)

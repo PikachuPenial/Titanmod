@@ -2737,7 +2737,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 280)
+                    DockInputs:SetSize(0, 440)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
@@ -2881,6 +2881,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Main Menu Keybind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Grenade Keybind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Grappling Hook Keybind", "SettingsLabel", 135, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Primary Weapon Keybind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Secondary Weapon Keybind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Keybind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2924,11 +2928,50 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     grappleBind:SetPos(22.5, 230)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
-                    grappleBind:SetTooltip("Adjust the keybind for using a grappling hook")
+                    grappleBind:SetTooltip("Adjust the keybind for using a grappling hook.")
                     function grappleBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedGrappleBind = grappleBind:GetSelectedNumber()
                         RunConsoleCommand("frest_bindg", selectedGrappleBind)
+                    end
+
+                    local quickWeaponSwitching = DockInputs:Add("DCheckBox")
+                    quickWeaponSwitching:SetPos(20, 270)
+                    quickWeaponSwitching:SetConVar("tm_quickswitching")
+                    quickWeaponSwitching:SetSize(30, 30)
+                    quickWeaponSwitching:SetTooltip("Enable quick weapon switching with the keybinds below.")
+
+                    local primaryBind = DockInputs:Add("DBinder")
+                    primaryBind:SetPos(22.5, 310)
+                    primaryBind:SetSize(100, 30)
+                    primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
+                    primaryBind:SetTooltip("Adjust the keybind for switching to your primary weapon.")
+                    function primaryBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
+                        selectedPrimaryBind = primaryBind:GetSelectedNumber()
+                        RunConsoleCommand("tm_primarybind", selectedPrimaryBind)
+                    end
+
+                    local secondaryBind = DockInputs:Add("DBinder")
+                    secondaryBind:SetPos(22.5, 350)
+                    secondaryBind:SetSize(100, 30)
+                    secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
+                    secondaryBind:SetTooltip("Adjust the keybind for switching to your secondary weapon.")
+                    function secondaryBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
+                        selectedSecondaryBind = secondaryBind:GetSelectedNumber()
+                        RunConsoleCommand("tm_secondarybind", selectedSecondaryBind)
+                    end
+
+                    local meleeBind = DockInputs:Add("DBinder")
+                    meleeBind:SetPos(22.5, 390)
+                    meleeBind:SetSize(100, 30)
+                    meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
+                    meleeBind:SetTooltip("Adjust the keybind for switching to your melee.")
+                    function meleeBind:OnChange(num)
+                        surface.PlaySound("tmui/buttonrollover.wav")
+                        selectedMeleeBind = meleeBind:GetSelectedNumber()
+                        RunConsoleCommand("tm_meleebind", selectedMeleeBind)
                     end
 
                     DockUI.Paint = function(self, w, h)
