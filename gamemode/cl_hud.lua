@@ -153,6 +153,13 @@ local updateRate = 0.66
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
 
+if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+    timer.Create("CounterUpdate", updateRate, 0, function()
+        clientFPS = tostring(math.floor(1 / RealFrameTime()))
+        ping = LocalPly:Ping()
+    end)
+end
+
 function HUD()
     if LocalPly == nil then LocalPly = LocalPlayer() end
     --Disables the HUD if the player has it disabled in Options.
@@ -175,13 +182,6 @@ function HUD()
     surface.SetMaterial(border)
     surface.SetDrawColor(objIndicatorColor)
     if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
-
-    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 and !timer.Exists("CounterUpdate") then
-        timer.Create("CounterUpdate", updateRate, 0, function()
-            clientFPS = tostring(math.floor(1 / RealFrameTime()))
-            ping = LocalPly:Ping()
-        end)
-    end
 
     --Remaining match time.
     local timeText = " ∞"
@@ -1433,6 +1433,18 @@ function ShowLoadoutOnSpawn()
     end)
 end
 concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
+
+--Create or delete FPS and Ping counter updating if ConVar is updated during gameplay.
+cvars.AddChangeCallback("tm_hud_fpscounter", function(convar_name, value_old, value_new)
+    if value_new == 1 and !timer.Exists("CounterUpdate") then
+        timer.Create("CounterUpdate", updateRate, 0, function()
+            clientFPS = tostring(math.floor(1 / RealFrameTime()))
+            ping = LocalPly:Ping()
+        end)
+    elseif value_new == 0 and timer.Exists("CounterUpdate") then
+        timer.Remove("CounterUpdate")
+    end
+end)
 
 --ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings.
 cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)

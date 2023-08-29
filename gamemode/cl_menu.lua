@@ -2,8 +2,6 @@
 local white = Color(255, 255, 255, 255)
 local gray = Color(50, 50, 50, 200)
 local lightGray = Color(40, 40, 40, 200)
-local patchGreen = Color(100, 250, 100, 255)
-local patchRed = Color(250, 100, 100, 255)
 local solidGreen = Color(0, 255, 0, 255)
 local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
@@ -580,7 +578,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         end
                     end
                 else
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, patchRed, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
                     draw.DrawText("" .. math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                 end
             end

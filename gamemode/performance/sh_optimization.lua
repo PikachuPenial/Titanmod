@@ -107,7 +107,6 @@ local function draw_DrawText(text, font, x, y, colour, xalign )
 	local curString = ""
 
 	surface_SetFont(font)
-	local sizeX, lineHeight = surface_GetTextSize("\n")
 
 	for i = 1, #text do
 		local ch = string_sub(text, i, i)
@@ -212,8 +211,6 @@ end
 
 function draw.RoundedBoxEx(bordersize, x, y, w, h, color, a, b, c, d)
 	surface_SetDrawColor(color)
-
-	-- Draw as much of the rect as we can without textures
 	surface_DrawRect(x + bordersize, y, w - bordersize * 2, h)
 	surface_DrawRect(x, y + bordersize, bordersize, h - bordersize * 2)
 	surface_DrawRect(x + w - bordersize, y + bordersize, bordersize, h - bordersize * 2)
@@ -249,8 +246,8 @@ function draw.SimpleTextOutlined(text, font, x, y, colour, xalign, yalign, outli
 	local steps = (outlinewidth * 2) / 3
 	if steps < 1 then steps = 1 end
 
-	for _x=-outlinewidth, outlinewidth, steps do
-		for _y=-outlinewidth, outlinewidth, steps do
+	for _x = -outlinewidth, outlinewidth, steps do
+		for _y = -outlinewidth, outlinewidth, steps do
 			draw_SimpleText(text, font, x + _x, y + _y, outlinecolour, xalign, yalign)
 		end
 	end

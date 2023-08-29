@@ -2,9 +2,7 @@ HIGH PRIORItY | Currently working on or is being focused, will most likely make 
 
 Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
 Allow for Text Chat on match end
-New hitsounds from community requested games
 Gamemode priority (most gamemode votes will contain FFA, with a small chance to have two special modes)
-Settings Menu redesign
 Fix spawning inside players
 
 fix cranked explosions not occuring on game servers
@@ -19,15 +17,7 @@ client indicator when using voice chat
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
-GUN MENU
-- Shows stats for every weapon
-- Stat comparison menu
-- kill icon and maybe homemade images for each gun
-- attachment editing (if possible)
-- unique music 
-
 VIP gamemode (you can select a loadout?)
 Item unlock tracking through scoreboard
 Improve readability of code because my autistic ass writes this in such a messy way
-Font refactor (improved performance and less chance of font related crashes)
 Unique sliding sounds

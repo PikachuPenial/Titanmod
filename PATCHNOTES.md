@@ -20,7 +20,7 @@
 
 - Added various HUD editor options related to objective-based gamemodes
 
-- Optimized gamemode checks, HL2 hud hiding, and the Main Menu
+- Optimized gamemode checks, FPS/Ping counter, Main Menu, and HL2 hud hiding
 
 - Music Volume setting now affects End Of Match music
 
