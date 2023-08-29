@@ -460,13 +460,36 @@ function DrawItemInfo()
 end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
+local chudlist = {
+    ["CHudHealth"] = true,
+    ["CHudBattery"] = true,
+    ["CHudAmmo"] = true,
+    ["CHudSecondaryAmmo"] = true,
+    ["CHudVoiceStatus"] = true,
+    ["CHudDamageIndicator"] = true,
+    ["CHUDQuickInfo"] = true
+}
+
 --Hides default HL2 HUD elements.
-function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo"}) do
-        if name == v then return false end
+hook.Add("HUDShouldDraw", "HideHL2HUD", function(name)
+    if (chudlist[name]) then return false end
+end )
+
+function GM:PlayerBindPress(ply, bind, pressed)
+    if GetConVar("tm_quickswitching"):GetInt() == 0 then return end
+    if string.find(bind, "slot1") and pressed then
+        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
+        return true
+    end
+    if string.find(bind, "slot2") and pressed then
+        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
+        return true
+    end
+    if string.find(bind, "slot3") and pressed then
+        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
+        return true
     end
 end
-hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 --Hides the default voice chat HUD and shows a custom message.
 function GM:PlayerStartVoice(ply)

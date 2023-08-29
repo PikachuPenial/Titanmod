@@ -11,21 +11,17 @@ if SERVER then
         self:SetCollisionBounds(self.Origin + self.Size, self.Origin - self.Size)
     end
 
-    function ENT:StartTouch(ent)
-        if !ent:IsPlayer() then return end
-        table.insert(hillOccupants, ent)
-        ent:SetNWBool("onOBJ", true)
+    function ENT:StartTouch(ply)
+        if !ply:IsPlayer() then return end
+        table.insert(hillOccupants, ply)
+        ply:SetNWBool("onOBJ", true)
         HillStatusCheck()
     end
 
-    function ENT:EndTouch(ent)
-        if !ent:IsPlayer() then return end
-        table.RemoveByValue(hillOccupants, ent)
-        ent:SetNWBool("onOBJ", false)
+    function ENT:EndTouch(ply)
+        if !ply:IsPlayer() then return end
+        table.RemoveByValue(hillOccupants, ply)
+        ply:SetNWBool("onOBJ", false)
         HillStatusCheck()
-    end
-
-    function ENT:Touch(ent)
-
     end
 end
