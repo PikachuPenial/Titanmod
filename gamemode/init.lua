@@ -138,7 +138,7 @@ end )
 
 net.Receive("GrabLeaderboardData", function(len, ply)
 	if timer.Exists(ply:SteamID64() .. "_GrabBoardDataCooldown") then return end
-	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 1.25, 1, function()
+	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 4, 1, function()
 	end)
 
 	local key = net.ReadString()
@@ -178,7 +178,6 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
 	local pos = spawnpointent:GetPos()
 
 	local entities = ents.FindInBox(pos + Vector(-640, -640, -384), pos + Vector(640, 640, 384))
-	if (ply:Team() == TEAM_SPECTATOR) then return true end
 	local entsBlocking = 0
 
 	for _, v in ipairs(entities) do

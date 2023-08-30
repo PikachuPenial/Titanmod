@@ -24,6 +24,8 @@
 
 - Music Volume setting now affects End Of Match music
 
+- Increased leaderboard cooldown to prevent server lag
+
 - Adjusted various ConVar descriptions
 
 - Players save data can no longer be wiped via the console while not in Main Menu

@@ -12,15 +12,15 @@ local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 net.Receive("OpenMainMenu", function(len, ply)
     local LocalPly = LocalPlayer()
     local respawnTimeLeft = net.ReadFloat()
-    timer.Create("respawnTimeLeft", respawnTimeLeft, 1, function()
-    end)
-    local dof
+    if respawnTimeLeft != 0 then timer.Create("respawnTimeLeft", respawnTimeLeft, 1, function()
+    end) end
 
+    local dof
     local mapID
     local mapName
 
     local canPrestige
-    if LocalPly:GetNWInt("playerLevel") ~= 60 then canPrestige = false else canPrestige = true end
+    if LocalPly:GetNWInt("playerLevel") != 60 then canPrestige = false else canPrestige = true end
     if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
@@ -61,13 +61,13 @@ net.Receive("OpenMainMenu", function(len, ply)
             MainPanel.Paint = function()
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
 
-                if LocalPly:GetNWInt("playerPrestige") ~= 0 and LocalPly:GetNWInt("playerLevel") ~= 60 then
+                if LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") != 60 then
                     draw.SimpleText("Prestige " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
-                elseif LocalPly:GetNWInt("playerPrestige") ~= 0 and LocalPly:GetNWInt("playerLevel") == 60 then
+                elseif LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") == 60 then
                     draw.SimpleText("Prestige " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
                 end
 
-                if LocalPly:GetNWInt("playerLevel") ~= 60 then
+                if LocalPly:GetNWInt("playerLevel") != 60 then
                     draw.SimpleText(math.Round(LocalPly:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPly:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
                     draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
 
@@ -266,7 +266,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if SelectedBoard == nil then return end
                         for p, t in pairs(SelectedBoard) do
                             if SelectedBoardName == "Level" then
-                                if t.Value == "NULL" or t.level == nil or t.prestige == nil then return end
+                                if t.level == "NULL" or t.prestige == "NULL" then return end
                                 if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
                                     if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
