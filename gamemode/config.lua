@@ -116,7 +116,7 @@ gamemodeArray[6] = {5, "KOTH", "FFA with a specific part of the map giving score
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
 --Map Array Formatting (map ID, map name, map thumbnail image)
 --The fourth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
---The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will make a map always be available in the map pool.
+--The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will consider the map as a map suitable for large player counts.
 mapArray = {}
 mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true, 0}
 mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
