@@ -116,7 +116,7 @@ gamemodeArray[6] = {5, "KOTH", "FFA with a specific part of the map giving score
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.
 --Map Array Formatting (map ID, map name, map thumbnail image)
 --The fourth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
---The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will make a map always be available in the map pool.
+--The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will consider the map as a map suitable for large player counts.
 mapArray = {}
 mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true, 0}
 mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
@@ -132,8 +132,9 @@ mapArray[11] = {"tm_oxide", "Oxide", "maps/thumb/tm_oxide.png", true, 0}
 mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
 mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
 mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[15] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
-mapArray[16] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
+mapArray[15] = {"tm_shoot_house", "Shoot House", "maps/thumb/tm_shoot_house.png", true, 5}
+mapArray[16] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[17] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
@@ -200,6 +201,10 @@ KOTHPos.tm_sanctuary = {
 KOTHPos.tm_shipment = {
     Origin = Vector(0, 0, 64),
     BrushSize = Vector(64, 64, 64)
+}
+KOTHPos.tm_shoot_house = {
+    Origin = Vector(-168, -437, 192),
+    BrushSize = Vector(168, 116.5, 63.5)
 }
 KOTHPos.tm_villa = {
     Origin = Vector(128, -880, -64),

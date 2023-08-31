@@ -535,15 +535,23 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		mapVoteOpen = true
 
 		local mapPool = {}
+		local mapPoolSecondary = {}
 		local modePool = {}
+
+		--Primary map pool will only contain maps suitable for the current player count.
+		--Secondary map pool will contain every map in the game.
 
 		--Makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
 			if game.GetMap() ~= v then table.insert(mapPool, v) end
 		end
 
+		for m, v in RandomPairs(availableMaps) do
+			if game.GetMap() ~= v then table.insert(mapPoolSecondary, v) end
+		end
+
 		for p, v in pairs(mapArray) do
-			if v[5] ~= 0 and player.GetCount() > v[5] then table.RemoveByValue(mapPool, v[1]) end
+			if v[5] ~= 0 and player.GetCount() > v[5] then table.RemoveByValue(mapPool, v[1]) elseif v[5] == 0 then table.RemoveByValue(mapPool, v[1]) end --Remove maps from primary map pool if they are not fit for current player count.
 		end
 
 		for g, v in RandomPairs(gamemodeArray) do
@@ -551,9 +559,14 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		firstMap = mapPool[1]
-		secondMap = mapPool[2]
+		table.RemoveByValue(mapPoolSecondary, firstMap) --Make sure that the same map isnt on both votes.
+		secondMap = mapPoolSecondary[1]
+
 		firstMode = modePool[1]
 		secondMode = modePool[2]
+
+		PrintTable(mapPool)
+		PrintTable(mapPoolSecondary)
 
 		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
 			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.

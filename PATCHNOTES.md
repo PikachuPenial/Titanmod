@@ -5,6 +5,11 @@
 *QUICK WEAPON SWITCHING*
 - A new setting (that is **ON** by default) that allows you to change to your Primary, Secondary, and Melee weapons with keybinds that you can set in Settings
 
+*MAP VOTING REWORK*
+- Map voting has been rewritten to have more variety and to be more applicable to player counts
+- The first map will always be a map suitable for the player count (small map if less than 6 players are playing, large if more than 6)
+- The second map can be any map in the game, allowing for small maps to rarely be playable on full lobbies (chaotic but fun)
+
 *NEW HITSOUND OPTIONS*
 - Apex Legends
 
@@ -12,10 +17,14 @@
 - Apex Legends
 
 **>MAPS**
+*NEW MAPS*
+- Shoot House
 
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- The order of weapons on the weapon selector have been reversed to better represent the new quick switch setting (Primary > Secondary > Melee)
+
 - Removed Main Menu music (was disliked by players)
 
 - Added various HUD editor options related to objective-based gamemodes
