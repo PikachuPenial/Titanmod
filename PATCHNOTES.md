@@ -17,10 +17,14 @@
 - Apex Legends
 
 **>MAPS**
+*NEW MAPS*
+- Shoot House
 
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- The order of weapons on the weapon selector have been reversed to better represent the new quick switch setting (Primary > Secondary > Melee)
+
 - Removed Main Menu music (was disliked by players)
 
 - Added various HUD editor options related to objective-based gamemodes

@@ -3,7 +3,7 @@
 ![Titanmod Banner](https://imgur.com/X6Lndd4.png)
 
 Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.  
-With over 6 gamemodes, 130+ unique weapons, and 16+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
+With over 6 gamemodes, 130+ unique weapons, and 17+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
 
 > Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)  
 > Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)  
@@ -48,6 +48,7 @@ Almost every aspact of Titanmod is configurable. Not only does it boast a wide a
 [Oxide](https://steamcommunity.com/sharedfiles/filedetails/?id=1759937246) by von*ferret     
 [Rig](https://steamcommunity.com/sharedfiles/filedetails/?id=1814169158) by Doxx Mulder & Sam  
 [Shipment](https://steamcommunity.com/sharedfiles/filedetails/?id=2682557992) by snake eyes  
+[Shoot House](https://steamcommunity.com/sharedfiles/filedetails/?id=2970548573) by Winston7
 [Villa](https://steamcommunity.com/sharedfiles/filedetails/?id=1623087187) by BallFondler06  
 [Wreck](https://steamcommunity.com/sharedfiles/filedetails/?id=442985393) by slipi & Pyroquantre    
 

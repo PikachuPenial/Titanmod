@@ -147,8 +147,7 @@ local hillContestedMat = Material("icons/kothcontested.png")
 
 local LocalPly
 local clientFPS = 0
-local ping = 0
-local updateRate = 0.66
+local updateRate = 0.5
 
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
@@ -156,7 +155,6 @@ local timeUntilSelfDestruct = 0
 if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
     timer.Create("CounterUpdate", updateRate, 0, function()
         clientFPS = tostring(math.floor(1 / RealFrameTime()))
-        ping = LocalPly:Ping()
     end)
 end
 
@@ -208,7 +206,7 @@ function HUD()
     --FPS and ping counter
     if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
         draw.SimpleText(clientFPS .. " FPS", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"], Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-        draw.SimpleText(ping .. " PING", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"] + 25, Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+        draw.SimpleText(LocalPly:Ping() .. " PING", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"] + 25, Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
     end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
@@ -400,6 +398,7 @@ if activeGamemode == "KOTH" then
     local playerAngle
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
+        if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
         render.SetColorMaterial()
         if LocalPlayer():GetNWBool("onOBJ") then
             render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
@@ -427,6 +426,7 @@ if activeGamemode == "KOTH" then
 
     local pfpUpdated = false
     local function UpdateKOTHPFP()
+        if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
         if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
             KOTHPFP:Hide()
             pfpUpdated = false
