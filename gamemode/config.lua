@@ -72,7 +72,7 @@ else
     fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
 
     --Gun Game settings
-    ggLadderSize = 24               --Sets the amount of weapons a player needs to get kills with to win a match.
+    ggLadderSize = 26               --Sets the amount of weapons a player needs to get kills with to win a match.
 
     --Cranked settings
     crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
