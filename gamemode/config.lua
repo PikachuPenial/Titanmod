@@ -111,6 +111,7 @@ gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladde
 gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun."}
 gamemodeArray[5] = {4, "Cranked", "FFA with kills granting the player increased movement capabilities."}
 gamemodeArray[6] = {5, "KOTH", "FFA with a specific part of the map giving score if inside of said area."}
+gamemodeArray[7] = {6, "Quickdraw", "FFA with secondaries only."}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.

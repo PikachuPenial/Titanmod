@@ -1,6 +1,8 @@
 **>GAMEPLAY**
 *NEW GAMEMODES*
 - **KOTH**, Fight for control over a specific part of the map to gain score
+- **VIP**
+- **Quickdraw**, typical FFA but with only secondary weapons
 
 *QUICK WEAPON SWITCHING*
 - A new setting (that is **ON** by default) that allows you to change to your Primary, Secondary, and Melee weapons with keybinds that you can set in Settings
@@ -13,6 +15,7 @@
 
 *NEW HITSOUND OPTIONS*
 - Apex Legends
+- Call Of Duty
 
 *NEW KILLSOUND OPTIONS*
 - Apex Legends

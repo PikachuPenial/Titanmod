@@ -3063,11 +3063,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitSoundsType:SetPos(20, 190)
                     hitSoundsType:SetSize(100, 30)
                     hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
-                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") end
+                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
                     hitSoundsType:AddChoice("Apex Legends")
                     hitSoundsType:AddChoice("Bad Business")
+                    hitSoundsType:AddChoice("Call Of Duty")
                     hitSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/hit_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_hitsoundtype", value - 1)

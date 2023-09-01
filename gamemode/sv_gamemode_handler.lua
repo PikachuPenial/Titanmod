@@ -139,16 +139,27 @@ if activeGamemode == "KOTH" then
         hillOccupants[1]:SetNWInt("playerScoreMatch", hillOccupants[1]:GetNWInt("playerScoreMatch") + kothScore)
         hillOccupants[1]:SetNWInt("playerXP", hillOccupants[1]:GetNWInt("playerXP") + (kothScore * xpMultiplier))
     end)
+
+    function HillStatusCheck()
+        if table.Count(hillOccupants) == 1 then
+            SetGlobal2String("tm_hillstatus", "Occupied")
+            SetGlobal2Entity("tm_entonhill", hillOccupants[1])
+        elseif table.Count(hillOccupants) > 1 then
+            SetGlobal2String("tm_hillstatus", "Contested")
+        else
+            SetGlobal2String("tm_hillstatus", "Empty")
+        end
+    end
 end
 
-function HillStatusCheck()
-    if table.Count(hillOccupants) == 1 then
-        SetGlobal2String("tm_hillstatus", "Occupied")
-        SetGlobal2Entity("tm_entonhill", hillOccupants[1])
-    elseif table.Count(hillOccupants) > 1 then
-        SetGlobal2String("tm_hillstatus", "Contested")
-    else
-        SetGlobal2String("tm_hillstatus", "Empty")
+--Generate the table of available weapons if the gamemode is set to FFA.
+if activeGamemode == "Quickdraw" then
+    for k, v in pairs(weaponArray) do
+        if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" then
+            table.insert(randSecondary, v[1])
+        elseif v[3] == "melee" or v[3] == "gadget" then
+            table.insert(randMelee, v[1])
+        end
     end
 end
 
@@ -290,5 +301,33 @@ if activeGamemode == "Cranked" then
         ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
 
         if timer.Exists(ply:SteamID() .. "CrankedTimer") then timer.Remove(ply:SteamID() .. "CrankedTimer") end
+    end
+end
+
+--Quickdraw
+if activeGamemode == "Quickdraw" then
+    function HandlePlayerInitialSpawn(ply)
+        --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
+        ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+    end
+
+    function HandlePlayerSpawn(ply)
+        if useSecondary == true then
+            ply:Give(ply:GetNWString("loadoutSecondary"))
+        end
+        if useMelee == true then
+            ply:Give(ply:GetNWString("loadoutMelee"))
+        end
+        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+    end
+
+    function HandlePlayerKill(ply, victim)
+        return
+    end
+
+    function HandlePlayerDeath(ply, weaponName)
+        ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
     end
 end
