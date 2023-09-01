@@ -1448,7 +1448,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ApplyCardButton.DoClick = function()
                         local masteryUnlock = 50
                         if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            surface.PlaySound("common/wpn_select.wav")
+                            surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerCardChange")
                             net.WriteString(newCard)
                             net.SendToServer()
@@ -1461,7 +1461,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1475,7 +1475,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1489,7 +1489,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1503,7 +1503,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1517,7 +1517,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1531,7 +1531,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1545,7 +1545,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1559,7 +1559,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1573,7 +1573,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1587,7 +1587,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if playerTotalLevel < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -1601,7 +1601,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerCardChange")
                                 net.WriteString(newCard)
                                 net.SendToServer()
@@ -2406,7 +2406,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ApplyModelButton:SetSize(350, 50)
                     ApplyModelButton.DoClick = function()
                         if newModelUnlockType == "default" then
-                            surface.PlaySound("common/wpn_select.wav")
+                            surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
@@ -2418,7 +2418,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2431,7 +2431,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2444,7 +2444,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2457,7 +2457,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2470,7 +2470,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2483,7 +2483,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2496,7 +2496,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2509,7 +2509,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()
@@ -2522,7 +2522,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
-                                surface.PlaySound("common/wpn_select.wav")
+                                surface.PlaySound("tmui/uisuccess.wav")
                                 net.Start("PlayerModelChange")
                                 net.WriteString(newModel)
                                 net.SendToServer()

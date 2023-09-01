@@ -18,6 +18,7 @@ if SERVER then
         if !ply:IsPlayer() then return end
         table.insert(hillOccupants, ply)
         ply:SetNWBool("onOBJ", true)
+        ply:SendLua("surface.PlaySound('tmui/objsuccess.wav')")
         HillStatusCheck()
     end
 
