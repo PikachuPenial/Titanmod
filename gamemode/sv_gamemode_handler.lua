@@ -152,7 +152,7 @@ if activeGamemode == "KOTH" then
     end
 end
 
---Generate the table of available weapons if the gamemode is set to FFA.
+--Generate the table of available weapons if the gamemode is set to Quickdraw.
 if activeGamemode == "Quickdraw" then
     for k, v in pairs(weaponArray) do
         if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" then
@@ -163,9 +163,22 @@ if activeGamemode == "Quickdraw" then
     end
 end
 
+--Generate the table of available weapons if the gamemode is set to VIP.
+if activeGamemode == "VIP" then
+    for k, v in pairs(weaponArray) do
+        if v[3] == "primary" then
+            table.insert(randPrimary, v[1])
+        elseif v[3] == "secondary" then
+            table.insert(randSecondary, v[1])
+        elseif v[3] == "melee" or v[3] == "gadget" then
+            table.insert(randMelee, v[1])
+        end
+    end
+end
+
 --Setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played.
 --FFA, Shotty Snipers & KOTH
-if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "KOTH" then
+if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "KOTH" or activeGamemode == "VIP" then
     function HandlePlayerInitialSpawn(ply)
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
@@ -222,7 +235,6 @@ if activeGamemode == "Fiesta" then
 end
 
 --Gun Game
-PrintTable(ggLadder)
 if activeGamemode == "Gun Game" then
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWInt("ladderPosition", 0)

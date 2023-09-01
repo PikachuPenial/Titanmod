@@ -1,4 +1,8 @@
 **>GAMEPLAY**
+*NEW WEAPONS*
+- **KAC ChainSAW** (Primary, LMG)
+- **PKP** (Primary, LMG)
+
 *NEW GAMEMODES*
 - **KOTH**, Fight for control over a specific part of the map to gain score
 - **VIP**
