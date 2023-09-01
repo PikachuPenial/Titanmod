@@ -1,6 +1,6 @@
 **>GAMEPLAY**
-*NEW GAMEMODE (**King Of The Hill**)*
-- KOTH is now in Titanmod! Fight for control over a specific part of the map to gain score
+*NEW GAMEMODES*
+- **KOTH**, Fight for control over a specific part of the map to gain score
 
 *QUICK WEAPON SWITCHING*
 - A new setting (that is **ON** by default) that allows you to change to your Primary, Secondary, and Melee weapons with keybinds that you can set in Settings
@@ -9,6 +9,7 @@
 - Map voting has been rewritten to have more variety and to be more applicable to player counts
 - The first map will always be a map suitable for the player count (small map if less than 6 players are playing, large if more than 6)
 - The second map can be any map in the game, allowing for small maps to rarely be playable on full lobbies (chaotic but fun)
+- Votes are now shown in percentages instead of amount of votes on said map/mode
 
 *NEW HITSOUND OPTIONS*
 - Apex Legends
@@ -25,11 +26,11 @@
 **>QOL & BUG FIXES**
 - The order of weapons on the weapon selector have been reversed to better represent the new quick switch setting (Primary > Secondary > Melee)
 
-- Removed Main Menu music (was disliked by players)
+- Gun Game weapon ladder has been increased to 26 weapons (previously 24)
 
 - Added various HUD editor options related to objective-based gamemodes
 
-- Optimized gamemode checks, FPS/Ping counter, Main Menu, and HL2 hud hiding
+- Optimized HUD, gamemode checks, FPS/Ping counter, main menu, leaderboards, health regeneration, and ConVar updating
 
 - Music Volume setting now affects End Of Match music
 
@@ -38,6 +39,12 @@
 - Adjusted various ConVar descriptions
 
 - Players save data can no longer be wiped via the console while not in Main Menu
+
+- Removed HL2 suit zoom (was not intended)
+
+- Removed Main Menu music (was disliked by players)
+
+- Removed custom font options for Kill/Death UI, they are now both on by default
 
 - Removed obselete gamemode code
 

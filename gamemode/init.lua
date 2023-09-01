@@ -479,7 +479,7 @@ end )
 if healthRegeneration == true then
 	local function Regeneration()
 		for _, ply in pairs(player.GetAll()) do
-			if (ply:Alive()) then
+			if (ply:Alive()) and ply:Health() ~= ply:GetMaxHealth() then
 
 				if (ply:Health() < (ply.LastHealth or 0)) then
 					ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
@@ -516,6 +516,10 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 	--Begins the process of ending a match.
 	function EndMatch()
+		SetGlobal2Int("VotesOnModeOne", 0)
+		SetGlobal2Int("VotesOnModeTwo", 0)
+		SetGlobal2Int("VotesOnMapOne", 0)
+		SetGlobal2Int("VotesOnMapTwo", 0)
 		SetGlobal2Bool("tm_matchended", true)
 		timer.Remove("matchStatusCheck")
 
@@ -564,9 +568,6 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 		firstMode = modePool[1]
 		secondMode = modePool[2]
-
-		PrintTable(mapPool)
-		PrintTable(mapPoolSecondary)
 
 		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
 			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.

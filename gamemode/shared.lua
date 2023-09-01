@@ -73,8 +73,6 @@ if CLIENT then
     CreateClientConVar("tm_hud_enablekillfeed", 1, true, false, "Enable/disable the kill feed", 0, 1)
     CreateClientConVar("tm_hud_font", "Arial", true, false, "Enable/disable any custom HUD elements created by the gamemode")
     CreateClientConVar("tm_hud_font_scale", 1, true, false, "Adjusts the scale of the font used on HUD/UI elements", 0.5, 1.5)
-    CreateClientConVar("tm_hud_font_kill", 0, true, false, "Enable/disable the use of your custom font for the kill UI", 0, 1)
-    CreateClientConVar("tm_hud_font_death", 0, true, false, "Enable/disable the use of your custom font for the death UI", 0, 1)
     CreateClientConVar("tm_hud_ammo_style", 0, true, false, "Adjusts the style and look of the ammo counter", 0, 1)
     CreateClientConVar("tm_hud_ammo_wep_text_color_r", 255, true, false, "Adjusts the red coloring for the weapon name text", 0, 255)
     CreateClientConVar("tm_hud_ammo_wep_text_color_g", 255, true, false, "Adjusts the green coloring for the weapon name text", 0, 255)

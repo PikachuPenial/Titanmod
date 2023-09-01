@@ -105,22 +105,25 @@ local sounds = {
     ["kill"] = GetConVar("tm_killsoundtype"):GetInt()
 }
 
-local StreakFont = "StreakText"
-local NameFont = "PlayerNotiName"
-local ArialFont = "Arial18"
-local DeathFont = "PlayerDeathName"
-local WepFont = "WepNameKill"
-
-if GetConVar("tm_hud_font_kill"):GetInt() == 1 then
-    StreakFont = "HUD_StreakText"
-    NameFont = "HUD_PlayerNotiName"
-end
-
-if GetConVar("tm_hud_font_death"):GetInt() == 1 then
-    ArialFont = "HUD_Arial18"
-    DeathFont = "HUD_PlayerDeathName"
-    WepFont = "HUD_WepNameKill"
-end
+--Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame.
+local convars = {
+    ["hud_enable"] = GetConVar("tm_hud_enable"):GetInt(),
+    ["fps_counter"] = GetConVar("tm_hud_fpscounter"):GetInt(),
+    ["ammo_style"] = GetConVar("tm_hud_ammo_style"):GetInt(),
+    ["kill_tracker"] = GetConVar("tm_hud_killtracker"):GetInt(),
+    ["reload_hints"] = GetConVar("tm_hud_reloadhint"):GetInt(),
+    ["grapple_bind"] = GetConVar("frest_bindg"):GetInt(),
+    ["nade_bind"] = GetConVar("tm_nadebind"):GetInt(),
+    ["menu_bind"] = GetConVar("tm_mainmenubind"):GetInt(),
+    ["keypress_overlay"] = GetConVar("tm_hud_keypressoverlay"):GetInt(),
+    ["velocity_counter"] = GetConVar("tm_hud_velocitycounter"):GetInt(),
+    ["quick_switching"] = GetConVar("tm_quickswitching"):GetInt(),
+    ["killfeed_enable"] = GetConVar("tm_hud_enablekillfeed"):GetInt(),
+    ["killfeed_limit"] = GetConVar("tm_hud_killfeed_limit"):GetInt(),
+    ["screen_flashes"] = GetConVar("tm_screenflashes"):GetInt(),
+    ["menu_dof"] = GetConVar("tm_menudof"):GetInt(),
+    ["music_volume"] = GetConVar("tm_musicvolume"):GetFloat()
+}
 
 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
 if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
@@ -145,25 +148,27 @@ local objIndicatorColor
 local hillEmptyMat = Material("icons/kothempty.png")
 local hillContestedMat = Material("icons/kothcontested.png")
 
-local LocalPly
+local LocalPly = LocalPlayer()
 local clientFPS = 0
 local updateRate = 0.5
 
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
 
-if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+if convars["fps_counter"] == 1 then
     timer.Create("CounterUpdate", updateRate, 0, function()
         clientFPS = tostring(math.floor(1 / RealFrameTime()))
     end)
 end
 
-function HUD()
-    if LocalPly == nil then LocalPly = LocalPlayer() end
-    --Disables the HUD if the player has it disabled in Options.
-    if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
-    if !LocalPly:Alive() or LocalPly:GetNWBool("mainmenu") == true or gameEnded == true then return end
+gameevent.Listen("player_spawn")
+hook.Add("player_spawn", "CreateHUDOnSpawn", function(data)
+    if convars["hud_enabled"] == 0 then return end
+    LocalPly = LocalPlayer()
+    hook.Add("HUDPaint", "HUD", HUD)
+end )
 
+function HUD()
     --Objective indicator
     if GetGlobal2String("tm_hillstatus") == "Empty" then
         hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 10)
@@ -204,17 +209,17 @@ function HUD()
     end
 
     --FPS and ping counter
-    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
+    if convars["fps_counter"] == 1 then
         draw.SimpleText(clientFPS .. " FPS", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"], Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
         draw.SimpleText(LocalPly:Ping() .. " PING", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"] + 25, Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
     end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
+    if convars["ammo_style  "] == 0 then
         --Numeric Style
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+            if convars["fps_counter"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
@@ -222,7 +227,7 @@ function HUD()
         --Bar Style
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+            if convars["fps_counter"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
         if (LocalPly:GetActiveWeapon():IsValid()) then
@@ -241,7 +246,7 @@ function HUD()
     end
 
     --Displays a reload hint when the player is out of ammo.
-    if GetConVar("tm_hud_reloadhint"):GetInt() == 1 and (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if convars["reload_hints"] == 1 and (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Shows the players health depending on the style they have selected in Options.
     if LocalPly:Health() <= 0 then health = 0 else health = LocalPly:Health() end
@@ -262,7 +267,7 @@ function HUD()
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"], ScrH() - 24 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Grappling hook disclaimer.
-    if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -273,7 +278,7 @@ function HUD()
         surface.SetMaterial(grappleMat)
         if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
+            grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
@@ -284,12 +289,12 @@ function HUD()
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + 10, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
-        draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
+        draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
     elseif LocalPly:HasWeapon("fres_grapple") then
         surface.SetMaterial(grappleMat)
         if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]"
+            grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
@@ -309,18 +314,18 @@ function HUD()
         surface.SetDrawColor(255,255,255,255)
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
         elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 17.5, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipmentHUD["x"], ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"], ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
         else
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
         end
     end
 
     --Keypress Overlay
-    if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
+    if convars["keypress_overlay"] == 1 then
         hook.Add("Tick", "KeyOverlayTracking", function()
             if LocalPly:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
             if LocalPly:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
@@ -359,7 +364,7 @@ function HUD()
     end
 
     --Velocity counter
-    if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
+    if convars["velocity_counter"] == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
     --Disclaimer for players connecting during an active gamemode and map vote.
     if GetGlobal2Bool("tm_matchended") == true then
@@ -388,7 +393,6 @@ function HUD()
         surface.DrawTexturedRect(ScrW() / 2 - 21, 70, 42, 42)
     end
 end
-hook.Add("HUDPaint", "TestHud", HUD)
 
 --KOTH rendering (the hill outline and the distance text)
 if activeGamemode == "KOTH" then
@@ -398,7 +402,7 @@ if activeGamemode == "KOTH" then
     local playerAngle
 
     hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
-        if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+        if convars["hud_enable"] == 0 then return end
         render.SetColorMaterial()
         if LocalPlayer():GetNWBool("onOBJ") then
             render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
@@ -426,7 +430,7 @@ if activeGamemode == "KOTH" then
 
     local pfpUpdated = false
     local function UpdateKOTHPFP()
-        if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+        if convars["hud_enable"] == 0 then return end
         if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
             KOTHPFP:Hide()
             pfpUpdated = false
@@ -476,7 +480,7 @@ hook.Add("HUDShouldDraw", "HideHL2HUD", function(name)
 end )
 
 function GM:PlayerBindPress(ply, bind, pressed)
-    if GetConVar("tm_quickswitching"):GetInt() == 0 then return end
+    if convars["quick_switching"] == 0 then return end
     if string.find(bind, "slot1") and pressed then
         LocalPlayer():EmitSound("common/talk.wav", 50, 180)
         return true
@@ -515,21 +519,21 @@ net.Receive("PlayHitsound", function(len, pl)
 end )
 
 net.Receive("KillFeedUpdate", function(len, ply)
-    if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
+    if convars["killfeed_enable"] == 0 then return end
     local playersInAction = net.ReadString()
     local victimLastHitIn = net.ReadInt(5)
     local attacker = net.ReadString()
     local streak = net.ReadInt(10)
 
     table.insert(feedArray, {playersInAction, victimLastHitIn})
-    if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
+    if table.Count(feedArray) >= (convars["killfeed_limit"] + 1) then table.remove(feedArray, 1) end
     timer.Create(playersInAction .. math.Round(CurTime()), 8, 1, function()
         table.remove(feedArray, 1)
     end)
 
     if streak == 5 or streak == 10 or streak == 15 or streak == 20 or streak == 25 or streak == 30 then
         table.insert(feedArray, {attacker .. " is on a " .. streak .. " killstreak", 0})
-        if table.Count(feedArray) >= (GetConVar("tm_hud_killfeed_limit"):GetInt() + 1) then table.remove(feedArray, 1) end
+        if table.Count(feedArray) >= (convars["killfeed_limit"] + 1) then table.remove(feedArray, 1) end
         timer.Create(attacker .. streak .. math.Round(CurTime()), 8, 1, function()
             table.remove(feedArray, 1)
         end)
@@ -538,7 +542,7 @@ end )
 
 --Displays after a player kills another player.
 net.Receive("NotifyKill", function(len, ply)
-    if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+    if convars["hud_enable"] == 0 then return end
     if gameEnded then return end
     local killedPlayer = net.ReadEntity()
     local killedWith = net.ReadString()
@@ -643,9 +647,9 @@ net.Receive("NotifyKill", function(len, ply)
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
-        if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", StreakFont, w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
-        draw.SimpleText(killedPlayer:GetName(), NameFont, w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, StreakFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", "HUD_StreakText", w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
+        draw.SimpleText(killedPlayer:GetName(), "HUD_PlayerNotiName", w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "HUD_StreakText", w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KillNotif:Show()
@@ -667,11 +671,12 @@ end )
 
 --Displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
+    hook.Remove("HUDPaint", "HUD")
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if timer.Exists("CrankedTimeUntilDeath") then hook.Remove("Think", "CrankedTimeLeft") end
     timeUntilSelfDestruct = 0
-    if GetConVar("tm_hud_enable"):GetInt() == 0 then return end
+    if convars["hud_enable"] == 0 then return end
     if gameEnded then return end
 
     local killedBy = net.ReadEntity()
@@ -705,26 +710,26 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif.Paint = function(self, w, h)
         if !IsValid(killedBy) then DeathNotif:Remove() return end
         if lastHitIn == 1 then
-            draw.SimpleText(killedFrom .. "m" .. " HS", WepFont, w / 2 + 10, 165, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedFrom .. "m" .. " HS", "HUD_WepNameKill", w / 2 + 10, 165, red, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedFrom .. "m", WepFont, w / 2 + 10, 165, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedFrom .. "m", "HUD_WepNameKill", w / 2 + 10, 165, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-        draw.SimpleText("Killed by", ArialFont, w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", DeathFont, w / 2, 135.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("|", DeathFont, w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedBy:GetName(), DeathFont, w / 2 - 10, 137.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        draw.SimpleText(killedWith, DeathFont, w / 2 + 10, 137.5, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Killed by", "HUD_Arial18", w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 135.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedBy:GetName(), "HUD_PlayerDeathName", w / 2 - 10, 137.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(killedWith, "HUD_PlayerDeathName", w / 2 + 10, 137.5, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         if killedBy:Health() <= 0 then
-            draw.SimpleText("DEAD", WepFont, w / 2 - 10, 165, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw.SimpleText("DEAD", "HUD_WepNameKill", w / 2 - 10, 165, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         else
-            draw.SimpleText(killedBy:Health() .. "HP", WepFont, w / 2 - 10, 165, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(killedBy:Health() .. "HP", "HUD_WepNameKill", w / 2 - 10, 165, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
 
-        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", ArialFont, w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Press [" .. input.GetKeyName(GetConVar("tm_mainmenubind"):GetInt()) .. "] to open the menu", WepFont, w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", "HUD_Arial18", w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open the menu", "HUD_WepNameKill", w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
@@ -737,7 +742,7 @@ net.Receive("NotifyDeath", function(len, ply)
     KilledByPlayerProfilePicture:SetSize(70, 70)
     KilledByPlayerProfilePicture:SetPlayer(killedBy, 184)
 
-    if GetConVar("tm_screenflashes"):GetInt() == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0) end
+    if convars["screen_flashes"] == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 45), 0.3, 0) end
 
     DeathNotif:Show()
     DeathNotif:MakePopup()
@@ -748,6 +753,7 @@ end )
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
     gameEnded = true
+    hook.Remove("HUDPaint", "HUD")
     local dof
     local winningPlayer
     local wonMatch = false
@@ -766,7 +772,7 @@ net.Receive("EndOfGame", function(len, ply)
     if IsValid(KOTHPFP) then KOTHPFP:Remove() end
     hook.Remove("Think", "UpdateKOTHPFP")
 
-    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
+    if convars["menu_dof"] == 1 then dof = true end
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
@@ -860,7 +866,7 @@ net.Receive("EndOfGame", function(len, ply)
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/matchvictory.mp3")
         MatchEndMusic:Play()
-        MatchEndMusic:ChangeVolume(GetConVar("tm_musicvolume"):GetFloat())
+        MatchEndMusic:ChangeVolume(convars["music_volume"])
 
         MatchWinLoseText = vgui.Create("DPanel")
         MatchWinLoseText:SetSize(800, 220)
@@ -878,7 +884,7 @@ net.Receive("EndOfGame", function(len, ply)
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 0, 0, 190), 1, 7)
         MatchEndMusic = CreateSound(LocalPly, "music/matchdefeat.mp3")
         MatchEndMusic:Play()
-        MatchEndMusic:ChangeVolume(GetConVar("tm_musicvolume"):GetFloat())
+        MatchEndMusic:ChangeVolume(convars["music_volume"])
 
         MatchWinLoseText = vgui.Create("DPanel")
         MatchWinLoseText:SetSize(800, 220)
@@ -968,19 +974,27 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText("MATCH RESULTS", "GunPrintName", 237.5, -3, white, TEXT_ALIGN_CENTER)
         end
 
+        local modeOneVotes = 0
+        local modeTwoVotes = 0
+        local mapOneVotes = 0
+        local mapTwoVotes = 0
         local VotingPanel = vgui.Create("DPanel", EndOfGamePanel)
         VotingPanel:Dock(BOTTOM)
         VotingPanel:SetSize(0, 275)
         VotingPanel.Paint = function(self, w, h)
             draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
             if mapDecided == false then
+                if GetGlobal2Int("VotesOnMapOne", 0) != 0 or GetGlobal2Int("VotesOnMapTwo", 0) != 0 then
+                    mapOneVotes = math.Round(GetGlobal2Int("VotesOnMapOne", 0) / (GetGlobal2Int("VotesOnMapOne", 0) + GetGlobal2Int("VotesOnMapTwo", 0)) * 100)
+                    mapTwoVotes = math.Round(GetGlobal2Int("VotesOnMapTwo") / (GetGlobal2Int("VotesOnMapTwo", 0) + GetGlobal2Int("VotesOnMapOne", 0)) * 100)
+                end
                 if mapPicked == 1 then draw.RoundedBox(0, 10, 70, 175, 175, Color(50, 125, 50, 75)) end
                 if mapPicked == 2 then draw.RoundedBox(0, 290, 70, 175, 175, Color(50, 125, 50, 75)) end
                 draw.SimpleText("MAP VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
 
                 draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", 10, 245, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", 465, 245, white, TEXT_ALIGN_RIGHT)
-                draw.SimpleText(GetGlobal2Int("VotesOnMapOne", 0) .. " | " .. GetGlobal2Int("VotesOnMapTwo"), "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(mapOneVotes .. "% | " .. mapTwoVotes .. "%", "StreakText", w / 2, 245, white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, 245, white, TEXT_ALIGN_CENTER)
@@ -993,10 +1007,14 @@ net.Receive("EndOfGame", function(len, ply)
         GamemodePanel.Paint = function(self, w, h)
             draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
             if gamemodeDecided == false then
+                if GetGlobal2Int("VotesOnModeOne", 0) != 0 or GetGlobal2Int("VotesOnModeTwo", 0) != 0 then
+                    modeOneVotes = math.Round(GetGlobal2Int("VotesOnModeOne", 0) / (GetGlobal2Int("VotesOnModeOne", 0) + GetGlobal2Int("VotesOnModeTwo", 0)) * 100)
+                    modeTwoVotes = math.Round(GetGlobal2Int("VotesOnModeTwo") / (GetGlobal2Int("VotesOnModeTwo", 0) + GetGlobal2Int("VotesOnModeOne", 0)) * 100)
+                end
                 if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
                 if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
                 draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                draw.SimpleText(GetGlobal2Int("VotesOnModeOne", 0) .. " | " .. GetGlobal2Int("VotesOnModeTwo"), "MainMenuLoadoutWeapons", w / 2, 70, white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(modeOneVotes .. "% | " .. modeTwoVotes .. "%", "StreakText", w / 2, 70, white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, 65, white, TEXT_ALIGN_CENTER)
@@ -1301,7 +1319,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
     LevelNotif:SetMouseInputEnabled(false)
     LevelNotif:SetKeyboardInputEnabled(false)
 
-    if GetConVar("tm_screenflashes"):GetInt() == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0) end
+    if convars["screen_flashes"] == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0) end
     surface.PlaySound("tmui/levelup.wav")
 
     timer.Create("LevelNotif", 6, 1, function()
@@ -1436,6 +1454,7 @@ concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
 
 --Create or delete FPS and Ping counter updating if ConVar is updated during gameplay.
 cvars.AddChangeCallback("tm_hud_fpscounter", function(convar_name, value_old, value_new)
+    convars["fps_counter"] = value_new
     if value_new == 1 and !timer.Exists("CounterUpdate") then
         timer.Create("CounterUpdate", updateRate, 0, function()
             clientFPS = tostring(math.floor(1 / RealFrameTime()))
@@ -1642,26 +1661,6 @@ end)
 cvars.AddChangeCallback("tm_hud_obj_text_color_b", function(convar_name, value_old, value_new)
     objHUD["text_b"] = value_new
 end)
-cvars.AddChangeCallback("tm_hud_font_kill", function(convar_name, value_old, value_new)
-    if value_new == "1" then
-        StreakFont = "HUD_StreakText"
-        NameFont = "HUD_PlayerNotiName"
-    else
-        StreakFont = "StreakText"
-        NameFont = "PlayerNotiName"
-    end
-end)
-cvars.AddChangeCallback("tm_hud_font_death", function(convar_name, value_old, value_new)
-    if value_new == "1" then
-        ArialFont = "HUD_Arial18"
-        DeathFont = "HUD_PlayerDeathName"
-        WepFont = "HUD_WepNameKill"
-    else
-        ArialFont = "Arial18"
-        DeathFont = "PlayerDeathName"
-        WepFont = "WepNameKill"
-    end
-end)
 cvars.AddChangeCallback("tm_hud_killfeed_style", function(convar_name, value_old, value_new)
     if value_new == 0 then
         feedEntryPadding = -20
@@ -1689,4 +1688,49 @@ cvars.AddChangeCallback("tm_hitsoundtype", function(convar_name, value_old, valu
 end)
 cvars.AddChangeCallback("tm_killsoundtype", function(convar_name, value_old, value_new)
     sounds["kill"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_enable", function(convar_name, value_old, value_new)
+    convars["hud_enable"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_ammo_style", function(convar_name, value_old, value_new)
+    convars["ammo_style"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killtracker", function(convar_name, value_old, value_new)
+    convars["kill_tracker"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_reloadhint", function(convar_name, value_old, value_new)
+    convars["reload_hints"] = value_new
+end)
+cvars.AddChangeCallback("frest_bindg", function(convar_name, value_old, value_new)
+    convars["grapple_bind"] = value_new
+end)
+cvars.AddChangeCallback("tm_nadebind", function(convar_name, value_old, value_new)
+    convars["nade_bind"] = value_new
+end)
+cvars.AddChangeCallback("tm_mainmenubind", function(convar_name, value_old, value_new)
+    convars["menu_bind"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_keypressoverlay", function(convar_name, value_old, value_new)
+    convars["keypress_overlay"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_velocitycounter", function(convar_name, value_old, value_new)
+    convars["velocity_counter"] = value_new
+end)
+cvars.AddChangeCallback("tm_quickswitching", function(convar_name, value_old, value_new)
+    convars["quick_switching"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_enablekillfeed", function(convar_name, value_old, value_new)
+    convars["killfeed_enable"] = value_new
+end)
+cvars.AddChangeCallback("tm_hud_killfeed_limit", function(convar_name, value_old, value_new)
+    convars["killfeed_limit"] = value_new
+end)
+cvars.AddChangeCallback("tm_screenflashes", function(convar_name, value_old, value_new)
+    convars["screen_flashes"] = value_new
+end)
+cvars.AddChangeCallback("tm_menudof", function(convar_name, value_old, value_new)
+    convars["menu_dof"] = value_new
+end)
+cvars.AddChangeCallback("tm_musicvolume", function(convar_name, value_old, value_new)
+    convars["music_volume"] = value_new
 end)

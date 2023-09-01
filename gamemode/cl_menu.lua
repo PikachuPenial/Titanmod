@@ -3506,14 +3506,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                 GeneralEditor:Dock(TOP)
-                GeneralEditor:SetSize(0, 210)
+                GeneralEditor:SetSize(0, 130)
                 GeneralEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Font Scale", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Use Font on Kill UI", "Health", 55, 127.5, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Use Font on Death UI", "Health", 55, 167.5, white, TEXT_ALIGN_LEFT)
                 end
 
                 local HUDFont = GeneralEditor:Add("DComboBox")
@@ -3553,18 +3551,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 FontScale:SetMax(1.5)
                 FontScale:SetDecimals(2)
                 FontScale:SetTooltip("Adjust the size of your font.")
-
-                local KillUICustomFont = GeneralEditor:Add("DCheckBox")
-                KillUICustomFont:SetPos(20, 130)
-                KillUICustomFont:SetConVar("tm_hud_font_kill")
-                KillUICustomFont:SetSize(30, 30)
-                KillUICustomFont:SetTooltip("Enable use of your custom font for the kill UI.")
-
-                local DeathUICustomFont = GeneralEditor:Add("DCheckBox")
-                DeathUICustomFont:SetPos(20, 170)
-                DeathUICustomFont:SetConVar("tm_hud_font_death")
-                DeathUICustomFont:SetSize(30, 30)
-                DeathUICustomFont:SetTooltip("Enable use of your custom font for the death UI.")
 
                 local AmmoEditor = vgui.Create("DPanel", EditorScroller)
                 AmmoEditor:Dock(TOP)
