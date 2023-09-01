@@ -28,6 +28,13 @@ net.Receive("OpenMainMenu", function(len, ply)
     table.Shuffle(hintList)
     local hintText = table.concat(hintList, " / ")
 
+    local function TriggerSound(type)
+        if GetConVar("tm_menusounds"):GetInt() == 0 then return end
+        if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 2) .. ".wav") end
+        if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
+        if type == "back" then surface.PlaySound("tmui/clickback.wav") end
+    end
+
     if not IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
         MainMenu:SetSize(ScrW(), ScrH())
@@ -110,7 +117,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
                 PrestigeButton.DoClick = function()
                     if (prestigeConfirm == 0) then
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         prestigeConfirm = 1
                     else
                         surface.PlaySound("tmui/prestige.wav")
@@ -140,7 +147,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton:SetSize(80, 80)
             LeaderboardButton:SetTooltip("Leaderboards (not available)")
             LeaderboardButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 MainPanel:Hide()
 
                 if not IsValid(LeaderboardPanel) then
@@ -194,7 +201,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         timer.Create("SendBoardDataRequestCooldown", 1.25, 1, function()
                             LeaderboardPickerButton:Show()
                         end)
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         net.Start("GrabLeaderboardData")
                         net.WriteString(data)
                         net.SendToServer()
@@ -207,7 +214,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     LeaderboardPickerButton:SetTooltip("Switch shown Leaderboard")
                     LeaderboardPickerButton:SetImage("icons/changeicon.png")
                     LeaderboardPickerButton.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         local BoardSelection = DermaMenu()
                         local statistics = BoardSelection:AddSubMenu("Statistics")
                         statistics:AddOption("Level", function() LeaderboardSelected("Level", "level") end)
@@ -250,7 +257,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         MainPanel:Show()
                         LeaderboardPanel:Hide()
                         LeaderboardSlideoutPanel:Hide()
@@ -347,7 +354,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectateButton:SetTooltip("Spectate")
             local spectatePanelOpen = 0
             SpectateButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 if (spectatePanelOpen == 0) then
                     spectatePanelOpen = 1
                     SpectatePanel:SizeTo(-1, 70, 1, 0, 0.1)
@@ -376,7 +383,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
                 end
                 TutorialPanel.OnClose = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
+                    TriggerSound("click")
                     MainMenu:SetMouseInputEnabled(true)
                 end
 
@@ -497,7 +504,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 DiscordButton:SetSize(64, 64)
                 DiscordButton:SetTooltip("Discord")
                 DiscordButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
+                    TriggerSound("click")
                     gui.OpenURL("https://discord.gg/GRfvt27uGF")
                 end
             end
@@ -510,7 +517,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             TutorialButton:SetSize(64, 64)
             TutorialButton:SetTooltip("Tutorial")
             TutorialButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 ShowTutorial()
             end
 
@@ -520,7 +527,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             DiscordButton:SetSize(64, 64)
             DiscordButton:SetTooltip("Discord")
             DiscordButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 gui.OpenURL("https://discord.gg/GRfvt27uGF")
             end
 
@@ -530,7 +537,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             WorkshopButton:SetSize(64, 64)
             WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
             end
 
@@ -540,7 +547,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             YouTubeButton:SetSize(64, 64)
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 gui.OpenURL("https://youtube.com/@penial_")
             end
 
@@ -550,7 +557,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             GithubButton:SetSize(64, 64)
             GithubButton:SetTooltip("GitHub")
             GithubButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
             end
 
@@ -584,7 +591,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
             SpawnButton.DoClick = function()
                 if timer.Exists("respawnTimeLeft") then return end
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
                 net.Start("CloseMainMenu")
@@ -628,7 +635,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             CustomizeCardButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 MainPanel:Hide()
                 local currentCard = LocalPly:GetNWString("chosenPlayercard")
 
@@ -1691,7 +1698,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextDefault)
                     end
 
@@ -1701,7 +1708,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     LevelJump:SetImage("icons/performanceicon.png")
                     LevelJump:SetTooltip("Leveling")
                     LevelJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextLevel)
                     end
 
@@ -1711,7 +1718,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
                     KillsJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextKill)
                     end
 
@@ -1721,7 +1728,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextAccolade)
                     end
 
@@ -1731,7 +1738,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump:SetTooltip("Mastery")
                     WeaponJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextMastery)
                     end
 
@@ -1741,7 +1748,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ColorJump:SetImage("icons/paletteicon.png")
                     ColorJump:SetTooltip("Colors")
                     ColorJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextColor)
                     end
 
@@ -1751,7 +1758,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     PrideJump:SetImage("icons/scoreicon.png")
                     PrideJump:SetTooltip("Pride")
                     PrideJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CardScroller:ScrollToChild(TextPride)
                     end
 
@@ -1761,7 +1768,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RandomizeButton:SetImage("icons/diceicon.png")
                     RandomizeButton:SetTooltip("Choose random card")
                     RandomizeButton.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         local rand = math.random(1, totalCards)
 
                         for k, v in pairs(cardArray) do
@@ -1781,7 +1788,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         MainPanel:Show()
                         CardPanel:Hide()
                         CardPreviewPanel:Hide()
@@ -1791,7 +1798,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             CustomizeModelButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 MainPanel:Hide()
 
                 local currentModel = LocalPly:GetNWString("chosenPlayermodel")
@@ -2587,7 +2594,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CustomizeScroller:ScrollToChild(TextDefault)
                     end
 
@@ -2597,7 +2604,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     KillsJump:SetImage("icons/uikillicon.png")
                     KillsJump:SetTooltip("Kills")
                     KillsJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CustomizeScroller:ScrollToChild(TextKills)
                     end
 
@@ -2607,7 +2614,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     StreaksJump:SetImage("icons/streakicon.png")
                     StreaksJump:SetTooltip("Streaks")
                     StreaksJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CustomizeScroller:ScrollToChild(TextStreak)
                     end
 
@@ -2617,7 +2624,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         CustomizeScroller:ScrollToChild(TextAccolade)
                     end
 
@@ -2627,7 +2634,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RandomizeButton:SetImage("icons/diceicon.png")
                     RandomizeButton:SetTooltip("Choose random model")
                     RandomizeButton.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         local rand = math.random(1, totalModels)
 
                         for k, v in pairs(modelArray) do
@@ -2653,7 +2660,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         MainPanel:Show()
                         CustomizeSlideoutPanel:Hide()
                         CustomizePanel:Hide()
@@ -2697,7 +2704,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             OptionsSettingsButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 MainPanel:Hide()
 
                 if not IsValid(OptionsPanel) then
@@ -2743,7 +2750,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
-                    DockAudio:SetSize(0, 280)
+                    DockAudio:SetSize(0, 320)
 
                     local DockWeaponry = vgui.Create("DPanel", OptionsScroller)
                     DockWeaponry:Dock(TOP)
@@ -2772,7 +2779,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     AccountJump:SetTooltip("Account")
                     AccountJump:SetImage("icons/modelicon.png")
                     AccountJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockAccount)
                     end
 
@@ -2791,7 +2798,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     UIJump:SetTooltip("Interface")
                     UIJump:SetImage("icons/uiicon.png")
                     UIJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockUI)
                     end
 
@@ -2801,7 +2808,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     AudioJump:SetTooltip("Audio")
                     AudioJump:SetImage("icons/audioicon.png")
                     AudioJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockAudio)
                     end
 
@@ -2811,7 +2818,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     WeaponJump:SetTooltip("Weapons")
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockWeaponry)
                     end
 
@@ -2821,7 +2828,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CrosshairJump:SetTooltip("Crosshair")
                     CrosshairJump:SetImage("icons/crosshairicon.png")
                     CrosshairJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockCrosshair)
                     end
 
@@ -2831,7 +2838,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HitmarkerJump:SetTooltip("Hitmarkers")
                     HitmarkerJump:SetImage("icons/hitmarkericon.png")
                     HitmarkerJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockHitmarker)
                     end
 
@@ -2841,7 +2848,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     PerformanceJump:SetTooltip("Performance")
                     PerformanceJump:SetImage("icons/performanceicon.png")
                     PerformanceJump.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockPerformance)
                     end
 
@@ -2851,7 +2858,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         MainPanel:Show()
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
@@ -3031,15 +3038,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Music Volume", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Enable Kill Sounds", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hit Sound Style", "SettingsLabel", 125, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu Sounds", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Music Volume", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Hit Sounds", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable Kill Sounds", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hit Sound Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Sound Style", "SettingsLabel", 125, 265, white, TEXT_ALIGN_LEFT)
                     end
 
+
+                    local menuSoundsButton = DockAudio:Add("DCheckBox")
+                    menuSoundsButton:SetPos(20, 70)
+                    menuSoundsButton:SetConVar("tm_menusounds")
+                    menuSoundsButton:SetSize(30, 30)
+                    menuSoundsButton:SetTooltip("Enable the menu sounds.")
+
                     local musicVolume = DockAudio:Add("DNumSlider")
-                    musicVolume:SetPos(-85, 70)
+                    musicVolume:SetPos(-85, 110)
                     musicVolume:SetSize(250, 30)
                     musicVolume:SetConVar("tm_musicvolume")
                     musicVolume:SetMin(0)
@@ -3048,19 +3063,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     musicVolume:SetTooltip("Adjust the volume of music.")
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
-                    hitSoundsButton:SetPos(20, 110)
+                    hitSoundsButton:SetPos(20, 150)
                     hitSoundsButton:SetConVar("tm_hitsounds")
                     hitSoundsButton:SetSize(30, 30)
                     hitSoundsButton:SetTooltip("Enable the hitsounds.")
 
                     local killSoundButton = DockAudio:Add("DCheckBox")
-                    killSoundButton:SetPos(20, 150)
+                    killSoundButton:SetPos(20, 190)
                     killSoundButton:SetConVar("tm_killsound")
                     killSoundButton:SetSize(30, 30)
                     killSoundButton:SetTooltip("Enable the kill conformation sound.")
 
                     local hitSoundsType = DockAudio:Add("DComboBox")
-                    hitSoundsType:SetPos(20, 190)
+                    hitSoundsType:SetPos(20, 230)
                     hitSoundsType:SetSize(100, 30)
                     hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
                     if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") end
@@ -3075,7 +3090,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local killSoundsType = DockAudio:Add("DComboBox")
-                    killSoundsType:SetPos(20, 230)
+                    killSoundsType:SetPos(20, 270)
                     killSoundsType:SetSize(100, 30)
                     killSoundsType:SetTooltip("Adjust the style of the kill confirmation sound.")
                     if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") end
@@ -3335,7 +3350,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         end
                     end
                     WipeAccountButton.DoClick = function()
-                        surface.PlaySound("tmui/buttonclick.wav")
+                        TriggerSound("click")
                         if (wipeConfirm == 0) then
                             wipeConfirm = 1
                         else
@@ -3350,7 +3365,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
             OptionsHUDButton.DoClick = function()
                 MainPanel:Hide()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 local ShowHiddenOptions = false
 
                 local health = 100
@@ -3473,7 +3488,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                 end
                 EditorPanel.OnClose = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
+                    TriggerSound("click")
                     MainMenu:SetMouseInputEnabled(true)
                     FakeHUD:Hide()
                     MainPanel:Show()
@@ -4180,7 +4195,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
                 end
                 ResetToDefaultButton.DoClick = function()
-                    surface.PlaySound("tmui/buttonclick.wav")
+                    TriggerSound("click")
                     if (ResetToDefaultConfirm == 0) then
                         ResetToDefaultConfirm = 1
                     else
@@ -4229,7 +4244,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 draw.DrawText("CREDITS", "StreakText", 85 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
             end
             CreditsButton.DoClick = function()
-                surface.PlaySound("tmui/buttonclick.wav")
+                TriggerSound("click")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod#credits")
             end
     end

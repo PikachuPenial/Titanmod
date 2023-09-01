@@ -35,6 +35,8 @@
 
 - Gun Game weapon ladder has been increased to 26 weapons (previously 24)
 
+- Added Enable Menu Sounds option
+
 - Added various HUD editor options related to the new gamemodes
 
 - Music Volume setting now affects End Of Match music
