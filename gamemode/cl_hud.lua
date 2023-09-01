@@ -170,21 +170,28 @@ end )
 
 function HUD()
     --Objective indicator
-    if GetGlobal2String("tm_hillstatus") == "Empty" then
-        hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 10)
-        objIndicatorColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 175)
-    elseif GetGlobal2String("tm_hillstatus") == "Occupied" then
-        hillColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 10)
-        objIndicatorColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
-    else
-        hillColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 10)
-        objIndicatorColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 175)
-    end
+    if activeGamemode == "KOTH" then
+        if GetGlobal2String("tm_hillstatus") == "Empty" then
+            hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 10)
+            objIndicatorColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 175)
+        elseif GetGlobal2String("tm_hillstatus") == "Occupied" then
+            hillColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 10)
+            objIndicatorColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
+        else
+            hillColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 10)
+            objIndicatorColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 175)
+        end
 
-    local border = Material("overlay/objborder.png")
-    surface.SetMaterial(border)
-    surface.SetDrawColor(objIndicatorColor)
-    if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+        local border = Material("overlay/objborder.png")
+        surface.SetMaterial(border)
+        surface.SetDrawColor(objIndicatorColor)
+        if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+    elseif activeGamemode == "VIP" then
+        local border = Material("overlay/objborder.png")
+        surface.SetMaterial(border)
+        surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
+        if GetGlobal2Entity("tm_vip", NULL) == LocalPly then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+    end
 
     --Remaining match time.
     local timeText = " ∞"
@@ -196,6 +203,12 @@ function HUD()
             draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         else
             draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        end
+    elseif activeGamemode == "VIP" then
+        if GetGlobal2Entity("tm_vip") != NULL then
+            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        else
+            draw.SimpleText("No VIP", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
     end
 
@@ -215,7 +228,7 @@ function HUD()
     end
 
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if convars["ammo_style  "] == 0 then
+    if convars["ammo_style"] == 0 then
         --Numeric Style
         if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
@@ -392,6 +405,13 @@ function HUD()
         end
         surface.DrawTexturedRect(ScrW() / 2 - 21, 70, 42, 42)
     end
+
+    --VIP status icons
+    if activeGamemode == "VIP" then
+        surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 225)
+        surface.SetMaterial(hillEmptyMat)
+        surface.DrawTexturedRect(ScrW() / 2 - 24, 67, 48, 48)
+    end
 end
 
 --KOTH rendering (the hill outline and the distance text)
@@ -441,6 +461,31 @@ if activeGamemode == "KOTH" then
         end
     end
     hook.Add("Think", "UpdateKOTHPFP", UpdateKOTHPFP)
+end
+
+--VIP rendering
+if activeGamemode == "VIP" then
+    if IsValid(VIPPFP) then VIPPFP:Remove() end
+    VIPPFP = vgui.Create("AvatarImage", PlayerPanel)
+    VIPPFP:SetPos(ScrW() / 2 - 21, 70)
+    VIPPFP:SetSize(42, 42)
+    VIPPFP:Hide()
+
+    local pfpUpdated = false
+    local vip
+    local function UpdateVIPPFP()
+        if convars["hud_enable"] == 0 then return end
+        vip = GetGlobal2Entity("tm_vip", NULL)
+        if vip == NULL then
+            VIPPFP:Hide()
+            pfpUpdated = false
+        else
+            VIPPFP:Show()
+            if !pfpUpdated then VIPPFP:SetPlayer(GetGlobal2Entity("tm_vip"), 184) end
+            pfpUpdated = true
+        end
+    end
+    hook.Add("Think", "UpdateVIPPFP", UpdateVIPPFP)
 end
 
 --Hides the players info that shows up when aiming at another player.
@@ -771,6 +816,7 @@ net.Receive("EndOfGame", function(len, ply)
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
     if IsValid(KOTHPFP) then KOTHPFP:Remove() end
     hook.Remove("Think", "UpdateKOTHPFP")
+    hook.Remove("Think", "UpdateVIPPFP")
 
     if convars["menu_dof"] == 1 then dof = true end
 

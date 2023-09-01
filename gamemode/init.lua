@@ -85,6 +85,7 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
+	ply:SetNWBool("trulyAlive", false)
 	ply:SetNWInt("playerID64", ply:SteamID64())
 	ply:SetNWString("playerName", ply:Name())
 	ply:SetCanZoom(false)
@@ -391,7 +392,10 @@ end
 
 net.Receive("CloseMainMenu", function(len, ply)
 	ply:SetNWBool("mainmenu", false)
-	if not timer.Exists(ply:SteamID() .. "respawnTime") then ply:Spawn() end
+	if not timer.Exists(ply:SteamID() .. "respawnTime") then
+		ply:Spawn()
+		ply:SetNWBool("trulyAlive", true)
+	end
 end )
 
 --Overwritting the default respawn mechanics to lock players behind a spwan countdown.

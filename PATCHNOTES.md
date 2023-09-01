@@ -4,8 +4,8 @@
 - **PKP** (Primary, LMG)
 
 *NEW GAMEMODES*
-- **KOTH**, Fight for control over a specific part of the map to gain score
-- **VIP**
+- **KOTH**, fight for control over a specific part of the map to gain score
+- **VIP**, typical FFA but one player is designated as a VIP and gets gains score every second, kill them to take the status for yourself
 - **Quickdraw**, typical FFA but with only secondary weapons
 
 *QUICK WEAPON SWITCHING*
@@ -35,17 +35,13 @@
 
 - Gun Game weapon ladder has been increased to 26 weapons (previously 24)
 
-- Added various HUD editor options related to objective-based gamemodes
-
-- Optimized HUD, gamemode checks, FPS/Ping counter, main menu, leaderboards, health regeneration, and ConVar updating
+- Added various HUD editor options related to the new gamemodes
 
 - Music Volume setting now affects End Of Match music
 
-- Increased leaderboard cooldown to prevent server lag
+- New end of match quotes from community members
 
-- Adjusted various ConVar descriptions
-
-- Players save data can no longer be wiped via the console while not in Main Menu
+- Optimized HUD, gamemode checks, FPS/Ping counter, main menu, leaderboards, health regeneration, and ConVar updating
 
 - Removed HL2 suit zoom (was not intended)
 
@@ -55,4 +51,8 @@
 
 - Removed obselete gamemode code
 
-- New end of match quotes from community members
+- Adjusted various ConVar descriptions
+
+- Players save data can no longer be wiped via the console while not in Main Menu
+
+- Adjusted order of gamemodes when changing the gamemode ConVar

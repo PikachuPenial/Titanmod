@@ -174,11 +174,25 @@ if activeGamemode == "VIP" then
             table.insert(randMelee, v[1])
         end
     end
+
+    local vip
+    timer.Create("VIPScoring", vipScoringInterval, 0, function()
+        vip = GetGlobal2Entity("tm_vip", NULL)
+        if vip == NULL then
+            local connectedPlayers = {}
+            for k, v in RandomPairs(player.GetAll()) do if v:Alive() and v:GetNWBool("trulyAlive") then table.insert(connectedPlayers, v) end end
+            SetGlobal2Entity("tm_vip", connectedPlayers[1])
+            return
+        end
+        vip:SetNWInt("playerScore", vip:GetNWInt("playerScore") + vipScore)
+        vip:SetNWInt("playerScoreMatch", vip:GetNWInt("playerScoreMatch") + vipScore)
+        vip:SetNWInt("playerXP", vip:GetNWInt("playerXP") + (vipScore * xpMultiplier))
+    end)
 end
 
 --Setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played.
 --FFA, Shotty Snipers & KOTH
-if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "KOTH" or activeGamemode == "VIP" then
+if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemode == "KOTH" then
     function HandlePlayerInitialSpawn(ply)
         --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
@@ -339,6 +353,44 @@ if activeGamemode == "Quickdraw" then
     end
 
     function HandlePlayerDeath(ply, weaponName)
+        ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+    end
+end
+
+--VIP
+if activeGamemode == "VIP" then
+    function HandlePlayerInitialSpawn(ply)
+        --This sets the players loadout as Networked Strings, this is mainly used to show the players loadout in the Main Menu and to track statistics.
+        ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
+        ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+    end
+
+    function HandlePlayerSpawn(ply)
+        if usePrimary == true then
+            ply:Give(ply:GetNWString("loadoutPrimary"))
+        end
+        if useSecondary == true then
+            ply:Give(ply:GetNWString("loadoutSecondary"))
+        end
+        if useMelee == true then
+            ply:Give(ply:GetNWString("loadoutMelee"))
+        end
+        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+    end
+
+    function HandlePlayerKill(ply, victim)
+        if victim == GetGlobal2Entity("tm_vip", NULL) then SetGlobal2Entity("tm_vip", ply) end
+    end
+
+    function HandlePlayerDeath(ply, weaponName)
+        if weaponName == "Suicide" then
+            local connectedPlayers = {}
+            for k, v in RandomPairs(player.GetAll()) do if v:Alive() then table.insert(connectedPlayers, v) end end
+            SetGlobal2Entity("tm_vip", connectedPlayers[1])
+        end
+        ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
         ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
     end
