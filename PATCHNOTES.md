@@ -15,11 +15,18 @@
 *QUICK WEAPON SWITCHING*
 - A new setting (that is **ON** by default) that allows you to change to your Primary, Secondary, and Melee weapons with keybinds that you can set in Settings
 
+*CUSTOM FOV SYSTEM*
+- A new setting (that is **OFF** by default) that allows you to change your FOV beyond the 100 FOV maximum in Garry's Mod, with the max being 125 with this setting enabled.
+
 *MAP VOTING REWORK*
-- Map voting has been rewritten to have more variety and to be more applicable to player counts
+- Map and mode voting has been rewritten to have more variety and to be more applicable to player counts
 - The first map will always be a map suitable for the player count (small map if less than 6 players are playing, large if more than 6)
 - The second map can be any map in the game, allowing for small maps to rarely be playable on full lobbies (chaotic but fun)
 - Votes are now shown in percentages instead of amount of votes on said map/mode
+
+*MODE VOTING REWORK*
+- The first mode will always be a simplistic gamemode (FFA, FFA with loadout variations, etc)
+- The second mode will always be a complicated gamemode (Objective modes, gun game, etc)
 
 *NEW HITSOUND OPTIONS*
 - Apex Legends
@@ -39,6 +46,10 @@
 
 - Gun Game weapon ladder has been increased to 26 weapons (previously 24)
 
+- Added Mute button to the Post Game UI that disables the voice chat
+
+- Added HUD indicator when transmitting your microphone
+
 - Main Menu has brand new sound and visual effects
 
 - Added Enable Menu Sounds option
@@ -49,7 +60,9 @@
 
 - New end of match quotes from community members
 
-- Optimized HUD, gamemode checks, FPS/Ping counter, main menu, leaderboards, health regeneration, and ConVar updating
+- Fixed Cranked self destruct not triggering an explosion
+
+- Optimized HUD, gamemode checks, FPS/Ping counter, main menu, voice chat, leaderboards, health regeneration, and ConVar updating
 
 - Removed HL2 suit zoom (was not intended)
 

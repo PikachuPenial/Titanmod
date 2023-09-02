@@ -36,6 +36,7 @@ util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
 util.AddNetworkString("ReceiveMapVote")
 util.AddNetworkString("ReceiveModeVote")
+util.AddNetworkString("ReceivePostGameMute")
 util.AddNetworkString("BeginSpectate")
 util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
@@ -144,7 +145,7 @@ end )
 
 net.Receive("GrabLeaderboardData", function(len, ply)
 	if timer.Exists(ply:SteamID64() .. "_GrabBoardDataCooldown") then return end
-	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 4, 1, function()
+	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 3, 1, function()
 	end)
 
 	local key = net.ReadString()
@@ -239,7 +240,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
-	timer.Create(victim:SteamID() .. "respawnTime", playerRespawnTime, 1, function()
+	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
 			if not IsValid(victim) then return end
 			if GetGlobal2Bool("tm_matchended") == true then return end
@@ -488,7 +489,7 @@ end )
 if healthRegeneration == true then
 	local function Regeneration()
 		for _, ply in pairs(player.GetAll()) do
-			if (ply:Alive()) and ply:Health() ~= ply:GetMaxHealth() then
+			if ply:Alive() then
 
 				if (ply:Health() < (ply.LastHealth or 0)) then
 					ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
@@ -532,6 +533,18 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		SetGlobal2Bool("tm_matchended", true)
 		timer.Remove("matchStatusCheck")
 
+		hook.Remove("PlayerCanHearPlayersVoice", "ProxVOIP")
+		hook.Add("PlayerCanHearPlayersVoice", "ProxVOIPPostMatch", function(listener,talker)
+			if listener:GetNWBool("PostGameMute") == true then
+				return false, false
+			else
+				return true, false
+			end
+		end )
+		net.Receive("ReceivePostGameMute", function(len, ply)
+			ply:SetNWBool("PostGameMute", net.ReadBool())
+		end )
+
 		mapVotes = {}
 		playersVoted = {}
 		modeVotes = {}
@@ -550,9 +563,13 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		local mapPool = {}
 		local mapPoolSecondary = {}
 		local modePool = {}
+		local modePoolSecondary = {}
 
 		--Primary map pool will only contain maps suitable for the current player count.
 		--Secondary map pool will contain every map in the game.
+
+		--Primary mode pool will only contain modes that are simplistic in nature.
+		--Secondary mode pool will only contain modes with complicated elements (objectives, weird modifiers, etc).
 
 		--Makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool.
 		for m, v in RandomPairs(availableMaps) do
@@ -568,7 +585,11 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		for g, v in RandomPairs(gamemodeArray) do
-			if activeGamemode ~= v then table.insert(modePool, v[1]) end
+			if activeGamemode ~= v and v[4] == true then table.insert(modePool, v[1]) end
+		end
+
+		for g, v in RandomPairs(gamemodeArray) do
+			if activeGamemode ~= v and v[4] == false then table.insert(modePoolSecondary, v[1]) end
 		end
 
 		firstMap = mapPool[1]
@@ -576,7 +597,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		secondMap = mapPoolSecondary[1]
 
 		firstMode = modePool[1]
-		secondMode = modePool[2]
+		secondMode = modePoolSecondary[2]
 
 		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
 			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.
@@ -589,6 +610,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 		for k, v in pairs(player.GetAll()) do
 			v:SetLaggedMovementValue(0.2)
+			v:SetNWBool("PostGameMute", false)
 		end
 
 		net.Start("EndOfGame")
@@ -827,14 +849,10 @@ hook.Add("PlayerSay", "FilterHook", ChatFilter)
 
 --Modifies base game voice chat to be proximity based.
 hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
-	if not timer.Exists("newMapCooldown") then
-		if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then
-			return false, false
-		else
-			return true, true
-		end
+	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then
+		return false, false
 	else
-		return true, false
+		return true, true
 	end
 end )
 

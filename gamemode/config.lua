@@ -18,7 +18,6 @@ if UseConfigConvars then
     healthRegeneration = GetConVar("sv_tm_player_healthregen_enable"):GetBool()
     healthRegenSpeed = GetConVar("sv_tm_player_healthregen_speed"):GetFloat()
     healthRegenDamageDelay = GetConVar("sv_tm_player_healthregen_damagedelay"):GetFloat()
-    playerRespawnTime = GetConVar("sv_tm_player_respawntime"):GetInt()
     forceDisableProgression = GetConVar("sv_tm_progression_forcedisable"):GetBool()
     xpMultiplier = GetConVar("sv_tm_progression_xp_multi"):GetFloat()
     usePrimary = GetConVar("sv_tm_ffa_use_primary"):GetBool()
@@ -55,9 +54,8 @@ else
     playerSlideSpeedMulti = 1.55    --The multiplier of the players speed while sliding.
     playerSlideDuration = 1         --The time (in seconds) that a players slide lasts.
     healthRegeneration = true       --Enable or disable health regeneration on players after not taking damage for a set amount of time.
-    healthRegenSpeed = 0.15         --The speed of the players health regeneration.
+    healthRegenSpeed = 0.12         --The speed of the players health regeneration.
     healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
-    playerRespawnTime = 4           --The time (in seconds) that it takes for a player to respawn.
 
     --Progression settings
     forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
@@ -111,14 +109,14 @@ end
 --GAMEMODES
 --Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
 gamemodeArray = {}
-gamemodeArray[1] = {0, "FFA", "Kill others with randomly generated loadouts."}
-gamemodeArray[2] = {1, "Cranked", "FFA with kills granting the player increased movement capabilities."}
-gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladder of " .. ggLadderSize .. " weapons."}
-gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun."}
-gamemodeArray[5] = {4, "Fiesta", "FFA with every player sharing the same loadout, with a new loadout being generated every " .. fiestaShuffleTime .. " seconds."}
-gamemodeArray[6] = {5, "Quickdraw", "FFA with secondaries only."}
-gamemodeArray[7] = {6, "KOTH", "FFA with a specific part of the map giving score if inside of said area."}
-gamemodeArray[8] = {7, "VIP", "FFA with a specific part of the map giving score if inside of said area."}
+gamemodeArray[1] = {0, "FFA", "Kill others with randomly generated loadouts.", true}
+gamemodeArray[2] = {1, "Cranked", "FFA with kills granting the player increased movement capabilities.", false}
+gamemodeArray[3] = {2, "Gun Game", "FFA with players progressing throguh a ladder of " .. ggLadderSize .. " weapons.", false}
+gamemodeArray[4] = {3, "Shotty Snipers", "FFA with loadouts always consisting of a sniper and a shotgun.", true}
+gamemodeArray[5] = {4, "Fiesta", "FFA with every player sharing the same loadout, with a new loadout being generated every " .. fiestaShuffleTime .. " seconds.", true}
+gamemodeArray[6] = {5, "Quickdraw", "FFA with secondaries only.", true}
+gamemodeArray[7] = {6, "KOTH", "FFA with a specific part of the map giving score if inside of said area.", false}
+gamemodeArray[8] = {7, "VIP", "FFA with a specific part of the map giving score if inside of said area.", false}
 
 --MAPS
 --If you want to use custom maps, or want to add or remove certain maps, edit this array.

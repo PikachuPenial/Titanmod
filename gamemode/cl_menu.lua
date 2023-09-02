@@ -204,7 +204,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     function LeaderboardSelected(text, data)
                         if SelectedBoardName == text then return end
                         LeaderboardPickerButton:Hide()
-                        timer.Create("SendBoardDataRequestCooldown", 1.25, 1, function()
+                        timer.Create("SendBoardDataRequestCooldown", 3, 1, function()
                             LeaderboardPickerButton:Show()
                         end)
                         TriggerSound("click")
@@ -279,7 +279,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if SelectedBoard == nil then return end
                         for p, t in pairs(SelectedBoard) do
                             if SelectedBoardName == "Level" then
-                                if t.level == "NULL" or t.prestige == "NULL" then return end
+                                if t.Value == "NULL" or t.level == nil or t.prestige == nil then return end
                                 if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
                                     if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end

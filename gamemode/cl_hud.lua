@@ -207,6 +207,7 @@ function HUD()
     elseif activeGamemode == "VIP" then
         if GetGlobal2Entity("tm_vip") != NULL then
             draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            if GetGlobal2Entity("tm_vip") != LocalPly then draw.SimpleText(math.Round(LocalPly:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", ScrW() / 2, 115, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
         else
             draw.SimpleText("No VIP", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
@@ -443,14 +444,14 @@ if activeGamemode == "KOTH" then
     end )
 
     if IsValid(KOTHPFP) then KOTHPFP:Remove() end
-    KOTHPFP = vgui.Create("AvatarImage", PlayerPanel)
+    KOTHPFP = vgui.Create("AvatarImage", HUD)
     KOTHPFP:SetPos(ScrW() / 2 - 21, 70)
     KOTHPFP:SetSize(42, 42)
     KOTHPFP:Hide()
 
     local pfpUpdated = false
     local function UpdateKOTHPFP()
-        if convars["hud_enable"] == 0 then return end
+        if convars["hud_enable"] == 0 or !ply:Alive() then KOTHPFP:Hide() return end
         if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
             KOTHPFP:Hide()
             pfpUpdated = false
@@ -466,23 +467,25 @@ end
 --VIP rendering
 if activeGamemode == "VIP" then
     if IsValid(VIPPFP) then VIPPFP:Remove() end
-    VIPPFP = vgui.Create("AvatarImage", PlayerPanel)
+    VIPPFP = vgui.Create("AvatarImage", HUD)
     VIPPFP:SetPos(ScrW() / 2 - 21, 70)
     VIPPFP:SetSize(42, 42)
     VIPPFP:Hide()
 
-    local pfpUpdated = false
-    local vip
+    local vip = GetGlobal2Entity("tm_vip", NULL)
+    local setPly
     local function UpdateVIPPFP()
-        if convars["hud_enable"] == 0 then return end
+        if convars["hud_enable"] == 0 or !ply:Alive() then VIPPFP:Hide() return end
         vip = GetGlobal2Entity("tm_vip", NULL)
         if vip == NULL then
             VIPPFP:Hide()
-            pfpUpdated = false
+            setPly = NULL
         else
             VIPPFP:Show()
-            if !pfpUpdated then VIPPFP:SetPlayer(GetGlobal2Entity("tm_vip"), 184) end
-            pfpUpdated = true
+            if setPly != vip then
+                VIPPFP:SetPlayer(vip, 184)
+                setPly = vip
+            end
         end
     end
     hook.Add("Think", "UpdateVIPPFP", UpdateVIPPFP)
@@ -540,15 +543,22 @@ function GM:PlayerBindPress(ply, bind, pressed)
     end
 end
 
---Hides the default voice chat HUD and shows a custom message.
-function GM:PlayerStartVoice(ply)
-    voiceActive = true
-    return
+local micIcon = Material("icons/microphoneicon.png")
+local function VoiceIcon()
+    surface.SetDrawColor(65, 155, 80, 155)
+    surface.SetMaterial(micIcon)
+    surface.DrawTexturedRect(ScrW() / 2 - 21, 170, 42, 42)
 end
 
-function GM:PlayerEndVoice(ply)
-    voiceActive = false
-end
+hook.Add("PlayerStartVoice", "ImageOnVoice", function(ply)
+    if ply != LocalPly then return true end
+    hook.Add("HUDPaint", "VoiceIndicator", VoiceIcon)
+    return true
+end)
+
+hook.Add("PlayerEndVoice", "ImageOnVoice", function()
+    hook.Remove("HUDPaint", "VoiceIndicator")
+end)
 
 --Plays the received hitsound if a player hits another player.
 net.Receive("PlayHitsound", function(len, pl)
@@ -720,6 +730,8 @@ net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if timer.Exists("CrankedTimeUntilDeath") then hook.Remove("Think", "CrankedTimeLeft") end
+    if IsValid(KOTHPFP) then KOTHPFP:Hide() end
+    if IsValid(VIPPFP) then VIPPFP:Hide() end
     timeUntilSelfDestruct = 0
     if convars["hud_enable"] == 0 then return end
     if gameEnded then return end
@@ -728,13 +740,13 @@ net.Receive("NotifyDeath", function(len, ply)
     local killedWith = net.ReadString()
     local killedFrom = net.ReadFloat()
     local lastHitIn = net.ReadInt(5)
-    local respawnTimeLeft = playerRespawnTime
+    local respawnTimeLeft = 4
 
     if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
 
     --Creates a cooldown for the death UI, having it disappear after 4 seconds.
-    timer.Create("respawnTimeHideHud", playerRespawnTime, 1, function()
+    timer.Create("respawnTimeHideHud", 4, 1, function()
         DeathNotif:Remove()
         hook.Remove("Think", "ShowRespawnTime")
     end)
@@ -809,14 +821,18 @@ net.Receive("EndOfGame", function(len, ply)
     local mapDecided = false
     local gamemodeDecided = false
     local VOIPActive = false
+    local MuteActive = false
     local bonusXP = 750
 
     if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
     if IsValid(EndOfGameUI) then EndOfGameUI:Remove() end
     if IsValid(KOTHPFP) then KOTHPFP:Remove() end
+    if IsValid(VIPPFP) then VIPPFP:Remove() end
     hook.Remove("Think", "UpdateKOTHPFP")
     hook.Remove("Think", "UpdateVIPPFP")
+    hook.Remove("PlayerStartVoice", "ImageOnVoice")
+    hook.Remove("PlayerEndVoice", "ImageOnVoice")
 
     if convars["menu_dof"] == 1 then dof = true end
 
@@ -998,6 +1014,7 @@ net.Receive("EndOfGame", function(len, ply)
             draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", 485, ScrH() - 55, white, TEXT_ALIGN_LEFT)
         end
         if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", 485, ScrH() - 235, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
+        if MuteActive == false then draw.DrawText("NOT MUTED", "MainMenuLoadoutWeapons", 485, ScrH() - 260, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MUTED", "MainMenuLoadoutWeapons", 485, ScrH() - 260, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
         draw.SimpleText("Had fun?", "MainMenuLoadoutWeapons", 700, ScrH() - 55, white, TEXT_ALIGN_LEFT)
     end
 
@@ -1240,6 +1257,28 @@ net.Receive("EndOfGame", function(len, ply)
                 end
             else
                 permissions.EnableVoiceChat(true)
+            end
+        end
+
+        local MuteButton = vgui.Create("DImageButton", EndOfGameUI)
+        MuteButton:SetPos(575, ScrH() - 205)
+        MuteButton:SetImage("icons/muteicon.png")
+        MuteButton:SetSize(80, 80)
+        MuteButton:SetTooltip("Toggle Mute")
+        MuteButton.DoClick = function()
+            surface.PlaySound("tmui/buttonclick.wav")
+            if (MuteActive == false) then
+                MuteActive = true
+                MuteButton:SetImage("icons/mutedmuteicon.png")
+                net.Start("ReceivePostGameMute")
+                net.WriteBool(true)
+                net.SendToServer()
+            else
+                MuteActive = false
+                MuteButton:SetImage("icons/muteicon.png")
+                net.Start("ReceivePostGameMute")
+                net.WriteBool(false)
+                net.SendToServer()
             end
         end
 
