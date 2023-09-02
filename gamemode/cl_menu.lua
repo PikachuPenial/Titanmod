@@ -30,7 +30,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local function TriggerSound(type)
         if GetConVar("tm_menusounds"):GetInt() == 0 then return end
-        if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 2) .. ".wav") end
+        if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 3) .. ".wav") end
         if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
         if type == "back" then surface.PlaySound("tmui/clickback.wav") end
     end
@@ -65,6 +65,12 @@ net.Receive("OpenMainMenu", function(len, ply)
             local pushExitItems = -100
             local spawnTextAnim = 0
             local hintTextAnim = 0
+
+            local spawnFont = "AmmoCountSmall"
+            local customizeFont = "AmmoCountSmall"
+            local optionsFont = "AmmoCountSmall"
+            local pauseFont = "AmmoCountSmall"
+
             MainPanel.Paint = function()
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
 
@@ -257,7 +263,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
-                        TriggerSound("click")
+                        TriggerSound("back")
                         MainPanel:Show()
                         LeaderboardPanel:Hide()
                         LeaderboardSlideoutPanel:Hide()
@@ -569,12 +575,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushSpawnItems)
                 if not timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
+                        spawnFont = "AmmoCountSmallMenu"
                         spawnTextAnim = math.Clamp(spawnTextAnim + 200 * FrameTime(), 0, 20)
                     else
+                        spawnFont = "AmmoCountSmall"
                         spawnTextAnim = math.Clamp(spawnTextAnim - 200 * FrameTime(), 0, 20)
                     end
 
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", spawnFont, 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                     for k, v in pairs(weaponArray) do
                         if activeGamemode == "Gun Game" then
                             draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT)
@@ -585,7 +593,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         end
                     end
                 else
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", spawnFont, 5 + spawnTextAnim, 5, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
                     draw.DrawText("" .. math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
                 end
             end
@@ -607,17 +615,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local textAnim = 0
             CustomizeButton.Paint = function()
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
+                    customizeFont = "AmmoCountSmallMenu"
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * FrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
+                    customizeFont = "AmmoCountSmall"
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems - 600 * FrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
-                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("CUSTOMIZE", customizeFont, 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
             CustomizeModelButton:SetPos(0, 100)
@@ -726,6 +736,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedCards:SetPos(145, 122.5)
                     HideLockedCards:SetSize(20, 20)
                     HideLockedCards:SetTooltip("Hide playercards that you do not have unlocked.")
+                    function HideLockedCards:OnChange() TriggerSound("click") end
 
                     --Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
@@ -1788,7 +1799,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
-                        TriggerSound("click")
+                        TriggerSound("back")
                         MainPanel:Show()
                         CardPanel:Hide()
                         CardPreviewPanel:Hide()
@@ -1876,7 +1887,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
                     HideLockedModels:SetPos(120, 122.5)
                     HideLockedModels:SetSize(20, 20)
-                    HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")    
+                    HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")
+                    function HideLockedModels:OnChange() TriggerSound("click") end
 
                     --Default Playermodels
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
@@ -2660,7 +2672,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
-                        TriggerSound("click")
+                        TriggerSound("back")
                         MainPanel:Show()
                         CustomizeSlideoutPanel:Hide()
                         CustomizePanel:Hide()
@@ -2678,15 +2690,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local textAnim = 0
             OptionsButton.Paint = function()
                 if OptionsButton:IsHovered() or OptionsSettingsButton:IsHovered() or OptionsHUDButton:IsHovered() then
+                    optionsFont = "AmmoCountSmallMenu"
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems + 600 * FrameTime(), 100, 150)
                     OptionsButton:SizeTo(-1, 200, 0, 0, 1)
                 else
+                    optionsFont = "AmmoCountSmall"
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems - 600 * FrameTime(), 100, 150)
                     OptionsButton:SizeTo(-1, 100, 0, 0, 1)
                 end
-                draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("OPTIONS", optionsFont, 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
             OptionsSettingsButton:SetPos(0, 100)
@@ -2754,7 +2768,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockWeaponry = vgui.Create("DPanel", OptionsScroller)
                     DockWeaponry:Dock(TOP)
-                    DockWeaponry:SetSize(0, 375)
+                    DockWeaponry:SetSize(0, 455)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
@@ -2766,7 +2780,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 360)
+                    DockPerformance:SetSize(0, 320)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -2815,7 +2829,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local WeaponJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
                     WeaponJump:SetPos(4, 308)
                     WeaponJump:SetSize(48, 48)
-                    WeaponJump:SetTooltip("Weapons")
+                    WeaponJump:SetTooltip("Gameplay")
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump.DoClick = function()
                         TriggerSound("click")
@@ -2858,7 +2872,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
-                        TriggerSound("click")
+                        TriggerSound("back")
                         MainPanel:Show()
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
@@ -2876,6 +2890,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
                     hideStatsFromOthers:SetSize(30, 30)
                     hideStatsFromOthers:SetTooltip("Hides your own personal stats from other players, making them only viewable by you.")
+                    function hideStatsFromOthers:OnChange() TriggerSound("click") end
 
                     DockInputs.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -2906,6 +2921,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
                     compensateSensWithFOV:SetSize(30, 30)
                     compensateSensWithFOV:SetTooltip("Change the ADS sensitivity depending on the weapons FOV.")
+                    function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
                     mainMenuBind:SetPos(22.5, 150)
@@ -2945,6 +2961,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
                     quickWeaponSwitching:SetSize(30, 30)
                     quickWeaponSwitching:SetTooltip("Enable quick weapon switching with the keybinds below.")
+                    function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
                     primaryBind:SetPos(22.5, 310)
@@ -2997,42 +3014,49 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     enableUIButton:SetConVar("tm_hud_enable")
                     enableUIButton:SetSize(30, 30)
                     enableUIButton:SetTooltip("Enable the UI.")
+                    function enableUIButton:OnChange() TriggerSound("click") end
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
                     reloadHintsToggle:SetPos(20, 110)
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetSize(30, 30)
                     reloadHintsToggle:SetTooltip("Enable visual cues when you need to reload.")
+                    function reloadHintsToggle:OnChange() TriggerSound("click") end
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
                     loadoutHintsToggle:SetPos(20, 150)
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetSize(30, 30)
                     loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
+                    function loadoutHintsToggle:OnChange() TriggerSound("click") end
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
                     killTrackerToggle:SetPos(20, 190)
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
                     killTrackerToggle:SetSize(30, 30)
                     killTrackerToggle:SetTooltip("Enable the weapon specific kill tracking on the HUD.")
+                    function killTrackerToggle:OnChange() TriggerSound("click") end
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
                     keypressOverlayToggle:SetPos(20, 230)
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
                     keypressOverlayToggle:SetSize(30, 30)
                     keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
+                    function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
                     local FPSPingCounterToggle = DockUI:Add("DCheckBox")
                     FPSPingCounterToggle:SetPos(20, 270)
                     FPSPingCounterToggle:SetConVar("tm_hud_fpscounter")
                     FPSPingCounterToggle:SetSize(30, 30)
                     FPSPingCounterToggle:SetTooltip("Enable a HUD element that shows your FPS and ping.")
+                    function FPSPingCounterToggle:OnChange() TriggerSound("click") end
 
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
                     VelocityCounterToggle:SetPos(20, 310)
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
                     VelocityCounterToggle:SetTooltip("Enable a HUD element that shows your velocity.")
+                    function VelocityCounterToggle:OnChange() TriggerSound("click") end
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3052,6 +3076,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuSoundsButton:SetConVar("tm_menusounds")
                     menuSoundsButton:SetSize(30, 30)
                     menuSoundsButton:SetTooltip("Enable the menu sounds.")
+                    function menuSoundsButton:OnChange() TriggerSound("click") end
 
                     local musicVolume = DockAudio:Add("DNumSlider")
                     musicVolume:SetPos(-85, 110)
@@ -3067,12 +3092,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitSoundsButton:SetConVar("tm_hitsounds")
                     hitSoundsButton:SetSize(30, 30)
                     hitSoundsButton:SetTooltip("Enable the hitsounds.")
+                    function hitSoundsButton:OnChange() TriggerSound("click") end
 
                     local killSoundButton = DockAudio:Add("DCheckBox")
                     killSoundButton:SetPos(20, 190)
                     killSoundButton:SetConVar("tm_killsound")
                     killSoundButton:SetSize(30, 30)
                     killSoundButton:SetTooltip("Enable the kill conformation sound.")
+                    function killSoundButton:OnChange() TriggerSound("click") end
 
                     local hitSoundsType = DockAudio:Add("DComboBox")
                     hitSoundsType:SetPos(20, 230)
@@ -3105,21 +3132,40 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockWeaponry.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("WEAPONS", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("GAMEPLAY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reticle Color", "SettingsLabel", 245, 235, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FOV Value", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Flashlight Color", "SettingsLabel", 245, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reticle Color", "SettingsLabel", 245, 325, white, TEXT_ALIGN_LEFT)
                     end
 
+                    local customFOV = DockWeaponry:Add("DCheckBox")
+                    customFOV:SetPos(20, 70)
+                    customFOV:SetConVar("tm_customfov")
+                    customFOV:SetSize(30, 30)
+                    customFOV:SetTooltip("Enable/disable Titanmod's custom FOV system.")
+                    function customFOV:OnChange() TriggerSound("click") end
+
+                    local customFOVSlider = DockWeaponry:Add("DNumSlider")
+                    customFOVSlider:SetPos(-85, 110)
+                    customFOVSlider:SetSize(250, 30)
+                    customFOVSlider:SetConVar("tm_customfov_value")
+                    customFOVSlider:SetMin(100)
+                    customFOVSlider:SetMax(125)
+                    customFOVSlider:SetDecimals(0)
+                    customFOVSlider:SetTooltip("Adjust the players FOV while using Titanmod's custom FOV system.")
+
                     local centeredVM = DockWeaponry:Add("DCheckBox")
-                    centeredVM:SetPos(20, 70)
+                    centeredVM:SetPos(20, 150)
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
                     centeredVM:SetSize(30, 30)
                     centeredVM:SetTooltip("Centeres your viewmodel towards the middle of your screen.")
+                    function centeredVM:OnChange() TriggerSound("click") end
 
                     local flashlightMixer = vgui.Create("DColorMixer", DockWeaponry)
-                    flashlightMixer:SetPos(20, 110)
+                    flashlightMixer:SetPos(20, 190)
                     flashlightMixer:SetSize(215, 110)
                     flashlightMixer:SetConVarR("tpf_cl_color_red")
                     flashlightMixer:SetConVarG("tpf_cl_color_green")
@@ -3130,7 +3176,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     flashlightMixer:SetTooltip("Change the color of your flashlight.")
 
                     local reticleMixer = vgui.Create("DColorMixer", DockWeaponry)
-                    reticleMixer:SetPos(20, 250)
+                    reticleMixer:SetPos(20, 330)
                     reticleMixer:SetSize(215, 110)
                     reticleMixer:SetConVarR("cl_tfa_reticule_color_r")
                     reticleMixer:SetConVarG("cl_tfa_reticule_color_g")
@@ -3162,24 +3208,28 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairToggle:SetConVar("cl_tfa_hud_crosshair_enable_custom")
                     crosshairToggle:SetSize(30, 30)
                     crosshairToggle:SetTooltip("Disables the custom crosshair and reverts back to the HL2 default.")
+                    function crosshairToggle:OnChange() TriggerSound("click") end
 
                     local dotToggle = DockCrosshair:Add("DCheckBox")
                     dotToggle:SetPos(20, 110)
                     dotToggle:SetConVar("cl_tfa_hud_crosshair_dot")
                     dotToggle:SetSize(30, 30)
                     dotToggle:SetTooltip("Enable a dot in the middle of your crosshair.")
+                    function dotToggle:OnChange() TriggerSound("click") end
 
                     local pumpToggle = DockCrosshair:Add("DCheckBox")
                     pumpToggle:SetPos(20, 150)
                     pumpToggle:SetConVar("cl_tfa_hud_crosshair_pump")
                     pumpToggle:SetSize(30, 30)
                     pumpToggle:SetTooltip("Rotates your crosshair during a sniper rechamber/shotgun pump.")
+                    function pumpToggle:OnChange() TriggerSound("click") end
 
                     local triangleToggle = DockCrosshair:Add("DCheckBox")
                     triangleToggle:SetPos(20, 190)
                     triangleToggle:SetConVar("cl_tfa_hud_crosshair_triangular")
                     triangleToggle:SetSize(30, 30)
                     triangleToggle:SetTooltip("Adjusts your crosshair to a triangular shape.")
+                    function triangleToggle:OnChange() TriggerSound("click") end
 
                     local crosshairMixer = vgui.Create("DColorMixer", DockCrosshair)
                     crosshairMixer:SetPos(20, 230)
@@ -3225,6 +3275,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     outlineToggle:SetConVar("cl_tfa_hud_crosshair_outline_enabled")
                     outlineToggle:SetSize(30, 30)
                     outlineToggle:SetTooltip("Enable a outline that wraps around your crosshair.")
+                    function outlineToggle:OnChange() TriggerSound("click") end
 
                     local outlineWidth = DockCrosshair:Add("DNumSlider")
                     outlineWidth:SetPos(-85, 510)
@@ -3262,12 +3313,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerToggle:SetConVar("cl_tfa_hud_hitmarker_enabled")
                     hitmarkerToggle:SetSize(30, 30)
                     hitmarkerToggle:SetTooltip("Enable hitmarkers (hit indication when you damage an enemy.)")
+                    function hitmarkerToggle:OnChange() TriggerSound("click") end
 
                     local hitmarkerDynamicToggle = DockHitmarker:Add("DCheckBox")
                     hitmarkerDynamicToggle:SetPos(20, 110)
                     hitmarkerDynamicToggle:SetConVar("cl_tfa_hud_hitmarker_3d_all")
                     hitmarkerDynamicToggle:SetSize(30, 30)
                     hitmarkerDynamicToggle:SetTooltip("Enable dynamic hitmarkers (changes position depending on where you shot hit.)")
+                    function hitmarkerDynamicToggle:OnChange() TriggerSound("click") end
 
                     local hitmarkerScale = DockHitmarker:Add("DNumSlider")
                     hitmarkerScale:SetPos(-85, 150)
@@ -3297,8 +3350,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Menu DOF", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS Vignette", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                     end
 
                     local menuDOF = DockPerformance:Add("DCheckBox")
@@ -3306,33 +3358,31 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuDOF:SetConVar("tm_menudof")
                     menuDOF:SetSize(30, 30)
                     menuDOF:SetTooltip("Blurs the background of certain in game menus.")
+                    function menuDOF:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
                     ironSightDOF:SetPos(20, 110)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
                     ironSightDOF:SetTooltip("Blurs your weapon while aiming down sights.")
+                    function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
                     inspectionDOF:SetPos(20, 150)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
                     inspectionDOF:SetTooltip("Enables a blur affect while in the attachment editing menu.")
-
-                    local vignetteDOF = DockPerformance:Add("DCheckBox")
-                    vignetteDOF:SetPos(20, 190)
-                    vignetteDOF:SetConVar("cl_aimingfx_enabled")
-                    vignetteDOF:SetSize(30, 30)
-                    vignetteDOF:SetTooltip("Darkens the corners of your screen while aiming down sights.")
+                    function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 230)
+                    screenFlashing:SetPos(20, 190)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
                     screenFlashing:SetTooltip("Enables sudden screen effects on certain events (mainly dying and leveling up)")
+                    function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 310)
+                    WipeAccountButton:SetPos(17.5, 270)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0
@@ -3488,7 +3538,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                 end
                 EditorPanel.OnClose = function()
-                    TriggerSound("click")
+                    TriggerSound("back")
                     MainMenu:SetMouseInputEnabled(true)
                     FakeHUD:Hide()
                     MainPanel:Show()
@@ -3804,6 +3854,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EnableKillFeed:SetConVar("tm_hud_enablekillfeed")
                 EnableKillFeed:SetSize(30, 30)
                 EnableKillFeed:SetTooltip("Enable the kill feed.")
+                function EnableKillFeed:OnChange() TriggerSound("click") end
 
                 local KillFeedStyle = KillFeedEditor:Add("DComboBox")
                 KillFeedStyle:SetPos(20, 85)
@@ -4215,11 +4266,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             ExitButton.Paint = function()
                 ExitButton:SetPos(0, ScrH() / 2 + pushExitItems)
                 if ExitButton:IsHovered() then
+                    pauseFont = "AmmoCountSmallMenu"
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                 else
+                    pauseFont = "AmmoCountSmall"
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 end
-                draw.DrawText("PAUSE MENU", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("PAUSE MENU", pauseFont, 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
             ExitButton.DoClick = function()
                 gui.ActivateGameUI()

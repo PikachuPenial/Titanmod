@@ -546,12 +546,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw", "1")
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw_is", "1")
 
-    --ADS FX
-    RunConsoleCommand("cl_aimingfx_ca_enabled", "0")
-    RunConsoleCommand("cl_aimingfx_vignette_enabled", "1")
-    RunConsoleCommand("cl_aimingfx_vignette_intensity_initially_multiplier", "0.75")
-    RunConsoleCommand("cl_aimingfx_vignette_intensity_sighted_multiplier", "0.60")
-
     --Sliding
     RunConsoleCommand("cl_qslide_view", "0")
 

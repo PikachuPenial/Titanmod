@@ -8,6 +8,12 @@ timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
+local plyFOVTM = GetConVar("tm_customfov_value"):GetInt()
+net.Receive("FOVUpdate", function(len, ply) if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((plyFOVTM / -100) + 2)) end end )
+cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, value_new)
+	plyFOVTM = value_new
+end)
+
 hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 	--Weapon bob
 	local vector_origin = Vector()
@@ -521,6 +527,24 @@ surface.CreateFont("AmmoCountSmall", {
 	extended = false,
 	size = 96,
 	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont("AmmoCountSmallMenu", {
+	font = "Arial",
+	extended = false,
+	size = 96,
+	weight = 600,
 	blursize = 0,
 	scanlines = 0,
 	antialias = true,

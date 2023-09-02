@@ -24,6 +24,25 @@ function GM:Initialize()
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 
+util.AddNetworkString("OpenMainMenu")
+util.AddNetworkString("CloseMainMenu")
+util.AddNetworkString("PlayHitsound")
+util.AddNetworkString("NotifyKill")
+util.AddNetworkString("NotifyDeath")
+util.AddNetworkString("NotifyLevelUp")
+util.AddNetworkString("NotifyMatchTime")
+util.AddNetworkString("KillFeedUpdate")
+util.AddNetworkString("EndOfGame")
+util.AddNetworkString("MapVoteCompleted")
+util.AddNetworkString("ReceiveMapVote")
+util.AddNetworkString("ReceiveModeVote")
+util.AddNetworkString("BeginSpectate")
+util.AddNetworkString("PlayerModelChange")
+util.AddNetworkString("PlayerCardChange")
+util.AddNetworkString("GrabLeaderboardData")
+util.AddNetworkString("SendLeaderboardData")
+util.AddNetworkString("FOVUpdate")
+
 --Sets up the global match time variable, makes it easily sharable between server and client. I have been using GLua for over a year and I didn't know this fucking existed...
 SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
 
@@ -54,6 +73,10 @@ function GM:PlayerSpawn(ply)
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
+
+	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
+	net.Start("FOVUpdate", false)
+	net.Send(ply)
 
 	HandlePlayerSpawn(ply)
 
@@ -111,24 +134,6 @@ function GM:PlayerInitialSpawn(ply)
 		end)
 	end)
 end
-
-util.AddNetworkString("OpenMainMenu")
-util.AddNetworkString("CloseMainMenu")
-util.AddNetworkString("PlayHitsound")
-util.AddNetworkString("NotifyKill")
-util.AddNetworkString("NotifyDeath")
-util.AddNetworkString("NotifyLevelUp")
-util.AddNetworkString("NotifyMatchTime")
-util.AddNetworkString("KillFeedUpdate")
-util.AddNetworkString("EndOfGame")
-util.AddNetworkString("MapVoteCompleted")
-util.AddNetworkString("ReceiveMapVote")
-util.AddNetworkString("ReceiveModeVote")
-util.AddNetworkString("BeginSpectate")
-util.AddNetworkString("PlayerModelChange")
-util.AddNetworkString("PlayerCardChange")
-util.AddNetworkString("GrabLeaderboardData")
-util.AddNetworkString("SendLeaderboardData")
 
 net.Receive("BeginSpectate", function(len, ply)
 	if ply:Alive() then return end

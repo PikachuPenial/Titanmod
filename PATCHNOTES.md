@@ -8,6 +8,10 @@
 - **VIP**, typical FFA but one player is designated as a VIP and gets gains score every second, kill them to take the status for yourself
 - **Quickdraw**, typical FFA but with only secondary weapons
 
+*MOVEMENT CHANGES*
+- Wall running no longer requires the player to be holding a forward input
+- Wall running cooldown was lowered to 1.25s (previously 1.5s)
+
 *QUICK WEAPON SWITCHING*
 - A new setting (that is **ON** by default) that allows you to change to your Primary, Secondary, and Melee weapons with keybinds that you can set in Settings
 
@@ -35,6 +39,8 @@
 
 - Gun Game weapon ladder has been increased to 26 weapons (previously 24)
 
+- Main Menu has brand new sound and visual effects
+
 - Added Enable Menu Sounds option
 
 - Added various HUD editor options related to the new gamemodes
@@ -50,6 +56,8 @@
 - Removed Main Menu music (was disliked by players)
 
 - Removed custom font options for Kill/Death UI, they are now both on by default
+
+- Removed ADS Vignette option
 
 - Removed obselete gamemode code
 
