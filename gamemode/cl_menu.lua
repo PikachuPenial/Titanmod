@@ -223,13 +223,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                         TriggerSound("click")
                         local BoardSelection = DermaMenu()
                         local statistics = BoardSelection:AddSubMenu("Statistics")
-                        statistics:AddOption("Level", function() LeaderboardSelected("Level", "level") end)
+                        --statistics:AddOption("Level", function() LeaderboardSelected("Level", "level") end)
                         statistics:AddOption("Kills", function() LeaderboardSelected("Kills", "playerKills") end)
                         statistics:AddOption("Deaths", function() LeaderboardSelected("Deaths", "playerDeaths") end)
-                        statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
+                        --statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
                         statistics:AddOption("Matches Played", function() LeaderboardSelected("Matches Played", "matchesPlayed") end)
                         statistics:AddOption("Matches Won", function() LeaderboardSelected("Matches Won", "matchesWon") end)
-                        statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
+                        --statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
                         statistics:AddOption("Highest Killstreak", function() LeaderboardSelected("Highest Killstreak", "highestKillStreak") end)
                         statistics:AddOption("Highest Kill Game", function() LeaderboardSelected("Highest Kill Game", "highestKillGame") end)
                         statistics:AddOption("Farthest Kill", function() LeaderboardSelected("Farthest Kill", "farthestKill") end)
@@ -2760,7 +2760,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 355)
+                    DockUI:SetSize(0, 315)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -3005,8 +3005,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("FPS/Ping Counter", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local enableUIButton = DockUI:Add("DCheckBox")
@@ -3044,15 +3043,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
                     function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
-                    local FPSPingCounterToggle = DockUI:Add("DCheckBox")
-                    FPSPingCounterToggle:SetPos(20, 270)
-                    FPSPingCounterToggle:SetConVar("tm_hud_fpscounter")
-                    FPSPingCounterToggle:SetSize(30, 30)
-                    FPSPingCounterToggle:SetTooltip("Enable a HUD element that shows your FPS and ping.")
-                    function FPSPingCounterToggle:OnChange() TriggerSound("click") end
-
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
-                    VelocityCounterToggle:SetPos(20, 310)
+                    VelocityCounterToggle:SetPos(20, 270)
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
                     VelocityCounterToggle:SetTooltip("Enable a HUD element that shows your velocity.")
@@ -3517,10 +3509,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("JUMP", "HUD_StreakText", 69 + keyX, 117 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                         draw.SimpleText("RUN", "HUD_StreakText", 33 + keyX, 165 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                         draw.SimpleText("DUCK", "HUD_StreakText", 105 + keyX, 165 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                    end
-                    if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then
-                        draw.SimpleText("420 FPS", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt(), Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-                        draw.SimpleText("69 PING", "HUD_Health", ScrW() - GetConVar("tm_hud_fpscounter_x"):GetInt(), GetConVar("tm_hud_fpscounter_y"):GetInt() + 25, Color(GetConVar("tm_hud_fpscounter_r"):GetInt(), GetConVar("tm_hud_fpscounter_g"):GetInt(), GetConVar("tm_hud_fpscounter_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
                         draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
@@ -4071,50 +4059,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressActuatedColor:SetPalette(false)
                 KeypressActuatedColor:SetWangs(true)
                 KeypressActuatedColor:SetTooltip("Adjusts the color of an actuated key on your keypress overlay.")
-
-                local FPSPingCounter
-                if GetConVar("tm_hud_fpscounter"):GetInt() == 1 then FPSPingCounter = vgui.Create("DPanel", EditorScroller) else
-                    FPSPingCounter = vgui.Create("DPanel", HiddenOptionsScroller)
-                    ShowHiddenOptions = true
-                end
-                FPSPingCounter:Dock(TOP)
-                FPSPingCounter:SetSize(0, 200)
-                FPSPingCounter.Paint = function(self, w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("FPS/PING COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Text Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
-                end
-
-                local FPSPingCounterX = FPSPingCounter:Add("DNumSlider")
-                FPSPingCounterX:SetPos(-85, 50)
-                FPSPingCounterX:SetSize(250, 30)
-                FPSPingCounterX:SetConVar("tm_hud_fpscounter_x")
-                FPSPingCounterX:SetMin(0)
-                FPSPingCounterX:SetMax(ScrW())
-                FPSPingCounterX:SetDecimals(0)
-                FPSPingCounterX:SetTooltip("Adjust the X offset of your FPS and ping counter.")
-
-                local FPSPingCounterY = FPSPingCounter:Add("DNumSlider")
-                FPSPingCounterY:SetPos(-85, 80)
-                FPSPingCounterY:SetSize(250, 30)
-                FPSPingCounterY:SetConVar("tm_hud_fpscounter_y")
-                FPSPingCounterY:SetMin(0)
-                FPSPingCounterY:SetMax(ScrH())
-                FPSPingCounterY:SetDecimals(0)
-                FPSPingCounterY:SetTooltip("Adjust the Y offset of your FPS and ping counter")
-
-                local FPSPingCounterColor = vgui.Create("DColorMixer", FPSPingCounter)
-                FPSPingCounterColor:SetPos(20, 120)
-                FPSPingCounterColor:SetSize(185, 70)
-                FPSPingCounterColor:SetConVarR("tm_hud_fpscounter_r")
-                FPSPingCounterColor:SetConVarG("tm_hud_fpscounter_g")
-                FPSPingCounterColor:SetConVarB("tm_hud_fpscounter_b")
-                FPSPingCounterColor:SetAlphaBar(false)
-                FPSPingCounterColor:SetPalette(false)
-                FPSPingCounterColor:SetWangs(true)
-                FPSPingCounterColor:SetTooltip("Adjusts the color of the text on the FPS and ping counter.")
 
                 local VelocityCounter
                 if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then VelocityCounter = vgui.Create("DPanel", EditorScroller) else

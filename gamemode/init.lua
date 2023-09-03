@@ -24,6 +24,7 @@ function GM:Initialize()
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 
+util.AddNetworkString("PlayerSpawn")
 util.AddNetworkString("OpenMainMenu")
 util.AddNetworkString("CloseMainMenu")
 util.AddNetworkString("PlayHitsound")
@@ -76,7 +77,7 @@ function GM:PlayerSpawn(ply)
 	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
-	net.Start("FOVUpdate", false)
+	net.Start("PlayerSpawn")
 	net.Send(ply)
 
 	HandlePlayerSpawn(ply)
@@ -84,7 +85,6 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
-	if ply:GetInfoNum("tm_hud_loadouthint", 1) == 1 and activeGamemode != "Gun Game" then ply:ConCommand("tm_showloadout") end
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -123,7 +123,7 @@ function GM:PlayerInitialSpawn(ply)
 
 	--Updates the players XP to next level based on their current level.
 	for k, v in pairs(levelArray) do
-		if ply:GetNWInt("playerLevel") == v[1] and v[2] ~= "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+		if ply:GetNWInt("playerLevel") == v[1] and v[2] != "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 	end
 
 	--Opens Main Menu on server connect if enabled by the user.
@@ -151,7 +151,7 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 	local key = net.ReadString()
 	local tbl
 
-	if key == "level" then
+	--[[ if key == "level" then
 		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 50;")
 	elseif key == "kd" then
 		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
@@ -159,7 +159,9 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
 	else
 		tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
-	end
+	end --]]
+
+	tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
 
 	net.Start("SendLeaderboardData", true)
 	net.WriteTable(tbl)
@@ -167,17 +169,11 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 end )
 
 --Calculate how much damage should be done to a player based on the hitgroup that was damaged, and send a hitsound to the inflictor of the damage.
-local function TestEntityForPlayer(ent)
-	return IsValid(ent) and ent:IsPlayer()
-end
-
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end --Custom gamemode damage profile
-	if (TestEntityForPlayer(dmginfo:GetAttacker())) then
-		net.Start("PlayHitsound", true)
-			net.WriteUInt(hitgroup, 4)
-		net.Send(dmginfo:GetAttacker())
-	end
+	net.Start("PlayHitsound", true)
+	net.WriteUInt(hitgroup, 4)
+	net.Send(dmginfo:GetAttacker())
 end
 
 --Check if a spawn point is suitable to spawn in (if another player is within proximity of this spawn point, do not spawn the player there.)
@@ -202,10 +198,9 @@ local function ReduceRocketDamage(ent, dmginfo)
 	if rocketJumping == false then return end
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
-	if dmginfo:GetInflictor():GetClass() == "npc_grenade_frag" then return end
 
 	local attacker = dmginfo:GetAttacker()
-	if attacker ~= ent then return end
+	if attacker != ent then return end
 
 	local dmgForce = dmginfo:GetDamageForce()
 	local newForce = dmgForce * 1.15
@@ -399,8 +394,8 @@ end
 net.Receive("CloseMainMenu", function(len, ply)
 	ply:SetNWBool("mainmenu", false)
 	if not timer.Exists(ply:SteamID() .. "respawnTime") then
-		ply:Spawn()
 		ply:SetNWBool("trulyAlive", true)
+		ply:Spawn()
 	end
 end )
 
@@ -580,8 +575,10 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			if game.GetMap() ~= v then table.insert(mapPoolSecondary, v) end
 		end
 
+		--Remove maps from primary map pool if they are not fit for current player count.
 		for p, v in pairs(mapArray) do
-			if v[5] ~= 0 and player.GetCount() > v[5] then table.RemoveByValue(mapPool, v[1]) elseif v[5] == 0 then table.RemoveByValue(mapPool, v[1]) end --Remove maps from primary map pool if they are not fit for current player count.
+			if player.GetCount() > 5 and v[5] ~= 0 then table.RemoveByValue(mapPool, v[1]) end
+			if player.GetCount() <= 5 and v[5] == 0 then table.RemoveByValue(mapPool, v[1]) end
 		end
 
 		for g, v in RandomPairs(gamemodeArray) do
@@ -612,6 +609,10 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			v:SetLaggedMovementValue(0.2)
 			v:SetNWBool("PostGameMute", false)
 		end
+
+		--Failsafe until im sure a bug is fixed lol
+		if firstMap == nil then firstMap = "tm_arctic" end
+		if secondMap == nil then secondMap = "tm_mall" end
 
 		net.Start("EndOfGame")
 		net.WriteString(firstMap)

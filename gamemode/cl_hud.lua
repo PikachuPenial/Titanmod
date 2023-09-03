@@ -66,14 +66,6 @@ local kpoHUD = {
     ["actuated_b"] = GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt()
 }
 
-local fpsHUD = {
-    ["x"] = GetConVar("tm_hud_fpscounter_x"):GetInt(),
-    ["y"] = GetConVar("tm_hud_fpscounter_y"):GetInt(),
-    ["r"] = GetConVar("tm_hud_fpscounter_r"):GetInt(),
-    ["g"] = GetConVar("tm_hud_fpscounter_g"):GetInt(),
-    ["b"] = GetConVar("tm_hud_fpscounter_b"):GetInt()
-}
-
 local velocityHUD = {
     ["x"] = GetConVar("tm_hud_velocitycounter_x"):GetInt(),
     ["y"] = GetConVar("tm_hud_velocitycounter_y"):GetInt(),
@@ -108,7 +100,6 @@ local sounds = {
 --Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame.
 local convars = {
     ["hud_enable"] = GetConVar("tm_hud_enable"):GetInt(),
-    ["fps_counter"] = GetConVar("tm_hud_fpscounter"):GetInt(),
     ["ammo_style"] = GetConVar("tm_hud_ammo_style"):GetInt(),
     ["kill_tracker"] = GetConVar("tm_hud_killtracker"):GetInt(),
     ["reload_hints"] = GetConVar("tm_hud_reloadhint"):GetInt(),
@@ -148,27 +139,24 @@ local objIndicatorColor
 local hillEmptyMat = Material("icons/kothempty.png")
 local hillContestedMat = Material("icons/kothcontested.png")
 
-local LocalPly = LocalPlayer()
-local clientFPS = 0
-local updateRate = 0.5
-
+local LocalPly
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
 
-if convars["fps_counter"] == 1 then
-    timer.Create("CounterUpdate", updateRate, 0, function()
-        clientFPS = tostring(math.floor(1 / RealFrameTime()))
-    end)
-end
-
-gameevent.Listen("player_spawn")
-hook.Add("player_spawn", "CreateHUDOnSpawn", function(data)
+local TitanmodFOV = GetConVar("tm_customfov_value"):GetInt()
+net.Receive("PlayerSpawn", function(len, pl)
+    if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((TitanmodFOV / -100) + 2)) end
     if convars["hud_enabled"] == 0 then return end
-    LocalPly = LocalPlayer()
     hook.Add("HUDPaint", "HUD", HUD)
+    if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
 end )
 
+cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, value_new)
+    TitanmodFOV = value_new
+end)
+
 function HUD()
+    if LocalPly == nil then LocalPly = LocalPlayer() end
     --Objective indicator
     if activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Empty" then
@@ -222,45 +210,37 @@ function HUD()
         draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedHUD["x"], ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
-    --FPS and ping counter
-    if convars["fps_counter"] == 1 then
-        draw.SimpleText(clientFPS .. " FPS", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"], Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-        draw.SimpleText(LocalPly:Ping() .. " PING", "HUD_Health", ScrW() - fpsHUD["x"], fpsHUD["y"] + 25, Color(fpsHUD["r"], fpsHUD["g"], fpsHUD["b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-    end
-
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if convars["ammo_style"] == 0 then
+    if convars["ammo_style"] == 0 and LocalPly:GetActiveWeapon() != NULL then
         --Numeric Style
-        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
+        if LocalPly:GetActiveWeapon():GetPrintName() != nil then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if convars["fps_counter"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+            if convars["kill_tracker"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
-    else
+        if LocalPly:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif LocalPly:GetActiveWeapon():Clip1() >= 0 then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+    elseif convars["ammo_style"] == 1 and LocalPly:GetActiveWeapon() != NULL then
         --Bar Style
-        if (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():GetPrintName() != nil) then
+        if LocalPly:GetActiveWeapon():GetPrintName() != nil then
             draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if convars["fps_counter"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+            if convars["kill_tracker"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if (LocalPly:GetActiveWeapon():IsValid()) then
-            if (LocalPly:GetActiveWeapon():Clip1() != 0) then
-                surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
-                surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
-            else
-                surface.SetDrawColor(255, 0, 0, 80)
-                surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
-            end
-
-            surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
-            surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (math.Clamp(LocalPly:GetActiveWeapon():Clip1() / LocalPly:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
-            if (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
+        if (LocalPly:GetActiveWeapon():Clip1() != 0) then
+            surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
+            surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
+        else
+            surface.SetDrawColor(255, 0, 0, 80)
+            surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
         end
+
+        surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
+        surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (math.Clamp(LocalPly:GetActiveWeapon():Clip1() / LocalPly:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
+        if (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
     end
 
     --Displays a reload hint when the player is out of ammo.
-    if convars["reload_hints"] == 1 and (LocalPly:GetActiveWeapon():IsValid()) and (LocalPly:GetActiveWeapon():Clip1() == 0) then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if convars["reload_hints"] == 1 and LocalPly:GetActiveWeapon() != NULL and LocalPly:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Shows the players health depending on the style they have selected in Options.
     if LocalPly:Health() <= 0 then health = 0 else health = LocalPly:Health() end
@@ -281,7 +261,7 @@ function HUD()
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"], ScrH() - 24 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Grappling hook disclaimer.
-    if (LocalPly:GetActiveWeapon():IsValid()) and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if LocalPly:GetActiveWeapon() != NULL and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -1520,35 +1500,21 @@ net.Receive("NotifyCranked", function(len, ply)
 end )
 
 --Shows the players loadout on the bottom left hand side of their screen.
-function ShowLoadoutOnSpawn()
-    if LocalPly == nil then LocalPly = LocalPlayer() end
+function ShowLoadoutOnSpawn(ply)
+    if ply == nil then return end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""
     for k, v in pairs(weaponArray) do
-        if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
-        if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
-        if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
+        if v[1] == ply:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
+        if v[1] == ply:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
+        if v[1] == ply:GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
     end
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
     timer.Simple(2.5, function()
         notification.Kill("LoadoutText")
     end)
 end
-concommand.Add("tm_showloadout", ShowLoadoutOnSpawn)
-
---Create or delete FPS and Ping counter updating if ConVar is updated during gameplay.
-cvars.AddChangeCallback("tm_hud_fpscounter", function(convar_name, value_old, value_new)
-    convars["fps_counter"] = value_new
-    if value_new == 1 and !timer.Exists("CounterUpdate") then
-        timer.Create("CounterUpdate", updateRate, 0, function()
-            clientFPS = tostring(math.floor(1 / RealFrameTime()))
-            ping = LocalPly:Ping()
-        end)
-    elseif value_new == 0 and timer.Exists("CounterUpdate") then
-        timer.Remove("CounterUpdate")
-    end
-end)
 
 --ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings.
 cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)
@@ -1676,21 +1642,6 @@ cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_g", function(convar_nam
 end)
 cvars.AddChangeCallback("tm_hud_keypressoverlay_actuated_b", function(convar_name, value_old, value_new)
     kpoHUD["actuated_b"] = value_new
-end)
-cvars.AddChangeCallback("tm_hud_fpscounter_x", function(convar_name, value_old, value_new)
-    fpsHUD["x"] = value_new
-end)
-cvars.AddChangeCallback("tm_hud_fpscounter_y", function(convar_name, value_old, value_new)
-    fpsHUD["y"] = value_new
-end)
-cvars.AddChangeCallback("tm_hud_fpscounter_r", function(convar_name, value_old, value_new)
-    fpsHUD["r"] = value_new
-end)
-cvars.AddChangeCallback("tm_hud_fpscounter_g", function(convar_name, value_old, value_new)
-    fpsHUD["g"] = value_new
-end)
-cvars.AddChangeCallback("tm_hud_fpscounter_b", function(convar_name, value_old, value_new)
-    fpsHUD["b"] = value_new
 end)
 cvars.AddChangeCallback("tm_hud_velocitycounter_x", function(convar_name, value_old, value_new)
     velocityHUD["x"] = value_new

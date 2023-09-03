@@ -137,7 +137,6 @@ if activeGamemode == "KOTH" then
         if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 or GetGlobal2Bool("tm_matchended") then return end
         hillOccupants[1]:SetNWInt("playerScore", hillOccupants[1]:GetNWInt("playerScore") + kothScore)
         hillOccupants[1]:SetNWInt("playerScoreMatch", hillOccupants[1]:GetNWInt("playerScoreMatch") + kothScore)
-        hillOccupants[1]:SetNWInt("playerXP", hillOccupants[1]:GetNWInt("playerXP") + (kothScore * xpMultiplier))
     end)
 
     function HillStatusCheck()
@@ -155,7 +154,7 @@ end
 --Generate the table of available weapons if the gamemode is set to Quickdraw.
 if activeGamemode == "Quickdraw" then
     for k, v in pairs(weaponArray) do
-        if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" then
+        if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" and v[1] != "st_stim_pistol" then
             table.insert(randSecondary, v[1])
         elseif v[3] == "melee" or v[3] == "gadget" then
             table.insert(randMelee, v[1])
@@ -186,7 +185,6 @@ if activeGamemode == "VIP" then
         end
         vip:SetNWInt("playerScore", vip:GetNWInt("playerScore") + vipScore)
         vip:SetNWInt("playerScoreMatch", vip:GetNWInt("playerScoreMatch") + vipScore)
-        vip:SetNWInt("playerXP", vip:GetNWInt("playerXP") + (vipScore * xpMultiplier))
     end)
 end
 
