@@ -841,13 +841,6 @@ if forceEnableAutoSaveTime ~= 0 then
 	end)
 end
 
---Chat filter
-function ChatFilter(pl, text, team, death)
-	for k,v in pairs(chatFilterArray) do text = string.gsub(text, k, v) end
-	return text
-end
-hook.Add("PlayerSay", "FilterHook", ChatFilter)
-
 --Modifies base game voice chat to be proximity based.
 hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then

@@ -534,24 +534,6 @@ surface.CreateFont("AmmoCountSmall", {
 	outline = false,
 } )
 
-surface.CreateFont("AmmoCountSmallMenu", {
-	font = "Arial",
-	extended = false,
-	size = 96,
-	weight = 600,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
-
 surface.CreateFont("OptionsHeader", {
 	font = "Arial",
 	extended = false,

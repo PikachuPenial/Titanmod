@@ -147,7 +147,6 @@ local TitanmodFOV = GetConVar("tm_customfov_value"):GetInt()
 net.Receive("PlayerSpawn", function(len, pl)
     if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((TitanmodFOV / -100) + 2)) end
     if convars["hud_enabled"] == 0 then return end
-    hook.Add("HUDPaint", "HUD", HUD)
     if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
 end )
 
@@ -155,8 +154,36 @@ cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, v
     TitanmodFOV = value_new
 end)
 
-function HUD()
-    if LocalPly == nil then LocalPly = LocalPlayer() end
+function HUDAlways(client)
+    --Remaining match time.
+    local timeText = " ∞"
+    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
+    draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
+        if GetGlobal2String("tm_hillstatus") == "Occupied" then
+            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        else
+            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        end
+    elseif activeGamemode == "VIP" then
+        if GetGlobal2Entity("tm_vip") != NULL then
+            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            if GetGlobal2Entity("tm_vip") != client then draw.SimpleText(math.Round(client:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", ScrW() / 2, 115, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+        else
+            draw.SimpleText("No VIP", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        end
+    end
+
+    --Kill feed
+    for k, v in pairs(feedArray) do
+        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedHUD["opacity"]) else surface.SetDrawColor(50, 50, 50, feedHUD["opacity"]) end
+        local nameLength = select(1, surface.GetTextSize(v[1]))
+
+        surface.DrawRect(10 + feedHUD["x"], ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedHUD["y"], nameLength + 5, 20)
+        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedHUD["x"], ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    end
+
     --Objective indicator
     if activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Empty" then
@@ -173,60 +200,52 @@ function HUD()
         local border = Material("overlay/objborder.png")
         surface.SetMaterial(border)
         surface.SetDrawColor(objIndicatorColor)
-        if LocalPly:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+        if client:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
     elseif activeGamemode == "VIP" then
         local border = Material("overlay/objborder.png")
         surface.SetMaterial(border)
         surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
-        if GetGlobal2Entity("tm_vip", NULL) == LocalPly then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
+        if GetGlobal2Entity("tm_vip", NULL) == client then surface.DrawTexturedRect(0, 0, ScrW(), ScrH()) end
     end
 
-    --Remaining match time.
-    local timeText = " ∞"
-    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-    draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - LocalPly:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
-        if GetGlobal2String("tm_hillstatus") == "Occupied" then
-            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    --KOTH status icons
+    if activeGamemode == "KOTH" then
+        if GetGlobal2String("tm_hillstatus") == "Empty" then
+            surface.SetDrawColor(255, 255, 255, 100)
+            surface.SetMaterial(hillEmptyMat)
         else
-            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            surface.SetDrawColor(255, 255, 255, 100)
+            surface.SetMaterial(hillContestedMat)
         end
-    elseif activeGamemode == "VIP" then
-        if GetGlobal2Entity("tm_vip") != NULL then
-            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-            if GetGlobal2Entity("tm_vip") != LocalPly then draw.SimpleText(math.Round(LocalPly:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", ScrW() / 2, 115, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
-        else
-            draw.SimpleText("No VIP", "HUD_Health", ScrW() / 2, 35, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-        end
+        surface.DrawTexturedRect(ScrW() / 2 - 21, 70, 42, 42)
     end
 
-    --Kill feed
-    for k, v in pairs(feedArray) do
-        if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedHUD["opacity"]) else surface.SetDrawColor(50, 50, 50, feedHUD["opacity"]) end
-        local nameLength = select(1, surface.GetTextSize(v[1]))
-
-        surface.DrawRect(10 + feedHUD["x"], ScrH() - 20 + ((k - 1) * feedEntryPadding) - feedHUD["y"], nameLength + 5, 20)
-        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + feedHUD["x"], ScrH() - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    --VIP status icons
+    if activeGamemode == "VIP" then
+        surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 225)
+        surface.SetMaterial(hillEmptyMat)
+        surface.DrawTexturedRect(ScrW() / 2 - 24, 67, 48, 48)
     end
+end
 
+function HUDAlive(client)
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if convars["ammo_style"] == 0 and LocalPly:GetActiveWeapon() != NULL then
+    if convars["ammo_style"] == 0 and client:GetActiveWeapon() != NULL then
         --Numeric Style
-        if LocalPly:GetActiveWeapon():GetPrintName() != nil then
-            draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if convars["kill_tracker"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+        if client:GetActiveWeapon():GetPrintName() != nil then
+            draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+            if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if LocalPly:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif LocalPly:GetActiveWeapon():Clip1() >= 0 then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
-    elseif convars["ammo_style"] == 1 and LocalPly:GetActiveWeapon() != NULL then
+        if client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) elseif client:GetActiveWeapon():Clip1() >= 0 then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+    elseif convars["ammo_style"] == 1 and client:GetActiveWeapon() != NULL then
         --Bar Style
-        if LocalPly:GetActiveWeapon():GetPrintName() != nil then
-            draw.SimpleText(LocalPly:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
-            if convars["kill_tracker"] == 1 then draw.SimpleText(LocalPly:GetNWInt("killsWith_" .. LocalPly:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
+        if client:GetActiveWeapon():GetPrintName() != nil then
+            draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
+            if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0) end
         end
 
-        if (LocalPly:GetActiveWeapon():Clip1() != 0) then
+        if (client:GetActiveWeapon():Clip1() != 0) then
             surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
             surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
         else
@@ -235,20 +254,20 @@ function HUD()
         end
 
         surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
-        surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (math.Clamp(LocalPly:GetActiveWeapon():Clip1() / LocalPly:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
-        if (LocalPly:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(LocalPly:GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
+        surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (math.Clamp(client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
+        if (client:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) else draw.SimpleText("∞", "HUD_Health", ScrW() - 410, ScrH() - 24, Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0) end
     end
 
     --Displays a reload hint when the player is out of ammo.
-    if convars["reload_hints"] == 1 and LocalPly:GetActiveWeapon() != NULL and LocalPly:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if convars["reload_hints"] == 1 and client:GetActiveWeapon() != NULL and client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", ScrW() / 2, ScrH() / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Shows the players health depending on the style they have selected in Options.
-    if LocalPly:Health() <= 0 then health = 0 else health = LocalPly:Health() end
+    if client:Health() <= 0 then health = 0 else health = client:Health() end
     surface.SetDrawColor(50, 50, 50, 80)
     surface.DrawRect(10 + healthHUD["x"], ScrH() - 38 - healthHUD["y"], healthHUD["size"], 30)
 
-    if LocalPly:Health() <= 66 then
-        if LocalPly:Health() <= 33 then
+    if client:Health() <= 66 then
+        if client:Health() <= 33 then
             surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
         else
             surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
@@ -257,25 +276,25 @@ function HUD()
         surface.SetDrawColor(healthHUD["barhigh_r"], healthHUD["barhigh_g"], healthHUD["barhigh_b"], 120)
     end
 
-    surface.DrawRect(10 + healthHUD["x"], ScrH() - 38 - healthHUD["y"], healthHUD["size"] * (LocalPly:Health() / LocalPly:GetMaxHealth()), 30)
+    surface.DrawRect(10 + healthHUD["x"], ScrH() - 38 - healthHUD["y"], healthHUD["size"] * (client:Health() / client:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"], ScrH() - 24 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER, 0)
 
     --Grappling hook disclaimer.
-    if LocalPly:GetActiveWeapon() != NULL and LocalPly:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
+    if client:GetActiveWeapon() != NULL and client:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", ScrW() / 2, ScrH() / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 0) end
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
     local nadeMat = Material("icons/grenadehudicon.png")
     local grappleText
 
-    if LocalPly:HasWeapon("fres_grapple") and LocalPly:GetAmmoCount("Grenade") > 0 then
+    if client:HasWeapon("fres_grapple") and client:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(grappleMat)
-        if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
+        if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
             grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
         surface.DrawTexturedRect(equipmentHUD["x"] - 45, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
         draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
@@ -284,14 +303,14 @@ function HUD()
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + 10, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
         draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
-    elseif LocalPly:HasWeapon("fres_grapple") then
+    elseif client:HasWeapon("fres_grapple") then
         surface.SetMaterial(grappleMat)
-        if Lerp((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(LocalPly:SetNWEntity("lina",stando)) then
+        if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
             grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((LocalPly:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
@@ -303,7 +322,7 @@ function HUD()
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, ScrH() - 47.5 - equipmentHUD["y"], 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] + 27.5, ScrH() - 75 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER)
         end
-    elseif LocalPly:GetAmmoCount("Grenade") > 0 then
+    elseif client:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         if equipAnchor == "left" then
@@ -321,13 +340,13 @@ function HUD()
     --Keypress Overlay
     if convars["keypress_overlay"] == 1 then
         hook.Add("Tick", "KeyOverlayTracking", function()
-            if LocalPly:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
-            if LocalPly:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
-            if LocalPly:KeyDown(IN_BACK) then bColor = actuatedColor else bColor = inactiveColor end
-            if LocalPly:KeyDown(IN_MOVERIGHT) then rColor = actuatedColor else rColor = inactiveColor end
-            if LocalPly:KeyDown(IN_JUMP) then jColor = actuatedColor else jColor = inactiveColor end
-            if LocalPly:KeyDown(IN_SPEED) then sColor = actuatedColor else sColor = inactiveColor end
-            if LocalPly:KeyDown(IN_DUCK) then cColor = actuatedColor else cColor = inactiveColor end
+            if client:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
+            if client:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
+            if client:KeyDown(IN_BACK) then bColor = actuatedColor else bColor = inactiveColor end
+            if client:KeyDown(IN_MOVERIGHT) then rColor = actuatedColor else rColor = inactiveColor end
+            if client:KeyDown(IN_JUMP) then jColor = actuatedColor else jColor = inactiveColor end
+            if client:KeyDown(IN_SPEED) then sColor = actuatedColor else sColor = inactiveColor end
+            if client:KeyDown(IN_DUCK) then cColor = actuatedColor else cColor = inactiveColor end
         end )
 
         surface.SetMaterial(keyMat)
@@ -374,26 +393,13 @@ function HUD()
         surface.SetDrawColor(255, 0, 0, 80)
         surface.DrawRect(ScrW() / 2 - 75, 70, 150 * (timeUntilSelfDestruct / crankedSelfDestructTime), 10)
     end
-
-    --KOTH status icons
-    if activeGamemode == "KOTH" then
-        if GetGlobal2String("tm_hillstatus") == "Empty" then
-            surface.SetDrawColor(255, 255, 255, 100)
-            surface.SetMaterial(hillEmptyMat)
-        else
-            surface.SetDrawColor(255, 255, 255, 100)
-            surface.SetMaterial(hillContestedMat)
-        end
-        surface.DrawTexturedRect(ScrW() / 2 - 21, 70, 42, 42)
-    end
-
-    --VIP status icons
-    if activeGamemode == "VIP" then
-        surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 225)
-        surface.SetMaterial(hillEmptyMat)
-        surface.DrawTexturedRect(ScrW() / 2 - 24, 67, 48, 48)
-    end
 end
+
+hook.Add("HUDPaint", "DrawTMHUD", function()
+    LocalPly = LocalPlayer()
+    HUDAlways(LocalPly)
+    if LocalPly:Alive() then HUDAlive(LocalPly) end
+end )
 
 --KOTH rendering (the hill outline and the distance text)
 if activeGamemode == "KOTH" then
@@ -527,7 +533,7 @@ local micIcon = Material("icons/microphoneicon.png")
 local function VoiceIcon()
     surface.SetDrawColor(65, 155, 80, 155)
     surface.SetMaterial(micIcon)
-    surface.DrawTexturedRect(ScrW() / 2 - 21, 170, 42, 42)
+    surface.DrawTexturedRect(ScrW() / 2 - 21, 150, 42, 42)
 end
 
 hook.Add("PlayerStartVoice", "ImageOnVoice", function(ply)
@@ -706,12 +712,9 @@ end )
 
 --Displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
-    hook.Remove("HUDPaint", "HUD")
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
     if timer.Exists("CrankedTimeUntilDeath") then hook.Remove("Think", "CrankedTimeLeft") end
-    if IsValid(KOTHPFP) then KOTHPFP:Hide() end
-    if IsValid(VIPPFP) then VIPPFP:Hide() end
     timeUntilSelfDestruct = 0
     if convars["hud_enable"] == 0 then return end
     if gameEnded then return end

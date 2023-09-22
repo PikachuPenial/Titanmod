@@ -557,26 +557,3 @@ if CLIENT then
     RunConsoleCommand("tpf_cl_fov", "75")
     RunConsoleCommand("tpf_cl_shadows", "0")
 end
-
---CHAT FILTER ENTRIES
---This is the list of words blocked from being used in the in-game chat.
---Formatting (Word to block, replacment in chat)
-chatFilterArray = {}
-chatFilterArray["niger"] = "cutie"
-chatFilterArray["n1ger"] = "nice guy"
-chatFilterArray["nig3r"] = "great guy"
-chatFilterArray["n1g3r"] = "best mate"
-chatFilterArray["niga"] = "nice lad"
-chatFilterArray["nigger"] = "charming lad"
-chatFilterArray["n1gg3r"] = "charming lad"
-chatFilterArray["n1gger"] = "attractive mate"
-chatFilterArray["nigg3r"] = "kind man"
-chatFilterArray["nigga"] = "swag daddy"
-chatFilterArray["fag"] = "incredible individual"
-chatFilterArray["faggot"] = "incredible individual"
-chatFilterArray["f4ggot"] = "incredible individual"
-chatFilterArray["fagg0t"] = "incredible individual"
-chatFilterArray["tranny"] = "amazing person"
-chatFilterArray["tr4nny"] = "amazing person"
-chatFilterArray["kike"] = "swag individual"
-chatFilterArray["dyke"] = "swag individual"
