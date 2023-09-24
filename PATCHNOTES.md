@@ -7,6 +7,10 @@
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- Complete icon overhaul across the Menu/UI for more consistency and a cleaner look
+
 - New order for categories in settings
 
 - Renamed many settings to improve naming consistency across said settings
+
+- Decreased gamemode file size

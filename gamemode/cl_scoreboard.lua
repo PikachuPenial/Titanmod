@@ -46,12 +46,12 @@ function GM:ScoreboardShow()
 		InfoPanel:SetSize(0, 36)
 
 		InfoPanel.Paint = function(self, w, h)
-			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 0, white, TEXT_ALIGN_LEFT)
+			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 5, white, TEXT_ALIGN_LEFT)
 		end
 
 		local PlayersIcon = vgui.Create("DImage", InfoPanel)
-		PlayersIcon:SetPos(10, 0)
-		PlayersIcon:SetSize(30, 30)
+		PlayersIcon:SetPos(10, -2)
+		PlayersIcon:SetSize(38, 38)
 		PlayersIcon:SetImage("icons/playericon.png")
 
 		local KillsIcon = vgui.Create("DImage", InfoPanel)
