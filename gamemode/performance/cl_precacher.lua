@@ -9,16 +9,10 @@ function PrecacheDir(dir)
     for k,v in pairs(files) do
         local fname = string.lower(dir .. v)
         local ismodel = -1
-        local isparticle = -1
         local issound = -1
         ismodel = (string.find(fname, ".mdl"))
-        isparticle = (string.find(fname, ".pcf"))
         issound = (string.find(fname, ".wav") or string.find(fname, ".mp3")  )
-        if isparticle then
-            if isparticle >= 0 then
-                PrecacheParticleSystem(fname)
-            end
-        elseif issound then
+        if issound then
             if issound >= 0 then
                 util.PrecacheSound(fname)
             end
@@ -36,7 +30,6 @@ function PrecacheAll()
     PrecacheDir("models/weapons/")
     PrecacheDir("models/weapons/akms/")
     PrecacheDir("models/weapons/ar57/")
-    PrecacheDir("models/weapons/darky_m/rust/")
     PrecacheDir("models/weapons/fml/")
     PrecacheDir("models/weapons/fml/rifle/")
     PrecacheDir("models/weapons/fml/smg/")
@@ -49,7 +42,6 @@ function PrecacheAll()
     PrecacheDir("models/weapons/tfa_inss/")
     PrecacheDir("models/weapons/tfa_l4d2/")
     PrecacheDir("models/weapons/upblitz/")
-    PrecacheDir("models/weapons/upgrades_yans_bsp/")
     PrecacheDir("models/weapons/fml/inss/")
     PrecacheDir("models/weapons/fml/le_french/")
     PrecacheDir("models/weapons/tfa_ins/")
@@ -57,28 +49,10 @@ function PrecacheAll()
     PrecacheDir("models/weapons/tfa_ins2/m4_9mm/")
     PrecacheDir("models/weapons/tfa_ins2/mp443/")
     PrecacheDir("models/weapons/tfa_ins2/zm_lr300")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/bravo/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/hunter/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/leupold_mark4/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/phantom/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/pkas/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/pso/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/shortdot/")
-    PrecacheDir("models/weapons/tfa_ins2/upgrades/ayykyu_sights/susat/")
-    PrecacheDir("models/weapons/tfre/")
-    PrecacheDir("models/weapons/upgitses/")
-
-    --Particles
-    PrecacheDir("particles/")
-
-    --Fonts
-    PrecacheDir("resource/fonts/")
 
     --Sounds
     PrecacheDir("sound/")
     PrecacheDir("sound/hitsound/")
-    PrecacheDir("sound/tmui/")
-    PrecacheDir("sound/music/ui/")
     PrecacheDir("sound/fml/")
     PrecacheDir("sound/datae/")
     PrecacheDir("sound/mantle/")
