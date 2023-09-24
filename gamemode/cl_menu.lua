@@ -997,7 +997,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if v[4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 DefaultCardList:Add(card)
 
@@ -1016,27 +1015,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "kills" or v[4] == "streak" then
                                 local card = vgui.Create("DImageButton", DockKillCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 KillCardList:Add(card)
 
                                 killCardsTotal = killCardsTotal + 1
 
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
+                                    card:SetColor(Color(100, 100, 100, 100))
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     killCardsUnlocked = killCardsUnlocked + 1
@@ -1053,27 +1038,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 AccoladeCardList:Add(card)
 
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
                                 if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
+                                    card:SetColor(Color(100, 100, 100, 100))
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
@@ -1090,7 +1061,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 ColorCardList:Add(card)
 
@@ -1109,7 +1079,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 PrideCardList:Add(card)
 
@@ -1128,27 +1097,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 LevelCardList:Add(card)
 
                                 levelCardsTotal = levelCardsTotal + 1
 
                                 if v[4] == "level" and playerTotalLevel < v[5] then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
+                                    card:SetColor(Color(100, 100, 100, 100))
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
@@ -1165,27 +1120,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "mastery" then
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 MasteryCardList:Add(card)
 
                                 masteryCardsTotal = masteryCardsTotal + 1
 
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    card:SetColor(Color(100, 100, 100))
-
-                                    local lockIndicator = vgui.Create("DImageButton", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
+                                    card:SetColor(Color(100, 100, 100, 100))
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
@@ -1208,7 +1149,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if v[4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 DefaultCardList:Add(card)
 
@@ -1229,7 +1169,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockKillCards)
                                     card:SetImage(v[1])
-                                    card:SetTooltip(v[2] .. "\n" .. v[3])
                                     card:SetSize(240, 80)
                                     KillCardList:Add(card)
 
@@ -1250,7 +1189,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(v[1])
-                                    card:SetTooltip(v[2] .. "\n" .. v[3])
                                     card:SetSize(240, 80)
                                     AccoladeCardList:Add(card)
 
@@ -1269,7 +1207,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 ColorCardList:Add(card)
 
@@ -1288,7 +1225,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif v[4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(v[1])
-                                card:SetTooltip(v[2] .. "\n" .. v[3])
                                 card:SetSize(240, 80)
                                 PrideCardList:Add(card)
 
@@ -1309,7 +1245,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if v[4] == "level" and playerTotalLevel >= v[5] then
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(v[1])
-                                    card:SetTooltip(v[2] .. "\n" .. v[3])
                                     card:SetSize(240, 80)
                                     LevelCardList:Add(card)
 
@@ -1330,7 +1265,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) >= 50 then
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(v[1])
-                                    card:SetTooltip(v[2] .. "\n" .. v[3])
                                     card:SetSize(240, 80)
                                     MasteryCardList:Add(card)
 
@@ -2086,25 +2020,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 killModelsTotal = killModelsTotal + 1
 
                                 if LocalPly:GetNWInt("playerKills") < v[4] then
-                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    local lockIndicator = vgui.Create("DImage", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
                                     lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
-
-                                        SelectedModelDisplay:Remove()
-
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(475, 337.5)
-                                        SelectedModelDisplay:SetPos(0, 120)
-                                        SelectedModelDisplay:SetModel(newModel)
-
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
                                 else
                                     killModelsUnlocked = killModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
@@ -2135,25 +2054,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 streakModelsTotal = streakModelsTotal + 1
 
                                 if LocalPly:GetNWInt("highestKillStreak") < v[4] then
-                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    local lockIndicator = vgui.Create("DImage", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
                                     lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
-
-                                        SelectedModelDisplay:Remove()
-
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(475, 337.5)
-                                        SelectedModelDisplay:SetPos(0, 120)
-                                        SelectedModelDisplay:SetModel(newModel)
-
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
                                 else
                                     streakModelsUnlocked = streakModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
@@ -2184,25 +2088,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
                                 if v[3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[4] or v[3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[4] or v[3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[4] or v[3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[4] or v[3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[4] or v[3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[4] or v[3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[4] then
-                                    local lockIndicator = vgui.Create("DImageButton", icon)
+                                    local lockIndicator = vgui.Create("DImage", icon)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(96, 96)
                                     lockIndicator:Center()
-                                    lockIndicator.DoClick = function(lockIndicator)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
-
-                                        SelectedModelDisplay:Remove()
-
-                                        SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
-                                        SelectedModelDisplay:SetSize(475, 337.5)
-                                        SelectedModelDisplay:SetPos(0, 120)
-                                        SelectedModelDisplay:SetModel(newModel)
-
-                                        surface.PlaySound("tmui/buttonrollover.wav")
-                                    end
                                 else
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
