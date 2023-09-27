@@ -48,7 +48,7 @@ Almost every aspact of Titanmod is configurable. Not only does it boast a wide a
 [Oxide](https://steamcommunity.com/sharedfiles/filedetails/?id=1759937246) by von*ferret     
 [Rig](https://steamcommunity.com/sharedfiles/filedetails/?id=1814169158) by Doxx Mulder & Sam  
 [Shipment](https://steamcommunity.com/sharedfiles/filedetails/?id=2682557992) by snake eyes  
-[Shoot House](https://steamcommunity.com/sharedfiles/filedetails/?id=2970548573) by Winston7
+[Shoot House](https://steamcommunity.com/sharedfiles/filedetails/?id=2970548573) by Winston7  
 [Villa](https://steamcommunity.com/sharedfiles/filedetails/?id=1623087187) by BallFondler06  
 [Wreck](https://steamcommunity.com/sharedfiles/filedetails/?id=442985393) by slipi & Pyroquantre    
 
@@ -61,10 +61,10 @@ Almost every aspact of Titanmod is configurable. Not only does it boast a wide a
 [TFA Insurgency Shared Parts](https://steamcommunity.com/sharedfiles/filedetails/?id=2840032487) by YuRaNnNnZZ & DBot  
 [TFA Yanky's Sights Extension Pack](https://steamcommunity.com/sharedfiles/filedetails/?id=2217411806) by YanKy03  
 [Titanfall Grappling Hook](https://steamcommunity.com/sharedfiles/filedetails/?id=2818193469) by frestylek    
-[VManip Base by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2155366756) by datæ  
-[VManip Contextual Animations by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2155841271) by datæ  
-[VManip Quick Nades by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2157021399) by datæ  
-[VManip Vaulting by datæ](https://steamcommunity.com/sharedfiles/filedetails/?id=2364206712) by datæ  
+[VManip Base](https://steamcommunity.com/sharedfiles/filedetails/?id=2155366756) by datæ  
+[VManip Contextual Animations](https://steamcommunity.com/sharedfiles/filedetails/?id=2155841271) by datæ  
+[VManip Quick Nades](https://steamcommunity.com/sharedfiles/filedetails/?id=2157021399) by datæ  
+[VManip Vaulting](https://steamcommunity.com/sharedfiles/filedetails/?id=2364206712) by datæ  
 
 > Playtesters
 
