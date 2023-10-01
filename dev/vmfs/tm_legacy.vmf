@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "9701"
-	"mapversion" "22"
+	"editorbuild" "9777"
+	"mapversion" "27"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -14,13 +14,13 @@ viewsettings
 	"bSnapToGrid" "1"
 	"bShowGrid" "1"
 	"bShowLogicalGrid" "0"
-	"nGridSpacing" "32"
+	"nGridSpacing" "16"
 	"bShow3DGrid" "0"
 }
 world
 {
 	"id" "1"
-	"mapversion" "22"
+	"mapversion" "27"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.4.0 from tm_legacy"
 	"detailmaterial" "detail/detailsprites"
@@ -11494,7 +11494,7 @@ entity
 {
 	"id" "9070"
 	"classname" "info_player_start"
-	"angles" "0 0 0"
+	"angles" "0 180 0"
 	"origin" "624.169 279.049 1"
 	editor
 	{
@@ -11509,7 +11509,7 @@ entity
 	"id" "9072"
 	"classname" "info_player_start"
 	"angles" "0 0 0"
-	"origin" "-216.793 519.4 1"
+	"origin" "-208 512 1"
 	editor
 	{
 		"color" "0 255 0"
@@ -11522,8 +11522,8 @@ entity
 {
 	"id" "9074"
 	"classname" "info_player_start"
-	"angles" "0 0 0"
-	"origin" "-1051.84 514.537 1"
+	"angles" "0 180 0"
+	"origin" "-1056 512 1"
 	editor
 	{
 		"color" "0 255 0"
@@ -11900,7 +11900,7 @@ entity
 	"lightmapresolutiony" "32"
 	"maxdxlevel" "0"
 	"mindxlevel" "0"
-	"model" "models/props/de_nuke/hr_nuke/foliage/cedar_tree_small_01.mdl"
+	"model" "models/eck/de_santorini/pi_tree3_02.mdl"
 	"screenspacefade" "0"
 	"skin" "0"
 	"solid" "6"
@@ -13071,13 +13071,69 @@ entity
 		"logicalpos" "[500 3000]"
 	}
 }
+entity
+{
+	"id" "11967"
+	"classname" "info_player_start"
+	"angles" "0 90 0"
+	"origin" "-1280 -640 256"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 5000]"
+	}
+}
+entity
+{
+	"id" "11979"
+	"classname" "info_player_start"
+	"angles" "0 90 0"
+	"origin" "-528 -2128 0"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 5000]"
+	}
+}
+entity
+{
+	"id" "11991"
+	"classname" "info_player_start"
+	"angles" "0 0 0"
+	"origin" "-1424 -48 -3.8147e-06"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 5000]"
+	}
+}
+entity
+{
+	"id" "11999"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "320 -1152 320"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 5000]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[-1242.93 -507.178 720.802]"
-		"look" "[-1067.64 -309.711 756.035]"
+		"position" "[363.766 -1287.12 431.689]"
+		"look" "[300.73 -1061.43 304.99]"
 	}
 	camera
 	{

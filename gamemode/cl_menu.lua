@@ -90,7 +90,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
-                hintTextAnim = math.Clamp(hintTextAnim + 25 * FrameTime(), 0, 10000)
+                hintTextAnim = math.Clamp(hintTextAnim + 50 * FrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 200)
                 surface.DrawRect(0, ScrH() - 24, ScrW(), 24)
                 draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, ScrH() - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)

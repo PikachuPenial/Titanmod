@@ -1,22 +1,20 @@
 **>GAMEPLAY**
-*HUD IMPROVMENTS*
-- Many HUD elements like the match time, kill feed, and gamemode specific information are now shown while waiting to respawn
 
 **>MAPS**
 
 **>BALANCE**
+*FAMAS*
+- Now fires in Full Auto with 1100 RPM
+- Increased vertical recoil to 110 (previously 80)
+- Reduced damage to 27 (previously 31)
+
+*Glock 18*
+- Increased Burst RPM to 1200 (previously 900)
+- Renamed to 'Glock 18' (previously 'Glock 17') as the weapon better fits this firearm IRL
 
 **>QOL & BUG FIXES**
-- Complete icon overhaul across the Menu/UI for more consistency and a cleaner look
+- Added Gravity font as a option in the HUD editor
 
-- New order for categories in settings
+- Increased the speed of hint text fly-by in the Main Menu
 
-- Renamed many settings to improve naming consistency across said settings
-
-- Improved loading speed across various menu subsections
-
-- Changed the style of locked calling cards in the menu (it doesn't look very good but I plan on revamping the menu)
-
-- Adjusted art on a few calling cards
-
-- Decreased gamemode file size
+- New end of match quotes from community members
