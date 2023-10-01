@@ -20,4 +20,6 @@
 
 - Increased the speed of hint text fly-by in the Main Menu
 
+- Fixed 'User Interface' setting not disabling the HUD when toggled off
+
 - New end of match quotes from community members
