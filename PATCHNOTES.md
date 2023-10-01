@@ -1,6 +1,9 @@
 **>GAMEPLAY**
 
 **>MAPS**
+*Legacy*
+- Added additional player spawns
+- Fixed missing tree model
 
 **>BALANCE**
 *FAMAS*
