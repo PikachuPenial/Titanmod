@@ -21,7 +21,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local canPrestige
     if LocalPly:GetNWInt("playerLevel") != 60 then canPrestige = false else canPrestige = true end
-    if ScrW() < 1024 and ScrH() < 768 then belowMinimumRes = true else belowMinimumRes = false end
+    if scrW < 1024 and scrH < 768 then belowMinimumRes = true else belowMinimumRes = false end
     if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     local hintList = hintArray
@@ -37,7 +37,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     if not IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
-        MainMenu:SetSize(ScrW(), ScrH())
+        MainMenu:SetSize(scrW, scrH)
         MainMenu:Center()
         MainMenu:SetTitle("")
         MainMenu:SetDraggable(false)
@@ -88,12 +88,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, ScrH() / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 50 * FrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 200)
-                surface.DrawRect(0, ScrH() - 24, ScrW(), 24)
-                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, ScrH() - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                surface.DrawRect(0, scrH - 24, scrW, 24)
+                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, scrH - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             if canPrestige == true then
@@ -157,7 +157,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local LeaderboardQuickjumpHolder = vgui.Create("DPanel", LeaderboardSlideoutPanel)
                     LeaderboardQuickjumpHolder:Dock(TOP)
-                    LeaderboardQuickjumpHolder:SetSize(0, ScrH())
+                    LeaderboardQuickjumpHolder:SetSize(0, scrH)
 
                     LeaderboardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -239,7 +239,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         accolades:AddOption("Kill Streaks Ended", function() LeaderboardSelected("Kill Streaks Ended", "playerAccoladeBuzzkill") end)
 
                         local weaponstatistics = BoardSelection:AddSubMenu("Weapons")
-                        weaponstatistics:SetMaxHeight(ScrH() / 2)
+                        weaponstatistics:SetMaxHeight(scrH / 2)
                         for p, t in pairs(weaponArray) do
                             weaponstatistics:AddOption("Kills w/ " .. t[2], function() LeaderboardSelected("Kills w/ " .. t[2], "killsWith_" .. t[1]) end)
                         end
@@ -253,7 +253,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     StatsIcon:SetImage("icons/leaderboardslideouticon.png")
 
                     local BackButtonSlideout = vgui.Create("DImageButton", LeaderboardQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetPos(12, scrH - 44)
                     BackButtonSlideout:SetSize(32, 32)
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
@@ -513,7 +513,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end --Force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
-            TutorialButton:SetPos(8, ScrH() - 96)
+            TutorialButton:SetPos(8, scrH - 96)
             TutorialButton:SetImage("icons/tutorialicon.png")
             TutorialButton:SetSize(64, 64)
             TutorialButton:SetTooltip("Tutorial")
@@ -523,7 +523,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local DiscordButton = vgui.Create("DImageButton", MainPanel)
-            DiscordButton:SetPos(108, ScrH() - 96)
+            DiscordButton:SetPos(108, scrH - 96)
             DiscordButton:SetImage("icons/discordicon.png")
             DiscordButton:SetSize(64, 64)
             DiscordButton:SetTooltip("Discord")
@@ -533,7 +533,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(180, ScrH() - 96)
+            WorkshopButton:SetPos(180, scrH - 96)
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(64, 64)
             WorkshopButton:SetTooltip("Steam Workshop")
@@ -543,7 +543,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(252, ScrH() - 96)
+            YouTubeButton:SetPos(252, scrH - 96)
             YouTubeButton:SetImage("icons/youtubeicon.png")
             YouTubeButton:SetSize(64, 64)
             YouTubeButton:SetTooltip("YouTube")
@@ -553,7 +553,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(324, ScrH() - 96)
+            GithubButton:SetPos(324, scrH - 96)
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(64, 64)
             GithubButton:SetTooltip("GitHub")
@@ -563,11 +563,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
-            SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushSpawnItems)
+            SpawnButton:SetPos(0, scrH / 2 - 100 - pushSpawnItems)
             SpawnButton:SetText("")
             SpawnButton:SetSize(535, 100)
             SpawnButton.Paint = function()
-                SpawnButton:SetPos(0, ScrH() / 2 - 100 - pushSpawnItems)
+                SpawnButton:SetPos(0, scrH / 2 - 100 - pushSpawnItems)
                 if not timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
                         spawnTextAnim = math.Clamp(spawnTextAnim + 200 * FrameTime(), 0, 20)
@@ -602,7 +602,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local CustomizeButton = vgui.Create("DButton", MainPanel)
             local CustomizeModelButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeCardButton = vgui.Create("DButton", CustomizeButton)
-            CustomizeButton:SetPos(0, ScrH() / 2 - 100)
+            CustomizeButton:SetPos(0, scrH / 2 - 100)
             CustomizeButton:SetText("")
             CustomizeButton:SetSize(530, 100)
             local textAnim = 0
@@ -610,12 +610,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
+                    CustomizeButton:SetPos(0, scrH / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems - 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, ScrH() / 2 - pushSpawnItems)
+                    CustomizeButton:SetPos(0, scrH / 2 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
@@ -646,7 +646,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local CardQuickjumpHolder = vgui.Create("DPanel", CardSlideoutPanel)
                     CardQuickjumpHolder:Dock(TOP)
-                    CardQuickjumpHolder:SetSize(0, ScrH())
+                    CardQuickjumpHolder:SetSize(0, scrH)
 
                     CardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -877,7 +877,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local PreviewCardTextHolder = vgui.Create("DPanel", CardsPreviewScroller)
                     PreviewCardTextHolder:Dock(TOP)
-                    if ScrH() >= 1080 then PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall() - 100) else PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall()) end
+                    if scrH >= 1080 then PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall() - 100) else PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall()) end
 
                     CallingCard = vgui.Create("DImage", PreviewCardTextHolder)
                     CallingCard:SetPos(137.5, 10)
@@ -1699,7 +1699,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local RandomizeButton = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    RandomizeButton:SetPos(12, ScrH() - 96)
+                    RandomizeButton:SetPos(12, scrH - 96)
                     RandomizeButton:SetSize(32, 32)
                     RandomizeButton:SetImage("icons/diceicon.png")
                     RandomizeButton:SetTooltip("Choose random card")
@@ -1719,7 +1719,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetPos(12, scrH - 44)
                     BackButtonSlideout:SetSize(32, 32)
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
@@ -1775,7 +1775,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local ModelQuickjumpHolder = vgui.Create("DPanel", CustomizeSlideoutPanel)
                     ModelQuickjumpHolder:Dock(TOP)
-                    ModelQuickjumpHolder:SetSize(0, ScrH())
+                    ModelQuickjumpHolder:SetSize(0, scrH)
 
                     ModelQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -1909,7 +1909,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local SelectedModelHolder = vgui.Create("DPanel", PreviewScroller)
                     SelectedModelHolder:Dock(TOP)
-                    if ScrH() >= 1080 then SelectedModelHolder:SetSize(0, PreviewPanel:GetTall() - 100) else SelectedModelHolder:SetSize(0, PreviewPanel:GetTall()) end
+                    if scrH >= 1080 then SelectedModelHolder:SetSize(0, PreviewPanel:GetTall() - 100) else SelectedModelHolder:SetSize(0, PreviewPanel:GetTall()) end
 
                     SelectedModelHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -2521,7 +2521,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local RandomizeButton = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    RandomizeButton:SetPos(12, ScrH() - 96)
+                    RandomizeButton:SetPos(12, scrH - 96)
                     RandomizeButton:SetSize(32, 32)
                     RandomizeButton:SetImage("icons/diceicon.png")
                     RandomizeButton:SetTooltip("Choose random model")
@@ -2547,7 +2547,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetPos(12, scrH - 44)
                     BackButtonSlideout:SetSize(32, 32)
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
@@ -2564,7 +2564,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local OptionsButton = vgui.Create("DButton", MainPanel)
             local OptionsSettingsButton = vgui.Create("DButton", OptionsButton)
             local OptionsHUDButton = vgui.Create("DButton", OptionsButton)
-            OptionsButton:SetPos(0, ScrH() / 2)
+            OptionsButton:SetPos(0, scrH / 2)
             OptionsButton:SetText("")
             OptionsButton:SetSize(415, 100)
             local textAnim = 0
@@ -2605,7 +2605,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local OptionsQuickjumpHolder = vgui.Create("DPanel", OptionsSlideoutPanel)
                     OptionsQuickjumpHolder:Dock(TOP)
-                    OptionsQuickjumpHolder:SetSize(0, ScrH())
+                    OptionsQuickjumpHolder:SetSize(0, scrH)
 
                     OptionsQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
@@ -2642,7 +2642,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 315)
+                    DockUI:SetSize(0, 355)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -2745,7 +2745,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, ScrH() - 44)
+                    BackButtonSlideout:SetPos(12, scrH - 44)
                     BackButtonSlideout:SetSize(32, 32)
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
@@ -2922,51 +2922,59 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("INTERFACE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("User Interface", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("HUD", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Damage Indicator", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                     end
 
-                    local enableUIButton = DockUI:Add("DCheckBox")
-                    enableUIButton:SetPos(20, 70)
-                    enableUIButton:SetConVar("tm_hud_enable")
-                    enableUIButton:SetSize(30, 30)
-                    enableUIButton:SetTooltip("Enable the UI.")
-                    function enableUIButton:OnChange() TriggerSound("click") end
+                    local HUDtoggle = DockUI:Add("DCheckBox")
+                    HUDtoggle:SetPos(20, 70)
+                    HUDtoggle:SetConVar("tm_hud_enable")
+                    HUDtoggle:SetSize(30, 30)
+                    HUDtoggle:SetTooltip("Enable the HUD.")
+                    function HUDtoggle:OnChange() TriggerSound("click") end
+
+                    local dmgIndicatorToggle = DockUI:Add("DCheckBox")
+                    dmgIndicatorToggle:SetPos(20, 110)
+                    dmgIndicatorToggle:SetConVar("tm_hud_dmgindicator")
+                    dmgIndicatorToggle:SetSize(30, 30)
+                    dmgIndicatorToggle:SetTooltip("Enable damage indicators.")
+                    function dmgIndicatorToggle:OnChange() TriggerSound("click") end
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 110)
+                    reloadHintsToggle:SetPos(20, 150)
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetSize(30, 30)
                     reloadHintsToggle:SetTooltip("Enable visual cues when you need to reload.")
                     function reloadHintsToggle:OnChange() TriggerSound("click") end
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
-                    loadoutHintsToggle:SetPos(20, 150)
+                    loadoutHintsToggle:SetPos(20, 190)
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetSize(30, 30)
                     loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
                     function loadoutHintsToggle:OnChange() TriggerSound("click") end
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
-                    killTrackerToggle:SetPos(20, 190)
+                    killTrackerToggle:SetPos(20, 230)
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
                     killTrackerToggle:SetSize(30, 30)
                     killTrackerToggle:SetTooltip("Enable the weapon specific kill tracking on the HUD.")
                     function killTrackerToggle:OnChange() TriggerSound("click") end
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
-                    keypressOverlayToggle:SetPos(20, 230)
+                    keypressOverlayToggle:SetPos(20, 270)
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
                     keypressOverlayToggle:SetSize(30, 30)
                     keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
                     function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
-                    VelocityCounterToggle:SetPos(20, 270)
+                    VelocityCounterToggle:SetPos(20, 310)
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
                     VelocityCounterToggle:SetTooltip("Enable a HUD element that shows your velocity.")
@@ -3295,20 +3303,20 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 FakeHUD.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 30, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 25, ScrH() - 155, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-                        draw.SimpleText(ammo, "HUD_AmmoCount", ScrW() - 15, ScrH() - 100, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - 15, scrH - 30, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - 25, scrH - 155, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW - 15, scrH - 100, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", ScrW() - 15, ScrH() - 70, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", ScrW() - 18, ScrH() - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - 15, scrH - 70, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - 18, scrH - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
-                        surface.DrawRect(ScrW() - 415, ScrH() - 38, 400, 30)
+                        surface.DrawRect(scrW - 415, scrH - 38, 400, 30)
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
-                        surface.DrawRect(ScrW() - 415, ScrH() - 38, 400 * (ammo / 30), 30)
-                        draw.SimpleText(ammo, "HUD_Health", ScrW() - 410, ScrH() - 24, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(scrW - 415, scrH - 38, 400 * (ammo / 30), 30)
+                        draw.SimpleText(ammo, "HUD_Health", scrW - 410, scrH - 24, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     surface.SetDrawColor(50, 50, 50, 80)
-                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
+                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
                     if health <= 66 then
                         if health <= 33 then
                             surface.SetDrawColor(GetConVar("tm_hud_health_color_low_r"):GetInt(), GetConVar("tm_hud_health_color_low_g"):GetInt(), GetConVar("tm_hud_health_color_low_b"):GetInt(), 120)
@@ -3318,8 +3326,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         surface.SetDrawColor(GetConVar("tm_hud_health_color_high_r"):GetInt(), GetConVar("tm_hud_health_color_high_g"):GetInt(), GetConVar("tm_hud_health_color_high_b"):GetInt(), 120)
                     end
-                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
-                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt(), ScrH() - 24 - GetConVar("tm_hud_health_offset_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
+                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 24 - GetConVar("tm_hud_health_offset_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     local feedStyle
                     if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
                         feedStyle = -20
@@ -3330,19 +3338,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) else surface.SetDrawColor(50, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) end
                         local nameLength = select(1, surface.GetTextSize(v[1]))
 
-                        surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
-                        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), ScrH() - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
+                        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-                    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", ScrW() / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", scrW / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45, ScrH() - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5, ScrH() - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45, scrH - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5, scrH - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10, ScrH() - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5, ScrH() - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10, scrH - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5, scrH - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
                     if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
                         local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt()
                         local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt()
@@ -3382,7 +3390,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local EditorPanel = vgui.Create("DFrame", FakeHUD)
-                EditorPanel:SetSize(435, ScrH() * 0.7)
+                EditorPanel:SetSize(435, scrH * 0.7)
                 EditorPanel:MakePopup()
                 EditorPanel:SetTitle("HUD Editor")
                 EditorPanel:Center()
@@ -3562,7 +3570,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarX:SetSize(250, 30)
                 HealthBarX:SetConVar("tm_hud_health_offset_x")
                 HealthBarX:SetMin(0)
-                HealthBarX:SetMax(ScrW())
+                HealthBarX:SetMax(scrW)
                 HealthBarX:SetDecimals(0)
                 HealthBarX:SetTooltip("Adjust the X offset of your health bar.")
 
@@ -3571,7 +3579,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarY:SetSize(250, 30)
                 HealthBarY:SetConVar("tm_hud_health_offset_y")
                 HealthBarY:SetMin(0)
-                HealthBarY:SetMax(ScrH())
+                HealthBarY:SetMax(scrH)
                 HealthBarY:SetDecimals(0)
                 HealthBarY:SetTooltip("Adjust the Y offset of your health bar.")
 
@@ -3654,7 +3662,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EquipmentX:SetSize(250, 30)
                 EquipmentX:SetConVar("tm_hud_equipment_offset_x")
                 EquipmentX:SetMin(0)
-                EquipmentX:SetMax(ScrW())
+                EquipmentX:SetMax(scrW)
                 EquipmentX:SetDecimals(0)
                 EquipmentX:SetTooltip("Adjust the X offset of your equipment UI.")
 
@@ -3663,7 +3671,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EquipmentY:SetSize(250, 30)
                 EquipmentY:SetConVar("tm_hud_equipment_offset_y")
                 EquipmentY:SetMin(0)
-                EquipmentY:SetMax(ScrH())
+                EquipmentY:SetMax(scrH)
                 EquipmentY:SetDecimals(0)
                 EquipmentY:SetTooltip("Adjust the Y offset of your equipment UI.")
 
@@ -3740,7 +3748,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedX:SetSize(250, 30)
                 KillFeedX:SetConVar("tm_hud_killfeed_offset_x")
                 KillFeedX:SetMin(0)
-                KillFeedX:SetMax(ScrW())
+                KillFeedX:SetMax(scrW)
                 KillFeedX:SetDecimals(0)
                 KillFeedX:SetTooltip("Adjust the X offset of your kill feed.")
 
@@ -3749,7 +3757,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedY:SetSize(250, 30)
                 KillFeedY:SetConVar("tm_hud_killfeed_offset_y")
                 KillFeedY:SetMin(0)
-                KillFeedY:SetMax(ScrH())
+                KillFeedY:SetMax(scrH)
                 KillFeedY:SetDecimals(0)
                 KillFeedY:SetTooltip("Adjust the Y offset of your kill feed.")
 
@@ -3778,8 +3786,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillDeathX:SetPos(-85, 50)
                 KillDeathX:SetSize(250, 30)
                 KillDeathX:SetConVar("tm_hud_killdeath_offset_x")
-                KillDeathX:SetMin(ScrW() / -2)
-                KillDeathX:SetMax(ScrW() / 2)
+                KillDeathX:SetMin(scrW / -2)
+                KillDeathX:SetMax(scrW / 2)
                 KillDeathX:SetDecimals(0)
                 KillDeathX:SetTooltip("Adjust the X offset of your kill and death UI.")
 
@@ -3788,7 +3796,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillDeathY:SetSize(250, 30)
                 KillDeathY:SetConVar("tm_hud_killdeath_offset_y")
                 KillDeathY:SetMin(0)
-                KillDeathY:SetMax(ScrH())
+                KillDeathY:SetMax(scrH)
                 KillDeathY:SetDecimals(0)
                 KillDeathY:SetTooltip("Adjust the Y offset of your kill and death UI.")
 
@@ -3870,6 +3878,39 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjTextColor:SetWangs(true)
                 ObjTextColor:SetTooltip("Adjusts the color of the objective text indicator.")
 
+                local DamageIndicatorOverlay
+                if GetConVar("tm_hud_dmgindicator"):GetInt() == 1 then DamageIndicatorOverlay = vgui.Create("DPanel", EditorScroller) else
+                    DamageIndicatorOverlay = vgui.Create("DPanel", HiddenOptionsScroller)
+                    ShowHiddenOptions = true
+                end
+                DamageIndicatorOverlay:Dock(TOP)
+                DamageIndicatorOverlay:SetSize(0, 160)
+                DamageIndicatorOverlay.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                    draw.SimpleText("DAMAGE INDICATOR", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Indicator Color", "Health", 210, 45, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Indicator Opacity", "Health", 150, 130, white, TEXT_ALIGN_LEFT)
+                end
+                local IndicatorColor = vgui.Create("DColorMixer", DamageIndicatorOverlay)
+                IndicatorColor:SetPos(20, 50)
+                IndicatorColor:SetSize(185, 70)
+                IndicatorColor:SetConVarR("tm_hud_dmgindicator_color_r")
+                IndicatorColor:SetConVarG("tm_hud_dmgindicator_color_g")
+                IndicatorColor:SetConVarB("tm_hud_dmgindicator_color_b")
+                IndicatorColor:SetAlphaBar(false)
+                IndicatorColor:SetPalette(false)
+                IndicatorColor:SetWangs(true)
+                IndicatorColor:SetTooltip("Adjusts the color of the damage indicator.")
+
+                local IndicatorOpaticy = DamageIndicatorOverlay:Add("DNumSlider")
+                IndicatorOpaticy:SetPos(-85, 130)
+                IndicatorOpaticy:SetSize(250, 30)
+                IndicatorOpaticy:SetConVar("tm_hud_dmgindicator_opacity")
+                IndicatorOpaticy:SetMin(0)
+                IndicatorOpaticy:SetMax(255)
+                IndicatorOpaticy:SetDecimals(0)
+                IndicatorOpaticy:SetTooltip("Adjusts the opacity of the damage indicator.")
+
                 local KeypressOverlay
                 if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then KeypressOverlay = vgui.Create("DPanel", EditorScroller) else
                     KeypressOverlay = vgui.Create("DPanel", HiddenOptionsScroller)
@@ -3891,7 +3932,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressOverlayX:SetSize(250, 30)
                 KeypressOverlayX:SetConVar("tm_hud_keypressoverlay_x")
                 KeypressOverlayX:SetMin(0)
-                KeypressOverlayX:SetMax(ScrW())
+                KeypressOverlayX:SetMax(scrW)
                 KeypressOverlayX:SetDecimals(0)
                 KeypressOverlayX:SetTooltip("Adjust the X offset of your keypress overlay.")
 
@@ -3900,7 +3941,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressOverlayY:SetSize(250, 30)
                 KeypressOverlayY:SetConVar("tm_hud_keypressoverlay_y")
                 KeypressOverlayY:SetMin(0)
-                KeypressOverlayY:SetMax(ScrH())
+                KeypressOverlayY:SetMax(scrH)
                 KeypressOverlayY:SetDecimals(0)
                 KeypressOverlayY:SetTooltip("Adjust the Y offset of your keypress overlay.")
 
@@ -3946,7 +3987,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterX:SetSize(250, 30)
                 VelocityCounterX:SetConVar("tm_hud_velocitycounter_x")
                 VelocityCounterX:SetMin(0)
-                VelocityCounterX:SetMax(ScrW())
+                VelocityCounterX:SetMax(scrW)
                 VelocityCounterX:SetDecimals(0)
                 VelocityCounterX:SetTooltip("Adjust the X offset of your velocity counter.")
 
@@ -3955,7 +3996,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterY:SetSize(250, 30)
                 VelocityCounterY:SetConVar("tm_hud_velocitycounter_y")
                 VelocityCounterY:SetMin(0)
-                VelocityCounterY:SetMax(ScrH())
+                VelocityCounterY:SetMax(scrH)
                 VelocityCounterY:SetDecimals(0)
                 VelocityCounterY:SetTooltip("Adjust the Y offset of your velocity counter")
 
@@ -4069,12 +4110,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local ExitButton = vgui.Create("DButton", MainPanel)
-            ExitButton:SetPos(0, ScrH() / 2 + 100)
+            ExitButton:SetPos(0, scrH / 2 + 100)
             ExitButton:SetText("")
             ExitButton:SetSize(600, 100)
             local textAnim = 0
             ExitButton.Paint = function()
-                ExitButton:SetPos(0, ScrH() / 2 + pushExitItems)
+                ExitButton:SetPos(0, scrH / 2 + pushExitItems)
                 if ExitButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                 else
@@ -4091,12 +4132,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local CreditsButton = vgui.Create("DButton", MainPanel)
-            CreditsButton:SetPos(ScrW() - 110, ScrH() - 52)
+            CreditsButton:SetPos(scrW - 110, scrH - 52)
             CreditsButton:SetText("")
             CreditsButton:SetSize(110, 32)
             local textAnim = 20
             CreditsButton.Paint = function()
-                CreditsButton:SetPos(ScrW() - 110, ScrH() - 52)
+                CreditsButton:SetPos(scrW - 110, scrH - 52)
                 if CreditsButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                 else
@@ -4113,7 +4154,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
     if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") ~= true then
         local ResWarning = vgui.Create("DPanel")
         ResWarning:SetPos(0, 0)
-        ResWarning:SetSize(ScrW(), ScrH())
+        ResWarning:SetSize(scrW, scrH)
         ResWarning:MakePopup()
 
         local ResWarningLabel = vgui.Create("DLabel", ResWarning)
@@ -4132,7 +4173,7 @@ end )
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(ScrW(), ScrH())
+    self:SetSize(scrW, scrH)
     self:SetPos(0, 0)
 end
 
@@ -4144,7 +4185,7 @@ vgui.Register("MainPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, ScrH())
+    self:SetSize(56, scrH)
     self:SetPos(0, 0)
 end
 
@@ -4156,7 +4197,7 @@ vgui.Register("OptionsSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(600, ScrH())
+    self:SetSize(600, scrH)
     self:SetPos(56, 0)
 end
 
@@ -4168,7 +4209,7 @@ vgui.Register("OptionsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, ScrH())
+    self:SetSize(56, scrH)
     self:SetPos(0, 0)
 end
 
@@ -4180,7 +4221,7 @@ vgui.Register("CustomizeSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(475, ScrH() * 0.6)
+    self:SetSize(475, scrH * 0.6)
     self:SetPos(56, 0)
 end
 
@@ -4192,8 +4233,8 @@ vgui.Register("CustomizePanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(475, ScrH() * 0.4)
-    self:SetPos(56, ScrH() * 0.6)
+    self:SetSize(475, scrH * 0.4)
+    self:SetPos(56, scrH * 0.6)
 end
 
 function PANEL:Paint(w, h)
@@ -4204,7 +4245,7 @@ vgui.Register("CustomizePreviewPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, ScrH())
+    self:SetSize(56, scrH)
     self:SetPos(0, 0)
 end
 
@@ -4216,7 +4257,7 @@ vgui.Register("CardSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(515, ScrH() * 0.75)
+    self:SetSize(515, scrH * 0.75)
     self:SetPos(56, 0)
 end
 
@@ -4228,8 +4269,8 @@ vgui.Register("CardPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(515, ScrH() * 0.25)
-    self:SetPos(56, ScrH() * 0.75)
+    self:SetSize(515, scrH * 0.25)
+    self:SetPos(56, scrH * 0.75)
 end
 
 function PANEL:Paint(w, h)
@@ -4240,7 +4281,7 @@ vgui.Register("CardPreviewPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, ScrH())
+    self:SetSize(56, scrH)
     self:SetPos(0, 0)
 end
 
@@ -4252,7 +4293,7 @@ vgui.Register("LeaderboardSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(780, ScrH())
+    self:SetSize(780, scrH)
     self:SetPos(56, 0)
 end
 
@@ -4264,13 +4305,13 @@ vgui.Register("LeaderboardPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, ScrH())
+    self:SetSize(56, scrH)
     self:SetPos(0, 0)
 end
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(ScrW(), ScrH())
+    self:SetSize(scrW, scrH)
     self:SetPos(0, 0)
 end
 

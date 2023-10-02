@@ -116,9 +116,6 @@ local convars = {
     ["music_volume"] = GetConVar("tm_musicvolume"):GetFloat()
 }
 
-local scrW, scrH = ScrW(), ScrH()
-hook.Add("OnScreenSizeChanged", "ResChange", function() scrW, scrH = scrW, scrH end)
-
 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
 if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
 

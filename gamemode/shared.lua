@@ -146,6 +146,11 @@ if CLIENT then
     CreateClientConVar("tm_hud_obj_text_color_r", 255, true, false, "Adjusts the red coloring for the objective text", 0, 255)
     CreateClientConVar("tm_hud_obj_text_color_g", 255, true, false, "Adjusts the green coloring for the objective text", 0, 255)
     CreateClientConVar("tm_hud_obj_text_color_b", 255, true, false, "Adjusts the blue coloring for the objective text", 0, 255)
+    CreateClientConVar("tm_hud_dmgindicator", 1, true, false, "Enable/disable damage indicators", 0, 1)
+    CreateClientConVar("tm_hud_dmgindicator_color_r", 255, true, false, "Adjusts the red coloring for the damage indicator", 0, 255)
+    CreateClientConVar("tm_hud_dmgindicator_color_g", 0, true, false, "Adjusts the green coloring for the damage indicator", 0, 255)
+    CreateClientConVar("tm_hud_dmgindicator_color_b", 0, true, false, "Adjusts the blue coloring for the damage indicator", 0, 255)
+    CreateClientConVar("tm_hud_dmgindicator_opacity", 85, true, false, "Adjusts the opacity for the damage indicator", 0, 255)
 end
 
 --Disabling footsteps if a player is crouched.

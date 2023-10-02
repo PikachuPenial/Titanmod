@@ -1,4 +1,8 @@
 **>GAMEPLAY**
+*NEW SETTINGS*
+- Damage Indicator toggle
+- Damage Indicator color
+- Damage indicator opacity
 
 **>MAPS**
 *Legacy*
@@ -21,5 +25,7 @@
 - Increased the speed of hint text fly-by in the Main Menu
 
 - Fixed 'User Interface' setting not disabling the HUD when toggled off
+
+- Optimized HUD, Main Menu, and damage indicators
 
 - New end of match quotes from community members
