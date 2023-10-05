@@ -27,11 +27,6 @@ hook.Add("Initialize", "Optimization", function()
     end
 end)
 
---Automatic garbage collection
---hook.Add("Think", "ManualGC", function()
-	--collectgarbage("step", 192)
---end)
-
 --Optimized surface and draw functions.
 if SERVER or SurfaceRewrite then return end
 SurfaceRewrite = true

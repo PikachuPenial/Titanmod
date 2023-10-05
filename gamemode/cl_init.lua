@@ -4,20 +4,9 @@ include("cl_scoreboard.lua")
 include("cl_menu.lua")
 
 scrW, scrH = ScrW(), ScrH()
-sScale = 1 //math.Round(ScrW() * ScrH() / 2073600, 3)
-print(sScale)
 
 local center_x, center_y = ScrW() / 2, ScrH() / 2
 local scale = center_y * (2 / 1080)
-hook.Add("OnScreenSizeChanged", "ResChange", function()
-	scrW, scrH = ScrW(), ScrH()
-	sScale = 1 //math.Round(ScrW() * ScrH() / 2073600, 3)
-	print(sScale)
-
-	center_x, center_y = ScrW() / 2, ScrH() / 2
-	scale = center_y * (2 / 1080)
-	UpdateFonts()
-end)
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
 timer.Create("cleanMap", mapCleanupTime, 0, function()
@@ -478,7 +467,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 56 * sScale,
+		size = 56,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -496,7 +485,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_AmmoCount", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 128 * sScale,
+		size = 128,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -514,7 +503,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_WepNameKill", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 28 * sScale,
+		size = 28,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -532,7 +521,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_Health", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 30 * sScale,
+		size = 30,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -550,7 +539,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_StreakText", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 22 * sScale,
+		size = 22,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -568,7 +557,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_PlayerNotiName", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 52 * sScale,
+		size = 52,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -586,7 +575,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_PlayerDeathName", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 36 * sScale,
+		size = 36,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -604,7 +593,7 @@ function UpdateFonts()
 	surface.CreateFont("HUD_Arial18", {
 		font = GetConVar("tm_hud_font"):GetString(),
 		extended = false,
-		size = 18 * sScale,
+		size = 18,
 		weight = 750,
 		blursize = 0,
 		scanlines = 0,
@@ -619,7 +608,15 @@ function UpdateFonts()
 		outline = false,
 	} )
 end
+UpdateFonts()
 cvars.AddChangeCallback("tm_hud_font", function(convar_name, value_old, value_new) UpdateFonts() end)
+hook.Add("OnScreenSizeChanged", "ResChange", function()
+	scrW, scrH = ScrW(), ScrH()
+
+	center_x, center_y = ScrW() / 2, ScrH() / 2
+	scale = center_y * (2 / 1080)
+	UpdateFonts()
+end)
 
 hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 	--Weapon bob
