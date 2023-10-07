@@ -33,7 +33,11 @@
 
 - Fixed ammo and weapon info potentially not showing up on the HUD when style is set to 'Numeric'
 
+- Fixed potential errors due to KOTH/VIP HUD elements being initialized early
+
 - Optimized HUD, Main Menu, and damage indicators
+
+- Increased responsivness of KOTH/VIP HUD elements
 
 - Removed Font Scale setting
 

@@ -1,4 +1,7 @@
---Color array, saving space
+scrW, scrH = ScrW(), ScrH()
+center_x, center_y = ScrW() / 2, ScrH() / 2
+scale = center_y * (2 / 1080)
+
 local white = Color(255, 255, 255, 255)
 local red = Color(255, 0, 0, 255)
 
@@ -181,18 +184,18 @@ function HUDAlways(client)
     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Occupied" then
-            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         else
-            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
     elseif activeGamemode == "VIP" then
         if GetGlobal2Entity("tm_vip") != NULL then
-            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-            if GetGlobal2Entity("tm_vip") != client then draw.SimpleText(math.Round(client:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", scrW / 2, 115 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            if GetGlobal2Entity("tm_vip") != client then draw.SimpleText(math.Round(client:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", scrW / 2, 105 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
         else
-            draw.SimpleText("No VIP", "HUD_Health", scrW / 2, 35 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText("No VIP", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
     end
 
@@ -238,33 +241,28 @@ function HUDAlways(client)
             surface.SetDrawColor(255, 255, 255, 100)
             surface.SetMaterial(hillContestedMat)
         end
-        surface.DrawTexturedRect(scrW / 2 - 21, 70 + matchHUD["y"], 42, 42)
+        surface.DrawTexturedRect(scrW / 2 - 21, 60 + matchHUD["y"], 42, 42)
     end
 
     --VIP status icons
     if activeGamemode == "VIP" then
         surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 225)
         surface.SetMaterial(hillEmptyMat)
-        surface.DrawTexturedRect(scrW / 2 - 24, 67 + matchHUD["y"], 48, 48)
+        surface.DrawTexturedRect(scrW / 2 - 24, 57 + matchHUD["y"], 48, 48)
     end
 end
 
 function HUDAlive(client)
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if convars["ammo_style"] == 0 and client:GetActiveWeapon() != nil then
+    if client:GetActiveWeapon() != NULL then if convars["ammo_style"] == 0 then
         --Numeric Style
-        if client:GetActiveWeapon():GetPrintName() != nil then
-            draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-            if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-        end
-
+        draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
         if client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) elseif client:GetActiveWeapon():Clip1() >= 0 then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-    elseif convars["ammo_style"] == 1 and client:GetActiveWeapon() != nil then
+    elseif convars["ammo_style"] == 1 then
         --Bar Style
-        if client:GetActiveWeapon():GetPrintName() != nil then
-            draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-            if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
-        end
+        draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
 
         if (client:GetActiveWeapon():Clip1() != 0) then
             surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
@@ -278,9 +276,7 @@ function HUDAlive(client)
         surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
         if (client:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
     end
-
-    --Displays a reload hint when the player is out of ammo.
-    if convars["reload_hints"] == 1 and client:GetActiveWeapon() != NULL and client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
+    if convars["reload_hints"] == 1 and client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if client:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
 
     --Shows the players health depending on the style they have selected in Options.
     if client:Health() <= 0 then health = 0 else health = client:Health() end
@@ -299,9 +295,6 @@ function HUDAlive(client)
 
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (client:Health() / client:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-
-    --Grappling hook disclaimer.
-    if client:GetActiveWeapon() != NULL and client:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -400,7 +393,7 @@ function HUDAlive(client)
     --Velocity counter
     if convars["velocity_counter"] == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
-    --Disclaimer for players connecting during an active gamemode and map vote.
+    --Disclaimer for players connecting during an active gamemode and map vote
     if GetGlobal2Bool("tm_matchended") == true then
         draw.SimpleText("Match has ended", "HUD_GunPrintName", scrW / 2, scrH / 2 - 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", scrW / 2, scrH / 2 - 120, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -416,15 +409,9 @@ function HUDAlive(client)
     end
 end
 
-hook.Add("HUDPaint", "DrawTMHUD", function()
-    LocalPly = LocalPlayer()
-    if convars["hud_enable"] == 0 then return end
-    HUDAlways(LocalPly)
-    if LocalPly:Alive() then HUDAlive(LocalPly) end
-end )
-
---KOTH rendering (the hill outline and the distance text)
+--Create the HUD hook depending on the gamemode being played
 if activeGamemode == "KOTH" then
+    --KOTH rendering
     local KOTHCords = KOTHPos[game.GetMap()]
     local origin = KOTHCords.Origin
     local size = KOTHCords.BrushSize
@@ -453,13 +440,14 @@ if activeGamemode == "KOTH" then
 
     if IsValid(KOTHPFP) then KOTHPFP:Remove() end
     KOTHPFP = vgui.Create("AvatarImage", HUD)
-    KOTHPFP:SetPos(scrW / 2 - 21, 70)
+    KOTHPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
     KOTHPFP:SetSize(42, 42)
     KOTHPFP:Hide()
 
-    local pfpUpdated = false
-    local function UpdateKOTHPFP()
-        if convars["hud_enable"] == 0 or !ply:Alive() then KOTHPFP:Hide() return end
+    pfpUpdated = false
+
+    function UpdateKOTHPFP(client)
+        if convars["hud_enable"] == 0 or !client:Alive() then KOTHPFP:Hide() return end
         if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
             KOTHPFP:Hide()
             pfpUpdated = false
@@ -469,21 +457,26 @@ if activeGamemode == "KOTH" then
             pfpUpdated = true
         end
     end
-    hook.Add("Think", "UpdateKOTHPFP", UpdateKOTHPFP)
-end
 
---VIP rendering
-if activeGamemode == "VIP" then
+    hook.Add("HUDPaint", "DrawTMHUD", function()
+        LocalPly = LocalPlayer()
+        if convars["hud_enable"] == 0 then return end
+        HUDAlways(LocalPly)
+        UpdateKOTHPFP(LocalPly)
+        if LocalPly:Alive() then HUDAlive(LocalPly) end
+    end )
+elseif activeGamemode == "VIP" then
+    --VIP rendering
     if IsValid(VIPPFP) then VIPPFP:Remove() end
     VIPPFP = vgui.Create("AvatarImage", HUD)
-    VIPPFP:SetPos(scrW / 2 - 21, 70)
+    VIPPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
     VIPPFP:SetSize(42, 42)
     VIPPFP:Hide()
 
     local vip = GetGlobal2Entity("tm_vip", NULL)
     local setPly
-    local function UpdateVIPPFP()
-        if convars["hud_enable"] == 0 or !ply:Alive() then VIPPFP:Hide() return end
+    function UpdateVIPPFP(client)
+        if convars["hud_enable"] == 0 or !client:Alive() then VIPPFP:Hide() return end
         vip = GetGlobal2Entity("tm_vip", NULL)
         if vip == NULL then
             VIPPFP:Hide()
@@ -496,7 +489,21 @@ if activeGamemode == "VIP" then
             end
         end
     end
-    hook.Add("Think", "UpdateVIPPFP", UpdateVIPPFP)
+
+    hook.Add("HUDPaint", "DrawTMHUD", function()
+        LocalPly = LocalPlayer()
+        if convars["hud_enable"] == 0 then return end
+        HUDAlways(LocalPly)
+        UpdateVIPPFP(LocalPly)
+        if LocalPly:Alive() then HUDAlive(LocalPly) end
+    end )
+else
+    hook.Add("HUDPaint", "DrawTMHUD", function()
+        LocalPly = LocalPlayer()
+        if convars["hud_enable"] == 0 then return end
+        HUDAlways(LocalPly)
+        if LocalPly:Alive() then HUDAlive(LocalPly) end
+    end )
 end
 
 --Hides the players info that shows up when aiming at another player.
@@ -1784,4 +1791,12 @@ cvars.AddChangeCallback("tm_menudof", function(convar_name, value_old, value_new
 end)
 cvars.AddChangeCallback("tm_musicvolume", function(convar_name, value_old, value_new)
     UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_bounds_x", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_bounds_y", function(convar_name, value_old, value_new)
+    UpdateHUD()
+    if IsValid(KOTHPFP) then KOTHPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"]) end
+    if IsValid(VIPPFP) then VIPPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"]) end
 end)
