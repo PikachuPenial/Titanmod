@@ -1,5 +1,10 @@
+**DISCLAIMER!!!**
+- Default HUD settings now differ GREATLY as of this update, I recommend reverting to default through the HUD Editor, or at the very least, resetting all of your 'offset' settings due to the new HUD edge bound settings.
+
 **>GAMEPLAY**
 *NEW SETTINGS*
+- HUD Edge Bounds X
+- HUD Edge Bounds Y
 - Damage Indicator toggle
 - Damage Indicator color
 - Damage indicator opacity
@@ -26,6 +31,12 @@
 
 - Fixed 'User Interface' setting not disabling the HUD when toggled off
 
+- Fixed ammo and weapon info potentially not showing up on the HUD when style is set to 'Numeric'
+
 - Optimized HUD, Main Menu, and damage indicators
+
+- Removed Font Scale setting
+
+- Removed most UI tooltips
 
 - New end of match quotes from community members

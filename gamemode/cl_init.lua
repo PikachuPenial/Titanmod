@@ -4,9 +4,8 @@ include("cl_scoreboard.lua")
 include("cl_menu.lua")
 
 scrW, scrH = ScrW(), ScrH()
-
-local center_x, center_y = ScrW() / 2, ScrH() / 2
-local scale = center_y * (2 / 1080)
+center_x, center_y = ScrW() / 2, ScrH() / 2
+scale = center_y * (2 / 1080)
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
 timer.Create("cleanMap", mapCleanupTime, 0, function()

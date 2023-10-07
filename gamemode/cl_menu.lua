@@ -146,7 +146,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton:SetPos(10, 10)
             LeaderboardButton:SetImage("icons/leaderboardicon.png")
             LeaderboardButton:SetSize(80, 80)
-            LeaderboardButton:SetTooltip("Leaderboards (not available)")
+            LeaderboardButton:SetTooltip("Leaderboards")
             LeaderboardButton.DoClick = function()
                 TriggerSound("click")
                 MainPanel:Hide()
@@ -726,7 +726,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local HideLockedCards = CardTextHolder:Add("DCheckBox")
                     HideLockedCards:SetPos(145, 122.5)
                     HideLockedCards:SetSize(20, 20)
-                    HideLockedCards:SetTooltip("Hide playercards that you do not have unlocked.")
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
                     --Default Playercards
@@ -1812,7 +1811,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
                     HideLockedModels:SetPos(120, 122.5)
                     HideLockedModels:SetSize(20, 20)
-                    HideLockedModels:SetTooltip("Hide playermodels that you do not have unlocked.")
                     function HideLockedModels:OnChange() TriggerSound("click") end
 
                     --Default Playermodels
@@ -2767,7 +2765,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hideStatsFromOthers:SetPos(20, 70)
                     hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
                     hideStatsFromOthers:SetSize(30, 30)
-                    hideStatsFromOthers:SetTooltip("Hides your own personal stats from other players, making them only viewable by you.")
                     function hideStatsFromOthers:OnChange() TriggerSound("click") end
 
                     DockInputs.Paint = function(self, w, h)
@@ -2792,20 +2789,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     adsSensitivity:SetMin(0)
                     adsSensitivity:SetMax(100)
                     adsSensitivity:SetDecimals(0)
-                    adsSensitivity:SetTooltip("Adjust the sensitivity while aiming down sights.")
 
                     local compensateSensWithFOV = DockInputs:Add("DCheckBox")
                     compensateSensWithFOV:SetPos(20, 110)
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
                     compensateSensWithFOV:SetSize(30, 30)
-                    compensateSensWithFOV:SetTooltip("Change the ADS sensitivity depending on the weapons FOV.")
                     function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
                     mainMenuBind:SetPos(22.5, 150)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
-                    mainMenuBind:SetTooltip("Adjust the keybind for opening the main menu.")
                     function mainMenuBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedMenuBind = mainMenuBind:GetSelectedNumber()
@@ -2816,7 +2810,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     grenadeBind:SetPos(22.5, 190)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
-                    grenadeBind:SetTooltip("Adjust the keybind for throwing a grenade.")
                     function grenadeBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedGrenadeBind = grenadeBind:GetSelectedNumber()
@@ -2827,7 +2820,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     grappleBind:SetPos(22.5, 230)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
-                    grappleBind:SetTooltip("Adjust the keybind for using a grappling hook.")
                     function grappleBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedGrappleBind = grappleBind:GetSelectedNumber()
@@ -2838,14 +2830,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     quickWeaponSwitching:SetPos(20, 270)
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
                     quickWeaponSwitching:SetSize(30, 30)
-                    quickWeaponSwitching:SetTooltip("Enable quick weapon switching with the keybinds below.")
                     function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
                     primaryBind:SetPos(22.5, 310)
                     primaryBind:SetSize(100, 30)
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
-                    primaryBind:SetTooltip("Adjust the keybind for switching to your primary weapon.")
                     function primaryBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedPrimaryBind = primaryBind:GetSelectedNumber()
@@ -2856,7 +2846,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     secondaryBind:SetPos(22.5, 350)
                     secondaryBind:SetSize(100, 30)
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
-                    secondaryBind:SetTooltip("Adjust the keybind for switching to your secondary weapon.")
                     function secondaryBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedSecondaryBind = secondaryBind:GetSelectedNumber()
@@ -2867,7 +2856,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     meleeBind:SetPos(22.5, 390)
                     meleeBind:SetSize(100, 30)
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
-                    meleeBind:SetTooltip("Adjust the keybind for switching to your melee.")
                     function meleeBind:OnChange(num)
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedMeleeBind = meleeBind:GetSelectedNumber()
@@ -2888,7 +2876,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     customFOV:SetPos(20, 70)
                     customFOV:SetConVar("tm_customfov")
                     customFOV:SetSize(30, 30)
-                    customFOV:SetTooltip("Enable/disable Titanmod's custom FOV system.")
                     function customFOV:OnChange() TriggerSound("click") end
 
                     local customFOVSlider = DockGameplay:Add("DNumSlider")
@@ -2898,13 +2885,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     customFOVSlider:SetMin(100)
                     customFOVSlider:SetMax(125)
                     customFOVSlider:SetDecimals(0)
-                    customFOVSlider:SetTooltip("Adjust the players FOV while using Titanmod's custom FOV system.")
 
                     local centeredVM = DockGameplay:Add("DCheckBox")
                     centeredVM:SetPos(20, 150)
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
                     centeredVM:SetSize(30, 30)
-                    centeredVM:SetTooltip("Centeres your viewmodel towards the middle of your screen.")
                     function centeredVM:OnChange() TriggerSound("click") end
 
                     local reticleMixer = vgui.Create("DColorMixer", DockGameplay)
@@ -2916,7 +2901,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     reticleMixer:SetAlphaBar(false)
                     reticleMixer:SetPalette(false)
                     reticleMixer:SetWangs(true)
-                    reticleMixer:SetTooltip("Override the color of the reticle on sights and scopes.")
 
                     DockUI.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -2935,49 +2919,42 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HUDtoggle:SetPos(20, 70)
                     HUDtoggle:SetConVar("tm_hud_enable")
                     HUDtoggle:SetSize(30, 30)
-                    HUDtoggle:SetTooltip("Enable the HUD.")
                     function HUDtoggle:OnChange() TriggerSound("click") end
 
                     local dmgIndicatorToggle = DockUI:Add("DCheckBox")
                     dmgIndicatorToggle:SetPos(20, 110)
                     dmgIndicatorToggle:SetConVar("tm_hud_dmgindicator")
                     dmgIndicatorToggle:SetSize(30, 30)
-                    dmgIndicatorToggle:SetTooltip("Enable damage indicators.")
                     function dmgIndicatorToggle:OnChange() TriggerSound("click") end
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
                     reloadHintsToggle:SetPos(20, 150)
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetSize(30, 30)
-                    reloadHintsToggle:SetTooltip("Enable visual cues when you need to reload.")
                     function reloadHintsToggle:OnChange() TriggerSound("click") end
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
                     loadoutHintsToggle:SetPos(20, 190)
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetSize(30, 30)
-                    loadoutHintsToggle:SetTooltip("Enable the loadout hud when you respawn.")
                     function loadoutHintsToggle:OnChange() TriggerSound("click") end
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
                     killTrackerToggle:SetPos(20, 230)
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
                     killTrackerToggle:SetSize(30, 30)
-                    killTrackerToggle:SetTooltip("Enable the weapon specific kill tracking on the HUD.")
                     function killTrackerToggle:OnChange() TriggerSound("click") end
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
                     keypressOverlayToggle:SetPos(20, 270)
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
                     keypressOverlayToggle:SetSize(30, 30)
-                    keypressOverlayToggle:SetTooltip("Enable a HUD element showing which keys are being pressed.")
                     function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
                     VelocityCounterToggle:SetPos(20, 310)
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
-                    VelocityCounterToggle:SetTooltip("Enable a HUD element that shows your velocity.")
                     function VelocityCounterToggle:OnChange() TriggerSound("click") end
 
                     DockAudio.Paint = function(self, w, h)
@@ -2997,7 +2974,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuSoundsButton:SetPos(20, 70)
                     menuSoundsButton:SetConVar("tm_menusounds")
                     menuSoundsButton:SetSize(30, 30)
-                    menuSoundsButton:SetTooltip("Enable the menu sounds.")
                     function menuSoundsButton:OnChange() TriggerSound("click") end
 
                     local musicVolume = DockAudio:Add("DNumSlider")
@@ -3007,26 +2983,22 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     musicVolume:SetMin(0)
                     musicVolume:SetMax(1)
                     musicVolume:SetDecimals(2)
-                    musicVolume:SetTooltip("Adjust the volume of music.")
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
                     hitSoundsButton:SetPos(20, 150)
                     hitSoundsButton:SetConVar("tm_hitsounds")
                     hitSoundsButton:SetSize(30, 30)
-                    hitSoundsButton:SetTooltip("Enable the hitsounds.")
                     function hitSoundsButton:OnChange() TriggerSound("click") end
 
                     local killSoundButton = DockAudio:Add("DCheckBox")
                     killSoundButton:SetPos(20, 190)
                     killSoundButton:SetConVar("tm_killsound")
                     killSoundButton:SetSize(30, 30)
-                    killSoundButton:SetTooltip("Enable the kill conformation sound.")
                     function killSoundButton:OnChange() TriggerSound("click") end
 
                     local hitSoundsType = DockAudio:Add("DComboBox")
                     hitSoundsType:SetPos(20, 230)
                     hitSoundsType:SetSize(100, 30)
-                    hitSoundsType:SetTooltip("Adjust the style of the hitsounds.")
                     if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
@@ -3041,7 +3013,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local killSoundsType = DockAudio:Add("DComboBox")
                     killSoundsType:SetPos(20, 270)
                     killSoundsType:SetSize(100, 30)
-                    killSoundsType:SetTooltip("Adjust the style of the kill confirmation sound.")
                     if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType:AddChoice("TABG")
@@ -3073,28 +3044,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairToggle:SetPos(20, 70)
                     crosshairToggle:SetConVar("cl_tfa_hud_crosshair_enable_custom")
                     crosshairToggle:SetSize(30, 30)
-                    crosshairToggle:SetTooltip("Disables the custom crosshair and reverts back to the HL2 default.")
                     function crosshairToggle:OnChange() TriggerSound("click") end
 
                     local dotToggle = DockCrosshair:Add("DCheckBox")
                     dotToggle:SetPos(20, 110)
                     dotToggle:SetConVar("cl_tfa_hud_crosshair_dot")
                     dotToggle:SetSize(30, 30)
-                    dotToggle:SetTooltip("Enable a dot in the middle of your crosshair.")
                     function dotToggle:OnChange() TriggerSound("click") end
 
                     local pumpToggle = DockCrosshair:Add("DCheckBox")
                     pumpToggle:SetPos(20, 150)
                     pumpToggle:SetConVar("cl_tfa_hud_crosshair_pump")
                     pumpToggle:SetSize(30, 30)
-                    pumpToggle:SetTooltip("Rotates your crosshair during a sniper rechamber/shotgun pump.")
                     function pumpToggle:OnChange() TriggerSound("click") end
 
                     local triangleToggle = DockCrosshair:Add("DCheckBox")
                     triangleToggle:SetPos(20, 190)
                     triangleToggle:SetConVar("cl_tfa_hud_crosshair_triangular")
                     triangleToggle:SetSize(30, 30)
-                    triangleToggle:SetTooltip("Adjusts your crosshair to a triangular shape.")
                     function triangleToggle:OnChange() TriggerSound("click") end
 
                     local crosshairMixer = vgui.Create("DColorMixer", DockCrosshair)
@@ -3107,7 +3074,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairMixer:SetAlphaBar(true)
                     crosshairMixer:SetPalette(false)
                     crosshairMixer:SetWangs(true)
-                    crosshairMixer:SetTooltip("Adjusts your crosshairs color.")
 
                     local crosshairLength = DockCrosshair:Add("DNumSlider")
                     crosshairLength:SetPos(-85, 350)
@@ -3116,7 +3082,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairLength:SetMin(0.2)
                     crosshairLength:SetMax(2)
                     crosshairLength:SetDecimals(1)
-                    crosshairLength:SetTooltip("Adjusts your crosshairs length.")
 
                     local crosshairWidth = DockCrosshair:Add("DNumSlider")
                     crosshairWidth:SetPos(-85, 390)
@@ -3125,7 +3090,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairWidth:SetMin(1)
                     crosshairWidth:SetMax(4)
                     crosshairWidth:SetDecimals(1)
-                    crosshairWidth:SetTooltip("Adjusts your crosshairs width.")
 
                     local crosshairGap = DockCrosshair:Add("DNumSlider")
                     crosshairGap:SetPos(-85, 430)
@@ -3134,13 +3098,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairGap:SetMin(0)
                     crosshairGap:SetMax(3)
                     crosshairGap:SetDecimals(1)
-                    crosshairGap:SetTooltip("Adjust the gap between your crosshair.")
 
                     local outlineToggle = DockCrosshair:Add("DCheckBox")
                     outlineToggle:SetPos(20, 470)
                     outlineToggle:SetConVar("cl_tfa_hud_crosshair_outline_enabled")
                     outlineToggle:SetSize(30, 30)
-                    outlineToggle:SetTooltip("Enable a outline that wraps around your crosshair.")
                     function outlineToggle:OnChange() TriggerSound("click") end
 
                     local outlineWidth = DockCrosshair:Add("DNumSlider")
@@ -3150,7 +3112,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     outlineWidth:SetMin(0)
                     outlineWidth:SetMax(3)
                     outlineWidth:SetDecimals(1)
-                    outlineWidth:SetTooltip("Adjusts your crosshairs outline width.")
 
                     local outlineMixer = vgui.Create("DColorMixer", DockCrosshair)
                     outlineMixer:SetPos(20, 550)
@@ -3162,7 +3123,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     outlineMixer:SetAlphaBar(true)
                     outlineMixer:SetPalette(false)
                     outlineMixer:SetWangs(true)
-                    outlineMixer:SetTooltip("Change the color of your crosshairs outline.")
 
                     DockHitmarker.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3178,14 +3138,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerToggle:SetPos(20, 70)
                     hitmarkerToggle:SetConVar("cl_tfa_hud_hitmarker_enabled")
                     hitmarkerToggle:SetSize(30, 30)
-                    hitmarkerToggle:SetTooltip("Enable hitmarkers (hit indication when you damage an enemy.)")
                     function hitmarkerToggle:OnChange() TriggerSound("click") end
 
                     local hitmarkerDynamicToggle = DockHitmarker:Add("DCheckBox")
                     hitmarkerDynamicToggle:SetPos(20, 110)
                     hitmarkerDynamicToggle:SetConVar("cl_tfa_hud_hitmarker_3d_all")
                     hitmarkerDynamicToggle:SetSize(30, 30)
-                    hitmarkerDynamicToggle:SetTooltip("Enable dynamic hitmarkers (changes position depending on where you shot hit.)")
                     function hitmarkerDynamicToggle:OnChange() TriggerSound("click") end
 
                     local hitmarkerScale = DockHitmarker:Add("DNumSlider")
@@ -3195,7 +3153,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerScale:SetMin(0.2)
                     hitmarkerScale:SetMax(2)
                     hitmarkerScale:SetDecimals(1)
-                    hitmarkerScale:SetTooltip("Adjust the size of hitmarkers.")
 
                     local hitmarkerMixer = vgui.Create("DColorMixer", DockHitmarker)
                     hitmarkerMixer:SetPos(20, 190)
@@ -3207,7 +3164,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerMixer:SetAlphaBar(true)
                     hitmarkerMixer:SetPalette(false)
                     hitmarkerMixer:SetWangs(true)
-                    hitmarkerMixer:SetTooltip("Change the color of hitmarkers.")
 
                     DockPerformance.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3223,28 +3179,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     menuDOF:SetPos(20, 70)
                     menuDOF:SetConVar("tm_menudof")
                     menuDOF:SetSize(30, 30)
-                    menuDOF:SetTooltip("Blurs the background of certain in game menus.")
                     function menuDOF:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
                     ironSightDOF:SetPos(20, 110)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
-                    ironSightDOF:SetTooltip("Blurs your weapon while aiming down sights.")
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
                     inspectionDOF:SetPos(20, 150)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
-                    inspectionDOF:SetTooltip("Enables a blur affect while in the attachment editing menu.")
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
                     screenFlashing:SetPos(20, 190)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
-                    screenFlashing:SetTooltip("Enables sudden screen effects on certain events (mainly dying and leveling up)")
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
@@ -3303,20 +3255,20 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 FakeHUD.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - 15, scrH - 30, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - 25, scrH - 155, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW - 15, scrH - 100, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 155 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 100 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - 15, scrH - 70, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - 18, scrH - 100, Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 35 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 85 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
-                        surface.DrawRect(scrW - 415, scrH - 38, 400, 30)
+                        surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400, 30)
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
-                        surface.DrawRect(scrW - 415, scrH - 38, 400 * (ammo / 30), 30)
-                        draw.SimpleText(ammo, "HUD_Health", scrW - 410, scrH - 24, Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400 * (ammo / 30), 30)
+                        draw.SimpleText(ammo, "HUD_Health", scrW - 390 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     surface.SetDrawColor(50, 50, 50, 80)
-                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
+                    surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
                     if health <= 66 then
                         if health <= 33 then
                             surface.SetDrawColor(GetConVar("tm_hud_health_color_low_r"):GetInt(), GetConVar("tm_hud_health_color_low_g"):GetInt(), GetConVar("tm_hud_health_color_low_b"):GetInt(), 120)
@@ -3326,8 +3278,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         surface.SetDrawColor(GetConVar("tm_hud_health_color_high_r"):GetInt(), GetConVar("tm_hud_health_color_high_g"):GetInt(), GetConVar("tm_hud_health_color_high_b"):GetInt(), 120)
                     end
-                    surface.DrawRect(10 + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 38 - GetConVar("tm_hud_health_offset_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
-                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt(), scrH - 24 - GetConVar("tm_hud_health_offset_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
+                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt() - 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     local feedStyle
                     if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
                         feedStyle = -20
@@ -3338,22 +3290,22 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) else surface.SetDrawColor(50, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) end
                         local nameLength = select(1, surface.GetTextSize(v[1]))
 
-                        surface.DrawRect(10 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), nameLength + 5, 20)
-                        draw.SimpleText(v[1], "HUD_StreakText", 12.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), nameLength + 5, 20)
+                        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-                    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", scrW / 2, 5, Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45, scrH - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5, scrH - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10, scrH - 47.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5, scrH - 75 - GetConVar("tm_hud_equipment_offset_y"):GetInt(), color_white, TEXT_ALIGN_CENTER)
+                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
-                        local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt()
-                        local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt()
+                        local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()
+                        local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()
                         local actuatedColor = Color(GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt())
                         local inactiveColor = Color(GetConVar("tm_hud_keypressoverlay_inactive_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt())
                         local keyMat = Material("icons/keyicon.png")
@@ -3385,7 +3337,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("DUCK", "HUD_StreakText", 105 + keyX, 165 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
-                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 end
 
@@ -3406,6 +3358,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     MainPanel:Show()
                     timer.Remove("previewLoop")
                     hook.Remove("Tick", "KeyOverlayTracking")
+                    UpdateHUD()
                 end
 
                 local EditorScroller = vgui.Create("DScrollPanel", EditorPanel)
@@ -3434,18 +3387,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                 GeneralEditor:Dock(TOP)
-                GeneralEditor:SetSize(0, 130)
+                GeneralEditor:SetSize(0, 170)
                 GeneralEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Font Scale", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD X Bounds", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Y Bounds", "Health", 150, 130, white, TEXT_ALIGN_LEFT)
                 end
 
                 local HUDFont = GeneralEditor:Add("DComboBox")
                 HUDFont:SetPos(20, 50)
                 HUDFont:SetSize(100, 30)
-                HUDFont:SetTooltip("Adjust the font used on HUD text.")
                 HUDFont:SetValue(GetConVar("tm_hud_font"):GetString())
                 HUDFont:AddChoice("Arial")
                 HUDFont:AddChoice("Comic Sans MS")
@@ -3471,14 +3424,21 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HUDFont:SetValue(self:GetValue())
                 end
 
-                local FontScale = GeneralEditor:Add("DNumSlider")
-                FontScale:SetPos(-85, 90)
-                FontScale:SetSize(250, 30)
-                FontScale:SetConVar("tm_hud_font_scale")
-                FontScale:SetMin(0.5)
-                FontScale:SetMax(1.5)
-                FontScale:SetDecimals(2)
-                FontScale:SetTooltip("Adjust the size of your font.")
+                local HUDXBounds = GeneralEditor:Add("DNumSlider")
+                HUDXBounds:SetPos(-85, 90)
+                HUDXBounds:SetSize(250, 30)
+                HUDXBounds:SetConVar("tm_hud_bounds_x")
+                HUDXBounds:SetMin(0)
+                HUDXBounds:SetMax(scrW / 4)
+                HUDXBounds:SetDecimals(0)
+
+                local HUDYBounds = GeneralEditor:Add("DNumSlider")
+                HUDYBounds:SetPos(-85, 130)
+                HUDYBounds:SetSize(250, 30)
+                HUDYBounds:SetConVar("tm_hud_bounds_y")
+                HUDYBounds:SetMin(0)
+                HUDYBounds:SetMax(scrH / 4)
+                HUDYBounds:SetDecimals(0)
 
                 local AmmoEditor = vgui.Create("DPanel", EditorScroller)
                 AmmoEditor:Dock(TOP)
@@ -3495,7 +3455,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local AmmoStyle = AmmoEditor:Add("DComboBox")
                 AmmoStyle:SetPos(20, 50)
                 AmmoStyle:SetSize(100, 30)
-                AmmoStyle:SetTooltip("Adjust the style of the ammo counter.")
                 if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
                     AmmoStyle:SetValue("Numeric")
                 elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
@@ -3517,7 +3476,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 WepTextColor:SetAlphaBar(false)
                 WepTextColor:SetPalette(false)
                 WepTextColor:SetWangs(true)
-                WepTextColor:SetTooltip("Adjusts your gun name text color.")
 
                 local AmmoTextColor = vgui.Create("DColorMixer", AmmoEditor)
                 AmmoTextColor:SetPos(20, 170)
@@ -3528,7 +3486,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 AmmoTextColor:SetAlphaBar(false)
                 AmmoTextColor:SetPalette(false)
                 AmmoTextColor:SetWangs(true)
-                AmmoTextColor:SetTooltip("Adjusts your ammo text color.")
 
                 local AmmoBarColor = vgui.Create("DColorMixer", AmmoEditor)
                 AmmoBarColor:SetPos(20, 250)
@@ -3539,7 +3496,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 AmmoBarColor:SetAlphaBar(false)
                 AmmoBarColor:SetPalette(false)
                 AmmoBarColor:SetWangs(true)
-                AmmoBarColor:SetTooltip("Adjusts your ammo bar color.")
 
                 local HealthEditor = vgui.Create("DPanel", EditorScroller)
                 HealthEditor:Dock(TOP)
@@ -3563,7 +3519,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarSize:SetMin(100)
                 HealthBarSize:SetMax(1000)
                 HealthBarSize:SetDecimals(0)
-                HealthBarSize:SetTooltip("Adjust the size of your health bar.")
 
                 local HealthBarX = HealthEditor:Add("DNumSlider")
                 HealthBarX:SetPos(-85, 80)
@@ -3572,7 +3527,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarX:SetMin(0)
                 HealthBarX:SetMax(scrW)
                 HealthBarX:SetDecimals(0)
-                HealthBarX:SetTooltip("Adjust the X offset of your health bar.")
 
                 local HealthBarY = HealthEditor:Add("DNumSlider")
                 HealthBarY:SetPos(-85, 110)
@@ -3581,7 +3535,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarY:SetMin(0)
                 HealthBarY:SetMax(scrH)
                 HealthBarY:SetDecimals(0)
-                HealthBarY:SetTooltip("Adjust the Y offset of your health bar.")
 
                 local HealthTextColor = vgui.Create("DColorMixer", HealthEditor)
                 HealthTextColor:SetPos(20, 150)
@@ -3592,7 +3545,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthTextColor:SetAlphaBar(false)
                 HealthTextColor:SetPalette(false)
                 HealthTextColor:SetWangs(true)
-                HealthTextColor:SetTooltip("Adjusts your health text color.")
 
                 local HealthHighColor = vgui.Create("DColorMixer", HealthEditor)
                 HealthHighColor:SetPos(20, 230)
@@ -3603,7 +3555,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthHighColor:SetAlphaBar(false)
                 HealthHighColor:SetPalette(false)
                 HealthHighColor:SetWangs(true)
-                HealthHighColor:SetTooltip("Adjusts your health bar color while on 100% or less HP.")
 
                 local HealthMidColor = vgui.Create("DColorMixer", HealthEditor)
                 HealthMidColor:SetPos(20, 310)
@@ -3614,7 +3565,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthMidColor:SetAlphaBar(false)
                 HealthMidColor:SetPalette(false)
                 HealthMidColor:SetWangs(true)
-                HealthMidColor:SetTooltip("Adjusts your health bar color while on 66% or less HP.")
 
                 local HealthLowColor = vgui.Create("DColorMixer", HealthEditor)
                 HealthLowColor:SetPos(20, 390)
@@ -3625,7 +3575,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthLowColor:SetAlphaBar(false)
                 HealthLowColor:SetPalette(false)
                 HealthLowColor:SetWangs(true)
-                HealthLowColor:SetTooltip("Adjusts your health bar color while on 33% or less HP.")
 
                 local EquipmentEditor = vgui.Create("DPanel", EditorScroller)
                 EquipmentEditor:Dock(TOP)
@@ -3641,7 +3590,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local EquipmentAnchor = EquipmentEditor:Add("DComboBox")
                 EquipmentAnchor:SetPos(20, 50)
                 EquipmentAnchor:SetSize(100, 30)
-                EquipmentAnchor:SetTooltip("Adjust the anchoring of your equipment UI.")
                 if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then
                     EquipmentAnchor:SetValue("Left")
                 elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then
@@ -3664,7 +3612,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EquipmentX:SetMin(0)
                 EquipmentX:SetMax(scrW)
                 EquipmentX:SetDecimals(0)
-                EquipmentX:SetTooltip("Adjust the X offset of your equipment UI.")
 
                 local EquipmentY = EquipmentEditor:Add("DNumSlider")
                 EquipmentY:SetPos(-85, 110)
@@ -3673,7 +3620,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EquipmentY:SetMin(0)
                 EquipmentY:SetMax(scrH)
                 EquipmentY:SetDecimals(0)
-                EquipmentY:SetTooltip("Adjust the Y offset of your equipment UI.")
 
                 local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                 KillFeedEditor:Dock(TOP)
@@ -3715,13 +3661,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EnableKillFeed:SetPos(20, 50)
                 EnableKillFeed:SetConVar("tm_hud_enablekillfeed")
                 EnableKillFeed:SetSize(30, 30)
-                EnableKillFeed:SetTooltip("Enable the kill feed.")
                 function EnableKillFeed:OnChange() TriggerSound("click") end
 
                 local KillFeedStyle = KillFeedEditor:Add("DComboBox")
                 KillFeedStyle:SetPos(20, 85)
                 KillFeedStyle:SetSize(100, 30)
-                KillFeedStyle:SetTooltip("Adjust the style of the kill feed entries.")
                 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
                     KillFeedStyle:SetValue("Ascending")
                 elseif GetConVar("tm_hud_killfeed_style"):GetInt() == 1 then
@@ -3741,7 +3685,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedItemLimit:SetMin(1)
                 KillFeedItemLimit:SetMax(10)
                 KillFeedItemLimit:SetDecimals(0)
-                KillFeedItemLimit:SetTooltip("Limit the amount of entries that can be shown on the kill feed.")
 
                 local KillFeedX = KillFeedEditor:Add("DNumSlider")
                 KillFeedX:SetPos(-85, 145)
@@ -3750,7 +3693,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedX:SetMin(0)
                 KillFeedX:SetMax(scrW)
                 KillFeedX:SetDecimals(0)
-                KillFeedX:SetTooltip("Adjust the X offset of your kill feed.")
 
                 local KillFeedY = KillFeedEditor:Add("DNumSlider")
                 KillFeedY:SetPos(-85, 175)
@@ -3759,7 +3701,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedY:SetMin(0)
                 KillFeedY:SetMax(scrH)
                 KillFeedY:SetDecimals(0)
-                KillFeedY:SetTooltip("Adjust the Y offset of your kill feed.")
 
                 local KillFeedOpacity = KillFeedEditor:Add("DNumSlider")
                 KillFeedOpacity:SetPos(-85, 205)
@@ -3768,7 +3709,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedOpacity:SetMin(0)
                 KillFeedOpacity:SetMax(255)
                 KillFeedOpacity:SetDecimals(0)
-                KillFeedOpacity:SetTooltip("Adjust the opacity of a feed entries background.")
 
                 local KillDeathEditor
                 KillDeathEditor = vgui.Create("DPanel", EditorScroller)
@@ -3789,7 +3729,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillDeathX:SetMin(scrW / -2)
                 KillDeathX:SetMax(scrW / 2)
                 KillDeathX:SetDecimals(0)
-                KillDeathX:SetTooltip("Adjust the X offset of your kill and death UI.")
 
                 local KillDeathY = KillDeathEditor:Add("DNumSlider")
                 KillDeathY:SetPos(-85, 80)
@@ -3798,7 +3737,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillDeathY:SetMin(0)
                 KillDeathY:SetMax(scrH)
                 KillDeathY:SetDecimals(0)
-                KillDeathY:SetTooltip("Adjust the Y offset of your kill and death UI.")
 
                 local KillColor = vgui.Create("DColorMixer", KillDeathEditor)
                 KillColor:SetPos(20, 120)
@@ -3809,7 +3747,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillColor:SetAlphaBar(false)
                 KillColor:SetPalette(false)
                 KillColor:SetWangs(true)
-                KillColor:SetTooltip("Adjusts the color of the skull icon on a kill.")
 
                 local ObjectiveEditor
                 ObjectiveEditor = vgui.Create("DPanel", EditorScroller)
@@ -3832,7 +3769,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjScale:SetMin(0.5)
                 ObjScale:SetMax(3.0)
                 ObjScale:SetDecimals(2)
-                ObjScale:SetTooltip("Adjust the X offset of your keypress overlay.")
 
                 local ObjEmptyBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
                 ObjEmptyBrushColor:SetPos(20, 90)
@@ -3843,7 +3779,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjEmptyBrushColor:SetAlphaBar(false)
                 ObjEmptyBrushColor:SetPalette(false)
                 ObjEmptyBrushColor:SetWangs(true)
-                ObjEmptyBrushColor:SetTooltip("Adjusts the color of the objective indicator when empty.")
 
                 local ObjOccupiedBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
                 ObjOccupiedBrushColor:SetPos(20, 170)
@@ -3854,7 +3789,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjOccupiedBrushColor:SetAlphaBar(false)
                 ObjOccupiedBrushColor:SetPalette(false)
                 ObjOccupiedBrushColor:SetWangs(true)
-                ObjOccupiedBrushColor:SetTooltip("Adjusts the color of the objective indicator when occupied.")
 
                 local ObjContestedBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
                 ObjContestedBrushColor:SetPos(20, 250)
@@ -3865,7 +3799,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjContestedBrushColor:SetAlphaBar(false)
                 ObjContestedBrushColor:SetPalette(false)
                 ObjContestedBrushColor:SetWangs(true)
-                ObjContestedBrushColor:SetTooltip("Adjusts the color of the objective indicator when contested.")
 
                 local ObjTextColor = vgui.Create("DColorMixer", ObjectiveEditor)
                 ObjTextColor:SetPos(20, 330)
@@ -3876,13 +3809,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjTextColor:SetAlphaBar(false)
                 ObjTextColor:SetPalette(false)
                 ObjTextColor:SetWangs(true)
-                ObjTextColor:SetTooltip("Adjusts the color of the objective text indicator.")
 
                 local DamageIndicatorOverlay
                 if GetConVar("tm_hud_dmgindicator"):GetInt() == 1 then DamageIndicatorOverlay = vgui.Create("DPanel", EditorScroller) else
                     DamageIndicatorOverlay = vgui.Create("DPanel", HiddenOptionsScroller)
                     ShowHiddenOptions = true
                 end
+
                 DamageIndicatorOverlay:Dock(TOP)
                 DamageIndicatorOverlay:SetSize(0, 160)
                 DamageIndicatorOverlay.Paint = function(self, w, h)
@@ -3900,7 +3833,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 IndicatorColor:SetAlphaBar(false)
                 IndicatorColor:SetPalette(false)
                 IndicatorColor:SetWangs(true)
-                IndicatorColor:SetTooltip("Adjusts the color of the damage indicator.")
 
                 local IndicatorOpaticy = DamageIndicatorOverlay:Add("DNumSlider")
                 IndicatorOpaticy:SetPos(-85, 130)
@@ -3909,13 +3841,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 IndicatorOpaticy:SetMin(0)
                 IndicatorOpaticy:SetMax(255)
                 IndicatorOpaticy:SetDecimals(0)
-                IndicatorOpaticy:SetTooltip("Adjusts the opacity of the damage indicator.")
 
                 local KeypressOverlay
                 if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then KeypressOverlay = vgui.Create("DPanel", EditorScroller) else
                     KeypressOverlay = vgui.Create("DPanel", HiddenOptionsScroller)
                     ShowHiddenOptions = true
                 end
+
                 KeypressOverlay:Dock(TOP)
                 KeypressOverlay:SetSize(0, 280)
                 KeypressOverlay.Paint = function(self, w, h)
@@ -3934,7 +3866,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressOverlayX:SetMin(0)
                 KeypressOverlayX:SetMax(scrW)
                 KeypressOverlayX:SetDecimals(0)
-                KeypressOverlayX:SetTooltip("Adjust the X offset of your keypress overlay.")
 
                 local KeypressOverlayY = KeypressOverlay:Add("DNumSlider")
                 KeypressOverlayY:SetPos(-85, 80)
@@ -3943,7 +3874,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressOverlayY:SetMin(0)
                 KeypressOverlayY:SetMax(scrH)
                 KeypressOverlayY:SetDecimals(0)
-                KeypressOverlayY:SetTooltip("Adjust the Y offset of your keypress overlay.")
 
                 local KeypressInactiveColor = vgui.Create("DColorMixer", KeypressOverlay)
                 KeypressInactiveColor:SetPos(20, 120)
@@ -3954,7 +3884,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressInactiveColor:SetAlphaBar(false)
                 KeypressInactiveColor:SetPalette(false)
                 KeypressInactiveColor:SetWangs(true)
-                KeypressInactiveColor:SetTooltip("Adjusts the color of an inactive key on your keypress overlay.")
 
                 local KeypressActuatedColor = vgui.Create("DColorMixer", KeypressOverlay)
                 KeypressActuatedColor:SetPos(20, 200)
@@ -3965,13 +3894,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressActuatedColor:SetAlphaBar(false)
                 KeypressActuatedColor:SetPalette(false)
                 KeypressActuatedColor:SetWangs(true)
-                KeypressActuatedColor:SetTooltip("Adjusts the color of an actuated key on your keypress overlay.")
 
                 local VelocityCounter
                 if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then VelocityCounter = vgui.Create("DPanel", EditorScroller) else
                     VelocityCounter = vgui.Create("DPanel", HiddenOptionsScroller)
                     ShowHiddenOptions = true
                 end
+
                 VelocityCounter:Dock(TOP)
                 VelocityCounter:SetSize(0, 200)
                 VelocityCounter.Paint = function(self, w, h)
@@ -3989,7 +3918,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterX:SetMin(0)
                 VelocityCounterX:SetMax(scrW)
                 VelocityCounterX:SetDecimals(0)
-                VelocityCounterX:SetTooltip("Adjust the X offset of your velocity counter.")
 
                 local VelocityCounterY = VelocityCounter:Add("DNumSlider")
                 VelocityCounterY:SetPos(-85, 80)
@@ -3998,7 +3926,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterY:SetMin(0)
                 VelocityCounterY:SetMax(scrH)
                 VelocityCounterY:SetDecimals(0)
-                VelocityCounterY:SetTooltip("Adjust the Y offset of your velocity counter")
 
                 local VelocityCounterColor = vgui.Create("DColorMixer", VelocityCounter)
                 VelocityCounterColor:SetPos(20, 120)
@@ -4009,7 +3936,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterColor:SetAlphaBar(false)
                 VelocityCounterColor:SetPalette(false)
                 VelocityCounterColor:SetWangs(true)
-                VelocityCounterColor:SetTooltip("Adjusts the color of the text on the velocity counter.")
 
                 local HiddenOptionsCollapse = vgui.Create("DCollapsibleCategory", EditorScroller)
                 HiddenOptionsCollapse:SetLabel("Show options for disabled HUD elements")
@@ -4102,6 +4028,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         ResetToDefaultConfirm = 1
                     else
                         RunConsoleCommand("tm_resethudtodefault_cannotbeundone")
+                        UpdateHUD()
                         ResetToDefaultConfirm = 0
                     end
 
