@@ -15,6 +15,8 @@ net.Receive("OpenMainMenu", function(len, ply)
     if respawnTimeLeft != 0 then timer.Create("respawnTimeLeft", respawnTimeLeft, 1, function()
     end) end
 
+    DeleteHUDHook()
+
     local dof
     local mapID
     local mapName
@@ -593,6 +595,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             SpawnButton.DoClick = function()
                 if timer.Exists("respawnTimeLeft") then return end
                 TriggerSound("click")
+                CreateHUDHook()
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
                 net.Start("CloseMainMenu")
@@ -3236,6 +3239,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 TriggerSound("click")
                 local ShowHiddenOptions = false
 
+                local modePool = {"FFA", "Cranked", "Gun Game", "KOTH", "VIP"}
+
+                local mode = "FFA"
+                local modeTime = "45"
+                local modeTimeText = "0:45"
+                local ggGuns = ggLadderSize
                 local health = 100
                 local ammo = 30
                 local velocity = 350
@@ -3243,8 +3252,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local fakeFeedArray = {}
                 local grappleMat = Material("icons/grapplehudicon.png")
                 local nadeMat = Material("icons/grenadehudicon.png")
+                local hillEmptyMat = Material("icons/kothempty.png")
+                local border = Material("overlay/objborder.png")
                 local timeText = " ∞"
                 timer.Create("previewLoop", 1, 0, function()
+                    mode = modePool[math.random(#modePool)]
+                    modeTime = math.random(1, 45)
+                    modeTimeText = "0:" .. modeTime
+                    ggGuns = math.random(1, ggLadderSize)
                     health = math.random(1, 100)
                     ammo = math.random(1, 30)
                     velocity = math.random(0, 400)
@@ -3293,8 +3308,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.DrawRect(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), nameLength + 5, 20)
                         draw.SimpleText(v[1], "HUD_StreakText", 2.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
-                    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-                    draw.SimpleText(activeGamemode .. " | " .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
@@ -3338,6 +3351,36 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
                         draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    end
+                    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
+                    draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+                    if mode == "Gun Game" then
+                        draw.SimpleText(ggGuns  .. " kills left", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    elseif mode == "Fiesta" then
+                        draw.SimpleText(modeTimeText, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    elseif mode == "Cranked" then
+                        draw.SimpleText(modeTime, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        surface.SetDrawColor(50, 50, 50, 80)
+                        surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150, 10)
+                        surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 80)
+                        surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150 * (modeTime / 45), 10)
+                    elseif mode == "KOTH" then
+                        draw.SimpleText("Contested", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 100)
+                        surface.SetMaterial(hillEmptyMat)
+                        surface.DrawTexturedRect(scrW / 2 - 21, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 42, 42)
+                        surface.SetMaterial(border)
+                        surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 175)
+                        surface.DrawTexturedRect(0, 0, scrW, scrH)
+                    elseif mode == "VIP" then
+                        draw.SimpleText(LocalPly:GetName(), "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 225)
+                        surface.SetMaterial(hillEmptyMat)
+                        surface.DrawTexturedRect(scrW / 2 - 24, 57 + GetConVar("tm_hud_bounds_y"):GetInt(), 48, 48)
+                        surface.SetMaterial(border)
+                        surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 175)
+                        surface.DrawTexturedRect(0, 0, scrW, scrH)
                     end
                 end
 
@@ -3409,7 +3452,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDFont:AddChoice("Trebuchet MS")
                 HUDFont:AddChoice("VCR OSD Mono")
                 HUDFont:AddChoice("Bender")
-                HUDFont:AddChoice("Source Sans Pro Semibold")
+                HUDFont:AddChoice("Gravity")
                 HUDFont.OnSelect = function(self, index, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_font", value)
@@ -4052,6 +4095,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
             ExitButton.DoClick = function()
                 gui.ActivateGameUI()
+                TriggerSound("click")
+                CreateHUDHook()
                 net.Start("CloseMainMenu")
                 net.SendToServer()
                 MainMenu:Remove()

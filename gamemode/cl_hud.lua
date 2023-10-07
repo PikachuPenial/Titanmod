@@ -161,9 +161,9 @@ local cColor = Color(255, 255, 255)
 local hillColor
 local objIndicatorColor
 local hillEmptyMat = Material("icons/kothempty.png")
-local hillContestedMat = Material("icons/kothcontested.png")
+local border = Material("overlay/objborder.png")
 
-local LocalPly
+local LocalPly = LocalPlayer()
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
 
@@ -221,12 +221,10 @@ function HUDAlways(client)
             objIndicatorColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 175)
         end
 
-        local border = Material("overlay/objborder.png")
         surface.SetMaterial(border)
         surface.SetDrawColor(objIndicatorColor)
         if client:GetNWBool("onOBJ") then surface.DrawTexturedRect(0, 0, scrW, scrH) end
     elseif activeGamemode == "VIP" then
-        local border = Material("overlay/objborder.png")
         surface.SetMaterial(border)
         surface.SetDrawColor(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
         if GetGlobal2Entity("tm_vip", NULL) == client then surface.DrawTexturedRect(0, 0, scrW, scrH) end
@@ -238,8 +236,8 @@ function HUDAlways(client)
             surface.SetDrawColor(255, 255, 255, 100)
             surface.SetMaterial(hillEmptyMat)
         else
-            surface.SetDrawColor(255, 255, 255, 100)
-            surface.SetMaterial(hillContestedMat)
+            surface.SetDrawColor(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 100)
+            surface.SetMaterial(hillEmptyMat)
         end
         surface.DrawTexturedRect(scrW / 2 - 21, 60 + matchHUD["y"], 42, 42)
     end
@@ -402,108 +400,114 @@ function HUDAlive(client)
     --Cranked bar
     if activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then
         surface.SetDrawColor(50, 50, 50, 80)
-        surface.DrawRect(scrW / 2 - 75, 70, 150, 10)
+        surface.DrawRect(scrW / 2 - 75, 60 + matchHUD["y"], 150, 10)
 
-        surface.SetDrawColor(255, 0, 0, 80)
-        surface.DrawRect(scrW / 2 - 75, 70, 150 * (timeUntilSelfDestruct / crankedSelfDestructTime), 10)
+        surface.SetDrawColor(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 80)
+        surface.DrawRect(scrW / 2 - 75, 60 + matchHUD["y"], 150 * (timeUntilSelfDestruct / crankedSelfDestructTime), 10)
     end
 end
 
 --Create the HUD hook depending on the gamemode being played
-if activeGamemode == "KOTH" then
-    --KOTH rendering
-    local KOTHCords = KOTHPos[game.GetMap()]
-    local origin = KOTHCords.Origin
-    local size = KOTHCords.BrushSize
-    local playerAngle
+function CreateHUDHook()
+    if activeGamemode == "KOTH" then
+        --KOTH rendering
+        local KOTHCords = KOTHPos[game.GetMap()]
+        local origin = KOTHCords.Origin
+        local size = KOTHCords.BrushSize
+        local playerAngle
 
-    hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
-        if convars["hud_enable"] == 0 then return end
-        render.SetColorMaterial()
-        if LocalPlayer():GetNWBool("onOBJ") then
-            render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
-            return
-        end
-        render.DrawBox(origin, angle_zero, -size, size, hillColor)
+        hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
+            if convars["hud_enable"] == 0 then return end
+            render.SetColorMaterial()
+            if LocalPlayer():GetNWBool("onOBJ") then
+                render.DrawBox(origin - Vector(0, 0, -2), angle_zero, -size, size - Vector(0, 0, size[3] * 2), hillColor)
+                return
+            end
+            render.DrawBox(origin, angle_zero, -size, size, hillColor)
 
-        playerAngle = LocalPlayer():EyeAngles()
-        playerAngle:RotateAroundAxis(playerAngle:Forward(), 90)
-        playerAngle:RotateAroundAxis(playerAngle:Right(), 90)
+            playerAngle = LocalPlayer():EyeAngles()
+            playerAngle:RotateAroundAxis(playerAngle:Forward(), 90)
+            playerAngle:RotateAroundAxis(playerAngle:Right(), 90)
 
-        cam.IgnoreZ(true)
-            cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
-                draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            cam.End3D2D()
-        cam.IgnoreZ(false)
-    end )
+            cam.IgnoreZ(true)
+                cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
+                    draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                cam.End3D2D()
+            cam.IgnoreZ(false)
+        end )
 
-    if IsValid(KOTHPFP) then KOTHPFP:Remove() end
-    KOTHPFP = vgui.Create("AvatarImage", HUD)
-    KOTHPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
-    KOTHPFP:SetSize(42, 42)
-    KOTHPFP:Hide()
+        if IsValid(KOTHPFP) then KOTHPFP:Remove() end
+        KOTHPFP = vgui.Create("AvatarImage", HUD)
+        KOTHPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
+        KOTHPFP:SetSize(42, 42)
+        KOTHPFP:Hide()
 
-    pfpUpdated = false
+        pfpUpdated = false
 
-    function UpdateKOTHPFP(client)
-        if convars["hud_enable"] == 0 or !client:Alive() then KOTHPFP:Hide() return end
-        if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
-            KOTHPFP:Hide()
-            pfpUpdated = false
-        else
-            KOTHPFP:Show()
-            if !pfpUpdated then KOTHPFP:SetPlayer(GetGlobal2Entity("tm_entonhill"), 184) end
-            pfpUpdated = true
-        end
-    end
-
-    hook.Add("HUDPaint", "DrawTMHUD", function()
-        LocalPly = LocalPlayer()
-        if convars["hud_enable"] == 0 then return end
-        HUDAlways(LocalPly)
-        UpdateKOTHPFP(LocalPly)
-        if LocalPly:Alive() then HUDAlive(LocalPly) end
-    end )
-elseif activeGamemode == "VIP" then
-    --VIP rendering
-    if IsValid(VIPPFP) then VIPPFP:Remove() end
-    VIPPFP = vgui.Create("AvatarImage", HUD)
-    VIPPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
-    VIPPFP:SetSize(42, 42)
-    VIPPFP:Hide()
-
-    local vip = GetGlobal2Entity("tm_vip", NULL)
-    local setPly
-    function UpdateVIPPFP(client)
-        if convars["hud_enable"] == 0 or !client:Alive() then VIPPFP:Hide() return end
-        vip = GetGlobal2Entity("tm_vip", NULL)
-        if vip == NULL then
-            VIPPFP:Hide()
-            setPly = NULL
-        else
-            VIPPFP:Show()
-            if setPly != vip then
-                VIPPFP:SetPlayer(vip, 184)
-                setPly = vip
+        function UpdateKOTHPFP(client)
+            if convars["hud_enable"] == 0 or !client:Alive() then KOTHPFP:Hide() return end
+            if GetGlobal2String("tm_hillstatus") == "Empty" or GetGlobal2String("tm_hillstatus") == "Contested" then
+                KOTHPFP:Hide()
+                pfpUpdated = false
+            else
+                KOTHPFP:Show()
+                if !pfpUpdated then KOTHPFP:SetPlayer(GetGlobal2Entity("tm_entonhill"), 184) end
+                pfpUpdated = true
             end
         end
-    end
 
-    hook.Add("HUDPaint", "DrawTMHUD", function()
-        LocalPly = LocalPlayer()
-        if convars["hud_enable"] == 0 then return end
-        HUDAlways(LocalPly)
-        UpdateVIPPFP(LocalPly)
-        if LocalPly:Alive() then HUDAlive(LocalPly) end
-    end )
-else
-    hook.Add("HUDPaint", "DrawTMHUD", function()
-        LocalPly = LocalPlayer()
-        if convars["hud_enable"] == 0 then return end
-        HUDAlways(LocalPly)
-        if LocalPly:Alive() then HUDAlive(LocalPly) end
-    end )
+        hook.Add("HUDPaint", "DrawTMHUD", function()
+            LocalPly = LocalPlayer()
+            if convars["hud_enable"] == 0 then return end
+            HUDAlways(LocalPly)
+            UpdateKOTHPFP(LocalPly)
+            if LocalPly:Alive() then HUDAlive(LocalPly) end
+        end )
+    elseif activeGamemode == "VIP" then
+        --VIP rendering
+        if IsValid(VIPPFP) then VIPPFP:Remove() end
+        VIPPFP = vgui.Create("AvatarImage", HUD)
+        VIPPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"])
+        VIPPFP:SetSize(42, 42)
+        VIPPFP:Hide()
+
+        local vip = GetGlobal2Entity("tm_vip", NULL)
+        local setPly
+        function UpdateVIPPFP(client)
+            if convars["hud_enable"] == 0 or !client:Alive() then VIPPFP:Hide() return end
+            vip = GetGlobal2Entity("tm_vip", NULL)
+            if vip == NULL then
+                VIPPFP:Hide()
+                setPly = NULL
+            else
+                VIPPFP:Show()
+                if setPly != vip then
+                    VIPPFP:SetPlayer(vip, 184)
+                    setPly = vip
+                end
+            end
+        end
+
+        hook.Add("HUDPaint", "DrawTMHUD", function()
+            LocalPly = LocalPlayer()
+            if convars["hud_enable"] == 0 then return end
+            HUDAlways(LocalPly)
+            UpdateVIPPFP(LocalPly)
+            if LocalPly:Alive() then HUDAlive(LocalPly) end
+        end )
+    else
+        hook.Add("HUDPaint", "DrawTMHUD", function()
+            LocalPly = LocalPlayer()
+            if convars["hud_enable"] == 0 then return end
+            HUDAlways(LocalPly)
+            if LocalPly:Alive() then HUDAlive(LocalPly) end
+        end )
+    end
+end
+
+function DeleteHUDHook()
+    hook.Remove("HUDPaint", "DrawTMHUD")
 end
 
 --Hides the players info that shows up when aiming at another player.

@@ -32,7 +32,7 @@ function GM:ScoreboardShow()
 			if dof == true then
 				DrawBokehDOF(2.5, 1, 0)
 			end
-			draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
+			draw.RoundedBox(6, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 
 			draw.SimpleText("Kills", "StreakTextMini", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -81,7 +81,7 @@ function GM:ScoreboardShow()
 
 		local sbar = PlayerScrollPanel:GetVBar()
 		function sbar:Paint(w, h)
-			draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
+			draw.RoundedBox(6, 0, 0, w, h, Color(0, 0, 0, 150))
 		end
 		function sbar.btnUp:Paint(w, h)
 			draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
@@ -90,7 +90,7 @@ function GM:ScoreboardShow()
 			draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
 		end
 		function sbar.btnGrip:Paint(w, h)
-			draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+			draw.RoundedBox(16, 0, 0, w, h, Color(155, 155, 155, 155))
 		end
 
 		PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
@@ -174,11 +174,11 @@ function GM:ScoreboardShow()
 			PlayerPanel.Paint = function(self, w, h)
 				if not IsValid(v) then return end
 				if v:GetNWBool("mainmenu") == true then
-					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 100, 100))
+					draw.RoundedBox(6, 0, 0, 630, h, Color(35, 35, 100, 100))
 				elseif not v:Alive() then
-					draw.RoundedBox(5, 0, 0, w, h, Color(100, 35, 35, 100))
+					draw.RoundedBox(6, 0, 0, 630, h, Color(100, 35, 35, 100))
 				else
-					draw.RoundedBox(5, 0, 0, w, h, Color(35, 35, 35, 100))
+					draw.RoundedBox(6, 0, 0, 630, h, Color(35, 35, 35, 100))
 				end
 
 				draw.SimpleText(name, "Health", 255, 5, white, TEXT_ALIGN_LEFT)
