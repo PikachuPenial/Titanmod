@@ -166,6 +166,7 @@ local border = Material("overlay/objborder.png")
 local LocalPly = LocalPlayer()
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
+local timeText = " ∞"
 
 local TitanmodFOV = GetConVar("tm_customfov_value"):GetInt()
 net.Receive("PlayerSpawn", function(len, pl)
@@ -180,7 +181,6 @@ end)
 
 function HUDAlways(client)
     --Remaining match time.
-    local timeText = " ∞"
     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 

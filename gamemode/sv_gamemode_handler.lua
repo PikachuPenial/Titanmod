@@ -30,7 +30,6 @@ function ShuffleFiestaLoadout()
             v:Give(v:GetNWString("loadoutPrimary"))
             v:Give(v:GetNWString("loadoutSecondary"))
             v:Give(v:GetNWString("loadoutMelee"))
-            v:SetAmmo(grenadesOnSpawn, "Grenade")
         end
     end
 end
