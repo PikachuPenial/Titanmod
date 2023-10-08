@@ -52,9 +52,13 @@
 - *While the gun was never hard to control, its DPS is still pretty low, this change should help it stand out.*
 
 **>QOL & BUG FIXES**
+- Garry's Mod Pause Menu/Console is now accessable while in the Titanmod Main Menu/EOR Menu
+
 - Added gamemode specific HUD elements to the HUD editor preview
 
 - Added Gravity font as a option in the HUD editor
+
+- Added subtle gradient to the background of the Main Menu
 
 - Increased the speed of hint text fly-by in the Main Menu
 
@@ -79,5 +83,7 @@
 - Removed Font Scale setting
 
 - Removed most Menu tooltips
+
+- Removed the PAUSE MENU and LEAVE GAME buttons across the Main Menu/EOR Menu as they are now useless
 
 - New end of match quotes from community members

@@ -6,6 +6,9 @@ local solidGreen = Color(0, 255, 0, 255)
 local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
 
+local gradientL = Material("overlay/gradient_c.png")
+local gradientR = Material("overlay/gradient_c2.png")
+
 local MainMenu
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
@@ -14,6 +17,11 @@ net.Receive("OpenMainMenu", function(len, ply)
     local respawnTimeLeft = net.ReadFloat()
     if respawnTimeLeft != 0 then timer.Create("respawnTimeLeft", respawnTimeLeft, 1, function()
     end) end
+
+    hook.Add("Think", "RenderBehindPauseMenu", function()
+        if !IsValid(MainMenu) then return end
+        if !gui.IsGameUIVisible() then MainMenu:Show() else MainMenu:Hide() end
+    end)
 
     DeleteHUDHook()
 
@@ -37,7 +45,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         if type == "back" then surface.PlaySound("tmui/clickback.wav") end
     end
 
-    if not IsValid(MainMenu) then
+    if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
         MainMenu:SetSize(scrW, scrH)
         MainMenu:Center()
@@ -58,6 +66,14 @@ net.Receive("OpenMainMenu", function(len, ply)
             if dof == true then DrawBokehDOF(4, 1, 0) end
             surface.SetDrawColor(40, 40, 40, 225)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
+
+            surface.SetMaterial(gradientL)
+            surface.SetDrawColor(100, 115, 255, 1)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
+
+            surface.SetMaterial(gradientR)
+            surface.SetDrawColor(100, 210, 255, 5)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
         end
 
         gui.EnableScreenClicker(true)
@@ -90,7 +106,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 110 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 50 * FrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 200)
@@ -551,7 +567,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://youtube.com/@penial_")
+                gui.OpenURL("https://youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
@@ -565,11 +581,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
-            SpawnButton:SetPos(0, scrH / 2 - 100 - pushSpawnItems)
+            SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
             SpawnButton:SetText("")
             SpawnButton:SetSize(535, 100)
             SpawnButton.Paint = function()
-                SpawnButton:SetPos(0, scrH / 2 - 100 - pushSpawnItems)
+                SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
                 if not timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
                         spawnTextAnim = math.Clamp(spawnTextAnim + 200 * FrameTime(), 0, 20)
@@ -598,6 +614,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 CreateHUDHook()
                 MainMenu:Remove()
                 gui.EnableScreenClicker(false)
+                hook.Remove("Think", "RenderBehindPauseMenu")
                 net.Start("CloseMainMenu")
                 net.SendToServer()
             end
@@ -605,7 +622,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local CustomizeButton = vgui.Create("DButton", MainPanel)
             local CustomizeModelButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeCardButton = vgui.Create("DButton", CustomizeButton)
-            CustomizeButton:SetPos(0, scrH / 2 - 100)
+            CustomizeButton:SetPos(0, scrH / 2 + 50)
             CustomizeButton:SetText("")
             CustomizeButton:SetSize(530, 100)
             local textAnim = 0
@@ -613,12 +630,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, scrH / 2 - pushSpawnItems)
+                    CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems - 600 * FrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, scrH / 2 - pushSpawnItems)
+                    CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
@@ -2565,7 +2582,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local OptionsButton = vgui.Create("DButton", MainPanel)
             local OptionsSettingsButton = vgui.Create("DButton", OptionsButton)
             local OptionsHUDButton = vgui.Create("DButton", OptionsButton)
-            OptionsButton:SetPos(0, scrH / 2)
+            OptionsButton:SetPos(0, scrH / 2 + 50)
             OptionsButton:SetText("")
             OptionsButton:SetSize(415, 100)
             local textAnim = 0
@@ -2597,8 +2614,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             OptionsSettingsButton.DoClick = function()
-                TriggerSound("click")
                 MainPanel:Hide()
+                TriggerSound("click")
 
                 if not IsValid(OptionsPanel) then
                     local OptionsPanel = MainMenu:Add("OptionsPanel")
@@ -4077,30 +4094,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     timer.Simple(3, function() ResetToDefaultConfirm = 0 end)
                 end
-            end
-
-            local ExitButton = vgui.Create("DButton", MainPanel)
-            ExitButton:SetPos(0, scrH / 2 + 100)
-            ExitButton:SetText("")
-            ExitButton:SetSize(600, 100)
-            local textAnim = 0
-            ExitButton.Paint = function()
-                ExitButton:SetPos(0, scrH / 2 + pushExitItems)
-                if ExitButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                else
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                end
-                draw.DrawText("PAUSE MENU", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
-            end
-            ExitButton.DoClick = function()
-                gui.ActivateGameUI()
-                TriggerSound("click")
-                CreateHUDHook()
-                net.Start("CloseMainMenu")
-                net.SendToServer()
-                MainMenu:Remove()
-                gui.EnableScreenClicker(false)
             end
 
             local CreditsButton = vgui.Create("DButton", MainPanel)

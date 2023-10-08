@@ -826,7 +826,7 @@ end )
 --Displays to all players when a map vote begins.
 net.Receive("EndOfGame", function(len, ply)
     gameEnded = true
-    hook.Remove("HUDPaint", "HUD")
+    DeleteHUDHook()
     local dof
     local winningPlayer
     local wonMatch = false
@@ -849,6 +849,11 @@ net.Receive("EndOfGame", function(len, ply)
     hook.Remove("Think", "UpdateVIPPFP")
     hook.Remove("PlayerStartVoice", "ImageOnVoice")
     hook.Remove("PlayerEndVoice", "ImageOnVoice")
+
+    hook.Add("Think", "RenderEORBehindPauseMenu", function()
+        if !IsValid(EndOfGameUI) then return end
+        if !gui.IsGameUIVisible() then EndOfGameUI:Show() else EndOfGameUI:Hide() end
+    end)
 
     if convars["menu_dof"] == 1 then dof = true end
 
@@ -1025,7 +1030,7 @@ net.Receive("EndOfGame", function(len, ply)
         if dof == true then DrawBokehDOF(4, 1, 0) end
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
         if timeUntilNextMatch > 10 then
-            draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", 485, scrH - 55, white, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", 485, scrH - 35, white, TEXT_ALIGN_LEFT)
         else
             draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", 485, scrH - 55, white, TEXT_ALIGN_LEFT)
         end
@@ -1206,35 +1211,6 @@ net.Receive("EndOfGame", function(len, ply)
             DecidedMapThumb:SetSize(175, 175)
             DecidedMapThumb:SetImage(decidedMapThumb)
         end )
-
-        local ExitButton = vgui.Create("DButton", EndOfGameUI)
-        ExitButton:SetPos(485, scrH - 35)
-        ExitButton:SetText("")
-        ExitButton:SetSize(185, 100)
-        local textAnim = 0
-        local disconnectConfirm = 0
-        ExitButton.Paint = function()
-            if ExitButton:IsHovered() then
-                textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-            else
-                textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-            end
-            if (disconnectConfirm == 0) then
-                draw.DrawText("LEAVE GAME", "MainMenuLoadoutWeapons", textAnim, 5, white, TEXT_ALIGN_LEFT)
-            else
-                draw.DrawText("CONFIRM?", "MainMenuLoadoutWeapons", textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
-            end
-        end
-        ExitButton.DoClick = function()
-            surface.PlaySound("tmui/buttonclick.wav")
-            if (disconnectConfirm == 0) then
-                disconnectConfirm = 1
-            else
-                RunConsoleCommand("disconnect")
-            end
-
-            timer.Simple(1, function() disconnectConfirm = 0 end)
-        end
 
         local DiscordButton = vgui.Create("DButton", EndOfGameUI)
         DiscordButton:SetPos(700, scrH - 35)
