@@ -1,6 +1,6 @@
 --Color array, saving space
 local white = Color(255, 255, 255, 255)
-local gray = Color(50, 50, 50, 200)
+local gray = Color(50, 50, 50, 185)
 local lightGray = Color(40, 40, 40, 200)
 local solidGreen = Color(0, 255, 0, 255)
 local solidRed = Color(255, 0, 0, 255)
@@ -8,6 +8,16 @@ local transparent = Color(0, 0, 0, 0)
 
 local gradientL = Material("overlay/gradient_c.png")
 local gradientR = Material("overlay/gradient_c2.png")
+
+local gradLColor
+local gradRColor
+if math.random(0, 1) == 0 then
+    gradLColor = Color(100, 0, 255, 6)
+    gradRColor = Color(100, 255, 255, 12)
+else
+    gradLColor = Color(100, 255, 255, 6)
+    gradRColor = Color(100, 0, 255, 12)
+end
 
 local MainMenu
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
@@ -64,15 +74,15 @@ net.Receive("OpenMainMenu", function(len, ply)
 
         MainMenu.Paint = function()
             if dof == true then DrawBokehDOF(4, 1, 0) end
-            surface.SetDrawColor(40, 40, 40, 225)
+            surface.SetDrawColor(35, 35, 35, 165)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
 
             surface.SetMaterial(gradientL)
-            surface.SetDrawColor(100, 0, 255, 2)
+            surface.SetDrawColor(gradLColor)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
 
             surface.SetMaterial(gradientR)
-            surface.SetDrawColor(100, 255, 255, 5)
+            surface.SetDrawColor(gradRColor)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
         end
 
@@ -169,7 +179,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TriggerSound("click")
                 MainPanel:Hide()
 
-                if not IsValid(LeaderboardPanel) then
+                if !IsValid(LeaderboardPanel) then
                     local LeaderboardPanel = MainMenu:Add("LeaderboardPanel")
                     local LeaderboardSlideoutPanel = MainMenu:Add("LeaderboardSlideoutPanel")
 
@@ -214,15 +224,17 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     local LeaderboardPickerButton
+                    local firstSelection = true
                     function LeaderboardSelected(text, data)
                         if SelectedBoardName == text then return end
-                        LeaderboardPickerButton:Hide()
-                        timer.Create("SendBoardDataRequestCooldown", 3, 1, function()
-                            LeaderboardPickerButton:Show()
-                        end)
+                        if !firstSelection then
+                            LeaderboardPickerButton:Hide()
+                            timer.Create("SendBoardDataRequestCooldown", 3, 1, function() if !LocalPly:Alive() then LeaderboardPickerButton:Show() end end)
+                        end
                         TriggerSound("click")
                         net.Start("GrabLeaderboardData")
                         net.WriteString(data)
+                        net.WriteBool(true)
                         net.SendToServer()
                         SelectedBoardName = text
                     end
@@ -237,6 +249,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         local BoardSelection = DermaMenu()
                         local statistics = BoardSelection:AddSubMenu("Statistics")
                         --statistics:AddOption("Level", function() LeaderboardSelected("Level", "level") end)
+                        statistics:AddOption("Score", function() LeaderboardSelected("Score", "playerScore") end)
                         statistics:AddOption("Kills", function() LeaderboardSelected("Kills", "playerKills") end)
                         statistics:AddOption("Deaths", function() LeaderboardSelected("Deaths", "playerDeaths") end)
                         --statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
@@ -330,8 +343,10 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     net.Start("GrabLeaderboardData")
                     net.WriteString("playerKills")
+                    net.WriteBool(false)
                     net.SendToServer()
                     SelectedBoardName = "Kills"
+                    firstSelection = false
                 end
             end
 
@@ -343,14 +358,14 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePanel:SetSize(170, 0)
             SpectatePanel:SetPos(10, 100)
             SpectatePanel.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, white)
+                draw.RoundedBox(0, 0, 0, w, h, gray)
             end
 
             local SpectateTextHeader = vgui.Create("DPanel", SpectatePanel)
             SpectateTextHeader:Dock(TOP)
             SpectateTextHeader:SetSize(0, 70)
             SpectateTextHeader.Paint = function(self, w, h)
-                draw.SimpleText("SPECTATE", "UITiny", 3, 0, Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                draw.SimpleText("SPECTATE", "UITiny", 3, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
             end
 
             local SpectatePicker = SpectateTextHeader:Add("DComboBox")

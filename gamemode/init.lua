@@ -144,13 +144,15 @@ net.Receive("BeginSpectate", function(len, ply)
 end )
 
 net.Receive("GrabLeaderboardData", function(len, ply)
-	if timer.Exists(ply:SteamID64() .. "_GrabBoardDataCooldown") then return end
-	timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 3, 1, function()
-	end)
-
 	local key = net.ReadString()
-	local tbl
+	local manual = net.ReadBool()
 
+	if manual then
+		if timer.Exists(ply:SteamID64() .. "_GrabBoardDataCooldown") then return end
+		timer.Create(ply:SteamID64() .. "_GrabBoardDataCooldown", 3, 1, function() end)
+	end
+
+	local tbl
 	--[[ if key == "level" then
 		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 50;")
 	elseif key == "kd" then
