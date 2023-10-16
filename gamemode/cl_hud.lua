@@ -1223,7 +1223,7 @@ net.Receive("EndOfGame", function(len, ply)
             else
                 textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
             end
-            draw.DrawText("JOIN OUR DISCORD", "MainMenuLoadoutWeapons", textAnim, 5, Color(114, 137, 218), TEXT_ALIGN_LEFT)
+            draw.DrawText("JOIN THE DISCORD!", "MainMenuLoadoutWeapons", textAnim, 5, Color(114, 137, 218), TEXT_ALIGN_LEFT)
         end
         DiscordButton.DoClick = function()
             surface.PlaySound("tmui/buttonclick.wav")

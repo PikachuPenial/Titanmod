@@ -68,11 +68,11 @@ net.Receive("OpenMainMenu", function(len, ply)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
 
             surface.SetMaterial(gradientL)
-            surface.SetDrawColor(100, 115, 255, 1)
+            surface.SetDrawColor(100, 0, 255, 2)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
 
             surface.SetMaterial(gradientR)
-            surface.SetDrawColor(100, 210, 255, 5)
+            surface.SetDrawColor(100, 255, 255, 5)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
         end
 

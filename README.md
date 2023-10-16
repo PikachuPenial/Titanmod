@@ -9,7 +9,6 @@ With over 8 gamemodes, 130+ unique weapons, and 17+ maps, Titanmod is one of the
 > Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)  
 > Play on the Titanmod dedicated server:    
 > US: **connect 45.88.228.52:27065**    
-> EU: **connect 193.233.232.6:27025**  
 
 Here are a few of Titanmods features:
 --
