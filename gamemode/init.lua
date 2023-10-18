@@ -16,11 +16,14 @@ include("shared.lua")
 include("sv_gamemode_handler.lua")
 include("concommands.lua")
 
-hook.Remove("PlayerTick", "TickWidgets") --Frames per second my beloved.
-local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+hook.Remove("PlayerTick", "TickWidgets")
+
+local activeGamemode
 SetGlobal2Bool("tm_matchended", false)
 
-function GM:Initialize()
+function GM:InitPostEntity()
+	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 
@@ -44,9 +47,6 @@ util.AddNetworkString("PlayerCardChange")
 util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("FOVUpdate")
-
---Sets up the global match time variable, makes it easily sharable between server and client. I have been using GLua for over a year and I didn't know this fucking existed...
-SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
 
 --Force friendly fire. If it is off, we do not get lag compensation.
 RunConsoleCommand("mp_friendlyfire", "1")

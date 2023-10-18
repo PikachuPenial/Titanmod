@@ -1,18 +1,16 @@
 **>GAMEPLAY**
+*NEW SETTINGS*
+- Render Body
 
 **>MAPS**
 
 **>BALANCE**
 
 **>QOL & BUG FIXES**
-- Added Score as a leaderboard category
+- Fixed the first kill feed entry always being inaccurate in size
 
-- Increased strength of the Main Menu background gradient
+- Potential fix for gamemode desync between server and clients
 
-- Adjusted transparency values across different Main Menu screens
+- Various improvments to the look and feel of the UI and menus
 
-- Leaderboard cooldown is no longer applied until you manually switch categories
-
-- Fixed lua error when exiting the Main Menu after recently switching a Leaderboard category
-
-- Main Menu gradient can now flip coloring randomly
+- Removed obselete fonts to improve performance

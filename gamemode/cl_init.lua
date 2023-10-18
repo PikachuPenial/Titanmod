@@ -8,6 +8,10 @@ timer.Create("cleanMap", mapCleanupTime, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
+function GM:InitPostEntity()
+	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+end
+
 function UpdateFonts()
 	surface.CreateFont("GunPrintName", {
 		font = "Arial",
@@ -27,82 +31,10 @@ function UpdateFonts()
 		outline = false,
 	} )
 
-	surface.CreateFont("MainMenuPlayerGreeting", {
-		font = "Arial",
-		extended = false,
-		size = 48,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = true,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("MainMenuLoadout", {
-		font = "Arial",
-		extended = false,
-		size = 32,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = true,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
 	surface.CreateFont("MainMenuLoadoutWeapons", {
 		font = "Arial",
 		extended = false,
 		size = 26,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("MainMenuPlayerName", {
-		font = "Arial",
-		extended = false,
-		size = 48,
-		weight = 1000,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("AmmoCount", {
-		font = "Arial",
-		extended = false,
-		size = 128,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -153,64 +85,10 @@ function UpdateFonts()
 		outline = false,
 	} )
 
-	surface.CreateFont("UITiny", {
-		font = "Arial",
-		extended = false,
-		size = 36,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("OptionsSlideoutText", {
-		font = "Arial",
-		extended = false,
-		size = 32,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
 	surface.CreateFont("AmmoCountESmall", {
 		font = "Arial",
 		extended = false,
 		size = 48,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("AmmoCountKindaSmall", {
-		font = "Arial",
-		extended = false,
-		size = 68,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,
@@ -297,47 +175,11 @@ function UpdateFonts()
 		outline = false,
 	} )
 
-	surface.CreateFont("StreakTextMini", {
-		font = "Tahoma",
-		extended = false,
-		size = 14,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
 	surface.CreateFont("CaliberText", {
 		font = "Tahoma",
 		extended = false,
-		size = 17.5,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = true,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("MainMenuMusicName", {
-		font = "Tahoma",
-		extended = false,
-		size = 30,
-		weight = 1000,
+		size = 18,
+		weight = 550,
 		blursize = 0,
 		scanlines = 0,
 		antialias = true,
@@ -387,77 +229,6 @@ function UpdateFonts()
 		outline = false,
 	} )
 
-	surface.CreateFont("PlayerDeathName", {
-		font = "Arial",
-		extended = false,
-		size = 36,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("WepNameKill", {
-		font = "Arial",
-		extended = false,
-		size = 28,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("MapName", {
-		font = "Arial",
-		extended = false,
-		size = 22,
-		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("Arial18", {
-		font = "Arial",
-		extended = false,
-		size = 18,
-		weight = 750,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
 
 	surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
@@ -572,24 +343,6 @@ function UpdateFonts()
 		extended = false,
 		size = 36,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
-	} )
-
-	surface.CreateFont("HUD_Arial18", {
-		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
-		size = 18,
-		weight = 750,
 		blursize = 0,
 		scanlines = 0,
 		antialias = true,

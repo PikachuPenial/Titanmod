@@ -11,6 +11,8 @@ GM.Website = "https://github.com/PikachuPenial/Titanmod"
 
 --Creating server ConVars and initializing the config.
 if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
+if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
+
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
 if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
 
@@ -49,8 +51,6 @@ if !ConVarExists("sv_tm_voip_range") then CreateConVar("sv_tm_voip_range", "1000
 if !ConVarExists("sv_tm_spectating_allow") then CreateConVar("sv_tm_spectating_allow", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables the ability for players to enter a free-cam spectating state through the Main Menu (1 by default)", 0, 1) end
 if !ConVarExists("sv_tm_optimization_mapcleanup_time") then CreateConVar("sv_tm_optimization_mapcleanup_time", "30", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) Not recommended going below 30 seconds (30 by default)") end
 if !ConVarExists("sv_tm_optimization_force_autosave") then CreateConVar("sv_tm_optimization_force_autosave", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving (0 by default)", 0, 1) end
-
-if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
 include("config.lua")
 
 --Creating client ConVars, mostly for use in the Options menu.

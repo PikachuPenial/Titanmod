@@ -4,7 +4,6 @@ hook.Add("Initialize", "Optimization", function()
     if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
     if CLIENT then
         hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
-        hook.Remove("RenderScreenspaceEffects", "RenderBloom")
         hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
         hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
         hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")

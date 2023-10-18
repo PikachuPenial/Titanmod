@@ -164,7 +164,6 @@ local hillEmptyMat = Material("icons/kothempty.png")
 local border = Material("overlay/objborder.png")
 
 local LocalPly = LocalPlayer()
-local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 local timeUntilSelfDestruct = 0
 local timeText = " ∞"
 
@@ -200,6 +199,7 @@ function HUDAlways(client)
     end
 
     --Kill feed
+    surface.SetFont("HUD_StreakText")
     for k, v in pairs(feedArray) do
         if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedHUD["opacity"]) else surface.SetDrawColor(50, 50, 50, feedHUD["opacity"]) end
         local nameLength = select(1, surface.GetTextSize(v[1]))
@@ -790,7 +790,7 @@ net.Receive("NotifyDeath", function(len, ply)
 
         --Information about the cause of your death, hopefully it wasn't too embarrising.
         draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
-        draw.SimpleText("Killed by", "HUD_Arial18", w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Killed by", "HUD_StreakText", w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 135.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedBy:GetName(), "HUD_PlayerDeathName", w / 2 - 10, 137.5, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
@@ -801,7 +801,7 @@ net.Receive("NotifyDeath", function(len, ply)
             draw.SimpleText(killedBy:Health() .. "HP", "HUD_WepNameKill", w / 2 - 10, 165, white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
 
-        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", "HUD_Arial18", w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", "HUD_StreakText", w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open the menu", "HUD_WepNameKill", w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 

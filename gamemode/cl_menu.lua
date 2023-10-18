@@ -20,7 +20,6 @@ else
 end
 
 local MainMenu
-local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 net.Receive("OpenMainMenu", function(len, ply)
     local LocalPly = LocalPlayer()
@@ -107,10 +106,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText(math.Round(LocalPly:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPly:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
                     draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
 
-                    surface.SetDrawColor(30, 30, 30, 200)
+                    surface.SetDrawColor(30, 30, 30, 125)
                     surface.DrawRect(440, 80, 220, 10)
 
-                    surface.SetDrawColor(200, 200, 0, 200)
+                    surface.SetDrawColor(200, 200, 0, 130)
                     surface.DrawRect(440, 80, (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * 220, 10)
                 else
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
@@ -119,7 +118,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 50 * FrameTime(), 0, 10000)
-                surface.SetDrawColor(30, 30, 30, 200)
+                surface.SetDrawColor(30, 30, 30, 125)
                 surface.DrawRect(0, scrH - 24, scrW, 24)
                 draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, scrH - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
@@ -248,7 +247,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                         TriggerSound("click")
                         local BoardSelection = DermaMenu()
                         local statistics = BoardSelection:AddSubMenu("Statistics")
-                        --statistics:AddOption("Level", function() LeaderboardSelected("Level", "level") end)
                         statistics:AddOption("Score", function() LeaderboardSelected("Score", "playerScore") end)
                         statistics:AddOption("Kills", function() LeaderboardSelected("Kills", "playerKills") end)
                         statistics:AddOption("Deaths", function() LeaderboardSelected("Deaths", "playerDeaths") end)
@@ -304,37 +302,31 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                         if SelectedBoard == nil then return end
                         for p, t in pairs(SelectedBoard) do
-                            if SelectedBoardName == "Level" then
-                                if t.Value == "NULL" or t.level == nil or t.prestige == nil then return end
+                            if t.Value == "NULL" then return end
+                            if t.SteamName != LocalPly:GetName() then
+                                draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
+                                if t.SteamName != "NULL" then draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
+                            else
+                                draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", 85, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                            end
+
+                            if SelectedBoardName == "W/L Ratio" then
                                 if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
-                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
-                                    draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
-                                else
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText("P" .. t.prestige .. " L" .. t.level, "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
-                                end
-                            elseif SelectedBoardName == "W/L Ratio" then
-                                if t.Value == "NULL" or t.Value == nil then return end
-                                if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
-                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
                                     draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
                                 else
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
                                     draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
-                            else
-                                if t.Value == "NULL" or t.Value == nil then return end
+                            elseif SelectedBoardName == "Farthest Kill" then
                                 if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
-                                    if t.SteamName != "NULL" then draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
+                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
+                                else
+                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                end
+                            else
+                                if t.SteamName != LocalPly:GetName() then
                                     draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
                                 else
-                                    draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                    draw.SimpleText(t.SteamName, "SettingsLabel", 85, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
                                     draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             end
@@ -365,7 +357,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectateTextHeader:Dock(TOP)
             SpectateTextHeader:SetSize(0, 70)
             SpectateTextHeader.Paint = function(self, w, h)
-                draw.SimpleText("SPECTATE", "UITiny", 3, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+                draw.SimpleText("SPECTATE", "Health", w / 2, 20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
 
             local SpectatePicker = SpectateTextHeader:Add("DComboBox")
@@ -374,7 +366,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePicker:SetValue("Spectate...")
             if allowSpectating then SpectatePicker:AddChoice("Freecam") else SpectatePicker:AddChoice("Spectating disabled by server.") end
             SpectatePicker.OnSelect = function(_, _, value, id)
-                if not allowSpectating then return end
+                if !allowSpectating then return end
                 net.Start("BeginSpectate")
                 net.SendToServer()
                 MainMenu:Remove(false)
@@ -2691,7 +2683,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 320)
+                    DockPerformance:SetSize(0, 360)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -3204,38 +3196,45 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Render Body", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
                     end
 
+                    local renderBody = DockPerformance:Add("DCheckBox")
+                    renderBody:SetPos(20, 70)
+                    renderBody:SetConVar("cl_ec2_enabled")
+                    renderBody:SetSize(30, 30)
+                    function renderBody:OnChange() TriggerSound("click") end
+
                     local menuDOF = DockPerformance:Add("DCheckBox")
-                    menuDOF:SetPos(20, 70)
+                    menuDOF:SetPos(20, 110)
                     menuDOF:SetConVar("tm_menudof")
                     menuDOF:SetSize(30, 30)
                     function menuDOF:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 110)
+                    ironSightDOF:SetPos(20, 150)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 150)
+                    inspectionDOF:SetPos(20, 190)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 190)
+                    screenFlashing:SetPos(20, 230)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 270)
+                    WipeAccountButton:SetPos(17.5, 310)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0

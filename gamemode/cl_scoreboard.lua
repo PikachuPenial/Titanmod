@@ -8,26 +8,26 @@ local mapName
 local mapThumb
 local dof
 
-local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+for m, t in pairs(mapArray) do
+	if game.GetMap() == t[1] then
+		mapName = t[2]
+		mapThumb = t[3]
+	end
+end
 
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
 	if not IsValid(ScoreboardDerma) then
-		for m, t in pairs(mapArray) do
-			if game.GetMap() == t[1] then
-				mapName = t[2]
-				mapThumb = t[3]
-			end
-		end
-
 		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
 		ScoreboardDerma = vgui.Create("DFrame")
 		if player.GetCount() < 5 then ScoreboardDerma:SetSize(640, 200 + (player.GetCount() * 100)) else ScoreboardDerma:SetSize(640, 700) end
 		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
 		ScoreboardDerma:SetTitle("")
+		ScoreboardDerma:MakePopup()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
+		ScoreboardDerma:SetBackgroundBlur(true)
 		ScoreboardDerma.Paint = function()
 			if dof == true then
 				DrawBokehDOF(2.5, 1, 0)
@@ -35,17 +35,17 @@ function GM:ScoreboardShow()
 			draw.RoundedBox(6, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 
-			draw.SimpleText("Kills", "StreakTextMini", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Deaths", "StreakTextMini", 425, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("K/D", "StreakTextMini", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Score", "StreakTextMini", 545, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Kills", "CaliberText", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Deaths", "CaliberText", 425, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("K/D", "CaliberText", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Score", "CaliberText", 545, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
 		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
 		InfoPanel:Dock(TOP)
 		InfoPanel:SetSize(0, 36)
 
-		InfoPanel.Paint = function(self, w, h)
+		InfoPanel.Paint = function()
 			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 5, white, TEXT_ALIGN_LEFT)
 		end
 
@@ -102,7 +102,7 @@ function GM:ScoreboardShow()
 		MapInfoPanel:SetSize(0, 100)
 
 		--Displays information about the current map, the map vote, and the server.
-		MapInfoPanel.Paint = function(self, w, h)
+		MapInfoPanel.Paint = function()
 			if mapName ~= nil then
 				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
@@ -138,7 +138,7 @@ function GM:ScoreboardShow()
 	end
 
 	if IsValid(ScoreboardDerma) then
-		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - ScoreboardDerma:GetTall() / 2, 0.5, 0, 0.25)
+		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - ScoreboardDerma:GetTall() / 2, 0.3, 0, 0.4)
 		PlayerList:Clear()
 
 		local connectedPlayers = player.GetAll()
@@ -171,7 +171,7 @@ function GM:ScoreboardShow()
 			local PlayerPanel = vgui.Create("DPanel", PlayerList)
 			PlayerPanel:SetSize(PlayerList:GetWide(), 100)
 			PlayerPanel:SetPos(0, 0)
-			PlayerPanel.Paint = function(self, w, h)
+			PlayerPanel.Paint = function(w, h)
 				if not IsValid(v) then return end
 				if v:GetNWBool("mainmenu") == true then
 					draw.RoundedBox(6, 0, 0, 630, h, Color(35, 35, 100, 100))
@@ -205,7 +205,7 @@ function GM:ScoreboardShow()
 			PlayerProfilePicture:SetPlayer(v, 184)
 
 			--Allows the players profile to be clicked to display various options revolving around the specific player.
-			PlayerProfilePicture.OnMousePressed = function(self)
+			PlayerProfilePicture.OnMousePressed = function()
 				local Menu = DermaMenu()
 
 				local profileButton = Menu:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
@@ -251,21 +251,14 @@ function GM:ScoreboardShow()
 
 				local copyMenu = Menu:AddSubMenu("Copy...")
 				copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
-				copyMenu:AddOption("Copy SteamID", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+				copyMenu:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
 
 				Menu:Open()
 			end
 		end
 
-		ScoreboardDerma:Show()
-		ScoreboardDerma:MakePopup()
 		ScoreboardDerma:SetKeyboardInputEnabled(false)
 	end
 end
 
-function GM:ScoreboardHide()
-	if IsValid(ScoreboardDerma) then
-		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
-		ScoreboardDerma:Remove()
-	end
-end
+function GM:ScoreboardHide() if IsValid(ScoreboardDerma) then ScoreboardDerma:Remove() end end
