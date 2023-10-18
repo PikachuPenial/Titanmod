@@ -23,7 +23,6 @@ if UseConfigConvars then
     usePrimary = GetConVar("sv_tm_ffa_use_primary"):GetBool()
     useSecondary = GetConVar("sv_tm_ffa_use_secondary"):GetBool()
     useMelee = GetConVar("sv_tm_ffa_use_melee"):GetBool()
-    grenadesOnSpawn = GetConVar("sv_tm_ffa_grenade_count"):GetInt()
     fiestaShuffleTime = GetConVar("sv_tm_fiesta_shuffle_time"):GetInt()
     ggLadderSize = GetConVar("sv_tm_gungame_ladder_size"):GetInt()
     crankedSelfDestructTime = GetConVar("sv_tm_cranked_selfdestruct_time"):GetInt()
@@ -35,13 +34,7 @@ if UseConfigConvars then
     grappleCooldown = GetConVar("sv_tm_grapple_cooldown"):GetInt()
     grappleKillReset = GetConVar("sv_tm_grapple_killreset"):GetBool()
     grappleRange = GetConVar("sv_tm_grapple_range"):GetInt()
-    rocketJumping = GetConVar("sv_tm_rocketjump_enable"):GetBool()
-    rocketJumpForceMulti = GetConVar("sv_tm_rocketjump_force_multi"):GetFloat()
-    damageKnockback = GetConVar("sv_tm_damage_knockback_enable"):GetBool()
     proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
-    allowSpectating = GetConVar("sv_tm_spectating_allow"):GetBool()
-    mapCleanupTime = GetConVar("sv_tm_optimization_mapcleanup_time"):GetInt()
-    forceEnableAutoSaveTime = GetConVar("sv_tm_optimization_force_autosave"):GetInt()
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
 else
     --Player settings
@@ -61,11 +54,10 @@ else
     forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
     xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
 
-    --FFA settings
+    --Universal settings
     usePrimary = true               --Enable primary weapons for the players loadout.
     useSecondary = true             --Enable secondary weapons for the players loadout.
     useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
-    grenadesOnSpawn = 1             --The amount of grenades that a player is given on spawn.
     grappleCooldown = 15            --The cooldown (in sceonds) of the grappling hook after being used.
 
     --Fiesta settings
@@ -89,19 +81,7 @@ else
     --Mechanic settings
     grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
     grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
-    rocketJumping = true            --Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage.)
-    rocketJumpForceMulti = 1        --The multiplier of the force applied on a player during a rocket jump.
-    damageKnockback = false         --Enable or disable knockback from incoming damage (being moved from other players bullets.)
     proxChatRange = 1000            --The thresehold in distance where players can hear other players over proximity voice chat.
-
-    --Feature settings
-    killFeed = true                 --Enables the kill feed.
-    suicidesInFeed = true           --Enables the broadcasting of a player(s) suicide in the kill feed.
-    allowSpectating = true          --Enables the ability for players to enter a free-cam spectating state through the Main Menu.
-
-    --Optimization settings
-    mapCleanupTime = 30             --The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) I would not recommend going below 30 seconds.
-    forceEnableAutoSaveTime = 0     --Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving.
 
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 end

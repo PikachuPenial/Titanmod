@@ -207,7 +207,7 @@ if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemo
         if useMelee == true then
             ply:Give(ply:GetNWString("loadoutMelee"))
         end
-        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+        ply:SetAmmo(1, "Grenade")
     end
 
     function HandlePlayerKill(ply, victim)
@@ -233,7 +233,7 @@ if activeGamemode == "Fiesta" then
         ply:Give(ply:GetNWString("loadoutPrimary"))
         ply:Give(ply:GetNWString("loadoutSecondary"))
         ply:Give(ply:GetNWString("loadoutMelee"))
-        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+        ply:SetAmmo(1, "Grenade")
     end
 
     function HandlePlayerKill(ply, victim)
@@ -297,7 +297,7 @@ if activeGamemode == "Cranked" then
         if useMelee == true then
             ply:Give(ply:GetNWString("loadoutMelee"))
         end
-        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+        ply:SetAmmo(1, "Grenade")
     end
 
     function HandlePlayerKill(ply, victim)
@@ -346,7 +346,7 @@ if activeGamemode == "Quickdraw" then
         if useMelee == true then
             ply:Give(ply:GetNWString("loadoutMelee"))
         end
-        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+        ply:SetAmmo(1, "Grenade")
     end
 
     function HandlePlayerKill(ply, victim)
@@ -378,7 +378,7 @@ if activeGamemode == "VIP" then
         if useMelee == true then
             ply:Give(ply:GetNWString("loadoutMelee"))
         end
-        ply:SetAmmo(grenadesOnSpawn, "Grenade")
+        ply:SetAmmo(1, "Grenade")
     end
 
     function HandlePlayerKill(ply, victim)

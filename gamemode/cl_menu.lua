@@ -364,9 +364,8 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePicker:SetPos(0, 40)
             SpectatePicker:SetSize(170, 30)
             SpectatePicker:SetValue("Spectate...")
-            if allowSpectating then SpectatePicker:AddChoice("Freecam") else SpectatePicker:AddChoice("Spectating disabled by server.") end
+            SpectatePicker:AddChoice("Freecam")
             SpectatePicker.OnSelect = function(_, _, value, id)
-                if !allowSpectating then return end
                 net.Start("BeginSpectate")
                 net.SendToServer()
                 MainMenu:Remove(false)

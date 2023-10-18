@@ -74,7 +74,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetUnDuckSpeed(0.5 * playerDuckStateMulti)
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
-	if damageKnockback == false then ply:AddEFlags(EFL_NO_DAMAGE_FORCES) end
+	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
 	net.Start("PlayerSpawn")
@@ -197,7 +197,6 @@ end )
 
 --Rocket jumping.
 local function ReduceRocketDamage(ent, dmginfo)
-	if rocketJumping == false then return end
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
 
@@ -207,7 +206,7 @@ local function ReduceRocketDamage(ent, dmginfo)
 	local dmgForce = dmginfo:GetDamageForce()
 	local newForce = dmgForce * 1.15
 	dmginfo:SetDamageForce(newForce)
-	ent:SetVelocity((newForce / 70) * rocketJumpForceMulti)
+	ent:SetVelocity(newForce / 70)
 	dmginfo:ScaleDamage(0.3)
 end
 hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
@@ -638,10 +637,10 @@ if table.HasValue(availableMaps, game.GetMap()) then
 				if v:Frags() >= v:GetNWInt("highestKillGame") then v:SetNWInt("highestKillGame", v:Frags()) end
 				if k == 1 then
 					v:SetNWInt("matchesWon", v:GetNWInt("matchesWon") + 1)
-					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 1500)
+					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + (1500 * xpMultiplier))
 					CheckForPlayerLevel(v)
 				else
-					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + 750)
+					v:SetNWInt("playerXP", v:GetNWInt("playerXP") + (750 * xpMultiplier))
 					CheckForPlayerLevel(v)
 				end
 			end
@@ -834,13 +833,6 @@ end
 
 function GM:ShowSpare2(ply)
 	if not ply:Alive() then OpenMainMenu() end
-end
-
---Auto saves player data if enabled by server admin.
-if forceEnableAutoSaveTime ~= 0 then
-	timer.Create("serverAutoSaveTimer", forceEnableAutoSaveTime, 0, function()
-		for k, v in pairs(player.GetHumans()) do v:ConCommand("tm_forcesave") end
-	end)
 end
 
 --Modifies base game voice chat to be proximity based.

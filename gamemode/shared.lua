@@ -32,7 +32,6 @@ if !ConVarExists("sv_tm_progression_xp_multi") then CreateConVar("sv_tm_progress
 if !ConVarExists("sv_tm_ffa_use_primary") then CreateConVar("sv_tm_ffa_use_primary", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable primary weapons for the players loadout (1 by default)", 0, 1) end
 if !ConVarExists("sv_tm_ffa_use_secondary") then CreateConVar("sv_tm_ffa_use_secondary", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable secondary weapons for the players loadout (1 by default)", 0, 1) end
 if !ConVarExists("sv_tm_ffa_use_melee") then CreateConVar("sv_tm_ffa_use_melee", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable melee weapons/gadgets for the players loadout (1 by default)", 0, 1) end
-if !ConVarExists("sv_tm_ffa_grenade_count") then CreateConVar("sv_tm_ffa_grenade_count", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The amount of grenades that a player is given on spawn (1 by default)") end
 if !ConVarExists("sv_tm_fiesta_shuffle_time") then CreateConVar("sv_tm_fiesta_shuffle_time", "30", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) between each loadout swap (30 by default)") end
 if !ConVarExists("sv_tm_gungame_ladder_size") then CreateConVar("sv_tm_gungame_ladder_size", "26", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The amount of weapons a player needs to get kills with to win a match (24 by default)", 2) end
 if !ConVarExists("sv_tm_cranked_selfdestruct_time") then CreateConVar("sv_tm_cranked_selfdestruct_time", "25", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) that it takes for a player to explode after being Cranked (25 by default)", 10) end
@@ -44,13 +43,7 @@ if !ConVarExists("sv_tm_vip_score") then CreateConVar("sv_tm_vip_score", "10", F
 if !ConVarExists("sv_tm_grapple_cooldown") then CreateConVar("sv_tm_grapple_cooldown", "15", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The cooldown (in sceonds) of the grappling hook after being used (15 by default)") end
 if !ConVarExists("sv_tm_grapple_killreset") then CreateConVar("sv_tm_grapple_killreset", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable the grapple cooldown reset on a player kill (1 by default)", 0, 1) end
 if !ConVarExists("sv_tm_grapple_range") then CreateConVar("sv_tm_grapple_range", "850", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The length (in units) that the grappling hook can travel too before despawning (850 by default)") end
-if !ConVarExists("sv_tm_rocketjump_enable") then CreateConVar("sv_tm_rocketjump_enable", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable rocket jumping (knockback and less damage from self-inflicted explosive damage) (1 by default)", 0, 1) end
-if !ConVarExists("sv_tm_rocketjump_force_multi") then CreateConVar("sv_tm_rocketjump_force_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the force applied on a player during a rocket jump (1 by default)") end
-if !ConVarExists("sv_tm_damage_knockback") then CreateConVar("sv_tm_damage_knockback_enable", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable knockback from incoming damage (being moved from other players bullets) (0 by default)", 0, 1) end
 if !ConVarExists("sv_tm_voip_range") then CreateConVar("sv_tm_voip_range", "1000", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The thresehold in distance where players can hear other players over proximity voice chat (1000 by default)") end
-if !ConVarExists("sv_tm_spectating_allow") then CreateConVar("sv_tm_spectating_allow", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables the ability for players to enter a free-cam spectating state through the Main Menu (1 by default)", 0, 1) end
-if !ConVarExists("sv_tm_optimization_mapcleanup_time") then CreateConVar("sv_tm_optimization_mapcleanup_time", "30", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The interval (in seconds) at which the map is cleared of decals (blood, bullet impacts.) Not recommended going below 30 seconds (30 by default)") end
-if !ConVarExists("sv_tm_optimization_force_autosave") then CreateConVar("sv_tm_optimization_force_autosave", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enables auto saving and the interval (in seconds) for each save, could be heavy on server performance. Set this to 0 to disable auto saving (0 by default)", 0, 1) end
 include("config.lua")
 
 --Creating client ConVars, mostly for use in the Options menu.

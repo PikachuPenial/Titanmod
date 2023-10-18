@@ -4,7 +4,7 @@ include("cl_scoreboard.lua")
 include("cl_menu.lua")
 
 --Used to clear the map of decals (blood, bullet impacts, etc) every 30 seconds, helps people with shitty computers.
-timer.Create("cleanMap", mapCleanupTime, 0, function()
+timer.Create("cleanMap", 20, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
 
