@@ -117,7 +117,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
 
-                hintTextAnim = math.Clamp(hintTextAnim + 50 * FrameTime(), 0, 10000)
+                hintTextAnim = math.Clamp(hintTextAnim + 50 * RealFrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 125)
                 surface.DrawRect(0, scrH - 24, scrW, 24)
                 draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, scrH - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -132,9 +132,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                 local prestigeConfirm = 0
                 PrestigeButton.Paint = function()
                     if PrestigeButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                     end
 
                     if prestigeConfirm == 0 then
@@ -594,9 +594,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
                 if not timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
-                        spawnTextAnim = math.Clamp(spawnTextAnim + 200 * FrameTime(), 0, 20)
+                        spawnTextAnim = math.Clamp(spawnTextAnim + 200 * RealFrameTime(), 0, 20)
                     else
-                        spawnTextAnim = math.Clamp(spawnTextAnim - 200 * FrameTime(), 0, 20)
+                        spawnTextAnim = math.Clamp(spawnTextAnim - 200 * RealFrameTime(), 0, 20)
                     end
 
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
@@ -634,13 +634,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local textAnim = 0
             CustomizeButton.Paint = function()
                 if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                    pushSpawnItems = math.Clamp(pushSpawnItems + 600 * FrameTime(), 100, 150)
+                    textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
+                    pushSpawnItems = math.Clamp(pushSpawnItems + 600 * RealFrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
                 else
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                    pushSpawnItems = math.Clamp(pushSpawnItems - 600 * FrameTime(), 100, 150)
+                    textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
+                    pushSpawnItems = math.Clamp(pushSpawnItems - 600 * RealFrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
                     CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
                 end
@@ -2594,12 +2594,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local textAnim = 0
             OptionsButton.Paint = function()
                 if OptionsButton:IsHovered() or OptionsSettingsButton:IsHovered() or OptionsHUDButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
-                    pushExitItems = math.Clamp(pushExitItems + 600 * FrameTime(), 100, 150)
+                    textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
+                    pushExitItems = math.Clamp(pushExitItems + 600 * RealFrameTime(), 100, 150)
                     OptionsButton:SizeTo(-1, 200, 0, 0, 1)
                 else
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
-                    pushExitItems = math.Clamp(pushExitItems - 600 * FrameTime(), 100, 150)
+                    textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
+                    pushExitItems = math.Clamp(pushExitItems - 600 * RealFrameTime(), 100, 150)
                     OptionsButton:SizeTo(-1, 100, 0, 0, 1)
                 end
                 draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
@@ -2674,7 +2674,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
-                    DockCrosshair:SetSize(0, 675)
+                    DockCrosshair:SetSize(0, 670)
 
                     local DockHitmarker = vgui.Create("DPanel", OptionsScroller)
                     DockHitmarker:Dock(TOP)
@@ -3053,109 +3053,189 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Use Crosshair", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Dot", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Pump Feedback", "SettingsLabel", 55 , 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Triangular Crosshair", "SettingsLabel", 55 , 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Color", "SettingsLabel", 245 , 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Length", "SettingsLabel", 155, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Width", "SettingsLabel", 155, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Gap Scale", "SettingsLabel", 155, 425, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Crosshair Outline", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Width", "SettingsLabel", 155, 505, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 545, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Style", "SettingsLabel", 125, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Center Dot", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", 145, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", 145, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", 145, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Color/Opacity", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline", "SettingsLabel", 55, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Top", "SettingsLabel", 55, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Bottom", "SettingsLabel", 155, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Left", "SettingsLabel", 300, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Right", "SettingsLabel", 395, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Show While Aiming Down Sights", "SettingsLabel", 55, 625, white, TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 210, white, TEXT_ALIGN_CENTER)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
                     crosshairToggle:SetPos(20, 70)
-                    crosshairToggle:SetConVar("cl_tfa_hud_crosshair_enable_custom")
+                    crosshairToggle:SetConVar("tm_hud_crosshair")
                     crosshairToggle:SetSize(30, 30)
                     function crosshairToggle:OnChange() TriggerSound("click") end
 
-                    local dotToggle = DockCrosshair:Add("DCheckBox")
-                    dotToggle:SetPos(20, 110)
-                    dotToggle:SetConVar("cl_tfa_hud_crosshair_dot")
-                    dotToggle:SetSize(30, 30)
-                    function dotToggle:OnChange() TriggerSound("click") end
+                    local crosshairStyle = DockCrosshair:Add("DComboBox")
+                    crosshairStyle:SetPos(20, 110)
+                    crosshairStyle:SetSize(100, 30)
+                    if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
+                    crosshairStyle:AddChoice("Static")
+                    //crosshairStyle:AddChoice("Dynamic")
+                    crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) end
 
-                    local pumpToggle = DockCrosshair:Add("DCheckBox")
-                    pumpToggle:SetPos(20, 150)
-                    pumpToggle:SetConVar("cl_tfa_hud_crosshair_pump")
-                    pumpToggle:SetSize(30, 30)
-                    function pumpToggle:OnChange() TriggerSound("click") end
+                    local crosshairDot = DockCrosshair:Add("DCheckBox")
+                    crosshairDot:SetPos(20, 150)
+                    crosshairDot:SetConVar("tm_hud_crosshair_dot")
+                    crosshairDot:SetSize(30, 30)
+                    function crosshairDot:OnChange() TriggerSound("click") end
 
-                    local triangleToggle = DockCrosshair:Add("DCheckBox")
-                    triangleToggle:SetPos(20, 190)
-                    triangleToggle:SetConVar("cl_tfa_hud_crosshair_triangular")
-                    triangleToggle:SetSize(30, 30)
-                    function triangleToggle:OnChange() TriggerSound("click") end
+                    local crosshairLength = DockCrosshair:Add("DNumSlider")
+                    crosshairLength:SetPos(-85, 190)
+                    crosshairLength:SetSize(250, 30)
+                    crosshairLength:SetConVar("tm_hud_crosshair_size")
+                    crosshairLength:SetMin(1)
+                    crosshairLength:SetMax(50)
+                    crosshairLength:SetDecimals(0)
+                    function crosshairLength:OnValueChanged() end
+
+                    local crosshairThickness = DockCrosshair:Add("DNumSlider")
+                    crosshairThickness:SetPos(-85, 230)
+                    crosshairThickness:SetSize(250, 30)
+                    crosshairThickness:SetConVar("tm_hud_crosshair_thickness")
+                    crosshairThickness:SetMin(1)
+                    crosshairThickness:SetMax(50)
+                    crosshairThickness:SetDecimals(0)
+                    function crosshairThickness:OnValueChanged() end
+
+                    local crosshairGap = DockCrosshair:Add("DNumSlider")
+                    crosshairGap:SetPos(-85, 270)
+                    crosshairGap:SetSize(250, 30)
+                    crosshairGap:SetConVar("tm_hud_crosshair_gap")
+                    crosshairGap:SetMin(0)
+                    crosshairGap:SetMax(50)
+                    crosshairGap:SetDecimals(0)
+                    function crosshairGap:OnValueChanged() end
 
                     local crosshairMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    crosshairMixer:SetPos(20, 230)
+                    crosshairMixer:SetPos(20, 310)
                     crosshairMixer:SetSize(215, 110)
-                    crosshairMixer:SetConVarR("cl_tfa_hud_crosshair_color_r")
-                    crosshairMixer:SetConVarG("cl_tfa_hud_crosshair_color_g")
-                    crosshairMixer:SetConVarB("cl_tfa_hud_crosshair_color_b")
-                    crosshairMixer:SetConVarA("cl_tfa_hud_crosshair_color_a")
+                    crosshairMixer:SetConVarR("tm_hud_crosshair_color_r")
+                    crosshairMixer:SetConVarG("tm_hud_crosshair_color_g")
+                    crosshairMixer:SetConVarB("tm_hud_crosshair_color_b")
+                    crosshairMixer:SetConVarA("tm_hud_crosshair_opacity")
                     crosshairMixer:SetAlphaBar(true)
                     crosshairMixer:SetPalette(false)
                     crosshairMixer:SetWangs(true)
 
-                    local crosshairLength = DockCrosshair:Add("DNumSlider")
-                    crosshairLength:SetPos(-85, 350)
-                    crosshairLength:SetSize(250, 30)
-                    crosshairLength:SetConVar("cl_tfa_hud_crosshair_length")
-                    crosshairLength:SetMin(0.2)
-                    crosshairLength:SetMax(2)
-                    crosshairLength:SetDecimals(1)
+                    local crosshairOutline = DockCrosshair:Add("DCheckBox")
+                    crosshairOutline:SetPos(20, 430)
+                    crosshairOutline:SetConVar("tm_hud_crosshair_outline")
+                    crosshairOutline:SetSize(30, 30)
+                    function crosshairOutline:OnChange() TriggerSound("click") end
 
-                    local crosshairWidth = DockCrosshair:Add("DNumSlider")
-                    crosshairWidth:SetPos(-85, 390)
-                    crosshairWidth:SetSize(250, 30)
-                    crosshairWidth:SetConVar("cl_tfa_hud_crosshair_width")
-                    crosshairWidth:SetMin(1)
-                    crosshairWidth:SetMax(4)
-                    crosshairWidth:SetDecimals(1)
+                    local crosshairOutlineMixer = vgui.Create("DColorMixer", DockCrosshair)
+                    crosshairOutlineMixer:SetPos(20, 470)
+                    crosshairOutlineMixer:SetSize(215, 110)
+                    crosshairOutlineMixer:SetConVarR("tm_hud_crosshair_outline_color_r")
+                    crosshairOutlineMixer:SetConVarG("tm_hud_crosshair_outline_color_g")
+                    crosshairOutlineMixer:SetConVarB("tm_hud_crosshair_outline_color_b")
+                    crosshairOutlineMixer:SetAlphaBar(false)
+                    crosshairOutlineMixer:SetPalette(false)
+                    crosshairOutlineMixer:SetWangs(true)
 
-                    local crosshairGap = DockCrosshair:Add("DNumSlider")
-                    crosshairGap:SetPos(-85, 430)
-                    crosshairGap:SetSize(250, 30)
-                    crosshairGap:SetConVar("cl_tfa_hud_crosshair_gap_scale")
-                    crosshairGap:SetMin(0)
-                    crosshairGap:SetMax(3)
-                    crosshairGap:SetDecimals(1)
+                    local crosshairTop = DockCrosshair:Add("DCheckBox")
+                    crosshairTop:SetPos(20, 590)
+                    crosshairTop:SetConVar("tm_hud_crosshair_show_t")
+                    crosshairTop:SetSize(30, 30)
+                    function crosshairTop:OnChange() TriggerSound("click") end
 
-                    local outlineToggle = DockCrosshair:Add("DCheckBox")
-                    outlineToggle:SetPos(20, 470)
-                    outlineToggle:SetConVar("cl_tfa_hud_crosshair_outline_enabled")
-                    outlineToggle:SetSize(30, 30)
-                    function outlineToggle:OnChange() TriggerSound("click") end
+                    local crosshairBottom = DockCrosshair:Add("DCheckBox")
+                    crosshairBottom:SetPos(120, 590)
+                    crosshairBottom:SetConVar("tm_hud_crosshair_show_b")
+                    crosshairBottom:SetSize(30, 30)
+                    function crosshairBottom:OnChange() TriggerSound("click") end
 
-                    local outlineWidth = DockCrosshair:Add("DNumSlider")
-                    outlineWidth:SetPos(-85, 510)
-                    outlineWidth:SetSize(250, 30)
-                    outlineWidth:SetConVar("cl_tfa_hud_crosshair_outline_width")
-                    outlineWidth:SetMin(0)
-                    outlineWidth:SetMax(3)
-                    outlineWidth:SetDecimals(1)
+                    local crosshairLeft = DockCrosshair:Add("DCheckBox")
+                    crosshairLeft:SetPos(265, 590)
+                    crosshairLeft:SetConVar("tm_hud_crosshair_show_l")
+                    crosshairLeft:SetSize(30, 30)
+                    function crosshairLeft:OnChange() TriggerSound("click") end
 
-                    local outlineMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    outlineMixer:SetPos(20, 550)
-                    outlineMixer:SetSize(215, 110)
-                    outlineMixer:SetConVarR("cl_tfa_hud_crosshair_outline_color_r")
-                    outlineMixer:SetConVarG("cl_tfa_hud_crosshair_outline_color_g")
-                    outlineMixer:SetConVarB("cl_tfa_hud_crosshair_outline_color_b")
-                    outlineMixer:SetConVarA("cl_tfa_hud_crosshair_outline_color_a")
-                    outlineMixer:SetAlphaBar(true)
-                    outlineMixer:SetPalette(false)
-                    outlineMixer:SetWangs(true)
+                    local crosshairRight = DockCrosshair:Add("DCheckBox")
+                    crosshairRight:SetPos(360, 590)
+                    crosshairRight:SetConVar("tm_hud_crosshair_show_r")
+                    crosshairRight:SetSize(30, 30)
+                    function crosshairRight:OnChange() TriggerSound("click") end
+
+                    local crosshairADS = DockCrosshair:Add("DCheckBox")
+                    crosshairADS:SetPos(20, 630)
+                    crosshairADS:SetConVar("tm_hud_crosshair_show_ads")
+                    crosshairADS:SetSize(30, 30)
+                    function crosshairADS:OnChange() TriggerSound("click") end
+
+                    local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png"}
+                    local previewImg = "images/preview/sky.png"
+
+                    local crosshairPreviewImage = DockCrosshair:Add("DImageButton")
+                    crosshairPreviewImage:SetPos(375, 10)
+                    crosshairPreviewImage:SetSize(200, 200)
+                    crosshairPreviewImage:SetImage(previewImg)
+                    crosshairPreviewImage.DoClick = function() previewImg = previewPool[math.random(#previewPool)] crosshairPreviewImage:SetImage(previewImg) end
+
+                    local crosshair = {}
+                    local function UpdateCrosshair()
+                        crosshair = {
+                            ["enabled"] = GetConVar("tm_hud_crosshair"):GetInt(),
+                            ["style"] = GetConVar("tm_hud_crosshair_style"):GetInt(),
+                            ["gap"] = GetConVar("tm_hud_crosshair_gap"):GetInt(),
+                            ["size"] = GetConVar("tm_hud_crosshair_size"):GetInt(),
+                            ["thickness"] = GetConVar("tm_hud_crosshair_thickness"):GetInt(),
+                            ["dot"] = GetConVar("tm_hud_crosshair_dot"):GetInt(),
+                            ["outline"] = GetConVar("tm_hud_crosshair_outline"):GetInt(),
+                            ["opacity"] = GetConVar("tm_hud_crosshair_opacity"):GetInt(),
+                            ["r"] = GetConVar("tm_hud_crosshair_color_r"):GetInt(),
+                            ["g"] = GetConVar("tm_hud_crosshair_color_g"):GetInt(),
+                            ["b"] = GetConVar("tm_hud_crosshair_color_b"):GetInt(),
+                            ["outline_r"] = GetConVar("tm_hud_crosshair_outline_color_r"):GetInt(),
+                            ["outline_g"] = GetConVar("tm_hud_crosshair_outline_color_g"):GetInt(),
+                            ["outline_b"] = GetConVar("tm_hud_crosshair_outline_color_b"):GetInt(),
+                            ["show_t"] = GetConVar("tm_hud_crosshair_show_t"):GetInt(),
+                            ["show_b"] = GetConVar("tm_hud_crosshair_show_b"):GetInt(),
+                            ["show_l"] = GetConVar("tm_hud_crosshair_show_l"):GetInt(),
+                            ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt()
+                        }
+                    end
+
+                    CrosshairPreview = vgui.Create("DPanel", DockCrosshair)
+                    CrosshairPreview:SetSize(200, 200)
+                    CrosshairPreview:SetPos(375, 10)
+                    CrosshairPreview:SetMouseInputEnabled(false)
+                    CrosshairPreview.Paint = function(self, w, h)
+                        UpdateCrosshair()
+                        if crosshair["outline"] == 1 then
+                            surface.SetDrawColor(Color(crosshair["outline_r"], crosshair["outline_g"], crosshair["outline_b"], crosshair["opacity"]))
+                            if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + crosshair["gap"] - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+                            if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - crosshair["gap"] - crosshair["size"] + crosshair["thickness"] % 2 - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+                            if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 + crosshair["gap"] - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+                            if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 - crosshair["size"] - crosshair["gap"] + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+                            if crosshair["dot"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["thickness"] + 2, crosshair["thickness"] + 2) end
+                        end
+                        surface.SetDrawColor(Color(crosshair["r"], crosshair["g"], crosshair["b"], crosshair["opacity"]))
+                        if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + crosshair["gap"], h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+                        if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - crosshair["gap"] - crosshair["size"] + crosshair["thickness"] % 2, h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+                        if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 + crosshair["gap"], crosshair["thickness"], crosshair["size"]) end
+                        if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 - crosshair["size"] - crosshair["gap"] + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
+                        if crosshair["dot"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
+                    end
 
                     DockHitmarker.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Use Hitmarkers", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("3D/Dynamic Hitmarkers", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("3D Hitmarkers", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker Scale", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker Color", "SettingsLabel", 245 , 185, white, TEXT_ALIGN_LEFT)
                     end
@@ -3240,9 +3320,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local wipeConfirm = 0
                     WipeAccountButton.Paint = function()
                         if WipeAccountButton:IsHovered() then
-                            textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                            textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                         else
-                            textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                            textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                         end
                         if (wipeConfirm == 0) then
                             draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
@@ -3715,9 +3795,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local textAnim = 0
                 AddFeedEntryButton.Paint = function()
                     if AddFeedEntryButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     draw.DrawText("Add Feed Entry", "StreakText", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
@@ -4033,9 +4113,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local textAnim = 0
                 TestKillButton.Paint = function()
                     if TestKillButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     draw.DrawText("Test Kill", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
@@ -4050,9 +4130,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local textAnim = 0
                 TestDeathButton.Paint = function()
                     if TestDeathButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     draw.DrawText("Test Death", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
@@ -4067,9 +4147,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local textAnim = 0
                 TestLevelUpButton.Paint = function()
                     if TestLevelUpButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     draw.DrawText("Test Level Up", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
@@ -4085,9 +4165,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local ResetToDefaultConfirm = 0
                 ResetToDefaultButton.Paint = function()
                     if ResetToDefaultButton:IsHovered() then
-                        textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
                     else
-                        textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 25)
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     if (ResetToDefaultConfirm == 0) then
                         draw.DrawText("Reset HUD To Default Options", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
@@ -4117,9 +4197,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CreditsButton.Paint = function()
                 CreditsButton:SetPos(scrW - 110, scrH - 52)
                 if CreditsButton:IsHovered() then
-                    textAnim = math.Clamp(textAnim - 200 * FrameTime(), 0, 20)
+                    textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else
-                    textAnim = math.Clamp(textAnim + 200 * FrameTime(), 0, 20)
+                    textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                 end
                 draw.DrawText("CREDITS", "StreakText", 85 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
             end

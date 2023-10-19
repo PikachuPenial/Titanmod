@@ -482,6 +482,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_hud_crosshair_color_friendly_g", "255")
     RunConsoleCommand("cl_tfa_hud_crosshair_color_friendly_r", "0")
     RunConsoleCommand("cl_tfa_hud_crosshair_color_team", "0")
+    RunConsoleCommand("cl_tfa_hud_crosshair_enable_custom", "0")
     RunConsoleCommand("cl_tfa_hud_crosshair_length_use_pixels", "0")
     RunConsoleCommand("cl_tfa_hud_enabled", "0")
     RunConsoleCommand("cl_tfa_hud_hangtime", "1")

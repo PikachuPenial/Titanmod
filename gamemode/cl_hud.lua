@@ -7,7 +7,6 @@ local red = Color(255, 0, 0, 255)
 
 local gameEnded = false
 local feedArray = {}
-local health
 
 local matchHUD = {}
 local healthHUD = {}
@@ -22,6 +21,28 @@ local sounds = {}
 local convars = {}
 
 function UpdateHUD()
+    crosshair = {
+        ["enabled"] = GetConVar("tm_hud_crosshair"):GetInt(),
+        ["style"] = GetConVar("tm_hud_crosshair_style"):GetInt(),
+        ["gap"] = GetConVar("tm_hud_crosshair_gap"):GetInt(),
+        ["size"] = GetConVar("tm_hud_crosshair_size"):GetInt(),
+        ["thickness"] = GetConVar("tm_hud_crosshair_thickness"):GetInt(),
+        ["dot"] = GetConVar("tm_hud_crosshair_dot"):GetInt(),
+        ["outline"] = GetConVar("tm_hud_crosshair_outline"):GetInt(),
+        ["opacity"] = GetConVar("tm_hud_crosshair_opacity"):GetInt(),
+        ["r"] = GetConVar("tm_hud_crosshair_color_r"):GetInt(),
+        ["g"] = GetConVar("tm_hud_crosshair_color_g"):GetInt(),
+        ["b"] = GetConVar("tm_hud_crosshair_color_b"):GetInt(),
+        ["outline_r"] = GetConVar("tm_hud_crosshair_outline_color_r"):GetInt(),
+        ["outline_g"] = GetConVar("tm_hud_crosshair_outline_color_g"):GetInt(),
+        ["outline_b"] = GetConVar("tm_hud_crosshair_outline_color_b"):GetInt(),
+        ["show_t"] = GetConVar("tm_hud_crosshair_show_t"):GetInt(),
+        ["show_b"] = GetConVar("tm_hud_crosshair_show_b"):GetInt(),
+        ["show_l"] = GetConVar("tm_hud_crosshair_show_l"):GetInt(),
+        ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt(),
+        ["show_ads"] = GetConVar("tm_hud_crosshair_show_ads"):GetInt()
+    }
+
     matchHUD = {
         ["y"] = GetConVar("tm_hud_bounds_y"):GetInt()
     }
@@ -250,19 +271,46 @@ function HUDAlways(client)
     end
 end
 
+local health
+local weapon
+local adsFade = 1
+local dyn = 0
 function HUDAlive(client)
+    if client:Health() <= 0 then health = 0 else health = client:Health() end
+    weapon = client:GetActiveWeapon()
+
+    if crosshair["show_ads"] == 0 and type(weapon.GetIronSights) == "function" and weapon:GetIronSights() then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 7 * RealFrameTime(), 0, 1) end
+
+    --Crosshair
+    if crosshair["enabled"] then
+        if crosshair["outline"] == 1 then
+            surface.SetDrawColor(Color(crosshair["outline_r"], crosshair["outline_g"], crosshair["outline_b"], crosshair["opacity"] * adsFade))
+            if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + dyn) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+            if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + dyn) - crosshair["size"] + crosshair["thickness"] % 2 - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+            if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y + (crosshair["gap"] + dyn) - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+            if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y - crosshair["size"] - (crosshair["gap"] + dyn) + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+            if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["thickness"] + 2, crosshair["thickness"] + 2) end
+        end
+        surface.SetDrawColor(Color(crosshair["r"], crosshair["g"], crosshair["b"], crosshair["opacity"] * adsFade))
+        if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + dyn), center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+        if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + dyn) - crosshair["size"] + crosshair["thickness"] % 2, center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+        if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y + (crosshair["gap"] + dyn), crosshair["thickness"], crosshair["size"]) end
+        if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - crosshair["size"] - (crosshair["gap"] + dyn) + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
+        if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
+    end
+
     --Shows the players ammo and weapon depending on the style they have selected in Options.
-    if client:GetActiveWeapon() != NULL then if convars["ammo_style"] == 0 then
+    if weapon != NULL then if convars["ammo_style"] == 0 then
         --Numeric Style
-        draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-        if client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) elseif client:GetActiveWeapon():Clip1() >= 0 then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+        if weapon:Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) elseif weapon:Clip1() >= 0 then draw.SimpleText(weapon:Clip1(), "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
     elseif convars["ammo_style"] == 1 then
         --Bar Style
-        draw.SimpleText(client:GetActiveWeapon():GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. client:GetActiveWeapon():GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
+        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
 
-        if (client:GetActiveWeapon():Clip1() != 0) then
+        if (weapon:Clip1() != 0) then
             surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400, 30)
         else
@@ -271,18 +319,17 @@ function HUDAlive(client)
         end
 
         surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
-        surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(client:GetActiveWeapon():Clip1() / client:GetActiveWeapon():GetMaxClip1(), 0, 1)), 30)
-        if (client:GetActiveWeapon():Clip1() >= 0) then draw.SimpleText(client:GetActiveWeapon():Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
+        surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(weapon:Clip1() / weapon:GetMaxClip1(), 0, 1)), 30)
+        if (weapon:Clip1() >= 0) then draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
     end
-    if convars["reload_hints"] == 1 and client:GetActiveWeapon():Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if client:GetActiveWeapon():GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
+    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
 
     --Shows the players health depending on the style they have selected in Options.
-    if client:Health() <= 0 then health = 0 else health = client:Health() end
     surface.SetDrawColor(50, 50, 50, 80)
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"], 30)
 
-    if client:Health() <= 66 then
-        if client:Health() <= 33 then
+    if health <= 66 then
+        if health <= 33 then
             surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
         else
             surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
@@ -291,7 +338,7 @@ function HUDAlive(client)
         surface.SetDrawColor(healthHUD["barhigh_r"], healthHUD["barhigh_g"], healthHUD["barhigh_b"], 120)
     end
 
-    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (client:Health() / client:GetMaxHealth()), 30)
+    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (health / client:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     --Equipment
@@ -538,7 +585,8 @@ local chudlist = {
     ["CHudSecondaryAmmo"] = true,
     ["CHudVoiceStatus"] = true,
     ["CHudDamageIndicator"] = true,
-    ["CHUDQuickInfo"] = true
+    ["CHUDQuickInfo"] = true,
+    ["CHudCrosshair"] = true
 }
 
 --Hides default HL2 HUD elements.
@@ -1779,4 +1827,61 @@ cvars.AddChangeCallback("tm_hud_bounds_y", function(convar_name, value_old, valu
     UpdateHUD()
     if IsValid(KOTHPFP) then KOTHPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"]) end
     if IsValid(VIPPFP) then VIPPFP:SetPos(scrW / 2 - 21, 60 + matchHUD["y"]) end
+end)
+cvars.AddChangeCallback("tm_hud_crosshair", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_style", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_gap", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_size", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_thickness", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_dot", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_outline", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_opacity", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_color_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_color_g", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_color_b", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_outline_color_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_outline_color_g", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_outline_color_b", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_show_t", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_show_b", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_show_l", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_show_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_show_ads", function(convar_name, value_old, value_new)
+    UpdateHUD()
 end)

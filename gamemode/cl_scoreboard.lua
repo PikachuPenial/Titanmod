@@ -124,7 +124,7 @@ function GM:ScoreboardShow()
 
 		--Displays information about the current map, the map vote, and the server.
 		LevelingPanel.Paint = function(self, w, h)
-			draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel"), "StreakText", 2.5, -2.5, white, TEXT_ALIGN_LEFT)
+			draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel") .. " | " .. LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakText", 0, -3, white, TEXT_ALIGN_LEFT)
 
 			surface.SetDrawColor(35, 35, 35, 100)
 			surface.DrawRect(0, 20, 630, 10)
@@ -132,7 +132,6 @@ function GM:ScoreboardShow()
 			surface.SetDrawColor(255, 255, 0, 50)
 			if LocalPlayer:GetNWInt("playerLevel") ~= 60 then
 				surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10)
-				draw.SimpleText(LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakTextMini", 320, 25, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
 		end
 	end
