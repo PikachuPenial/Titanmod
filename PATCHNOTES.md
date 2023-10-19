@@ -1,9 +1,12 @@
 **>GAMEPLAY**
 *CROSSHAIR OVERHAUL*
-- I ditched the TFA crosshair and created my own crosshair system with even more customization options
+- I ditched the TFA crosshair and created my own crosshair system with even more customization options, a preview while editing the settings, and more
 
-*NEW SETTINGS*
-- Render Body
+*HUD CODES*
+- You can now export your HUD customization settings as a code and can import other codes sent to you in the HUD editor
+
+*NEW SETTING*
+- Render Body toggle
 
 **>MAPS**
 
@@ -13,6 +16,8 @@
 - All text color based HUD settings were combined into one universal setting
 
 - Added various crosshair settings
+
+- Adjusted animation for the kill notification
 
 - Fixed the first kill feed entry always being inaccurate in size
 

@@ -52,8 +52,6 @@ function UpdateHUD()
         ["size"] = GetConVar("tm_hud_health_size"):GetInt(),
         ["x"] = GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(),
         ["y"] = GetConVar("tm_hud_health_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(),
-        ["text_g"] = GetConVar("tm_hud_health_text_color_g"):GetInt(),
-        ["text_b"] = GetConVar("tm_hud_health_text_color_b"):GetInt(),
         ["barhigh_r"] = GetConVar("tm_hud_health_color_high_r"):GetInt(),
         ["barhigh_g"] = GetConVar("tm_hud_health_color_high_g"):GetInt(),
         ["barhigh_b"] = GetConVar("tm_hud_health_color_high_b"):GetInt(),
@@ -68,15 +66,9 @@ function UpdateHUD()
     weaponHUD = {
         ["x"] = GetConVar("tm_hud_bounds_x"):GetInt(),
         ["y"] = GetConVar("tm_hud_bounds_y"):GetInt(),
-        ["weptext_r"] = GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(),
-        ["weptext_g"] = GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(),
-        ["weptext_b"] = GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt(),
         ["ammobar_r"] = GetConVar("tm_hud_ammo_bar_color_r"):GetInt(),
         ["ammobar_g"] = GetConVar("tm_hud_ammo_bar_color_g"):GetInt(),
-        ["ammobar_b"] = GetConVar("tm_hud_ammo_bar_color_b"):GetInt(),
-        ["ammotext_r"] = GetConVar("tm_hud_ammo_text_color_r"):GetInt(),
-        ["ammotext_g"] = GetConVar("tm_hud_ammo_text_color_g"):GetInt(),
-        ["ammotext_b"] = GetConVar("tm_hud_ammo_text_color_b"):GetInt()
+        ["ammobar_b"] = GetConVar("tm_hud_ammo_bar_color_b"):GetInt()
     }
 
     equipmentHUD = {
@@ -111,10 +103,7 @@ function UpdateHUD()
 
     velocityHUD = {
         ["x"] = GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(),
-        ["y"] = GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(),
-        ["r"] = GetConVar("tm_hud_velocitycounter_r"):GetInt(),
-        ["g"] = GetConVar("tm_hud_velocitycounter_g"):GetInt(),
-        ["b"] = GetConVar("tm_hud_velocitycounter_b"):GetInt()
+        ["y"] = GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()
     }
 
     objHUD = {
@@ -127,9 +116,7 @@ function UpdateHUD()
         ["obj_occupied_b"] = GetConVar("tm_hud_obj_color_occupied_b"):GetInt(),
         ["obj_contested_r"] = GetConVar("tm_hud_obj_color_contested_r"):GetInt(),
         ["obj_contested_g"] = GetConVar("tm_hud_obj_color_contested_g"):GetInt(),
-        ["obj_contested_b"] = GetConVar("tm_hud_obj_color_contested_b"):GetInt(),
-        ["text_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
-        ["text_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt()
+        ["obj_contested_b"] = GetConVar("tm_hud_obj_color_contested_b"):GetInt()
     }
 
     sounds = {
@@ -680,17 +667,19 @@ net.Receive("NotifyKill", function(len, ply)
     if IsValid(DeathNotif) then DeathNotif:Remove() end
 
     KillNotif = vgui.Create("DFrame")
-    KillNotif:SetSize(scrW, 200)
+    KillNotif:SetSize(scrW, 0)
     KillNotif:SetX(killdeathHUD["x"])
     KillNotif:SetY(scrH - killdeathHUD["y"])
     KillNotif:SetTitle("")
     KillNotif:SetDraggable(false)
     KillNotif:ShowCloseButton(false)
+    KillNotif:SizeTo(scrW, 200, 0.5, 0, 0.1)
 
     KillIcon = vgui.Create("DImage", KillNotif)
     KillIcon:SetPos(scrW / 2 - 25, 50)
-    KillIcon:SetSize(50, 50)
+    KillIcon:SetSize(50, 0)
     KillIcon:SetImage("icons/killicon.png")
+    KillIcon:SizeTo(50, 50, 0.75, 0, 0.1)
 
     --Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg.
     if LocalPly:Health() <= 15 then
@@ -770,9 +759,9 @@ net.Receive("NotifyKill", function(len, ply)
         rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
         --Displays information about the player you killed, as well as the Accolades you achived.
-        if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", "HUD_StreakText", w / 2, 35, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
-        draw.SimpleText(killedPlayer:GetName(), "HUD_PlayerNotiName", w / 2, 125, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "HUD_StreakText", w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", "HUD_StreakText", w / 2, h * 0.175, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
+        draw.SimpleText(killedPlayer:GetName(), "HUD_PlayerNotiName", w / 2, h * 0.625, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "HUD_StreakText", w / 2, h * 0.8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KillNotif:Show()
@@ -785,8 +774,12 @@ net.Receive("NotifyKill", function(len, ply)
     --Creates a countdown for the kill UI, having it disappear after 3.5 seconds.
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
-            KillNotif:MoveTo(killdeathHUD["x"], scrH, 1, 0, 0.25, function()
+            KillNotif:MoveTo(killdeathHUD["x"], scrH, 0.5, 0, 0.15)
+            KillNotif:SizeTo(scrW, 0, 0.5, 0, 0.1, function()
                 KillNotif:Remove()
+            end)
+            KillIcon:SizeTo(50, 0, 0.25, 0, 0.1, function()
+                KillIcon:Remove()
             end)
         end
     end)

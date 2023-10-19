@@ -18,7 +18,7 @@ Here are a few of Titanmods features:
 - Deep player customization and unlocks (40+ player models, 240+ player cards)  
 - Endless player progression (60 levels w/ prestiging, no prestige cap)  
 - In-depth settings  
-- HUD Editor  
+- HUD Editor w/ code sharing  
 - Statistics (over 150+ being tracked)  
 - Leaderboards  
 - Proximity Voice Chat  

@@ -4120,6 +4120,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RunConsoleCommand("tm_hud_testlevelup")
                 end
 
+                local ImportCodeInput = EditorButtons:Add("DTextEntry")
+                ImportCodeInput:SetPlaceholderText("Enter a HUD code...")
+                ImportCodeInput:SetPos(250, 140)
+                ImportCodeInput:SetSize(150, 30)
+
                 local ImportCode = vgui.Create("DButton", EditorButtons)
                 ImportCode:SetPos(20, 140)
                 ImportCode:SetText("")
@@ -4134,15 +4139,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.DrawText("Import HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
                 ImportCode.DoClick = function()
-                    RunConsoleCommand("tm_hud_testkill")
-                end
-
-                local ImportCodeInput = EditorButtons:Add("DTextEntry")
-                ImportCodeInput:SetPlaceholderText("Enter a HUD code...")
-                ImportCodeInput:SetPos(250, 140)
-                ImportCodeInput:SetSize(150, 30)
-                ImportCodeInput.OnEnter = function(self)
-                    ImportCodeInput:SetValue(self:GetValue())
+                    RunConsoleCommand("tm_importhudcode_cannotbeundone", ImportCodeInput:GetValue())
                 end
 
                 local function CreateExportedCodeEntry(code)
@@ -4171,7 +4168,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.DrawText("Export HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
                 end
                 ExportCode.DoClick = function()
-                    CreateExportedCodeEntry(GetConVar("tm_hud_font"):GetString())
+                    CreateExportedCodeEntry(GetConVar("tm_hud_font"):GetString() .. "-" .. GetConVar("tm_hud_bounds_x"):GetInt() .. "-" .. GetConVar("tm_hud_bounds_y"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_g"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_style"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_g"):GetInt() .. "-"
+                    .. GetConVar("tm_hud_ammo_bar_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_size"):GetInt() .. "-" .. GetConVar("tm_hud_health_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_health_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_b"):GetInt() .. "-" .. GetConVar("tm_hud_equipment_anchor"):GetInt() .. "-"
+                    .. GetConVar("tm_hud_equipment_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_equipment_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_enablekillfeed"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_style"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_limit"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_opacity"):GetInt() .. "-" .. GetConVar("tm_hud_killdeath_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_killdeath_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_r"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_g"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_scale"):GetInt() .. "-"
+                    .. GetConVar("tm_hud_obj_color_empty_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_empty_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_empty_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_b"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_g"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_opacity"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_x"):GetInt() .. "-"
+                    .. GetConVar("tm_hud_keypressoverlay_y"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_inactive_r"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_inactive_g"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt() .. "-" .. GetConVar("tm_hud_velocitycounter_x"):GetInt() .. "-" .. GetConVar("tm_hud_velocitycounter_y"):GetInt())
                 end
 
                 local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
