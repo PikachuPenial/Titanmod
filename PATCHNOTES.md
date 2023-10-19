@@ -10,6 +10,8 @@
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- All text color based HUD settings were combined into one universal setting
+
 - Added various crosshair settings
 
 - Fixed the first kill feed entry always being inaccurate in size

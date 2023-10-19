@@ -8,6 +8,7 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local feedArray = {}
 
+local crosshair = {}
 local matchHUD = {}
 local healthHUD = {}
 local weaponHUD = {}
@@ -51,7 +52,6 @@ function UpdateHUD()
         ["size"] = GetConVar("tm_hud_health_size"):GetInt(),
         ["x"] = GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(),
         ["y"] = GetConVar("tm_hud_health_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(),
-        ["text_r"] = GetConVar("tm_hud_health_text_color_r"):GetInt(),
         ["text_g"] = GetConVar("tm_hud_health_text_color_g"):GetInt(),
         ["text_b"] = GetConVar("tm_hud_health_text_color_b"):GetInt(),
         ["barhigh_r"] = GetConVar("tm_hud_health_color_high_r"):GetInt(),
@@ -128,7 +128,6 @@ function UpdateHUD()
         ["obj_contested_r"] = GetConVar("tm_hud_obj_color_contested_r"):GetInt(),
         ["obj_contested_g"] = GetConVar("tm_hud_obj_color_contested_g"):GetInt(),
         ["obj_contested_b"] = GetConVar("tm_hud_obj_color_contested_b"):GetInt(),
-        ["text_r"] = GetConVar("tm_hud_obj_text_color_r"):GetInt(),
         ["text_g"] = GetConVar("tm_hud_obj_text_color_g"):GetInt(),
         ["text_b"] = GetConVar("tm_hud_obj_text_color_b"):GetInt()
     }
@@ -142,6 +141,9 @@ function UpdateHUD()
 
     --Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame.
     convars = {
+        ["text_r"] = GetConVar("tm_hud_text_color_r"):GetInt(),
+        ["text_g"] = GetConVar("tm_hud_text_color_g"):GetInt(),
+        ["text_b"] = GetConVar("tm_hud_text_color_b"):GetInt(),
         ["hud_enable"] = GetConVar("tm_hud_enable"):GetInt(),
         ["ammo_style"] = GetConVar("tm_hud_ammo_style"):GetInt(),
         ["kill_tracker"] = GetConVar("tm_hud_killtracker"):GetInt(),
@@ -202,20 +204,20 @@ end)
 function HUDAlways(client)
     --Remaining match time.
     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-    draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Occupied" then
-            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         else
-            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText(GetGlobal2String("tm_hillstatus"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
     elseif activeGamemode == "VIP" then
         if GetGlobal2Entity("tm_vip") != NULL then
-            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-            if GetGlobal2Entity("tm_vip") != client then draw.SimpleText(math.Round(client:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", scrW / 2, 105 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
+            draw.SimpleText(GetGlobal2Entity("tm_vip"):GetName(), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            if GetGlobal2Entity("tm_vip") != client then draw.SimpleText(math.Round(client:GetPos():Distance(GetGlobal2Entity("tm_vip"):GetPos()) * 0.01905) .. "m", "HUD_Health", scrW / 2, 105 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) end
         else
-            draw.SimpleText("No VIP", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText("No VIP", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
     end
 
@@ -226,7 +228,7 @@ function HUDAlways(client)
         local nameLength = select(1, surface.GetTextSize(v[1]))
 
         surface.DrawRect(feedHUD["x"], scrH - 20 + ((k - 1) * feedEntryPadding) - feedHUD["y"], nameLength + 5, 20)
-        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + feedHUD["x"], scrH - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + feedHUD["x"], scrH - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     --Objective indicator
@@ -279,10 +281,9 @@ function HUDAlive(client)
     if client:Health() <= 0 then health = 0 else health = client:Health() end
     weapon = client:GetActiveWeapon()
 
-    if crosshair["show_ads"] == 0 and type(weapon.GetIronSights) == "function" and weapon:GetIronSights() then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 7 * RealFrameTime(), 0, 1) end
-
+    if crosshair["show_ads"] == 0 and type(weapon.GetIronSights) == "function" and weapon:GetIronSights() then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
     --Crosshair
-    if crosshair["enabled"] then
+    if crosshair["enabled"] == 1 then
         if crosshair["outline"] == 1 then
             surface.SetDrawColor(Color(crosshair["outline_r"], crosshair["outline_g"], crosshair["outline_b"], crosshair["opacity"] * adsFade))
             if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + dyn) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
@@ -302,13 +303,13 @@ function HUDAlive(client)
     --Shows the players ammo and weapon depending on the style they have selected in Options.
     if weapon != NULL then if convars["ammo_style"] == 0 then
         --Numeric Style
-        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-        if weapon:Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) elseif weapon:Clip1() >= 0 then draw.SimpleText(weapon:Clip1(), "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+        if weapon:Clip1() == 0 then draw.SimpleText("0", "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], red, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) elseif weapon:Clip1() >= 0 then draw.SimpleText(weapon:Clip1(), "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
     elseif convars["ammo_style"] == 1 then
         --Bar Style
-        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(weaponHUD["weptext_r"], weaponHUD["weptext_g"], weaponHUD["weptext_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
+        draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
 
         if (weapon:Clip1() != 0) then
             surface.SetDrawColor(weaponHUD["ammobar_r"] - 205, weaponHUD["ammobar_g"] - 205, weaponHUD["ammobar_b"] - 205, 80)
@@ -320,9 +321,9 @@ function HUDAlive(client)
 
         surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
         surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(weapon:Clip1() / weapon:GetMaxClip1(), 0, 1)), 30)
-        if (weapon:Clip1() >= 0) then draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(weaponHUD["ammotext_r"], weaponHUD["ammotext_g"], weaponHUD["ammotext_b"], 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
+        if (weapon:Clip1() >= 0) then draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
     end
-    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
+    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
 
     --Shows the players health depending on the style they have selected in Options.
     surface.SetDrawColor(50, 50, 50, 80)
@@ -339,7 +340,7 @@ function HUDAlive(client)
     end
 
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (health / client:GetMaxHealth()), 30)
-    draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(healthHUD["text_r"], healthHUD["text_g"], healthHUD["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     --Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
@@ -356,12 +357,12 @@ function HUDAlive(client)
             grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
         end
         surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
-        draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+        draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-        draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+        draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
     elseif client:HasWeapon("fres_grapple") then
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
@@ -373,26 +374,26 @@ function HUDAlive(client)
         end
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 17.5, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         else
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         end
     elseif client:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 17.5, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         else
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         end
     end
 
@@ -436,12 +437,12 @@ function HUDAlive(client)
     end
 
     --Velocity counter
-    if convars["velocity_counter"] == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(velocityHUD["r"], velocityHUD["g"], velocityHUD["b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
+    if convars["velocity_counter"] == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
     --Disclaimer for players connecting during an active gamemode and map vote
     if GetGlobal2Bool("tm_matchended") == true then
-        draw.SimpleText("Match has ended", "HUD_GunPrintName", scrW / 2, scrH / 2 - 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", scrW / 2, scrH / 2 - 120, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Match has ended", "HUD_GunPrintName", scrW / 2, scrH / 2 - 160, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", scrW / 2, scrH / 2 - 120, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     --Cranked bar
@@ -478,8 +479,8 @@ function CreateHUDHook()
 
             cam.IgnoreZ(true)
                 cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
-                    draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                    draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(objHUD["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(convars["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(convars["text_r"], objHUD["text_g"], objHUD["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 cam.End3D2D()
             cam.IgnoreZ(false)
         end )
@@ -1586,13 +1587,13 @@ end)
 cvars.AddChangeCallback("tm_hud_health_offset_y", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
-cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_r", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_text_color_r", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
-cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_g", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_text_color_g", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
-cvars.AddChangeCallback("tm_hud_ammo_wep_text_color_b", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_text_color_b", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_ammo_bar_color_r", function(convar_name, value_old, value_new)
@@ -1602,24 +1603,6 @@ cvars.AddChangeCallback("tm_hud_ammo_bar_color_g", function(convar_name, value_o
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_ammo_bar_color_b", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_ammo_text_color_r", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_ammo_text_color_g", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_ammo_text_color_b", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_health_text_color_r", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_health_text_color_g", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_health_text_color_b", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_health_color_high_r", function(convar_name, value_old, value_new)
@@ -1746,15 +1729,6 @@ cvars.AddChangeCallback("tm_hud_obj_color_contested_g", function(convar_name, va
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_obj_color_contested_b", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_obj_text_color_r", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_obj_text_color_g", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_hud_obj_text_color_b", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_killfeed_style", function(convar_name, value_old, value_new)

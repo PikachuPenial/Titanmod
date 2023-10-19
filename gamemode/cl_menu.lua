@@ -3365,6 +3365,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local hillEmptyMat = Material("icons/kothempty.png")
                 local border = Material("overlay/objborder.png")
                 local timeText = " ∞"
+                local convars = {}
                 timer.Create("previewLoop", 1, 0, function()
                     mode = modePool[math.random(#modePool)]
                     modeTime = math.random(1, 45)
@@ -3378,19 +3379,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local FakeHUD = MainMenu:Add("HUDEditorPanel")
                 MainMenu:SetMouseInputEnabled(false)
                 FakeHUD.Paint = function(self, w, h)
+                    convars = {
+                        ["text_r"] = GetConVar("tm_hud_text_color_r"):GetInt(),
+                        ["text_g"] = GetConVar("tm_hud_text_color_g"):GetInt(),
+                        ["text_b"] = GetConVar("tm_hud_text_color_b"):GetInt()
+                    }
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 155 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 100 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 155 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 100 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 35 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 85 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_wep_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_wep_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 35 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 85 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
                         surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400, 30)
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
                         surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400 * (ammo / 30), 30)
-                        draw.SimpleText(ammo, "HUD_Health", scrW - 390 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_ammo_text_color_r"):GetInt(), GetConVar("tm_hud_ammo_text_color_g"):GetInt(), GetConVar("tm_hud_ammo_text_color_b"):GetInt(), 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(ammo, "HUD_Health", scrW - 390 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     surface.SetDrawColor(50, 50, 50, 80)
                     surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
@@ -3404,7 +3410,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.SetDrawColor(GetConVar("tm_hud_health_color_high_r"):GetInt(), GetConVar("tm_hud_health_color_high_g"):GetInt(), GetConVar("tm_hud_health_color_high_b"):GetInt(), 120)
                     end
                     surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
-                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt() - 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_health_text_color_r"):GetInt(), GetConVar("tm_hud_health_text_color_g"):GetInt(), GetConVar("tm_hud_health_text_color_b"):GetInt()), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt() - 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                     local feedStyle
                     if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
                         feedStyle = -20
@@ -3416,16 +3422,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         local nameLength = select(1, surface.GetTextSize(v[1]))
 
                         surface.DrawRect(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), nameLength + 5, 20)
-                        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
                         local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()
                         local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()
@@ -3460,23 +3466,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("DUCK", "HUD_StreakText", 105 + keyX, 165 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
-                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(), Color(GetConVar("tm_hud_velocitycounter_r"):GetInt(), GetConVar("tm_hud_velocitycounter_g"):GetInt(), GetConVar("tm_hud_velocitycounter_b"):GetInt()), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-                    draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
                     if mode == "Gun Game" then
-                        draw.SimpleText(ggGuns  .. " kills left", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(ggGuns  .. " kills left", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     elseif mode == "Fiesta" then
-                        draw.SimpleText(modeTimeText, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(modeTimeText, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                     elseif mode == "Cranked" then
-                        draw.SimpleText(modeTime, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(modeTime, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                         surface.SetDrawColor(50, 50, 50, 80)
                         surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150, 10)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 80)
                         surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150 * (modeTime / 45), 10)
                     elseif mode == "KOTH" then
-                        draw.SimpleText("Contested", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText("Contested", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 100)
                         surface.SetMaterial(hillEmptyMat)
                         surface.DrawTexturedRect(scrW / 2 - 21, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 42, 42)
@@ -3484,7 +3490,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 175)
                         surface.DrawTexturedRect(0, 0, scrW, scrH)
                     elseif mode == "VIP" then
-                        draw.SimpleText(LocalPly:GetName(), "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(250, 250, 250, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(LocalPly:GetName(), "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 225)
                         surface.SetMaterial(hillEmptyMat)
                         surface.DrawTexturedRect(scrW / 2 - 24, 57 + GetConVar("tm_hud_bounds_y"):GetInt(), 48, 48)
@@ -3540,13 +3546,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                 GeneralEditor:Dock(TOP)
-                GeneralEditor:SetSize(0, 170)
+                GeneralEditor:SetSize(0, 250)
                 GeneralEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD X Bounds", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD Y Bounds", "Health", 150, 130, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
                 end
 
                 local HUDFont = GeneralEditor:Add("DComboBox")
@@ -3593,16 +3600,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDYBounds:SetMax(scrH / 4)
                 HUDYBounds:SetDecimals(0)
 
+                local WepTextColor = vgui.Create("DColorMixer", GeneralEditor)
+                WepTextColor:SetPos(20, 170)
+                WepTextColor:SetSize(185, 70)
+                WepTextColor:SetConVarR("tm_hud_text_color_r")
+                WepTextColor:SetConVarG("tm_hud_text_color_g")
+                WepTextColor:SetConVarB("tm_hud_text_color_b")
+                WepTextColor:SetAlphaBar(false)
+                WepTextColor:SetPalette(false)
+                WepTextColor:SetWangs(true)
+
                 local AmmoEditor = vgui.Create("DPanel", EditorScroller)
                 AmmoEditor:Dock(TOP)
-                AmmoEditor:SetSize(0, 330)
+                AmmoEditor:SetSize(0, 170)
                 AmmoEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("AMMO", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Style", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Gun Text Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Ammo Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Color", "Health", 210, 245, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
                 end
 
                 local AmmoStyle = AmmoEditor:Add("DComboBox")
@@ -3620,28 +3635,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RunConsoleCommand("tm_hud_ammo_style", value - 1)
                 end
 
-                local WepTextColor = vgui.Create("DColorMixer", AmmoEditor)
-                WepTextColor:SetPos(20, 90)
-                WepTextColor:SetSize(185, 70)
-                WepTextColor:SetConVarR("tm_hud_ammo_wep_text_color_r")
-                WepTextColor:SetConVarG("tm_hud_ammo_wep_text_color_g")
-                WepTextColor:SetConVarB("tm_hud_ammo_wep_text_color_b")
-                WepTextColor:SetAlphaBar(false)
-                WepTextColor:SetPalette(false)
-                WepTextColor:SetWangs(true)
-
-                local AmmoTextColor = vgui.Create("DColorMixer", AmmoEditor)
-                AmmoTextColor:SetPos(20, 170)
-                AmmoTextColor:SetSize(185, 70)
-                AmmoTextColor:SetConVarR("tm_hud_ammo_text_color_r")
-                AmmoTextColor:SetConVarG("tm_hud_ammo_text_color_g")
-                AmmoTextColor:SetConVarB("tm_hud_ammo_text_color_b")
-                AmmoTextColor:SetAlphaBar(false)
-                AmmoTextColor:SetPalette(false)
-                AmmoTextColor:SetWangs(true)
-
                 local AmmoBarColor = vgui.Create("DColorMixer", AmmoEditor)
-                AmmoBarColor:SetPos(20, 250)
+                AmmoBarColor:SetPos(20, 90)
                 AmmoBarColor:SetSize(185, 70)
                 AmmoBarColor:SetConVarR("tm_hud_ammo_bar_color_r")
                 AmmoBarColor:SetConVarG("tm_hud_ammo_bar_color_g")
@@ -3652,17 +3647,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local HealthEditor = vgui.Create("DPanel", EditorScroller)
                 HealthEditor:Dock(TOP)
-                HealthEditor:SetSize(0, 470)
+                HealthEditor:SetSize(0, 390)
                 HealthEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("HEALTH", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Bar Size", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Bar X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Bar Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HP Text Color", "Health", 210, 145, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("High HP Color", "Health", 210, 225, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Mid HP Color", "Health", 210, 305, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Low HP Color", "Health", 210, 385, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("High HP Color", "Health", 210, 145, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Mid HP Color", "Health", 210, 225, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Low HP Color", "Health", 210, 305, white, TEXT_ALIGN_LEFT)
                 end
 
                 local HealthBarSize = HealthEditor:Add("DNumSlider")
@@ -3689,18 +3683,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthBarY:SetMax(scrH)
                 HealthBarY:SetDecimals(0)
 
-                local HealthTextColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthTextColor:SetPos(20, 150)
-                HealthTextColor:SetSize(185, 70)
-                HealthTextColor:SetConVarR("tm_hud_health_text_color_r")
-                HealthTextColor:SetConVarG("tm_hud_health_text_color_g")
-                HealthTextColor:SetConVarB("tm_hud_health_text_color_b")
-                HealthTextColor:SetAlphaBar(false)
-                HealthTextColor:SetPalette(false)
-                HealthTextColor:SetWangs(true)
-
                 local HealthHighColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthHighColor:SetPos(20, 230)
+                HealthHighColor:SetPos(20, 150)
                 HealthHighColor:SetSize(185, 70)
                 HealthHighColor:SetConVarR("tm_hud_health_color_high_r")
                 HealthHighColor:SetConVarG("tm_hud_health_color_high_g")
@@ -3710,7 +3694,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthHighColor:SetWangs(true)
 
                 local HealthMidColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthMidColor:SetPos(20, 310)
+                HealthMidColor:SetPos(20, 230)
                 HealthMidColor:SetSize(185, 70)
                 HealthMidColor:SetConVarR("tm_hud_health_color_mid_r")
                 HealthMidColor:SetConVarG("tm_hud_health_color_mid_g")
@@ -3720,7 +3704,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthMidColor:SetWangs(true)
 
                 local HealthLowColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthLowColor:SetPos(20, 390)
+                HealthLowColor:SetPos(20, 310)
                 HealthLowColor:SetSize(185, 70)
                 HealthLowColor:SetConVarR("tm_hud_health_color_low_r")
                 HealthLowColor:SetConVarG("tm_hud_health_color_low_g")
@@ -3904,15 +3888,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local ObjectiveEditor
                 ObjectiveEditor = vgui.Create("DPanel", EditorScroller)
                 ObjectiveEditor:Dock(TOP)
-                ObjectiveEditor:SetSize(0, 440)
+                ObjectiveEditor:SetSize(0, 330)
                 ObjectiveEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("OBJECTIVE UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI Text Scale", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("OBJ Text Scale", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Empty Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Occupied Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Contested Color", "Health", 210, 245, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI Text Color", "Health", 210, 325, white, TEXT_ALIGN_LEFT)
                 end
 
                 local ObjScale = ObjectiveEditor:Add("DNumSlider")
@@ -3952,16 +3935,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjContestedBrushColor:SetAlphaBar(false)
                 ObjContestedBrushColor:SetPalette(false)
                 ObjContestedBrushColor:SetWangs(true)
-
-                local ObjTextColor = vgui.Create("DColorMixer", ObjectiveEditor)
-                ObjTextColor:SetPos(20, 330)
-                ObjTextColor:SetSize(185, 70)
-                ObjTextColor:SetConVarR("tm_hud_obj_text_color_r")
-                ObjTextColor:SetConVarG("tm_hud_obj_text_color_g")
-                ObjTextColor:SetConVarB("tm_hud_obj_text_color_b")
-                ObjTextColor:SetAlphaBar(false)
-                ObjTextColor:SetPalette(false)
-                ObjTextColor:SetWangs(true)
 
                 local DamageIndicatorOverlay
                 if GetConVar("tm_hud_dmgindicator"):GetInt() == 1 then DamageIndicatorOverlay = vgui.Create("DPanel", EditorScroller) else
@@ -4055,7 +4028,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 VelocityCounter:Dock(TOP)
-                VelocityCounter:SetSize(0, 200)
+                VelocityCounter:SetSize(0, 110)
                 VelocityCounter.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("VELOCITY COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
@@ -4080,16 +4053,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounterY:SetMax(scrH)
                 VelocityCounterY:SetDecimals(0)
 
-                local VelocityCounterColor = vgui.Create("DColorMixer", VelocityCounter)
-                VelocityCounterColor:SetPos(20, 120)
-                VelocityCounterColor:SetSize(185, 70)
-                VelocityCounterColor:SetConVarR("tm_hud_velocitycounter_r")
-                VelocityCounterColor:SetConVarG("tm_hud_velocitycounter_g")
-                VelocityCounterColor:SetConVarB("tm_hud_velocitycounter_b")
-                VelocityCounterColor:SetAlphaBar(false)
-                VelocityCounterColor:SetPalette(false)
-                VelocityCounterColor:SetWangs(true)
-
                 local HiddenOptionsCollapse = vgui.Create("DCollapsibleCategory", EditorScroller)
                 HiddenOptionsCollapse:SetLabel("Show options for disabled HUD elements")
                 HiddenOptionsCollapse:Dock(TOP)
@@ -4101,7 +4064,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local EditorButtons = vgui.Create("DPanel", EditorScroller)
                 EditorButtons:Dock(TOP)
-                EditorButtons:SetSize(0, 190)
+                EditorButtons:SetSize(0, 290)
                 EditorButtons.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                 end
@@ -4157,8 +4120,62 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     RunConsoleCommand("tm_hud_testlevelup")
                 end
 
+                local ImportCode = vgui.Create("DButton", EditorButtons)
+                ImportCode:SetPos(20, 140)
+                ImportCode:SetText("")
+                ImportCode:SetSize(225, 40)
+                local textAnim = 0
+                ImportCode.Paint = function()
+                    if ImportCode:IsHovered() then
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
+                    else
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
+                    end
+                    draw.DrawText("Import HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                end
+                ImportCode.DoClick = function()
+                    RunConsoleCommand("tm_hud_testkill")
+                end
+
+                local ImportCodeInput = EditorButtons:Add("DTextEntry")
+                ImportCodeInput:SetPlaceholderText("Enter a HUD code...")
+                ImportCodeInput:SetPos(250, 140)
+                ImportCodeInput:SetSize(150, 30)
+                ImportCodeInput.OnEnter = function(self)
+                    ImportCodeInput:SetValue(self:GetValue())
+                end
+
+                local function CreateExportedCodeEntry(code)
+                    if not IsValid(ExportCodeInput) then
+                        ExportCodeInput = EditorButtons:Add("DTextEntry")
+                        ExportCodeInput:SetPos(250, 170)
+                        ExportCodeInput:SetSize(150, 30)
+                        ExportCodeInput.AllowInput = function(self, stringValue) return true end
+                        ExportCodeInput:SetValue(code)
+                    else
+                        ExportCodeInput:SetValue(code)
+                    end
+                end
+
+                local ExportCode = vgui.Create("DButton", EditorButtons)
+                ExportCode:SetPos(20, 170)
+                ExportCode:SetText("")
+                ExportCode:SetSize(225, 40)
+                local textAnim = 0
+                ExportCode.Paint = function()
+                    if ExportCode:IsHovered() then
+                        textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 25)
+                    else
+                        textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
+                    end
+                    draw.DrawText("Export HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                end
+                ExportCode.DoClick = function()
+                    CreateExportedCodeEntry(GetConVar("tm_hud_font"):GetString())
+                end
+
                 local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
-                ResetToDefaultButton:SetPos(20, 150)
+                ResetToDefaultButton:SetPos(20, 250)
                 ResetToDefaultButton:SetText("")
                 ResetToDefaultButton:SetSize(360, 40)
                 local textAnim = 0
