@@ -77,6 +77,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
+	ply:DrawShadow(false)
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
 	net.Start("PlayerSpawn")

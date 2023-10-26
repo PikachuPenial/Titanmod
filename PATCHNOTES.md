@@ -5,10 +5,13 @@
 
 *MOVEMENT ADDITIONS/CHANGES*
 - Added Forward wall jumping
-- Landing on the ground while being inputting a sprint and a crouch will initiate a slide
+- Landing on the ground while inputting a sprint and a crouch will initiate a mini slide (holding JUMP cancels this)
 
 **>MAPS**
 
 **>BALANCE**
 
 **>QOL & BUG FIXES**
+- Heavy optimization for many movement related functions
+
+- Decreased volume of sliding related sound effects

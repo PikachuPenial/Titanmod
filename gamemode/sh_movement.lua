@@ -49,6 +49,7 @@ if game.SinglePlayer() then
 end
 
 local slidepunch = Angle(-1, 0, -2.5)
+local landslidepunch = Angle(-0.5, 0, 0)
 local trace_down = Vector(0, 0, 32)
 local trace_tbl = {}
 
@@ -64,7 +65,7 @@ local function SlideSurfaceSound(ply, pos)
     trace_tbl.filter = ply
     local tr = util.TraceLine(trace_tbl)
     local sndtable = slide_sounds[tr.MatType] or slide_sounds[0]
-    ply:EmitSound(sndtable[math.random(#sndtable)], 75, 100 + math.random(-4, 4))
+    ply:EmitSound(sndtable[math.random(#sndtable)], 50, 100 + math.random(-4, 4))
     ply:EmitSound("datae/fol_sprint_rustle_0" .. math.random(1, 5) .. ".wav")
 
     if ply:WaterLevel() > 0 then
@@ -73,7 +74,10 @@ local function SlideSurfaceSound(ply, pos)
     end
 end
 
-hook.Add("SetupMove", "qslide", function(ply, mv, cmd)
+local slidetime = math.max(0.1, qslide_duration:GetFloat())
+local wallJumpTime = 1
+local wallRunTime = 1.25
+hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     if not ply.OldDuckSpeed then
         ply.OldDuckSpeed = ply:GetDuckSpeed()
         ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
@@ -82,16 +86,19 @@ hook.Add("SetupMove", "qslide", function(ply, mv, cmd)
     local sliding = ply:GetSliding()
     local speed = mv:GetVelocity():Length()
     local runspeed = ply:GetRunSpeed()
-    local slidetime = math.max(0.1, qslide_duration:GetFloat())
     local ducking = mv:KeyDown(IN_DUCK)
     local crouching = ply:Crouching()
     local sprinting = mv:KeyDown(IN_SPEED)
     local onground = ply:OnGround()
+    local goingForward = mv:KeyDown(IN_FORWARD)
+    local goingLeft = mv:KeyDown(IN_MOVELEFT)
+    local goingRight = mv:KeyDown(IN_MOVERIGHT)
+    local jumping = mv:KeyDown(IN_JUMP)
     local CT = CurTime()
 
     if ducking and sprinting and onground and not sliding and not crouching and speed > runspeed * 0.5 then
         if timer.Exists(ply:SteamID64() .. "_SlideCD") then return end
-        timer.Create(ply:SteamID64() .. "_SlideCD", 0.9, 1, function()
+        timer.Create(ply:SteamID64() .. "_SlideCD", 1, 1, function()
         end)
         ply:SetSliding(true)
         ply:SetSlidingTime(CT + slidetime)
@@ -115,8 +122,6 @@ hook.Add("SetupMove", "qslide", function(ply, mv, cmd)
         ply:SetSliding(false)
         ply:SetSlidingTime(0)
     end
-
-    if not onground and timer.Exists(ply:SteamID64() .. "_SlideCD") then timer.Remove(ply:SteamID64() .. "_SlideCD") end
 
     sliding = ply:GetSliding()
 
@@ -150,7 +155,138 @@ hook.Add("SetupMove", "qslide", function(ply, mv, cmd)
         ply:SetDuckSpeed(ply.OldDuckSpeed)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
     end
+
+    -- WJ Left
+    if (goingLeft and jumping) then
+        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetRight() * 1)
+        tracedata.endpos = ply:EyePos() + (ply:GetRight() * 32)
+        tracedata.filter = ply
+        local traceWallLeft = util.TraceLine(tracedata)
+
+        if (traceWallLeft.Hit) then
+            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
+            ply:ViewPunch(walljumpleftpunch)
+            mv:SetVelocity(((ply:GetRight() * -1) * 175) + (ply:GetUp() * 280))
+            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
+        end
+    end
+
+    -- WJ Right
+    if (goingRight and jumping) then
+        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetRight() * -1)
+        tracedata.endpos = ply:EyePos() + (ply:GetRight() * -32)
+        tracedata.filter = ply
+        local traceWallRight = util.TraceLine(tracedata)
+
+        if (traceWallRight.Hit) then
+            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
+            ply:ViewPunch(walljumprightpunch)
+            mv:SetVelocity(((ply:GetRight() * 1) * 175) + (ply:GetUp() * 280))
+            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
+        end
+    end
+
+    -- WJ Forward (finish this b4 update)
+    if (goingForward and jumping) then
+        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
+        tracedata = {}
+        tracedata.start = ply:EyePos()
+        tracedata.endpos = ply:EyePos() + (ply:GetForward() * 18)
+        tracedata.filter = ply
+        local traceWallForward = util.TraceLine(tracedata)
+
+        if (traceWallForward.Hit) then
+            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
+            ply:ViewPunch(walljumpforwardpunch)
+            mv:SetVelocity(Vector(0, 0, 0))
+            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
+        end
+    end
+
+    -- WR Left
+    if goingLeft and sprinting then
+        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetUp() * -1) + (ply:GetForward() * 32)
+        tracedata.endpos = ply:EyePos() + (ply:GetUp() * -73) + (ply:GetForward() * 64)
+        tracedata.filter = ply
+        local traceWalLLow = util.TraceLine(tracedata)
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetForward() * 32)
+        tracedata.endpos = ply:EyePos() + (ply:GetForward() * 64)
+        tracedata.filter = ply
+        local traceWalLHigh = util.TraceLine(tracedata)
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetRight() * -1)
+        tracedata.endpos = ply:EyePos() + (ply:GetRight() * -32)
+        tracedata.filter = ply
+        local traceWalLRight = util.TraceLine(tracedata)
+
+        if not traceWalLLow.Hit and not traceWalLHigh.Hit and traceWalLRight.Hit then
+            timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
+            ply:ViewPunch(wallrunleftpunch)
+            ply:EmitSound("wallrun.wav")
+            mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * -200 +  ply:GetForward() * 360))
+        end
+    end
+
+    -- WR Right
+    if goingRight and sprinting then
+        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetUp() * -1) + (ply:GetForward() * 32)
+        tracedata.endpos = ply:EyePos() + (ply:GetUp() * -73) + (ply:GetForward() * 64)
+        tracedata.filter = ply
+        local traceWalRLow = util.TraceLine(tracedata)
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetForward() * 32)
+        tracedata.endpos = ply:EyePos() + (ply:GetForward() * 64)
+        tracedata.filter = ply
+        local traceWalRHigh = util.TraceLine(tracedata)
+
+        tracedata = {}
+        tracedata.start = ply:EyePos() + (ply:GetRight() * 1)
+        tracedata.endpos = ply:EyePos() + (ply:GetRight() * 32)
+        tracedata.filter = ply
+        local traceWalRRight = util.TraceLine(tracedata)
+
+        if not traceWalRLow.Hit and not traceWalRHigh.Hit and traceWalRRight.Hit then
+            timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
+            ply:ViewPunch(wallrunrightpunch)
+            ply:EmitSound("wallrun.wav")
+            mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * 200 +  ply:GetForward() * 360))
+        end
+    end
+
+    if onground then
+        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then timer.Remove(ply:SteamID64() .. "_WallJumpCD") end
+        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then timer.Remove(ply:SteamID64() .. "_WallRunCD") end
+    end
 end)
+
+hook.Add("OnPlayerHitGround", "SlideOnLanding", function(ply, speed)
+    if not ply:Crouching() or ply:KeyDown(IN_JUMP) then return end
+    if timer.Exists(ply:SteamID64() .. "_SlideCD") then return end
+    timer.Create(ply:SteamID64() .. "_SlideCD", 1, 1, function()
+    end)
+    ply:SetSliding(true)
+    ply:SetSlidingTime(CurTime() + (slidetime * 0.7))
+    ply:ViewPunch(landslidepunch)
+    ply:SetDuckSpeed(0.25)
+    ply:SetUnDuckSpeed(0.3)
+    local pos = ply:GetPos()
+    SlideSurfaceSound(ply, pos)
+    ply.SlidingAngle = ply:GetVelocity():Angle()
+end )
 
 hook.Add("StartCommand", "qslidespeed", function(ply, cmd)
     if ply:GetSliding() then
@@ -208,131 +344,4 @@ if CLIENT then
         end
     end)
 end
--- ^^ Original Slide script created by datæ
-
-hook.Add("SetupMove", "wallrunjump", function(ply, mv, cmd)
-    local wallJumpTime = 1
-    local wallRunTime = 1.25
-    local goingForward = mv:KeyDown(IN_FORWARD)
-    local goingLeft = mv:KeyDown(IN_MOVELEFT)
-    local goingRight = mv:KeyDown(IN_MOVERIGHT)
-    local jumping = mv:KeyDown(IN_JUMP)
-    local sprinting = mv:KeyDown(IN_SPEED)
-    local onground = ply:OnGround()
-
-    -- WJ Left
-    if (goingLeft and jumping) then
-        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
-        tracedata = {}
-        tracedata.start = ply:EyePos() + (ply:GetRight() * 1)
-        tracedata.endpos = ply:EyePos() + (ply:GetRight() * 32)
-        tracedata.filter = ply
-        local traceWallLeft = util.TraceLine(tracedata)
-
-        if (traceWallLeft.Hit) then
-            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
-            ply:ViewPunch(walljumpleftpunch)
-            mv:SetVelocity(((ply:GetRight() * -1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
-        end
-    end
-
-    -- WJ Right
-    if (goingRight and jumping) then
-        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
-        tracedata = {}
-		tracedata.start = ply:EyePos() + (ply:GetRight() * -1)
-		tracedata.endpos = ply:EyePos() + (ply:GetRight() * -32)
-		tracedata.filter = ply
-        local traceWallRight = util.TraceLine(tracedata)
-
-        if (traceWallRight.Hit) then
-            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
-            ply:ViewPunch(walljumprightpunch)
-            mv:SetVelocity(((ply:GetRight() * 1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
-        end
-    end
-
-    -- WJ Forward (finish this b4 update)
-    if (goingForward and jumping) then
-        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
-        tracedata = {}
-		tracedata.start = ply:EyePos()
-		tracedata.endpos = ply:EyePos()
-		tracedata.filter = ply
-        local traceWallForward = util.TraceLine(tracedata)
-
-        if (traceWallForward.Hit) then
-            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
-            ply:ViewPunch(walljumpforwardpunch)
-            mv:SetVelocity(((ply:GetForward() * -1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
-        end
-    end
-
-    -- WR Left
-    if goingLeft and sprinting then
-        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
-
-        tracedata = {}
-        tracedata.start = ply:EyePos() + (ply:GetUp() * -1) + (ply:GetForward() * 32)
-        tracedata.endpos = ply:EyePos() + (ply:GetUp() * -73) + (ply:GetForward() * 64)
-        tracedata.filter = ply
-        local traceWalLLow = util.TraceLine(tracedata)
-
-        tracedata = {}
-        tracedata.start = ply:EyePos() + (ply:GetForward() * 32)
-        tracedata.endpos = ply:EyePos() + (ply:GetForward() * 64)
-        tracedata.filter = ply
-        local traceWalLHigh = util.TraceLine(tracedata)
-
-        tracedata = {}
-        tracedata.start = ply:EyePos() + (ply:GetRight() * -1)
-        tracedata.endpos = ply:EyePos() + (ply:GetRight() * -32)
-        tracedata.filter = ply
-        local traceWalLRight = util.TraceLine(tracedata)
-
-        if not traceWalLLow.Hit and not traceWalLHigh.Hit and traceWalLRight.Hit then
-            timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
-            ply:ViewPunch(wallrunleftpunch)
-            ply:EmitSound("wallrun.wav")
-            mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * -200 +  ply:GetForward() * 360))
-        end
-    end
-
-    -- WR Right
-    if goingRight and sprinting then
-        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
-
-		tracedata = {}
-		tracedata.start = ply:EyePos() + (ply:GetUp() * -1) + (ply:GetForward() * 32)
-		tracedata.endpos = ply:EyePos() + (ply:GetUp() * -73) + (ply:GetForward() * 64)
-		tracedata.filter = ply
-		local traceWalRLow = util.TraceLine(tracedata)
-
-		tracedata = {}
-		tracedata.start = ply:EyePos() + (ply:GetForward() * 32)
-		tracedata.endpos = ply:EyePos() + (ply:GetForward() * 64)
-		tracedata.filter = ply
-		local traceWalRHigh = util.TraceLine(tracedata)
-
-		tracedata = {}
-		tracedata.start = ply:EyePos() + (ply:GetRight() * 1)
-		tracedata.endpos = ply:EyePos() + (ply:GetRight() * 32)
-		tracedata.filter = ply
-		local traceWalRRight = util.TraceLine(tracedata)
-
-        if not traceWalRLow.Hit and not traceWalRHigh.Hit and traceWalRRight.Hit then
-            timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
-            ply:ViewPunch(wallrunrightpunch)
-            ply:EmitSound("wallrun.wav")
-            mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * 200 +  ply:GetForward() * 360))
-        end
-    end
-
-    if onground then
-        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then timer.Remove(ply:SteamID64() .. "_WallJumpCD") end
-        if timer.Exists(ply:SteamID64() .. "_WallRunCD") then timer.Remove(ply:SteamID64() .. "_WallRunCD") end
-    end
-end)
+-- ^^ Original Sliding portion of script created by datæ

@@ -13,4 +13,3 @@ LOW PRIORITY | Backlog for new features and adjustments that are not important, 
 
 Party mode (random effects throughout match)
 Item unlock tracking through scoreboard
-Unique sliding sounds

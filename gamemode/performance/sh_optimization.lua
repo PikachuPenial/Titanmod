@@ -26,6 +26,36 @@ hook.Add("Initialize", "Optimization", function()
     end
 end)
 
+hook.Add("PlayerInitialSpawn", "anti-crash", function(ply)
+	ply:SendLua("RunConsoleCommand('r_drawmodeldecals', 0)")
+	ply:SendLua("RunConsoleCommand('r_maxmodeldecal', 50)")
+end)
+
+hook.Add("InitPostEntityMap", "DisableShadowControl", function()
+	local shadowexists = 0
+
+	for _, ent in pairs(ents.FindByClass("shadow_control")) do
+		ent:SetKeyValue("disableallshadows", 1)
+		shadowexists = 1
+	end
+
+	if shadowexists == 0 then
+		local ent = ents.Create("shadow_control")
+		if ent:IsValid() then
+			ent:SetKeyValue("disableallshadows", 1)
+			shadowexists = 1
+		end
+	end
+
+	for _, ent in pairs(ents.FindByClass("func_precipitation")) do
+		ent:Remove()
+	end
+
+	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do
+		ent:Remove()
+	end
+end)
+
 --Optimized surface and draw functions.
 if SERVER or SurfaceRewrite then return end
 SurfaceRewrite = true
