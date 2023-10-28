@@ -151,6 +151,11 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         if CT > ply:GetSlidingTime() then
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
+            ply:SetDuckSpeed(ply.OldDuckSpeed)
+            ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
+            ply:SetWalkSpeed(ply.OldWalkSpeed)
+            ply:SetJumpPower(ply.OldJumpPower)
+            ply:SetCrouchedWalkSpeed(ply.OldCrouchMult)
         end
     end
 
@@ -272,7 +277,7 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         local slidetime = math.max(0.1, qslide_duration:GetFloat())
         local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
 
-        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyDown(IN_JUMP) or (bindType == 1 and ply:KeyDown(IN_SPEED))) then
+        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyDown(IN_JUMP) or (bindType == 1 and ply:KeyPressed(IN_SPEED))) then
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
             ply:SetUnDuckSpeed(0.15)

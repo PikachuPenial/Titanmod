@@ -1,6 +1,6 @@
 **>GAMEPLAY**
 *MOVEMENT ADDITIONS/CHANGES*
-- Added Slide Cancelling (input a SPRINT while sliding)
+- Added Slide Cancelling (new settings determines which input cancels a slide)
 - Sliding speed is now affected by velocity (if the player is moving at a decent speed)
 - Canceling a Slide will dynamically impact the Slide cooldown
 - Your character will no longer lose velocity at the end of a Slide
@@ -18,7 +18,7 @@
 **>BALANCE**
 
 **>QOL & BUG FIXES**
-- Server tickrate is now 60hz (previously 30hz) (will monitor server performance to see if this works smoothly)
+- Official Servers now run on 60hz again (previously 30hz) (will monitor server performance to see if this runs smoothly)
 
 - Heavy optimization for many movement related functions
 
