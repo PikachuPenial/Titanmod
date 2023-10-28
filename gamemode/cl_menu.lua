@@ -2658,7 +2658,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 440)
+                    DockInputs:SetSize(0, 480)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -2806,6 +2806,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Melee Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Slide Cancel Type", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -2886,6 +2887,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.PlaySound("tmui/buttonrollover.wav")
                         selectedMeleeBind = meleeBind:GetSelectedNumber()
                         RunConsoleCommand("tm_meleebind", selectedMeleeBind)
+                    end
+
+                    local slideCancelType = DockInputs:Add("DComboBox")
+                    slideCancelType:SetPos(20, 430)
+                    slideCancelType:SetSize(100, 30)
+                    if GetConVar("tm_slidecanceltype"):GetInt() == 0 then slideCancelType:SetValue("Jump") elseif GetConVar("tm_slidecanceltype"):GetInt() == 1 then slideCancelType:SetValue("Sprint") end
+                    slideCancelType:AddChoice("Jump")
+                    slideCancelType:AddChoice("Sprint")
+                    slideCancelType.OnSelect = function(self, value)
+                        RunConsoleCommand("tm_slidecanceltype", value - 1)
                     end
 
                     DockGameplay.Paint = function(self, w, h)

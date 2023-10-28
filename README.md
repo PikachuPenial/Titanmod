@@ -28,7 +28,7 @@ Here are a few of Titanmods features:
 
 Players fight it out across multiple gamemodes and maps using a vast array of fun and unique weapons. Movement is key, with Titanmod allowing players to wall run, wall jump, slide, rocket jump, and more. With the skill-based gunplay and movement mechanics, players are rewarded for their individual skill.  
   
-Almost every aspact of Titanmod is configurable. Not only does it boast a wide array of settings for players to change at will, but Titanmod also comes with a config file, allowing server operators to change the experience to their liking.
+Almost every aspect of Titanmod is configurable. Not only does it boast a wide array of settings for players to change at will, but Titanmod also comes with a config file, allowing server operators to change the experience to their liking.
 
 *Thank you to everyone who have created content, playtested, found bugs, or simply those who have taken the time out of their day to check out my passion project, I love you guys <3*
 

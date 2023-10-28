@@ -49,13 +49,11 @@ if game.SinglePlayer() then
 end
 
 local slidepunch = Angle(-1, 0, -2.5)
-local landslidepunch = Angle(-0.5, 0, 0)
 local trace_down = Vector(0, 0, 32)
 local trace_tbl = {}
 
 local walljumpleftpunch = Angle(0, 0, -10)
 local walljumprightpunch = Angle(0, 0, 10)
-local walljumpforwardpunch = Angle(-5, 0, 0)
 local wallrunleftpunch = Angle(0, 0, 15)
 local wallrunrightpunch = Angle(0, 0, -15)
 
@@ -65,7 +63,7 @@ local function SlideSurfaceSound(ply, pos)
     trace_tbl.filter = ply
     local tr = util.TraceLine(trace_tbl)
     local sndtable = slide_sounds[tr.MatType] or slide_sounds[0]
-    ply:EmitSound(sndtable[math.random(#sndtable)], 50, 100 + math.random(-4, 4))
+    ply:EmitSound(sndtable[math.random(#sndtable)], math.random(40, 50), math.random(90, 110) + math.random(-4, 4))
     ply:EmitSound("datae/fol_sprint_rustle_0" .. math.random(1, 5) .. ".wav")
 
     if ply:WaterLevel() > 0 then
@@ -81,6 +79,10 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     if not ply.OldDuckSpeed then
         ply.OldDuckSpeed = ply:GetDuckSpeed()
         ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
+        ply.OldWalkSpeed = ply:GetWalkSpeed()
+        ply.OldRunSpeed = ply:GetRunSpeed()
+        ply.OldJumpPower = ply:GetJumpPower()
+        ply.OldCrouchMult = ply:GetCrouchedWalkSpeed()
     end
 
     local sliding = ply:GetSliding()
@@ -90,21 +92,24 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     local crouching = ply:Crouching()
     local sprinting = mv:KeyDown(IN_SPEED)
     local onground = ply:OnGround()
-    local goingForward = mv:KeyDown(IN_FORWARD)
     local goingLeft = mv:KeyDown(IN_MOVELEFT)
     local goingRight = mv:KeyDown(IN_MOVERIGHT)
     local jumping = mv:KeyDown(IN_JUMP)
     local CT = CurTime()
 
-    if ducking and sprinting and onground and not sliding and not crouching and speed > runspeed * 0.5 then
+    if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
         if timer.Exists(ply:SteamID64() .. "_SlideCD") then return end
-        timer.Create(ply:SteamID64() .. "_SlideCD", 1, 1, function()
+        timer.Create(ply:SteamID64() .. "_SlideCD", 1.4, 1, function()
         end)
+        ply.LandVelocity = mv:GetVelocity():Length()
         ply:SetSliding(true)
         ply:SetSlidingTime(CT + slidetime)
         ply:ViewPunch(slidepunch)
-        ply:SetDuckSpeed(0.25)
-        ply:SetUnDuckSpeed(0.3)
+        ply:SetDuckSpeed(0.2)
+        ply:SetUnDuckSpeed(0.2)
+        ply:SetWalkSpeed(ply.OldRunSpeed)
+        ply:SetJumpPower(0)
+        ply:SetCrouchedWalkSpeed(1)
         ply.SlidingAngle = mv:GetVelocity():Angle()
 
         if SERVER then
@@ -127,7 +132,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
 
     if sliding and mv:KeyDown(IN_DUCK) then
         local slidedelta = (ply:GetSlidingTime() - CT) / slidetime
-        speed = (runspeed * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slidetime)) * (1 / engine.TickInterval()) * engine.TickInterval() * qslide_speedmult:GetFloat()
+        speed = (math.max(276, ply.LandVelocity / 2.4 * slidetime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slidetime)) * (1 / engine.TickInterval()) * engine.TickInterval() * qslide_speedmult:GetFloat()
         mv:SetVelocity(ply.SlidingAngle:Forward() * speed)
         local pos = mv:GetOrigin()
 
@@ -154,6 +159,9 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     if not crouching and not sliding then
         ply:SetDuckSpeed(ply.OldDuckSpeed)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
+        ply:SetWalkSpeed(ply.OldWalkSpeed)
+        ply:SetJumpPower(ply.OldJumpPower)
+        ply:SetCrouchedWalkSpeed(ply.OldCrouchMult)
     end
 
     -- WJ Left
@@ -186,23 +194,6 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
             timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
             ply:ViewPunch(walljumprightpunch)
             mv:SetVelocity(((ply:GetRight() * 1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
-        end
-    end
-
-    -- WJ Forward (finish this b4 update)
-    if (goingForward and jumping) then
-        if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
-        tracedata = {}
-        tracedata.start = ply:EyePos()
-        tracedata.endpos = ply:EyePos() + (ply:GetForward() * 18)
-        tracedata.filter = ply
-        local traceWallForward = util.TraceLine(tracedata)
-
-        if (traceWallForward.Hit) then
-            timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
-            ply:ViewPunch(walljumpforwardpunch)
-            mv:SetVelocity(Vector(0, 0, 0))
             ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
         end
     end
@@ -273,29 +264,21 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     end
 end)
 
-hook.Add("OnPlayerHitGround", "SlideOnLanding", function(ply, speed)
-    if not ply:Crouching() or ply:KeyDown(IN_JUMP) then return end
-    if timer.Exists(ply:SteamID64() .. "_SlideCD") then return end
-    timer.Create(ply:SteamID64() .. "_SlideCD", 1, 1, function()
-    end)
-    ply:SetSliding(true)
-    ply:SetSlidingTime(CurTime() + (slidetime * 0.7))
-    ply:ViewPunch(landslidepunch)
-    ply:SetDuckSpeed(0.25)
-    ply:SetUnDuckSpeed(0.3)
-    local pos = ply:GetPos()
-    SlideSurfaceSound(ply, pos)
-    ply.SlidingAngle = ply:GetVelocity():Angle()
-end )
-
-hook.Add("StartCommand", "qslidespeed", function(ply, cmd)
+hook.Add("StartCommand", "SlideControl", function(ply, cmd)
     if ply:GetSliding() then
-        cmd:RemoveKey(IN_SPEED)
-        cmd:RemoveKey(IN_JUMP)
         cmd:ClearMovement()
+        local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
+        if bindType == 0 then cmd:RemoveKey(IN_SPEED) elseif bindType == 1 then cmd:RemoveKey(IN_JUMP) end
         local slidetime = math.max(0.1, qslide_duration:GetFloat())
+        local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
 
-        if (ply:GetSlidingTime() - CurTime()) / slidetime > 0.6 then
+        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyDown(IN_JUMP) or (bindType == 1 and ply:KeyDown(IN_SPEED))) then
+            ply:SetSliding(false)
+            ply:SetSlidingTime(0)
+            ply:SetUnDuckSpeed(0.15)
+            timer.Create(ply:SteamID64() .. "_SlideCD", trueslidetime + 0.1, 1, function()
+            end)
+        elseif trueslidetime > 0.45 then
             cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
         end
     end
