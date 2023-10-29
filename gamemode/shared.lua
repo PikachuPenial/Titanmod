@@ -174,9 +174,9 @@ hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon)
     return false
 end)
 
---Disable UBGLs
+--Disable specific TFA attachments
 hook.Add("TFABase_ShouldLoadAttachment", "DisableUBGL", function(id, path)
-    if id and (id == "ins2_fg_gp25" or id == "ins2_fg_m203" or id == "r6s_flashhider_2" or id == "r6s_h_barrel" or id == "am_gib" or id == "flashlight" or id == "flashlight_lastac" or id == "ins2_eft_lastac2" or id == "tfa_at_fml_flashlight" or id == "un_flashlight" or id == "ins2_ub_flashlight") then
+    if id and (id == "ins2_fg_gp25" or id == "ins2_fg_m203" or id == "r6s_flashhider_2" or id == "r6s_h_barrel" or id == "am_gib" or id == "am_magnum" or id == "am_match" or id == "flashlight" or id == "flashlight_lastac" or id == "ins2_eft_lastac2" or id == "tfa_at_fml_flashlight" or id == "un_flashlight" or id == "ins2_ub_flashlight") then
         return false
     end
 end)

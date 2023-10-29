@@ -277,7 +277,7 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         local slidetime = math.max(0.1, qslide_duration:GetFloat())
         local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
 
-        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyPressed(IN_JUMP)) or (bindType == 1 and ply:KeyPressed(IN_SPEED)) then
+        if (trueslidetime < 0.79 and bindType == 0 and ply:KeyPressed(IN_JUMP)) or (trueslidetime < 0.79 and bindType == 1 and ply:KeyPressed(IN_SPEED)) then
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
             ply:SetDuckSpeed(0.75)
