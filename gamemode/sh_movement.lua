@@ -277,13 +277,15 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         local slidetime = math.max(0.1, qslide_duration:GetFloat())
         local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
 
-        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyDown(IN_JUMP) or (bindType == 1 and ply:KeyPressed(IN_SPEED))) then
+        if trueslidetime < 0.79 and (bindType == 0 and ply:KeyPressed(IN_JUMP)) or (bindType == 1 and ply:KeyPressed(IN_SPEED)) then
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
+            ply:SetDuckSpeed(0.75)
             ply:SetUnDuckSpeed(0.15)
             timer.Create(ply:SteamID64() .. "_SlideCD", trueslidetime + 0.1, 1, function()
             end)
-        elseif trueslidetime > 0.45 then
+        end
+        if trueslidetime > 0.45 then
             cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
         end
     end

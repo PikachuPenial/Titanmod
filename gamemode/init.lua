@@ -240,7 +240,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	--Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu.
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
-		if victim:GetNWBool("mainmenu") == false and victim ~= nil then
+		if victim:GetNWBool("mainmenu") == false and victim != nil then
 			if not IsValid(victim) then return end
 			if GetGlobal2Bool("tm_matchended") == true then return end
 			victim:Spawn()
@@ -304,7 +304,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Broadcast()
 
-		--This will start the Kill Cam on a players death, this could look and run much better, but I don't feel like breaking anything right now.
 		victim:SpectateEntity(attacker)
 		victim:Spectate(OBS_MODE_DEATHCAM)
 
@@ -489,11 +488,7 @@ if healthRegeneration == true then
 	local function Regeneration()
 		for _, ply in pairs(player.GetAll()) do
 			if ply:Alive() then
-
-				if (ply:Health() < (ply.LastHealth or 0)) then
-					ply.HealthRegenNext = CurTime() + healthRegenDamageDelay
-				end
-
+				if (ply:Health() < (ply.LastHealth or 0)) then ply.HealthRegenNext = CurTime() + healthRegenDamageDelay end
 				if (CurTime() > (ply.HealthRegenNext or 0)) then
 					ply.HealthRegen = (ply.HealthRegen or 0) + FrameTime()
 					if (ply.HealthRegen >= healthRegenSpeed) then
@@ -819,23 +814,6 @@ else
 			ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
 		end
 	end)
-end
-
---Allows [F1 - F4] to trigger the Main Menu if the player is not alive.
-function GM:ShowHelp(ply)
-	if not ply:Alive() then OpenMainMenu() end
-end
-
-function GM:ShowTeam(ply)
-	if not ply:Alive() then OpenMainMenu() end
-end
-
-function GM:ShowSpare1(ply)
-	if not ply:Alive() then OpenMainMenu() end
-end
-
-function GM:ShowSpare2(ply)
-	if not ply:Alive() then OpenMainMenu() end
 end
 
 --Modifies base game voice chat to be proximity based.
