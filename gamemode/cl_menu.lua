@@ -2804,7 +2804,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Melee Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Slide Cancel Type", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
                     end
 
@@ -2891,7 +2891,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local slideCancelType = DockInputs:Add("DComboBox")
                     slideCancelType:SetPos(20, 430)
                     slideCancelType:SetSize(100, 30)
-                    if GetConVar("tm_slidecanceltype"):GetInt() == 0 then slideCancelType:SetValue("Jump") elseif GetConVar("tm_slidecanceltype"):GetInt() == 1 then slideCancelType:SetValue("Sprint") end
+                    if GetConVar("tm_slidecanceltype"):GetInt() == 0 then slideCancelType:SetValue("Release") elseif GetConVar("tm_slidecanceltype"):GetInt() == 1 then slideCancelType:SetValue("Jump") elseif GetConVar("tm_slidecanceltype"):GetInt() == 2 then slideCancelType:SetValue("Sprint") end
+                    slideCancelType:AddChoice("Release")
                     slideCancelType:AddChoice("Jump")
                     slideCancelType:AddChoice("Sprint")
                     slideCancelType.OnSelect = function(self, value)

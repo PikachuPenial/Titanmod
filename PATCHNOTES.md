@@ -11,7 +11,7 @@
 - Removed Jump Sliding (was very powerful, but was only used by a handful of players, giving them a big advantage)
 
 *NEW SETTING*
-- Slide Cancel Type
+- Slide Cancel Type (Release, Jump, or Sprint)
 
 **>MAPS**
 

@@ -82,7 +82,6 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         ply.OldWalkSpeed = ply:GetWalkSpeed()
         ply.OldRunSpeed = ply:GetRunSpeed()
         ply.OldJumpPower = ply:GetJumpPower()
-        ply.OldCrouchMult = ply:GetCrouchedWalkSpeed()
     end
 
     local sliding = ply:GetSliding()
@@ -99,16 +98,20 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
 
     if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
         if timer.Exists(ply:SteamID64() .. "_SlideCD") then return end
-        timer.Create(ply:SteamID64() .. "_SlideCD", 1.4, 1, function()
+        if not ply.CanSlide then return end
+        timer.Create(ply:SteamID64() .. "_SlideCD", 1, 1, function()
         end)
+        timer.Create(ply:SteamID64() .. "_WalkReset", 0.8, 1, function()
+            ply:SetWalkSpeed(ply.OldWalkSpeed)
+        end)
+        ply.CanSlide = false
         ply.LandVelocity = mv:GetVelocity():Length()
         ply:SetSliding(true)
         ply:SetSlidingTime(CT + slidetime)
         ply:ViewPunch(slidepunch)
-        ply:SetCrouchedWalkSpeed(0.36)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
-        ply:SetWalkSpeed(ply.OldRunSpeed)
+        ply:SetWalkSpeed(458) // This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
         ply:SetJumpPower(0)
         ply.SlidingAngle = mv:GetVelocity():Angle()
 
@@ -155,7 +158,6 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
             ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
             ply:SetWalkSpeed(ply.OldWalkSpeed)
             ply:SetJumpPower(ply.OldJumpPower)
-            ply:SetCrouchedWalkSpeed(ply.OldCrouchMult)
         end
     end
 
@@ -166,7 +168,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
         ply:SetWalkSpeed(ply.OldWalkSpeed)
         ply:SetJumpPower(ply.OldJumpPower)
-        ply:SetCrouchedWalkSpeed(ply.OldCrouchMult)
+        ply.CanSlide = true
     end
 
     // WJ Left
@@ -273,22 +275,21 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
     if ply:GetSliding() then
         cmd:ClearMovement()
         local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
-        if bindType == 0 then cmd:RemoveKey(IN_SPEED) elseif bindType == 1 then cmd:RemoveKey(IN_JUMP) end
+        if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
+        if bindType != 0 then slidelock = 0.45 else slidelock = 0.79 end
         local slidetime = math.max(0.1, qslide_duration:GetFloat())
         local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
 
-        if (trueslidetime < 0.79 and bindType == 0 and ply:KeyPressed(IN_JUMP)) or (trueslidetime < 0.79 and bindType == 1 and ply:KeyPressed(IN_SPEED)) then
+        if (trueslidetime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueslidetime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueslidetime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
+            cmd:RemoveKey(IN_DUCK)
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
             ply:SetDuckSpeed(0.75)
             ply:SetUnDuckSpeed(0.15)
-            timer.Create(ply:SteamID64() .. "_SlideCD", trueslidetime + 0.1, 1, function()
-            end)
         end
-        if trueslidetime > 0.45 then
+
+        if trueslidetime > slidelock then
             cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
-        else
-            ply:SetWalkSpeed(765) // This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
         end
     end
 end)
