@@ -1,4 +1,3 @@
-//Color array, saving space
 local white = Color(255, 255, 255, 255)
 local gray = Color(50, 50, 50, 185)
 local lightGray = Color(40, 40, 40, 200)
@@ -216,7 +215,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Entries update on match start/player disconnect | Only top 50 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
 
-                        if SelectedBoardName ~= nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
+                        if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
                         draw.SimpleText("#", "StreakText", 20, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Name", "StreakText", 85, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Stat", "StreakText", 710, 185, white, TEXT_ALIGN_RIGHT)
@@ -250,10 +249,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                         statistics:AddOption("Score", function() LeaderboardSelected("Score", "playerScore") end)
                         statistics:AddOption("Kills", function() LeaderboardSelected("Kills", "playerKills") end)
                         statistics:AddOption("Deaths", function() LeaderboardSelected("Deaths", "playerDeaths") end)
-                        //statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
+                        // statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
                         statistics:AddOption("Matches Played", function() LeaderboardSelected("Matches Played", "matchesPlayed") end)
                         statistics:AddOption("Matches Won", function() LeaderboardSelected("Matches Won", "matchesWon") end)
-                        //statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
+                        // statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
                         statistics:AddOption("Highest Killstreak", function() LeaderboardSelected("Highest Killstreak", "highestKillStreak") end)
                         statistics:AddOption("Highest Kill Game", function() LeaderboardSelected("Highest Kill Game", "highestKillGame") end)
                         statistics:AddOption("Farthest Kill", function() LeaderboardSelected("Farthest Kill", "farthestKill") end)
@@ -534,7 +533,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
             end
 
-            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end //Force shows the Tutorial is a player joins for the first time
+            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end // Force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
             TutorialButton:SetPos(8, scrH - 96)
@@ -710,7 +709,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
-                    //Checking for the players currently equipped card.
+                    // Checking for the players currently equipped card
                     for k, v in pairs(cardArray) do
                         if v[1] == currentCard then
                             newCard = v[1]
@@ -754,7 +753,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedCards:SetSize(20, 20)
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
-                    //Default Playercards
+                    // Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 90)
@@ -763,7 +762,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockDefaultCards:Dock(TOP)
                     DockDefaultCards:SetSize(0, 500)
 
-                    //Leveling related Playercards
+                    // Leveling related Playercards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
                     TextLevel:Dock(TOP)
                     TextLevel:SetSize(0, 90)
@@ -772,7 +771,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockLevelCards:Dock(TOP)
                     DockLevelCards:SetSize(0, 2030)
 
-                    //Kill related Playercards
+                    // Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
                     TextKill:Dock(TOP)
                     TextKill:SetSize(0, 90)
@@ -781,7 +780,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockKillCards:Dock(TOP)
                     DockKillCards:SetSize(0, 250)
 
-                    //Accolade related Playercards
+                    // Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 90)
@@ -790,7 +789,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockAccoladeCards:Dock(TOP)
                     DockAccoladeCards:SetSize(0, 1198)
 
-                    //Mastery related Playercards
+                    // Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
                     TextMastery:SetSize(0, 90)
@@ -799,7 +798,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockMasteryCards:Dock(TOP)
                     DockMasteryCards:SetSize(0, 5442)
 
-                    //Color related Playercards
+                    // Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
                     TextColor:SetSize(0, 90)
@@ -808,7 +807,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockColorCards:Dock(TOP)
                     DockColorCards:SetSize(0, 500)
 
-                    //Pride related Playercards
+                    // Pride related Playercards
                     local TextPride = vgui.Create("DPanel", CardScroller)
                     TextPride:Dock(TOP)
                     TextPride:SetSize(0, 90)
@@ -817,7 +816,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockPrideCards:Dock(TOP)
                     DockPrideCards:SetSize(0, 416)
 
-                    //Creating playercard lists
+                    // Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
                     DefaultCardList:Dock(TOP)
                     DefaultCardList:SetSpaceY(5)
@@ -917,7 +916,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     PreviewCardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
-                        if currentCard ~= nil then
+                        if currentCard != nil then
                             draw.SimpleText(newCardName, "PlayerNotiName", 5, 88, white, TEXT_ALIGN_LEFT)
                             draw.SimpleText(newCardDesc, "Health", 5, 135, white, TEXT_ALIGN_LEFT)
                         end
@@ -1788,7 +1787,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
 
-                    //Checking for the players currently equipped model.
+                    // Checking for the players currently equipped model
                     for k, v in pairs(modelArray) do
                         if v[1] == currentModel then
                             newModel = v[1]
@@ -1839,7 +1838,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedModels:SetSize(20, 20)
                     function HideLockedModels:OnChange() TriggerSound("click") end
 
-                    //Default Playermodels
+                    // Default Playermodels
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 90)
@@ -1848,7 +1847,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModels:Dock(TOP)
                     DockModels:SetSize(0, 465)
 
-                    //Kills Playermodels
+                    // Kills Playermodels
                     local TextKills = vgui.Create("DPanel", CustomizeScroller)
                     TextKills:Dock(TOP)
                     TextKills:SetSize(0, 90)
@@ -1857,7 +1856,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsKills:Dock(TOP)
                     DockModelsKills:SetSize(0, 310)
 
-                    //Streak Playermodels
+                    // Streak Playermodels
                     local TextStreak = vgui.Create("DPanel", CustomizeScroller)
                     TextStreak:Dock(TOP)
                     TextStreak:SetSize(0, 90)
@@ -1866,7 +1865,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsStreak:Dock(TOP)
                     DockModelsStreak:SetSize(0, 310)
 
-                    //Accolade Playermodels
+                    // Accolade Playermodels
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 90)
@@ -1875,7 +1874,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsAccolade:Dock(TOP)
                     DockModelsAccolade:SetSize(0, 1550)
 
-                    //Creating playermodel lists
+                    // Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
                     DefaultModelList:SetSpaceY(5)
@@ -1938,7 +1937,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     SelectedModelHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
 
-                        if newModel ~= nil then
+                        if newModel != nil then
                             draw.SimpleText(newModelName, "PlayerNotiName", w / 2, 2.5, white, TEXT_ALIGN_CENTER)
                         end
 
@@ -3092,7 +3091,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairStyle:SetSize(100, 30)
                     if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
                     crosshairStyle:AddChoice("Static")
-                    //crosshairStyle:AddChoice("Dynamic")
+                    // crosshairStyle:AddChoice("Dynamic")
                     crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) end
 
                     local crosshairDot = DockCrosshair:Add("DCheckBox")
@@ -4237,7 +4236,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
     end
 
-    if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") ~= true then
+    if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") != true then
         local ResWarning = vgui.Create("DPanel")
         ResWarning:SetPos(0, 0)
         ResWarning:SetSize(scrW, scrH)

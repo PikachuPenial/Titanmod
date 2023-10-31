@@ -169,7 +169,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         ply:SetCrouchedWalkSpeed(ply.OldCrouchMult)
     end
 
-    -- WJ Left
+    // WJ Left
     if (goingLeft and jumping) then
         if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
         tracedata = {}
@@ -186,7 +186,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         end
     end
 
-    -- WJ Right
+    // WJ Right
     if (goingRight and jumping) then
         if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then return end
         tracedata = {}
@@ -203,7 +203,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         end
     end
 
-    -- WR Left
+    // WR Left
     if goingLeft and sprinting then
         if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
 
@@ -233,7 +233,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         end
     end
 
-    -- WR Right
+    // WR Right
     if goingRight and sprinting then
         if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
 
@@ -288,7 +288,7 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         if trueslidetime > 0.45 then
             cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
         else
-            ply:SetWalkSpeed(765) -- This is SUCH A HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
+            ply:SetWalkSpeed(765) // This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
         end
     end
 end)
@@ -302,7 +302,7 @@ if CLIENT then
         if not qslide_view:GetBool() then return end
         local sliding = ply:GetSliding()
 
-        if not ply:ShouldDrawLocalPlayer() and sliding or lastz ~= 0 then
+        if not ply:ShouldDrawLocalPlayer() and sliding or lastz != 0 then
             if not sliding then
                 t = t + (2 * FrameTime())
             else
@@ -336,4 +336,4 @@ if CLIENT then
         end
     end)
 end
--- ^^ Original Sliding portion of script created by datæ
+// ^^ Original Sliding portion of script created by datæ

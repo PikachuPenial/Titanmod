@@ -8,10 +8,10 @@ local val
 local wt
 function M_Weapon:__index(key)
 	val = M_Weapon[key]
-	if val ~= nil then return val end
+	if val != nil then return val end
 
 	val = M_Entity[key]
-	if val ~= nil then return val end
+	if val != nil then return val end
 
 	if key == "Owner" then return E_GetOwner(self) end
 

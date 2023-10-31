@@ -1,4 +1,3 @@
-//Color array, saving space
 local white = Color(255, 255, 255, 255)
 
 local ScoreboardDerma
@@ -101,9 +100,8 @@ function GM:ScoreboardShow()
 		MapInfoPanel:Dock(TOP)
 		MapInfoPanel:SetSize(0, 100)
 
-		//Displays information about the current map, the map vote, and the server.
 		MapInfoPanel.Paint = function()
-			if mapName ~= nil then
+			if mapName != nil then
 				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
 			else
@@ -111,7 +109,7 @@ function GM:ScoreboardShow()
 			end
 		end
 
-		if mapName ~= nil then
+		if mapName != nil then
 			MapThumb = vgui.Create("DImage", MapInfoPanel)
 			MapThumb:SetPos(0, 5)
 			MapThumb:SetSize(100, 100)
@@ -122,7 +120,6 @@ function GM:ScoreboardShow()
 		LevelingPanel:Dock(TOP)
 		LevelingPanel:SetSize(0, 30)
 
-		//Displays information about the current map, the map vote, and the server.
 		LevelingPanel.Paint = function(self, w, h)
 			draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel") .. " | " .. LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakText", 0, -3, white, TEXT_ALIGN_LEFT)
 
@@ -130,7 +127,7 @@ function GM:ScoreboardShow()
 			surface.DrawRect(0, 20, 630, 10)
 
 			surface.SetDrawColor(255, 255, 0, 50)
-			if LocalPlayer:GetNWInt("playerLevel") ~= 60 then
+			if LocalPlayer:GetNWInt("playerLevel") != 60 then
 				surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10)
 			end
 		end
@@ -144,7 +141,7 @@ function GM:ScoreboardShow()
 		if activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) else table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) end
 
 		for k, v in pairs(connectedPlayers) do
-			//Constants for basic player information, much more optimized than checking every frame.
+			// Constants for basic player information, much more optimized than checking every frame
 			local name = v:GetName()
 			local prestige = v:GetNWInt("playerPrestige")
 			local level = v:GetNWInt("playerLevel")
@@ -155,7 +152,7 @@ function GM:ScoreboardShow()
 			local usergroup
 			if v:IsUserGroup("dev") then usergroup = "dev" elseif v:IsUserGroup("mod") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
 
-			//Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet.
+			// Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
 			if v:Frags() <= 0 then
 				ratio = 0
 			elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -166,7 +163,6 @@ function GM:ScoreboardShow()
 
 			local ratioRounded = math.Round(ratio, 2)
 
-			//Displays the players statistics.
 			local PlayerPanel = vgui.Create("DPanel", PlayerList)
 			PlayerPanel:SetSize(PlayerList:GetWide(), 100)
 			PlayerPanel:SetPos(0, 0)
@@ -191,7 +187,6 @@ function GM:ScoreboardShow()
 				if usergroup == "dev" then draw.SimpleText("Developer", "StreakText", 315, 72, Color(205, 255, 0), TEXT_ALIGN_LEFT) elseif usergroup == "mod" then draw.SimpleText("Moderator", "StreakText", 315, 72, Color(255, 0, 100), TEXT_ALIGN_LEFT) elseif usergroup == "contributor" then draw.SimpleText("Contributor", "StreakText", 315, 72, Color(0, 110, 255), TEXT_ALIGN_LEFT) end
 			end
 
-			//Displays a players calling card and profile picture.
 			local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
 			PlayerCallingCard:SetPos(10, 10)
 			PlayerCallingCard:SetSize(240, 80)
@@ -203,7 +198,7 @@ function GM:ScoreboardShow()
 			PlayerProfilePicture:SetSize(70, 70)
 			PlayerProfilePicture:SetPlayer(v, 184)
 
-			//Allows the players profile to be clicked to display various options revolving around the specific player.
+			// Allows the players profile to be clicked to display various options revolving around the specific player
 			PlayerProfilePicture.OnMousePressed = function()
 				local Menu = DermaMenu()
 

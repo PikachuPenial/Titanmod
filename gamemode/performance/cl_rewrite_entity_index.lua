@@ -6,7 +6,7 @@ local val
 local et
 function M_Entity:__index(key)
 	val = M_Entity[key]
-	if val ~= nil then return val end
+	if val != nil then return val end
 
 	et = E_GetTable(self)
 	if et then
