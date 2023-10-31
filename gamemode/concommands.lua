@@ -1,4 +1,4 @@
---Allows the player to save their local stats to the sv.db file without having to leave the server.
+//Allows the player to save their local stats to the sv.db file without having to leave the server.
 function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	if forceDisableProgression == true then return end
@@ -28,7 +28,7 @@ function ForceSave(ply, cmd, args)
 end
 concommand.Add("tm_forcesave", ForceSave)
 
---Allows the player to prestige if they have hit the max level cap (Level 60).
+//Allows the player to prestige if they have hit the max level cap (Level 60).
 function PlayerPrestige(ply, cmd, args)
 	if ply:GetNWInt("playerLevel") == 60 then
 		ply:SetNWInt("playerLevel", 1)
@@ -39,7 +39,7 @@ function PlayerPrestige(ply, cmd, args)
 end
 concommand.Add("tm_prestige", PlayerPrestige)
 
---Allows the player to test the look and feel of their customized kill/death/level up UI's.
+//Allows the player to test the look and feel of their customized kill/death/level up UI's.
 function HUDTestKill(ply, cmd, args)
 	net.Start("NotifyKill")
 	net.WriteEntity(ply)
@@ -75,7 +75,7 @@ function HUDTestTimeWarning(ply, cmd, args)
 end
 concommand.Add("tm_hud_testtimewarning", HUDTestTimeWarning)
 
---Allows the player to wipe their account and start fresh.
+//Allows the player to wipe their account and start fresh.
 function PlayerAccountWipe(ply, cmd, args)
 	if ply:GetNWBool("mainmenu") == false then return end
 	ply:SetNWInt("playerKills", 0)
@@ -100,14 +100,14 @@ function PlayerAccountWipe(ply, cmd, args)
 	ply:SetNWInt("playerAccoladeBuzzkill", 0)
 	ply:SetNWInt("playerAccoladeClutch", 0)
 
-	--Checking if PData exists for every single fucking weapon, GG.
+	//Checking if PData exists for every single fucking weapon, GG.
 	for k, v in pairs(weaponArray) do
 		ply:SetNWInt("killsWith_" .. v[1], 0)
 	end
 end
 concommand.Add("tm_wipeplayeraccount_cannotbeundone", PlayerAccountWipe)
 
---Allows the player to reset their custom HUD settings to default.
+//Allows the player to reset their custom HUD settings to default.
 function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_bounds_x", 15)
 	RunConsoleCommand("tm_hud_bounds_y", 15)

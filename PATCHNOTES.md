@@ -18,6 +18,8 @@
 **>BALANCE**
 - Removed **Magnum Ammunition** from all weapons (was a free damage upgrade, couldn't tell when it was being used, new players who didn't learn to equip it were at a big disadvantage)
 - Removed **Match Ammunition** from all weapons (wasn't very useful, was basically a free recoil reduction)
+- All Secondaries (excluding hand cannons/revolverss) now have point fire as an attachment option
+- Point Fire no longer requires a laser sight to be attached to a weapon
 
 *M3 Grease Gun*
 - Reduced damage to 30 (previously 32)
@@ -48,3 +50,5 @@
 - Adjusted visual effect of mantling
 
 - Fixed some secondaries not firing underwater
+
+- Removed Show Crosshair while aimed down sights setting due to it being powerful when used with point firing

@@ -105,11 +105,11 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         ply:SetSliding(true)
         ply:SetSlidingTime(CT + slidetime)
         ply:ViewPunch(slidepunch)
+        ply:SetCrouchedWalkSpeed(0.36)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
         ply:SetWalkSpeed(ply.OldRunSpeed)
         ply:SetJumpPower(0)
-        ply:SetCrouchedWalkSpeed(1)
         ply.SlidingAngle = mv:GetVelocity():Angle()
 
         if SERVER then
@@ -287,6 +287,8 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         end
         if trueslidetime > 0.45 then
             cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
+        else
+            ply:SetWalkSpeed(765) -- This is SUCH A HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
         end
     end
 end)

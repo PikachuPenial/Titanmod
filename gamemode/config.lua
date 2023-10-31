@@ -4,7 +4,7 @@
     If you do not understand what a certain setting does, I would recommend not changing it.
 ]]--
 
-local UseConfigConvars = true   --Disables the legacy Config, and allows sv_ ConVars to adjust the Titanmod Config.
+local UseConfigConvars = true   // Disables the legacy Config, and allows sv_ ConVars to adjust the Titanmod Config.
 
 if UseConfigConvars then
     playerHealth = GetConVar("sv_tm_player_health"):GetInt()
@@ -37,57 +37,57 @@ if UseConfigConvars then
     proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
 else
-    --Player settings
-    playerHealth = 100              --The max health of the player.
-    playerSpeedMulti = 1            --The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
-    playerGravityMulti = 1          --The multiplier for the strength of gravity affecting the player.
-    playerJumpMulti = 1             --The multiplier for the strength of the players jump.
-    playerDuckStateMulti = 1        --The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
-    playerCrouchWalkSpeedMulti = 1  --The multiplier of the players wakling speed while crouched.
-    playerSlideSpeedMulti = 1.55    --The multiplier of the players speed while sliding.
-    playerSlideDuration = 1         --The time (in seconds) that a players slide lasts.
-    healthRegeneration = true       --Enable or disable health regeneration on players after not taking damage for a set amount of time.
-    healthRegenSpeed = 0.12         --The speed of the players health regeneration.
-    healthRegenDamageDelay = 3.5    --The time (in seconds) from when the player was last hit to begin health regeneration.
+    //Player settings
+    playerHealth = 100              // The max health of the player.
+    playerSpeedMulti = 1            // The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds.)
+    playerGravityMulti = 1          // The multiplier for the strength of gravity affecting the player.
+    playerJumpMulti = 1             // The multiplier for the strength of the players jump.
+    playerDuckStateMulti = 1        // The multiplier of the speed at which the player enters/exits a crocuh after the key is pressed/released.
+    playerCrouchWalkSpeedMulti = 1  // The multiplier of the players wakling speed while crouched.
+    playerSlideSpeedMulti = 1.55    // The multiplier of the players speed while sliding.
+    playerSlideDuration = 1         // The time (in seconds) that a players slide lasts.
+    healthRegeneration = true       // Enable or disable health regeneration on players after not taking damage for a set amount of time.
+    healthRegenSpeed = 0.12         // The speed of the players health regeneration.
+    healthRegenDamageDelay = 3.5    // The time (in seconds) from when the player was last hit to begin health regeneration.
 
-    --Progression settings
-    forceDisableProgression = false --Any progress or unlocks made during a play session will be reset upon leaving.
-    xpMultiplier = 1                --Multiplies all sources of XP (kills, accolades, and more.)
+    // Progression settings
+    forceDisableProgression = false // Any progress or unlocks made during a play session will be reset upon leaving.
+    xpMultiplier = 1                // Multiplies all sources of XP (kills, accolades, and more.)
 
-    --Universal settings
-    usePrimary = true               --Enable primary weapons for the players loadout.
-    useSecondary = true             --Enable secondary weapons for the players loadout.
-    useMelee = true                 --Enable melee weapons/gadgets  for the players loadout.
-    grappleCooldown = 15            --The cooldown (in sceonds) of the grappling hook after being used.
+    //Universal settings
+    usePrimary = true               //Enable primary weapons for the players loadout.
+    useSecondary = true             //Enable secondary weapons for the players loadout.
+    useMelee = true                 //Enable melee weapons/gadgets  for the players loadout.
+    grappleCooldown = 15            //The cooldown (in sceonds) of the grappling hook after being used.
 
-    --Fiesta settings
-    fiestaShuffleTime = 30          --Sets the amount of weapons a player needs to get kills with to win a match.
+    //Fiesta settings
+    fiestaShuffleTime = 30          //Sets the amount of weapons a player needs to get kills with to win a match.
 
-    --Gun Game settings
-    ggLadderSize = 26               --Sets the amount of weapons a player needs to get kills with to win a match.
+    //Gun Game settings
+    ggLadderSize = 26               //Sets the amount of weapons a player needs to get kills with to win a match.
 
-    --Cranked settings
-    crankedSelfDestructTime = 25    --Sets the amount of weapons a player needs to get kills with to win a match.
-    crankedBuffMultiplier = 1.33    --The multiplier for the buffs that being Cranked gives to a player
+    //Cranked settings
+    crankedSelfDestructTime = 25    //Sets the amount of weapons a player needs to get kills with to win a match.
+    crankedBuffMultiplier = 1.33    //The multiplier for the buffs that being Cranked gives to a player
 
-    --King Of The Hill settings
-    kothScoringInterval = 1         --The time (in seconds) that a hill check is done, this is repeating (obviously).
-    kothScore = 15                  --Sets the amount of score that is given to a player standing on the hill.
+    //King Of The Hill settings
+    kothScoringInterval = 1         //The time (in seconds) that a hill check is done, this is repeating (obviously).
+    kothScore = 15                  //Sets the amount of score that is given to a player standing on the hill.
 
-    --VIP settings
-    vipScoringInterval = 1          --The time (in seconds) that a VIP check is done, this is repeating (obviously).
-    vipScore = 15                   --Sets the amount of score that is given to the VIP.
+    //VIP settings
+    vipScoringInterval = 1          //The time (in seconds) that a VIP check is done, this is repeating (obviously).
+    vipScore = 15                   //Sets the amount of score that is given to the VIP.
 
-    --Mechanic settings
-    grappleKillReset = true         --Enable or disable the grapple cooldown reset on a player kill.
-    grappleRange = 850              --The length (in units) that the grappling hook can travel too before despawning.
-    proxChatRange = 1000            --The thresehold in distance where players can hear other players over proximity voice chat.
+    //Mechanic settings
+    grappleKillReset = true         //Enable or disable the grapple cooldown reset on a player kill.
+    grappleRange = 850              //The length (in units) that the grappling hook can travel too before despawning.
+    proxChatRange = 1000            //The thresehold in distance where players can hear other players over proximity voice chat.
 
-    matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    --The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
+    matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    //The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar.
 end
 
---GAMEMODES
---Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
+//GAMEMODES
+//Don't mess with this, there is not a way to create or easily modify gamemodes at the current moment. Any changable gamemode settings will be found above.
 gamemodeArray = {}
 gamemodeArray[1] = {0, "FFA", "Kill others with randomly generated loadouts.", true}
 gamemodeArray[2] = {1, "Cranked", "FFA with kills granting the player increased movement capabilities.", false}
@@ -98,11 +98,11 @@ gamemodeArray[6] = {5, "Quickdraw", "FFA with secondaries only.", true}
 gamemodeArray[7] = {6, "KOTH", "FFA with a specific part of the map giving score if inside of said area.", false}
 gamemodeArray[8] = {7, "VIP", "FFA with a specific part of the map giving score if inside of said area.", false}
 
---MAPS
---If you want to use custom maps, or want to add or remove certain maps, edit this array.
---Map Array Formatting (map ID, map name, map thumbnail image)
---The fourth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
---The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will consider the map as a map suitable for large player counts.
+//MAPS
+//If you want to use custom maps, or want to add or remove certain maps, edit this array.
+//Map Array Formatting (map ID, map name, map thumbnail image)
+//The fourth key either allows/disallows the maps entry into the map pool, set this to false if you don't want a map showing up in map votes.
+//The fifth key will stop a map from showing up in map votes if the player count surpasses the set value, setting this to 0 will consider the map as a map suitable for large player counts.
 mapArray = {}
 mapArray[1] = {"tm_arctic", "Arctic", "maps/thumb/tm_arctic.png", true, 0}
 mapArray[2] = {"tm_bridge", "Bridge", "maps/thumb/tm_bridge.png", true, 0}
@@ -127,10 +127,10 @@ for m, v in pairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
 
---KOTH/King Of The Hill positioning array
---This is REQUIRED for any map listed in the mapArray above, the map WILL break when being played on KOTH if this is not filled out correctly.
---KOTH Array Formatting (Origin (the center of the hill), BrushSize (adjusts size of hill, self explanitory)
---Hills can be created easily by creating a brush in Hammer, getting the brushes origin, and by getting the size (divide each sides size by 2 as Titanmod automatically expands the brush out across both sides).
+//KOTH/King Of The Hill positioning array
+//This is REQUIRED for any map listed in the mapArray above, the map WILL break when being played on KOTH if this is not filled out correctly.
+//KOTH Array Formatting (Origin (the center of the hill), BrushSize (adjusts size of hill, self explanitory)
+//Hills can be created easily by creating a brush in Hammer, getting the brushes origin, and by getting the size (divide each sides size by 2 as Titanmod automatically expands the brush out across both sides).
 KOTHPos = {}
 KOTHPos.tm_arctic = {
     Origin = Vector(504, 384, 320),
@@ -201,9 +201,9 @@ KOTHPos.tm_wreck = {
     BrushSize = Vector(140, 112, 80)
 }
 
---WEAPONS
---If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
---Formatting (Item ID, print name, category.)
+//WEAPONS
+//If you want to use custom weapons, or want to add or remove certain weapons, edit this array.
+//Formatting (Item ID, print name, category.)
 weaponArray = {}
 weaponArray[1] = {"tfa_ins2_aa12", "AA-12", "primary", "rifle"}
 weaponArray[2] = {"tfa_ins2_acrc", "ACR-C", "primary", "rifle"}
@@ -337,24 +337,24 @@ weaponArray[129] = {"tfa_ins2_walther_p99", "Walther P99", "secondary", "pistol"
 weaponArray[130] = {"tfa_doi_webley", "Webley", "secondary", "pistol"}
 weaponArray[131] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
 
---CONVARS
+//CONVARS
 if SERVER then
-    --Noclip
+    //Noclip
     RunConsoleCommand("sbox_noclip", "0")
 
-    --Dynamic Height
+    //Dynamic Height
     RunConsoleCommand("sv_ec2_dynamicheight", "0")
     RunConsoleCommand("sv_ec2_dynamicheight_min", "42")
     RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
 
-    --Sliding
+    //Sliding
     RunConsoleCommand("sv_qslide_duration", playerSlideDuration)
     RunConsoleCommand("sv_qslide_speedmult", playerSlideSpeedMulti)
 
-    --Player Acceleration
+    //Player Acceleration
     RunConsoleCommand("sv_airaccelerate", "1000")
 
-    --Gunplay Specific TFA Configuration
+    //Gunplay Specific TFA Configuration
     RunConsoleCommand("sv_tfa_damage_multiplier", "1.00")
     RunConsoleCommand("sv_tfa_recoil_mul_p", "0.75")
     RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.75")
@@ -363,7 +363,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.75")
     RunConsoleCommand("sv_tfa_spread_multiplier", "0.65")
 
-    --Server Side TFA Configuration
+    //Server Side TFA Configuration
     RunConsoleCommand("sv_tfa_allow_dryfire", "1")
     RunConsoleCommand("sv_tfa_ammo_detonation", "0")
     RunConsoleCommand("sv_tfa_ammo_detonation_chain", "0")
@@ -424,26 +424,26 @@ if SERVER then
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
     RunConsoleCommand("sv_tfa_worldmodel_culldistance", "20")
 
-    --Flashlight
+    //Flashlight
     RunConsoleCommand("tpf_sv_light_forward_offset", "15")
     RunConsoleCommand("tpf_sv_max_bright", "255")
     RunConsoleCommand("tpf_sv_max_farz", "750")
     RunConsoleCommand("tpf_sv_max_fov", "75")
 
-    --Grappling Hook
+    //Grappling Hook
     if GetConVar("tm_developermode"):GetInt() == 1 then RunConsoleCommand("frest_Cooldowng", "0") else RunConsoleCommand("frest_Cooldowng", grappleCooldown) end
     RunConsoleCommand("frest_range", grappleRange)
 
-    --HL2 Grenades
-    timer.Simple(5, function() --Delaying by 5 seconds because it literally just doesn't work unless I delay the ConVar, thanks a lot Source.
+    //HL2 Grenades
+    timer.Simple(5, function() //Delaying by 5 seconds because it literally just doesn't work unless I delay the ConVar, thanks a lot Source.
         RunConsoleCommand("sk_fraggrenade_radius", "400")
         RunConsoleCommand("sk_npc_dmg_fraggrenade", "160")
     end)
 end
 
---Client Side
+//Client Side
 if CLIENT then
-    --Client Side TFA Configuration
+    //Client Side TFA Configuration
     RunConsoleCommand("cl_tfa_3dscope", "1")
     RunConsoleCommand("cl_tfa_3dscope_overlay", "0")
     RunConsoleCommand("cl_tfa_3dscope_quality", "0")
@@ -525,13 +525,13 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw", "1")
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw_is", "1")
 
-    --Sliding
+    //Sliding
     RunConsoleCommand("cl_qslide_view", "0")
 
-    --Voice Chat animations
+    //Voice Chat animations
     RunConsoleCommand("cl_vmanip_voicechat", "0")
 
-    --Flashlight
+    //Flashlight
     RunConsoleCommand("tpf_should_load_defaults", "0")
     RunConsoleCommand("tpf_cl_bright", "255")
     RunConsoleCommand("tpf_cl_farz", "750")
