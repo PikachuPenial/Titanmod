@@ -689,8 +689,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local defaultCardsTotal = 0
                     local defaultCardsUnlocked = 0
 
-                    local killCardsTotal = 0
-                    local killCardsUnlocked = 0
+                    local statCardsTotal = 0
+                    local statCardsUnlocked = 0
 
                     local accoladeCardsTotal = 0
                     local accoladeCardsUnlocked = 0
@@ -776,9 +776,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     TextKill:Dock(TOP)
                     TextKill:SetSize(0, 90)
 
-                    local DockKillCards = vgui.Create("DPanel", CardScroller)
-                    DockKillCards:Dock(TOP)
-                    DockKillCards:SetSize(0, 250)
+                    local DockStatCards = vgui.Create("DPanel", CardScroller)
+                    DockStatCards:Dock(TOP)
+                    DockStatCards:SetSize(0, 250)
 
                     // Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
@@ -822,10 +822,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DefaultCardList:SetSpaceY(5)
                     DefaultCardList:SetSpaceX(20)
 
-                    local KillCardList = vgui.Create("DIconLayout", DockKillCards)
-                    KillCardList:Dock(TOP)
-                    KillCardList:SetSpaceY(5)
-                    KillCardList:SetSpaceX(20)
+                    local StatCardList = vgui.Create("DIconLayout", DockStatCards)
+                    StatCardList:Dock(TOP)
+                    StatCardList:SetSpaceY(5)
+                    StatCardList:SetSpaceX(20)
 
                     local AccoladeCardList = vgui.Create("DIconLayout", DockAccoladeCards)
                     AccoladeCardList:Dock(TOP)
@@ -856,7 +856,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
-                    KillCardList.Paint = function(self, w, h)
+                    StatCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
@@ -1037,18 +1037,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
-                                local card = vgui.Create("DImageButton", DockKillCards)
+                                local card = vgui.Create("DImageButton", DockStatCards)
                                 card:SetImage(v[1])
                                 card:SetSize(240, 80)
-                                KillCardList:Add(card)
+                                StatCardList:Add(card)
 
-                                killCardsTotal = killCardsTotal + 1
+                                statCardsTotal = statCardsTotal + 1
 
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
                                     card:SetColor(Color(100, 100, 100, 100))
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
-                                    killCardsUnlocked = killCardsUnlocked + 1
+                                    statCardsUnlocked = statCardsUnlocked + 1
                                 end
 
                                 card.DoClick = function(card)
@@ -1189,15 +1189,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.PlaySound("tmui/buttonrollover.wav")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
-                                killCardsTotal = killCardsTotal + 1
+                                statCardsTotal = statCardsTotal + 1
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] then
-                                    local card = vgui.Create("DImageButton", DockKillCards)
+                                    local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(v[1])
                                     card:SetSize(240, 80)
-                                    KillCardList:Add(card)
+                                    StatCardList:Add(card)
 
                                     cardsUnlocked = cardsUnlocked + 1
-                                    killCardsUnlocked = killCardsUnlocked + 1
+                                    statCardsUnlocked = statCardsUnlocked + 1
 
                                     card.DoClick = function(card)
                                         newCard = v[1]
@@ -1318,12 +1318,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     TextKill.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Kills", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Stats", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
-                        if killCardsUnlocked == killCardsTotal then
-                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                        if statCardsUnlocked == statCardsTotal then
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(killCardsUnlocked .. " / " .. killCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
@@ -1376,7 +1376,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
-                    DockKillCards.Paint = function(self, w, h)
+                    DockStatCards.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
@@ -1584,7 +1584,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function HideLockedCards:OnChange(bVal)
                         if (bVal) then
                             DefaultCardList:Clear()
-                            KillCardList:Clear()
+                            StatCardList:Clear()
                             AccoladeCardList:Clear()
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
@@ -1593,8 +1593,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
-                            killCardsTotal = 0
-                            killCardsUnlocked = 0
+                            statCardsTotal = 0
+                            statCardsUnlocked = 0
                             accoladeCardsTotal = 0
                             accoladeCardsUnlocked = 0
                             levelCardsTotal = 0
@@ -1607,7 +1607,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsUnlocked = 0
                             FillCardListsUnlocked()
                             DockDefaultCards:SetSize(0, 416)
-                            DockKillCards:SetSize(0, (killCardsUnlocked * 42.5) + 42.5)
+                            DockStatCards:SetSize(0, (statCardsUnlocked * 42.5) + 42.5)
                             DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
                             DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
                             DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 42.5) + 42.5)
@@ -1615,7 +1615,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockPrideCards:SetSize(0, 416)
                         else
                             DefaultCardList:Clear()
-                            KillCardList:Clear()
+                            StatCardList:Clear()
                             AccoladeCardList:Clear()
                             LevelCardList:Clear()
                             MasteryCardList:Clear()
@@ -1624,8 +1624,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             cardsUnlocked = 0
                             defaultCardsTotal = 0
                             defaultCardsUnlocked = 0
-                            killCardsTotal = 0
-                            killCardsUnlocked = 0
+                            statCardsTotal = 0
+                            statCardsUnlocked = 0
                             accoladeCardsTotal = 0
                             accoladeCardsUnlocked = 0
                             levelCardsTotal = 0
@@ -1638,7 +1638,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsUnlocked = 0
                             FillCardListsAll()
                             DockDefaultCards:SetSize(0, 416)
-                            DockKillCards:SetSize(0, 250)
+                            DockStatCards:SetSize(0, 250)
                             DockAccoladeCards:SetSize(0, 1166)
                             DockLevelCards:SetSize(0, 2030)
                             DockMasteryCards:SetSize(0, 5442)
@@ -1715,7 +1715,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local PrideJump = vgui.Create("DImageButton", CardQuickjumpHolder)
                     PrideJump:SetPos(4, 412)
                     PrideJump:SetSize(48, 48)
-                    PrideJump:SetImage("icons/scoreicon.png")
+                    PrideJump:SetImage("icons/hearticon.png")
                     PrideJump:SetTooltip("Pride")
                     PrideJump.DoClick = function()
                         TriggerSound("click")

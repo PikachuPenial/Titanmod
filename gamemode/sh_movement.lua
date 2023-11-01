@@ -135,7 +135,8 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
 
     if sliding and mv:KeyDown(IN_DUCK) then
         local slidedelta = (ply:GetSlidingTime() - CT) / slidetime
-        speed = (math.max(276, ply.LandVelocity / 2.4 * slidetime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slidetime)) * (1 / engine.TickInterval()) * engine.TickInterval() * qslide_speedmult:GetFloat()
+        speed = (math.max(276, ply.LandVelocity / 2 * slidetime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slidetime)) * (1 / engine.TickInterval()) * engine.TickInterval() * qslide_speedmult:GetFloat()
+        ply:SetMoveType(MOVETYPE_WALK)
         mv:SetVelocity(ply.SlidingAngle:Forward() * speed)
         local pos = mv:GetOrigin()
 
@@ -183,8 +184,9 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         if (traceWallLeft.Hit) then
             timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
             ply:ViewPunch(walljumpleftpunch)
+            if SERVER then ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80) end
+            ply:SetMoveType(MOVETYPE_WALK)
             mv:SetVelocity(((ply:GetRight() * -1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
         end
     end
 
@@ -200,8 +202,9 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         if (traceWallRight.Hit) then
             timer.Create(ply:SteamID64() .. "_WallJumpCD", wallJumpTime, 1, function() end)
             ply:ViewPunch(walljumprightpunch)
+            if SERVER then ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80) end
+            ply:SetMoveType(MOVETYPE_WALK)
             mv:SetVelocity(((ply:GetRight() * 1) * 175) + (ply:GetUp() * 280))
-            ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80)
         end
     end
 
@@ -230,7 +233,8 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         if not traceWalLLow.Hit and not traceWalLHigh.Hit and traceWalLRight.Hit then
             timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
             ply:ViewPunch(wallrunleftpunch)
-            ply:EmitSound("wallrun.wav")
+            if SERVER then ply:EmitSound("wallrun.wav") end
+            ply:SetMoveType(MOVETYPE_WALK)
             mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * -200 +  ply:GetForward() * 360))
         end
     end
@@ -260,7 +264,8 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
         if not traceWalRLow.Hit and not traceWalRHigh.Hit and traceWalRRight.Hit then
             timer.Create(ply:SteamID64() .. "_WallRunCD", wallRunTime, 1, function() end)
             ply:ViewPunch(wallrunrightpunch)
-            ply:EmitSound("wallrun.wav")
+            if SERVER then ply:EmitSound("wallrun.wav") end
+            ply:SetMoveType(MOVETYPE_WALK)
             mv:SetVelocity(Vector(0,0,210) + (ply:EyeAngles():Right() * 200 +  ply:GetForward() * 360))
         end
     end

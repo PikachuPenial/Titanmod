@@ -7,7 +7,6 @@
 - Landing on the ground while inputting a SPRINT and a CROUCH will initiate a Slide immediantly upon landing
 - Crouch transition speed increased by 20%
 - Slide duration increased by 25%
-- Slide cooldown increased to 1.4 seconds (previously 1 second)
 - Removed Jump Sliding (was very powerful, but was only used by a handful of players, giving them a big advantage)
 
 *NEW SETTING*
