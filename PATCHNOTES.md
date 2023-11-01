@@ -47,6 +47,8 @@
 **>QOL & BUG FIXES**
 - Official Servers now run on 60hz again (previously 30hz) (will monitor server performance to see if this runs smoothly)
 
+- Health and Ammo bars now smoothly scale instead of instantly changing size
+
 - Crosshair now fades away while sprinting
 
 - Heavy optimization for many movement related functions

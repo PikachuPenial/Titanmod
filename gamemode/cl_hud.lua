@@ -285,27 +285,66 @@ end
 
 local health
 local weapon
+local ammo
 local adsFade = 1
-local lerpStart = 0
 local dyn = 0
-local newDyn = 0
+
+// HUD lerp functinos
 local smoothDyn = 0
+local startDyn = 0
+local newDyn = 0
+local oldDyn = 0
+local function LerpCrosshair()
+    smoothDyn = Lerp((SysTime() - startDyn ) / 0.07, oldDyn, newDyn)
+
+    if newDyn != dyn then
+        if (smoothDyn != dyn) then newDyn = smoothDyn end
+        oldDyn = newDyn
+        startDyn = SysTime()
+        newDyn = dyn
+    end
+end
+
+local smoothHP = 0
+local startHP = 0
+local newHP = 0
+local oldHP = 0
+local function LerpHealth()
+    smoothHP = Lerp((SysTime() - startHP ) / 0.1, oldHP, newHP)
+
+    if newHP != health then
+        if (smoothHP != health) then newHP = smoothHP end
+        oldHP = newHP
+        startHP = SysTime()
+        newHP = health
+    end
+end
+
+local smoothAmmo = 0
+local startAmmo = 0
+local newAmmo = 0
+local oldAmmo = 0
+local function LerpAmmo()
+    smoothAmmo = Lerp((SysTime() - startAmmo ) / 0.1, oldAmmo, newAmmo)
+
+    if newAmmo != ammo then
+        if (smoothAmmo != ammo) then newAmmo = smoothAmmo end
+        oldAmmo = newAmmo
+        startAmmo = SysTime()
+        newAmmo = ammo
+    end
+end
+
 function HUDAlive(client)
     if client:Health() <= 0 then health = 0 else health = client:Health() end
     weapon = client:GetActiveWeapon()
+    LerpCrosshair()
 
     if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
     // Crosshair
     if crosshair["style"] == 1 then
         dyn = CrosshairStateUpdate(client, weapon)
-        smoothDyn = Lerp((SysTime() - lerpStart ) / 0.07, oldDyn, newDyn)
-
-        if newDyn != dyn then
-            if (smoothDyn != dyn) then newDyn = smoothDyn end
-            oldDyn = newDyn
-            lerpStart = SysTime()
-            newDyn = dyn
-        end
+        LerpCrosshair(client)
     else dyn = 0 end
     if crosshair["enabled"] == 1 then
         if crosshair["outline"] == 1 then
@@ -324,8 +363,26 @@ function HUDAlive(client)
         if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
     end
 
+    // Health
+    LerpHealth()
+    surface.SetDrawColor(50, 50, 50, 80)
+    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"], 30)
+
+    if health <= 66 then
+        if health <= 33 then
+            surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
+        else
+            surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
+        end
+    else
+        surface.SetDrawColor(healthHUD["barhigh_r"], healthHUD["barhigh_g"], healthHUD["barhigh_b"], 120)
+    end
+
+    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (math.max(0, smoothHP) / client:GetMaxHealth()), 30)
+    draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+
     // Ammo/Weapon
-    if weapon != NULL then if convars["ammo_style"] == 0 then
+    if weapon != NULL then ammo = weapon:Clip1() LerpAmmo() if convars["ammo_style"] == 0 then
         // Numeric Style
         draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
@@ -344,27 +401,10 @@ function HUDAlive(client)
         end
 
         surface.SetDrawColor(weaponHUD["ammobar_r"], weaponHUD["ammobar_g"], weaponHUD["ammobar_b"], 175)
-        surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(weapon:Clip1() / weapon:GetMaxClip1(), 0, 1)), 30)
+        surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(math.max(0, smoothAmmo) / weapon:GetMaxClip1(), 0, 1)), 30)
         if (weapon:Clip1() >= 0) then draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
     end
     if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
-
-    // Health
-    surface.SetDrawColor(50, 50, 50, 80)
-    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"], 30)
-
-    if health <= 66 then
-        if health <= 33 then
-            surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
-        else
-            surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)
-        end
-    else
-        surface.SetDrawColor(healthHUD["barhigh_r"], healthHUD["barhigh_g"], healthHUD["barhigh_b"], 120)
-    end
-
-    surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (health / client:GetMaxHealth()), 30)
-    draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     // Equipment
     local grappleMat = Material("icons/grapplehudicon.png")
