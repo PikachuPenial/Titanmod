@@ -22,6 +22,7 @@ local sounds = {}
 local convars = {}
 
 function UpdateHUD()
+    // Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame
     crosshair = {
         ["enabled"] = GetConVar("tm_hud_crosshair"):GetInt(),
         ["style"] = GetConVar("tm_hud_crosshair_style"):GetInt(),
@@ -125,7 +126,6 @@ function UpdateHUD()
         ["kill"] = GetConVar("tm_killsoundtype"):GetInt()
     }
 
-    // Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame
     convars = {
         ["text_r"] = GetConVar("tm_hud_text_color_r"):GetInt(),
         ["text_g"] = GetConVar("tm_hud_text_color_g"):GetInt(),
@@ -158,14 +158,23 @@ local keyMat = Material("icons/keyicon.png")
 local keyMatMed = Material("icons/keyiconmedium.png")
 local keyMatLong = Material("icons/keyiconlong.png")
 
-local fColor = Color(255, 255, 255)
-local lColor = Color(255, 255, 255)
-local bColor = Color(255, 255, 255)
-local rColor = Color(255, 255, 255)
-local jColor = Color(255, 255, 255)
-local sColor = Color(255, 255, 255)
-local cColor = Color(255, 255, 255)
+local fColor = white
+local lColor = white
+local bColor = white
+local rColor = white
+local jColor = white
+local sColor = white
+local cColor = white
 
+local function KPOKeyCheck(client)
+    if client:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
+    if client:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
+    if client:KeyDown(IN_BACK) then bColor = actuatedColor else bColor = inactiveColor end
+    if client:KeyDown(IN_MOVERIGHT) then rColor = actuatedColor else rColor = inactiveColor end
+    if client:KeyDown(IN_JUMP) then jColor = actuatedColor else jColor = inactiveColor end
+    if client:KeyDown(IN_SPEED) then sColor = actuatedColor else sColor = inactiveColor end
+    if client:KeyDown(IN_DUCK) then cColor = actuatedColor else cColor = inactiveColor end
+end
 
 local hillColor
 local objIndicatorColor
@@ -186,6 +195,21 @@ end )
 cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, value_new)
     TitanmodFOV = value_new
 end)
+
+local function CrosshairStateUpdate(client, wep)
+    local gap = 0
+    local velocity = tostring(math.Round(client:GetVelocity():Length()))
+
+    if wep != NULL and type(wep.Primary.Spread) == "number" then
+        gap = gap + wep.Primary.Spread * 300
+        if ply:KeyDown(IN_ATTACK) then gap = gap + 5 end
+    end
+    if client:Crouching() then gap = gap - 5 end
+    if !client:OnGround() then gap = gap + 7 end
+    gap = gap + velocity / 55
+
+    return math.Clamp(gap, 0, 100)
+end
 
 function HUDAlways(client)
     // Remaining match time
@@ -262,27 +286,41 @@ end
 local health
 local weapon
 local adsFade = 1
+local lerpStart = 0
 local dyn = 0
+local newDyn = 0
+local smoothDyn = 0
 function HUDAlive(client)
     if client:Health() <= 0 then health = 0 else health = client:Health() end
     weapon = client:GetActiveWeapon()
 
-    if type(weapon.GetIronSights) == "function" and weapon:GetIronSights() then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
+    if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
     // Crosshair
+    if crosshair["style"] == 1 then
+        dyn = CrosshairStateUpdate(client, weapon)
+        smoothDyn = Lerp((SysTime() - lerpStart ) / 0.07, oldDyn, newDyn)
+
+        if newDyn != dyn then
+            if (smoothDyn != dyn) then newDyn = smoothDyn end
+            oldDyn = newDyn
+            lerpStart = SysTime()
+            newDyn = dyn
+        end
+    else dyn = 0 end
     if crosshair["enabled"] == 1 then
         if crosshair["outline"] == 1 then
             surface.SetDrawColor(Color(crosshair["outline_r"], crosshair["outline_g"], crosshair["outline_b"], crosshair["opacity"] * adsFade))
-            if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + dyn) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
-            if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + dyn) - crosshair["size"] + crosshair["thickness"] % 2 - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
-            if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y + (crosshair["gap"] + dyn) - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
-            if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y - crosshair["size"] - (crosshair["gap"] + dyn) + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+            if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + smoothDyn) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+            if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + smoothDyn) - crosshair["size"] + crosshair["thickness"] % 2 - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+            if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y + (crosshair["gap"] + smoothDyn) - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+            if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y - crosshair["size"] - (crosshair["gap"] + smoothDyn) + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
             if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2) - 1, center_y - math.floor(crosshair["thickness"] / 2) - 1, crosshair["thickness"] + 2, crosshair["thickness"] + 2) end
         end
         surface.SetDrawColor(Color(crosshair["r"], crosshair["g"], crosshair["b"], crosshair["opacity"] * adsFade))
-        if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + dyn), center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
-        if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + dyn) - crosshair["size"] + crosshair["thickness"] % 2, center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
-        if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y + (crosshair["gap"] + dyn), crosshair["thickness"], crosshair["size"]) end
-        if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - crosshair["size"] - (crosshair["gap"] + dyn) + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
+        if crosshair["show_r"] == 1 then surface.DrawRect(center_x + (crosshair["gap"] + smoothDyn), center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+        if crosshair["show_l"] == 1 then surface.DrawRect(center_x - (crosshair["gap"] + smoothDyn) - crosshair["size"] + crosshair["thickness"] % 2, center_y - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+        if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y + (crosshair["gap"] + smoothDyn), crosshair["thickness"], crosshair["size"]) end
+        if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - crosshair["size"] - (crosshair["gap"] + smoothDyn) + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
         if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
     end
 
@@ -385,16 +423,7 @@ function HUDAlive(client)
 
     // Keypress Overlay
     if convars["keypress_overlay"] == 1 then
-        hook.Add("Tick", "KeyOverlayTracking", function()
-            if client:KeyDown(IN_FORWARD) then fColor = actuatedColor else fColor = inactiveColor end
-            if client:KeyDown(IN_MOVELEFT) then lColor = actuatedColor else lColor = inactiveColor end
-            if client:KeyDown(IN_BACK) then bColor = actuatedColor else bColor = inactiveColor end
-            if client:KeyDown(IN_MOVERIGHT) then rColor = actuatedColor else rColor = inactiveColor end
-            if client:KeyDown(IN_JUMP) then jColor = actuatedColor else jColor = inactiveColor end
-            if client:KeyDown(IN_SPEED) then sColor = actuatedColor else sColor = inactiveColor end
-            if client:KeyDown(IN_DUCK) then cColor = actuatedColor else cColor = inactiveColor end
-        end )
-
+        KPOKeyCheck(client)
         surface.SetMaterial(keyMat)
         surface.SetDrawColor(fColor)
         surface.DrawTexturedRect(48 + kpoHUD["x"], 0 + kpoHUD["y"], 42, 42)
@@ -995,8 +1024,8 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, scrH)
             MatchWinLoseText:SetY(textAnim)
 
-            draw.SimpleText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("VICTORY", "MatchEndText", w / 2, h / 2 - 90, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, white, TEXT_ALIGN_CENTER)
         end
     else
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 0, 0, 190), 1, 7)
@@ -1013,8 +1042,8 @@ net.Receive("EndOfGame", function(len, ply)
             textAnim = math.Clamp(textAnim - 1500 * FrameTime(), anchorAnim, scrH)
             MatchWinLoseText:SetY(textAnim)
 
-            draw.SimpleText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.SimpleText("DEFEAT", "MatchEndText", w / 2, h / 2 - 90, white, TEXT_ALIGN_CENTER)
+            draw.SimpleText(quote, "QuoteText", w / 2, h / 2 + 60, white, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -1033,7 +1062,7 @@ net.Receive("EndOfGame", function(len, ply)
 
                 surface.SetDrawColor(30, 30, 30, 150)
                 surface.DrawRect(w / 2 - 300, 50, 600, 15)
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(255, 255, 255)
                 surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "StreakText", w / 2 - 300, 25, white, TEXT_ALIGN_LEFT)
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", w / 2 + 300, 25, white, TEXT_ALIGN_RIGHT)
@@ -1044,7 +1073,7 @@ net.Receive("EndOfGame", function(len, ply)
 
                 surface.SetDrawColor(30, 30, 30, 150)
                 surface.DrawRect(w / 2 - 300, 50, 600, 15)
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(255, 255, 255)
                 surface.DrawRect(w / 2 - 300, 50, levelAnim * 600, 15)
                 draw.SimpleText("MAX LEVEL", "StreakText", w / 2, 25, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText("Prestige at the Main Menu", "StreakText", w / 2, 65, white, TEXT_ALIGN_CENTER)
@@ -1366,7 +1395,7 @@ net.Receive("EndOfGame", function(len, ply)
                 draw.SimpleText(frags, "Health", 285, 35, Color(0, 255, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                draw.SimpleText(score, "Health", 427, 85, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText(score, "Health", 427, 85, white, TEXT_ALIGN_RIGHT)
             end
 
             local KillsIcon = vgui.Create("DImage", PlayerPanel)

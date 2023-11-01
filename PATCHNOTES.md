@@ -9,8 +9,9 @@
 - Slide duration increased by 25%
 - Removed Jump Sliding (was very powerful, but was only used by a handful of players, giving them a big advantage)
 
-*NEW SETTING*
-- Slide Cancel Type (Release, Jump, or Sprint)
+*NEW SETTINGS*
+- Slide Cancel type (Release, Jump, or Sprint)
+- Dynamic Crosshair type
 
 **>MAPS**
 
@@ -20,10 +21,16 @@
 - All Secondaries (excluding hand cannons/revolverss) now have point fire as an attachment option
 - Point Fire no longer requires a laser sight to be attached to a weapon
 
+*FN 2000*
+- Reduced damage to 27 (previously 31)
+
 *M3 Grease Gun*
 - Reduced damage to 30 (previously 32)
 - Reduced vertical recoil to 20 (previously 32)
 - Reduced horizontal recoil to 5 (previously 12)
+
+*PM-9*
+- Gas Port Adjustment now decreases recoil by 50% and increases damage by 10%
 
 *Sten Gun*
 - Increaased damage to 32 (previously 30)
@@ -40,6 +47,8 @@
 **>QOL & BUG FIXES**
 - Official Servers now run on 60hz again (previously 30hz) (will monitor server performance to see if this runs smoothly)
 
+- Crosshair now fades away while sprinting
+
 - Heavy optimization for many movement related functions
 
 - Decreased volume of sliding related sound effects
@@ -47,6 +56,8 @@
 - The pitch of sliding related sound effects now slightly vary on each slide
 
 - Adjusted visual effect of mantling
+
+- Adjusted default crosshair settings for new players
 
 - Fixed some secondaries not firing underwater
 

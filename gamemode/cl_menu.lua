@@ -3092,7 +3092,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairStyle:SetSize(100, 30)
                     if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
                     crosshairStyle:AddChoice("Static")
-                    // crosshairStyle:AddChoice("Dynamic")
+                    crosshairStyle:AddChoice("Dynamic")
                     crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) end
 
                     local crosshairDot = DockCrosshair:Add("DCheckBox")
