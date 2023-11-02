@@ -3,13 +3,11 @@ HIGH PRIORItY | Currently working on or is being focused, will most likely make 
 Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
 Allow for Text Chat on match end
 Fix spawning inside players
-
-space map with low gravity
-hide stats from others option removing player from leaderboards
+Space map with low gravity
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
 Party mode (random effects throughout match)
-Item unlock tracking through scoreboard
+Notification system (top left, modular, replace match time alerts w/ this)

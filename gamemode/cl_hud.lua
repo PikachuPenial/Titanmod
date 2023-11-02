@@ -368,8 +368,8 @@ function HUDAlive(client)
     surface.SetDrawColor(50, 50, 50, 80)
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"], 30)
 
-    if health <= 66 then
-        if health <= 33 then
+    if health <= (playerHealth / 1.5) then
+        if health <= (playerHealth / 3) then
             surface.SetDrawColor(healthHUD["barlow_r"], healthHUD["barlow_g"], healthHUD["barlow_b"], 120)
         else
             surface.SetDrawColor(healthHUD["barmid_r"], healthHUD["barmid_g"], healthHUD["barmid_b"], 120)

@@ -24,10 +24,16 @@
 *FN 2000*
 - Reduced damage to 27 (previously 31)
 
+*M249*
+- Increased spread to 50 (previously 40)
+
 *M3 Grease Gun*
 - Reduced damage to 30 (previously 32)
 - Reduced vertical recoil to 20 (previously 32)
 - Reduced horizontal recoil to 5 (previously 12)
+
+*PKP*
+- Increased spread to 59 (previously 29)
 
 *PM-9*
 - Gas Port Adjustment now decreases recoil by 50% and increases damage by 10%
@@ -62,5 +68,9 @@
 - Adjusted default crosshair settings for new players
 
 - Fixed some secondaries not firing underwater
+
+- Fixed health bar color not correctly updating on a customized player health
+
+- Fixed PKP having spread while aiming down sights
 
 - Removed Show Crosshair while aimed down sights setting due to it being powerful when used with point firing
