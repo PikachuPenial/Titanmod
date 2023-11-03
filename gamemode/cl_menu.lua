@@ -249,10 +249,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                         statistics:AddOption("Score", function() LeaderboardSelected("Score", "playerScore") end)
                         statistics:AddOption("Kills", function() LeaderboardSelected("Kills", "playerKills") end)
                         statistics:AddOption("Deaths", function() LeaderboardSelected("Deaths", "playerDeaths") end)
-                        // statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
+                        -- statistics:AddOption("K/D Ratio", function() LeaderboardSelected("K/D Ratio", "kd") end)
                         statistics:AddOption("Matches Played", function() LeaderboardSelected("Matches Played", "matchesPlayed") end)
                         statistics:AddOption("Matches Won", function() LeaderboardSelected("Matches Won", "matchesWon") end)
-                        // statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
+                        -- statistics:AddOption("W/L Ratio", function() LeaderboardSelected("W/L Ratio", "wl") end)
                         statistics:AddOption("Highest Killstreak", function() LeaderboardSelected("Highest Killstreak", "highestKillStreak") end)
                         statistics:AddOption("Highest Kill Game", function() LeaderboardSelected("Highest Kill Game", "highestKillGame") end)
                         statistics:AddOption("Farthest Kill", function() LeaderboardSelected("Farthest Kill", "farthestKill") end)
@@ -529,11 +529,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 DiscordButton:SetTooltip("Discord")
                 DiscordButton.DoClick = function()
                     TriggerSound("click")
-                    gui.OpenURL("https://discord.gg/GRfvt27uGF")
+                    gui.OpenURL("https:--discord.gg/GRfvt27uGF")
                 end
             end
 
-            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end // Force shows the Tutorial is a player joins for the first time
+            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- Force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
             TutorialButton:SetPos(8, scrH - 96)
@@ -552,7 +552,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             DiscordButton:SetTooltip("Discord")
             DiscordButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://discord.gg/GRfvt27uGF")
+                gui.OpenURL("https:--discord.gg/GRfvt27uGF")
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
@@ -562,7 +562,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
+                gui.OpenURL("https:--steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
@@ -572,7 +572,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
+                gui.OpenURL("https:--youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
@@ -582,7 +582,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             GithubButton:SetTooltip("GitHub")
             GithubButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
+                gui.OpenURL("https:--github.com/PikachuPenial/Titanmod")
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
@@ -709,7 +709,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
-                    // Checking for the players currently equipped card
+                    -- Checking for the players currently equipped card
                     for k, v in pairs(cardArray) do
                         if v[1] == currentCard then
                             newCard = v[1]
@@ -753,7 +753,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedCards:SetSize(20, 20)
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
-                    // Default Playercards
+                    -- Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 90)
@@ -762,7 +762,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockDefaultCards:Dock(TOP)
                     DockDefaultCards:SetSize(0, 500)
 
-                    // Leveling related Playercards
+                    -- Leveling related Playercards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
                     TextLevel:Dock(TOP)
                     TextLevel:SetSize(0, 90)
@@ -771,7 +771,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockLevelCards:Dock(TOP)
                     DockLevelCards:SetSize(0, 2030)
 
-                    // Kill related Playercards
+                    -- Kill related Playercards
                     local TextKill = vgui.Create("DPanel", CardScroller)
                     TextKill:Dock(TOP)
                     TextKill:SetSize(0, 90)
@@ -780,7 +780,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockStatCards:Dock(TOP)
                     DockStatCards:SetSize(0, 250)
 
-                    // Accolade related Playercards
+                    -- Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 90)
@@ -789,7 +789,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockAccoladeCards:Dock(TOP)
                     DockAccoladeCards:SetSize(0, 1198)
 
-                    // Mastery related Playercards
+                    -- Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
                     TextMastery:SetSize(0, 90)
@@ -798,7 +798,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockMasteryCards:Dock(TOP)
                     DockMasteryCards:SetSize(0, 5442)
 
-                    // Color related Playercards
+                    -- Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
                     TextColor:SetSize(0, 90)
@@ -807,7 +807,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockColorCards:Dock(TOP)
                     DockColorCards:SetSize(0, 500)
 
-                    // Pride related Playercards
+                    -- Pride related Playercards
                     local TextPride = vgui.Create("DPanel", CardScroller)
                     TextPride:Dock(TOP)
                     TextPride:SetSize(0, 90)
@@ -816,7 +816,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockPrideCards:Dock(TOP)
                     DockPrideCards:SetSize(0, 416)
 
-                    // Creating playercard lists
+                    -- Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
                     DefaultCardList:Dock(TOP)
                     DefaultCardList:SetSpaceY(5)
@@ -1787,7 +1787,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
 
-                    // Checking for the players currently equipped model
+                    -- Checking for the players currently equipped model
                     for k, v in pairs(modelArray) do
                         if v[1] == currentModel then
                             newModel = v[1]
@@ -1838,7 +1838,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedModels:SetSize(20, 20)
                     function HideLockedModels:OnChange() TriggerSound("click") end
 
-                    // Default Playermodels
+                    -- Default Playermodels
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 90)
@@ -1847,7 +1847,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModels:Dock(TOP)
                     DockModels:SetSize(0, 465)
 
-                    // Kills Playermodels
+                    -- Kills Playermodels
                     local TextKills = vgui.Create("DPanel", CustomizeScroller)
                     TextKills:Dock(TOP)
                     TextKills:SetSize(0, 90)
@@ -1856,7 +1856,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsKills:Dock(TOP)
                     DockModelsKills:SetSize(0, 310)
 
-                    // Streak Playermodels
+                    -- Streak Playermodels
                     local TextStreak = vgui.Create("DPanel", CustomizeScroller)
                     TextStreak:Dock(TOP)
                     TextStreak:SetSize(0, 90)
@@ -1865,7 +1865,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsStreak:Dock(TOP)
                     DockModelsStreak:SetSize(0, 310)
 
-                    // Accolade Playermodels
+                    -- Accolade Playermodels
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 90)
@@ -1874,7 +1874,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsAccolade:Dock(TOP)
                     DockModelsAccolade:SetSize(0, 1550)
 
-                    // Creating playermodel lists
+                    -- Creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
                     DefaultModelList:SetSpaceY(5)
@@ -4233,7 +4233,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
             CreditsButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://github.com/PikachuPenial/Titanmod#credits")
+                gui.OpenURL("https:--github.com/PikachuPenial/Titanmod#credits")
             end
     end
 

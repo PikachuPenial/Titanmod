@@ -4,7 +4,7 @@ include("cl_hud.lua")
 include("cl_scoreboard.lua")
 include("cl_menu.lua")
 
-// Used to clear the map of decals (blood, bullet impacts, etc) every 15 seconds, helps people with shitty computers
+-- Used to clear the map of decals (blood, bullet impacts, etc) every 15 seconds, helps people with shitty computers
 timer.Create("cleanMap", 15, 0, function()
 	RunConsoleCommand("r_cleardecals")
 end)
@@ -368,7 +368,7 @@ hook.Add("OnScreenSizeChanged", "ResChange", function()
 end)
 
 hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
-	// Weapon bob
+	-- Weapon bob
 	local vector_origin = Vector()
 	SWEP.ti = 0
 	SWEP.LastCalcBob = 0
@@ -454,11 +454,11 @@ hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 		xVelocity = ownerVelocity:Length2D() * ownerVelocityMod:Dot(rightVec)
 		xVelocitySmooth = l_Lerp(delta * 5 * rateScaleFac, xVelocitySmooth, xVelocity)
 
-		// Multipliers
+		-- Multipliers
 		breathIntensity = breathIntensitySmooth * gunbob_intensity * 0.525
 		walkIntensity = walkIntensitySmooth * gunbob_intensity * 1.45
 
-		// Breathing / walking while ADS
+		-- Breathing / walking while ADS
 		local breatheMult2 = math.Clamp((self2.IronSightsProgressUnpredicted2 or self:GetIronSightsProgress()), 0, 1)
 		local breatheMult1 = 1 - breatheMult2
 
@@ -483,19 +483,19 @@ hook.Add("PreRegisterSWEP", "TitanmodBob", function(swep, class)
 		ang:RotateAroundAxis(up, WalkPosLagged.x)
 		ang:RotateAroundAxis(fw, WalkPos.x)
 
-		// Constant offset
+		-- Constant offset
 		pos:Add(riLocal * walkVec.x * flip_v)
 		pos:Add(fwLocal * walkVec.y)
 		pos:Add(upLocal * walkVec.z)
 
-		// Jumping
+		-- Jumping
 		local trigX = -math.Clamp(zVelocitySmooth / 200, -1, 1) * math.pi / 2
 		local jumpIntensity = (3 + math.Clamp(math.abs(zVelocitySmooth) - 100, 0, 200) / 200 * 4) * (1 - (self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) * 0.8)
 		pos:Add(ri * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * flip_v * 0.25)
 		pos:Add(-up * math.sin(trigX) * scale_r * 0.1 * jumpIntensity * 0.25)
 		ang:RotateAroundAxis(ang:Forward(), math.sin(trigX) * scale_r * jumpIntensity * flip_v * 0.25)
 
-		// Rolling with horizontal motion
+		-- Rolling with horizontal motion
 		local xVelocityClamped = xVelocitySmooth
 
 		if math.abs(xVelocityClamped) > 200 then
@@ -630,10 +630,10 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 			motion = LerpAngle(rft * swayRate, motion, delta + compensation)
 		end
 
-		// Modify position/angle
+		-- Modify position/angle
 		positionCompensation = 0.2 + 0.2 * ((self2.IronSightsProgressUnpredicted or self:GetIronSightsProgress()) or 0)
-		pos:Add(-motion.y * positionCompensation * 0.66 * fac * ang:Right() * flipFactor) // Compensate position for yaw
-		pos:Add(-motion.p * positionCompensation * fac * ang:Up()) // Compensate position for pitch
+		pos:Add(-motion.y * positionCompensation * 0.66 * fac * ang:Right() * flipFactor) -- Compensate position for yaw
+		pos:Add(-motion.p * positionCompensation * fac * ang:Up()) -- Compensate position for pitch
 		ang:RotateAroundAxis(ang:Right(), motion.p * fac)
 		ang:RotateAroundAxis(ang:Up(), -motion.y * 0.66 * fac * flipFactor)
 		ang:RotateAroundAxis(ang:Forward(), counterMotion.r * 0.5 * fac * flipFactor)
@@ -642,7 +642,7 @@ hook.Add("PreRegisterSWEP", "TitanmodSway", function(swep, class)
 	end
 end )
 
-// Damage indicator
+-- Damage indicator
 local indmat = Material("materials/ttt_dmgdirect/indicator.png", "mips smooth")
 indmat:SetInt("$flags", 16 + 32 + 128)
 

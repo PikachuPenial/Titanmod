@@ -7,9 +7,9 @@ include("performance/sh_optimization.lua")
 GM.Name = "Titanmod"
 GM.Author = "Penial"
 GM.Email = "glass campers on tm_mall turning around to see a bald man crouching with a AA-12"
-GM.Website = "https://github.com/PikachuPenial/Titanmod"
+GM.Website = "https:--github.com/PikachuPenial/Titanmod"
 
-// Creating server ConVars and initializing the config
+-- Creating server ConVars and initializing the config
 if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
 if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
 
@@ -46,7 +46,7 @@ if !ConVarExists("sv_tm_grapple_range") then CreateConVar("sv_tm_grapple_range",
 if !ConVarExists("sv_tm_voip_range") then CreateConVar("sv_tm_voip_range", "1000", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The thresehold in distance where players can hear other players over proximity voice chat (1000 by default)") end
 include("config.lua")
 
-// Creating client ConVars, mostly for use in the Options menu
+-- Creating client ConVars, mostly for use in the Options menu
 if CLIENT then
     CreateClientConVar("tm_menusounds", 1, true, false, "Enable/disable the menu sounds", 0, 1)
     CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
@@ -157,30 +157,42 @@ if CLIENT then
     CreateClientConVar("tm_hud_crosshair_show_r", 1, true, false, "Enable/disable the right of the crosshair", 0, 1)
 end
 
-// Disabling footsteps if a player is crouched
+-- Disabling footsteps if a player is crouched
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
     if !ply:Crouching() then return end
     return true
 end)
 
-// Disable the default HL2 death sound
+-- Disable the default HL2 death sound
 hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
 end)
 
-// Disable muzzle flash
+-- Disable various TFA related effects when firing a weapon
+hook.Add("TFA_MakeShell", "DisableShells", function(Weapon)
+    return false
+end)
+
+hook.Add("TFA_EjectionSmoke", "DisableEjectionSmoke", function(Weapon)
+    return false
+end)
+
 hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon)
     return false
 end)
 
-// Disable specific TFA attachments
+hook.Add("TFA_MuzzleSmoke", "DisableMuzzleSmoke", function(Weapon)
+    return false
+end)
+
+-- Disable specific TFA attachments
 hook.Add("TFABase_ShouldLoadAttachment", "DisableUBGL", function(id, path)
     if id and (id == "ins2_fg_gp25" or id == "ins2_fg_m203" or id == "r6s_flashhider_2" or id == "r6s_h_barrel" or id == "am_gib" or id == "am_magnum" or id == "am_match" or id == "flashlight" or id == "flashlight_lastac" or id == "ins2_eft_lastac2" or id == "tfa_at_fml_flashlight" or id == "un_flashlight" or id == "ins2_ub_flashlight") then
         return false
     end
 end)
 
-// Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
+-- Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
 modelArray = {}
 modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "default", "default"}
 modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "default", "default"}
@@ -232,7 +244,7 @@ modelArray[47] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Vip
 modelArray[48] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "buzzkills", 200}
 modelArray[49] = {"models/auditor/re2/chr_hunk_pmrig.mdl", "Hunk", "buzzkills", 320}
 
-// Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
+-- Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
 cardArray = {}
 cardArray[1] = {"cards/default/barrels.png", "Barrels", "", "default", "default"}
 cardArray[2] = {"cards/default/carbon.png", "Carbon", "", "default", "default"}
@@ -293,7 +305,7 @@ cardArray[56] = {"cards/color/gray.png", "Gray", "Solid gray color.", "color", "
 cardArray[57] = {"cards/color/white.png", "White", "Solid white color.", "color", "color"}
 cardArray[58] = {"cards/color/black.png", "Black", "Solid black color.", "color", "color"}
 
-// Mastery Cards
+-- Mastery Cards
 cardArray[59] = {"cards/mastery/aa12.png", "Close Up", "AA-12 mastery", "mastery", "tfa_ins2_aa12"}
 cardArray[60] = {"cards/mastery/acrc.png", "Posted Up", "ACR-C mastery", "mastery", "tfa_ins2_acrc"}
 cardArray[61] = {"cards/mastery/aek971.png", "Stalker", "AEK-971 mastery", "mastery", "tfa_ins2_aek971"}
@@ -423,7 +435,7 @@ cardArray[184] = {"cards/mastery/waltherp99.png", "Advisory", "Walther P99 maste
 cardArray[185] = {"cards/mastery/webley.png", "Bear Witness", "Webley mastery", "mastery", "tfa_doi_webley"}
 cardArray[186] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
-// Leveling Cards
+-- Leveling Cards
 cardArray[187] = {"cards/leveling/5.png", "Mist", "", "level", 5}
 cardArray[188] = {"cards/leveling/10.png", "Shift", "", "level", 10}
 cardArray[189] = {"cards/leveling/15.png", "Powerhouse", "", "level", 15}
@@ -473,7 +485,7 @@ cardArray[232] = {"cards/leveling/230.png", "Arctic", "", "level", 230}
 cardArray[233] = {"cards/leveling/235.png", "Modern", "", "level", 235}
 cardArray[234] = {"cards/leveling/240.png", "Childhood", "", "level", 240}
 
-// Pride cards
+-- Pride cards
 cardArray[235] = {"cards/pride/pride.png", "Pride", "Pride flag", "pride", "pride"}
 cardArray[236] = {"cards/pride/trans.png", "Trans", "Trans flag", "pride", "pride"}
 cardArray[237] = {"cards/pride/gay.png", "Gay", "Gay flag", "pride", "pride"}
@@ -485,9 +497,9 @@ cardArray[242] = {"cards/pride/nonbinary.png", "Nonbinary", "Nonbinary flag", "p
 cardArray[243] = {"cards/pride/genderfluid.png", "Genderfluid", "Genderfluid flag", "pride", "pride"}
 cardArray[244] = {"cards/pride/zedo.png", "Zedo", "What's her name?", "pride", "pride"}
 
-// Creating a leveling array, this removes the consistency of the leveling, using set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro
+-- Creating a leveling array, this removes the consistency of the leveling, using set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro
 levelArray = {}
-levelArray[1] = {1, 750} // +75 XP
+levelArray[1] = {1, 750} -- +75 XP
 levelArray[2] = {2, 825}
 levelArray[3] = {3, 900}
 levelArray[4] = {4, 975}
@@ -496,7 +508,7 @@ levelArray[6] = {6, 1125}
 levelArray[7] = {7, 1200}
 levelArray[8] = {8, 1275}
 levelArray[9] = {9, 1350}
-levelArray[10] = {10, 1450} // +100 XP
+levelArray[10] = {10, 1450} -- +100 XP
 levelArray[11] = {11, 1550}
 levelArray[12] = {12, 1650}
 levelArray[13] = {13, 1750}
@@ -506,7 +518,7 @@ levelArray[16] = {16, 2050}
 levelArray[17] = {17, 2150}
 levelArray[18] = {18, 2250}
 levelArray[19] = {19, 2350}
-levelArray[20] = {20, 2475} // +125 XP
+levelArray[20] = {20, 2475} -- +125 XP
 levelArray[21] = {21, 2600}
 levelArray[22] = {22, 2725}
 levelArray[23] = {23, 2850}
@@ -516,7 +528,7 @@ levelArray[26] = {26, 3225}
 levelArray[27] = {27, 3350}
 levelArray[28] = {28, 3475}
 levelArray[29] = {29, 3600}
-levelArray[30] = {30, 3750} // +150 XP
+levelArray[30] = {30, 3750} -- +150 XP
 levelArray[31] = {31, 3900}
 levelArray[32] = {32, 4050}
 levelArray[33] = {33, 4200}
@@ -526,7 +538,7 @@ levelArray[36] = {36, 4650}
 levelArray[37] = {37, 4800}
 levelArray[38] = {38, 4950}
 levelArray[39] = {39, 5100}
-levelArray[40] = {40, 5275} // +175 XP
+levelArray[40] = {40, 5275} -- +175 XP
 levelArray[41] = {41, 5450}
 levelArray[42] = {42, 5625}
 levelArray[43] = {43, 5800}
@@ -536,7 +548,7 @@ levelArray[46] = {46, 6325}
 levelArray[47] = {47, 6500}
 levelArray[48] = {48, 6675}
 levelArray[49] = {49, 6850}
-levelArray[50] = {50, 7050} // +200 XP
+levelArray[50] = {50, 7050} -- +200 XP
 levelArray[51] = {51, 7250}
 levelArray[52] = {52, 7450}
 levelArray[53] = {53, 7650}
@@ -548,11 +560,11 @@ levelArray[58] = {58, 8650}
 levelArray[59] = {59, 8850}
 levelArray[60] = {60, "prestige"}
 
-// Hints, are displayed at the bottom of the Main Menu
+-- Hints, are displayed at the bottom of the Main Menu
 hintArray = {"Winning the match nets you bonus XP", "Suppressors might make your gun sound badass, but it will also lower your damage", "Be vigilant with the acidic flood while playing on the Mephitic map", "Match Ammunition is a good choice for low accuracy weapons", "Follow CaptainBear on the Steam Workshop", "Switching to your secondary is 'usually' faster than reloading", "To win a match, a player must have more score than the rest of the competing players", "Voice chat is proximity based, do with this information as you see fit", "Magnum ammunition pairs extremely well with low damage weapons", "Slug ammunition turns your traditional shotgun into a marksman rifle", "Try personalizing yourself in the cuztomization menus", "Crouching completely eliminates your footstep audio, embrace the sneaky", "Underbarrel grenade launchers can be used by pressing Interact + Left Click", "You can cycle through firing modes by using your Interact + Reload keys", "All melee weapons can be thrown with the reload key", "Air strafing is extremely useful, try to incorperate it into your playstyle", "G.I.B ammunition is a good choice if you want to slow down hit opponents", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed", "Explosive barrels can be used as a funny distraction", "Players can not shoot most weapons while submerged in water, use this to your advantage", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others", "The grappling hook can easily be used to start favorable engagments", "Jumping and/or being in mid air gives your weapons less accuracy", "Sliding provides the same accuracy and recoil benefits as crouching", "Chaining multiple accolades together can give a big score/XP boost", "Accolades award good amounts of score and XP", "Running any optic lowers your weapons ADS speed", "There are over 130+ weapons, try to get consistent with many different loadouts", "There is no scope glint, hardscope all you want", "Hip fire is an effective strategy while on the move", "Other players can see your flashlight, be cautious", "Certain playermodels may shine or stand out in dark enviroments", "Combine wall running and jumping for extremely unpredictable movement", "Wall running through a chokepoint can catch opponents off guard", "Wall jumping constantly allows for continuous climbing of said wall", "All melee weapons have a left and right click attack, learn how effective each are", "Attachments save throughout play sessions, tweak your guns once and you are done", "Some snipers and hand cannons can one shot to the torso", "Explosives hurt, don't aim downwards if you want to stay alive", "Crouching drastically increases your accuracy and recoil control", "Each weapon has its own distinct recoil pattern to master", "Your grappling hook cooldown refreshes on each kill", "Shooting the torso and/or head will guarintee good damage per shot", "You can sprint and/or slide in any direction, not just forwards", "Don't stand still, potshotters will have an easy time killing you", "The vehicles can be mounted and surfed on while playing the Bridge map", "Bunny hopping will help perserve velocity after landing from a grapple/slide"}
 
-// Quotes, are displayed on the victory/defeat screeen
+-- Quotes, are displayed on the victory/defeat screeen
 quoteArray = {'"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"i may be im i may i have autism" -Penial', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls', '"im like that" -Homeless', '"i need about tree fiddy" -Random Films', '"bring out the whole ocean" -Robo', '"can we ban this guy" -Poopy', '"root beer" -Plat', '"never forget 9/11" -afiais', '"praise o monolith" -Medinator', '"why is he there" -Smity', '"shut it mate yer da sells avon" -zee!', '"rule #1 always boss up" -Zenthic', '"titanmod servers are as stable as a girl with blue hair" -TheBean'}
 
-// Derives the gamemode with Sandbox if Developer Mode is enabled on server start
+-- Derives the gamemode with Sandbox if Developer Mode is enabled on server start
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
