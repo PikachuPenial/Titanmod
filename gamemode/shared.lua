@@ -7,7 +7,7 @@ include("performance/sh_optimization.lua")
 GM.Name = "Titanmod"
 GM.Author = "Penial"
 GM.Email = "glass campers on tm_mall turning around to see a bald man crouching with a AA-12"
-GM.Website = "https:--github.com/PikachuPenial/Titanmod"
+GM.Website = "https://github.com/PikachuPenial/Titanmod"
 
 -- Creating server ConVars and initializing the config
 if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
@@ -166,6 +166,12 @@ end)
 -- Disable the default HL2 death sound
 hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
+end)
+
+-- Disable fake TFA bullet tracers (clutters up gameplay because most weapons are hitscan)
+hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
+    if stat == "DisableChambering" then return true end
+    if stat == "Secondary.IronFOV_MX4" then return 64 end
 end)
 
 -- Disable various TFA related effects when firing a weapon

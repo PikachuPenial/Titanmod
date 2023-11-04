@@ -53,6 +53,8 @@
 **>QOL & BUG FIXES**
 - Official Servers now run on 60hz again (previously 30hz) (will monitor server performance to see if this runs smoothly)
 
+- All sniper scopes are now set to the same FOV
+
 - Health and Ammo bars now smoothly scale instead of instantly changing size
 
 - Crosshair now fades away while sprinting
@@ -72,5 +74,9 @@
 - Fixed health bar color not correctly updating on a customized player health
 
 - Fixed PKP having spread while aiming down sights
+
+- Fixed PzB 39 ADS sensitivity
+
+- Removed Gun Chambering
 
 - Removed Show Crosshair while aimed down sights setting due to it being powerful when used with point firing

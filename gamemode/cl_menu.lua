@@ -529,7 +529,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 DiscordButton:SetTooltip("Discord")
                 DiscordButton.DoClick = function()
                     TriggerSound("click")
-                    gui.OpenURL("https:--discord.gg/GRfvt27uGF")
+                    gui.OpenURL("https://discord.gg/GRfvt27uGF")
                 end
             end
 
@@ -552,7 +552,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             DiscordButton:SetTooltip("Discord")
             DiscordButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https:--discord.gg/GRfvt27uGF")
+                gui.OpenURL("https://discord.gg/GRfvt27uGF")
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
@@ -562,7 +562,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https:--steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
+                gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
@@ -572,7 +572,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https:--youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
+                gui.OpenURL("https://youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
@@ -582,7 +582,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             GithubButton:SetTooltip("GitHub")
             GithubButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https:--github.com/PikachuPenial/Titanmod")
+                gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
@@ -4233,7 +4233,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
             CreditsButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https:--github.com/PikachuPenial/Titanmod#credits")
+                gui.OpenURL("https://github.com/PikachuPenial/Titanmod#credits")
             end
     end
 

@@ -846,3 +846,8 @@ hook.Add("PreGamemodeLoaded", "SmoothScrolling", function()
 
 	derma.DefineControl("DVScrollBar", "Smooth Scrollbar", dermaCtrs, "Panel")
 end)
+
+-- Forcefully disable the use of the TFA crosshair
+hook.Add("TFA_DrawCrosshair", "DisableTFACrosshair", function(ply)
+    return true
+end)
