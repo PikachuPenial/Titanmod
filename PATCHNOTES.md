@@ -72,6 +72,8 @@
 
 - Adjusted default crosshair settings for new players
 
+- Adjusted penetration system to stop bullet after passing 3 objects
+
 - Fixed some secondaries not firing underwater
 
 - Fixed health bar color not correctly updating on a customized player health

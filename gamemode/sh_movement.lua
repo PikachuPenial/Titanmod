@@ -75,6 +75,30 @@ end
 local slidetime = math.max(0.1, qslide_duration:GetFloat())
 local wallJumpTime = 1
 local wallRunTime = 1.25
+
+hook.Add("StartCommand", "SlideControl", function(ply, cmd)
+    if ply:GetSliding() then
+        cmd:ClearMovement()
+        local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
+        if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
+        if bindType != 0 then slidelock = 0.45 else slidelock = 0.79 end
+        local slidetime = math.max(0.1, qslide_duration:GetFloat())
+        local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
+
+        if (trueslidetime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueslidetime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueslidetime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
+            cmd:RemoveKey(IN_DUCK)
+            ply:SetSliding(false)
+            ply:SetSlidingTime(0)
+            ply:SetDuckSpeed(0.75)
+            ply:SetUnDuckSpeed(0.15)
+        end
+
+        if trueslidetime > slidelock then
+            cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
+        end
+    end
+end)
+
 hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     if not ply.OldDuckSpeed then
         ply.OldDuckSpeed = ply:GetDuckSpeed()
@@ -209,7 +233,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     end
 
     -- WR Left
-    if goingLeft and sprinting then
+    if goingLeft and sprinting and not onground then
         if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
 
         tracedata = {}
@@ -240,7 +264,7 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     end
 
     -- WR Right
-    if goingRight and sprinting then
+    if goingRight and sprinting and not onground then
         if timer.Exists(ply:SteamID64() .. "_WallRunCD") then return end
 
         tracedata = {}
@@ -273,29 +297,6 @@ hook.Add("SetupMove", "tmmoveement", function(ply, mv, cmd)
     if onground then
         if timer.Exists(ply:SteamID64() .. "_WallJumpCD") then timer.Remove(ply:SteamID64() .. "_WallJumpCD") end
         if timer.Exists(ply:SteamID64() .. "_WallRunCD") then timer.Remove(ply:SteamID64() .. "_WallRunCD") end
-    end
-end)
-
-hook.Add("StartCommand", "SlideControl", function(ply, cmd)
-    if ply:GetSliding() then
-        cmd:ClearMovement()
-        local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
-        if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
-        if bindType != 0 then slidelock = 0.45 else slidelock = 0.79 end
-        local slidetime = math.max(0.1, qslide_duration:GetFloat())
-        local trueslidetime = (ply:GetSlidingTime() - CurTime()) / slidetime
-
-        if (trueslidetime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueslidetime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueslidetime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
-            cmd:RemoveKey(IN_DUCK)
-            ply:SetSliding(false)
-            ply:SetSlidingTime(0)
-            ply:SetDuckSpeed(0.75)
-            ply:SetUnDuckSpeed(0.15)
-        end
-
-        if trueslidetime > slidelock then
-            cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_DUCK))
-        end
     end
 end)
 
