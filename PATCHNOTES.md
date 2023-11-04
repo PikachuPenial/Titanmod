@@ -9,6 +9,9 @@
 - Slide duration increased by 25%
 - Removed Jump Sliding (was very powerful, but was only used by a handful of players, giving them a big advantage)
 
+*GUN TRACERS OVERHAUL*
+- Tracers have been completely redesigned and are now gun depenedent (a SMG will have a smaller and less visible tracer compared to a Sniper)
+
 *NEW SETTINGS*
 - Slide Cancel type (Release, Jump, or Sprint)
 - Dynamic Crosshair type

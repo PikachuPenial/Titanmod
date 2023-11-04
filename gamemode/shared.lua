@@ -170,6 +170,7 @@ end)
 
 -- Disable fake TFA bullet tracers (clutters up gameplay because most weapons are hitscan)
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
+    if stat == "TracerCount" then return 1 end
     if stat == "DisableChambering" then return true end
     if stat == "Secondary.IronFOV_MX4" then return 64 end
 end)
