@@ -769,12 +769,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 2030)
+                    DockLevelCards:SetSize(0, 2040)
 
                     -- Kill related Playercards
-                    local TextKill = vgui.Create("DPanel", CardScroller)
-                    TextKill:Dock(TOP)
-                    TextKill:SetSize(0, 90)
+                    local TextStats = vgui.Create("DPanel", CardScroller)
+                    TextStats:Dock(TOP)
+                    TextStats:SetSize(0, 90)
 
                     local DockStatCards = vgui.Create("DPanel", CardScroller)
                     DockStatCards:Dock(TOP)
@@ -1045,7 +1045,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 statCardsTotal = statCardsTotal + 1
 
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 100))
+                                    card:SetColor(Color(100, 100, 100, 150))
+                                    card.Paint = function(self, w, h)
+                                        surface.SetDrawColor(35, 35, 35, 255)
+                                        surface.DrawRect(0, h - 10, 240, 10)
+
+                                        surface.SetDrawColor(255, 255, 0, 100)
+                                        if v[4] == "kills" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 10) elseif v[4] == "streak" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 10) end
+                                    end
+                                    local lockIndicator = vgui.Create("DImage", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
@@ -1068,7 +1079,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
                                 if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 100))
+                                    card:SetColor(Color(100, 100, 100, 150))
+                                    card.Paint = function(self, w, h)
+                                        surface.SetDrawColor(35, 35, 35, 255)
+                                        surface.DrawRect(0, h - 10, 240, 10)
+
+                                        surface.SetDrawColor(255, 255, 0, 100)
+                                        if v[4] == "headshot" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 10) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 10) elseif v[4] == "clutch" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 10) elseif v[4] == "longshot" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 10) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 10) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 10) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 10) end
+                                    end
+                                    local lockIndicator = vgui.Create("DImage", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
@@ -1127,7 +1149,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 levelCardsTotal = levelCardsTotal + 1
 
                                 if v[4] == "level" and playerTotalLevel < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 100))
+                                    card:SetColor(Color(100, 100, 100, 150))
+                                    card.Paint = function(self, w, h)
+                                        surface.SetDrawColor(35, 35, 35, 255)
+                                        surface.DrawRect(0, h - 10, 240, 10)
+
+                                        surface.SetDrawColor(255, 255, 0, 100)
+                                        surface.DrawRect(0, h - 10, (playerTotalLevel / v[5]) * 240, 10)
+                                    end
+                                    local lockIndicator = vgui.Create("DImage", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
@@ -1150,7 +1183,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 masteryCardsTotal = masteryCardsTotal + 1
 
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    card:SetColor(Color(100, 100, 100, 100))
+                                    card:SetColor(Color(100, 100, 100, 150))
+                                    local lockIndicator = vgui.Create("DImage", card)
+                                    lockIndicator:SetImage("icons/lockicon.png")
+                                    lockIndicator:SetSize(48, 48)
+                                    lockIndicator:Center()
                                 else
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
@@ -1316,7 +1353,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
-                    TextKill.Paint = function(self, w, h)
+                    TextStats.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("Stats", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
 
@@ -1672,14 +1709,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         CardScroller:ScrollToChild(TextLevel)
                     end
 
-                    local KillsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    KillsJump:SetPos(4, 204)
-                    KillsJump:SetSize(48, 48)
-                    KillsJump:SetImage("icons/uikillicon.png")
-                    KillsJump:SetTooltip("Kills")
-                    KillsJump.DoClick = function()
+                    local StatsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
+                    StatsJump:SetPos(4, 204)
+                    StatsJump:SetSize(48, 48)
+                    StatsJump:SetImage("icons/uikillicon.png")
+                    StatsJump:SetTooltip("Stats")
+                    StatsJump.DoClick = function()
                         TriggerSound("click")
-                        CardScroller:ScrollToChild(TextKill)
+                        CardScroller:ScrollToChild(TextStats)
                     end
 
                     local AccoladeJump = vgui.Create("DImageButton", CardQuickjumpHolder)

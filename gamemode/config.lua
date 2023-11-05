@@ -384,7 +384,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_bullet_doordestruction", "1")
     RunConsoleCommand("sv_tfa_bullet_doordestruction_keep", "1")
     RunConsoleCommand("sv_tfa_bullet_penetration", "1")
-    RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "1.25")
+    RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "0.7")
     RunConsoleCommand("sv_tfa_bullet_randomseed", "0")
     RunConsoleCommand("sv_tfa_bullet_ricochet", "0")
     RunConsoleCommand("sv_tfa_cmenu", "1")

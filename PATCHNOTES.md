@@ -12,6 +12,9 @@
 *GUN TRACERS OVERHAUL*
 - Tracers have been completely redesigned and are now gun depenedent (a SMG will have a smaller and less visible tracer compared to a Sniper)
 
+*AMMO CONVERSIONS*
+- Added experimental attachment options to the **KRISS Vector** and the **Mac 10** that rework the guns stats
+
 *NEW SETTINGS*
 - Slide Cancel type (Release, Jump, or Sprint)
 - Dynamic Crosshair type
@@ -61,6 +64,8 @@
 - Health and Ammo bars now smoothly scale instead of instantly changing size
 
 - Crosshair now fades away while sprinting
+
+- Added progress bars to player models/cards that you do not have unlocked in the customization menu
 
 - Heavy optimization for many movement related functions
 
