@@ -22,24 +22,24 @@ end
 function InitializeNetworkBool(ply, key, value)
     local v = tobool(value)
     local pdata = tobool(GetPlayerData(ply:SteamID64(), key))
-    if pdata == nil then ply:SetNWBool(key, v) else ply:SetNWBool(key, pdata) end
+    if pdata != nil then ply:SetNWBool(key, pdata) else ply:SetNWBool(key, v) end
 end
 
 function InitializeNetworkInt(ply, key, value)
     local v = tonumber(value)
     local pdata = tonumber(GetPlayerData(ply:SteamID64(), key))
-    if pdata == nil then ply:SetNWInt(key, v) else ply:SetNWInt(key, pdata) end
+    if pdata != nil then ply:SetNWInt(key, pdata) else ply:SetNWInt(key, v) end
 end
 
 function InitializeNetworkFloat(ply, key, value)
     local v = tonumber(value)
     local pdata = tonumber(GetPlayerData(ply:SteamID64(), key))
-    if pdata == nil then ply:SetNWFloat(key, v) else ply:SetNWFloat(key, pdata) end
+    if pdata != nil then ply:SetNWFloat(key, pdata) else ply:SetNWFloat(key, v) end
 end
 
 function InitializeNetworkString(ply, key, value)
     local pdata = GetPlayerData(ply:SteamID64(), key)
-    if pdata == nil then ply:SetNWString(key, value) else ply:SetNWString(key, pdata) end
+    if pdata != nil then ply:SetNWString(key, pdata) else ply:SetNWString(key, value) end
 end
 
 function UninitializeNetworkBool(ply, key)

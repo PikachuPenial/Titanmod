@@ -25,7 +25,7 @@ if !ConVarExists("sv_tm_player_crouchwalkspeed_multi") then CreateConVar("sv_tm_
 if !ConVarExists("sv_tm_player_slide_speed_multi") then CreateConVar("sv_tm_player_slide_speed_multi", "1.55", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier of the players speed while sliding (1.55 by default)") end
 if !ConVarExists("sv_tm_player_slide_duration") then CreateConVar("sv_tm_player_slide_duration", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) that a players slide lasts (1 by default)") end
 if !ConVarExists("sv_tm_player_healthregen") then CreateConVar("sv_tm_player_healthregen_enable", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable health regeneration on players (1 by default)", 0, 1) end
-if !ConVarExists("sv_tm_player_healthregen_speed") then CreateConVar("sv_tm_player_healthregen_speed", "0.12", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The speed of the players health regeneration (0.15 by default)") end
+if !ConVarExists("sv_tm_player_healthregen_speed") then CreateConVar("sv_tm_player_healthregen_speed", "0.12", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The speed of the players health regeneration (0.12 by default)") end
 if !ConVarExists("sv_tm_player_healthregen_damagedelay") then CreateConVar("sv_tm_player_healthregen_damagedelay", "3.5", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The time (in seconds) from when the player was last hit to begin health regeneration (3.5 by default)") end
 if !ConVarExists("sv_tm_progression_forcedisable") then CreateConVar("sv_tm_progression_forcedisable", "0", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Any progress or unlocks made during a play session will be reset upon leaving (0 by default)", 0, 1) end
 if !ConVarExists("sv_tm_progression_xp_multi") then CreateConVar("sv_tm_progression_xp_multi", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Multiplies all sources of XP (kills, accolades, and more) (1 by default)") end
@@ -171,6 +171,7 @@ end)
 -- Disable fake TFA bullet tracers (clutters up gameplay because most weapons are hitscan)
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "TracerCount" then return 1 end
+    if stat == "TracerName" then return "Tracer" end
     if stat == "DisableChambering" then return true end
     if stat == "Secondary.IronFOV_MX4" then return 64 end
 end)

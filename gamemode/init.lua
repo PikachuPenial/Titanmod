@@ -92,6 +92,8 @@ end
 
 function GM:PlayerInitialSpawn(ply)
 	-- Checking if PData exists for the player. If the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
+	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
+	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
 	InitializeNetworkInt(ply, "playerKills", 0)
 	InitializeNetworkInt(ply, "playerDeaths", 0)
 	InitializeNetworkInt(ply, "playerScore", 0)
@@ -103,8 +105,6 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerLevel", 1)
 	InitializeNetworkInt(ply, "playerPrestige", 0)
 	InitializeNetworkInt(ply, "playerXP", 0)
-	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
-	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
 	InitializeNetworkInt(ply, "playerAccoladeHeadshot", 0)
 	InitializeNetworkInt(ply, "playerAccoladeSmackdown", 0)
 	InitializeNetworkInt(ply, "playerAccoladeLongshot", 0)
@@ -112,15 +112,12 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
+	for k, v in pairs(weaponArray) do InitializeNetworkInt(ply, "killsWith_" .. v[1], 0) end
+
 	ply:SetNWBool("trulyAlive", false)
 	ply:SetNWInt("playerID64", ply:SteamID64())
 	ply:SetNWString("playerName", ply:Name())
 	ply:SetCanZoom(false)
-
-	-- Checking if PData exists for every single fucking weapon, GG
-	for k, v in pairs(weaponArray) do
-		InitializeNetworkInt(ply, "killsWith_" .. v[1], 0)
-	end
 
 	HandlePlayerInitialSpawn(ply)
 
