@@ -1034,7 +1034,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
                                 local card = vgui.Create("DImageButton", DockStatCards)
@@ -1048,10 +1048,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     card:SetColor(Color(100, 100, 100, 150))
                                     card.Paint = function(self, w, h)
                                         surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 10, 240, 10)
+                                        surface.DrawRect(0, h - 5, 240, 5)
 
                                         surface.SetDrawColor(255, 255, 0, 100)
-                                        if v[4] == "kills" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 10) elseif v[4] == "streak" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 10) end
+                                        if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) end
                                     end
                                     local lockIndicator = vgui.Create("DImage", card)
                                     lockIndicator:SetImage("icons/lockicon.png")
@@ -1068,7 +1068,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
@@ -1082,10 +1082,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     card:SetColor(Color(100, 100, 100, 150))
                                     card.Paint = function(self, w, h)
                                         surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 10, 240, 10)
+                                        surface.DrawRect(0, h - 5, 240, 5)
 
                                         surface.SetDrawColor(255, 255, 0, 100)
-                                        if v[4] == "headshot" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 10) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 10) elseif v[4] == "clutch" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 10) elseif v[4] == "longshot" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 10) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 10) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 10) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 10, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 10) end
+                                        if v[4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 5) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 5) elseif v[4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 5) elseif v[4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 5) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 5) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 5) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 5) end
                                     end
                                     local lockIndicator = vgui.Create("DImage", card)
                                     lockIndicator:SetImage("icons/lockicon.png")
@@ -1102,7 +1102,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
@@ -1120,7 +1120,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
@@ -1138,7 +1138,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
@@ -1152,10 +1152,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     card:SetColor(Color(100, 100, 100, 150))
                                     card.Paint = function(self, w, h)
                                         surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 10, 240, 10)
+                                        surface.DrawRect(0, h - 5, 240, 5)
 
                                         surface.SetDrawColor(255, 255, 0, 100)
-                                        surface.DrawRect(0, h - 10, (playerTotalLevel / v[5]) * 240, 10)
+                                        surface.DrawRect(0, h - 5, (playerTotalLevel / v[5]) * 240, 5)
                                     end
                                     local lockIndicator = vgui.Create("DImage", card)
                                     lockIndicator:SetImage("icons/lockicon.png")
@@ -1172,7 +1172,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "mastery" then
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
@@ -1184,6 +1184,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                                 if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
                                     card:SetColor(Color(100, 100, 100, 150))
+                                    card.Paint = function(self, w, h)
+                                        surface.SetDrawColor(35, 35, 35, 255)
+                                        surface.DrawRect(0, h - 5, 240, 5)
+
+                                        surface.SetDrawColor(255, 255, 0, 100)
+                                        surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. v[5]) / 50    ) * 240, 5)
+                                    end
                                     local lockIndicator = vgui.Create("DImage", card)
                                     lockIndicator:SetImage("icons/lockicon.png")
                                     lockIndicator:SetSize(48, 48)
@@ -1199,7 +1206,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             end
                         end
@@ -1223,7 +1230,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
                                 statCardsTotal = statCardsTotal + 1
@@ -1242,7 +1249,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         newCardDesc = v[3]
                                         newCardUnlockType = v[4]
                                         newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
@@ -1262,7 +1269,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         newCardDesc = v[3]
                                         newCardUnlockType = v[4]
                                         newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             elseif v[4] == "color" then
@@ -1281,7 +1288,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
@@ -1299,7 +1306,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardDesc = v[3]
                                     newCardUnlockType = v[4]
                                     newCardUnlockValue = v[5]
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
@@ -1318,7 +1325,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         newCardDesc = v[3]
                                         newCardUnlockType = v[4]
                                         newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             elseif v[4] == "mastery" then
@@ -1338,7 +1345,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         newCardDesc = v[3]
                                         newCardUnlockType = v[4]
                                         newCardUnlockValue = v[5]
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             end
@@ -2068,7 +2075,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[3] == "kills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsKills)
@@ -2102,7 +2109,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[3] == "streak" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStreak)
@@ -2136,7 +2143,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
@@ -2170,7 +2177,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             end
                         end
@@ -2202,7 +2209,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     SelectedModelDisplay:SetPos(0, 120)
                                     SelectedModelDisplay:SetModel(newModel)
 
-                                    surface.PlaySound("tmui/buttonrollover.wav")
+                                    TriggerSound("click")
                                 end
                             elseif v[3] == "kills" then
                                 killModelsTotal = killModelsTotal + 1
@@ -2229,7 +2236,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             elseif v[3] == "streak" then
@@ -2258,7 +2265,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
@@ -2287,7 +2294,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         SelectedModelDisplay:SetPos(0, 120)
                                         SelectedModelDisplay:SetModel(newModel)
 
-                                        surface.PlaySound("tmui/buttonrollover.wav")
+                                        TriggerSound("click")
                                     end
                                 end
                             end
@@ -2657,7 +2664,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
             OptionsSettingsButton.DoClick = function()
                 MainPanel:Hide()
-                TriggerSound("click")
 
                 if not IsValid(OptionsPanel) then
                     local OptionsPanel = MainMenu:Add("OptionsPanel")
@@ -2864,7 +2870,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     function mainMenuBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedMenuBind = mainMenuBind:GetSelectedNumber()
                         RunConsoleCommand("tm_mainmenubind", selectedMenuBind)
                     end
@@ -2874,7 +2880,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     function grenadeBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedGrenadeBind = grenadeBind:GetSelectedNumber()
                         RunConsoleCommand("tm_nadebind", selectedGrenadeBind)
                     end
@@ -2884,7 +2890,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     function grappleBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedGrappleBind = grappleBind:GetSelectedNumber()
                         RunConsoleCommand("frest_bindg", selectedGrappleBind)
                     end
@@ -2900,7 +2906,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     primaryBind:SetSize(100, 30)
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
                     function primaryBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedPrimaryBind = primaryBind:GetSelectedNumber()
                         RunConsoleCommand("tm_primarybind", selectedPrimaryBind)
                     end
@@ -2910,7 +2916,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     secondaryBind:SetSize(100, 30)
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
                     function secondaryBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedSecondaryBind = secondaryBind:GetSelectedNumber()
                         RunConsoleCommand("tm_secondarybind", selectedSecondaryBind)
                     end
@@ -2920,7 +2926,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     meleeBind:SetSize(100, 30)
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
                     function meleeBind:OnChange(num)
-                        surface.PlaySound("tmui/buttonrollover.wav")
+                        TriggerSound("forward")
                         selectedMeleeBind = meleeBind:GetSelectedNumber()
                         RunConsoleCommand("tm_meleebind", selectedMeleeBind)
                     end
@@ -2934,6 +2940,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     slideCancelType:AddChoice("Sprint")
                     slideCancelType.OnSelect = function(self, value)
                         RunConsoleCommand("tm_slidecanceltype", value - 1)
+                        TriggerSound("forward")
                     end
 
                     DockGameplay.Paint = function(self, w, h)
@@ -3130,7 +3137,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
                     crosshairStyle:AddChoice("Static")
                     crosshairStyle:AddChoice("Dynamic")
-                    crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) end
+                    crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) TriggerSound("forward") end
 
                     local crosshairDot = DockCrosshair:Add("DCheckBox")
                     crosshairDot:SetPos(20, 150)
@@ -3215,12 +3222,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairRight:SetConVar("tm_hud_crosshair_show_r")
                     crosshairRight:SetSize(30, 30)
                     function crosshairRight:OnChange() TriggerSound("click") end
-
-                    local crosshairADS = DockCrosshair:Add("DCheckBox")
-                    crosshairADS:SetPos(20, 630)
-                    crosshairADS:SetConVar("tm_hud_crosshair_show_ads")
-                    crosshairADS:SetSize(30, 30)
-                    function crosshairADS:OnChange() TriggerSound("click") end
 
                     local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png"}
                     local previewImg = "images/preview/sky.png"
@@ -3394,8 +3395,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             OptionsHUDButton.DoClick = function()
                 MainPanel:Hide()
                 TriggerSound("click")
-                local ShowHiddenOptions = false
 
+                local ShowHiddenOptions = false
                 local modePool = {"FFA", "Cranked", "Gun Game", "KOTH", "VIP"}
 
                 local mode = "FFA"
@@ -3620,6 +3621,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDFont.OnSelect = function(self, index, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_font", value)
+                    TriggerSound("forward")
                 end
 
                 local CustomFontInput = GeneralEditor:Add("DTextEntry")
@@ -3629,6 +3631,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 CustomFontInput.OnEnter = function(self)
                     RunConsoleCommand("tm_hud_font", self:GetValue())
                     HUDFont:SetValue(self:GetValue())
+                    TriggerSound("forward")
                 end
 
                 local HUDXBounds = GeneralEditor:Add("DNumSlider")
@@ -3680,6 +3683,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 AmmoStyle.OnSelect = function(self, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_ammo_style", value - 1)
+                    TriggerSound("forward")
                 end
 
                 local AmmoBarColor = vgui.Create("DColorMixer", AmmoEditor)
@@ -3787,6 +3791,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EquipmentAnchor.OnSelect = function(self, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_equipment_anchor", value - 1)
+                    TriggerSound("forward")
                 end
 
                 local EquipmentX = EquipmentEditor:Add("DNumSlider")
@@ -3860,6 +3865,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillFeedStyle.OnSelect = function(self, value)
                     surface.PlaySound("tmui/buttonrollover.wav")
                     RunConsoleCommand("tm_hud_killfeed_style", value - 1)
+                    TriggerSound("forward")
                 end
 
                 local KillFeedItemLimit = KillFeedEditor:Add("DNumSlider")
@@ -4187,6 +4193,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
                 ImportCode.DoClick = function()
                     RunConsoleCommand("tm_importhudcode_cannotbeundone", ImportCodeInput:GetValue())
+                    TriggerSound("forward")
                 end
 
                 local function CreateExportedCodeEntry(code)

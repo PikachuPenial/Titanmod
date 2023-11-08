@@ -30,8 +30,6 @@ Players fight it out across multiple gamemodes and maps using a vast array of fu
   
 Almost every aspect of Titanmod is configurable. Not only does it boast a wide array of settings for players to change at will, but Titanmod also comes with a config file, allowing server operators to change the experience to their liking.
 
-*Thank you to everyone who have created content, playtested, found bugs, or simply those who have taken the time out of their day to check out my passion project, I love you guys <3*
-
 # Credits:
 > Maps
 

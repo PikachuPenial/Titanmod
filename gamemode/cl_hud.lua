@@ -906,7 +906,7 @@ net.Receive("NotifyDeath", function(len, ply)
         end
 
         draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", "HUD_StreakText", w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open the menu", "HUD_WepNameKill", w / 2, 220, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", w / 2, 225, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)
@@ -1476,7 +1476,7 @@ net.Receive("EndOfGame", function(len, ply)
 end )
 
 -- Displays after a player levels up
-net.Receive("NotifyLevelUp", function(len, ply)
+net.Receive("NotifyLevelUp", function(len)
     if IsValid(LevelNotif) then LevelNotif:Remove() end
     local previousLevel = net.ReadInt(8)
 
@@ -1491,7 +1491,7 @@ net.Receive("NotifyLevelUp", function(len, ply)
 
     LevelNotif.Paint = function(self, w, h)
         draw.SimpleText("LEVEL UP", "HUD_PlayerNotiName", 300, 25, Color(255, 255, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(previousLevel .. "  > " .. previousLevel + 1, "HUD_PlayerNotiName", 300, 80, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(previousLevel + 1, "HUD_PlayerNotiName", 300, 80, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     LevelNotif:Show()
