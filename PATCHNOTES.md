@@ -1,17 +1,12 @@
 # Unreleased Upate
 **>GAMEPLAY**   
-- Reverted new custom bullet tracers due to visual bugs, will return in the future
 
 **>MAPS**   
 
 **>BALANCE**    
 
 **>QOL & BUG FIXES**    
-- Fixed locked mastery cards not showing progress bars
-
-- Adjusted various menu UI objects that wouldn't trigger a UI sound
-
-- Slightly adjusted death and level popup text
+- Removed motion blur that would be triggered while sliding
 
 
 
@@ -1575,7 +1570,7 @@
 *MAP VOTE ADJUSTMENTS*
 - Small maps no longer appear in the map vote when there are more than 5 players connected (this applies to Nuketown, Shipment, and the new Initial map)
 
-**>MAPS**
+**>MAPS**   
 *NEW MAPS*
 - Devtown
 - Initial
