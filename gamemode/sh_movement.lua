@@ -13,6 +13,13 @@ function meta:SetSlidingTime(value)
     return self:SetDTFloat(20, value)
 end
 
+function meta:GetWJTime()
+    return self:GetDTFloat(20)
+end
+function meta:SetWJTime(value)
+    return self:SetDTFloat(20, value)
+end
+
 function meta:GetWRTime()
     return self:GetDTFloat(20)
 end
@@ -47,15 +54,14 @@ if game.SinglePlayer() then
             end
 
             local ply = LocalPlayer()
-            ply.SlidingAngle = ply:GetVelocity():Angle()
         end)
     end
 end
 
-local slidepunch = Angle(-1, 0, -2.5)
 local trace_down = Vector(0, 0, 32)
 local trace_tbl = {}
 
+local slidepunch = Angle(-1, 0, -2.5)
 local walljumpleftpunch = Angle(0, 0, -10)
 local walljumprightpunch = Angle(0, 0, 10)
 local wallrunleftpunch = Angle(0, 0, 15)
@@ -80,16 +86,24 @@ local slidetime = math.max(0.1, qslide_duration:GetFloat())
 local wallJumpTime = 1
 local wallRunTime = 1.25
 
-hook.Add("Move", "Noclip", function(ply, mv)
-    local speed = mv:GetForwardSpeed()
+hook.Add("Move", "TM_Move", function(ply, mv)
+    if not ply.OldDuckSpeed then
+        ply.OldDuckSpeed = ply:GetDuckSpeed()
+        ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
+        ply.OldWalkSpeed = ply:GetWalkSpeed()
+        ply.OldRunSpeed = ply:GetRunSpeed()
+        ply.OldJumpPower = ply:GetJumpPower()
+    end
+
+    local speed = mv:GetVelocity():Length()
     local runspeed = ply:GetRunSpeed()
     local ducking = mv:KeyDown(IN_DUCK)
-    local crouching = ply:Crouching()
     local sprinting = mv:KeyDown(IN_SPEED)
-    local onground = ply:OnGround()
     local goingLeft = mv:KeyDown(IN_MOVELEFT)
     local goingRight = mv:KeyDown(IN_MOVERIGHT)
     local jumping = mv:KeyDown(IN_JUMP)
+    crouching = ply:Crouching()
+    onground = ply:OnGround()
     local CT = CurTime()
 
     local ang = mv:GetMoveAngles()
@@ -103,7 +117,7 @@ hook.Add("Move", "Noclip", function(ply, mv)
 
         tracedata = {}
         tracedata.start = eyepos + (ang:Up() * -1) + (ang:Forward() * 32)
-        tracedata.endpos = eyepos + (ang:Up() * -60) + (ang:Forward() * 64)
+        tracedata.endpos = eyepos + (ang:Up() * -73) + (ang:Forward() * 64)
         tracedata.filter = ply
         local traceWalLLow = util.TraceLine(tracedata)
 
@@ -120,10 +134,11 @@ hook.Add("Move", "Noclip", function(ply, mv)
         local traceWalLRight = util.TraceLine(tracedata)
 
         if not traceWalLLow.Hit and not traceWalLHigh.Hit and traceWalLRight.Hit then
+            ang.x = 0 ang.z = 0
             ply:SetWRTime(CT + wallRunTime)
             ply:ViewPunch(wallrunleftpunch)
             if SERVER then ply:EmitSound("wallrun.wav") end
-            vel = Vector(0, 0, 210) + (ang:Right() * -200 + ang:Forward() * 360)
+            vel = Vector(0, 0, 210) + (ang:Right() * -200) + (ang:Forward() * 360)
         end
     end
 
@@ -133,7 +148,7 @@ hook.Add("Move", "Noclip", function(ply, mv)
 
         tracedata = {}
         tracedata.start = eyepos + (ang:Up() * -1) + (ang:Forward() * 32)
-        tracedata.endpos = eyepos + (ang:Up() * -60) + (ang:Forward() * 64)
+        tracedata.endpos = eyepos + (ang:Up() * -73) + (ang:Forward() * 64)
         tracedata.filter = ply
         local traceWalRLow = util.TraceLine(tracedata)
 
@@ -150,11 +165,17 @@ hook.Add("Move", "Noclip", function(ply, mv)
         local traceWalRRight = util.TraceLine(tracedata)
 
         if not traceWalRLow.Hit and not traceWalRHigh.Hit and traceWalRRight.Hit then
+            ang.x = 0 ang.z = 0
             ply:SetWRTime(CT + wallRunTime)
             ply:ViewPunch(wallrunrightpunch)
             if SERVER then ply:EmitSound("wallrun.wav") end
-            vel = (Vector(0, 0, 210) + (ang:Right() * 200 + ang:Forward() * 360))
+            vel = Vector(0, 0, 210) + (ang:Right() * 200) + (ang:Forward() * 360)
         end
+    end
+
+    if onground then
+        ply:SetWJTime(CT)
+        ply:SetWRTime(CT)
     end
 
     mv:SetVelocity(vel)

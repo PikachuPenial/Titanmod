@@ -508,9 +508,6 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw", "1")
     RunConsoleCommand("cl_tfa_viewmodel_vp_yaw_is", "1")
 
-    -- Sliding
-    RunConsoleCommand("cl_qslide_view", "0")
-
     -- Voice Chat animations
     RunConsoleCommand("cl_vmanip_voicechat", "0")
 
