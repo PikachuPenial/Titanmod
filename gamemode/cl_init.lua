@@ -50,6 +50,42 @@ function UpdateFonts()
 		outline = false,
 	} )
 
+	surface.CreateFont("MainMenuDescription", {
+		font = "Arial",
+		extended = false,
+		size = 24,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("MainMenuTitle", {
+		font = "Arial",
+		extended = false,
+		size = 45,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
 	surface.CreateFont("MatchEndText", {
 		font = "Arial",
 		extended = false,

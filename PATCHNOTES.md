@@ -6,8 +6,11 @@
 **>BALANCE**    
 
 **>QOL & BUG FIXES**    
+- Overhauled the card cuztomization screen
+
 - Removed motion blur that would be triggered while sliding
 
+- Adjusted various calling card names and descriptions
 
 
 # November 8th, 2023 (11/8/23)

@@ -356,7 +356,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectateTextHeader:Dock(TOP)
             SpectateTextHeader:SetSize(0, 70)
             SpectateTextHeader.Paint = function(self, w, h)
-                draw.SimpleText("SPECTATE", "Health", w / 2, 20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText("SPECTATE", "MainMenuDescription", w / 2, 20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
 
             local SpectatePicker = SpectateTextHeader:Add("DComboBox")
@@ -666,13 +666,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local currentCard = LocalPly:GetNWString("chosenPlayercard")
 
                 if not IsValid(CardPanel) then
-                    local CardPanel = MainMenu:Add("CardPanel")
-                    local CardSlideoutPanel = MainMenu:Add("CardSlideoutPanel")
+                    local CardPanel = vgui.Create("DPanel", MainMenu)
+                    CardPanel:SetSize(745, scrH)
+                    CardPanel:SetPos(56, 0)
+                    CardPanel.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
+                    end
+
+                    local CardSlideoutPanel = vgui.Create("DPanel", MainMenu)
+                    CardSlideoutPanel:SetSize(56, scrH)
+                    CardSlideoutPanel:SetPos(0, 0)
+                    CardSlideoutPanel.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
+                    end
 
                     local CardQuickjumpHolder = vgui.Create("DPanel", CardSlideoutPanel)
                     CardQuickjumpHolder:Dock(TOP)
                     CardQuickjumpHolder:SetSize(0, scrH)
-
                     CardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
                     end
@@ -743,114 +753,121 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("CARDS", "AmmoCountSmall", 257.5, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " cards unlocked", "Health", 257.5, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("CARDS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " unlocked", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText("Hide locked playercards", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
+                    local CardPreviewPanel = vgui.Create("DPanel", CardPanel)
+                    CardPreviewPanel:Dock(TOP)
+                    CardPreviewPanel:SetSize(0, 100)
+                    CardPreviewPanel.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
+                    end
+
                     local HideLockedCards = CardTextHolder:Add("DCheckBox")
-                    HideLockedCards:SetPos(145, 122.5)
+                    HideLockedCards:SetPos(268, 122.5)
                     HideLockedCards:SetSize(20, 20)
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
                     -- Default Playercards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
-                    TextDefault:SetSize(0, 90)
+                    TextDefault:SetSize(0, 85)
 
                     local DockDefaultCards = vgui.Create("DPanel", CardScroller)
                     DockDefaultCards:Dock(TOP)
-                    DockDefaultCards:SetSize(0, 500)
+                    DockDefaultCards:SetSize(0, 340)
 
                     -- Leveling related Playercards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
                     TextLevel:Dock(TOP)
-                    TextLevel:SetSize(0, 90)
+                    TextLevel:SetSize(0, 85)
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 2040)
+                    DockLevelCards:SetSize(0, 1360)
 
                     -- Kill related Playercards
                     local TextStats = vgui.Create("DPanel", CardScroller)
                     TextStats:Dock(TOP)
-                    TextStats:SetSize(0, 90)
+                    TextStats:SetSize(0, 85)
 
                     local DockStatCards = vgui.Create("DPanel", CardScroller)
                     DockStatCards:Dock(TOP)
-                    DockStatCards:SetSize(0, 250)
+                    DockStatCards:SetSize(0, 180)
 
                     -- Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
-                    TextAccolade:SetSize(0, 90)
+                    TextAccolade:SetSize(0, 85)
 
                     local DockAccoladeCards = vgui.Create("DPanel", CardScroller)
                     DockAccoladeCards:Dock(TOP)
-                    DockAccoladeCards:SetSize(0, 1198)
+                    DockAccoladeCards:SetSize(0, 850)
 
                     -- Mastery related Playercards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
-                    TextMastery:SetSize(0, 90)
+                    TextMastery:SetSize(0, 85)
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 5442)
+                    DockMasteryCards:SetSize(0, 3570)
 
                     -- Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
-                    TextColor:SetSize(0, 90)
+                    TextColor:SetSize(0, 85)
 
                     local DockColorCards = vgui.Create("DPanel", CardScroller)
                     DockColorCards:Dock(TOP)
-                    DockColorCards:SetSize(0, 500)
+                    DockColorCards:SetSize(0, 340)
 
                     -- Pride related Playercards
                     local TextPride = vgui.Create("DPanel", CardScroller)
                     TextPride:Dock(TOP)
-                    TextPride:SetSize(0, 90)
+                    TextPride:SetSize(0, 85)
 
                     local DockPrideCards = vgui.Create("DPanel", CardScroller)
                     DockPrideCards:Dock(TOP)
-                    DockPrideCards:SetSize(0, 416)
+                    DockPrideCards:SetSize(0, 335)
 
                     -- Creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
                     DefaultCardList:Dock(TOP)
                     DefaultCardList:SetSpaceY(5)
-                    DefaultCardList:SetSpaceX(20)
+                    DefaultCardList:SetSpaceX(5)
 
                     local StatCardList = vgui.Create("DIconLayout", DockStatCards)
                     StatCardList:Dock(TOP)
                     StatCardList:SetSpaceY(5)
-                    StatCardList:SetSpaceX(20)
+                    StatCardList:SetSpaceX(5)
 
                     local AccoladeCardList = vgui.Create("DIconLayout", DockAccoladeCards)
                     AccoladeCardList:Dock(TOP)
                     AccoladeCardList:SetSpaceY(5)
-                    AccoladeCardList:SetSpaceX(20)
+                    AccoladeCardList:SetSpaceX(5)
 
                     local LevelCardList = vgui.Create("DIconLayout", DockLevelCards)
                     LevelCardList:Dock(TOP)
                     LevelCardList:SetSpaceY(5)
-                    LevelCardList:SetSpaceX(20)
+                    LevelCardList:SetSpaceX(5)
 
                     local MasteryCardList = vgui.Create("DIconLayout", DockMasteryCards)
                     MasteryCardList:Dock(TOP)
                     MasteryCardList:SetSpaceY(5)
-                    MasteryCardList:SetSpaceX(20)
+                    MasteryCardList:SetSpaceX(5)
 
                     local ColorCardList = vgui.Create("DIconLayout", DockColorCards)
                     ColorCardList:Dock(TOP)
                     ColorCardList:SetSpaceY(5)
-                    ColorCardList:SetSpaceX(20)
+                    ColorCardList:SetSpaceX(5)
 
                     local PrideCardList = vgui.Create("DIconLayout", DockPrideCards)
                     PrideCardList:Dock(TOP)
                     PrideCardList:SetSpaceY(5)
-                    PrideCardList:SetSpaceX(20)
+                    PrideCardList:SetSpaceX(5)
 
                     DefaultCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -880,31 +897,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
-                    local CardPreviewPanel = MainMenu:Add("CardPreviewPanel")
-
-                    local CardsPreviewScroller = vgui.Create("DScrollPanel", CardPreviewPanel)
-                    CardsPreviewScroller:Dock(FILL)
-
-                    local sbar = CardsPreviewScroller:GetVBar()
-                    function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, lightGray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                    end
-                    function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
-                    end
-
-                    local PreviewCardTextHolder = vgui.Create("DPanel", CardsPreviewScroller)
-                    PreviewCardTextHolder:Dock(TOP)
-                    if scrH >= 1080 then PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall() - 100) else PreviewCardTextHolder:SetSize(0, CardPreviewPanel:GetTall()) end
+                    local PreviewCardTextHolder = vgui.Create("DPanel", CardPreviewPanel)
+                    PreviewCardTextHolder:Dock(FILL)
+                    PreviewCardTextHolder:SetSize(0, 100)
 
                     CallingCard = vgui.Create("DImage", PreviewCardTextHolder)
-                    CallingCard:SetPos(137.5, 10)
+                    CallingCard:SetPos(245, 10)
                     CallingCard:SetSize(240, 80)
                     CallingCard:SetImage(newCard)
 
@@ -913,103 +911,130 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ProfilePicture:SetSize(70, 70)
                     ProfilePicture:SetPlayer(LocalPly, 184)
 
+                    local previewRed = Color(255, 0, 0, 5)
+                    local previewGreen = Color(0, 255, 0, 5)
+                    local previewColor = previewGreen
+
                     PreviewCardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                        draw.RoundedBox(0, 0, 0, w, h, previewColor)
 
                         if currentCard != nil then
-                            draw.SimpleText(newCardName, "PlayerNotiName", 5, 88, white, TEXT_ALIGN_LEFT)
-                            draw.SimpleText(newCardDesc, "Health", 5, 135, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(newCardName, "PlayerNotiName", 240, 5, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(newCardDesc, "MainMenuDescription", 240, 65, white, TEXT_ALIGN_RIGHT)
                         end
 
                         if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
-                                draw.SimpleText("Locked", "PlayerNotiName", 510, 88, solidRed, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidRed, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 510, 88, solidGreen, TEXT_ALIGN_RIGHT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "Health", 510, 135, solidGreen, TEXT_ALIGN_RIGHT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
                             end
                         end
 
@@ -1356,64 +1381,64 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Default", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Default", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextStats.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Stats", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Stats", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
 
                         if statCardsUnlocked == statCardsTotal then
-                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Accolades", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Accolades", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
 
                         if accoladeCardsUnlocked == accoladeCardsTotal then
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextLevel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Leveling", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Leveling", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
 
                         if levelCardsUnlocked == levelCardsTotal then
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextMastery.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Mastery", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Mastery", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
 
                         if masteryCardsUnlocked == masteryCardsTotal then
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", 257.5, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextColor.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Colors", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Colors", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextPride.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("Pride", "OptionsHeader", 257.5, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(prideCardsUnlocked .. " / " .. prideCardsTotal, "Health", 257.5, 55, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Pride", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(prideCardsUnlocked .. " / " .. prideCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     DockDefaultCards.Paint = function(self, w, h)
@@ -1444,187 +1469,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
 
-                    local ApplyButtonHolder = vgui.Create("DPanel", CardsPreviewScroller)
-                    ApplyButtonHolder:Dock(TOP)
-                    ApplyButtonHolder:SetSize(0, 100)
-
-                    ApplyButtonHolder.Paint = function(self, w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, Color(50, 80, 50, 200))
-                    end
-
-                    local ApplyCardButton = vgui.Create("DButton", ApplyButtonHolder)
-                    ApplyCardButton:SetText("APPLY NEW PLAYERCARD")
-                    ApplyCardButton:SetPos(82.5, 25)
-                    ApplyCardButton:SetSize(350, 50)
-                    ApplyCardButton.DoClick = function()
-                        local masteryUnlock = 50
-                        if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerCardChange")
-                            net.WriteString(newCard)
-                            net.SendToServer()
-                            plyCallingCard:SetImage(newCard)
-                            MainPanel:Show()
-                            CardPanel:Hide()
-                            CardPreviewPanel:Hide()
-                            CardSlideoutPanel:Hide()
-                        elseif newCardUnlockType == "kills" then
-                            if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "streak" then
-                            if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "headshot" then
-                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "smackdown" then
-                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "clutch" then
-                            if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "longshot" then
-                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "pointblank" then
-                            if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "killstreaks" then
-                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "buzzkills" then
-                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "level" then
-                            if playerTotalLevel < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        elseif newCardUnlockType == "mastery" then
-                            if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
-                            end
-                        end
-                    end
-
                     function HideLockedCards:OnChange(bVal)
                         if (bVal) then
                             DefaultCardList:Clear()
@@ -1650,13 +1494,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsTotal = 0
                             prideCardsUnlocked = 0
                             FillCardListsUnlocked()
-                            DockDefaultCards:SetSize(0, 416)
-                            DockStatCards:SetSize(0, (statCardsUnlocked * 42.5) + 42.5)
-                            DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 42.5) + 42.5)
-                            DockLevelCards:SetSize(0, (levelCardsUnlocked * 42.5) + 42.5)
-                            DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 42.5) + 42.5)
-                            DockColorCards:SetSize(0, 500)
-                            DockPrideCards:SetSize(0, 416)
+                            DockDefaultCards:SetSize(0, 340)
+                            DockStatCards:SetSize(0, (statCardsUnlocked * 28.34) + 28.34)
+                            DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 28.34) + 28.34)
+                            DockLevelCards:SetSize(0, (levelCardsUnlocked * 28.34) + 28.34)
+                            DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 28.34) + 28.34)
+                            DockColorCards:SetSize(0, 340)
+                            DockPrideCards:SetSize(0, 355)
                         else
                             DefaultCardList:Clear()
                             StatCardList:Clear()
@@ -1681,13 +1525,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsTotal = 0
                             prideCardsUnlocked = 0
                             FillCardListsAll()
-                            DockDefaultCards:SetSize(0, 416)
-                            DockStatCards:SetSize(0, 250)
-                            DockAccoladeCards:SetSize(0, 1166)
-                            DockLevelCards:SetSize(0, 2030)
-                            DockMasteryCards:SetSize(0, 5442)
-                            DockColorCards:SetSize(0, 500)
-                            DockPrideCards:SetSize(0, 416)
+                            DockDefaultCards:SetSize(0, 340)
+                            DockStatCards:SetSize(0, 180)
+                            DockAccoladeCards:SetSize(0, 850)
+                            DockLevelCards:SetSize(0, 1360)
+                            DockMasteryCards:SetSize(0, 3570)
+                            DockColorCards:SetSize(0, 340)
+                            DockPrideCards:SetSize(0, 335)
                         end
                     end
 
@@ -1873,7 +1717,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " models unlocked", "Health", w / 2, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " unlocked", "Health", w / 2, 85, white, TEXT_ALIGN_CENTER)
                         draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
@@ -4372,42 +4216,6 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("CustomizePreviewPanel", PANEL, "Panel")
-
-PANEL = {}
-function PANEL:Init()
-    self:SetSize(56, scrH)
-    self:SetPos(0, 0)
-end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("CardSlideoutPanel", PANEL, "Panel")
-
-PANEL = {}
-function PANEL:Init()
-    self:SetSize(515, scrH * 0.75)
-    self:SetPos(56, 0)
-end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("CardPanel", PANEL, "Panel")
-
-PANEL = {}
-function PANEL:Init()
-    self:SetSize(515, scrH * 0.25)
-    self:SetPos(56, scrH * 0.75)
-end
-
-function PANEL:Paint(w, h)
-    surface.SetDrawColor(0, 0, 0, 0)
-    surface.DrawRect(0, 0, w, h)
-end
-vgui.Register("CardPreviewPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
