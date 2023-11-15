@@ -15,6 +15,7 @@ if UseConfigConvars then
     playerCrouchWalkSpeedMulti = GetConVar("sv_tm_player_crouchwalkspeed_multi"):GetFloat()
     playerSlideSpeedMulti = GetConVar("sv_tm_player_slide_speed_multi"):GetFloat()
     playerSlideDuration = GetConVar("sv_tm_player_slide_duration"):GetFloat()
+    enableMovement = GetConVar("sv_tm_custom_movement"):GetBool()
     healthRegeneration = GetConVar("sv_tm_player_healthregen_enable"):GetBool()
     healthRegenSpeed = GetConVar("sv_tm_player_healthregen_speed"):GetFloat()
     healthRegenDamageDelay = GetConVar("sv_tm_player_healthregen_damagedelay"):GetFloat()
@@ -46,6 +47,7 @@ else
     playerCrouchWalkSpeedMulti = 1  -- The multiplier of the players wakling speed while crouched
     playerSlideSpeedMulti = 1.55    -- The multiplier of the players speed while sliding
     playerSlideDuration = 1         -- The time (in seconds) that a players slide lasts
+    enableMovement = true            -- Enable wall running
     healthRegeneration = true       -- Enable or disable health regeneration on players after not taking damage for a set amount of time
     healthRegenSpeed = 0.12         -- The speed of the players health regeneration
     healthRegenDamageDelay = 3.5    -- The time (in seconds) from when the player was last hit to begin health regeneration

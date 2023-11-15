@@ -36,5 +36,13 @@
 			"singleplayer"	"true"
 		}
 
+		4
+		{
+			"name"		"sv_tm_custom_movement"
+			"text"		"enable custom movement (wall running and sliding)"
+			"type"		"CheckBox"
+			"default"	"1"
+			"singleplayer"	"true"
+		}
 	}
 }

@@ -5,7 +5,9 @@ AddCSLuaFile("performance/cl_rewrite_player_index.lua")
 AddCSLuaFile("performance/cl_rewrite_weapon_index.lua")
 
 AddCSLuaFile("shared.lua")
-AddCSLuaFile("sh_movement.lua")
+if enableMovement then
+	AddCSLuaFile("sh_movement.lua")
+end
 AddCSLuaFile("config.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_hud.lua")
@@ -15,7 +17,9 @@ AddCSLuaFile("cl_scoreboard.lua")
 include("sv_save_manager.lua")
 include("shared.lua")
 include("sv_gamemode_handler.lua")
-include("sh_movement.lua")
+if enableMovement then
+	include("sh_movement.lua")
+end
 include("concommands.lua")
 
 hook.Remove("PlayerTick", "TickWidgets")
