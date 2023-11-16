@@ -10,6 +10,8 @@
 
 - Removed motion blur that would be triggered while sliding
 
+- Adjusted visibility of the exit button across menus
+
 - Adjusted various calling card names and descriptions
 
 

@@ -117,7 +117,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
         tracedata = {}
         tracedata.start = eyepos + (ang:Up() * -1) + (ang:Forward() * 32)
-        tracedata.endpos = eyepos + (ang:Up() * -73) + (ang:Forward() * 64)
+        tracedata.endpos = eyepos + (ang:Up() * -53) + (ang:Forward() * 64)
         tracedata.filter = ply
         local traceWalLLow = util.TraceLine(tracedata)
 
@@ -148,7 +148,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
         tracedata = {}
         tracedata.start = eyepos + (ang:Up() * -1) + (ang:Forward() * 32)
-        tracedata.endpos = eyepos + (ang:Up() * -73) + (ang:Forward() * 64)
+        tracedata.endpos = eyepos + (ang:Up() * -53) + (ang:Forward() * 64)
         tracedata.filter = ply
         local traceWalRLow = util.TraceLine(tracedata)
 
