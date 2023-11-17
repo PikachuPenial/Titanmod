@@ -102,8 +102,8 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     local goingLeft = mv:KeyDown(IN_MOVELEFT)
     local goingRight = mv:KeyDown(IN_MOVERIGHT)
     local jumping = mv:KeyDown(IN_JUMP)
-    crouching = ply:Crouching()
-    onground = ply:OnGround()
+    local crouching = ply:Crouching()
+    local onground = ply:OnGround()
     local CT = CurTime()
 
     local ang = mv:GetMoveAngles()
@@ -111,8 +111,10 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     local eyepos = pos + Vector(0, 0, 64)
     local vel = mv:GetVelocity()
 
+    if ply:GetMoveType() == MOVETYPE_LADDER then return end
+
     -- WR Left
-    if goingLeft and sprinting and not onground then
+    if goingLeft and not goingRight and sprinting and not onground then
         if ply:GetWRTime() > CT then return end
 
         tracedata = {}
@@ -143,7 +145,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     end
 
     -- WR Right
-    if goingRight and sprinting and not onground then
+    if goingRight and not goingLeft and sprinting and not onground then
         if ply:GetWRTime() > CT then return end
 
         tracedata = {}
