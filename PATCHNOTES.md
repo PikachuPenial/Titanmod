@@ -1,5 +1,7 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+*MOVEMENT ADDITIONS/CHANGES*    
+- Hook from grapple travels 33% faster
 
 **>MAPS**   
 

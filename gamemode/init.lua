@@ -207,7 +207,7 @@ local function ReduceRocketDamage(ent, dmginfo)
 	local newForce = dmgForce * 1.15
 	dmginfo:SetDamageForce(newForce)
 	ent:SetVelocity(newForce / 70)
-	dmginfo:ScaleDamage(0.3)
+	dmginfo:ScaleDamage(1)
 end
 hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
 
@@ -226,7 +226,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 
-		if (attacker:GetActiveWeapon():IsValid()) then
+		if inflictor:GetClass() == "npc_grenade_frag" then
+			attacker:SetNWInt("killsWith_grenade", attacker:GetNWInt("killsWith_grenade") + 1)
+		elseif (attacker:GetActiveWeapon():IsValid()) then
 			weaponClassName = attacker:GetActiveWeapon():GetClass()
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
 		end
@@ -271,7 +273,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local distance = math.Round(rawDistance * 0.01905)
 	local victimHitgroup = victim:LastHitGroup()
 
-	if (attacker:GetActiveWeapon():IsValid()) then
+	if inflictor:GetClass() == "npc_grenade_frag" then
+		weaponName = "Grenade"
+	elseif (attacker:GetActiveWeapon():IsValid()) then
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 		weaponName = weaponInfo["PrintName"]
 	else
