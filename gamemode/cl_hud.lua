@@ -619,7 +619,9 @@ function DeleteHUDHook()
     hook.Remove("HUDPaint", "DrawTMHUD")
 end
 
-local notiClock = Material("icons/noti_clock.png")
+local notiClock = Material("icons/noti_clock.png", "noclamp smooth")
+local notiLevel = Material("icons/noti_level.png", "noclamp smooth")
+local notiKnife = Material("icons/noti_knife.png", "noclamp smooth")
 
 net.Receive("SendNotification", function(len, ply)
     if convars["hud_enable"] == 0 or convars["notif_enable"] == 0 then return end
@@ -633,15 +635,27 @@ net.Receive("SendNotification", function(len, ply)
     local notiSecondaryColor
 
     if notiType == "time" then
+        surface.PlaySound("tmui/timenotif.wav")
         notiIcon = notiClock
         notiColor = Color(100, 0, 0, 155)
         notiSecondaryColor = Color(255, 0, 0, 50)
+    elseif notiType == "level" then
+        if convars["screen_flashes"] == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 25), 0.3, 0) end
+        surface.PlaySound("tmui/levelup.wav")
+        notiIcon = notiLevel
+        notiColor = Color(100, 100, 0, 155)
+        notiSecondaryColor = Color(255, 255, 0, 50)
+    elseif notiType == "gungame" then
+        surface.PlaySound("tmui/timenotif.wav")
+        notiIcon = notiKnife
+        notiColor = Color(100, 0, 100, 155)
+        notiSecondaryColor = Color(255, 0, 255, 50)
     end
 
     if IsValid(Notif) then Notif:Remove() end
     Notif = vgui.Create("DFrame")
-    Notif:SetSize(0, 40)
-    Notif:SizeTo(textLength + 48, -1, 1, 0, 0.1)
+    Notif:SetSize(0, 42)
+    Notif:SizeTo(textLength + 64, -1, 1, 0, 0.1)
     Notif:SetY(notis["y"])
     Notif:SetTitle("")
     Notif:SetDraggable(false)
@@ -649,11 +663,11 @@ net.Receive("SendNotification", function(len, ply)
     Notif.Paint = function(self, w, h)
         Notif:SetX(scrW - Notif:GetWide() - notis["x"])
         draw.RoundedBox(0, 0, 0, Notif:GetWide(), Notif:GetTall(), notiColor)
-        draw.RoundedBox(0, 0, 0, 40, 40, notiSecondaryColor)
+        draw.RoundedBox(0, 0, 0, 42, 42, notiSecondaryColor)
         surface.SetMaterial(notiIcon)
         surface.SetDrawColor(white)
-        surface.DrawTexturedRect(4, 4, 32, 32)
-        draw.SimpleText(notiText, "HUD_Health", 44, 20, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        surface.DrawTexturedRect(3, 3, 36, 36)
+        draw.SimpleText(notiText, "HUD_Health", 52, 20, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     Notif:Show()
@@ -661,8 +675,8 @@ net.Receive("SendNotification", function(len, ply)
     Notif:SetMouseInputEnabled(false)
     Notif:SetKeyboardInputEnabled(false)
 
-    timer.Create("removeNotification", 5, 1, function()
-        Notif:SizeTo(-1, 0, 0.25, 0, 0.1, function()
+    timer.Create("removeNotification", 6.5, 1, function()
+        Notif:SizeTo(-1, 0, 0.75, 0, 0.1, function()
             Notif:Remove()
         end)
     end)
@@ -1527,133 +1541,6 @@ net.Receive("EndOfGame", function(len, ply)
 
     EndOfGameUI:Show()
     gui.EnableScreenClicker(true)
-end )
-
--- Displays after a player levels up
-net.Receive("NotifyLevelUp", function(len)
-    if IsValid(LevelNotif) then LevelNotif:Remove() end
-    local previousLevel = net.ReadInt(8)
-
-    LevelNotif = vgui.Create("DFrame")
-    LevelNotif:SetSize(600, 100)
-    LevelNotif:SetX(scrW / 2 - 300)
-    LevelNotif:SetY(scrH)
-    LevelNotif:SetTitle("")
-    LevelNotif:SetDraggable(false)
-    LevelNotif:ShowCloseButton(false)
-    LevelNotif:MoveTo(scrW / 2 - 300, scrH - 110, 0.5, 0, 0.25)
-
-    LevelNotif.Paint = function(self, w, h)
-        draw.SimpleText("LEVEL UP", "HUD_PlayerNotiName", 300, 25, Color(255, 255, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(previousLevel + 1, "HUD_PlayerNotiName", 300, 80, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-
-    LevelNotif:Show()
-    LevelNotif:MakePopup()
-    LevelNotif:SetMouseInputEnabled(false)
-    LevelNotif:SetKeyboardInputEnabled(false)
-
-    if convars["screen_flashes"] == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 45), 0.3, 0) end
-    surface.PlaySound("tmui/levelup.wav")
-
-    timer.Create("LevelNotif", 6, 1, function()
-        LevelNotif:MoveTo(scrW / 2 - 300, scrH, 1, 0, 0.25, function()
-            LevelNotif:Remove()
-        end)
-    end)
-end )
-
--- Displays at certain intervals during the match to show players the remaining match time
-net.Receive("NotifyMatchTime", function(len, ply)
-    if IsValid(TimeNotif) then TimeNotif:Remove() end
-    matchTime = math.Round(net.ReadInt(16))
-    matchTimeFormatted = string.FormattedTime(matchTime, "%i:%02i")
-
-    if matchTime > 10 then
-        TimeNotif = vgui.Create("DFrame")
-        TimeNotif:SetSize(600, 100)
-        TimeNotif:SetX(scrW / 2 - 300)
-        TimeNotif:SetY(scrH)
-        TimeNotif:SetTitle("")
-        TimeNotif:SetDraggable(false)
-        TimeNotif:ShowCloseButton(false)
-        TimeNotif:MoveTo(scrW / 2 - 300, scrH - 400, 0.5, 0, 0.25)
-
-        TimeNotif.Paint = function(self, w, h)
-            draw.SimpleText(matchTimeFormatted, "HUD_PlayerNotiName", 300, 25, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Remaining", "HUD_WepNameKill", 300, 60, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        end
-
-        TimeNotif:Show()
-        TimeNotif:MakePopup()
-        TimeNotif:SetMouseInputEnabled(false)
-        TimeNotif:SetKeyboardInputEnabled(false)
-
-        surface.PlaySound("tmui/timenotif.wav")
-
-        timer.Create("TimeNotif", 4, 1, function()
-            TimeNotif:MoveTo(scrW / 2 - 300, scrH, 1, 0, 0.25, function()
-                TimeNotif:Remove()
-            end)
-        end)
-    else
-        TimeNotif = vgui.Create("DFrame")
-        TimeNotif:SetSize(600, 100)
-        TimeNotif:SetX(scrW / 2 - 300)
-        TimeNotif:SetY(scrH)
-        TimeNotif:SetTitle("")
-        TimeNotif:SetDraggable(false)
-        TimeNotif:ShowCloseButton(false)
-        TimeNotif:MoveTo(scrW / 2 - 300, scrH - 400, 0.5, 0, 0.25)
-
-        TimeNotif.Paint = function(self, w, h)
-            draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "HUD_AmmoCount", 300, 45, Color(255, 0, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        end
-
-        TimeNotif:Show()
-        TimeNotif:MakePopup()
-        TimeNotif:SetMouseInputEnabled(false)
-        TimeNotif:SetKeyboardInputEnabled(false)
-
-        surface.PlaySound("tmui/timenotif.wav")
-
-        timer.Create("TimeNotif", 10, 1, function()
-            TimeNotif:Remove()
-        end)
-    end
-end )
-
--- Displays after a player reaches the final weapon in Gun Game
-net.Receive("NotifyGGThreat", function(len, ply)
-    if IsValid(GGThreatNotif) then GGThreatNotif:Remove() end
-    playerName = net.ReadString()
-
-    GGThreatNotif = vgui.Create("DFrame")
-    GGThreatNotif:SetSize(600, 100)
-    GGThreatNotif:SetX(scrW / 2 - 300)
-    GGThreatNotif:SetY(scrH)
-    GGThreatNotif:SetTitle("")
-    GGThreatNotif:SetDraggable(false)
-    GGThreatNotif:ShowCloseButton(false)
-    GGThreatNotif:MoveTo(scrW / 2 - 300, scrH - 400, 0.5, 0, 0.25)
-
-    GGThreatNotif.Paint = function(self, w, h)
-        draw.SimpleText(playerName, "HUD_PlayerNotiName", 300, 25, Color(255, 255, 0, 241), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("has reached the Knife", "HUD_WepNameKill", 300, 60, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-
-    GGThreatNotif:Show()
-    GGThreatNotif:MakePopup()
-    GGThreatNotif:SetMouseInputEnabled(false)
-    GGThreatNotif:SetKeyboardInputEnabled(false)
-
-    surface.PlaySound("tmui/timenotif.wav")
-
-    timer.Create("GGThreatNotif", 3, 1, function()
-        GGThreatNotif:MoveTo(scrW / 2 - 300, scrH, 1, 0, 0.25, function()
-            GGThreatNotif:Remove()
-        end)
-    end)
 end )
 
 -- Updates the players time until self destruct on Cranked

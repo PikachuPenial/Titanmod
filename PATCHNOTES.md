@@ -8,7 +8,11 @@
 **>BALANCE**    
 
 **>QOL & BUG FIXES**    
+- Overhauled the notification system for things like match time warning, level up notifications, and more
+
 - Overhauled the card cuztomization screen
+
+- Added a notification if a player self destructs on Cranked that explains why they blew up
 
 - Removed motion blur that would be triggered while sliding
 

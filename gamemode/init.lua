@@ -35,9 +35,7 @@ util.AddNetworkString("CloseMainMenu")
 util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
-util.AddNetworkString("NotifyLevelUp")
 util.AddNetworkString("SendNotification")
-util.AddNetworkString("NotifyMatchTime")
 util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
@@ -389,8 +387,9 @@ function CheckForPlayerLevel(ply)
 			if (curLvl + 1) == v[1] then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 		end
 
-		net.Start("NotifyLevelUp")
-		net.WriteInt(curLvl, 8)
+		net.Start("SendNotification")
+		net.WriteString("You are now level " .. curLvl + 1 .. "!")
+		net.WriteString("level")
 		net.Send(ply)
 	end
 end
@@ -697,8 +696,9 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		if CurTime() > GetGlobal2Int("tm_matchtime", 0) then EndMatch() end
 
 		if currentTime == 300 or currentTime == 60 or currentTime == 10 then
-			net.Start("NotifyMatchTime")
-			net.WriteInt(currentTime, 16)
+			net.Start("SendNotification")
+			net.WriteString(string.FormattedTime(currentTime, "%i:%02i") .. " remaining in the match!")
+			net.WriteString("time")
 			net.Broadcast()
 		end
 	end

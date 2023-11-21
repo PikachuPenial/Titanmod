@@ -54,6 +54,72 @@ net.Receive("OpenMainMenu", function(len, ply)
         if type == "back" then surface.PlaySound("tmui/clickback.wav") end
     end
 
+    local notiClock = Material("icons/noti_clock.png", "noclamp smooth")
+    local notiLevel = Material("icons/noti_level.png", "noclamp smooth")
+    local notiKnife = Material("icons/noti_knife.png", "noclamp smooth")
+
+    local convars = {
+        ["notif_enable"] = GetConVar("tm_hud_notifications"):GetInt(),
+    }
+
+    net.Receive("SendNotification", function(len, ply)
+        if convars["notif_enable"] == 0 then return end
+        local notiText = net.ReadString()
+        local notiType = net.ReadString()
+        surface.SetFont("HUD_Health")
+        local textLength = select(1, surface.GetTextSize(notiText))
+
+        local notiIcon
+        local notiColor
+        local notiSecondaryColor
+
+        if notiType == "time" then
+            surface.PlaySound("tmui/timenotif.wav")
+            notiIcon = notiClock
+            notiColor = Color(100, 0, 0, 155)
+            notiSecondaryColor = Color(255, 0, 0, 50)
+        elseif notiType == "level" then
+            surface.PlaySound("tmui/levelup.wav")
+            notiIcon = notiLevel
+            notiColor = Color(100, 100, 0, 155)
+            notiSecondaryColor = Color(255, 255, 0, 50)
+        elseif notiType == "gungame" then
+            surface.PlaySound("tmui/timenotif.wav")
+            notiIcon = notiKnife
+            notiColor = Color(100, 0, 100, 155)
+            notiSecondaryColor = Color(255, 0, 255, 50)
+        end
+
+        if IsValid(Notif) then Notif:Remove() end
+        Notif = vgui.Create("DFrame")
+        Notif:SetSize(0, 42)
+        Notif:SizeTo(textLength + 64, -1, 1, 0, 0.1)
+        Notif:SetY(notis["y"])
+        Notif:SetTitle("")
+        Notif:SetDraggable(false)
+        Notif:ShowCloseButton(false)
+        Notif.Paint = function(self, w, h)
+            Notif:SetX(scrW - Notif:GetWide() - notis["x"])
+            draw.RoundedBox(0, 0, 0, Notif:GetWide(), Notif:GetTall(), notiColor)
+            draw.RoundedBox(0, 0, 0, 42, 42, notiSecondaryColor)
+            surface.SetMaterial(notiIcon)
+            surface.SetDrawColor(white)
+            surface.DrawTexturedRect(3, 3, 36, 36)
+            draw.SimpleText(notiText, "HUD_Health", 52, 20, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        end
+
+        Notif:Show()
+        Notif:MakePopup()
+        Notif:SetMouseInputEnabled(false)
+        Notif:SetKeyboardInputEnabled(false)
+
+        timer.Create("removeNotification", 6.5, 1, function()
+            Notif:SizeTo(-1, 0, 0.25, 0, 0.1, function()
+                Notif:Remove()
+            end)
+        end)
+    end )
+
     if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
         MainMenu:SetSize(scrW, scrH)
@@ -72,7 +138,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         end
 
         MainMenu.Paint = function()
-            if dof == true then DrawBokehDOF(4, 1, 0) end
+            if dof == true then DrawBokehDOF(4, 1, 12) end
             surface.SetDrawColor(35, 35, 35, 165)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
 
@@ -405,7 +471,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TutorialPanel:SetDeleteOnClose(true)
                 MainMenu:SetMouseInputEnabled(false)
                 TutorialPanel.Paint = function(self, w, h)
-                    DrawBokehDOF(4, 1, 0)
+                    DrawBokehDOF(4, 1, 12)
                     draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
                 end
                 TutorialPanel.OnClose = function()
@@ -3489,7 +3555,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local hillEmptyMat = Material("icons/kothempty.png")
                 local border = Material("overlay/objborder.png")
                 local timeText = " ∞"
-                local convars = {}
                 timer.Create("previewLoop", 1, 0, function()
                     mode = modePool[math.random(#modePool)]
                     modeTime = math.random(1, 45)

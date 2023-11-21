@@ -62,26 +62,12 @@ end
 concommand.Add("tm_hud_testdeath", HUDTestDeath)
 
 function HUDTestLevelUp(ply, cmd, args)
-	net.Start("NotifyLevelUp")
-	net.WriteInt(math.random(1, 59), 8)
+	net.Start("SendNotification")
+	net.WriteString("You are now level " .. math.random(1, 60) .. "!")
+	net.WriteString("level")
 	net.Send(ply)
 end
 concommand.Add("tm_hud_testlevelup", HUDTestLevelUp)
-
-function HUDTestTimeWarning(ply, cmd, args)
-	net.Start("NotifyMatchTime")
-	net.WriteInt(300, 16)
-	net.Send(ply)
-end
-concommand.Add("tm_hud_testtimewarning", HUDTestTimeWarning)
-
-function HUDNoti(ply, cmd, args)
-	net.Start("SendNotification")
-	net.WriteString("5 minutes left")
-	net.WriteString("time")
-	net.Send(ply)
-end
-concommand.Add("noti", HUDNoti)
 
 -- Allows the player to wipe their account and start fresh
 function PlayerAccountWipe(ply, cmd, args)

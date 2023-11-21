@@ -11,7 +11,6 @@ local fiestaPrimary
 local fiestaSecondary
 local fiestaMelee
 
-util.AddNetworkString("NotifyGGThreat")
 util.AddNetworkString("NotifyCranked")
 
 function ShuffleFiestaLoadout()
@@ -267,9 +266,10 @@ if activeGamemode == "Gun Game" then
         ply:Give(wepToGive[1])
         ply:Give(wepToGive[2])
         if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
-            net.Start("NotifyGGThreat")
-            net.WriteString(ply:GetName())
-            net.Broadcast()
+            net.Start("SendNotification")
+            net.WriteString(ply:Name() .. " has reached the knife!")
+            net.WriteString("gungame")
+            net.Send(ply)
         end
     end
 
@@ -318,6 +318,10 @@ if activeGamemode == "Cranked" then
             crankedExplosion:Spawn()
             crankedExplosion:Fire("Explode")
             crankedExplosion:SetKeyValue("IMagnitude", 150)
+            net.Start("SendNotification")
+            net.WriteString("You ran out of Cranked time and blew up, kill others to prevent this!")
+			net.WriteString("time")
+			net.Send(ply)
         end)
     end
 

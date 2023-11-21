@@ -29,7 +29,7 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetBackgroundBlur(true)
 		ScoreboardDerma.Paint = function()
 			if dof == true then
-				DrawBokehDOF(2.5, 1, 0)
+				DrawBokehDOF(2.5, 1, 12)
 			end
 			draw.RoundedBox(6, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
