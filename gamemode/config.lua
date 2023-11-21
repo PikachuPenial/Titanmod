@@ -465,6 +465,7 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_gunbob_intensity", "0.65")
     RunConsoleCommand("cl_tfa_hud_ammodata_fadein", "0.20")
     RunConsoleCommand("cl_tfa_hud_enabled", "0")
+    RunConsoleCommand("cl_tfa_hud_fallback_enabled", "0")
     RunConsoleCommand("cl_tfa_hud_hangtime", "1")
     RunConsoleCommand("cl_tfa_hud_hitmarker_3d_shotguns", "1")
     RunConsoleCommand("cl_tfa_hud_hitmarker_fadetime", "0.04")
