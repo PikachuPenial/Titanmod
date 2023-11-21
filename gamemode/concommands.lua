@@ -75,6 +75,14 @@ function HUDTestTimeWarning(ply, cmd, args)
 end
 concommand.Add("tm_hud_testtimewarning", HUDTestTimeWarning)
 
+function HUDNoti(ply, cmd, args)
+	net.Start("SendNotification")
+	net.WriteString("5 minutes left")
+	net.WriteString("time")
+	net.Send(ply)
+end
+concommand.Add("noti", HUDNoti)
+
 -- Allows the player to wipe their account and start fresh
 function PlayerAccountWipe(ply, cmd, args)
 	if ply:GetNWBool("mainmenu") == false then return end
@@ -171,6 +179,7 @@ function PlayerHUDReset(ply, cmd, args)
 	RunConsoleCommand("tm_hud_dmgindicator_color_g", 0)
 	RunConsoleCommand("tm_hud_dmgindicator_color_b", 0)
 	RunConsoleCommand("tm_hud_dmgindicator_opacity", 85)
+	RunConsoleCommand("tm_hud_notifications", 1)
 end
 concommand.Add("tm_resethudtodefault_cannotbeundone", PlayerHUDReset)
 

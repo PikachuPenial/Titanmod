@@ -2777,7 +2777,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 355)
+                    DockUI:SetSize(0, 395)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -3057,12 +3057,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INTERFACE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("HUD", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Damage Indicator", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Notifications", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Damage Indicator", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
                     end
 
                     local HUDtoggle = DockUI:Add("DCheckBox")
@@ -3071,38 +3072,44 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HUDtoggle:SetSize(30, 30)
                     function HUDtoggle:OnChange() TriggerSound("click") end
 
+                    local notificationToggle = DockUI:Add("DCheckBox")
+                    notificationToggle:SetPos(20, 110)
+                    notificationToggle:SetConVar("tm_hud_notifications")
+                    notificationToggle:SetSize(30, 30)
+                    function notificationToggle:OnChange() TriggerSound("click") end
+
                     local dmgIndicatorToggle = DockUI:Add("DCheckBox")
-                    dmgIndicatorToggle:SetPos(20, 110)
+                    dmgIndicatorToggle:SetPos(20, 150)
                     dmgIndicatorToggle:SetConVar("tm_hud_dmgindicator")
                     dmgIndicatorToggle:SetSize(30, 30)
                     function dmgIndicatorToggle:OnChange() TriggerSound("click") end
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 150)
+                    reloadHintsToggle:SetPos(20, 190)
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
                     reloadHintsToggle:SetSize(30, 30)
                     function reloadHintsToggle:OnChange() TriggerSound("click") end
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
-                    loadoutHintsToggle:SetPos(20, 190)
+                    loadoutHintsToggle:SetPos(20, 230)
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
                     loadoutHintsToggle:SetSize(30, 30)
                     function loadoutHintsToggle:OnChange() TriggerSound("click") end
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
-                    killTrackerToggle:SetPos(20, 230)
+                    killTrackerToggle:SetPos(20, 270)
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
                     killTrackerToggle:SetSize(30, 30)
                     function killTrackerToggle:OnChange() TriggerSound("click") end
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
-                    keypressOverlayToggle:SetPos(20, 270)
+                    keypressOverlayToggle:SetPos(20, 310)
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
                     keypressOverlayToggle:SetSize(30, 30)
                     function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
-                    VelocityCounterToggle:SetPos(20, 310)
+                    VelocityCounterToggle:SetPos(20, 350)
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
                     function VelocityCounterToggle:OnChange() TriggerSound("click") end

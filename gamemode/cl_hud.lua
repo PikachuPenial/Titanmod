@@ -119,6 +119,11 @@ function UpdateHUD()
         ["obj_contested_b"] = GetConVar("tm_hud_obj_color_contested_b"):GetInt()
     }
 
+    notis = {
+        ["x"] = GetConVar("tm_hud_bounds_x"):GetInt(),
+        ["y"] = GetConVar("tm_hud_bounds_y"):GetInt()
+    }
+
     sounds = {
         ["hit_enabled"] = GetConVar("tm_hitsounds"):GetInt(),
         ["kill_enabled"] = GetConVar("tm_killsound"):GetInt(),
@@ -131,6 +136,7 @@ function UpdateHUD()
         ["text_g"] = GetConVar("tm_hud_text_color_g"):GetInt(),
         ["text_b"] = GetConVar("tm_hud_text_color_b"):GetInt(),
         ["hud_enable"] = GetConVar("tm_hud_enable"):GetInt(),
+        ["notif_enable"] = GetConVar("tm_hud_notifications"):GetInt(),
         ["ammo_style"] = GetConVar("tm_hud_ammo_style"):GetInt(),
         ["kill_tracker"] = GetConVar("tm_hud_killtracker"):GetInt(),
         ["reload_hints"] = GetConVar("tm_hud_reloadhint"):GetInt(),
@@ -613,6 +619,55 @@ function DeleteHUDHook()
     hook.Remove("HUDPaint", "DrawTMHUD")
 end
 
+local notiClock = Material("icons/noti_clock.png")
+
+net.Receive("SendNotification", function(len, ply)
+    if convars["hud_enable"] == 0 or convars["notif_enable"] == 0 then return end
+    local notiText = net.ReadString()
+    local notiType = net.ReadString()
+    surface.SetFont("HUD_Health")
+    local textLength = select(1, surface.GetTextSize(notiText))
+
+    local notiIcon
+    local notiColor
+    local notiSecondaryColor
+
+    if notiType == "time" then
+        notiIcon = notiClock
+        notiColor = Color(100, 0, 0, 155)
+        notiSecondaryColor = Color(255, 0, 0, 50)
+    end
+
+    if IsValid(Notif) then Notif:Remove() end
+    Notif = vgui.Create("DFrame")
+    Notif:SetSize(0, 40)
+    Notif:SizeTo(textLength + 48, -1, 1, 0, 0.1)
+    Notif:SetY(notis["y"])
+    Notif:SetTitle("")
+    Notif:SetDraggable(false)
+    Notif:ShowCloseButton(false)
+    Notif.Paint = function(self, w, h)
+        Notif:SetX(scrW - Notif:GetWide() - notis["x"])
+        draw.RoundedBox(0, 0, 0, Notif:GetWide(), Notif:GetTall(), notiColor)
+        draw.RoundedBox(0, 0, 0, 40, 40, notiSecondaryColor)
+        surface.SetMaterial(notiIcon)
+        surface.SetDrawColor(white)
+        surface.DrawTexturedRect(4, 4, 32, 32)
+        draw.SimpleText(notiText, "HUD_Health", 44, 20, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    end
+
+    Notif:Show()
+    Notif:MakePopup()
+    Notif:SetMouseInputEnabled(false)
+    Notif:SetKeyboardInputEnabled(false)
+
+    timer.Create("removeNotification", 5, 1, function()
+        Notif:SizeTo(-1, 0, 0.25, 0, 0.1, function()
+            Notif:Remove()
+        end)
+    end)
+end )
+
 -- Hides the players info that shows up when aiming at another player
 function DrawTarget()
     return false
@@ -893,7 +948,6 @@ net.Receive("NotifyDeath", function(len, ply)
             draw.SimpleText(killedFrom .. "m", "HUD_WepNameKill", w / 2 + 10, 165, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
 
-        draw.RoundedBox(5, 0, 0, DeathNotif:GetWide(), DeathNotif:GetTall(), Color(80, 80, 80, 0))
         draw.SimpleText("Killed by", "HUD_StreakText", w / 2, 8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 135.5, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, 160, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -1804,6 +1858,9 @@ cvars.AddChangeCallback("tm_killsoundtype", function(convar_name, value_old, val
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_enable", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_notification", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_ammo_style", function(convar_name, value_old, value_new)
