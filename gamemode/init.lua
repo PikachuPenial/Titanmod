@@ -207,7 +207,7 @@ local function ReduceRocketDamage(ent, dmginfo)
 	local newForce = dmgForce * 1.15
 	dmginfo:SetDamageForce(newForce)
 	ent:SetVelocity(newForce / 70)
-	dmginfo:ScaleDamage(1)
+	dmginfo:ScaleDamage(0.3)
 end
 hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
 

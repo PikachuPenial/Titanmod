@@ -1,6 +1,5 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
-Advanced cause of death tracking (Car, explosive barrel, knives being thrown)
 Allow for Text Chat on match end
 Fix spawning inside players
 Space map with low gravity
