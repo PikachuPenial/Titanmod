@@ -7,7 +7,7 @@
 
 **>BALANCE**    
 
-**>QOL & BUG FIXES**    
+**>QOL & BUG FIXES**   
 - Overhauled the notification system for things like match time warning, level up notifications, and more
 
 - Overhauled the card cuztomization screen
@@ -18,9 +18,12 @@
 
 - New HUD icons for the grappling hook and the grenade
 
+- Added the "sv_tm_player_custommovement" ConVar that can enable/disable wall running/jumping, sliding, and vaulting
+
 - Adjusted visibility of the exit button across menus
 
 - Adjusted various calling card names and descriptions
+
 
 
 # November 8th, 2023 (11/8/23)
