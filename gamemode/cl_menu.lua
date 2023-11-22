@@ -6,8 +6,8 @@ local solidRed = Color(255, 0, 0, 255)
 local transparent = Color(0, 0, 0, 0)
 local transparentRed = Color(255, 0, 0, 20)
 
-local gradientL = Material("overlay/gradient_c.png")
-local gradientR = Material("overlay/gradient_c2.png")
+local gradientL = Material("overlay/gradient_c.png", "noclamp smooth")
+local gradientR = Material("overlay/gradient_c2.png", "noclamp smooth")
 
 local gradLColor
 local gradRColor
@@ -53,72 +53,6 @@ net.Receive("OpenMainMenu", function(len, ply)
         if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
         if type == "back" then surface.PlaySound("tmui/clickback.wav") end
     end
-
-    local notiClock = Material("icons/noti_clock.png", "noclamp smooth")
-    local notiLevel = Material("icons/noti_level.png", "noclamp smooth")
-    local notiKnife = Material("icons/noti_knife.png", "noclamp smooth")
-
-    local convars = {
-        ["notif_enable"] = GetConVar("tm_hud_notifications"):GetInt(),
-    }
-
-    net.Receive("SendNotification", function(len, ply)
-        if convars["notif_enable"] == 0 then return end
-        local notiText = net.ReadString()
-        local notiType = net.ReadString()
-        surface.SetFont("HUD_Health")
-        local textLength = select(1, surface.GetTextSize(notiText))
-
-        local notiIcon
-        local notiColor
-        local notiSecondaryColor
-
-        if notiType == "time" then
-            surface.PlaySound("tmui/timenotif.wav")
-            notiIcon = notiClock
-            notiColor = Color(100, 0, 0, 155)
-            notiSecondaryColor = Color(255, 0, 0, 50)
-        elseif notiType == "level" then
-            surface.PlaySound("tmui/levelup.wav")
-            notiIcon = notiLevel
-            notiColor = Color(100, 100, 0, 155)
-            notiSecondaryColor = Color(255, 255, 0, 50)
-        elseif notiType == "gungame" then
-            surface.PlaySound("tmui/timenotif.wav")
-            notiIcon = notiKnife
-            notiColor = Color(100, 0, 100, 155)
-            notiSecondaryColor = Color(255, 0, 255, 50)
-        end
-
-        if IsValid(Notif) then Notif:Remove() end
-        Notif = vgui.Create("DFrame")
-        Notif:SetSize(0, 42)
-        Notif:SizeTo(textLength + 64, -1, 1, 0, 0.1)
-        Notif:SetY(notis["y"])
-        Notif:SetTitle("")
-        Notif:SetDraggable(false)
-        Notif:ShowCloseButton(false)
-        Notif.Paint = function(self, w, h)
-            Notif:SetX(scrW - Notif:GetWide() - notis["x"])
-            draw.RoundedBox(0, 0, 0, Notif:GetWide(), Notif:GetTall(), notiColor)
-            draw.RoundedBox(0, 0, 0, 42, 42, notiSecondaryColor)
-            surface.SetMaterial(notiIcon)
-            surface.SetDrawColor(white)
-            surface.DrawTexturedRect(3, 3, 36, 36)
-            draw.SimpleText(notiText, "HUD_Health", 52, 20, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        end
-
-        Notif:Show()
-        Notif:MakePopup()
-        Notif:SetMouseInputEnabled(false)
-        Notif:SetKeyboardInputEnabled(false)
-
-        timer.Create("removeNotification", 6.5, 1, function()
-            Notif:SizeTo(-1, 0, 0.25, 0, 0.1, function()
-                Notif:Remove()
-            end)
-        end)
-    end )
 
     if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")

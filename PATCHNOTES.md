@@ -1,7 +1,7 @@
 # Unreleased Upate
 **>GAMEPLAY**   
-*MOVEMENT ADDITIONS/CHANGES*    
-- Hook from grapple travels 33% faster
+*CLIENT SIDED MOVEMENT*
+- Wall running, wall jumping, and sliding are now all done on the client, this means that no matter your ping, there will be no delay or stutters
 
 **>MAPS**   
 

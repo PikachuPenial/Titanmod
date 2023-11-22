@@ -160,9 +160,9 @@ function UpdateHUD()
 end
 UpdateHUD()
 
-local keyMat = Material("icons/keyicon.png")
-local keyMatMed = Material("icons/keyiconmedium.png")
-local keyMatLong = Material("icons/keyiconlong.png")
+local keyMat = Material("icons/keyicon.png", "noclamp smooth")
+local keyMatMed = Material("icons/keyiconmedium.png", "noclamp smooth")
+local keyMatLong = Material("icons/keyiconlong.png", "noclamp smooth")
 
 local fColor = white
 local lColor = white
@@ -413,8 +413,8 @@ function HUDAlive(client)
     if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
 
     -- Equipment
-    local grappleMat = Material("icons/grapplehudicon.png")
-    local nadeMat = Material("icons/grenadehudicon.png")
+    local grappleMat = Material("icons/grapplehudicon.png", "noclamp smooth")
+    local nadeMat = Material("icons/grenadehudicon.png", "noclamp smooth")
     local grappleText
 
     if client:HasWeapon("fres_grapple") and client:GetAmmoCount("Grenade") > 0 then
@@ -735,7 +735,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
     end
 end
 
-local micIcon = Material("icons/microphoneicon.png")
+local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
 local function VoiceIcon()
     surface.SetDrawColor(65, 155, 80, 155)
     surface.SetMaterial(micIcon)
