@@ -159,6 +159,69 @@ if CLIENT then
     CreateClientConVar("tm_hud_notifications", 1, true, false, "Enable/disable HUD notifications", 0, 1)
 end
 
+-- Sets up keybinds
+if activeGamemode != "Gun Game" then
+	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+        if SERVER then
+            -- Main Menu
+            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+                net.Start("OpenMainMenu")
+                if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+                net.Send(ply)
+                ply:SetNWBool("mainmenu", true)
+            end
+            -- Weapon quick switching
+            if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
+            if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
+            end
+            if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                ply:SelectWeapon(ply:GetNWString("loadoutSecondary"))
+            end
+            if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
+            end
+        end
+        if CLIENT then
+            -- Grenade
+            if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
+            hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
+                if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+            end)
+        end
+	end)
+else
+	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+        if SERVER then
+            -- Main Menu
+            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+                net.Start("OpenMainMenu")
+                if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
+                net.Send(ply)
+                ply:SetNWBool("mainmenu", true)
+            end
+            -- Weapon quick switching
+            if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
+            if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
+            end
+            if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+            end
+            if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+            end
+        end
+        if CLIENT then
+            -- Grenade
+            if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
+            hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
+                if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
+            end)
+        end
+	end)
+end
+
 -- Disabling footsteps if a player is crouched
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
     if !ply:Crouching() then return end

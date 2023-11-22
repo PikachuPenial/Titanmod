@@ -1,4 +1,3 @@
-print(customMovement)
 if customMovement == true then
 local meta = FindMetaTable("Player")
 function meta:GetWJTime()
@@ -27,6 +26,12 @@ function meta:GetSliding()
 end
 function meta:SetSliding(value)
     return self:SetDTBool(24, value)
+end
+function meta:GetCanSlide()
+    return self:GetDTBool(25)
+end
+function meta:SetCanSlide(value)
+    return self:SetDTBool(25, value)
 end
 function meta:GetSlidingTime()
     return self:GetDTFloat(24)
@@ -139,7 +144,8 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     if ply:GetMoveType() == MOVETYPE_LADDER then return end
 
     if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
-        if ply:GetSlidingCD() > CT then return end
+        if ply:GetSlidingCD() > CT or not ply:GetCanSlide() then return end
+        ply:SetCanSlide(false)
         ply:SetSlidingCD(CT + slideTime)
         ply:SetSliding(true)
         ply:SetSlidingTime(CT + slideTime)
@@ -196,6 +202,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     sliding = ply:GetSliding()
 
     if not crouching and not sliding then
+        ply:SetCanSlide(true)
         ply:SetDuckSpeed(ply.OldDuckSpeed)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
         ply:SetWalkSpeed(ply.OldWalkSpeed)
