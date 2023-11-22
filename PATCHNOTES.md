@@ -16,6 +16,8 @@
 
 - Removed motion blur that would be triggered while sliding
 
+- New HUD icons for the grappling hook and the grenade
+
 - Adjusted visibility of the exit button across menus
 
 - Adjusted various calling card names and descriptions

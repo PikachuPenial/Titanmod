@@ -44,6 +44,7 @@ if !ConVarExists("sv_tm_grapple_cooldown") then CreateConVar("sv_tm_grapple_cool
 if !ConVarExists("sv_tm_grapple_killreset") then CreateConVar("sv_tm_grapple_killreset", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable the grapple cooldown reset on a player kill (1 by default)", 0, 1) end
 if !ConVarExists("sv_tm_grapple_range") then CreateConVar("sv_tm_grapple_range", "850", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The length (in units) that the grappling hook can travel too before despawning (850 by default)") end
 if !ConVarExists("sv_tm_voip_range") then CreateConVar("sv_tm_voip_range", "1000", FCVAR_NOTIFY + FCVAR_ARCHIVE, "The thresehold in distance where players can hear other players over proximity voice chat (1000 by default)") end
+if !ConVarExists("sv_tm_player_custommovement") then CreateConVar("sv_tm_player_custommovement", "1", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable Titanmod's custom movement mechanics (wall running/jumping, sliding, vaulting) (1 by default)") end
 include("config.lua")
 
 -- Creating client ConVars, mostly for use in the Options menu

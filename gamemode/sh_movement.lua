@@ -1,3 +1,5 @@
+print(customMovement)
+if customMovement == true then
 local meta = FindMetaTable("Player")
 function meta:GetWJTime()
     return self:GetDTFloat(20)
@@ -318,4 +320,5 @@ end)
 hook.Add("FinishMove", "TM_FinishMove", function(ply, mv)
     ply:SetNetworkOrigin(mv:GetOrigin())
 end)
+end
 -- ^^ Original Sliding portion of script created by datæ
