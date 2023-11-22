@@ -3,6 +3,9 @@
 *CLIENT SIDED MOVEMENT*
 - Wall running, wall jumping, and sliding are now all done on the client, this means that no matter your ping, there will be no delay or stutters
 
+*SLIDE FATIGUE*
+- Instead of the traditional sliding cooldown, you are now able to spam slides, but if you are sliding too frequently, your slide velocity will be lower (only applies if slides are less than 1 seconds apart)
+
 **>MAPS**   
 
 **>BALANCE**    
@@ -11,6 +14,8 @@
 - Overhauled the notification system for things like match time warning, level up notifications, and more
 
 - Overhauled the card cuztomization screen
+
+- Throwing a grenade is now handled client side
 
 - Added a notification if a player self destructs on Cranked that explains why they blew up
 

@@ -144,7 +144,8 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     if ply:GetMoveType() == MOVETYPE_LADDER then return end
 
     if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
-        if ply:GetSlidingCD() > CT or not ply:GetCanSlide() then return end
+        if not ply:GetCanSlide() then return end
+        ply.Fatigue = math.min(1, (CT + slideTime) - (ply:GetSlidingCD()))
         ply:SetCanSlide(false)
         ply:SetSlidingCD(CT + slideTime)
         ply:SetSliding(true)
@@ -171,7 +172,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
     if sliding and mv:KeyDown(IN_DUCK) then
         local slideDelta = (ply:GetSlidingTime() - CT) / slideTime
-        speed = (math.max(276, ply.LandVelocity / 2 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed
+        speed = math.max(200, (math.max(276, ply.LandVelocity / 2 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed * ply.Fatigue)
 
         vel = ply.SlidingAngle:Forward() * speed
         mv:SetVelocity(vel)
