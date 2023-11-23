@@ -6,6 +6,10 @@
 *SLIDE FATIGUE*
 - Instead of the traditional sliding cooldown, you are now able to spam slides, but if you are sliding too frequently, your slide velocity will be lower (only applies if slides are less than 1 seconds apart)
 
+*SLIDE ACCELERATION AND TIME*
+- Time spent sliding at an downward angle will no longer count towards your slide duration
+- Sliding at a downward angle will now add extra velocity to the slide
+
 **>MAPS**   
 
 **>BALANCE**    
@@ -28,6 +32,8 @@
 - Adjusted visibility of the exit button across menus
 
 - Adjusted various calling card names and descriptions
+
+- Fixed "Dead Slides" when inputting a slide input within 200 miliseconds of a previous slide
 
 
 

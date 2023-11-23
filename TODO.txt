@@ -10,6 +10,5 @@ Disable custom movement ConVar
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
-Fix slide canceling being ping dependent
 Party mode (random effects throughout match)
 Notification system (top left, modular, replace match time alerts w/ this)

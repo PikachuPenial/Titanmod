@@ -45,6 +45,36 @@ end
 function meta:SetSlidingCD(value)
     return self:SetDTFloat(26, value)
 end
+function meta:GetSlideFatigue()
+    return self:GetDTFloat(27)
+end
+function meta:SetSlideFatigue(value)
+    return self:SetDTFloat(27, value)
+end
+function meta:GetSlopedSpeed()
+    return self:GetDTFloat(28)
+end
+function meta:SetSlopedSpeed(value)
+    return self:SetDTFloat(28, value)
+end
+function meta:GetLandingVelocity()
+    return self:GetDTFloat(29)
+end
+function meta:SetLandingVelocity(value)
+    return self:SetDTFloat(29, value)
+end
+function meta:GetSlideLastPosZ()
+    return self:GetDTFloat(30)
+end
+function meta:SetSlideLastPosZ(value)
+    return self:SetDTFloat(30, value)
+end
+function meta:GetSlidingAngle()
+    return self:GetDTAngle(31)
+end
+function meta:SetSlidingAngle(value)
+    return self:SetDTAngle(31, value)
+end
 
 local slide_sounds = {
     [MAT_DIRT] = {"datae/fol_slide_dirt_01.wav", "datae/fol_slide_dirt_02.wav", "datae/fol_slide_dirt_03.wav", "datae/fol_slide_dirt_04.wav"},
@@ -94,7 +124,7 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
         if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
         if bindType != 0 then slideLock = 0.45 else slideLock = 0.79 end
-        local trueSlideTime = (ply:GetSlidingTime() - CurTime()) / slideTime
+        local trueSlideTime = (ply:GetSlidingCD() - CurTime()) / slideTime
 
         if (trueSlideTime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueSlideTime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueSlideTime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
             cmd:RemoveKey(IN_DUCK)
@@ -145,18 +175,19 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
     if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
         if not ply:GetCanSlide() then return end
-        ply.Fatigue = math.min(1, (CT + slideTime) - (ply:GetSlidingCD()))
+        ply:SetSliding(true)
+        ply:SetSlideFatigue(math.min(1, (CT + slideTime) - (ply:GetSlidingCD())))
         ply:SetCanSlide(false)
         ply:SetSlidingCD(CT + slideTime)
-        ply:SetSliding(true)
         ply:SetSlidingTime(CT + slideTime)
         ply:ViewPunch(slidepunch)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
         ply:SetWalkSpeed(458) -- This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
         ply:SetJumpPower(0)
-        ply.LandVelocity = mv:GetVelocity():Length()
-        ply.SlidingAngle = mv:GetVelocity():Angle()
+        ply:SetLandingVelocity(mv:GetVelocity():Length())
+        ply:SetSlidingAngle(mv:GetVelocity():Angle())
+        ply:SetSlopedSpeed(1)
 
         if SERVER then
             SlideSurfaceSound(ply, pos)
@@ -164,31 +195,41 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             VManip:PlayAnim("vault")
         end
     elseif (not ducking or not onground) and sliding then
+        ply:SetCanSlide(true)
         ply:SetSliding(false)
         ply:SetSlidingTime(0)
+        ply:SetSlopedSpeed(0)
     end
 
     sliding = ply:GetSliding()
 
     if sliding and mv:KeyDown(IN_DUCK) then
-        local slideDelta = (ply:GetSlidingTime() - CT) / slideTime
-        speed = math.max(200, (math.max(276, ply.LandVelocity / 2 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed * ply.Fatigue)
+        if ply:GetSlideLastPosZ() == 0 then
+            ply:SetSlideLastPosZ(pos.z)
+        end
 
-        vel = ply.SlidingAngle:Forward() * speed
+        lastpos = ply:GetSlideLastPosZ()
+
+        local slopeDiff = lastpos - pos.z
+        local slopedMulti = math.min(math.min(2, slopeDiff + 1, 7))
+
+        if pos.z > lastpos + 1 then
+            ply:SetSlidingTime(ply:GetSlidingTime() - 0.025)
+            ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
+        elseif pos.z < lastpos - 0.6 then
+            ply:SetSlidingTime(CT + slideTime)
+            ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() + 0.002 * slopedMulti, 1), 2))
+        elseif pos.z == lastpos then
+            ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
+        end
+
+        speed = math.max(200, (math.max(276, ply:GetLandingVelocity() / 2 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed * ply:GetSlideFatigue()) * ply:GetSlopedSpeed()
+
+        vel = ply:GetSlidingAngle():Forward() * speed
         mv:SetVelocity(vel)
         mv:SetOrigin(pos)
 
-        if not ply.SlidingLastPos then
-            ply.SlidingLastPos = pos
-        end
-
-        if pos.z > ply.SlidingLastPos.z + 1 then
-            ply:SetSlidingTime(ply:GetSlidingTime() - 0.025)
-        elseif slideDelta < 0.5 and pos.z < ply.SlidingLastPos.z - 1 then
-            ply:SetSlidingTime(CT + slideTime * 0.5)
-        end
-
-        ply.SlidingLastPos = pos
+        ply:SetSlideLastPosZ(pos.z)
 
         if CT > ply:GetSlidingTime() then
             ply:SetSliding(false)
