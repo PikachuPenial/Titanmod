@@ -216,13 +216,13 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         end
 
         lastpos = ply:GetSlideLastPosZ()
-        stallSlideTime = ply:GetSlidingTime() + 0.0125
+        stallSlideTime = ply:GetSlidingTime() + 0.014
 
         local slopeDiff = lastpos - pos.z
         local slopedMulti = math.min(4, slopeDiff + 1)
 
         if pos.z > lastpos + 1 then
-            ply:SetSlidingTime(ply:GetSlidingTime() - 0.015)
+            ply:SetSlidingTime(ply:GetSlidingTime() - 0.012)
             ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
         elseif pos.z < lastpos - 0.4 then
             ply:SetSlidingTime(stallSlideTime)
@@ -231,7 +231,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
         end
 
-        speed = math.max(200, (math.max(276, ply:GetLandingVelocity() / 2 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed * ply:GetSlideFatigue()) * ply:GetSlopedSpeed()
+        speed = math.max(200, (math.max(276, ply:GetLandingVelocity() / 1.5 * slideTime) * math.min(0.85, (ply:GetSlidingTime() - CT + 0.5) / slideTime)) * (1 / engine.TickInterval()) * engine.TickInterval() * slideSpeed * ply:GetSlideFatigue()) * ply:GetSlopedSpeed()
 
         vel = ply:GetSlidingAngle():Forward() * speed
         mv:SetVelocity(vel)
