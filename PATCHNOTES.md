@@ -12,6 +12,11 @@
 
 **>MAPS**   
 
+*Shoot House*
+- Increased the gap of all doorways
+- Removed most on-ground props
+- Improved map geometry consistency
+
 **>BALANCE**    
 
 **>QOL & BUG FIXES**   
