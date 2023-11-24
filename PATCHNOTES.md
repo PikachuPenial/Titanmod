@@ -29,6 +29,8 @@
 
 - Overhauled the card cuztomization screen
 
+- Added 19 new calling cards
+
 - Throwing a grenade is now handled client side
 
 - Added a notification if a player self destructs on Cranked that explains why they blew up
@@ -39,9 +41,11 @@
 
 - Added the "sv_tm_player_custommovement" ConVar that can enable/disable wall running/jumping, sliding, and vaulting
 
+- Unlocked calling cards now appear at the top of calling card pages
+
 - Adjusted visibility of the exit button across menus
 
-- Adjusted various calling card art, names and descriptions
+- Adjusted various calling card art, unlock requirments, names and descriptions
 
 - Fixed "Dead Slides" when inputting a slide input within 200 miliseconds of a previous slide
 

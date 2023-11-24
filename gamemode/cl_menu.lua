@@ -798,7 +798,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockStatCards = vgui.Create("DPanel", CardScroller)
                     DockStatCards:Dock(TOP)
-                    DockStatCards:SetSize(0, 180)
+                    DockStatCards:SetSize(0, 680)
 
                     -- Accolade related Playercards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
@@ -1133,6 +1133,34 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 CardPreviewPanel:SetSize(0, 120)
                                 ApplyCardButton:Show()
                             end
+                        elseif newCardUnlockType == "matches" then
+                            if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
+                                CardPreviewPanel:SetSize(0, 100)
+                                ApplyCardButton:Hide()
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
+                                CardPreviewPanel:SetSize(0, 120)
+                                ApplyCardButton:Show()
+                            end
+                        elseif newCardUnlockType == "wins" then
+                            if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
+                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
+                                CardPreviewPanel:SetSize(0, 100)
+                                ApplyCardButton:Hide()
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
+                                CardPreviewPanel:SetSize(0, 120)
+                                ApplyCardButton:Show()
+                            end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
@@ -1285,10 +1313,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardUnlockValue = v[5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "kills" or v[4] == "streak" then
+                            elseif v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
 
-                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
+                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] or v[4] == "matches" and LocalPly:GetNWInt("matchesPlayed") < v[5] or v[4] == "wins" and LocalPly:GetNWInt("matchesWon") < v[5] then
                                     table.insert(lockedCards, v)
                                 else
                                     local card = vgui.Create("DImageButton", DockStatCards)
@@ -1413,7 +1441,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         end
 
                         for k, v in pairs(lockedCards) do
-                            if v[4] == "kills" or v[4] == "streak" then
+                            if v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
                                 local card = vgui.Create("DImageButton", DockStatCards)
                                 card:SetImage(v[1])
                                 card:SetSize(240, 80)
@@ -1423,7 +1451,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.DrawRect(0, h - 5, 240, 5)
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) end
+                                    if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) elseif v[4] == "matches" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesPlayed") / v[5]) * 240, 5) elseif v[4] == "wins" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesWon") / v[5]) * 240, 5) end
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
@@ -1541,9 +1569,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newCardUnlockValue = v[5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "kills" or v[4] == "streak" then
+                            elseif v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
-                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] then
+                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] or v[4] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= v[5] or v[4] == "wins" and LocalPly:GetNWInt("matchesWon") >= v[5] then
                                     local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(v[1])
                                     card:SetSize(240, 80)
@@ -1810,7 +1838,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsUnlocked = 0
                             FillCardListsAll()
                             DockDefaultCards:SetSize(0, 340)
-                            DockStatCards:SetSize(0, 180)
+                            DockStatCards:SetSize(0, 680)
                             DockAccoladeCards:SetSize(0, 850)
                             DockLevelCards:SetSize(0, 1360)
                             DockMasteryCards:SetSize(0, 3660)
