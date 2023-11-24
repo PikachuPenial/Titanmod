@@ -1265,6 +1265,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local function FillCardListsAll()
+                        local lockedCards = {}
                         for k, v in pairs(cardArray) do
                             if v[4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
@@ -1285,72 +1286,48 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     TriggerSound("click")
                                 end
                             elseif v[4] == "kills" or v[4] == "streak" then
-                                local card = vgui.Create("DImageButton", DockStatCards)
-                                card:SetImage(v[1])
-                                card:SetSize(240, 80)
-                                StatCardList:Add(card)
-
                                 statCardsTotal = statCardsTotal + 1
 
                                 if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 150))
-                                    card.Paint = function(self, w, h)
-                                        surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 5, 240, 5)
-
-                                        surface.SetDrawColor(255, 255, 0, 100)
-                                        if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) end
-                                    end
-                                    local lockIndicator = vgui.Create("DImage", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
+                                    table.insert(lockedCards, v)
                                 else
+                                    local card = vgui.Create("DImageButton", DockStatCards)
+                                    card:SetImage(v[1])
+                                    card:SetSize(240, 80)
+                                    StatCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
-                                end
 
-                                card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    TriggerSound("click")
+                                    card.DoClick = function(card)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        TriggerSound("click")
+                                    end
                                 end
                             elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
-                                local card = vgui.Create("DImageButton", DockAccoladeCards)
-                                card:SetImage(v[1])
-                                card:SetSize(240, 80)
-                                AccoladeCardList:Add(card)
-
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
                                 if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 150))
-                                    card.Paint = function(self, w, h)
-                                        surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 5, 240, 5)
-
-                                        surface.SetDrawColor(255, 255, 0, 100)
-                                        if v[4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 5) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 5) elseif v[4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 5) elseif v[4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 5) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 5) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 5) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 5) end
-                                    end
-                                    local lockIndicator = vgui.Create("DImage", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
+                                    table.insert(lockedCards, v)
                                 else
+                                    local card = vgui.Create("DImageButton", DockAccoladeCards)
+                                    card:SetImage(v[1])
+                                    card:SetSize(240, 80)
+                                    AccoladeCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
-                                end
 
-                                card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
-                                    TriggerSound("click")
+                                    card.DoClick = function(card)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        TriggerSound("click")
+                                    end
                                 end
                             elseif v[4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
@@ -1389,30 +1366,122 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     TriggerSound("click")
                                 end
                             elseif v[4] == "level" then
-                                local card = vgui.Create("DImageButton", DockLevelCards)
-                                card:SetImage(v[1])
-                                card:SetSize(240, 80)
-                                LevelCardList:Add(card)
-
                                 levelCardsTotal = levelCardsTotal + 1
 
                                 if v[4] == "level" and playerTotalLevel < v[5] then
-                                    card:SetColor(Color(100, 100, 100, 150))
-                                    card.Paint = function(self, w, h)
-                                        surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 5, 240, 5)
-
-                                        surface.SetDrawColor(255, 255, 0, 100)
-                                        surface.DrawRect(0, h - 5, (playerTotalLevel / v[5]) * 240, 5)
-                                    end
-                                    local lockIndicator = vgui.Create("DImage", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
+                                    table.insert(lockedCards, v)
                                 else
+                                    local card = vgui.Create("DImageButton", DockLevelCards)
+                                    card:SetImage(v[1])
+                                    card:SetSize(240, 80)
+                                    LevelCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
+
+                                    card.DoClick = function(card)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        TriggerSound("click")
+                                    end
                                 end
+                            elseif v[4] == "mastery" then
+                                masteryCardsTotal = masteryCardsTotal + 1
+
+                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
+                                    table.insert(lockedCards, v)
+                                else
+                                    local card = vgui.Create("DImageButton", DockMasteryCards)
+                                    card:SetImage(v[1])
+                                    card:SetSize(240, 80)
+                                    MasteryCardList:Add(card)
+                                    cardsUnlocked = cardsUnlocked + 1
+                                    masteryCardsUnlocked = masteryCardsUnlocked + 1
+
+                                    card.DoClick = function(card)
+                                        newCard = v[1]
+                                        newCardName = v[2]
+                                        newCardDesc = v[3]
+                                        newCardUnlockType = v[4]
+                                        newCardUnlockValue = v[5]
+                                        TriggerSound("click")
+                                    end
+                                end
+                            end
+                        end
+
+                        for k, v in pairs(lockedCards) do
+                            if v[4] == "kills" or v[4] == "streak" then
+                                local card = vgui.Create("DImageButton", DockStatCards)
+                                card:SetImage(v[1])
+                                card:SetSize(240, 80)
+                                card:SetColor(Color(100, 100, 100, 150))
+                                card.Paint = function(self, w, h)
+                                    surface.SetDrawColor(35, 35, 35, 255)
+                                    surface.DrawRect(0, h - 5, 240, 5)
+
+                                    surface.SetDrawColor(255, 255, 0, 100)
+                                    if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) end
+                                end
+                                local lockIndicator = vgui.Create("DImage", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                StatCardList:Add(card)
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    TriggerSound("click")
+                                end
+                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                                local card = vgui.Create("DImageButton", DockAccoladeCards)
+                                card:SetImage(v[1])
+                                card:SetSize(240, 80)
+                                card:SetColor(Color(100, 100, 100, 150))
+                                card.Paint = function(self, w, h)
+                                    surface.SetDrawColor(35, 35, 35, 255)
+                                    surface.DrawRect(0, h - 5, 240, 5)
+
+                                    surface.SetDrawColor(255, 255, 0, 100)
+                                    if v[4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 5) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 5) elseif v[4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 5) elseif v[4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 5) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 5) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 5) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 5) end
+                                end
+                                local lockIndicator = vgui.Create("DImage", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                AccoladeCardList:Add(card)
+
+                                card.DoClick = function(card)
+                                    newCard = v[1]
+                                    newCardName = v[2]
+                                    newCardDesc = v[3]
+                                    newCardUnlockType = v[4]
+                                    newCardUnlockValue = v[5]
+                                    TriggerSound("click")
+                                end
+                            elseif v[4] == "level" then
+                                local card = vgui.Create("DImageButton", DockLevelCards)
+                                card:SetImage(v[1])
+                                card:SetSize(240, 80)
+                                card:SetColor(Color(100, 100, 100, 150))
+                                card.Paint = function(self, w, h)
+                                    surface.SetDrawColor(35, 35, 35, 255)
+                                    surface.DrawRect(0, h - 5, 240, 5)
+
+                                    surface.SetDrawColor(255, 255, 0, 100)
+                                    surface.DrawRect(0, h - 5, (playerTotalLevel / v[5]) * 240, 5)
+                                end
+                                local lockIndicator = vgui.Create("DImage", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                LevelCardList:Add(card)
 
                                 card.DoClick = function(card)
                                     newCard = v[1]
@@ -1426,27 +1495,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
                                 card:SetImage(v[1])
                                 card:SetSize(240, 80)
-                                MasteryCardList:Add(card)
+                                card:SetColor(Color(100, 100, 100, 150))
+                                card.Paint = function(self, w, h)
+                                    surface.SetDrawColor(35, 35, 35, 255)
+                                    surface.DrawRect(0, h - 5, 240, 5)
 
-                                masteryCardsTotal = masteryCardsTotal + 1
-
-                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    card:SetColor(Color(100, 100, 100, 150))
-                                    card.Paint = function(self, w, h)
-                                        surface.SetDrawColor(35, 35, 35, 255)
-                                        surface.DrawRect(0, h - 5, 240, 5)
-
-                                        surface.SetDrawColor(255, 255, 0, 100)
-                                        surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. v[5]) / 50    ) * 240, 5)
-                                    end
-                                    local lockIndicator = vgui.Create("DImage", card)
-                                    lockIndicator:SetImage("icons/lockicon.png")
-                                    lockIndicator:SetSize(48, 48)
-                                    lockIndicator:Center()
-                                else
-                                    cardsUnlocked = cardsUnlocked + 1
-                                    masteryCardsUnlocked = masteryCardsUnlocked + 1
+                                    surface.SetDrawColor(255, 255, 0, 100)
+                                    surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. v[5]) / 50    ) * 240, 5)
                                 end
+                                local lockIndicator = vgui.Create("DImage", card)
+                                lockIndicator:SetImage("icons/lockicon.png")
+                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:Center()
+                                MasteryCardList:Add(card)
 
                                 card.DoClick = function(card)
                                     newCard = v[1]

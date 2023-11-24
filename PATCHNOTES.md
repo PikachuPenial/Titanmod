@@ -41,7 +41,7 @@
 
 - Adjusted visibility of the exit button across menus
 
-- Adjusted various calling card names and descriptions
+- Adjusted various calling card art, names and descriptions
 
 - Fixed "Dead Slides" when inputting a slide input within 200 miliseconds of a previous slide
 
