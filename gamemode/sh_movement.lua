@@ -75,6 +75,12 @@ end
 function meta:SetSlidingAngle(value)
     return self:SetDTAngle(31, value)
 end
+function meta:GetCT()
+    return self:GetDTFloat(10)
+end
+function meta:SetCT(value)
+    return self:SetDTFloat(10, value)
+end
 
 local slide_sounds = {
     [MAT_DIRT] = {"datae/fol_slide_dirt_01.wav", "datae/fol_slide_dirt_02.wav", "datae/fol_slide_dirt_03.wav", "datae/fol_slide_dirt_04.wav"},
@@ -124,7 +130,7 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
         local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
         if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
         if bindType != 0 then slideLock = 0.45 else slideLock = 0.79 end
-        local trueSlideTime = (ply:GetSlidingCD() - CurTime()) / slideTime
+        local trueSlideTime = (ply:GetSlidingCD() - ply:GetCT())
 
         if (trueSlideTime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueSlideTime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueSlideTime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
             cmd:RemoveKey(IN_DUCK)
@@ -204,6 +210,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     sliding = ply:GetSliding()
 
     if sliding and mv:KeyDown(IN_DUCK) then
+        ply:SetCT(CT)
         if ply:GetSlideLastPosZ() == 0 then
             ply:SetSlideLastPosZ(pos.z)
         end
