@@ -816,7 +816,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 3570)
+                    DockMasteryCards:SetSize(0, 3660)
 
                     -- Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1752,7 +1752,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockStatCards:SetSize(0, 180)
                             DockAccoladeCards:SetSize(0, 850)
                             DockLevelCards:SetSize(0, 1360)
-                            DockMasteryCards:SetSize(0, 3570)
+                            DockMasteryCards:SetSize(0, 3660)
                             DockColorCards:SetSize(0, 340)
                             DockPrideCards:SetSize(0, 335)
                         end
