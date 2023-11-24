@@ -209,16 +209,17 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         end
 
         lastpos = ply:GetSlideLastPosZ()
+        stallSlideTime = ply:GetSlidingTime() + 0.0125
 
         local slopeDiff = lastpos - pos.z
-        local slopedMulti = math.min(math.min(2, slopeDiff + 1, 7))
+        local slopedMulti = math.min(4, slopeDiff + 1)
 
         if pos.z > lastpos + 1 then
-            ply:SetSlidingTime(ply:GetSlidingTime() - 0.025)
+            ply:SetSlidingTime(ply:GetSlidingTime() - 0.015)
             ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
-        elseif pos.z < lastpos - 0.6 then
-            ply:SetSlidingTime(CT + slideTime)
-            ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() + 0.002 * slopedMulti, 1), 2))
+        elseif pos.z < lastpos - 0.4 then
+            ply:SetSlidingTime(stallSlideTime)
+            ply:SetSlopedSpeed(math.max(ply:GetSlopedSpeed() + 0.002 * slopedMulti, 1))
         elseif pos.z == lastpos then
             ply:SetSlopedSpeed(math.min(math.max(ply:GetSlopedSpeed() - 0.001, 1), 2))
         end
