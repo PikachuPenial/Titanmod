@@ -11,6 +11,11 @@
 - Sliding at a downward angle will now add extra velocity to the slide
 
 **>MAPS**   
+*Arctic*
+- Added access to the roofs of buildings
+- Improved the atmosphere of the unreachable areas
+- Reduced amount of falling snow particles
+- Added snowmen :)
 
 *Shoot House*
 - Increased the gap of all doorways
