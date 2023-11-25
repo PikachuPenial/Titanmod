@@ -1,5 +1,16 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+
+**>MAPS**   
+
+**>BALANCE**    
+
+**>QOL & BUG FIXES**   
+
+
+
+# November 24th, 2023 (11/24/23)
+**>GAMEPLAY**   
 *CLIENT SIDED MOVEMENT*
 - Wall running, wall jumping, and sliding are now all done on the client, this means that no matter your ping, there will be no delay or stutters
 
@@ -22,12 +33,10 @@
 - Removed most on-ground props
 - Improved map geometry consistency
 
-**>BALANCE**    
-
 **>QOL & BUG FIXES**   
 - Overhauled the notification system for things like match time warning, level up notifications, and more
 
-- Overhauled the card cuztomization screen
+- Overhauled the card customization screen
 
 - Added 19 new calling cards
 
