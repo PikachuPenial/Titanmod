@@ -49,6 +49,16 @@ util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("FOVUpdate")
 
+local modelFiles = {}
+local cardFiles = {}
+
+for k, v in pairs(modelArray) do
+	table.insert(modelFiles, v[1])
+end
+for k, v in pairs(cardArray) do
+	table.insert(cardFiles, v[1])
+end
+
 RunConsoleCommand("mp_friendlyfire", "1")
 
 function OpenMainMenu(ply)
@@ -123,6 +133,10 @@ function GM:PlayerInitialSpawn(ply)
 	for k, v in pairs(levelArray) do
 		if ply:GetNWInt("playerLevel") == v[1] and v[2] != "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 	end
+
+	-- Checks for potential save file corruption and will fix it accordingly
+	if not table.HasValue(modelFiles, ply:GetNWString("chosenPlayermodel")) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") end
+	if not table.HasValue(cardFiles, ply:GetNWString("chosenPlayercard")) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") end
 
 	-- Opens Main Menu on server connect
 	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
