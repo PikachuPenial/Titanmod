@@ -407,7 +407,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_nearlyempty", "1")
     RunConsoleCommand("sv_tfa_npc_burst", "0")
     RunConsoleCommand("sv_tfa_npc_randomize_atts", "0")
-    RunConsoleCommand("sv_tfa_penetration_hardlimit", "3")
+    RunConsoleCommand("sv_tfa_penetration_hardlimit", "50")
     RunConsoleCommand("sv_tfa_penetration_hitmarker", "1")
     RunConsoleCommand("sv_tfa_range_modifier", "0.85")
     RunConsoleCommand("sv_tfa_recoil_legacy", "0")

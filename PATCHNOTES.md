@@ -8,6 +8,10 @@
 **>QOL & BUG FIXES**   
 - Server ConVars are now properly replicated for players, fixing a variety of visual bugs
 
+- Fixed "'Player' is on the Knife" notifications on Gun Game only being sent to the player that is now on the knife
+
+- Potentially fixed the wrong player receiving the win on Gun Game
+
 
 
 # November 25th, 2023 (11/25/23)    

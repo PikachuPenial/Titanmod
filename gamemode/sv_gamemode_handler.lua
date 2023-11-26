@@ -269,7 +269,7 @@ if activeGamemode == "Gun Game" then
             net.Start("SendNotification")
             net.WriteString(ply:Name() .. " has reached the knife!")
             net.WriteString("gungame")
-            net.Send(ply)
+            net.Broadcast()
         end
     end
 
