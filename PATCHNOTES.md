@@ -6,7 +6,13 @@
 **>BALANCE**    
 
 **>QOL & BUG FIXES**   
-- Corrupt player saves are now fixed accordingly upon joining a server running the gamemode
+- Server ConVars are now properly replicated for players, fixing a variety of visual bugs
+
+
+
+# November 25th, 2023 (11/25/23)    
+**>QOL & BUG FIXES**   
+- Corrupted player saves are now fixed accordingly upon joining a server running the gamemode
 
 
 
