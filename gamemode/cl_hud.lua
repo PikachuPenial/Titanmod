@@ -250,13 +250,13 @@ function HUDAlways(client)
     -- Objective indicator
     if activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Empty" then
-            hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 10)
+            hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 3)
             objIndicatorColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 175)
         elseif GetGlobal2String("tm_hillstatus") == "Occupied" then
-            hillColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 10)
+            hillColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 3)
             objIndicatorColor = Color(objHUD["obj_occupied_r"], objHUD["obj_occupied_g"], objHUD["obj_occupied_b"], 175)
         else
-            hillColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 10)
+            hillColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 3)
             objIndicatorColor = Color(objHUD["obj_contested_r"], objHUD["obj_contested_g"], objHUD["obj_contested_b"], 175)
         end
 
@@ -524,6 +524,7 @@ function CreateHUDHook()
         local origin = KOTHCords.Origin
         local size = KOTHCords.BrushSize
         local playerAngle
+        local indiFade = 1
 
         hook.Add("PostDrawTranslucentRenderables", "TitanmodKOTHBoxRendering", function()
             if convars["hud_enable"] == 0 then return end
@@ -540,8 +541,9 @@ function CreateHUDHook()
 
             cam.IgnoreZ(true)
                 cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
-                    draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                    draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    if IsValid(weapon) and (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) then indiFade = math.Clamp(indiFade - 7 * RealFrameTime(), 0, 1) else indiFade = math.Clamp(indiFade + 4 * RealFrameTime(), 0, 1) end
+                    draw.WordBox(0, 8, -25, "Hill", "HUD_StreakText", Color(0, 0, 0, 10 * indiFade), Color(convars["text_r"], convars["text_g"], convars["text_b"], 255 * indiFade), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10 * indiFade), Color(convars["text_r"], convars["text_g"], convars["text_b"], 255 * indiFade), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 cam.End3D2D()
             cam.IgnoreZ(false)
         end )

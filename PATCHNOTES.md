@@ -1,12 +1,21 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+
+**>MAPS**   
+
+**>BALANCE**    
+
+**>QOL & BUG FIXES**   
+
+
+
+# November 26th, 2023 (11/26/23)    
+**>GAMEPLAY**   
 *RELOAD CANCELING*
 - Most reloads can now be canceled by left clicking if you have ammo left in the magazine, this can not be done while sprinting/aiming down sights
 
 *ADS SENSITIVITY PARITY*
-- All weapons now have the same ADS sensitivity, no matter the weapons mobility (your sensitivity might feel a bit high, especially with scopes, you can lower this in the Titanmod settings) 
-
-**>MAPS**   
+- All weapons now have the same ADS sensitivity, no matter the weapons mobility (your sensitivity might feel a bit high, especially with scopes, you can lower this in the Titanmod settings)
 
 **>BALANCE**    
 *Barrett M98B*
@@ -31,6 +40,8 @@
 - Fixed "'Player' is on the Knife" notifications on Gun Game only being sent to the player that is now on the knife
 
 - Potentially fixed the wrong player receiving the win on Gun Game
+
+- Fixed PPSH not having ammo loaded on first deploy
 
 
 
