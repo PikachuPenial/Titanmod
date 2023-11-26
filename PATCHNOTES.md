@@ -3,6 +3,9 @@
 *RELOAD CANCELING*
 - Most reloads can now be canceled by left clicking if you have ammo left in the magazine, this can not be done while sprinting/aiming down sights
 
+*ADS SENSITIVITY PARITY*
+- All weapons now have the same ADS sensitivity, no matter the weapons mobility (your sensitivity might feel a bit high, especially with scopes, you can lower this in the Titanmod settings) 
+
 **>MAPS**   
 
 **>BALANCE**    
