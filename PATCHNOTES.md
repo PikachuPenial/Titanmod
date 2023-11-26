@@ -1,9 +1,26 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+*RELOAD CANCELING*
+- Most reloads can now be canceled by left clicking if you have ammo left in the magazine, this can not be done while sprinting/aiming down sights
 
 **>MAPS**   
 
 **>BALANCE**    
+*Barrett M98B*
+- Reduced mobility to 75% (previously 80%)
+- Reduced rechambering speed slightly
+
+*DSR-1*
+- Reduced rechambering speed slightly
+
+*Spike X1S*
+- Increased RPM to 175 (previously 115)
+
+*SV-98*
+- Doubled rechambering speed
+
+*Mosin Nagant*
+- Doubled rechambering speed
 
 **>QOL & BUG FIXES**   
 - Server ConVars are now properly replicated for players, fixing a variety of visual bugs

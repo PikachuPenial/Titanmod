@@ -6,7 +6,6 @@ Allow for Text Chat on match end
 Fix spawning inside players
 Space map with low gravity
 
-Fix gun game winning, maybe only visual?
 Reload time improvment across the board
 Increase handling and rechambering on weaker snipers
 
