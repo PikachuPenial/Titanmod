@@ -6,7 +6,6 @@ Allow for Text Chat on match end
 Fix spawning inside players
 Space map with low gravity
 
-Fix HUD Codes
 maybe put big ass playermodel on the right hand side of the main menu's main screen
 magnification specific sensitivity settings
 

@@ -1,11 +1,18 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+*MOVEMENT CHANGES*
+- The perks of sliding at a downward angle are now more effective on shorter slopes
+
+- Sliding at a downward angle will now set your sliding duration to 0.4 seconds if it was below 0.4 seconds when beginning the downward slide
+
+- Slide fatigue now affects your sliding duration
 
 **>MAPS**   
 
 **>BALANCE**    
 
 **>QOL & BUG FIXES**   
+- Overhauled the playermodel customization screen
 
 
 

@@ -185,7 +185,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetSlideFatigue(math.min(1, (CT + slideTime) - (ply:GetSlidingCD())))
         ply:SetCanSlide(false)
         ply:SetSlidingCD(CT + slideTime)
-        ply:SetSlidingTime(CT + slideTime)
+        ply:SetSlidingTime(CT + (slideTime * ply:GetSlideFatigue()))
         ply:ViewPunch(slidepunch)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
@@ -216,10 +216,10 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         end
 
         lastpos = ply:GetSlideLastPosZ()
-        stallSlideTime = ply:GetSlidingTime() + 0.014
+        stallSlideTime = math.max(ply:GetSlidingTime() + 0.01665, CT + 0.4)
 
         local slopeDiff = lastpos - pos.z
-        local slopedMulti = math.min(4, slopeDiff + 1)
+        local slopedMulti = math.min(4, slopeDiff + 1.45)
 
         if pos.z > lastpos + 1 then
             ply:SetSlidingTime(ply:GetSlidingTime() - 0.012)
@@ -238,6 +238,8 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         mv:SetOrigin(pos)
 
         ply:SetSlideLastPosZ(pos.z)
+
+        print(ply:GetSlidingTime() - CT)
 
         if CT > ply:GetSlidingTime() then
             ply:SetSliding(false)

@@ -176,7 +176,13 @@ function ImportHUDCode(ply, cmd, args)
 	for s in string.gmatch(code, "[^-]+") do
 		table.insert(var, s)
 	end
-	if table.Count(var) != 60 then return end
+	if table.Count(var) != 60 then
+		net.Start("SendNotification")
+		net.WriteString("Failed HUD import (" .. table.Count(var) .. " vars), code may be from older TM version.")
+		net.WriteString("warning")
+		net.Send(ply)
+		return
+	end
 	RunConsoleCommand("tm_hud_font", var[1])
 	RunConsoleCommand("tm_hud_bounds_x", var[2])
 	RunConsoleCommand("tm_hud_bounds_y", var[3])
