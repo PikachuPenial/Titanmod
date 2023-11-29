@@ -239,8 +239,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
         ply:SetSlideLastPosZ(pos.z)
 
-        print(ply:GetSlidingTime() - CT)
-
         if CT > ply:GetSlidingTime() then
             ply:SetSliding(false)
             ply:SetSlidingTime(0)

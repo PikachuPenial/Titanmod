@@ -45,7 +45,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local hintList = hintArray
     table.Shuffle(hintList)
-    local hintText = table.concat(hintList, " / ")
+    local hintText = table.concat(hintList, "                ")
 
     local function TriggerSound(type)
         if GetConVar("tm_menusounds"):GetInt() == 0 then return end

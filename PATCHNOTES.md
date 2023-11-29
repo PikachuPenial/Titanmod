@@ -7,6 +7,9 @@
 
 - Slide fatigue now affects your sliding duration
 
+*AMMO CONVERSIONS*
+- Added new attachment types to the **Glock 18** that rework their gun stats
+
 **>MAPS**   
 
 **>BALANCE**    
