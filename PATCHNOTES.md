@@ -14,6 +14,10 @@
 **>QOL & BUG FIXES**   
 - Overhauled the playermodel customization screen
 
+- Added a notification when importing a invalid HUD code
+
+- Fixed very rare occurance of main menu sub-menus opening twice if clicked too many times during loading
+
 
 
 # November 26th, 2023 (11/26/23)    

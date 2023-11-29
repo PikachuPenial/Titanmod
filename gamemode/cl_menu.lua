@@ -175,6 +175,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton:SetSize(80, 80)
             LeaderboardButton:SetTooltip("Leaderboards")
             LeaderboardButton.DoClick = function()
+                if IsValid(LeaderboardPanel) then return end
                 TriggerSound("click")
                 MainPanel:Hide()
 
@@ -391,6 +392,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local function ShowTutorial()
+                if IsValid(TutorialPanel) then return end
                 local ContextBind = "Context Menu Bind"
                 if input.LookupBinding("+menu_context") != nil then ContextBind = input.LookupBinding("+menu_context") end
 
@@ -663,6 +665,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             CustomizeCardButton.DoClick = function()
+                if IsValid(CardPanel) then return end
                 TriggerSound("click")
                 MainPanel:Hide()
                 local currentCard = LocalPly:GetNWString("chosenPlayercard")
@@ -1958,6 +1961,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             CustomizeModelButton.DoClick = function()
+                if IsValid(ModelPanel) then return end
                 TriggerSound("click")
                 MainPanel:Hide()
 
@@ -2771,6 +2775,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             OptionsSettingsButton.DoClick = function()
+                if IsValid(OptionsPanel) then return end
                 MainPanel:Hide()
 
                 if not IsValid(OptionsPanel) then
@@ -3509,6 +3514,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             OptionsHUDButton.DoClick = function()
+                if IsValid(FakeHUD) then return end
                 MainPanel:Hide()
                 TriggerSound("click")
 

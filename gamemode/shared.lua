@@ -527,7 +527,7 @@ cardArray[204] = {"cards/mastery/webley.png", "Bear", "Webley mastery", "mastery
 cardArray[205] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
 
 -- Leveling Cards
-cardArray[206] = {"cards/leveling/5.png", "Mist", "", "level", 5}
+cardArray[206] = {"cards/leveling/5.png", "Mist", "Prestige 0 Level 5", "level", 5}
 cardArray[207] = {"cards/leveling/10.png", "Shift", "", "level", 10}
 cardArray[208] = {"cards/leveling/15.png", "Processing", "", "level", 15}
 cardArray[209] = {"cards/leveling/20.png", "Monolith", "", "level", 20}

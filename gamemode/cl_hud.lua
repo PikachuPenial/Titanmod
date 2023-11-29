@@ -625,6 +625,7 @@ local notiClock = Material("icons/noti_clock.png", "noclamp smooth")
 local notiLevel = Material("icons/noti_level.png", "noclamp smooth")
 local notiKnife = Material("icons/noti_knife.png", "noclamp smooth")
 local notiWarning = Material("icons/noti_warning.png", "noclamp smooth")
+local notiSuccess = Material("icons/noti_success.png", "noclamp smooth")
 
 net.Receive("SendNotification", function(len, ply)
     if convars["hud_enable"] == 0 or convars["notif_enable"] == 0 then return end
@@ -658,6 +659,11 @@ net.Receive("SendNotification", function(len, ply)
         notiIcon = notiWarning
         notiColor = Color(100, 0, 0, 155)
         notiSecondaryColor = Color(255, 0, 0, 50)
+    elseif notiType == "success" then
+        surface.PlaySound("tmui/success.wav")
+        notiIcon = notiSuccess
+        notiColor = Color(0, 100, 0, 155)
+        notiSecondaryColor = Color(0, 255, 0, 50)
     end
 
     if IsValid(Notif) then Notif:Remove() end
