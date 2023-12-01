@@ -67,6 +67,10 @@ if CLIENT then
     CreateClientConVar("tm_screenflashes", 1, true, false, "Enable/disable sudden screen flashes on certain occasions (mainly dying and leveling up)", 0, 1)
     CreateClientConVar("tm_customfov", 0, true, true, "Enable/disable Titanmod's custom FOV system", 0, 1)
     CreateClientConVar("tm_customfov_value", 100, true, true, "Adjust the players FOV while using Titanmod's custom FOV system", 100, 125)
+    CreateClientConVar("tm_sensitivity_1x", 75, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_2x", 70, true, true, "Adjust the sensitivity when using medium zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_4x", 60, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_8x", 40, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
     CreateClientConVar("tm_hud_bounds_x", 15, true, false, "Adjust the HUD bounds on the X axis, moving all hud elements from the edge of your screen", 0, ScrW() / 4)
@@ -371,7 +375,7 @@ cardArray[50] = {"cards/accolades/longshot2.png", "Stalker", "", "longshot", 60}
 cardArray[51] = {"cards/accolades/longshot3.png", "Highrise", "", "longshot", 100}
 cardArray[52] = {"cards/accolades/longshot4.png", "Tactical", "", "longshot", 180}
 cardArray[53] = {"cards/accolades/pointblank1.png", "Showers", "", "pointblank", 45}
-cardArray[54] = {"cards/accolades/pointblank2.png", "No Full Auto", "", "pointblank", 90}
+cardArray[54] = {"cards/accolades/pointblank2.png", "Full Auto", "", "pointblank", 90}
 cardArray[55] = {"cards/accolades/pointblank3.png", "Live Fire", "", "pointblank", 150}
 cardArray[56] = {"cards/accolades/pointblank4.png", "Dual Wield", "", "pointblank", 275}
 cardArray[57] = {"cards/accolades/killstreaks1.png", "Soilder", "", "killstreaks", 40}

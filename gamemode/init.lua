@@ -25,7 +25,7 @@ SetGlobal2Bool("tm_matchended", false)
 
 function GM:InitPostEntity()
 	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
-	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt())
+	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt() + 30)
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 end
 

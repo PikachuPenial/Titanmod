@@ -2745,7 +2745,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local OptionsHUDButton = vgui.Create("DButton", OptionsButton)
             OptionsButton:SetPos(0, scrH / 2 + 50)
             OptionsButton:SetText("")
-            OptionsButton:SetSize(415, 100)
+            OptionsButton:SetSize(405, 100)
             local textAnim = 0
             OptionsButton.Paint = function()
                 if OptionsButton:IsHovered() or OptionsSettingsButton:IsHovered() or OptionsHUDButton:IsHovered() then
@@ -2814,7 +2814,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 480)
+                    DockInputs:SetSize(0, 600)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -2953,34 +2953,61 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Slide Cancel Type", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("8x ADS Sensitivity", "SettingsLabel", 155, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Slide Cancel Type", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
                     adsSensitivity:SetPos(-85, 70)
                     adsSensitivity:SetSize(250, 30)
-                    adsSensitivity:SetConVar("cl_tfa_scope_sensitivity")
+                    adsSensitivity:SetConVar("tm_sensitivity_1x")
                     adsSensitivity:SetMin(0)
                     adsSensitivity:SetMax(100)
                     adsSensitivity:SetDecimals(0)
 
+                    local twoadsSensitivity = DockInputs:Add("DNumSlider")
+                    twoadsSensitivity:SetPos(-85, 110)
+                    twoadsSensitivity:SetSize(250, 30)
+                    twoadsSensitivity:SetConVar("tm_sensitivity_2x")
+                    twoadsSensitivity:SetMin(0)
+                    twoadsSensitivity:SetMax(100)
+                    twoadsSensitivity:SetDecimals(0)
+
+                    local fouradsSensitivity = DockInputs:Add("DNumSlider")
+                    fouradsSensitivity:SetPos(-85, 150)
+                    fouradsSensitivity:SetSize(250, 30)
+                    fouradsSensitivity:SetConVar("tm_sensitivity_4x")
+                    fouradsSensitivity:SetMin(0)
+                    fouradsSensitivity:SetMax(100)
+                    fouradsSensitivity:SetDecimals(0)
+
+                    local eightadsSensitivity = DockInputs:Add("DNumSlider")
+                    eightadsSensitivity:SetPos(-85, 190)
+                    eightadsSensitivity:SetSize(250, 30)
+                    eightadsSensitivity:SetConVar("tm_sensitivity_8x")
+                    eightadsSensitivity:SetMin(0)
+                    eightadsSensitivity:SetMax(100)
+                    eightadsSensitivity:SetDecimals(0)
+
                     local compensateSensWithFOV = DockInputs:Add("DCheckBox")
-                    compensateSensWithFOV:SetPos(20, 110)
+                    compensateSensWithFOV:SetPos(20, 230)
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
                     compensateSensWithFOV:SetSize(30, 30)
                     function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 150)
+                    mainMenuBind:SetPos(22.5, 270)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     function mainMenuBind:OnChange(num)
@@ -2990,7 +3017,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 190)
+                    grenadeBind:SetPos(22.5, 310)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     function grenadeBind:OnChange(num)
@@ -3000,7 +3027,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 230)
+                    grappleBind:SetPos(22.5, 350)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     function grappleBind:OnChange(num)
@@ -3010,13 +3037,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local quickWeaponSwitching = DockInputs:Add("DCheckBox")
-                    quickWeaponSwitching:SetPos(20, 270)
+                    quickWeaponSwitching:SetPos(20, 390)
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
                     quickWeaponSwitching:SetSize(30, 30)
                     function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
-                    primaryBind:SetPos(22.5, 310)
+                    primaryBind:SetPos(22.5, 430)
                     primaryBind:SetSize(100, 30)
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
                     function primaryBind:OnChange(num)
@@ -3026,7 +3053,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local secondaryBind = DockInputs:Add("DBinder")
-                    secondaryBind:SetPos(22.5, 350)
+                    secondaryBind:SetPos(22.5, 470)
                     secondaryBind:SetSize(100, 30)
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
                     function secondaryBind:OnChange(num)
@@ -3036,7 +3063,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local meleeBind = DockInputs:Add("DBinder")
-                    meleeBind:SetPos(22.5, 390)
+                    meleeBind:SetPos(22.5, 510)
                     meleeBind:SetSize(100, 30)
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
                     function meleeBind:OnChange(num)
@@ -3046,7 +3073,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local slideCancelType = DockInputs:Add("DComboBox")
-                    slideCancelType:SetPos(20, 430)
+                    slideCancelType:SetPos(20, 550)
                     slideCancelType:SetSize(100, 30)
                     if GetConVar("tm_slidecanceltype"):GetInt() == 0 then slideCancelType:SetValue("Release") elseif GetConVar("tm_slidecanceltype"):GetInt() == 1 then slideCancelType:SetValue("Jump") elseif GetConVar("tm_slidecanceltype"):GetInt() == 2 then slideCancelType:SetValue("Sprint") end
                     slideCancelType:AddChoice("Release")

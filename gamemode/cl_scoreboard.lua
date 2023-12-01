@@ -202,7 +202,7 @@ function GM:ScoreboardShow()
 			PlayerProfilePicture.OnMousePressed = function()
 				local Menu = DermaMenu()
 
-				local profileButton = Menu:AddOption("Open Steam Profile", function() gui.OpenURL("http:--steamcommunity.com/profiles/" .. v:SteamID64()) end)
+				local profileButton = Menu:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
 				profileButton:SetIcon("icon16/page_find.png")
 
 				Menu:AddSpacer()

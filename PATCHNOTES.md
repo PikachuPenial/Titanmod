@@ -7,19 +7,33 @@
 
 - Slide fatigue now affects your sliding duration
 
+*NEW SETTINGS*  
+- 2x ADS Sensitivity
+- 4x ADS Sensitivity
+- 8x ADS Sensitivity
+
 *AMMO CONVERSIONS*
-- Added new attachment types to the **Glock 18** that rework their gun stats
+- Added new attachment types to the **AS Val**, **Desert Eagle** and **Glock 18** that rework their gun stats
 
 **>MAPS**   
 
 **>BALANCE**    
+- All melees have been standardized stat-wise and will all function the same
+
+*Melee*
+- Increased damage to 150
+- Both types of swings now function identically, but still differ in animation
 
 **>QOL & BUG FIXES**   
 - Overhauled the playermodel customization screen
 
 - Added a notification when importing a invalid HUD code
 
-- Fixed very rare occurance of main menu sub-menus opening twice if clicked too many times during loading
+- Fixed "Open Steam Profile" button not working on scoreboard
+
+- Fixed Lua errors when firing the AN-94
+
+- Fixed very rare occurance of sub-menus opening twice if clicked too many times during loading
 
 
 
