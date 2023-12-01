@@ -10,6 +10,9 @@ magnification specific sensitivity settings
 maybe put big ass playermodel on the right hand side of the main menu's main screen
 automatic wall movement setting
 
+allow players to return to menu during intermission instantly with no death
+make intermission look prettier
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen

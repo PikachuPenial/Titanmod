@@ -1,5 +1,8 @@
 # Unreleased Upate
 **>GAMEPLAY**   
+*MATCH INTERMISSION*
+- By default, players will be frozen for the first 30 seconds of a match to allow other players to connect in time
+
 *MOVEMENT CHANGES*
 - The perks of sliding at a downward angle are now more effective on shorter slopes
 

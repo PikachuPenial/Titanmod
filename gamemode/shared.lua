@@ -10,13 +10,14 @@ GM.Email = "glass campers on tm_mall turning around to see a bald man crouching 
 GM.Website = "https://github.com/PikachuPenial/Titanmod"
 
 -- Creating server ConVars and initializing the config
-if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
+if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
 if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
 
-if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
-if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
+if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
+if !ConVarExists("tm_intermissiontimer") then CreateConVar("tm_intermissiontimer", "30", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the intermission length to the selected value in seconds", 0, 60) end
+if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
 
-if !ConVarExists("sv_tm_player_health") then CreateConVar("sv_tm_player_health", "100", FCVAR_REPLICATED + FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The max health of the player (100 by default)") end
+if !ConVarExists("sv_tm_player_health") then CreateConVar("sv_tm_player_health", "100", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The max health of the player (100 by default)") end
 if !ConVarExists("sv_tm_player_speed_multi") then CreateConVar("sv_tm_player_speed_multi", "1", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds) (1 by default)") end
 if !ConVarExists("sv_tm_player_gravity_multi") then CreateConVar("sv_tm_player_gravity_multi", "1", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the strength of gravity affecting the player (1 by default)") end
 if !ConVarExists("sv_tm_player_jump_multi") then CreateConVar("sv_tm_player_jump_multi", "1", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the strength of the players jump (1 by default)") end

@@ -21,12 +21,24 @@ include("concommands.lua")
 hook.Remove("PlayerTick", "TickWidgets")
 
 local activeGamemode
+local intermission = true
 SetGlobal2Bool("tm_matchended", false)
 
 function GM:InitPostEntity()
 	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
-	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt() + 30)
+	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt() + GetConVar("tm_intermissiontimer"):GetInt())
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
+
+	hook.Add("Think", "IntermissionFreeze", function()
+		local time = GetGlobal2Int("tm_matchtime", 0)
+		if time - CurTime() < (time - GetConVar("tm_intermissiontimer"):GetInt()) then
+			intermission = false
+			for k, ply in pairs(player.GetAll()) do
+				ply:Freeze(false)
+			end
+			hook.Remove("Think", "IntermissionFreeze")
+		end
+	end )
 end
 
 util.AddNetworkString("PlayerSpawn")
@@ -86,6 +98,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 	ply:DrawShadow(false)
+	if intermission then ply:Freeze(true) end
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
 	net.Start("PlayerSpawn")

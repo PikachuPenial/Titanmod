@@ -21,13 +21,22 @@
 		2
 		{
 			"name"		"tm_matchlengthtimer"
-			"text"		"Match Length (in seconds)"
+			"text"		"Match Time (in seconds)"
 			"type"		"Numeric"
 			"default"	"600"
 			"singleplayer"	"true"
 		}
-		
+
 		3
+		{
+			"name"		"tm_intermissiontimer"
+			"text"		"Intermission Time (in seconds)"
+			"type"		"Numeric"
+			"default"	"30"
+			"singleplayer"	"true"
+		}
+		
+		4
 		{
 			"name"		"tm_developermode"
 			"text"		"Developer Mode (enable spawn menu, disable progression)"

@@ -219,7 +219,7 @@ end
 
 function HUDAlways(client)
     -- Remaining match time
-    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
+    timeText = string.FormattedTime(GetGlobal2Int("tm_matchtime", 0) - CurTime(), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, 25 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP) elseif activeGamemode == "KOTH" then
@@ -339,6 +339,14 @@ local function LerpAmmo()
         startAmmo = SysTime()
         newAmmo = ammo
     end
+end
+
+local tab = {
+    ["$pp_colour_colour"] = 0,
+}
+
+function HUDIntermission(client)
+    draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "MatchEndText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function HUDAlive(client)
@@ -570,6 +578,7 @@ function CreateHUDHook()
 
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
+            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             UpdateKOTHPFP(LocalPly)
@@ -602,6 +611,7 @@ function CreateHUDHook()
 
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
+            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             UpdateVIPPFP(LocalPly)
@@ -610,6 +620,7 @@ function CreateHUDHook()
     else
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
+            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             if LocalPly:Alive() then HUDAlive(LocalPly) end
