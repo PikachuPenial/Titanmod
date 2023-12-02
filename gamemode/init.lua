@@ -36,6 +36,8 @@ function GM:InitPostEntity()
 			for k, ply in pairs(player.GetAll()) do
 				ply:Freeze(false)
 			end
+			net.Start("MatchStartPopup")
+			net.Broadcast()
 			hook.Remove("Think", "IntermissionFreeze")
 		end
 	end )
@@ -48,6 +50,7 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
 util.AddNetworkString("SendNotification")
+util.AddNetworkString("MatchStartPopup")
 util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
@@ -796,6 +799,11 @@ hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	else
 		return true, true
 	end
+end )
+
+-- Disable traditional suiciding when in the intermission phase
+hook.Add("CanPlayerSuicide", "IntermissionBlocksSuicide", function(ply)
+	if intermission then return false end
 end )
 
 -- Saves the players statistics when they leave, or when the server shuts down

@@ -14,7 +14,7 @@ if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_REPL
 if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
 
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
-if !ConVarExists("tm_intermissiontimer") then CreateConVar("tm_intermissiontimer", "30", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the intermission length to the selected value in seconds", 0, 60) end
+if !ConVarExists("tm_intermissiontimer") then CreateConVar("tm_intermissiontimer", "30", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the intermission length to the selected value in seconds", 0, 600) end
 if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
 
 if !ConVarExists("sv_tm_player_health") then CreateConVar("sv_tm_player_health", "100", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The max health of the player (100 by default)") end
@@ -166,10 +166,17 @@ end
 
 -- Sets up keybinds
 if activeGamemode != "Gun Game" then
-	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+    hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
         if SERVER then
             -- Main Menu
-            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
+                if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
+                    ply:KillSilent()
+                    net.Start("OpenMainMenu")
+                    net.WriteFloat(0)
+                    net.Send(ply)
+                end
+                if ply:Alive() then return end
                 net.Start("OpenMainMenu")
                 if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
                 net.Send(ply)
@@ -194,12 +201,19 @@ if activeGamemode != "Gun Game" then
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
             end)
         end
-	end)
+    end)
 else
-	hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+    hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
         if SERVER then
             -- Main Menu
-            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) and not ply:Alive() then
+            if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
+                if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
+                    ply:KillSilent()
+                    net.Start("OpenMainMenu")
+                    net.WriteFloat(0)
+                    net.Send(ply)
+                end
+                if ply:Alive() then return end
                 net.Start("OpenMainMenu")
                 if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end
                 net.Send(ply)
@@ -224,7 +238,7 @@ else
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
             end)
         end
-	end)
+    end)
 end
 
 -- Disabling footsteps if a player is crouched

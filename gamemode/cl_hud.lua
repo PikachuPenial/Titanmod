@@ -202,6 +202,29 @@ cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, v
     TitanmodFOV = value_new
 end)
 
+hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
+    if GetGlobal2Int("tm_matchtime", 0) - CurTime() < (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()) then
+        hook.Remove("RenderScreenspaceEffects", "IntermissionPostProcess")
+    end
+
+    local intTime = (GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt())
+    local pp = (-intTime / 30) + 1
+
+    local intermissionpp = {
+        [ "$pp_colour_contrast" ] = math.max(0.5, pp),
+        [ "$pp_colour_colour" ] = pp,
+    }
+
+    if ply:Alive() != true then return end
+
+    DrawColorModify(intermissionpp)
+end )
+
+function HUDIntermission(client)
+    draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "MatchEndText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", scrW / 2, scrH / 2 + 225, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+end
+
 local function CrosshairStateUpdate(client, wep)
     local gap = 0
     local velocity = tostring(math.Round(client:GetVelocity():Length()))
@@ -339,14 +362,6 @@ local function LerpAmmo()
         startAmmo = SysTime()
         newAmmo = ammo
     end
-end
-
-local tab = {
-    ["$pp_colour_colour"] = 0,
-}
-
-function HUDIntermission(client)
-    draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "MatchEndText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function HUDAlive(client)
@@ -703,6 +718,39 @@ net.Receive("SendNotification", function(len, ply)
     timer.Create("removeNotification", 6.5, 1, function()
         Notif:SizeTo(-1, 0, 0.75, 0, 0.1, function()
             Notif:Remove()
+        end)
+    end)
+end )
+
+net.Receive("MatchStartPopup", function(len, ply)
+    if convars["hud_enable"] == 0 then return end
+    surface.SetFont("MatchEndText")
+    local textLength = select(1, surface.GetTextSize(activeGamemode))
+
+    //surface.PlaySound("tmui/success.wav")
+
+    if IsValid(GamemodePopup) then GamemodePopup:Remove() end
+    GamemodePopup = vgui.Create("DFrame")
+    GamemodePopup:SetSize(textLength + 16, 0)
+    GamemodePopup:SizeTo(-1, 150, 1, 0, 0.1)
+    GamemodePopup:SetX(scrW / 2 - (textLength / 2))
+    GamemodePopup:SetTitle("")
+    GamemodePopup:SetDraggable(false)
+    GamemodePopup:ShowCloseButton(false)
+    GamemodePopup.Paint = function(self, w, h)
+        GamemodePopup:SetY(GamemodePopup:GetTall())
+        draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(50, 50, 50, 200))
+        draw.SimpleText(activeGamemode, "MatchEndText", w / 2 - 4, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+
+    GamemodePopup:Show()
+    GamemodePopup:MakePopup()
+    GamemodePopup:SetMouseInputEnabled(false)
+    GamemodePopup:SetKeyboardInputEnabled(false)
+
+    timer.Create("removeGamemodePopup", 4.5, 1, function()
+        GamemodePopup:SizeTo(-1, 0, 0.75, 0, 0.1, function()
+            GamemodePopup:Remove()
         end)
     end)
 end )

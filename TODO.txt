@@ -6,12 +6,7 @@ Allow for Text Chat on match end
 Fix spawning inside players
 Space map with low gravity
 
-magnification specific sensitivity settings
-maybe put big ass playermodel on the right hand side of the main menu's main screen
 automatic wall movement setting
-
-allow players to return to menu during intermission instantly with no death
-make intermission look prettier
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
