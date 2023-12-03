@@ -21,24 +21,25 @@ include("concommands.lua")
 hook.Remove("PlayerTick", "TickWidgets")
 
 local activeGamemode
-local intermission = true
 SetGlobal2Bool("tm_matchended", false)
 
 function GM:InitPostEntity()
 	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+	SetGlobal2Bool("tm_intermission", true)
 	SetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt() + GetConVar("tm_intermissiontimer"):GetInt())
 	print("Titanmod Initialized on " .. game.GetMap() .. " on the " .. activeGamemode .. " gamemode")
 
 	hook.Add("Think", "IntermissionFreeze", function()
 		local time = GetGlobal2Int("tm_matchtime", 0)
 		if time - CurTime() < (time - GetConVar("tm_intermissiontimer"):GetInt()) then
-			intermission = false
+			SetGlobal2Bool("tm_intermission", false)
 			for k, ply in pairs(player.GetAll()) do
 				ply:Freeze(false)
 			end
 			net.Start("MatchStartPopup")
 			net.Broadcast()
 			hook.Remove("Think", "IntermissionFreeze")
+			hook.Remove("CanPlayerSuicide", "IntermissionBlocksSuicide")
 		end
 	end )
 end
@@ -101,7 +102,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 	ply:DrawShadow(false)
-	if intermission then ply:Freeze(true) end
+	if GetGlobal2Bool("tm_intermission") then ply:Freeze(true) end
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
 	net.Start("PlayerSpawn")
@@ -803,7 +804,7 @@ end )
 
 -- Disable traditional suiciding when in the intermission phase
 hook.Add("CanPlayerSuicide", "IntermissionBlocksSuicide", function(ply)
-	if intermission then return false end
+	if GetGlobal2Bool("tm_intermission") then return false end
 end )
 
 -- Saves the players statistics when they leave, or when the server shuts down

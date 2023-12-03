@@ -80,7 +80,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_text_color_g", 255, true, false, "Adjusts the green coloring of the HUD text", 0, 255)
     CreateClientConVar("tm_hud_text_color_b", 255, true, false, "Adjusts the blue coloring of the HUD text", 0, 255)
     CreateClientConVar("tm_hud_enablekillfeed", 1, true, false, "Enable/disable the kill feed", 0, 1)
-    CreateClientConVar("tm_hud_font", "Arial", true, false, "Enable/disable any custom HUD elements created by the gamemode")
+    CreateClientConVar("tm_hud_font", "Bender", true, false, "Enable/disable any custom HUD elements created by the gamemode")
     CreateClientConVar("tm_hud_ammo_style", 0, true, false, "Adjusts the style and look of the ammo counter", 0, 1)
     CreateClientConVar("tm_hud_ammo_bar_color_r", 150, true, false, "Adjusts the red coloring for the ammo bar", 0, 255)
     CreateClientConVar("tm_hud_ammo_bar_color_g", 100, true, false, "Adjusts the green coloring for the ammo bar", 0, 255)

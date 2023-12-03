@@ -30,7 +30,9 @@
 **>QOL & BUG FIXES**   
 - Overhauled the playermodel customization screen
 
-- Added a notification when importing a invalid HUD code
+- Added a notification when importing HUD codes and resetting HUD settings to default
+
+- Bender is now the default HUD font for new players (previously Arial)
 
 - Fixed "Open Steam Profile" button not working on scoreboard
 

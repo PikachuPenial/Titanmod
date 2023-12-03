@@ -208,7 +208,7 @@ hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
     end
 
     local intTime = (GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt())
-    local pp = (-intTime / 30) + 1
+    local pp = (-intTime / GetConVar("tm_intermissiontimer"):GetInt()) + 1
 
     local intermissionpp = {
         [ "$pp_colour_contrast" ] = math.max(0.5, pp),
@@ -221,8 +221,9 @@ hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
 end )
 
 function HUDIntermission(client)
-    draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "MatchEndText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", scrW / 2, scrH / 2 + 225, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText("Match begins in", "HUD_WepNameKill", scrW / 2, scrH / 2 - 190, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "HUD_IntermissionText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", scrW / 2, scrH - 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 local function CrosshairStateUpdate(client, wep)
@@ -593,7 +594,7 @@ function CreateHUDHook()
 
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
-            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
+            if GetGlobal2Bool("tm_intermission") then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             UpdateKOTHPFP(LocalPly)
@@ -626,7 +627,7 @@ function CreateHUDHook()
 
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
-            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
+            if GetGlobal2Bool("tm_intermission") then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             UpdateVIPPFP(LocalPly)
@@ -635,7 +636,7 @@ function CreateHUDHook()
     else
         hook.Add("HUDPaint", "DrawTMHUD", function()
             LocalPly = LocalPlayer()
-            if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then HUDIntermission(LocalPly) return end
+            if GetGlobal2Bool("tm_intermission") then HUDIntermission(LocalPly) return end
             if convars["hud_enable"] == 0 then return end
             HUDAlways(LocalPly)
             if LocalPly:Alive() then HUDAlive(LocalPly) end
@@ -724,33 +725,81 @@ end )
 
 net.Receive("MatchStartPopup", function(len, ply)
     if convars["hud_enable"] == 0 then return end
-    surface.SetFont("MatchEndText")
-    local textLength = select(1, surface.GetTextSize(activeGamemode))
+    local gm = string.upper(activeGamemode)
+    local desc
+    local winCondition
+    surface.SetFont("AmmoCountSmall")
+    local popupW, popupH = select(1, surface.GetTextSize(gm))
 
-    //surface.PlaySound("tmui/success.wav")
+    if gm == "FFA" then
+        desc = "Eliminate other players"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "CRANKED" then
+        desc = "Eliminate other players, movement boost on kill"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "GUN GAME" then
+        desc = "Eliminate other players to advance to the next weapon"
+        winCondition = "Get a kill with every each to WIN"
+    elseif gm == "SHOTTY SNIPERS" then
+        desc = "Eliminate other players with snipers and shotguns"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "FIESTA" then
+        desc = "Eliminate other players with constantly changing loadouts"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "QUICKDRAW" then
+        desc = "Eliminate other players with secondaries"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "KOTH" then
+        desc = "Capture and defend the objective"
+        winCondition = "Get the most score to WIN"
+    elseif gm == "VIP" then
+        desc = "Track down and kill the VIP, defend the status for yourself"
+        winCondition = "Get the most score to WIN"
+    end
 
     if IsValid(GamemodePopup) then GamemodePopup:Remove() end
+    if IsValid(GamemodeDesc) then GamemodeDesc:Remove() end
     GamemodePopup = vgui.Create("DFrame")
-    GamemodePopup:SetSize(textLength + 16, 0)
-    GamemodePopup:SizeTo(-1, 150, 1, 0, 0.1)
-    GamemodePopup:SetX(scrW / 2 - (textLength / 2))
+    GamemodePopup:SetSize(popupW + 8, 0)
+    GamemodePopup:SizeTo(-1, popupH - 8, 1, 0, 0.1)
+    GamemodePopup:SetX(scrW / 2 - (popupW / 2))
     GamemodePopup:SetTitle("")
     GamemodePopup:SetDraggable(false)
     GamemodePopup:ShowCloseButton(false)
     GamemodePopup.Paint = function(self, w, h)
         GamemodePopup:SetY(GamemodePopup:GetTall())
-        draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(50, 50, 50, 200))
-        draw.SimpleText(activeGamemode, "MatchEndText", w / 2 - 4, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(50, 50, 50, 100))
+        draw.SimpleText(gm, "AmmoCountSmall", w / 2, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
-    GamemodePopup:Show()
-    GamemodePopup:MakePopup()
-    GamemodePopup:SetMouseInputEnabled(false)
-    GamemodePopup:SetKeyboardInputEnabled(false)
+    timer.Create("addAdditionalPopupInfo", 1.5, 1, function()
+        surface.SetFont("HUD_Health")
+        local descTextW, descTextH = select(1, surface.GetTextSize(desc))
+        local winTextW, winTextH = select(1, surface.GetTextSize(winCondition))
+        local textW = math.max(descTextW, winTextW)
 
-    timer.Create("removeGamemodePopup", 4.5, 1, function()
+        GamemodeDesc = vgui.Create("DFrame")
+        GamemodeDesc:SetSize(0, descTextH + winTextH + 2)
+        GamemodeDesc:SizeTo(textW + 16, descTextH + winTextH + 2, 0.75, 0, 0.1)
+        GamemodeDesc:SetY(GamemodePopup:GetTall() + popupH)
+        GamemodeDesc:SetTitle("")
+        GamemodeDesc:SetDraggable(false)
+        GamemodeDesc:ShowCloseButton(false)
+        GamemodeDesc.Paint = function(self, w, h)
+            GamemodeDesc:SetX(scrW / 2 - (textW / 2))
+            draw.RoundedBox(0, 0, 0, GamemodeDesc:GetWide(), GamemodeDesc:GetTall(), Color(50, 50, 50, 100))
+            draw.SimpleText(desc, "HUD_Health", w / 2, descTextH / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText(winCondition, "HUD_Health", w / 2, descTextH + (winTextH / 2), white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+    end)
+
+    timer.Create("removeGamemodePopup", 6.5, 1, function()
         GamemodePopup:SizeTo(-1, 0, 0.75, 0, 0.1, function()
             GamemodePopup:Remove()
+        end)
+
+        GamemodeDesc:SizeTo(-1, 0, 0.25, 0, 0.1, function()
+            GamemodeDesc:Remove()
         end)
     end)
 end )

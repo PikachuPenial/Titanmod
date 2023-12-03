@@ -392,6 +392,24 @@ function UpdateFonts()
 		additive = false,
 		outline = false,
 	} )
+
+	surface.CreateFont("HUD_IntermissionText", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		extended = false,
+		size = 180,
+		weight = 600,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = true,
+	} )
 end
 UpdateFonts()
 cvars.AddChangeCallback("tm_hud_font", function(convar_name, value_old, value_new) UpdateFonts() end)
