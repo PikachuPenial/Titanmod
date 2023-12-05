@@ -165,7 +165,7 @@ if CLIENT then
 end
 
 -- Sets up keybinds
-if activeGamemode != "Gun Game" then
+if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
     hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
         if SERVER then
             -- Main Menu
@@ -243,7 +243,7 @@ end
 
 -- Disabling footsteps if a player is crouched
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
-    if not ply:Crouching() then return end
+    if !ply:Crouching() then return end
     return true
 end)
 

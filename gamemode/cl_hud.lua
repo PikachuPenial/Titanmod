@@ -724,6 +724,7 @@ net.Receive("SendNotification", function(len, ply)
 end )
 
 net.Receive("MatchStartPopup", function(len, ply)
+    if !LocalPlayer():Alive() then return end
     if convars["hud_enable"] == 0 then return end
     local gm = string.upper(activeGamemode)
     local desc

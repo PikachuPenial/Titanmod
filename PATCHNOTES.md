@@ -36,6 +36,10 @@
 
 - Fixed "Open Steam Profile" button not working on scoreboard
 
+- Fixed a movement speed exploit when landing on the ground while crouched after a slide
+
+- Fixed weapon quick switching not functioning when playing the Gun Game gamemode
+
 - Fixed Lua errors when firing the AN-94
 
 - Fixed very rare occurance of sub-menus opening twice if clicked too many times during loading

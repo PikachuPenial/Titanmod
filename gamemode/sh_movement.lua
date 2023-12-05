@@ -251,7 +251,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
     sliding = ply:GetSliding()
 
-    if not crouching and not sliding then
+    if (not crouching and not sliding) or (not onground and not sliding) then
         ply:SetCanSlide(true)
         ply:SetDuckSpeed(ply.OldDuckSpeed)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
