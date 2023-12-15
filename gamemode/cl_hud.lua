@@ -1680,7 +1680,7 @@ end )
 
 -- Shows the players loadout on the bottom left hand side of their screen
 function ShowLoadoutOnSpawn(ply)
-    if ply == nil then return end
+    if !IsValid(ply) then return end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""
