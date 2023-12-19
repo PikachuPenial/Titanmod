@@ -31,6 +31,12 @@
 *PP-19 Bizon*
 - Reduced magazine capacity to 44 (previously 64)
 
+*SCAR-H*
+- Reduced RPM to 500 (previously 550)
+
+*SKS*
+- Reduced RPM to 400 (previously 500)
+
 **>QOL & BUG FIXES**   
 - Overhauled the playermodel customization screen
 
@@ -45,6 +51,8 @@
 - Fixed weapon quick switching not functioning when playing the Gun Game gamemode
 
 - Fixed Lua errors when firing the AN-94
+
+- Fixed RFB reload animation
 
 - Fixed very rare occurance of sub-menus opening twice if clicked too many times during loading
 
