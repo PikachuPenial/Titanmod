@@ -2,7 +2,6 @@ HIGH PRIORItY | Currently working on or is being focused, will most likely make 
 
 Rebalance reload times
 
-Allow for Text Chat on match end
 Fix spawning inside players
 Space map with low gravity
 

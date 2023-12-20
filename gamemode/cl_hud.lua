@@ -1239,6 +1239,7 @@ net.Receive("EndOfGame", function(len, ply)
     local levelAnim = 0
     local xpCountUp = 0
     local quote = quoteArray[math.random(#quoteArray)]
+    local chatArray = {}
 
     if wonMatch == true then
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
@@ -1316,9 +1317,12 @@ net.Receive("EndOfGame", function(len, ply)
         if timer.Exists("timeUntilNextMatch") then timeUntilNextMatch = math.Round(timer.TimeLeft("timeUntilNextMatch")) end
     end)
 
-    EndOfGameUI = vgui.Create("DPanel")
+    EndOfGameUI = vgui.Create("DFrame")
     EndOfGameUI:SetSize(scrW, scrH)
     EndOfGameUI:SetPos(0, 0)
+    EndOfGameUI:SetTitle("")
+    EndOfGameUI:SetDraggable(false)
+    EndOfGameUI:ShowCloseButton(false)
     EndOfGameUI:MakePopup()
     EndOfGameUI.Paint = function(self, w, h)
         if VotingActive == false then return end
@@ -1332,6 +1336,15 @@ net.Receive("EndOfGame", function(len, ply)
         if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", 485, scrH - 235, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", 485, scrH - 235, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
         if MuteActive == false then draw.DrawText("NOT MUTED", "MainMenuLoadoutWeapons", 485, scrH - 260, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MUTED", "MainMenuLoadoutWeapons", 485, scrH - 260, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
         draw.SimpleText("Had fun?", "MainMenuLoadoutWeapons", 700, scrH - 55, white, TEXT_ALIGN_LEFT)
+
+        for k, v in pairs(chatArray) do
+            surface.SetDrawColor(50, 50, 50, 100)
+            surface.SetFont("HUD_Health")
+            local textLength = select(1, surface.GetTextSize(v[1]))
+
+            surface.DrawRect(485, 55 + ((k - 1) * 20), textLength + 5, 20)
+            draw.SimpleText(v[1], "MainMenuLoadoutWeapons", 487, 55 + ((k - 1) * 20), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        end
     end
 
     function StartVotingPhase()
@@ -1568,6 +1581,18 @@ net.Receive("EndOfGame", function(len, ply)
                 net.SendToServer()
             end
         end
+
+        local ChatTextBox = vgui.Create("DTextEntry", EndOfGameUI)
+        ChatTextBox:SetPos(485, 5)
+        ChatTextBox:SetSize(200, 35)
+        ChatTextBox:SetPlaceholderText("Press ENTER to send message")
+        ChatTextBox.OnEnter = function(self)
+            RunConsoleCommand("say", self:GetValue())
+        end
+
+        hook.Add("OnPlayerChat", "AddToChatArray", function(ply, strText, bTeam, bDead) 
+            table.insert(chatArray, strText)
+        end )
 
         local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
         PlayerScrollPanel:Dock(FILL)
