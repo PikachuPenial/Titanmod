@@ -23,10 +23,20 @@
 **>BALANCE**    
 - All melee weapons have been standardized stat-wise and will all deal the same damage and have the same swing cooldown
 - Increased reload, empty reload, and rechambering speeds across many different weapons (typically a 15-30% improvement)
+- Rebalanced foregrip attachment
+- Removed foregrip from various weapons
 
 *Melee*
 - Increased damage to 150 (previously 75-100)
 - Both types of swings now function identically, but still differ in animation
+
+*Foregrip Attachment*
+- Reduced vertical recoil reduction to 35% (previously 60%)
+- Increased horizontal recoil reduction to 25% (previously 20%)
+- Increased mobility reduction to 4% (previously 2.5%)
+
+*FN FAL*
+- Reduced vertical recoil to 90 (previously 200)
 
 *PP-19 Bizon*
 - Reduced magazine capacity to 44 (previously 64)
