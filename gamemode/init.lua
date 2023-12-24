@@ -36,8 +36,6 @@ function GM:InitPostEntity()
 			for k, ply in pairs(player.GetAll()) do
 				ply:Freeze(false)
 			end
-			net.Start("MatchStartPopup")
-			net.Broadcast()
 			hook.Remove("Think", "IntermissionFreeze")
 			hook.Remove("CanPlayerSuicide", "IntermissionBlocksSuicide")
 		end
@@ -51,7 +49,6 @@ util.AddNetworkString("PlayHitsound")
 util.AddNetworkString("NotifyKill")
 util.AddNetworkString("NotifyDeath")
 util.AddNetworkString("SendNotification")
-util.AddNetworkString("MatchStartPopup")
 util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
