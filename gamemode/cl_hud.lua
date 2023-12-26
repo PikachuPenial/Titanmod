@@ -8,6 +8,7 @@ local red = Color(255, 0, 0, 255)
 local gameEnded = false
 local matchStartPopupSeen = false
 local feedArray = {}
+local chatArray = {}
 
 local crosshair = {}
 local matchHUD = {}
@@ -193,9 +194,7 @@ local timeUntilSelfDestruct = 0
 local timeText = " ∞"
 
 local function MatchStartPopup()
-    print("CHECKING FOR HUD")
     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()) then return end
-    print("PASSED INTERMISSION CHECK")
     if convars["hud_enable"] == 0 then return end
     local gm = string.upper(activeGamemode)
     local desc
@@ -279,7 +278,6 @@ end
 
 local TitanmodFOV = GetConVar("tm_customfov_value"):GetInt()
 net.Receive("PlayerSpawn", function(len, pl)
-    print("TRIGGERING SPAWN")
     if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((TitanmodFOV / -100) + 2)) end
     if convars["hud_enable"] == 0 then return end
     if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
@@ -867,9 +865,9 @@ end
 
 local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
 local function VoiceIcon()
-    surface.SetDrawColor(65, 155, 80, 155)
+    surface.SetDrawColor(65, 155, 80, 115)
     surface.SetMaterial(micIcon)
-    surface.DrawTexturedRect(scrW / 2 - 21, 150, 42, 42)
+    surface.DrawTexturedRect(scrW / 2 - 21, 115 + matchHUD["y"], 42, 42)
 end
 
 hook.Add("PlayerStartVoice", "ImageOnVoice", function(ply)
@@ -1246,7 +1244,6 @@ net.Receive("EndOfGame", function(len, ply)
     local levelAnim = 0
     local xpCountUp = 0
     local quote = quoteArray[math.random(#quoteArray)]
-    local chatArray = {}
 
     if wonMatch == true then
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
@@ -1597,10 +1594,6 @@ net.Receive("EndOfGame", function(len, ply)
             RunConsoleCommand("say", self:GetValue())
         end
 
-        hook.Add("OnPlayerChat", "AddToChatArray", function(ply, strText, bTeam, bDead) 
-            table.insert(chatArray, strText)
-        end )
-
         local PlayerScrollPanel = vgui.Create("DScrollPanel", EndOfGamePanel)
         PlayerScrollPanel:Dock(FILL)
         PlayerScrollPanel:SetSize(EndOfGamePanel:GetWide(), 0)
@@ -1698,6 +1691,11 @@ net.Receive("EndOfGame", function(len, ply)
     gui.EnableScreenClicker(true)
 end )
 
+net.Receive("SendChatMessage", function(len, ply)
+    local text = net.ReadString()
+    table.insert(chatArray, text)
+end)
+
 -- Updates the players time until self destruct on Cranked
 net.Receive("NotifyCranked", function(len, ply)
     timeUntilSelfDestruct = crankedSelfDestructTime
@@ -1708,7 +1706,7 @@ net.Receive("NotifyCranked", function(len, ply)
     hook.Add("Think", "CrankedTimeLeft", function()
         if timer.Exists("CrankedTimeUntilDeath") then timeUntilSelfDestruct = math.Round(timer.TimeLeft("CrankedTimeUntilDeath")) end
     end)
-end )
+end)
 
 -- Shows the players loadout on the bottom left hand side of their screen
 function ShowLoadoutOnSpawn(ply)

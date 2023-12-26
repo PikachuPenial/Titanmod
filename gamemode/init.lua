@@ -60,6 +60,7 @@ util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
 util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
+util.AddNetworkString("SendChatMessage")
 util.AddNetworkString("FOVUpdate")
 
 local modelFiles = {}
@@ -331,18 +332,20 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Broadcast()
 
-		victim:SpectateEntity(attacker)
-		victim:Spectate(OBS_MODE_DEATHCAM)
+		if victim:GetInfoNum("tm_deathcam", 1) == 1 then
+			victim:SpectateEntity(attacker)
+			victim:Spectate(OBS_MODE_DEATHCAM)
 
-		timer.Simple(0.75, function()
-			if not IsValid(victim) or not IsValid(attacker) then return end
-			victim:SetObserverMode(OBS_MODE_FREEZECAM)
-
-			timer.Simple(1.25, function()
+			timer.Simple(0.75, function()
 				if not IsValid(victim) or not IsValid(attacker) then return end
-				victim:SetObserverMode(OBS_MODE_IN_EYE)
+				victim:SetObserverMode(OBS_MODE_FREEZECAM)
+
+				timer.Simple(1.25, function()
+					if not IsValid(victim) or not IsValid(attacker) then return end
+					victim:SetObserverMode(OBS_MODE_IN_EYE)
+				end)
 			end)
-		end)
+		end
 	end
 
 	HandlePlayerDeath(victim, weaponName)
@@ -565,6 +568,12 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end )
 		net.Receive("ReceivePostGameMute", function(len, ply)
 			ply:SetNWBool("PostGameMute", net.ReadBool())
+		end )
+
+		hook.Add("SendChatMessageSendChatMessage", "SendToEORChat", function(ply, text)
+			net.Start("SendChatMessage")
+			net.WriteString(ply:GetName() .. " | " .. text)
+			net.Broadcast()
 		end )
 
 		mapVotes = {}

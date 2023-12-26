@@ -2818,11 +2818,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
-                    DockGameplay:SetSize(0, 315)
+                    DockGameplay:SetSize(0, 355)
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 395)
+                    DockUI:SetSize(0, 435)
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
@@ -3091,7 +3091,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("FOV Value", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death Cam", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 225, white, TEXT_ALIGN_LEFT)
                     end
 
                     local customFOV = DockGameplay:Add("DCheckBox")
@@ -3114,8 +3115,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     centeredVM:SetSize(30, 30)
                     function centeredVM:OnChange() TriggerSound("click") end
 
+                    local deathCam = DockGameplay:Add("DCheckBox")
+                    deathCam:SetPos(20, 190)
+                    deathCam:SetConVar("tm_deathcam")
+                    deathCam:SetSize(30, 30)
+                    function deathCam:OnChange() TriggerSound("click") end
+
                     local reticleMixer = vgui.Create("DColorMixer", DockGameplay)
-                    reticleMixer:SetPos(20, 190)
+                    reticleMixer:SetPos(20, 230)
                     reticleMixer:SetSize(215, 110)
                     reticleMixer:SetConVarR("cl_tfa_reticule_color_r")
                     reticleMixer:SetConVarG("cl_tfa_reticule_color_g")
@@ -3136,6 +3143,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Voice Chat Indicator", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
                     end
 
                     local HUDtoggle = DockUI:Add("DCheckBox")
@@ -3185,6 +3193,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
                     VelocityCounterToggle:SetSize(30, 30)
                     function VelocityCounterToggle:OnChange() TriggerSound("click") end
+
+                    local VoiceChatIndicatorToggle = DockUI:Add("DCheckBox")
+                    VoiceChatIndicatorToggle:SetPos(20, 390)
+                    VoiceChatIndicatorToggle:SetConVar("tm_hud_voiceindicator")
+                    VoiceChatIndicatorToggle:SetSize(30, 30)
+                    function VoiceChatIndicatorToggle:OnChange() TriggerSound("click") end
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -3561,6 +3575,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local nadeMat = Material("icons/grenadehudicon.png")
                 local hillEmptyMat = Material("icons/kothempty.png")
                 local border = Material("overlay/objborder.png")
+                local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
                 local timeText = " ∞"
                 timer.Create("previewLoop", 1, 0, function()
                     mode = modePool[math.random(#modePool)]
@@ -3693,6 +3708,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.SetMaterial(border)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 175)
                         surface.DrawTexturedRect(0, 0, scrW, scrH)
+                    end
+                    if GetConVar("tm_hud_voiceindicator"):GetInt() == 1 then
+                        surface.SetDrawColor(65, 155, 80, 115)
+                        surface.SetMaterial(micIcon)
+                        surface.DrawTexturedRect(scrW / 2 - 21, 115 + GetConVar("tm_hud_bounds_y"):GetInt(), 42, 42)
                     end
                 end
 

@@ -12,6 +12,8 @@
 - 2x ADS Sensitivity
 - 4x ADS Sensitivity
 - 8x ADS Sensitivity
+- Death Cam toggle
+- Voice Chat Indicator toggle
 
 *AMMO CONVERSIONS*
 - Added new attachment types to the **AS Val**, **Desert Eagle** and **Glock 18** that rework their gun stats
@@ -51,6 +53,10 @@
 - Added a notification when importing HUD codes and resetting HUD settings to default
 
 - Bender is now the default HUD font for new players (previously Arial)
+
+- Voice chat indicator is now affected by HUD bounds
+
+- Voice chat indicator added to the HUD editor preview
 
 - Fixed "Open Steam Profile" button not working on scoreboard
 
