@@ -1125,6 +1125,7 @@ end )
 
 -- Displays to all players when a map vote begins
 net.Receive("EndOfGame", function(len, ply)
+    LocalPly = LocalPlayer()
     gameEnded = true
     DeleteHUDHook()
     local dof
@@ -1343,7 +1344,7 @@ net.Receive("EndOfGame", function(len, ply)
 
         surface.SetFont("MainMenuLoadoutWeapons")
         for k, v in pairs(chatArray) do
-            surface.SetDrawColor(255, 0, 0, 200)
+            surface.SetDrawColor(25, 25, 25, 100)
             local textLength = select(1, surface.GetTextSize(v))
 
             surface.DrawRect(485, 50 + ((k - 1) * 35), textLength + 5, 30)

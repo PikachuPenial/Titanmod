@@ -72,6 +72,8 @@
 
 - Fixed RFB reload animation
 
+- Fixed End Of Game UI not triggering for a player if said player was in the Main Menu at the end of a match
+
 - Fixed very rare occurance of sub-menus opening twice if clicked too many times during loading
 
 

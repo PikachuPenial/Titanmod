@@ -83,6 +83,8 @@ net.Receive("OpenMainMenu", function(len, ply)
             surface.SetMaterial(gradientR)
             surface.SetDrawColor(gradRColor)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
+
+            if GetGlobal2Bool("tm_matchended") == true then MainMenu:Remove() return end
         end
 
         gui.EnableScreenClicker(true)
