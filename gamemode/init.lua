@@ -332,7 +332,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Broadcast()
 
-		if victim:GetInfoNum("tm_deathcam", 1) == 1 then
+		if victim:GetInfoNum("tm_deathcam", 1) == 1 and deathCamera == true then
 			victim:SpectateEntity(attacker)
 			victim:Spectate(OBS_MODE_DEATHCAM)
 
@@ -570,7 +570,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			ply:SetNWBool("PostGameMute", net.ReadBool())
 		end )
 
-		hook.Add("SendChatMessageSendChatMessage", "SendToEORChat", function(ply, text)
+		hook.Add("PlayerSay", "SendToEORChat", function(ply, text)
 			net.Start("SendChatMessage")
 			net.WriteString(ply:GetName() .. " | " .. text)
 			net.Broadcast()

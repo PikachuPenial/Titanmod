@@ -48,6 +48,8 @@
 - Reduced RPM to 400 (previously 500)
 
 **>QOL & BUG FIXES**   
+- Players can now send and read chat messages during map/gamemode voting
+
 - Overhauled the playermodel customization screen
 
 - Added a notification when importing HUD codes and resetting HUD settings to default
@@ -57,6 +59,8 @@
 - Voice chat indicator is now affected by HUD bounds
 
 - Voice chat indicator added to the HUD editor preview
+
+- Added the "sv_tm_deathcam" ConVar that can forcefully enable/disable the death camera system
 
 - Fixed "Open Steam Profile" button not working on scoreboard
 

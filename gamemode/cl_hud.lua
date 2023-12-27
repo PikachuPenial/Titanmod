@@ -1341,13 +1341,13 @@ net.Receive("EndOfGame", function(len, ply)
         if MuteActive == false then draw.DrawText("NOT MUTED", "MainMenuLoadoutWeapons", 485, scrH - 260, Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MUTED", "MainMenuLoadoutWeapons", 485, scrH - 260, Color(255, 0, 0), TEXT_ALIGN_LEFT) end
         draw.SimpleText("Had fun?", "MainMenuLoadoutWeapons", 700, scrH - 55, white, TEXT_ALIGN_LEFT)
 
+        surface.SetFont("MainMenuLoadoutWeapons")
         for k, v in pairs(chatArray) do
-            surface.SetDrawColor(50, 50, 50, 100)
-            surface.SetFont("HUD_Health")
-            local textLength = select(1, surface.GetTextSize(v[1]))
+            surface.SetDrawColor(255, 0, 0, 200)
+            local textLength = select(1, surface.GetTextSize(v))
 
-            surface.DrawRect(485, 55 + ((k - 1) * 20), textLength + 5, 20)
-            draw.SimpleText(v[1], "MainMenuLoadoutWeapons", 487, 55 + ((k - 1) * 20), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            surface.DrawRect(485, 50 + ((k - 1) * 35), textLength + 5, 30)
+            draw.SimpleText(v, "MainMenuLoadoutWeapons", 487, 64 + ((k - 1) * 35), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 
