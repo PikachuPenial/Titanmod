@@ -38,6 +38,10 @@
 *FN FAL*
 - Reduced vertical recoil to 90 (previously 200)
 
+*KAC ChainSAW*
+- Reduced vertical recoil to 40 (previously 64)
+- Reduced horizontal recoil to 15 (previously 28)
+
 *PP-19 Bizon*
 - Reduced magazine capacity to 44 (previously 64)
 
@@ -51,6 +55,8 @@
 - Players can now send and read chat messages during map/gamemode voting
 
 - Overhauled the playermodel customization screen
+
+- Overhauled the scoreboard layout and animations
 
 - Added a notification when importing HUD codes and resetting HUD settings to default
 
@@ -71,6 +77,8 @@
 - Fixed Lua errors when firing the AN-94
 
 - Fixed RFB reload animation
+
+- Fixed Scoreboard level UI when player is max level
 
 - Fixed End Of Game UI not triggering for a player if said player was in the Main Menu at the end of a match
 

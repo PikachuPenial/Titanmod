@@ -20,62 +20,30 @@ function GM:ScoreboardShow()
 		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
 		ScoreboardDerma = vgui.Create("DFrame")
-		if player.GetCount() < 5 then ScoreboardDerma:SetSize(640, 200 + (player.GetCount() * 100)) else ScoreboardDerma:SetSize(640, 700) end
-		ScoreboardDerma:SetPos(ScrW() / 2 - 320, 0)
+		if player.GetCount() < 5 then ScoreboardDerma:SizeTo(640, 164 + (player.GetCount() * 100), 0.5, 0, 0.1) else ScoreboardDerma:SizeTo(640, 664, 0.5, 0, 0.1) end
 		ScoreboardDerma:SetTitle("")
 		ScoreboardDerma:MakePopup()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma:SetBackgroundBlur(true)
 		ScoreboardDerma.Paint = function()
+			ScoreboardDerma:SetPos(ScrW() / 2 - ScoreboardDerma:GetWide() / 2, ScrH() / 2 - ScoreboardDerma:GetTall() / 2)
 			if dof == true then
 				DrawBokehDOF(2.5, 1, 12)
 			end
-			draw.RoundedBox(6, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod", "StreakText", 15, 0, white, TEXT_ALIGN_LEFT)
 
-			draw.SimpleText("Kills", "CaliberText", 380, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Deaths", "CaliberText", 425, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("K/D", "CaliberText", 475, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Score", "CaliberText", 545, 20, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.RoundedBox(4, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
+			draw.SimpleText("Titanmod", "StreakText", 15, 15, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+
+			draw.SimpleText("Kills", "StreakText", 380, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Deaths", "StreakText", 425, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("K/D", "StreakText", 475, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("Score", "StreakText", 545, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
-
-		local InfoPanel = vgui.Create("DPanel", ScoreboardDerma)
-		InfoPanel:Dock(TOP)
-		InfoPanel:SetSize(0, 36)
-
-		InfoPanel.Paint = function()
-			draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 50, 5, white, TEXT_ALIGN_LEFT)
-		end
-
-		local PlayersIcon = vgui.Create("DImage", InfoPanel)
-		PlayersIcon:SetPos(10, -2)
-		PlayersIcon:SetSize(38, 38)
-		PlayersIcon:SetImage("icons/playericon.png")
-
-		local KillsIcon = vgui.Create("DImage", InfoPanel)
-		KillsIcon:SetPos(360, 0)
-		KillsIcon:SetSize(30, 30)
-		KillsIcon:SetImage("icons/killicon.png")
-
-		local DeathsIcon = vgui.Create("DImage", InfoPanel)
-		DeathsIcon:SetPos(405, 0)
-		DeathsIcon:SetSize(30, 30)
-		DeathsIcon:SetImage("icons/deathicon.png")
-
-		local KDIcon = vgui.Create("DImage", InfoPanel)
-		KDIcon:SetPos(455, 0)
-		KDIcon:SetSize(30, 30)
-		KDIcon:SetImage("icons/ratioicon.png")
-
-		local ScoreIcon = vgui.Create("DImage", InfoPanel)
-		ScoreIcon:SetPos(525, 0)
-		ScoreIcon:SetSize(30, 30)
-		ScoreIcon:SetImage("icons/scoreicon.png")
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
 		PlayerScrollPanel:Dock(TOP)
-		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), player.GetCount() * 100) else PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), 500) end
+		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(640, player.GetCount() * 100) else PlayerScrollPanel:SetSize(640, 500) end
 		PlayerScrollPanel:SetPos(0, 0)
 
 		local sbar = PlayerScrollPanel:GetVBar()
@@ -100,11 +68,18 @@ function GM:ScoreboardShow()
 		MapInfoPanel:Dock(TOP)
 		MapInfoPanel:SetSize(0, 100)
 
+		local PlayersIcon = vgui.Create("DImage", MapInfoPanel)
+		PlayersIcon:SetPos(102, 37)
+		PlayersIcon:SetSize(30, 30)
+		PlayersIcon:SetImage("icons/playericon.png")
+
 		MapInfoPanel.Paint = function()
 			if mapName != nil then
-				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102.5, 60.5, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102.5, 80, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 132, 40, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102, 60, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102, 80, white, TEXT_ALIGN_LEFT)
 			else
+				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 132, 40, white, TEXT_ALIGN_LEFT)
 				draw.SimpleText("Playing " .. activeGamemode .. " on " .. game.GetMap(), "StreakText", 2.5, 75, white, TEXT_ALIGN_LEFT)
 			end
 		end
@@ -116,25 +91,30 @@ function GM:ScoreboardShow()
 			MapThumb:SetImage(mapThumb)
 		end
 
+		local levelAnim = 0
+		local xpCountUp = 0
 		local LevelingPanel = vgui.Create("DPanel", ScoreboardDerma)
 		LevelingPanel:Dock(TOP)
 		LevelingPanel:SetSize(0, 30)
 
 		LevelingPanel.Paint = function(self, w, h)
-			draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel") .. " | " .. LocalPlayer:GetNWInt("playerXP") .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakText", 0, -3, white, TEXT_ALIGN_LEFT)
-
 			surface.SetDrawColor(35, 35, 35, 100)
 			surface.DrawRect(0, 20, 630, 10)
 
 			surface.SetDrawColor(255, 255, 0, 50)
 			if LocalPlayer:GetNWInt("playerLevel") != 60 then
-				surface.DrawRect(0, 20, (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * 630, 10)
+				xpCountUp = math.Clamp(xpCountUp + LocalPlayer:GetNWInt("playerXP") * FrameTime() * 4, 0, LocalPlayer:GetNWInt("playerXP"))
+				levelAnim = math.Clamp(levelAnim + (LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel")) * FrameTime() * 4, 0, LocalPlayer:GetNWInt("playerXP") / LocalPlayer:GetNWInt("playerXPToNextLevel"))
+				draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel") .. " | " .. math.Round(xpCountUp) .. " / " .. LocalPlayer:GetNWInt("playerXPToNextLevel") .. "XP", "StreakText", 0, -3, white, TEXT_ALIGN_LEFT)
+				surface.DrawRect(0, 20, levelAnim * 630, 10)
+			else
+				draw.SimpleText("P" .. LocalPlayer:GetNWInt("playerPrestige") .. " L" .. LocalPlayer:GetNWInt("playerLevel"), "StreakText", 0, -3, white, TEXT_ALIGN_LEFT)
+				surface.DrawRect(0, 20, 630, 10)
 			end
 		end
 	end
 
 	if IsValid(ScoreboardDerma) then
-		ScoreboardDerma:MoveTo(ScrW() / 2 - 320, ScrH() / 2 - ScoreboardDerma:GetTall() / 2, 0.3, 0, 0.4)
 		PlayerList:Clear()
 
 		local connectedPlayers = player.GetAll()
@@ -214,7 +194,7 @@ function GM:ScoreboardShow()
 				weaponKills:SetMaxHeight(ScrH() / 1.5)
 
 				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPlayer then
-					statistics:AddOption("Level: P" .. v:GetNWInt("playerPrestige") .. " L" .. v:GetNWInt("playerLevel"))
+					statistics:AddOption("Prestige " .. v:GetNWInt("playerPrestige") .. " Level " .. v:GetNWInt("playerLevel"))
 					statistics:AddOption("Score: " .. v:GetNWInt("playerScore"))
 					statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
 					statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
