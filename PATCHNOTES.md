@@ -58,6 +58,8 @@
 
 - Overhauled the scoreboard layout and animations
 
+- Added Steam Profile buttons to the leaderboard
+
 - Added a notification when importing HUD codes and resetting HUD settings to default
 
 - Bender is now the default HUD font for new players (previously Arial)

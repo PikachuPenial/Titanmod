@@ -171,6 +171,8 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             local SelectedBoard
             local SelectedBoardName
+            local LeaderboardProfiles
+            local ProfilesHolder
             local LeaderboardButton = vgui.Create("DImageButton", MainPanel)
             LeaderboardButton:SetPos(10, 10)
             LeaderboardButton:SetImage("icons/leaderboardicon.png")
@@ -337,6 +339,17 @@ net.Receive("OpenMainMenu", function(len, ply)
                         end
                     end
 
+                    LeaderboardProfiles = vgui.Create("DPanel", LeaderboardScroller)
+                    LeaderboardProfiles:SetPos(720, 0)
+                    LeaderboardProfiles:SetSize(45, 2082.5)
+                    LeaderboardProfiles.Paint = function(self, w, h)
+                        draw.RoundedBox(0, 0, 0, w, h, transparent)
+                    end
+
+                    ProfilesHolder = vgui.Create("DIconLayout", LeaderboardProfiles)
+                    ProfilesHolder:Dock(TOP)
+                    ProfilesHolder:SetSpaceY(1.25)
+
                     net.Start("GrabLeaderboardData")
                     net.WriteString("playerKills")
                     net.WriteBool(false)
@@ -348,6 +361,20 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             net.Receive("SendLeaderboardData", function(len, ply)
                 SelectedBoard = net.ReadTable()
+                ProfilesHolder:Clear()
+
+                for p, t in pairs(SelectedBoard) do
+                    local SteamProfile = vgui.Create("DImageButton", ProfilesHolder)
+                    SteamProfile:SetImage("icons/linkicon.png")
+                    SteamProfile:SetSize(40, 40)
+                    SteamProfile:SetTooltip("Open " .. t.SteamName .. "'s Steam Profile")
+                    ProfilesHolder:Add(SteamProfile)
+
+                    SteamProfile.DoClick = function()
+                        TriggerSound("click")
+                        gui.OpenURL("http://steamcommunity.com/profiles/" .. t.SteamID)
+                    end
+                end
             end )
 
             local SpectatePanel = vgui.Create("DPanel", MainPanel)
