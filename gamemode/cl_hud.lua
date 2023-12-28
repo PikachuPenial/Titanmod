@@ -743,6 +743,7 @@ local notiSuccess = Material("icons/noti_success.png", "noclamp smooth")
 
 net.Receive("SendNotification", function(len, ply)
     if convars["hud_enable"] == 0 or convars["notif_enable"] == 0 then return end
+    LocalPly = LocalPlayer()
     local notiText = net.ReadString()
     local notiType = net.ReadString()
     surface.SetFont("HUD_Health")

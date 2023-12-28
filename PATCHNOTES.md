@@ -68,6 +68,8 @@
 
 - Added the "sv_tm_deathcam" ConVar that can forcefully enable/disable the death camera system
 
+- Adjusted the text of various hints
+
 - Fixed "Open Steam Profile" button not working on scoreboard
 
 - Fixed a movement speed exploit when landing on the ground while crouched after a slide
@@ -80,7 +82,11 @@
 
 - Fixed Scoreboard level UI when player is max level
 
+- Fixed HUD Reset not applying all of the default settings
+
 - Fixed End Of Game UI not triggering for a player if said player was in the Main Menu at the end of a match
+
+- Fixed Level Up notification from triggering an error if the player has not spawned in yet
 
 - Fixed very rare occurance of sub-menus opening twice if clicked too many times during loading
 
