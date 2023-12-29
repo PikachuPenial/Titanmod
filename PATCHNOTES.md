@@ -18,6 +18,16 @@
 *AMMO CONVERSIONS*
 - Added new attachment types to the **AS Val**, **Desert Eagle** and **Glock 18** that rework their gun stats
 
+*WEAPON NAME ADJUSTMENTS*
+- Renamed ACR-R to ACR
+- Renamed AUG A3 to AUG A2
+- Renamed CheyTac M200 to Intervention
+- Renamed Colt M1911 to M1911
+- Renamed Colt M45A1 to M45A1
+- Renamed DSR-1 Veresk to DSR-50
+- Renamed OTs-14 Groza Veresk to Groza
+- Renamed UZK-BR99 Veresk to BR99
+
 **>MAPS**   
 
 **>BALANCE**    
