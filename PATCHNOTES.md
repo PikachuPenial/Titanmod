@@ -26,6 +26,7 @@
 - Renamed Colt M45A1 to M45A1
 - Renamed DSR-1 Veresk to DSR-50
 - Renamed OTs-14 Groza Veresk to Groza
+- Renamed SIG P320 Veresk to P320
 - Renamed UZK-BR99 Veresk to BR99
 
 **>MAPS**   
@@ -87,6 +88,10 @@
 - Fixed a movement speed exploit when landing on the ground while crouched after a slide
 
 - Fixed weapon quick switching not functioning when playing the Gun Game gamemode
+
+- Fixed various naming errors in calling cards
+
+- Fixed alphabetical sorting for weapon arrays and calling card arrays
 
 - Fixed Lua errors when firing the AN-94
 
