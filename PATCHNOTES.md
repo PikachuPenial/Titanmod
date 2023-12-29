@@ -33,7 +33,8 @@
 
 **>BALANCE**    
 - All melee weapons have been standardized stat-wise and will all deal the same damage and have the same swing cooldown
-- Increased reload, empty reload, and rechambering speeds across many different weapons (typically a 15-30% improvement)
+- Increased reload, empty reload, and rechambering speeds across almost every weapon (typically a 15-30% improvement)
+- Reduced visual recoil across all shotguns
 - Rebalanced foregrip attachment
 - Removed foregrip from various weapons
 
@@ -53,6 +54,9 @@
 - Reduced vertical recoil to 40 (previously 64)
 - Reduced horizontal recoil to 15 (previously 28)
 
+*KSG*
+- Reduced damage per pellet to 12 (previously 13)
+
 *PP-19 Bizon*
 - Reduced magazine capacity to 44 (previously 64)
 
@@ -61,6 +65,16 @@
 
 *SKS*
 - Reduced RPM to 400 (previously 500)
+
+*SPAS-12*
+- Increased pellets per shot to 15 (previously 12)
+
+*Stevens 620*
+- Increased magazine capacity to 6 (previously 5)
+- Reduced vertical recoil to 150 (previously 200)
+
+*Typhoon F12*
+- Reduced vertical recoil to 150 (previously 200)
 
 **>QOL & BUG FIXES**   
 - Players can now send and read chat messages during map/gamemode voting
