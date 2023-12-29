@@ -73,6 +73,8 @@
 
 - Added a notification when importing HUD codes and resetting HUD settings to default
 
+- Added two new Pride calling cards
+
 - Bender is now the default HUD font for new players (previously Arial)
 
 - Voice chat indicator is now affected by HUD bounds
@@ -82,6 +84,8 @@
 - Added the "sv_tm_deathcam" ConVar that can forcefully enable/disable the death camera system
 
 - Adjusted the text of various hints
+
+- Adjusted the images of various calling cards
 
 - Fixed "Open Steam Profile" button not working on scoreboard
 

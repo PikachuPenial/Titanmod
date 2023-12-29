@@ -550,12 +550,12 @@ cardArray[205] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", 
 
 -- Leveling Cards
 cardArray[206] = {"cards/leveling/5.png", "Mist", "Prestige 0 Level 5", "level", 5}
-cardArray[207] = {"cards/leveling/10.png", "Shift", "", "level", 10}
-cardArray[208] = {"cards/leveling/15.png", "Processing", "", "level", 15}
-cardArray[209] = {"cards/leveling/20.png", "Monolith", "", "level", 20}
-cardArray[210] = {"cards/leveling/25.png", "Kitty", "", "level", 25}
-cardArray[211] = {"cards/leveling/30.png", "Kittens", "", "level", 30}
-cardArray[212] = {"cards/leveling/35.png", "Gangster", "", "level", 35}
+cardArray[207] = {"cards/leveling/10.png", "Shift", "Prestige 0 Level 10", "level", 10}
+cardArray[208] = {"cards/leveling/15.png", "Processing", "Prestige 0 Level 15", "level", 15}
+cardArray[209] = {"cards/leveling/20.png", "Monolith", "Prestige 0 Level 20", "level", 20}
+cardArray[210] = {"cards/leveling/25.png", "Kitty", "Prestige 0 Level 25", "level", 25}
+cardArray[211] = {"cards/leveling/30.png", "Kittens", "Prestige 0 Level 30", "level", 30}
+cardArray[212] = {"cards/leveling/35.png", "Gangster", "Prestige 0 Level 35", "level", 35}
 cardArray[213] = {"cards/leveling/40.png", "Shark", "", "level", 40}
 cardArray[214] = {"cards/leveling/45.png", "Bath", "", "level", 45}
 cardArray[215] = {"cards/leveling/50.png", "Rig", "", "level", 50}
@@ -600,15 +600,17 @@ cardArray[253] = {"cards/leveling/240.png", "Childhood", "", "level", 240}
 
 -- Pride cards
 cardArray[254] = {"cards/pride/pride.png", "Pride", "<3", "pride", "pride"}
-cardArray[255] = {"cards/pride/trans.png", "Trans", "<3", "pride", "pride"}
-cardArray[256] = {"cards/pride/gay.png", "Gay", "<3", "pride", "pride"}
-cardArray[257] = {"cards/pride/lesbian.png", "Lesbian", "<3", "pride", "pride"}
-cardArray[258] = {"cards/pride/bi.png", "Bi", "<3", "pride", "pride"}
-cardArray[259] = {"cards/pride/pan.png", "Pan", "<3", "pride", "pride"}
-cardArray[260] = {"cards/pride/ace.png", "Ace", "<3", "pride", "pride"}
-cardArray[261] = {"cards/pride/nonbinary.png", "Nonbinary", "<3", "pride", "pride"}
-cardArray[262] = {"cards/pride/genderfluid.png", "Genderfluid", "<3", "pride", "pride"}
-cardArray[263] = {"cards/pride/zedo.png", "Zedo", "", "pride", "pride"}
+cardArray[255] = {"cards/pride/bi.png", "Bi", "<3", "pride", "pride"}
+cardArray[256] = {"cards/pride/pan.png", "Pan", "<3", "pride", "pride"}
+cardArray[257] = {"cards/pride/gay.png", "Gay", "<3", "pride", "pride"}
+cardArray[258] = {"cards/pride/lesbian.png", "Lesbian", "<3", "pride", "pride"}
+cardArray[259] = {"cards/pride/ace.png", "Ace", "<3", "pride", "pride"}
+cardArray[260] = {"cards/pride/trans.png", "Trans", "<3", "pride", "pride"}
+cardArray[261] = {"cards/pride/genderfluid.png", "Gen. Fluid", "<3", "pride", "pride"}
+cardArray[262] = {"cards/pride/genderqueer.png", "Gen. Queer", "<3", "pride", "pride"}
+cardArray[263] = {"cards/pride/nonbinary.png", "Nonbinary", "<3", "pride", "pride"}
+cardArray[264] = {"cards/pride/agender.png", "Agender", "<3", "pride", "pride"}
+cardArray[265] = {"cards/pride/zedo.png", "Zedo", "", "pride", "pride"}
 
 -- Creating a leveling array, this removes the consistency of the leveling, using set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro
 levelArray = {}
