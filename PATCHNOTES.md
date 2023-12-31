@@ -15,8 +15,11 @@
 - Death Cam toggle
 - Voice Chat Indicator toggle
 
+*NEW KILLSOUND OPTIONS*
+- Counter Strike
+
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AS Val**, **Desert Eagle** and **Glock 18** that rework their gun stats
+- Added new attachment types to the **ACR**, **AS Val**, **Desert Eagle** and **Glock 18** that rework their gun stats
 
 *WEAPON NAME ADJUSTMENTS*
 - Renamed ACR-R to ACR
@@ -47,8 +50,17 @@
 - Increased horizontal recoil reduction to 25% (previously 20%)
 - Increased mobility reduction to 4% (previously 2.5%)
 
+*ACR*
+- Increased damage to 32 (previously 30)
+- Reduced RPM to 650 (previously 800)
+- Reduced vertical recoil to 20 (previously 30)
+
 *FN FAL*
 - Reduced vertical recoil to 90 (previously 200)
+
+*Honey Badger*
+- Reduced vertical recoil to 45 (previously 65)
+- Reduced horizontal recoil to 25 (previously 30)
 
 *KAC ChainSAW*
 - Reduced vertical recoil to 40 (previously 64)
@@ -110,6 +122,8 @@
 - Fixed various naming errors in calling cards
 
 - Fixed alphabetical sorting for weapon arrays and calling card arrays
+
+- Fixed missing descriptions for player level related calling cards
 
 - Fixed Lua errors when firing the AN-94
 

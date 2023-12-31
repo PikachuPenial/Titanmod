@@ -1266,13 +1266,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                                 CardPreviewPanel:SetSize(0, 100)
                                 ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                                 CardPreviewPanel:SetSize(0, 120)
                                 ApplyCardButton:Show()
@@ -2367,13 +2367,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         elseif newModelUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                                 PreviewModelTextHolder:SetSize(315, 135)
                                 ApplyModelButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Killstreaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                                 PreviewModelTextHolder:SetSize(315, 155)
                                 ApplyModelButton:Show()
@@ -3285,11 +3285,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local killSoundsType = DockAudio:Add("DComboBox")
                     killSoundsType:SetPos(20, 270)
                     killSoundsType:SetSize(100, 30)
-                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") end
+                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_killsoundtype"):GetInt() == 4 then killSoundsType:SetValue("Counter Strike")  end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType:AddChoice("TABG")
                     killSoundsType:AddChoice("Bad Business")
                     killSoundsType:AddChoice("Apex Legends")
+                    killSoundsType:AddChoice("Counter Strike")
                     killSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/kill_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_killsoundtype", value - 1)

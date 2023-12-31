@@ -298,8 +298,8 @@ hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
     local pp = (-intTime / GetConVar("tm_intermissiontimer"):GetInt()) + 1
 
     local intermissionpp = {
-        [ "$pp_colour_contrast" ] = math.max(0.5, pp),
-        [ "$pp_colour_colour" ] = pp,
+        ["$pp_colour_contrast"] = math.max(0.5, pp),
+        ["$pp_colour_colour"] = pp,
     }
 
     if ply:Alive() != true then return end

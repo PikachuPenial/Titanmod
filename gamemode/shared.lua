@@ -56,7 +56,7 @@ if CLIENT then
     CreateClientConVar("tm_killsound", 1, true, false, "Enable/disable the kill confirmation sound", 0, 1)
     CreateClientConVar("tm_musicvolume", 1, true, false, "Increase or lower the volume of music", 0, 1)
     CreateClientConVar("tm_hitsoundtype", 0, true, false, "Switch between the multiple styles of hitsounds", 0, 4)
-    CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 3)
+    CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 4)
     CreateClientConVar("tm_menudof", 1, true, false, "Enable or disable Depth Of Field on certain in game menus", 0, 1)
     CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
     CreateClientConVar("tm_mainmenubind", KEY_M, true, true, "Determines the keybind that will open the main menu")
@@ -550,53 +550,53 @@ cardArray[205] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", 
 
 -- Leveling Cards
 cardArray[206] = {"cards/leveling/5.png", "Mist", "Prestige 0 Level 5", "level", 5}
-cardArray[207] = {"cards/leveling/10.png", "Shift", "Prestige 0 Level 10", "level", 10}
+cardArray[207] = {"cards/leveling/10.png", "Tech", "Prestige 0 Level 10", "level", 10}
 cardArray[208] = {"cards/leveling/15.png", "Processing", "Prestige 0 Level 15", "level", 15}
 cardArray[209] = {"cards/leveling/20.png", "Monolith", "Prestige 0 Level 20", "level", 20}
 cardArray[210] = {"cards/leveling/25.png", "Kitty", "Prestige 0 Level 25", "level", 25}
-cardArray[211] = {"cards/leveling/30.png", "Kittens", "Prestige 0 Level 30", "level", 30}
+cardArray[211] = {"cards/leveling/30.png", "Tonal", "Prestige 0 Level 30", "level", 30}
 cardArray[212] = {"cards/leveling/35.png", "Gangster", "Prestige 0 Level 35", "level", 35}
-cardArray[213] = {"cards/leveling/40.png", "Shark", "", "level", 40}
-cardArray[214] = {"cards/leveling/45.png", "Bath", "", "level", 45}
-cardArray[215] = {"cards/leveling/50.png", "Rig", "", "level", 50}
-cardArray[216] = {"cards/leveling/55.png", "Station", "", "level", 55}
-cardArray[217] = {"cards/leveling/60.png", "Scenic", "", "level", 60}
-cardArray[218] = {"cards/leveling/65.png", "Dunes", "", "level", 65}
-cardArray[219] = {"cards/leveling/70.png", "Pyro", "", "level", 70}
-cardArray[220] = {"cards/leveling/75.png", "Toxicity", "", "level", 75}
-cardArray[221] = {"cards/leveling/80.png", "Drainer", "", "level", 80}
-cardArray[222] = {"cards/leveling/85.png", "Sweat", "", "level", 85}
-cardArray[223] = {"cards/leveling/90.png", "Drive", "", "level", 90}
-cardArray[224] = {"cards/leveling/95.png", "Dinner", "", "level", 95}
-cardArray[225] = {"cards/leveling/100.png", "Thunder", "", "level", 100}
-cardArray[226] = {"cards/leveling/105.png", "David", "", "level", 105}
-cardArray[227] = {"cards/leveling/110.png", "Horizon", "", "level", 110}
-cardArray[228] = {"cards/leveling/115.png", "Eyepatch", "", "level", 115}
-cardArray[229] = {"cards/leveling/120.png", "Pro", "", "level", 120}
-cardArray[230] = {"cards/leveling/125.png", "Stare", "", "level", 125}
-cardArray[231] = {"cards/leveling/130.png", "Death", "", "level", 130}
-cardArray[232] = {"cards/leveling/135.png", "Man", "", "level", 135}
-cardArray[233] = {"cards/leveling/140.png", "Depths", "", "level", 140}
-cardArray[234] = {"cards/leveling/145.png", "Super", "", "level", 145}
-cardArray[235] = {"cards/leveling/150.png", "Shocked", "", "level", 150}
-cardArray[236] = {"cards/leveling/155.png", "Scott Up", "", "level", 155}
-cardArray[237] = {"cards/leveling/160.png", "Buzzkilled", "", "level", 160}
-cardArray[238] = {"cards/leveling/165.png", "Fumos", "", "level", 165}
-cardArray[239] = {"cards/leveling/170.png", "The Voices", "", "level", 170}
-cardArray[240] = {"cards/leveling/175.png", "Crisis", "", "level", 175}
-cardArray[241] = {"cards/leveling/180.png", "Axel", "", "level", 180}
-cardArray[242] = {"cards/leveling/185.png", "Operative", "", "level", 185}
-cardArray[243] = {"cards/leveling/190.png", "Cool Skull", "", "level", 190}
-cardArray[244] = {"cards/leveling/195.png", "Breakcore", "", "level", 195}
-cardArray[245] = {"cards/leveling/200.png", "Dr. Han", "", "level", 200}
-cardArray[246] = {"cards/leveling/205.png", "Waves", "", "level", 205}
-cardArray[247] = {"cards/leveling/210.png", "Universe", "", "level", 210}
-cardArray[248] = {"cards/leveling/215.png", "Invasion", "", "level", 215}
-cardArray[249] = {"cards/leveling/220.png", "Airship", "", "level", 220}
-cardArray[250] = {"cards/leveling/225.png", "Darkness", "", "level", 225}
-cardArray[251] = {"cards/leveling/230.png", "Arctic", "", "level", 230}
-cardArray[252] = {"cards/leveling/235.png", "Modern", "", "level", 235}
-cardArray[253] = {"cards/leveling/240.png", "Childhood", "", "level", 240}
+cardArray[213] = {"cards/leveling/40.png", "Shark", "Prestige 0 Level 40", "level", 40}
+cardArray[214] = {"cards/leveling/45.png", "Bath", "Prestige 0 Level 45", "level", 45}
+cardArray[215] = {"cards/leveling/50.png", "Rig", "Prestige 0 Level 50", "level", 50}
+cardArray[216] = {"cards/leveling/55.png", "Station", "Prestige 0 Level 55", "level", 55}
+cardArray[217] = {"cards/leveling/60.png", "Scenic", "Prestige 0 Level 60", "level", 60}
+cardArray[218] = {"cards/leveling/65.png", "Dunes", "Prestige 1 Level 5", "level", 65}
+cardArray[219] = {"cards/leveling/70.png", "Pyro", "Prestige 1 Level 10", "level", 70}
+cardArray[220] = {"cards/leveling/75.png", "Toxicity", "Prestige 1 Level 15", "level", 75}
+cardArray[221] = {"cards/leveling/80.png", "Drainer", "Prestige 1 Level 20", "level", 80}
+cardArray[222] = {"cards/leveling/85.png", "Aquarium", "Prestige 1 Level 25", "level", 85}
+cardArray[223] = {"cards/leveling/90.png", "Drive", "Prestige 1 Level 30", "level", 90}
+cardArray[224] = {"cards/leveling/95.png", "Nightfall", "Prestige 1 Level 35", "level", 95}
+cardArray[225] = {"cards/leveling/100.png", "Thunder", "Prestige 1 Level 40", "level", 100}
+cardArray[226] = {"cards/leveling/105.png", "Shift", "Prestige 1 Level 45", "level", 105}
+cardArray[227] = {"cards/leveling/110.png", "Horizon", "Prestige 1 Level 50", "level", 110}
+cardArray[228] = {"cards/leveling/115.png", "Summit", "Prestige 1 Level 55", "level", 115}
+cardArray[229] = {"cards/leveling/120.png", "Illusion", "Prestige 1 Level 60", "level", 120}
+cardArray[230] = {"cards/leveling/125.png", "Stare", "Prestige 2 Level 5", "level", 125}
+cardArray[231] = {"cards/leveling/130.png", "Death", "Prestige 2 Level 10", "level", 130}
+cardArray[232] = {"cards/leveling/135.png", "Man", "Prestige 2 Level 15", "level", 135}
+cardArray[233] = {"cards/leveling/140.png", "Depths", "Prestige 2 Level 20", "level", 140}
+cardArray[234] = {"cards/leveling/145.png", "Irony", "Prestige 2 Level 25", "level", 145}
+cardArray[235] = {"cards/leveling/150.png", "Grass", "Prestige 2 Level 30", "level", 150}
+cardArray[236] = {"cards/leveling/155.png", "Scott Up", "Prestige 2 Level 35", "level", 155}
+cardArray[237] = {"cards/leveling/160.png", "Buzzkilled", "Prestige 2 Level 40", "level", 160}
+cardArray[238] = {"cards/leveling/165.png", "Fumos", "Prestige 2 Level 45", "level", 165}
+cardArray[239] = {"cards/leveling/170.png", "The Voices", "Prestige 2 Level 50", "level", 170}
+cardArray[240] = {"cards/leveling/175.png", "Crisis", "Prestige 2 Level 55", "level", 175}
+cardArray[241] = {"cards/leveling/180.png", "CRT", "Prestige 2 Level 60", "level", 180}
+cardArray[242] = {"cards/leveling/185.png", "Operative", "Prestige 3 Level 5", "level", 185}
+cardArray[243] = {"cards/leveling/190.png", "Cool Skull", "Prestige 3 Level 10", "level", 190}
+cardArray[244] = {"cards/leveling/195.png", "Breakcore", "Prestige 3 Level 15", "level", 195}
+cardArray[245] = {"cards/leveling/200.png", "Dr. Han", "Prestige 3 Level 20", "level", 200}
+cardArray[246] = {"cards/leveling/205.png", "Waves", "Prestige 3 Level 25", "level", 205}
+cardArray[247] = {"cards/leveling/210.png", "Universe", "Prestige 3 Level 30", "level", 210}
+cardArray[248] = {"cards/leveling/215.png", "Invasion", "Prestige 3 Level 35", "level", 215}
+cardArray[249] = {"cards/leveling/220.png", "Airship", "Prestige 3 Level 40", "level", 220}
+cardArray[250] = {"cards/leveling/225.png", "Darkness", "Prestige 3 Level 45", "level", 225}
+cardArray[251] = {"cards/leveling/230.png", "Arctic", "Prestige 3 Level 50", "level", 230}
+cardArray[252] = {"cards/leveling/235.png", "Modern", "Prestige 3 Level 55", "level", 235}
+cardArray[253] = {"cards/leveling/240.png", "Childhood", "Prestige 3 Level 60", "level", 240}
 
 -- Pride cards
 cardArray[254] = {"cards/pride/pride.png", "Pride", "<3", "pride", "pride"}
@@ -679,7 +679,7 @@ levelArray[60] = {60, "prestige"}
 hintArray = {"Winning the match nets you bonus XP", "Suppressors might make your gun sound badass, but it will also lower your damage", "Be vigilant with the acidic flood while playing on the Mephitic map", "Follow CaptainBear on the Steam Workshop", "Switching to your secondary is 'usually' faster than reloading", "To win a match, a player must have more score than the rest of the competing players", "Voice chat is proximity based, do with this information as you see fit", "Slug ammunition turns your traditional shotgun into a marksman rifle", "Try personalizing yourself in the cuztomization menus", "Crouching completely eliminates your footstep audio, embrace the sneaky", "You can cycle through firing modes by using your Interact + Reload keys", "All melee weapons can be thrown with the reload key", "Air strafing is extremely useful, try to incorperate it into your playstyle", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed", "Explosive barrels can be used as a funny distraction", "Players can not shoot most weapons while submerged in water, use this to your advantage", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others", "The grappling hook can easily be used to start favorable engagments", "Jumping and/or being in mid air gives your weapons less accuracy", "Sliding provides the same accuracy and recoil benefits as crouching", "Chaining multiple accolades together can give a big score/XP boost", "Accolades grant good amounts of score and XP", "Running any optic lowers your weapons ADS speed", "There are over 130+ weapons, try to get consistent with many different loadouts", "There is no scope glint, hardscope all you want", "Hip fire is an effective strategy while on the move", "Other players can see your flashlight, be cautious", "Certain playermodels may shine or stand out in dark enviroments", "Combine wall running and jumping for extremely unpredictable movement", "Wall running through a chokepoint can catch opponents off guard", "Wall jumping constantly allows for continuous climbing of said wall", "All melee weapons have a left and right click attack, learn how effective each are", "Attachments save throughout play sessions, tweak your guns once and you are done", "Some snipers and hand cannons can one shot to the torso", "Explosives hurt, don't aim downwards if you want to stay alive", "Crouching drastically increases your accuracy and recoil control", "Each weapon has its own distinct recoil pattern to master", "Your grappling hook cooldown refreshes on each kill", "Shooting the torso and/or head will guarintee good damage per shot", "You can sprint and/or slide in any direction, not just forwards", "Don't stand still, potshotters will have an easy time killing you", "The vehicles can be mounted and surfed on while playing the Bridge map", "Bunny hopping will help perserve velocity after landing from a grapple/slide"}
 
 -- Quotes, are displayed on the victory/defeat screeen
-quoteArray = {'"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"i may be im i may i have autism" -Penial', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls', '"im like that" -Homeless', '"i need about tree fiddy" -Random Films', '"bring out the whole ocean" -Robo', '"can we ban this guy" -Poopy', '"root beer" -Plat', '"never forget 9/11" -afiais', '"praise o monolith" -Medinator', '"why is he there" -Smity', '"shut it mate yer da sells avon" -zee!', '"rule #1 always boss up" -Zenthic', '"titanmod servers are as stable as a girl with blue hair" -TheBean'}
+quoteArray = {'"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"i may be im i may i have autism" -Penial', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls', '"im like that" -Homeless', '"i need about tree fiddy" -Random Films', '"bring out the whole ocean" -Robo', '"can we ban this guy" -Poopy', '"root beer" -Plat', '"never forget 9/11" -afiais', '"praise o monolith" -Medinator', '"why is he there" -Smity', '"shut it mate yer da sells avon" -zee!', '"rule #1 always boss up" -Zenthic', '"titanmod servers are as stable as a girl with blue hair" -TheBean', '"" -Shmeeg'}
 
 -- Derives the gamemode with Sandbox if Developer Mode is enabled on server start
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end
