@@ -484,7 +484,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 WeaponryLabel:SetSize(554, 230)
                 WeaponryLabel:SetFont("GModNotify")
                 WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
-You can use your Context Menu key []] .. ContextBind .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
+You can use your Context Menu key []] .. string.upper(ContextBind) .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
 Each weapon has its own unique recoil pattern to learn.
 Bullets are hitscan and can penetrate through surfaces.
 ]])
@@ -3668,11 +3668,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("frest_bindg"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("frest_bindg"):GetInt())) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. input.GetKeyName(GetConVar("tm_nadebind"):GetInt()) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("tm_nadebind"):GetInt())) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
                     if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
                         local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()
                         local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()
@@ -3738,11 +3738,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         surface.SetMaterial(border)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 175)
                         surface.DrawTexturedRect(0, 0, scrW, scrH)
-                    end
-                    if GetConVar("tm_hud_voiceindicator"):GetInt() == 1 then
-                        surface.SetDrawColor(65, 155, 80, 115)
-                        surface.SetMaterial(micIcon)
-                        surface.DrawTexturedRect(scrW / 2 - 21, 115 + GetConVar("tm_hud_bounds_y"):GetInt(), 42, 42)
                     end
                 end
 

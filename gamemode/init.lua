@@ -42,6 +42,7 @@ function GM:InitPostEntity()
 	end )
 end
 
+util.AddNetworkString("PlayerInitialSpawn")
 util.AddNetworkString("PlayerSpawn")
 util.AddNetworkString("OpenMainMenu")
 util.AddNetworkString("CloseMainMenu")
@@ -82,6 +83,12 @@ function OpenMainMenu(ply)
 	ply:SetNWBool("mainmenu", true)
 end
 
+net.Receive("PlayerInitialSpawn", function(len, ply)
+	ply:KillSilent()
+	OpenMainMenu(ply)
+	sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:Name()) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
+end)
+
 -- Player setup
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
@@ -103,6 +110,7 @@ function GM:PlayerSpawn(ply)
 	if GetGlobal2Bool("tm_intermission") then ply:Freeze(true) end
 
 	if ply:GetInfoNum("tm_customfov", 0) == 1 then ply:SetFOV(ply:GetInfoNum("tm_customfov_value", 100)) end
+
 	net.Start("PlayerSpawn")
 	net.Send(ply)
 
@@ -114,6 +122,9 @@ function GM:PlayerSpawn(ply)
 end
 
 function GM:PlayerInitialSpawn(ply)
+	ply:SetNWInt("playerID64", ply:SteamID64())
+	ply:SetNWString("playerName", ply:Name())
+
 	-- Checking if PData exists for the player. If the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
 	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
 	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
@@ -137,11 +148,7 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
 	for k, v in pairs(weaponArray) do InitializeNetworkInt(ply, "killsWith_" .. v[1], 0) end
 
-	ply:SetNWBool("trulyAlive", false)
-	ply:SetNWInt("playerID64", ply:SteamID64())
-	ply:SetNWString("playerName", ply:Name())
 	ply:SetCanZoom(false)
-
 	HandlePlayerInitialSpawn(ply)
 
 	-- Updates the players XP to next level based on their current level
@@ -152,15 +159,6 @@ function GM:PlayerInitialSpawn(ply)
 	-- Checks for potential save file corruption and will fix it accordingly
 	if not table.HasValue(modelFiles, ply:GetNWString("chosenPlayermodel")) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") end
 	if not table.HasValue(cardFiles, ply:GetNWString("chosenPlayercard")) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") end
-
-	-- Opens Main Menu on server connect
-	timer.Create(ply:SteamID() .. "killOnFirstSpawn", 0.75, 1, function()
-		ply:KillSilent()
-		timer.Simple(0.75, function() -- Delaying by 0.75 because the menu just doesn't open sometimes, might fix, idk
-			OpenMainMenu(ply)
-			sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:Name()) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
-		end)
-	end)
 end
 
 net.Receive("BeginSpectate", function(len, ply)
@@ -200,6 +198,7 @@ end )
 -- Calculate how much damage should be done to a player based on the hitgroup that was damaged, and send a hitsound to the inflictor of the damage
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end --Custom gamemode damage profile
+	if not dmginfo:GetAttacker():IsPlayer() then return end
 	net.Start("PlayHitsound", true)
 	net.WriteUInt(hitgroup, 4)
 	net.Send(dmginfo:GetAttacker())
@@ -428,7 +427,6 @@ end
 net.Receive("CloseMainMenu", function(len, ply)
 	ply:SetNWBool("mainmenu", false)
 	if not timer.Exists(ply:SteamID() .. "respawnTime") then
-		ply:SetNWBool("trulyAlive", true)
 		ply:Spawn()
 	end
 end )

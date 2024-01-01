@@ -193,9 +193,11 @@ local LocalPly = LocalPlayer()
 local timeUntilSelfDestruct = 0
 local timeText = " ∞"
 
-local function MatchStartPopup()
+local function MatchStartPopup(ply)
     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()) then return end
     if convars["hud_enable"] == 0 then return end
+    if !IsValid(ply) then return end
+    if activeGamemode == nil then return end
     local gm = string.upper(activeGamemode)
     local desc
     local winCondition
@@ -281,7 +283,7 @@ net.Receive("PlayerSpawn", function(len, pl)
     if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((TitanmodFOV / -100) + 2)) end
     if convars["hud_enable"] == 0 then return end
     if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
-    if matchStartPopupSeen == false then MatchStartPopup() end
+    if matchStartPopupSeen == false then MatchStartPopup(LocalPly) end
 end )
 
 cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, value_new)
@@ -310,7 +312,7 @@ end )
 function HUDIntermission(client)
     draw.SimpleText("Match begins in", "HUD_WepNameKill", scrW / 2, scrH / 2 - 190, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     draw.SimpleText(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()), "HUD_IntermissionText", scrW / 2, scrH / 2 - 100, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", scrW / 2, scrH - 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText("Press [" .. string.upper(input.GetKeyName(convars["menu_bind"])) .. "] to open menu", "HUD_WepNameKill", scrW / 2, scrH - 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 local function CrosshairStateUpdate(client, wep)
@@ -521,7 +523,7 @@ function HUDAlive(client)
         surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(math.max(0, smoothAmmo) / weapon:GetMaxClip1(), 0, 1)), 30)
         if (weapon:Clip1() >= 0) then draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) else draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
     end
-    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. input.GetKeyName(convars["grapple_bind"]) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
+    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end end
 
     -- Equipment
     local grappleMat = Material("icons/grapplehudicon.png", "noclamp smooth")
@@ -532,7 +534,7 @@ function HUDAlive(client)
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
+            grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
@@ -543,12 +545,12 @@ function HUDAlive(client)
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-        draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+        draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
     elseif client:HasWeapon("fres_grapple") then
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. input.GetKeyName(convars["grapple_bind"]) .. "]"
+            grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
             grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
@@ -568,13 +570,13 @@ function HUDAlive(client)
         surface.SetDrawColor(255,255,255,255)
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         elseif equipAnchor == "center" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 17.5, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         else
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. input.GetKeyName(convars["nade_bind"]) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         end
     end
 
@@ -1103,7 +1105,7 @@ net.Receive("NotifyDeath", function(len, ply)
         end
 
         draw.SimpleText("Respawning in " .. respawnTimeLeft .. "s", "HUD_StreakText", w / 2 - 10, 200, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText("Press [" .. input.GetKeyName(convars["menu_bind"]) .. "] to open menu", "HUD_WepNameKill", w / 2, 225, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Press [" .. string.upper(input.GetKeyName(convars["menu_bind"])) .. "] to open menu", "HUD_WepNameKill", w / 2, 225, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KilledByCallingCard = vgui.Create("DImage", DeathNotif)

@@ -1,4 +1,29 @@
-# Unreleased Upate
+# Unreleased Update
+**>GAMEPLAY**   
+
+**>MAPS**   
+
+**>BALANCE**    
+
+**>QOL & BUG FIXES**   
+
+
+
+# January 1st, 2024 (1/1/24)   
+**>QOL & BUG FIXES**   
+- Text displaying a players keybind now shows the letter as a capital letter
+
+- Fixed Main Menu requiring a forced delay before showing up after connecting to a server, should now be close to instant
+
+- Fixed gamemode information popup from not displaying at the proper time if joining a match already in progress
+
+- Fixed hit sounds being sent to a nil entity if killed by a car/cranked self destruction
+
+- Removed Voice chat indicator from the HUD editor preview
+
+
+
+# December 31th, 2023 (12/31/23)   
 **>GAMEPLAY**   
 *MATCH INTERMISSION*
 - By default, players will be frozen for the first 30 seconds of a match to allow other players to connect in time

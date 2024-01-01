@@ -11,6 +11,8 @@ end)
 
 function GM:InitPostEntity()
 	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+	net.Start("PlayerInitialSpawn")
+	net.SendToServer()
 end
 
 function UpdateFonts()

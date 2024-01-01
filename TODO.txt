@@ -1,13 +1,13 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
-Rebalance reload times
-
 Fix spawning inside players
 Space map with low gravity
 
 automatic wall movement setting
 
 config option to disable map/mode voting seperately
+
+overwrite networked values with my own custom system that isnt horrible
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
