@@ -301,7 +301,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local LeaderboardContents = vgui.Create("DPanel", LeaderboardScroller)
                     LeaderboardContents:Dock(TOP)
-                    LeaderboardContents:SetSize(0, 2082.5)
+                    LeaderboardContents:SetSize(0, 4142)
 
                     LeaderboardContents.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)

@@ -293,7 +293,7 @@ end)
 hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
     if GetGlobal2Int("tm_matchtime", 0) - CurTime() < (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()) then
         hook.Remove("RenderScreenspaceEffects", "IntermissionPostProcess")
-        if LocalPlayer():Alive() then MatchStartPopup() end
+        if LocalPlayer():Alive() then MatchStartPopup(LocalPlayer()) end
     end
 
     local intTime = (GetGlobal2Int("tm_matchtime", 0) - CurTime()) - (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt())

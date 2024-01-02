@@ -132,7 +132,7 @@ if activeGamemode == "KOTH" then
     SetGlobal2Bool("tm_hillstatus", "Empty")
     hillOccupants = {}
     timer.Create("HillScoring", kothScoringInterval, 0, function()
-        if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 or GetGlobal2Bool("tm_matchended") then return end
+        if table.IsEmpty(hillOccupants) or table.Count(hillOccupants) > 1 or GetGlobal2Bool("tm_matchended") or GetGlobal2Bool("tm_intermission") then return end
         hillOccupants[1]:SetNWInt("playerScore", hillOccupants[1]:GetNWInt("playerScore") + kothScore)
         hillOccupants[1]:SetNWInt("playerScoreMatch", hillOccupants[1]:GetNWInt("playerScoreMatch") + kothScore)
     end)
@@ -176,8 +176,9 @@ if activeGamemode == "VIP" then
     timer.Create("VIPScoring", vipScoringInterval, 0, function()
         vip = GetGlobal2Entity("tm_vip", NULL)
         if vip == NULL then
+            if GetGlobal2Bool("tm_intermission") then return end
             local connectedPlayers = {}
-            for k, v in RandomPairs(player.GetAll()) do if v:Alive() and v:GetNWBool("trulyAlive") then table.insert(connectedPlayers, v) end end
+            for k, v in RandomPairs(player.GetAll()) do if v:Alive() then table.insert(connectedPlayers, v) end end
             SetGlobal2Entity("tm_vip", connectedPlayers[1])
             return
         end

@@ -1,12 +1,30 @@
 # Unreleased Update
 **>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **Uzi** that rework their gun stats
 
 **>MAPS**   
 
 **>BALANCE**    
+*FAMAS*
+- Reduced damage to 25 (previously 27)
+- Reduced vertical recoil to 35 (previously 80)
+- Reduced horizontal recoil to 20 (previously 30)
+
+*FN FAL*
+- Reduced vertical recoil to 55 (previously 90)
+
+*Spike X1S*
+- Increased range to 131m (previously 31m)
 
 **>QOL & BUG FIXES**   
+- Fixed no player being assigned VIP status in the VIP gamemode
 
+- Fixed players being able to secure the hill during intermission in the KOTH gamemode
+
+- Fixed gamemode information popup from not displaying at the end of intermission
+
+- Fixed AWM mastery calling card not being unlockable
 
 
 # January 1st, 2024 (1/1/24)   
