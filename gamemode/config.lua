@@ -36,7 +36,7 @@ if UseConfigConvars then
     grappleRange = GetConVar("sv_tm_grapple_range"):GetInt()
     proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
     customMovement = GetConVar("sv_tm_player_custommovement"):GetBool()
-    deathCamera = GetConVar("sv_tm_player_custommovement"):GetBool()
+    deathCamera = GetConVar("sv_tm_deathcam"):GetBool()
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
 else
     -- Player settings

@@ -220,7 +220,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     LeaderboardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Entries update on match start/player disconnect | Only top 50 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Entries update on match start/player disconnect | Only top 100 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
 
                         if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
                         draw.SimpleText("#", "StreakText", 20, 185, white, TEXT_ALIGN_LEFT)
@@ -301,7 +301,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local LeaderboardContents = vgui.Create("DPanel", LeaderboardScroller)
                     LeaderboardContents:Dock(TOP)
-                    LeaderboardContents:SetSize(0, 4142)
+                    LeaderboardContents:SetSize(0, 4130)
 
                     LeaderboardContents.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -341,7 +341,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     LeaderboardProfiles = vgui.Create("DPanel", LeaderboardScroller)
                     LeaderboardProfiles:SetPos(720, 0)
-                    LeaderboardProfiles:SetSize(45, 2082.5)
+                    LeaderboardProfiles:SetSize(45, 4130)
                     LeaderboardProfiles.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end

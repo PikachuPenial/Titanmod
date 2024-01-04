@@ -67,7 +67,7 @@ if CLIENT then
     CreateClientConVar("tm_slidecanceltype", 0, true, true, "Determines the keybind that will cancel a slide", 0, 2)
     CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
     CreateClientConVar("tm_screenflashes", 1, true, false, "Enable/disable sudden screen flashes on certain occasions (mainly dying and leveling up)", 0, 1)
-    CreateClientConVar("tm_deathcam", 1, true, false, "Enable/disable the custom death camera when killed by another player", 0, 1)
+    CreateClientConVar("tm_deathcam", 1, true, true, "Enable/disable the custom death camera when killed by another player", 0, 1)
     CreateClientConVar("tm_customfov", 0, true, true, "Enable/disable Titanmod's custom FOV system", 0, 1)
     CreateClientConVar("tm_customfov_value", 100, true, true, "Adjust the players FOV while using Titanmod's custom FOV system", 100, 125)
     CreateClientConVar("tm_sensitivity_1x", 75, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)

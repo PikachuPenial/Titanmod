@@ -1,9 +1,21 @@
 # Unreleased Update
 **>GAMEPLAY**   
-*AMMO CONVERSIONS*
-- Added new attachment types to the **Uzi** that rework their gun stats
 
 **>MAPS**   
+
+**>BALANCE**    
+
+**>QOL & BUG FIXES**   
+
+
+
+# January 3rd, 2024 (1/3/24)    
+**>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **MP 40**, **MP18** and **Uzi** that rework their gun stats
+
+*LEADERBOARDS*
+- Leaderboards now show the top 100 players in any given category (previously showed top 50)
 
 **>BALANCE**    
 *FAMAS*
@@ -24,7 +36,10 @@
 
 - Fixed gamemode information popup from not displaying at the end of intermission
 
-- Fixed AWM mastery calling card not being unlockable
+- Fixed death cam still playing despite being disabled by the user or the server
+
+- Fixed AWM mastery calling card not being unlockable   
+
 
 
 # January 1st, 2024 (1/1/24)   
