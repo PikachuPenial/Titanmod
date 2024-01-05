@@ -331,7 +331,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(attacker:GetNWInt("killStreak"), 10)
 		net.Broadcast()
 
-		print(deathCamera)
 		if victim:GetInfoNum("tm_deathcam", 1) == 1 and deathCamera == true then
 			victim:SpectateEntity(attacker)
 			victim:Spectate(OBS_MODE_DEATHCAM)

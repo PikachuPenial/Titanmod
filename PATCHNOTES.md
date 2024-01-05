@@ -1,5 +1,7 @@
 # Unreleased Update
 **>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **Lee Enfield** that rework their gun stats
 
 **>MAPS**   
 

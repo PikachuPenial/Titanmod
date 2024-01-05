@@ -532,7 +532,7 @@ function HUDAlive(client)
 
     if client:HasWeapon("fres_grapple") and client:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(grappleMat)
-        if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
+        if Lerp((client:GetNWFloat("linat", CurTime()) - CurTime()) * 0.2, 0, 500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
             grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
         else
