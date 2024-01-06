@@ -8,6 +8,9 @@
 **>BALANCE**    
 
 **>QOL & BUG FIXES**   
+- Leaderboard is now dynamically sized depending on the number of players/entries being shown
+
+- Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
 
 
 

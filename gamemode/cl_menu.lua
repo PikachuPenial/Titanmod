@@ -300,8 +300,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     local LeaderboardContents = vgui.Create("DPanel", LeaderboardScroller)
-                    LeaderboardContents:Dock(TOP)
-                    LeaderboardContents:SetSize(0, 4130)
+                    LeaderboardContents:Dock(FILL)
 
                     LeaderboardContents.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
@@ -341,7 +340,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     LeaderboardProfiles = vgui.Create("DPanel", LeaderboardScroller)
                     LeaderboardProfiles:SetPos(720, 0)
-                    LeaderboardProfiles:SetSize(45, 4130)
                     LeaderboardProfiles.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -362,6 +360,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             net.Receive("SendLeaderboardData", function(len, ply)
                 SelectedBoard = net.ReadTable()
                 ProfilesHolder:Clear()
+                LeaderboardProfiles:SetSize(45, math.max(table.Count(SelectedBoard) * 41.25 + 5, 870))
 
                 for p, t in pairs(SelectedBoard) do
                     local SteamProfile = vgui.Create("DImageButton", ProfilesHolder)
@@ -982,6 +981,34 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("tmui/uisuccess.wav")
+                                net.Start("PlayerCardChange")
+                                net.WriteString(newCard)
+                                net.SendToServer()
+                                plyCallingCard:SetImage(newCard)
+                                MainPanel:Show()
+                                CardPanel:Hide()
+                                CardPreviewPanel:Hide()
+                                CardSlideoutPanel:Hide()
+                            end
+                        elseif newCardUnlockType == "matches" then
+                            if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
+                                surface.PlaySound("common/wpn_denyselect.wav")
+                            else
+                                surface.PlaySound("tmui/uisuccess.wav")
+                                net.Start("PlayerCardChange")
+                                net.WriteString(newCard)
+                                net.SendToServer()
+                                plyCallingCard:SetImage(newCard)
+                                MainPanel:Show()
+                                CardPanel:Hide()
+                                CardPreviewPanel:Hide()
+                                CardSlideoutPanel:Hide()
+                            end
+                        elseif newCardUnlockType == "wins" then
+                            if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
                             else
                                 surface.PlaySound("tmui/uisuccess.wav")

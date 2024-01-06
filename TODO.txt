@@ -9,8 +9,6 @@ config option to disable map/mode voting seperately
 
 overwrite networked values with my own custom system that isnt horrible
 
-dynamically scale leaderboard scroller with the amount of valid leaderboard submissions
-
 reduce prop count on a bunch of maps to make traversal easier
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

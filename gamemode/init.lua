@@ -179,13 +179,13 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 
 	local tbl
 	--[[ if key == "level" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 50;")
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 100;")
 	elseif key == "kd" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
 	elseif key == "wl" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 50;")
+		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
 	else
-		tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 50;")
+		tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;")
 	end --]]
 
 	tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;")
@@ -488,6 +488,10 @@ net.Receive("PlayerCardChange", function(len, ply)
 			elseif cardUnlock == "kills" and ply:GetNWInt("playerKills") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "matches" and ply:GetNWInt("matchesPlayed") >= cardValue then
+				ply:SetNWString("chosenPlayercard", cardID)
+			elseif cardUnlock == "wins" and ply:GetNWInt("matchesWon") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
 			elseif cardUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= cardValue then
 				ply:SetNWString("chosenPlayercard", cardID)
