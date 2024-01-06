@@ -234,7 +234,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         if SelectedBoardName == text then return end
                         if !firstSelection then
                             LeaderboardPickerButton:Hide()
-                            timer.Create("SendBoardDataRequestCooldown", 3, 1, function() if !LocalPly:Alive() then LeaderboardPickerButton:Show() end end)
+                            timer.Create("SendBoardDataRequestCooldown", 3, 1, function() if !LocalPly:Alive() and IsValid(LeaderboardPickerButton) then LeaderboardPickerButton:Show() end end)
                         end
                         TriggerSound("click")
                         net.Start("GrabLeaderboardData")
@@ -358,11 +358,10 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             net.Receive("SendLeaderboardData", function(len, ply)
-                SelectedBoard = net.ReadTable()
+                ReceivedBoard = net.ReadTable()
                 ProfilesHolder:Clear()
-                LeaderboardProfiles:SetSize(45, math.max(table.Count(SelectedBoard) * 41.25 + 5, 870))
 
-                for p, t in pairs(SelectedBoard) do
+                for p, t in pairs(ReceivedBoard) do
                     local SteamProfile = vgui.Create("DImageButton", ProfilesHolder)
                     SteamProfile:SetImage("icons/linkicon.png")
                     SteamProfile:SetSize(40, 40)
@@ -374,6 +373,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                         gui.OpenURL("http://steamcommunity.com/profiles/" .. t.SteamID)
                     end
                 end
+
+                LeaderboardProfiles:SetSize(45, math.max(table.Count(ReceivedBoard) * 41.25 + 5, 870))
+                SelectedBoard = ReceivedBoard
             end )
 
             local SpectatePanel = vgui.Create("DPanel", MainPanel)

@@ -1,11 +1,21 @@
 # Unreleased Update
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **Lee Enfield** that rework their gun stats
+- Added new attachment types to the **Lee Enfield**, **M4A1**, **MK18**, and **MP9** that rework their gun stats
 
 **>MAPS**   
 
-**>BALANCE**    
+**>BALANCE**  
+*M4A1*
+- Reduced horizontal recoil to 12 (previously 20)
+- Reduced RPM to 800 (previously 850)
+
+*MK18*
+- Increased damage to 33 (previously 32)
+- Reduced RPM to 700 (previously 800)
+
+*MP9*
+- Reduced damage to 23 (previously 26)
 
 **>QOL & BUG FIXES**   
 - Leaderboard is now dynamically sized depending on the number of players/entries being shown
