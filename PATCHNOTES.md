@@ -1,11 +1,21 @@
 # Unreleased Update
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **Lee Enfield**, **M4A1**, **MK18**, and **MP9** that rework their gun stats
+- Added new attachment types to the **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, and **PPSH** that rework their gun stats
+
+*WEAPON NAME ADJUSTMENTS*
+- Renamed SA80 to L85
 
 **>MAPS**   
 
 **>BALANCE**  
+*L85*
+- Increased RPM to 675 (previously 650)
+- Reduced horizontal recoil to 15 (previously 22)
+
+*Groza*
+- Reduced horizontal recoil to 10 (previously 20)
+
 *M4A1*
 - Reduced horizontal recoil to 12 (previously 20)
 - Reduced RPM to 800 (previously 850)
@@ -20,7 +30,15 @@
 **>QOL & BUG FIXES**   
 - Leaderboard is now dynamically sized depending on the number of players/entries being shown
 
+- Crosshair preview in the settings menu is now affected by the dynamic and static crosshair styles
+
+- Added four new crosshair preview images
+
+- Added opacity slider for the crosshair preview image
+
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
+
+- Fixed crosshair preview image not cycling properly on certain occasions
 
 
 
@@ -1606,7 +1624,7 @@
 - Increased horizontal recoil to 30 (previously 15)
 
 *SA80*
-- Increased vertical recoil 44 (previously 37)
+- Increased vertical recoil to 44 (previously 37)
 
 *AR-57*
 - Smoothened recoil pattern

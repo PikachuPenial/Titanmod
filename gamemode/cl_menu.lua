@@ -2992,6 +2992,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         MainPanel:Show()
                         OptionsSlideoutPanel:Hide()
                         OptionsPanel:Hide()
+                        timer.Remove("CrosshairDynamicPreview")
                     end
 
                     DockAccount.Paint = function(self, w, h)
@@ -3148,7 +3149,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                         draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("FOV Value", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Gun", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Death Cam", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 225, white, TEXT_ALIGN_LEFT)
                     end
@@ -3343,7 +3344,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Left", "SettingsLabel", 300, 585, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Right", "SettingsLabel", 395, 585, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 210, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 225, white, TEXT_ALIGN_CENTER)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
@@ -3444,16 +3445,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairRight:SetSize(30, 30)
                     function crosshairRight:OnChange() TriggerSound("click") end
 
-                    local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png"}
+                    local previewOpacitySlider = DockCrosshair:Add("DSlider")
+                    previewOpacitySlider:SetPos(400, 210)
+                    previewOpacitySlider:SetSize(150, 20)
+                    previewOpacitySlider:SetSlideX(1)
+
+                    local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png", "images/preview/grass.png", "images/preview/devtexture.png", "images/preview/wood.png", "images/preview/glass.png"}
                     local previewImg = "images/preview/sky.png"
 
                     local crosshairPreviewImage = DockCrosshair:Add("DImageButton")
                     crosshairPreviewImage:SetPos(375, 10)
                     crosshairPreviewImage:SetSize(200, 200)
                     crosshairPreviewImage:SetImage(previewImg)
-                    crosshairPreviewImage.DoClick = function() previewImg = previewPool[math.random(#previewPool)] crosshairPreviewImage:SetImage(previewImg) end
+                    crosshairPreviewImage.DoClick = function()
+                        local imagePool = table.Copy(previewPool)
+                        table.RemoveByValue(imagePool, previewImg)
+                        previewImg = imagePool[math.random(#imagePool)]
+                        crosshairPreviewImage:SetImage(previewImg)
+                    end
 
                     local crosshair = {}
+                    local dyn = 0
+                    local smoothDyn = 0
+                    local startDyn = 0
+                    local newDyn = 0
+                    local oldDyn = 0
+
                     local function UpdateCrosshair()
                         crosshair = {
                             ["enabled"] = GetConVar("tm_hud_crosshair"):GetInt(),
@@ -3475,7 +3492,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             ["show_l"] = GetConVar("tm_hud_crosshair_show_l"):GetInt(),
                             ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt()
                         }
+                        crosshairPreviewImage:SetColor(Color(255, 255, 255, previewOpacitySlider:GetSlideX() * 255))
                     end
+
+                    local function LerpCrosshair()
+                        smoothDyn = Lerp((SysTime() - startDyn ) / 0.07, oldDyn, newDyn)
+
+                        if newDyn != dyn then
+                            if (smoothDyn != dyn) then newDyn = smoothDyn end
+                            oldDyn = newDyn
+                            startDyn = SysTime()
+                            newDyn = dyn
+                        end
+                    end
+
+                    timer.Create("CrosshairDynamicPreview", 0.5, 0, function()
+                        if crosshair["style"] == 1 then dyn = math.Rand(0, 10) else dyn = 0 end
+                    end)
 
                     CrosshairPreview = vgui.Create("DPanel", DockCrosshair)
                     CrosshairPreview:SetSize(200, 200)
@@ -3483,19 +3516,20 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CrosshairPreview:SetMouseInputEnabled(false)
                     CrosshairPreview.Paint = function(self, w, h)
                         UpdateCrosshair()
+                        LerpCrosshair()
                         if crosshair["outline"] == 1 then
                             surface.SetDrawColor(Color(crosshair["outline_r"], crosshair["outline_g"], crosshair["outline_b"], crosshair["opacity"]))
-                            if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + crosshair["gap"] - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
-                            if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - crosshair["gap"] - crosshair["size"] + crosshair["thickness"] % 2 - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
-                            if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 + crosshair["gap"] - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
-                            if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 - crosshair["size"] - crosshair["gap"] + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+                            if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + (crosshair["gap"] + smoothDyn) - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+                            if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - (crosshair["gap"] + smoothDyn) - crosshair["size"] + crosshair["thickness"] % 2 - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["size"] + 2,  crosshair["thickness"] + 2) end
+                            if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 + (crosshair["gap"] + smoothDyn) - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
+                            if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 - crosshair["size"] - (crosshair["gap"] + smoothDyn) + crosshair["thickness"] % 2 - 1, crosshair["thickness"] + 2, crosshair["size"] + 2) end
                             if crosshair["dot"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2) - 1, h / 2 - math.floor(crosshair["thickness"] / 2) - 1, crosshair["thickness"] + 2, crosshair["thickness"] + 2) end
                         end
                         surface.SetDrawColor(Color(crosshair["r"], crosshair["g"], crosshair["b"], crosshair["opacity"]))
-                        if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + crosshair["gap"], h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
-                        if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - crosshair["gap"] - crosshair["size"] + crosshair["thickness"] % 2, h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
-                        if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 + crosshair["gap"], crosshair["thickness"], crosshair["size"]) end
-                        if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 - crosshair["size"] - crosshair["gap"] + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
+                        if crosshair["show_r"] == 1 then surface.DrawRect(w / 2 + (crosshair["gap"] + smoothDyn), h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+                        if crosshair["show_l"] == 1 then surface.DrawRect(w / 2 - (crosshair["gap"] + smoothDyn) - crosshair["size"] + crosshair["thickness"] % 2, h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["size"],  crosshair["thickness"]) end
+                        if crosshair["show_b"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 + (crosshair["gap"] + smoothDyn), crosshair["thickness"], crosshair["size"]) end
+                        if crosshair["show_t"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 - crosshair["size"] - (crosshair["gap"] + smoothDyn) + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
                         if crosshair["dot"] == 1 then surface.DrawRect(w / 2 - math.floor(crosshair["thickness"] / 2), h / 2 - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
                     end
 
