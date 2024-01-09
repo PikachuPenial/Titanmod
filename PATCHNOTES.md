@@ -1880,7 +1880,7 @@
 
 
 
-# April 3rd, 2023 (4/3/23) (Public Playtest Began)
+# April 3rd, 2023 (4/3/23) (Public Playtest/BETA Began)
 **>GAMEPLAY**   
 *MAP VOTE ADJUSTMENTS*
 - Small maps no longer appear in the map vote when there are more than 5 players connected (this applies to Nuketown, Shipment, and the new Initial map)
@@ -1912,3 +1912,443 @@
 - Fixed "transmitting voice" showing up while other users were using proximity voice chat nearby
 
 - Fixed jamming on RFB reload
+
+
+
+# January 25th, 2022 (1/25/23) - April 2nd, 2022 (4/2/23) (Every update within this time frame was undocumented, here is a roundup)
+- Added over 8 new and revamped weapons
+
+- Added Match system
+
+- Added various new HUD editor options
+
+- Added VOIP indicator
+
+- Added in-game chat filtering (and then removed said filter)
+
+- Added various new hit and kill SFX options
+
+- Added farthest kill stat
+
+- Added new main menu music tracks
+
+- Added customizable main menu keybind option
+
+- Added new config file entries
+
+- Completely revamped and overhauled map voting system
+
+- Moved many systems to the net messages system
+
+- Scoreboard size now dynamically changes based on player count
+
+- Refactored the spectating system
+
+- Overhauled player model and player card customization menus
+
+- Fixed auto downloading of gamemode addons when mounted to server
+
+
+
+# January 23rd, 2022 (1/23/23)
+- Drastic gunplay refinments
+
+- Added HK53 primary weapon
+
+- Added SIG P320 secondary weapon
+
+- Rebalancing across all weapons
+
+- Multiple weapon revamps/remodels
+
+- Added More trackable statistics
+
+- Added Weapon kill tracking HUD option
+
+- Various Scoreboard improvments
+
+- Moved many systems to the net messages system
+
+- Added Config option to disable map vote skip
+
+- Map framework changes
+
+- Fixed bugs introduced with the new GMOD update
+
+- Updated credit entries
+
+- Removed Galil primary weapon
+
+- Removed SIG P260 secondary weapon
+
+
+# December 5th, 2022 (12/5/22)
+- Added G28, G36A1, Dual Skorpions, AK-12 and M4A1 primary weapons
+
+- Added Skorpion secondary weapon
+
+- Added File Compression
+
+- Added Option tooltips
+
+- Added Account and Privacy options category
+
+- Added Credits menu
+
+- Added Level 200-300 and Pride Player Cards
+
+- Added Config File
+
+- Added Killstrak notifications in kill feed
+
+- Added Hints
+
+- Added Loadout Hints option
+
+- Added Match tracking
+
+- Added Match win XP bonus
+
+- Added HUD Editing and recoloring
+
+- Added Custom font support
+
+- Added Hide Locked option in cuztomization menus
+
+- Added Clan tags
+
+- New UI animations
+
+- More UI SFX
+
+- Optimized UI
+
+- Optimized score calculation
+
+- Optimized kill cams
+
+- Optimized player leveling
+
+- Optimized arrays
+
+- Fixed incorrect score distribution
+
+- Faster loading on model and card menus
+
+- Fixed overlapping menu SFX
+
+- Added DOF for main menu and scoreboard
+
+- Primaries no longer fire underwater
+
+- Secondaries and melee now fire underwater
+
+- Buffed Mac 10, Beretta Mx4, MP7
+
+- Nerfed AKS-74U, Imbel IA2, SCAR-H
+
+- Updated many weapon names
+
+- Smoothened level up animation
+
+- Lowered volume of level up SFX
+
+- Improved statistics menu
+
+- Improved map voting algorithm
+
+- Fixed death cooldown check every frame
+
+- Fixed manually voting on unvotable maps
+
+- Added errors during manual map voting
+
+- Added caliber information for weapons
+
+- Removed unused weapon files
+
+- Removed hooks that run exclusively in Sandbox
+
+- Kill/Death UI now scale properly
+
+- Added Smooth scrolling across all UI
+
+- Updated and improved ASh-12 model
+
+- Fixed ammo bar being 1 pixel too high
+
+- Fixed ammo bar text while using melee
+
+- Fixed UI elements when player disconnects
+
+- Fixed desync related to kill info and streaks
+
+- Removed WA-2000, H&K MG36, AK-12 RPK and AR-15 primary weapons
+
+- Removed Groves and Rooftops maps
+
+- Removed Revenge accolade
+
+- Removed Lee-Enfield stripper clip attachment
+
+- Removed Profile Picture Offset option
+
+
+
+# November 21st, 2022 (11/21/22)
+- Added Arctic, Rig, and Station map
+
+- Added Grenades
+
+- Added Rocket/M79 Jumping
+
+- Added UI SFX
+
+- Added Slight scoreboard coloring on player states
+
+- Improved explosion FX
+
+- Small scale optimization
+
+- Fixed conflicting files
+
+
+
+# November 14th, 2022 (11/14/22)
+- Added Player Leveling and Prestiging
+
+- Added dynamic weapon spread
+
+- Added 50+ new player cards
+
+- Buffed RFB, Makarov, Mare's Leg and Honey Badger
+
+- Various Scoreboard improvments
+
+- Suicides no longer give accolades
+
+- Updated some fonts
+
+- Updated some weapon names
+
+- Fixed Firing Range appearing in map vote
+
+- Various efforts towards optimization
+
+- Reduced recoil by 10% due to spread addition
+
+- Streamlined new content creation
+
+
+
+# November 10th, 2022 (11/10/22)
+- Added Shipment and Firing Range map
+
+- Added Colt 9mm, FN 2000 and LR-300 primary weapons
+
+- Added Mare's Leg and MP-443 Grach secondary weapons
+
+- Added Firing Range Weapon Spawning
+
+- Added Hit/Kill sound type options
+
+- Updated card and model menus
+
+- Shortened some weapon names
+
+- Fixed YouTube link
+
+
+
+# November 8th, 2022 (11/8/22)
+- Map updates and optimizations
+
+- Added Accolade player models
+
+- Scope Shadows are now forced off
+
+- Many bug fixes
+
+
+# November 4th, 2022 (11/4/22)
+- Added Mall and Bridge map
+
+- Added Honey Badger, RK62, PzB 39 and WA-2000 primary weapons
+
+- Added OSP-18 secondary weapon
+
+- Added Match end UI
+
+- Revamped stats/model menus
+
+- Added New community music track
+
+- Added Beta participation rewards
+
+- Buffed Glock 17 and Steyr AUG
+
+- Nerfed FG 42, KRISS Vector, Scropion Evo 3, PP-Bizon and Desert Eagle
+
+- Added Map Vote Time command
+
+- Fixed Rooftops map
+
+- Fixed Kill UI updating incorrectly
+
+- Optimized headshot tracking
+
+- Flashlights are now rendered serverside
+
+- Added Flashlight customization options
+
+- Scoreboard is now sorted by player score
+
+- Removed full auto from Mk. 14 EBR and M14
+
+
+
+# November 2nd, 2022 (11/2/22)
+- Added Map voting
+
+- Added Player cards and card options
+
+- Revamped scoreboard
+
+- Added Weapon mastery
+
+- Added Revenge and Copycat accolade
+
+- Added 5 new optics
+
+- Buffed Stevens 620
+
+- Nerfed Minimi Para
+
+- Improved options and customize menus
+
+- Added map information to main menu
+
+- Added Loadout notification on player spawn
+
+- Added Endless mode as a server option
+
+- Maps are now included in the addon
+
+- AR-15 now defaults to full auto
+
+- Players now climb ladders 10% faster
+
+- Grapple Hook now refreshes on player kill
+
+- Wallrun velocity slightly increased
+
+- Death info now shows on a players suicide
+
+- Optimized Kill UI
+
+- Fixed poor hit registration
+
+- Fixed new weapons not spawning after death
+
+- Fixed error on player suicide
+
+- Fixed error on players first death
+
+- Fixed error for loading player cards
+
+- Removed Player specific spectating due to bug
+
+
+
+# October 22nd, 2022 (10/22/22)
+- Added M1919, MG 34 and Thompson M1928 primary weapons
+
+- Revamped and optimized Main Menu
+
+- Added Dedicated Stats page
+
+- Added Spectating system
+
+- Added Patch Notes page
+
+- Added Developer Mode
+
+- Buffed Colt M1911 and Walther P99
+
+- Nerfed Minimi Para, SCAR-H SSR, OTs-14 Groza, Beretta Mx4 Storm, Imbel IA2, XM8, MP7A1, FNP-45, PM-9, Colt M45A1, MK18 and AEK-971
+
+- Added Fancy animations across the main menu
+
+- Fixed Clutch Accolade not being awarded
+
+- Rounded played K/D on statistics
+
+- KIllcam no longer ends until player spawn
+
+- Backend changes for future playercard support
+
+- tm_forcesave now saves Accolades
+
+- Alphabetically sorted weapon arrays
+
+- Removed Intro splash screen
+
+
+
+# October 15th, 2022 (10/15/22)
+- Added Kill Cam
+
+- Added Clutch accolade
+
+- Health based HUD values can no longer go below 0
+
+- Changable Grappling Hook keybind in options
+
+- Reload Hints toggle added to options
+
+- ADS Vignette toggle added to options
+
+- Centered Numeric added as an Ammo Style in options
+
+- Viewmodel FOV Multiplier and Centered Viewmodel options now save upon leaving a game
+
+- Kill/Death UI anchoring added to options
+
+- Weapon Bobbing Multiplier added to options
+
+- Invert Weapon Bobbing added to options
+
+
+
+# October 14th, 2022 (10/14/22) (First documentation of patch notes)
+- Added Intro Screen, can be disabled in options
+
+- New default menu song to replace Chillwave
+
+- Added new community music track
+
+- Equalized audio between all music tracks
+
+- Added Below Crosshair anchoring for health and ammo
+
+- Updated KRISS Vector model
+
+- Added new primarys (KSVK 12.7, UMP9, Type-81)
+
+- Added new secondary (TCo Stim Pistol)
+
+- Increased Grappling Hook cooldown (15 > 18s)
+
+- Buffed UMP-45
+
+- Nerfed M14, Mk. 14 EBR
+
+- KM-2000 now applies the Smackdown Accolade
+
+- Velocity Counter added to options
+
+- Show Kill UI Accolades added to options
+
+- Added 3 new default PMs
+
+- Replaced Super Soilder PM with GMan PM

@@ -15,6 +15,8 @@ make scroll bars not look like ass
 
 disable nade/grapple during intermission
 
+rare events mid match, double XP as an example for 1 minute
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
