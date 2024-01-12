@@ -185,6 +185,8 @@ if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
                 net.Send(ply)
                 ply:SetNWBool("mainmenu", true)
             end
+            if GetGlobal2Bool("tm_intermission") then return end
+
             -- Weapon quick switching
             if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
             if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
@@ -198,6 +200,7 @@ if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
             end
         end
         if CLIENT then
+            if GetGlobal2Bool("tm_intermission") then return end
             -- Grenade
             if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
             hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
@@ -222,6 +225,8 @@ else
                 net.Send(ply)
                 ply:SetNWBool("mainmenu", true)
             end
+            if GetGlobal2Bool("tm_intermission") then return end
+
             -- Weapon quick switching
             if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
             if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
@@ -235,6 +240,7 @@ else
             end
         end
         if CLIENT then
+            if GetGlobal2Bool("tm_intermission") then return end
             -- Grenade
             if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
             hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
