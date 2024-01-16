@@ -163,6 +163,7 @@ end
 
 net.Receive("BeginSpectate", function(len, ply)
 	if ply:Alive() then return end
+	if GetGlobal2Bool("tm_intermission") then return end
 	ply:SetNWBool("mainmenu", false)
 	ply:UnSpectate()
 	ply:Spectate(OBS_MODE_ROAMING)

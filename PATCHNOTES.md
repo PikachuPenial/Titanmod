@@ -1,12 +1,35 @@
 # Unreleased Update
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, and **PPSH** that rework their gun stats
+- Added new attachment types to the **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, and **SCAR-H** that rework their gun stats
 
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
 
 **>MAPS**   
+*Arctic*
+- Smoothened out staircases with clip brushes
+
+*Corrugated*
+- Reduced amount of props
+- Smoothened out staircases with clip brushes
+
+*Initial*
+- Reduced amount of props
+
+*Mephitic*
+- Reduced amount of props
+- Removed excess doors
+
+*Oxide*
+- Reduced amount of props
+
+*Villa*
+- Reduced amount of props
+- Increased gap size of multiple doorways
+
+*Wreck*
+- Reduced amount of props
 
 **>BALANCE**  
 *L85*
@@ -27,6 +50,9 @@
 *MP9*
 - Reduced damage to 23 (previously 26)
 
+*PP-19 Bizon*
+- Increased damage to 29 (previously 28)
+
 **>QOL & BUG FIXES**   
 - Leaderboard is now dynamically sized depending on the number of players/entries being shown
 
@@ -39,6 +65,8 @@
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
 
 - Fixed crosshair preview image not cycling properly on certain occasions
+
+- Fixed freecam spectate being selectable during intermission period
 
 
 

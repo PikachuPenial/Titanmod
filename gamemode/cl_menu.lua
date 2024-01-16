@@ -398,6 +398,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePicker:SetValue("Spectate...")
             SpectatePicker:AddChoice("Freecam")
             SpectatePicker.OnSelect = function(_, _, value, id)
+                if GetGlobal2Bool("tm_intermission") then return end
                 net.Start("BeginSpectate")
                 net.SendToServer()
                 MainMenu:Remove(false)
@@ -414,10 +415,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TriggerSound("click")
                 if (spectatePanelOpen == 0) then
                     spectatePanelOpen = 1
-                    SpectatePanel:SizeTo(-1, 70, 1, 0, 0.1)
+                    SpectatePanel:SizeTo(-1, 70, 0.75, 0, 0.1)
                 else
                     spectatePanelOpen = 0
-                    SpectatePanel:SizeTo(-1, 0, 1, 0, 0.1)
+                    SpectatePanel:SizeTo(-1, 0, 0.75, 0, 0.1)
                 end
             end
 

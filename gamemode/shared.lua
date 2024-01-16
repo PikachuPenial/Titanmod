@@ -169,7 +169,7 @@ end
 
 -- Sets up keybinds
 if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
-    hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+    hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
         if SERVER then
             -- Main Menu
             if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
@@ -209,7 +209,7 @@ if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
         end
     end)
 else
-    hook.Add("PlayerButtonDown", "NadeCock", function(ply, button)
+    hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
         if SERVER then
             -- Main Menu
             if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
