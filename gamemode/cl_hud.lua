@@ -1630,17 +1630,12 @@ net.Receive("EndOfGame", function(len, ply)
         end
 
         local sbar = PlayerScrollPanel:GetVBar()
+        sbar:SetHideButtons(true)
         function sbar:Paint(w, h)
-            draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 150))
-        end
-        function sbar.btnUp:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-        end
-        function sbar.btnDown:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
+            draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
         end
         function sbar.btnGrip:Paint(w, h)
-            draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+            draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
         end
 
         PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)

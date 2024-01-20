@@ -58,6 +58,8 @@
 
 - Crosshair preview in the settings menu is now affected by the dynamic and static crosshair styles
 
+- All scroll bars have been revamped visually
+
 - Added four new crosshair preview images
 
 - Added opacity slider for the crosshair preview image

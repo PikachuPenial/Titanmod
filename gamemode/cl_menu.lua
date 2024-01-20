@@ -200,17 +200,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                     LeaderboardScroller:Dock(FILL)
 
                     local sbar = LeaderboardScroller:GetVBar()
+                    sbar:SetHideButtons(true)
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                     end
 
                     local LeaderboardTextHolder = vgui.Create("DPanel", LeaderboardPanel)
@@ -450,17 +445,12 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TutorialScroller:Dock(FILL)
 
                 local sbar = TutorialScroller:GetVBar()
+                sbar:SetHideButtons(true)
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(5, 0, 0, w, h, gray)
-                end
-                function sbar.btnUp:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
-                end
-                function sbar.btnDown:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                 end
 
                 local TitleText = vgui.Create("DPanel", TutorialScroller)
@@ -771,17 +761,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CardScroller:Dock(FILL)
 
                     local sbar = CardScroller:GetVBar()
+                    sbar:SetHideButtons(true)
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                     end
 
                     local CardTextHolder = vgui.Create("DPanel", CardPanel)
@@ -2081,17 +2066,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CustomizeScroller:Dock(FILL)
 
                     local sbar = CustomizeScroller:GetVBar()
+                    sbar:SetHideButtons(true)
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                     end
 
                     local CustomizeTextHolder = vgui.Create("DPanel", ModelPanel)
@@ -2854,17 +2834,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     OptionsScroller:Dock(FILL)
 
                     local sbar = OptionsScroller:GetVBar()
+                    sbar:SetHideButtons(true)
                     function sbar:Paint(w, h)
-                        draw.RoundedBox(5, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnUp:Paint(w, h)
-                        draw.RoundedBox(0, 0, 0, w, h, gray)
-                    end
-                    function sbar.btnDown:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                     end
 
                     local DockAccount = vgui.Create("DPanel", OptionsScroller)
@@ -3829,17 +3804,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EditorScroller:Dock(FILL)
 
                 local sbar = EditorScroller:GetVBar()
+                sbar:SetHideButtons(true)
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(5, 0, 0, w, h, lightGray)
-                end
-                function sbar.btnUp:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                end
-                function sbar.btnDown:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(15, 0, 0, w, h, Color(155, 155, 155, 155))
+                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
                 end
 
                 local HiddenOptionsScroller = vgui.Create("DPanel", EditorPanel)

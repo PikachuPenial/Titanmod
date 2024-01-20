@@ -46,19 +46,14 @@ function GM:ScoreboardShow()
 		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(640, player.GetCount() * 100) else PlayerScrollPanel:SetSize(640, 500) end
 		PlayerScrollPanel:SetPos(0, 0)
 
-		local sbar = PlayerScrollPanel:GetVBar()
-		function sbar:Paint(w, h)
-			draw.RoundedBox(6, 0, 0, w, h, Color(0, 0, 0, 150))
-		end
-		function sbar.btnUp:Paint(w, h)
-			draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-		end
-		function sbar.btnDown:Paint(w, h)
-			draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 155))
-		end
-		function sbar.btnGrip:Paint(w, h)
-			draw.RoundedBox(16, 0, 0, w, h, Color(155, 155, 155, 155))
-		end
+        local sbar = PlayerScrollPanel:GetVBar()
+        sbar:SetHideButtons(true)
+        function sbar:Paint(w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(35, 35, 35, 100))
+        end
+        function sbar.btnGrip:Paint(w, h)
+            draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+        end
 
 		PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
 		PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
