@@ -10,10 +10,7 @@
 **>MAPS**   
 *Arctic*
 - Smoothened out staircases with clip brushes
-
-*Corrugated*
-- Reduced amount of props
-- Smoothened out staircases with clip brushes
+- Expanded the dark staircase room
 
 *Initial*
 - Reduced amount of props

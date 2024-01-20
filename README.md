@@ -33,6 +33,7 @@ Almost every aspect of Titanmod is configurable. Not only does it boast a wide a
 # Credits:
 > Maps
 
+[Arctic](https://steamcommunity.com/sharedfiles/filedetails/?id=378091855) by Danny Judas   
 [Bridge](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by nyko_18   
 [Corrugated](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by heyo  
 [Disequilibrium](http://steamcommunity.com/profiles/76561198313962855) by Zedorfska  
