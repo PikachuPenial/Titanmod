@@ -66,6 +66,10 @@
 
 - Fixed crosshair preview image not cycling properly on certain occasions
 
+- Fixed missing ammo count text when using a weapon with no magazine on the text ammo style
+
+- Fixed missing ammo bar when using a weapon with no magazine on the bar ammo style
+
 - Fixed freecam spectate being selectable during intermission period
 
 

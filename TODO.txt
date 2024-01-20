@@ -1,27 +1,20 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
-Fix spawning inside players
-Space map with low gravity
-
-automatic wall movement setting
-
+fix spawning inside players
+space map with low gravity
 config option to disable map/mode voting seperately
-
-overwrite networked values with my own custom system that isnt horrible
-
-reduce prop count on a bunch of maps to make traversal easier
-
 make scroll bars not look like ass
-
-disable nade/grapple during intermission
-
 rare events mid match, double XP as an example for 1 minute
-
-dont allow reload canceling near end of reload
+unlockable melee weapons w/ all new melees still being throwable
+seperate grapple hook from melee, allow for both in a loadout
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
-Fix map voting popup causing errors when in main menu
-Party mode (random effects throughout match)
+explosive arrows for bow/crossbow
+knifes thrown come back after 5-10 seconds
+party mode (random effects throughout match)
+dont allow reload canceling near end of reload
+overwrite networked values with my own custom system that isnt horrible
+automatic wall movement setting
