@@ -952,7 +952,7 @@ net.Receive("NotifyKill", function(len, ply)
     local lastHitIn = net.ReadInt(5)
     local killStreak = net.ReadInt(10)
 
-    local seperator = ""
+    local accoladeList = ""
 
     if IsValid(KillNotif) then KillNotif:Remove() end
 
@@ -975,57 +975,35 @@ net.Receive("NotifyKill", function(len, ply)
 
     -- Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg
     if LocalPly:Health() <= 15 then
-        clutch = "Clutch +20 | "
-        seperator = "| "
-    else
-        clutch = ""
+        accoladeList = accoladeList .. "Clutch +20 | "
     end
 
     if killedFrom >= 40 then
-        marksman = "Longshot +" .. killedFrom .. " | "
-        seperator = "| "
-    else
-        marksman = ""
+        accoladeList = accoladeList .. "Longshot +" .. killedFrom .. " | "
     end
 
     if killedFrom <= 3 then
-        pointblank = "Point Blank +20 | "
-        seperator = "| "
-    else
-        pointblank = ""
+        accoladeList = accoladeList .. "Point Blank +20 | "
     end
 
     if killedWith == "Tanto" or killedWith == "Mace" or killedWith == "KM-2000" then
-        smackdown = "Smackdown +20 |"
-        seperator = "| "
-    else
-        smackdown = ""
+        accoladeList = accoladeList .. "Smackdown +20 |"
     end
 
     if killStreak >= 3 then
         onstreakScore = 10 * killStreak
-        onstreak = "On Streak +" .. onstreakScore .. " | "
-        seperator = "| "
-    else
-        onstreakScore = ""
-        onstreak = ""
+        accoladeList = accoladeList .. "On Streak +" .. onstreakScore .. " | "
     end
 
     if killedPlayer:GetNWInt("killStreak") >= 3 then
         buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
-        buzzkill = "Buzz Kill +" .. buzzkillScore .. " | "
-        seperator = "| "
-    else
-        buzzkillScore = ""
-        buzzkill = ""
+        accoladeList = accoladeList ..  "Buzz Kill +" .. buzzkillScore .. " | "
     end
 
     if lastHitIn == 1 then
-        headshot = "Headshot +20 | "
-        seperator = "| "
+        accoladeList = accoladeList .. "Headshot +20 | "
         KillIcon:SetImageColor(red)
     else
-        headshot = ""
         KillIcon:SetImageColor(Color(killdeathHUD["killicon_r"], killdeathHUD["killicon_g"], killdeathHUD["killicon_b"]))
     end
 
@@ -1051,7 +1029,7 @@ net.Receive("NotifyKill", function(len, ply)
 
         if killStreak > 1 then draw.SimpleText(killStreak .. " Kills", "HUD_StreakText", w / 2, h * 0.175, streakColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
         draw.SimpleText(killedPlayer:GetName(), "HUD_PlayerNotiName", w / 2, h * 0.625, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(seperator .. headshot .. onstreak .. clutch .. buzzkill .. marksman .. pointblank .. smackdown, "HUD_StreakText", w / 2, h * 0.8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(string.sub(accoladeList, 1, -4), "HUD_StreakText", w / 2, h * 0.8, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     KillNotif:Show()

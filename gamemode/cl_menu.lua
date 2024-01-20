@@ -556,6 +556,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     TriggerSound("click")
                     gui.OpenURL("https://discord.gg/GRfvt27uGF")
                 end
+                DiscordButton.Paint = function()
+                    if DiscordButton:IsHovered() then
+                        DiscordButton:SetColor(Color(114, 137, 218))
+                    else
+                        DiscordButton:SetColor(Color(255, 255, 255))
+                    end
+                end
             end
 
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- Force shows the Tutorial is a player joins for the first time
@@ -579,6 +586,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 TriggerSound("click")
                 gui.OpenURL("https://discord.gg/GRfvt27uGF")
             end
+            DiscordButton.Paint = function()
+                if DiscordButton:IsHovered() then
+                    DiscordButton:SetColor(Color(114, 137, 218))
+                else
+                    DiscordButton:SetColor(Color(255, 255, 255))
+                end
+            end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
             WorkshopButton:SetPos(180, scrH - 96)
@@ -589,6 +603,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 TriggerSound("click")
                 gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569")
             end
+            WorkshopButton.Paint = function()
+                if WorkshopButton:IsHovered() then
+                    WorkshopButton:SetColor(Color(0, 164, 240))
+                else
+                    WorkshopButton:SetColor(Color(255, 255, 255))
+                end
+            end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
             YouTubeButton:SetPos(252, scrH - 96)
@@ -597,7 +618,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 TriggerSound("click")
-                gui.OpenURL("https://youtu.be/OPH7Tm9ngRI?si=9X9bO9IGbuiEZaz8")
+                gui.OpenURL("https://youtu.be/MyBYoh2shmo?si=H6bU6E9xKseb4YuH")
+            end
+            YouTubeButton.Paint = function()
+                if YouTubeButton:IsHovered() then
+                    YouTubeButton:SetColor(Color(255, 0, 0))
+                else
+                    YouTubeButton:SetColor(Color(255, 255, 255))
+                end
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
@@ -608,6 +636,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             GithubButton.DoClick = function()
                 TriggerSound("click")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod")
+            end
+            GithubButton.Paint = function()
+                if GithubButton:IsHovered() then
+                    GithubButton:SetColor(Color(108, 198, 68))
+                else
+                    GithubButton:SetColor(Color(255, 255, 255))
+                end
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)

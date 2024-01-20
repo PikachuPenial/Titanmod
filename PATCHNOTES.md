@@ -65,6 +65,12 @@
 
 - Added opacity slider for the crosshair preview image
 
+- Added coloring effect when hovering over social media links in the Main Menu
+
+- Optimized kill popup
+
+- Updated YouTube social link in Main Menu
+
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
 
 - Fixed crosshair preview image not cycling properly on certain occasions
