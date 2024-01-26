@@ -357,11 +357,11 @@ if SERVER then
 
     -- Gunplay Specific TFA Configuration
     RunConsoleCommand("sv_tfa_damage_multiplier", "1.00")
-    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.75")
-    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.75")
-    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.75")
-    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.75")
-    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.75")
+    RunConsoleCommand("sv_tfa_recoil_mul_p", "0.8")
+    RunConsoleCommand("sv_tfa_recoil_mul_p_npc", "0.8")
+    RunConsoleCommand("sv_tfa_recoil_mul_y", "0.8")
+    RunConsoleCommand("sv_tfa_recoil_mul_y_npc", "0.8")
+    RunConsoleCommand("sv_tfa_recoil_viewpunch_mul", "0.8")
     RunConsoleCommand("sv_tfa_spread_multiplier", "0.65")
 
     -- Server Side TFA Configuration

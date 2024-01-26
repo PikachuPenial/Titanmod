@@ -4,6 +4,11 @@
 - Added new attachment types to the **AK-400**, **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, and **SCAR-H** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
 
+*MUZZLE ATTACHMENT REWORK*
+- Added Compensator attachment (muzzle brake but helps with horizontal control instead of vertical)
+- All muzzle attachments have been rebalanced for more diversity when creating weapon builds
+- Almost every weapon has now received muzzle attachments
+
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
 
@@ -30,6 +35,35 @@
 - Reduced amount of props
 
 **>BALANCE**  
+- Crouching/sliding recoil reduction is now a flat 20% on every weapon
+- Crouching/sliding spread reduction is now a flat 30% on every weapon
+
+*AAC Silencer*
+- Added vertical recoil increase of 10%
+- Removed damage decrease
+- Removed vertical recoil decrease
+- Removed spread increase
+
+*Heavy Barrel Attachment*
+- Added horizontal recoil decrease of 10%
+- Added ADS time increase of 25%
+- Added spread increase of 10%
+- Removed mobility decrease
+
+*Muzzle Brake Attachment*
+- Added ADS time increase of 10%
+- Reduced vertical recoil decrease to 20% (previously 25%)
+- Reduced spread increase to 10% (previously 25%)
+
+*Osprey Suppressor Attachment*
+- Added ADS time increase of 10%
+- Removed vertical recoil decrease
+
+*Foregrip Attachment*
+- Added ADS time increase of 20%
+- Reduced vertical recoil reduction to 25% (previously 35%)
+- Increased mobility reduction to 5% (previously 4%)
+
 *L85*
 - Increased RPM to 675 (previously 650)
 - Reduced horizontal recoil to 15 (previously 22)
@@ -77,6 +111,8 @@
 - Fixed missing ammo bar when using a weapon with no magazine on the bar ammo style
 
 - Fixed freecam spectate being selectable during intermission period
+
+- Fixed client sided bindings (grenade throwing) not functioning in single player
 
 
 
