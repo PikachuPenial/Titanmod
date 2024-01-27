@@ -39,24 +39,24 @@
 - Crouching/sliding spread reduction is now a flat 30% on every weapon
 
 *AAC Silencer*
-- Added vertical recoil increase of 10%
+- Added vertical recoil increase of 5%
 - Removed damage decrease
 - Removed vertical recoil decrease
 - Removed spread increase
 
 *Heavy Barrel Attachment*
 - Added horizontal recoil decrease of 10%
-- Added ADS time increase of 25%
+- Added ADS time increase of 2%
 - Added spread increase of 10%
 - Removed mobility decrease
 
 *Muzzle Brake Attachment*
-- Added ADS time increase of 10%
-- Reduced vertical recoil decrease to 20% (previously 25%)
+- Added ADS time increase of 5%
+- Reduced vertical recoil decrease to 15% (previously 25%)
 - Reduced spread increase to 10% (previously 25%)
 
 *Osprey Suppressor Attachment*
-- Added ADS time increase of 10%
+- Added ADS time increase of 5%
 - Removed vertical recoil decrease
 
 *Foregrip Attachment*
