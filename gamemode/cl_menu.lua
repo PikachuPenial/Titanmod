@@ -870,7 +870,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 3660)
+                    DockMasteryCards:SetSize(0, 3745)
 
                     -- Color related Playercards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1923,7 +1923,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockStatCards:SetSize(0, 680)
                             DockAccoladeCards:SetSize(0, 850)
                             DockLevelCards:SetSize(0, 1360)
-                            DockMasteryCards:SetSize(0, 3660)
+                            DockMasteryCards:SetSize(0, 3745)
                             DockColorCards:SetSize(0, 340)
                             DockPrideCards:SetSize(0, 335)
                         end
@@ -2883,7 +2883,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 600)
+                    DockInputs:SetSize(0, 560)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -3035,7 +3035,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 465, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Slide Cancel Type", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
                     end
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
@@ -3140,18 +3139,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("forward")
                         selectedMeleeBind = meleeBind:GetSelectedNumber()
                         RunConsoleCommand("tm_meleebind", selectedMeleeBind)
-                    end
-
-                    local slideCancelType = DockInputs:Add("DComboBox")
-                    slideCancelType:SetPos(20, 550)
-                    slideCancelType:SetSize(100, 30)
-                    if GetConVar("tm_slidecanceltype"):GetInt() == 0 then slideCancelType:SetValue("Release") elseif GetConVar("tm_slidecanceltype"):GetInt() == 1 then slideCancelType:SetValue("Jump") elseif GetConVar("tm_slidecanceltype"):GetInt() == 2 then slideCancelType:SetValue("Sprint") end
-                    slideCancelType:AddChoice("Release")
-                    slideCancelType:AddChoice("Jump")
-                    slideCancelType:AddChoice("Sprint")
-                    slideCancelType.OnSelect = function(self, value)
-                        RunConsoleCommand("tm_slidecanceltype", value - 1)
-                        TriggerSound("forward")
                     end
 
                     DockGameplay.Paint = function(self, w, h)

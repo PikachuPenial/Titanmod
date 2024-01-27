@@ -1,5 +1,8 @@
 # Unreleased Update
 **>GAMEPLAY**   
+*NEW WEAPON*
+- **ASh-12** (Primary, Rifle)
+
 *AMMO CONVERSIONS*
 - Added new attachment types to the **AK-400**, **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, and **SCAR-H** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
@@ -113,6 +116,8 @@
 - Fixed freecam spectate being selectable during intermission period
 
 - Fixed client sided bindings (grenade throwing) not functioning in single player
+
+- Removed Slide Cancel Type setting (led to many movement exploits that would keep popping back up after being fixed)
 
 
 

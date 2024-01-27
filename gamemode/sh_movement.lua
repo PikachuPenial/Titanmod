@@ -127,12 +127,12 @@ end
 hook.Add("StartCommand", "SlideControl", function(ply, cmd)
     if ply:GetSliding() then
         cmd:ClearMovement()
-        local bindType = ply:GetInfoNum("tm_slidecanceltype", 0)
-        if (bindType == 0 or bindType == 1) then cmd:RemoveKey(IN_SPEED) elseif bindType == 2 then cmd:RemoveKey(IN_JUMP) end
-        if bindType != 0 then slideLock = 0.45 else slideLock = 0.79 end
+        cmd:RemoveKey(IN_SPEED)
+        cmd:RemoveKey(IN_JUMP)
+        slideLock = 0.79
         local trueSlideTime = (ply:GetSlidingCD() - ply:GetCT())
 
-        if (trueSlideTime < 0.79 and bindType == 0 and ply:KeyDown(IN_DUCK) == false) or (trueSlideTime < 0.79 and bindType == 1 and ply:KeyPressed(IN_JUMP)) or (trueSlideTime < 0.79 and bindType == 2 and ply:KeyPressed(IN_SPEED)) then
+        if trueSlideTime < 0.79 and ply:KeyDown(IN_DUCK) == false then
             cmd:RemoveKey(IN_DUCK)
             ply:SetSliding(false)
             ply:SetSlidingTime(0)
@@ -152,7 +152,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
         ply.OldWalkSpeed = ply:GetWalkSpeed()
         ply.OldRunSpeed = ply:GetRunSpeed()
-        ply.OldJumpPower = ply:GetJumpPower()
     end
 
     local sprinting = mv:KeyDown(IN_SPEED)
@@ -190,7 +189,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
         ply:SetWalkSpeed(458) -- This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
-        ply:SetJumpPower(0)
         ply:SetLandingVelocity(mv:GetVelocity():Length())
         ply:SetSlidingAngle(mv:GetVelocity():Angle())
         ply:SetSlopedSpeed(1)
@@ -245,7 +243,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             ply:SetDuckSpeed(ply.OldDuckSpeed)
             ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
             ply:SetWalkSpeed(ply.OldWalkSpeed)
-            ply:SetJumpPower(ply.OldJumpPower)
         end
     end
 
@@ -256,7 +253,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetDuckSpeed(ply.OldDuckSpeed)
         ply:SetUnDuckSpeed(ply.OldUnDuckSpeed)
         ply:SetWalkSpeed(ply.OldWalkSpeed)
-        ply:SetJumpPower(ply.OldJumpPower)
     end
 
     if goingLeft then
