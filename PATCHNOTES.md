@@ -48,15 +48,14 @@
 - Removed spread increase
 
 *Heavy Barrel Attachment*
-- Added horizontal recoil decrease of 10%
-- Added ADS time increase of 2%
-- Added spread increase of 10%
+- Added horizontal recoil decrease of 5%
+- Added ADS time increase of 10%
 - Removed mobility decrease
 
 *Muzzle Brake Attachment*
 - Added ADS time increase of 5%
-- Reduced vertical recoil decrease to 15% (previously 25%)
-- Reduced spread increase to 10% (previously 25%)
+- Reduced vertical recoil decrease to 10% (previously 25%)
+- Reduced spread increase to 5% (previously 25%)
 
 *Osprey Suppressor Attachment*
 - Added ADS time increase of 5%
