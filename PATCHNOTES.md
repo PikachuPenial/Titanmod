@@ -4,7 +4,7 @@
 - **ASh-12** (Primary, Rifle)
 
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M4A1**, **M9**, **M45A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92** and **SCAR-H** that rework their gun stats
+- Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M4A1**, **M9**, **M45A1**, **MK18**, **MP9**, **Owen Gun**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92**, **SCAR-H**, and **Sten** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
 
 *MUZZLE ATTACHMENT REWORK*
@@ -14,6 +14,7 @@
 
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
+- Renamed Sten Gun to Sten
 
 **>MAPS**   
 *Arctic*
