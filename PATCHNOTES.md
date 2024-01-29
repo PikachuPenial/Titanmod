@@ -7,10 +7,11 @@
 - Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M4A1**, **M9**, **M45A1**, **MK18**, **MP9**, **Owen Gun**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92**, **SCAR-H**, and **Sten** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
 
-*MUZZLE ATTACHMENT REWORK*
+*ATTACHMENT REWORK*
 - Added Compensator attachment (muzzle brake but helps with horizontal control instead of vertical)
 - All muzzle attachments have been rebalanced for more diversity when creating weapon builds
 - Almost every weapon has now received muzzle attachments
+- Added foregrip to various weapons
 
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
@@ -67,6 +68,9 @@
 - Reduced vertical recoil reduction to 25% (previously 35%)
 - Increased mobility reduction to 5% (previously 4%)
 
+*AEK-971*
+- Decreased damage to 25 (previously 28)
+
 *AUG A2*
 - Increased damage to 29 (previously 28)
 
@@ -119,7 +123,7 @@
 
 - Updated text in the tutorial
 
-- Fixed reloads getting "stuck" with a foregrip equipped
+- Fixed reloads getting "stuck" with a foregrip equipped (TFA grips SUCK, and there is going to be inconsistency when doing vanilla and foregrip reloads, specifically when it comes to locking reload cancels, there is nothing I can do about it)
 
 - Fixed knives not always one hitting despite having the required damage to do so
 
