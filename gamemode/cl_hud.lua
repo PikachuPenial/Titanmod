@@ -1253,7 +1253,7 @@ net.Receive("EndOfGame", function(len, ply)
 
     if wonMatch == true then
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 50, 0, 190), 1, 7)
-        MatchEndMusic = CreateSound(LocalPly, "music/matchvictory.mp3")
+        MatchEndMusic = CreateSound(LocalPly, "music/matchvictory_" .. math.random(1, 3) .. ".mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(convars["music_volume"] * 0.75)
 
@@ -1271,7 +1271,7 @@ net.Receive("EndOfGame", function(len, ply)
         end
     else
         LocalPly:ScreenFade(SCREENFADE.OUT, Color(50, 0, 0, 190), 1, 7)
-        MatchEndMusic = CreateSound(LocalPly, "music/matchdefeat.mp3")
+        MatchEndMusic = CreateSound(LocalPly, "music/matchdefeat_" .. math.random(1, 3) .. ".mp3")
         MatchEndMusic:Play()
         MatchEndMusic:ChangeVolume(convars["music_volume"])
 
@@ -1545,7 +1545,7 @@ net.Receive("EndOfGame", function(len, ply)
         end
         DiscordButton.DoClick = function()
             surface.PlaySound("tmui/buttonclick.wav")
-            gui.OpenURL("https:--discord.gg/GRfvt27uGF")
+            gui.OpenURL("https://discord.gg/GRfvt27uGF")
         end
 
         local VOIPButton = vgui.Create("DImageButton", EndOfGameUI)

@@ -501,7 +501,7 @@ Bullets are hitscan and can penetrate through surfaces.
                 MovementLabel:SetFont("GModNotify")
                 MovementLabel:SetText([[Titanmod has an assortment of movement mechanics to learn and use on your opponents!
 Here are a few things to look out for:
-Sliding                     Air Strafing
+Sliding                     Bunny Hopping
 Wall Running          Wall Jumping
 Rocket Jumping      Grappling
 + More to discover on your own
@@ -525,7 +525,7 @@ Rocket Jumping      Grappling
                 PersonalizeLabel:SetPos(280, 45)
                 PersonalizeLabel:SetSize(554, 230)
                 PersonalizeLabel:SetFont("GModNotify")
-                PersonalizeLabel:SetText([[There are over 250+ items to unlock in Titanmod!
+                PersonalizeLabel:SetText([[There are over 260+ items to unlock in Titanmod!
 There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
 Check out the CUSTOMIZE page to see what is on offer.
 Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.

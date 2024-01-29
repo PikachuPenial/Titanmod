@@ -4,7 +4,7 @@
 - **ASh-12** (Primary, Rifle)
 
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AK-400**, **FNP-45**, **Lee Enfield**, **M45A1**, **M4A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, and **SCAR-H** that rework their gun stats
+- Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M4A1**, **M9**, **M45A1**, **MK18**, **MP9**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92** and **SCAR-H** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
 
 *MUZZLE ATTACHMENT REWORK*
@@ -66,6 +66,13 @@
 - Reduced vertical recoil reduction to 25% (previously 35%)
 - Increased mobility reduction to 5% (previously 4%)
 
+*AUG A2*
+- Increased damage to 29 (previously 28)
+
+*Bow*
+- Can now be shot while sprinting and sliding
+- Increased ADS FOV to allow for easier use
+
 *L85*
 - Increased RPM to 675 (previously 650)
 - Reduced horizontal recoil to 15 (previously 22)
@@ -87,8 +94,13 @@
 *PP-19 Bizon*
 - Increased damage to 29 (previously 28)
 
+*UMP9*
+- Increased damage to 27 (previously 26)
+
 **>QOL & BUG FIXES**   
 - Leaderboard is now dynamically sized depending on the number of players/entries being shown
+
+- Added variations to the victory/defeat music on match end
 
 - Crosshair preview in the settings menu is now affected by the dynamic and static crosshair styles
 
@@ -104,15 +116,23 @@
 
 - Updated YouTube social link in Main Menu
 
+- Updated text in the tutorial
+
+- Fixed reloads getting "stuck" with a foregrip equipped
+
+- Fixed knives not always one hitting despite having the required damage to do so
+
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
 
-- Fixed crosshair preview image not cycling properly on certain occasions
+- Fixed crosshair preview image not cycling properly on certain occasions\
 
 - Fixed missing ammo count text when using a weapon with no magazine on the text ammo style
 
 - Fixed missing ammo bar when using a weapon with no magazine on the bar ammo style
 
 - Fixed freecam spectate being selectable during intermission period
+
+- Fixed the discord join button at the end of match not functioning
 
 - Fixed client sided bindings (grenade throwing) not functioning in single player
 
