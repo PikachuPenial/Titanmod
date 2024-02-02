@@ -2,9 +2,10 @@
 **>GAMEPLAY**   
 *NEW WEAPON*
 - **ASh-12** (Primary, Rifle)
+- **MPX** (Primary, SMG)
 
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M4A1**, **M9**, **M45A1**, **MK18**, **MP9**, **Owen Gun**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92**, **SCAR-H**, and **Sten** that rework their gun stats
+- Added new attachment types to the **AK-400**, **AUG A2**, **FNP-45**, **Lee Enfield**, **M9**, **M45A1**, **MK18**, **MP9**, **Owen Gun**, **Pindad SS2**, **P90**, **PP-19 Bizon**, **PPSH**, **QBZ-97**, **QSZ-92**, **SCAR-H**, **Sten** and **UMP** that rework their gun stats
 - All ammo conversions now alter the weapons firing sounds
 
 *ATTACHMENT REWORK*
@@ -13,9 +14,13 @@
 - Almost every weapon has now received muzzle attachments
 - Added foregrip to various weapons
 
+*CUSTOMIZATION*
+- Added 12 new player models
+
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
 - Renamed Sten Gun to Sten
+- Renamed UMP .45 to UMP
 
 **>MAPS**   
 *Arctic*
@@ -99,9 +104,6 @@
 *PP-19 Bizon*
 - Increased damage to 29 (previously 28)
 
-*UMP9*
-- Increased damage to 27 (previously 26)
-
 **>QOL & BUG FIXES**   
 - Leaderboard is now dynamically sized depending on the number of players/entries being shown
 
@@ -144,6 +146,8 @@
 - Fixed the discord join button at the end of match not functioning
 
 - Fixed client sided bindings (grenade throwing) not functioning in single player
+
+- Removed UMP9 weapon, was converted into a UMP .45 conversion
 
 - Removed Slide Cancel Type setting (led to many movement exploits that would keep popping back up after being fixed)
 
