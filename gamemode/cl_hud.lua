@@ -908,7 +908,7 @@ hook.Add("PlayerEndVoice", "ImageOnVoice", function()
 end)
 
 -- Plays the received hitsound if a player hits another player
-net.Receive("PlayHitsound", function(len, pl)
+net.Receive("SendHitmarker", function(len, pl)
     if sounds["hit_enabled"] == 0 then return end
     local hit_reg = "hitsound/hit_" .. sounds["hit"] .. ".wav"
     local hit_reg_head = "hitsound/hit_head_" .. sounds["hit"] .. ".wav"

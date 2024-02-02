@@ -525,7 +525,7 @@ Rocket Jumping      Grappling
                 PersonalizeLabel:SetPos(280, 45)
                 PersonalizeLabel:SetSize(554, 230)
                 PersonalizeLabel:SetFont("GModNotify")
-                PersonalizeLabel:SetText([[There are over 260+ items to unlock in Titanmod!
+                PersonalizeLabel:SetText([[There are over 300+ items to unlock in Titanmod!
 There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
 Check out the CUSTOMIZE page to see what is on offer.
 Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.
@@ -2976,7 +2976,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local HitmarkerJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
                     HitmarkerJump:SetPos(4, 412)
                     HitmarkerJump:SetSize(48, 48)
-                    HitmarkerJump:SetTooltip("Hitmarkers")
+                    HitmarkerJump:SetTooltip("Hitmarker")
                     HitmarkerJump:SetImage("icons/hitmarkericon.png")
                     HitmarkerJump.DoClick = function()
                         TriggerSound("click")
@@ -3533,12 +3533,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockHitmarker.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("HITMARKERS", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("HITMARKER", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("3D Hitmarkers", "SettingsLabel", 55 , 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker Scale", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker Color", "SettingsLabel", 245 , 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Scale", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
                     end
 
                     local hitmarkerToggle = DockHitmarker:Add("DCheckBox")
@@ -3547,30 +3545,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerToggle:SetSize(30, 30)
                     function hitmarkerToggle:OnChange() TriggerSound("click") end
 
-                    local hitmarkerDynamicToggle = DockHitmarker:Add("DCheckBox")
-                    hitmarkerDynamicToggle:SetPos(20, 110)
-                    hitmarkerDynamicToggle:SetConVar("cl_tfa_hud_hitmarker_3d_all")
-                    hitmarkerDynamicToggle:SetSize(30, 30)
-                    function hitmarkerDynamicToggle:OnChange() TriggerSound("click") end
-
                     local hitmarkerScale = DockHitmarker:Add("DNumSlider")
-                    hitmarkerScale:SetPos(-85, 150)
+                    hitmarkerScale:SetPos(-85, 110)
                     hitmarkerScale:SetSize(250, 30)
                     hitmarkerScale:SetConVar("cl_tfa_hud_hitmarker_scale")
                     hitmarkerScale:SetMin(0.2)
                     hitmarkerScale:SetMax(2)
                     hitmarkerScale:SetDecimals(1)
-
-                    local hitmarkerMixer = vgui.Create("DColorMixer", DockHitmarker)
-                    hitmarkerMixer:SetPos(20, 190)
-                    hitmarkerMixer:SetSize(215, 110)
-                    hitmarkerMixer:SetConVarR("cl_tfa_hud_hitmarker_color_r")
-                    hitmarkerMixer:SetConVarG("cl_tfa_hud_hitmarker_color_g")
-                    hitmarkerMixer:SetConVarB("cl_tfa_hud_hitmarker_color_b")
-                    hitmarkerMixer:SetConVarA("cl_tfa_hud_hitmarker_color_a")
-                    hitmarkerMixer:SetAlphaBar(true)
-                    hitmarkerMixer:SetPalette(false)
-                    hitmarkerMixer:SetWangs(true)
 
                     DockPerformance.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)

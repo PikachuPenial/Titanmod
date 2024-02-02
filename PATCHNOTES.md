@@ -125,6 +125,10 @@
 
 - Fixed reloads getting "stuck" with a foregrip equipped (TFA grips SUCK, and there is going to be inconsistency when doing vanilla and foregrip reloads, specifically when it comes to locking reload cancels, there is nothing I can do about it)
 
+- Fixed various hitboxes for player models
+
+- Fixed some player models not receiving proper damage in specific hit boxes
+
 - Fixed knives not always one hitting despite having the required damage to do so
 
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
