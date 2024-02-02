@@ -2141,7 +2141,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockModelsStats = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsStats:Dock(TOP)
-                    DockModelsStats:SetSize(0, 465)
+                    DockModelsStats:SetSize(0, 930)
 
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
@@ -2224,6 +2224,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             ModelPanel:Hide()
                             ModelPreviewPanel:Hide()
                         elseif newModelUnlockType == "streak" then
+                            surface.PlaySound("tmui/uisuccess.wav")
+                            net.Start("PlayerModelChange")
+                            net.WriteString(newModel)
+                            net.SendToServer()
+                            MainPanel:Show()
+                            ModelSlideoutPanel:Hide()
+                            ModelPanel:Hide()
+                            ModelPreviewPanel:Hide()
+                        elseif newModelUnlockType == "matches" then
+                            surface.PlaySound("tmui/uisuccess.wav")
+                            net.Start("PlayerModelChange")
+                            net.WriteString(newModel)
+                            net.SendToServer()
+                            MainPanel:Show()
+                            ModelSlideoutPanel:Hide()
+                            ModelPanel:Hide()
+                            ModelPreviewPanel:Hide()
+                        elseif newModelUnlockType == "wins" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
@@ -2335,6 +2353,34 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
+                                PreviewModelTextHolder:SetSize(315, 155)
+                                ApplyModelButton:Show()
+                            end
+                        elseif newModelUnlockType == "matches" then
+                            if LocalPly:GetNWInt("matchesPlayed") < newModelUnlockValue then
+                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
+                                PreviewModelTextHolder:SetSize(315, 135)
+                                ApplyModelButton:Hide()
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
+                                previewColor = previewGreen
+                                PreviewModelTextHolder:SetSize(315, 155)
+                                ApplyModelButton:Show()
+                            end
+                        elseif newModelUnlockType == "wins" then
+                            if LocalPly:GetNWInt("matchesWon") < newModelUnlockValue then
+                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
+                                previewColor = previewRed
+                                PreviewModelTextHolder:SetSize(315, 135)
+                                ApplyModelButton:Hide()
+                            else
+                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                                 PreviewModelTextHolder:SetSize(315, 155)
                                 ApplyModelButton:Show()
@@ -2473,10 +2519,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
-                            elseif v[3] == "kills" or v[3] == "streak" then
+                            elseif v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
 
-                                if v[3] == "kills" and LocalPly:GetNWInt("playerKills") < v[4] or v[3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[4] then
+                                if v[3] == "kills" and LocalPly:GetNWInt("playerKills") < v[4] or v[3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[4] or v[3] == "matches" and LocalPly:GetNWInt("matchesPlayed") < v[4] or v[3] == "wins" and LocalPly:GetNWInt("matchesWon") < v[4] then
                                     table.insert(lockedModels, v)
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
@@ -2525,7 +2571,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         end
 
                         for k, v in pairs(lockedModels) do
-                            if v[3] == "kills" or v[3] == "streak" then
+                            if v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                 icon:SetModel(v[1])
                                 icon:SetTooltip(v[2])
@@ -2592,33 +2638,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                                     TriggerSound("click")
                                 end
-                            elseif v[3] == "kills" then
+                            elseif v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
-                                if LocalPly:GetNWInt("playerKills") >= v[4] then
-                                    local icon = vgui.Create("SpawnIcon", DockModelsStats)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2])
-                                    icon:SetSize(150, 150)
-                                    StatModelList:Add(icon)
-
-                                    statModelsUnlocked = statModelsUnlocked + 1
-                                    modelsUnlocked = modelsUnlocked + 1
-
-                                    icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
-
-                                        PreviewNewModel(newModel)
-
-                                        TriggerSound("click")
-                                    end
-                                end
-                            elseif v[3] == "streak" then
-                                statModelsTotal = statModelsTotal + 1
-
-                                if LocalPly:GetNWInt("highestKillStreak") >= v[4] then
+                                if v[3] == "kills" and LocalPly:GetNWInt("playerKills") >= v[4] or v[3] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[4] or v[3] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= v[4] or v[3] == "wins" and LocalPly:GetNWInt("matchesWon") >= v[4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(v[1])
                                     icon:SetTooltip(v[2])
@@ -2738,7 +2760,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             accoladeModelsUnlocked = 0
                             FillModelListsAll()
                             DockModels:SetSize(0, 310)
-                            DockModelsStats:SetSize(0, 465)
+                            DockModelsStats:SetSize(0, 930)
                             DockModelsAccolade:SetSize(0, 1080)
                         end
                     end

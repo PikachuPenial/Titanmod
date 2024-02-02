@@ -454,6 +454,10 @@ net.Receive("PlayerModelChange", function(len, ply)
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "streak" and ply:GetNWInt("highestKillStreak") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "matches" and ply:GetNWInt("matchesPlayed") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
+			elseif modelUnlock == "wins" and ply:GetNWInt("matchesWon") >= modelValue then
+				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "headshot" and ply:GetNWInt("playerAccoladeHeadshot") >= modelValue then
 				ply:SetNWString("chosenPlayermodel", modelID)
 			elseif modelUnlock == "smackdown" and ply:GetNWInt("playerAccoladeSmackdown") >= modelValue then
