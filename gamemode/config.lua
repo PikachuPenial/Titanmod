@@ -186,8 +186,8 @@ KOTHPos.tm_rig = {
     BrushSize = Vector(256, 256, 128)
 }
 KOTHPos.tm_rust = {
-    Origin = Vector(-3508, 739, 10737),
-    BrushSize = Vector(328, 288, 110)
+    Origin = Vector(608, 1252, -196),
+    BrushSize = Vector(164, 144, 128)
 }
 KOTHPos.tm_sanctuary = {
     Origin = Vector(-472, 888, 10),

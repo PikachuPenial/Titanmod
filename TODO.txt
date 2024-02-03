@@ -10,7 +10,6 @@ seperate grapple hook from melee, allow for both in a loadout
 
 TRANSITION SCREEN AT END OF MATCH
 cant send empty chat messages at end of game
-backwards wall run
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,3 +21,4 @@ party mode (random effects throughout match)
 dont allow reload canceling near end of reload
 overwrite networked values with my own custom system that isnt horrible
 automatic wall movement setting
+backwards wall run
