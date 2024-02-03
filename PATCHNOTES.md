@@ -1,5 +1,16 @@
 # Unreleased Update
 **>GAMEPLAY**   
+
+**>MAPS**   
+
+**>BALANCE** 
+
+**>QOL & BUG FIXES**   
+
+
+
+# Febuary 3rd, 2024 (1/3/24)    
+**>GAMEPLAY**   
 *NEW WEAPON*
 - **ASh-12** (Primary, Rifle)
 - **MPX** (Primary, SMG)
