@@ -2360,13 +2360,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         elseif newModelUnlockType == "matches" then
                             if LocalPly:GetNWInt("matchesPlayed") < newModelUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                                 PreviewModelTextHolder:SetSize(315, 135)
                                 ApplyModelButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                                 PreviewModelTextHolder:SetSize(315, 155)
                                 ApplyModelButton:Show()

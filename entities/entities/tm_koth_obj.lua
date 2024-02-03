@@ -5,6 +5,8 @@ ENT.Base = "base_brush"
 ENT.Type = "brush"
 
 local KOTHCords = KOTHPos[game.GetMap()]
+if KOTHCords == nil then return end
+
 ENT.Origin = KOTHCords.Origin
 ENT.Size = KOTHCords.BrushSize
 

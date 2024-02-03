@@ -1246,7 +1246,49 @@ net.Receive("EndOfGame", function(len, ply)
     local connectedPlayers = player.GetHumans()
     if activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) else table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) end
 
+    local gradientL = Material("overlay/gradient_c.png", "noclamp smooth")
+    local gradientR = Material("overlay/gradient_c2.png", "noclamp smooth")
+
+    local gradLColor
+    local gradRColor
+    if math.random(0, 1) == 0 then
+        gradLColor = Color(100, 0, 255, 6)
+        gradRColor = Color(100, 255, 255, 12)
+    else
+        gradLColor = Color(100, 255, 255, 6)
+        gradRColor = Color(100, 0, 255, 12)
+    end
+
     timer.Create("timeUntilNextMatch", 33, 1, function()
+        hook.Add("Think", "RenderBehindPauseMenu", function()
+            if !IsValid(LoadingPrompt) then return end
+            if !gui.IsGameUIVisible() then LoadingPrompt:Show() else LoadingPrompt:Hide() end
+        end)
+
+        LoadingPrompt = vgui.Create("DFrame")
+        LoadingPrompt:SetSize(scrW, scrH)
+        LoadingPrompt:Center()
+        LoadingPrompt:SetTitle("")
+        LoadingPrompt:SetDraggable(false)
+        LoadingPrompt:ShowCloseButton(false)
+        LoadingPrompt:SetDeleteOnClose(false)
+        LoadingPrompt:MakePopup()
+
+        LoadingPrompt.Paint = function(self, w, h)
+            if dof == true then DrawBokehDOF(4, 1, 12) end
+            surface.SetDrawColor(35, 35, 35, 165)
+            surface.DrawRect(0, 0, LoadingPrompt:GetWide(), LoadingPrompt:GetTall())
+
+            surface.SetMaterial(gradientL)
+            surface.SetDrawColor(gradLColor)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
+
+            surface.SetMaterial(gradientR)
+            surface.SetDrawColor(gradRColor)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
+
+            draw.SimpleText("LOADING NEXT MATCH", "QuoteText", w / 2, h / 2, white, TEXT_ALIGN_CENTER)
+        end
     end)
 
     timer.Create("ShowVotingMenu", 8, 1, function()
@@ -1631,6 +1673,7 @@ net.Receive("EndOfGame", function(len, ply)
         ChatTextBox:SetSize(200, 35)
         ChatTextBox:SetPlaceholderText("Press ENTER to send message")
         ChatTextBox.OnEnter = function(self)
+            if self:GetValue() == "" then return end
             RunConsoleCommand("say", self:GetValue())
         end
 

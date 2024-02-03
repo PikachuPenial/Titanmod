@@ -133,6 +133,8 @@
 
 - Added coloring effect when hovering over social media links in the Main Menu
 
+- Added loading notice while server is busy setting up next match
+
 - Optimized kill popup
 
 - Updated YouTube social link in Main Menu
@@ -149,7 +151,9 @@
 
 - Fixed "Matches Played" and "Matches Won" calling cards from not being able to be applied
 
-- Fixed crosshair preview image not cycling properly on certain occasions\
+- Fixed crosshair preview image not cycling properly on certain occasions
+
+- Fixed end of round chat messages sending if the chat box contained no text
 
 - Fixed missing ammo count text when using a weapon with no magazine on the text ammo style
 
