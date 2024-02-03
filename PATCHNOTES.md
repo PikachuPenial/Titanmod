@@ -14,8 +14,19 @@
 - Almost every weapon has now received muzzle attachments
 - Added foregrip to various weapons
 
+*HITMARKER OVERHAUL*
+- A brand new hitmarker system to replace the default TFA one, allowing for more customization and better performance
+
 *CUSTOMIZATION*
 - Added 12 new player models
+
+*NEW SETTINGS*
+- Hitmarker Length
+- Hitmarker Thickness
+- Hitmarker Gap
+- Hitmarker Opacity
+- Hitmarker Duration
+- Hitmarker Headshot Color
 
 *WEAPON NAME ADJUSTMENTS*
 - Renamed SA80 to L85
@@ -23,6 +34,9 @@
 - Renamed UMP .45 to UMP
 
 **>MAPS**   
+*NEW MAPS*
+- Rust
+
 *Arctic*
 - Smoothened out staircases with clip brushes
 - Expanded the dark staircase room

@@ -11,6 +11,7 @@ local feedArray = {}
 local chatArray = {}
 
 local crosshair = {}
+local hitmarker = {}
 local matchHUD = {}
 local healthHUD = {}
 local weaponHUD = {}
@@ -44,6 +45,20 @@ function UpdateHUD()
         ["show_b"] = GetConVar("tm_hud_crosshair_show_b"):GetInt(),
         ["show_l"] = GetConVar("tm_hud_crosshair_show_l"):GetInt(),
         ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt()
+    }
+
+    hitmarker = {
+        ["enabled"] = GetConVar("tm_hud_hitmarker"):GetInt(),
+        ["gap"] = GetConVar("tm_hud_hitmarker_gap"):GetInt(),
+        ["size"] = GetConVar("tm_hud_hitmarker_size"):GetInt(),
+        ["thickness"] = GetConVar("tm_hud_hitmarker_thickness"):GetInt(),
+        ["opacity"] = GetConVar("tm_hud_hitmarker_opacity"):GetInt(),
+        ["hit_r"] = GetConVar("tm_hud_hitmarker_color_hit_r"):GetInt(),
+        ["hit_g"] = GetConVar("tm_hud_hitmarker_color_hit_g"):GetInt(),
+        ["hit_b"] = GetConVar("tm_hud_hitmarker_color_hit_b"):GetInt(),
+        ["head_r"] = GetConVar("tm_hud_hitmarker_color_head_r"):GetInt(),
+        ["head_g"] = GetConVar("tm_hud_hitmarker_color_head_g"):GetInt(),
+        ["head_b"] = GetConVar("tm_hud_hitmarker_color_head_b"):GetInt(),
     }
 
     matchHUD = {
@@ -407,6 +422,8 @@ local weapon
 local ammo
 local adsFade = 1
 local dyn = 0
+local hitmarkerFade = 0
+local hitColor = "hit"
 
 -- HUD lerp functinos
 local smoothDyn = 0
@@ -480,6 +497,16 @@ function HUDAlive(client)
         if crosshair["show_b"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y + (crosshair["gap"] + smoothDyn), crosshair["thickness"], crosshair["size"]) end
         if crosshair["show_t"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - crosshair["size"] - (crosshair["gap"] + smoothDyn) + crosshair["thickness"] % 2, crosshair["thickness"], crosshair["size"]) end
         if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
+    end
+
+    -- Hitmarkers
+    if hitmarker["enabled"] == 1 then
+        hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, 2)
+        surface.SetDrawColor(hitmarker[hitColor .. "_r"], hitmarker[hitColor .. "_g"], hitmarker[hitColor .. "_b"], hitmarker["opacity"] * math.min(1, hitmarkerFade))
+        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y - hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 45)
+        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y - hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 135)
+        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 225)
+        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 315)
     end
 
     -- Health
@@ -914,9 +941,14 @@ net.Receive("SendHitmarker", function(len, pl)
     local hit_reg_head = "hitsound/hit_head_" .. sounds["hit"] .. ".wav"
 
     local hitgroup = net.ReadUInt(4)
+    hitmarkerFade = 2
+    hitColor = "hit"
     local soundfile = hit_reg
 
-    if (hitgroup == HITGROUP_HEAD) then soundfile = hit_reg_head end
+    if (hitgroup == HITGROUP_HEAD) then
+        hitColor = "head"
+        soundfile = hit_reg_head
+    end
     surface.PlaySound(soundfile)
 end )
 
@@ -974,6 +1006,13 @@ net.Receive("NotifyKill", function(len, ply)
     KillIcon:SizeTo(50, 50, 0.75, 0, 0.1)
 
     -- Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg
+    if lastHitIn == 1 then
+        accoladeList = accoladeList .. "Headshot +20 | "
+        KillIcon:SetImageColor(red)
+    else
+        KillIcon:SetImageColor(Color(killdeathHUD["killicon_r"], killdeathHUD["killicon_g"], killdeathHUD["killicon_b"]))
+    end
+
     if LocalPly:Health() <= 15 then
         accoladeList = accoladeList .. "Clutch +20 | "
     end
@@ -998,13 +1037,6 @@ net.Receive("NotifyKill", function(len, ply)
     if killedPlayer:GetNWInt("killStreak") >= 3 then
         buzzkillScore = 10 * killedPlayer:GetNWInt("killStreak")
         accoladeList = accoladeList ..  "Buzz Kill +" .. buzzkillScore .. " | "
-    end
-
-    if lastHitIn == 1 then
-        accoladeList = accoladeList .. "Headshot +20 | "
-        KillIcon:SetImageColor(red)
-    else
-        KillIcon:SetImageColor(Color(killdeathHUD["killicon_r"], killdeathHUD["killicon_g"], killdeathHUD["killicon_b"]))
     end
 
     local streakColor
@@ -2008,6 +2040,36 @@ end)
 cvars.AddChangeCallback("tm_hud_crosshair_show_r", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
-cvars.AddChangeCallback("tm_hud_crosshair_show_ads", function(convar_name, value_old, value_new)
+cvars.AddChangeCallback("tm_hud_hitmarker", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_gap", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_size", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_thickness", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_opacity", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_hit_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_hit_g", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_hit_b", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_head_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_head_g", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_color_head_b", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)

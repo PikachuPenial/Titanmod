@@ -178,7 +178,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
 
     if ply:GetMoveType() == MOVETYPE_LADDER then return end
 
-    if ducking and sprinting and onground and not sliding and speed > runspeed * 0.5 then
+    if ducking and sprinting and onground and not jumping and not sliding and speed > runspeed * 0.5 then
         if not ply:GetCanSlide() then return end
         ply:SetSliding(true)
         ply:SetSlideFatigue(math.min(1, (CT + slideTime) - (ply:GetSlidingCD())))

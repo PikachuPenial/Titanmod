@@ -120,11 +120,12 @@ mapArray[9] = {"tm_mephitic", "Mephitic", "maps/thumb/tm_mephitic.png", true, 0}
 mapArray[10] = {"tm_nuketown", "Nuketown", "maps/thumb/tm_nuketown.png", true, 5}
 mapArray[11] = {"tm_oxide", "Oxide", "maps/thumb/tm_oxide.png", true, 0}
 mapArray[12] = {"tm_rig", "Rig", "maps/thumb/tm_rig.png", true, 0}
-mapArray[13] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
-mapArray[14] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
-mapArray[15] = {"tm_shoot_house", "Shoot House", "maps/thumb/tm_shoot_house.png", true, 5}
-mapArray[16] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
-mapArray[17] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
+mapArray[13] = {"tm_rust", "Rust", "maps/thumb/tm_rust.png", true, 5}
+mapArray[14] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
+mapArray[15] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
+mapArray[16] = {"tm_shoot_house", "Shoot House", "maps/thumb/tm_shoot_house.png", true, 5}
+mapArray[17] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[18] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
 for m, v in pairs(mapArray) do
@@ -183,6 +184,10 @@ KOTHPos.tm_oxide = {
 KOTHPos.tm_rig = {
     Origin = Vector(-1024, -1024, -584),
     BrushSize = Vector(256, 256, 128)
+}
+KOTHPos.tm_rust = {
+    Origin = Vector(-3508, 739, 10737),
+    BrushSize = Vector(328, 288, 110)
 }
 KOTHPos.tm_sanctuary = {
     Origin = Vector(-472, 888, 10),
@@ -411,7 +416,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_npc_burst", "0")
     RunConsoleCommand("sv_tfa_npc_randomize_atts", "0")
     RunConsoleCommand("sv_tfa_penetration_hardlimit", "50")
-    RunConsoleCommand("sv_tfa_penetration_hitmarker", "1")
+    RunConsoleCommand("sv_tfa_penetration_hitmarker", "0")
     RunConsoleCommand("sv_tfa_range_modifier", "0.85")
     RunConsoleCommand("sv_tfa_recoil_legacy", "0")
     RunConsoleCommand("sv_tfa_scope_gun_speed_scale", "0")
@@ -472,7 +477,8 @@ if CLIENT then
     RunConsoleCommand("cl_tfa_hud_enabled", "0")
     RunConsoleCommand("cl_tfa_hud_fallback_enabled", "0")
     RunConsoleCommand("cl_tfa_hud_hangtime", "1")
-    RunConsoleCommand("cl_tfa_hud_hitmarker_3d_shotguns", "1")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_3d_shotguns", "0")
+    RunConsoleCommand("cl_tfa_hud_hitmarker_enabled", "0")
     RunConsoleCommand("cl_tfa_hud_hitmarker_fadetime", "0.04")
     RunConsoleCommand("cl_tfa_hud_hitmarker_solidtime", "0.10")
     RunConsoleCommand("cl_tfa_hud_keybindhints_enabled", "0")

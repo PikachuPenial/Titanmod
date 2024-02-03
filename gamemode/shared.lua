@@ -162,6 +162,18 @@ if CLIENT then
     CreateClientConVar("tm_hud_crosshair_show_b", 1, true, false, "Enable/disable the bottom of the crosshair", 0, 1)
     CreateClientConVar("tm_hud_crosshair_show_l", 1, true, false, "Enable/disable the left of the crosshair", 0, 1)
     CreateClientConVar("tm_hud_crosshair_show_r", 1, true, false, "Enable/disable the right of the crosshair", 0, 1)
+    CreateClientConVar("tm_hud_hitmarker", 1, true, false, "Enable/disable the hitmarker", 0, 1)
+    CreateClientConVar("tm_hud_hitmarker_gap", 8, true, false, "Adjusts the hitmarker gap", 0, 100)
+    CreateClientConVar("tm_hud_hitmarker_size", 8, true, false, "Adjusts the hitmarker size", 0, 100)
+    CreateClientConVar("tm_hud_hitmarker_thickness", 2, true, false, "Adjusts the hitmarker thickness", 0, 20)
+    CreateClientConVar("tm_hud_hitmarker_opacity", 200, true, false, "Adjusts the hitmarker opacity", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_duration", 2, true, false, "Adjusts the hitmarker opacity", 1, 5)
+    CreateClientConVar("tm_hud_hitmarker_color_hit_r", 255, true, false, "Adjusts the red coloring for the hitmarker", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_color_hit_g", 255, true, false, "Adjusts the green coloring for the hitmarker", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_color_hit_b", 255, true, false, "Adjusts the blue coloring for the hitmarker", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_color_head_r", 255, true, false, "Adjusts the red coloring for the hitmarker on a headshot", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_color_head_g", 0, true, false, "Adjusts the green coloring for the hitmarker on a headshot", 0, 255)
+    CreateClientConVar("tm_hud_hitmarker_color_head_b", 0, true, false, "Adjusts the blue coloring for the hitmarker on a headshot", 0, 255)
     CreateClientConVar("tm_hud_notifications", 1, true, false, "Enable/disable HUD notifications", 0, 1)
     CreateClientConVar("tm_hud_voiceindicator", 1, true, false, "Enable/disable the voice indicator", 0, 1)
 end
@@ -398,14 +410,14 @@ modelArray[20] = {"models/walterwhite/playermodels/walterwhitechem.mdl", "Drug D
 modelArray[21] = {"models/halo2/spartan_red.mdl", "Red", "matches", 1}
 modelArray[22] = {"models/Splinks/Hotline_Miami/Jacket/Drive/Player_jacket_Drive.mdl", "Drive", "matches", 5}
 modelArray[23] = {"models/konnie/asapgaming/modernwarfare/grinchghillie.mdl", "Grinch", "matches", 20}
-modelArray[24] = {"models/player/gman_high.mdl", "", "matches", 50}
+modelArray[24] = {"models/dizcordum/fallen_set.mdl", "Fallen", "matches", 50}
 modelArray[25] = {"models/player/p2_chell.mdl", "", "matches", 100}
 modelArray[26] = {"models/player/skeleton.mdl", "Bones", "matches", 200}
 modelArray[27] = {"models/halo2/spartan_blue.mdl", "Blue", "wins", 1}
 modelArray[28] = {"models/player/alyx.mdl", "", "wins", 3}
 modelArray[29] = {"models/COW MW22 Horangi/Horangi.mdl", "Horangi", "wins", 10}
 modelArray[30] = {"models/player/gman_high.mdl", "", "wins", 20}
-modelArray[31] = {"models/dizcordum/fallen_set.mdl", "Fallen", "wins", 50}
+modelArray[31] = {"models/paynamia/bms/gordon_survivor_player.mdl", "", "wins", 50}
 modelArray[32] = {"models/player/zombie_fast.mdl", "Infected", "wins", 100}
 modelArray[33] = {"models/paynamia/bms/gordon_survivor_player.mdl", "Gordon", "headshot", 125}
 modelArray[34] = {"models/munch/mace/Mace.mdl", "Mace", "headshot", 250}

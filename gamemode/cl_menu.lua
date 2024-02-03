@@ -2874,6 +2874,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if IsValid(OptionsPanel) then return end
                 MainPanel:Hide()
 
+                local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png", "images/preview/grass.png", "images/preview/devtexture.png", "images/preview/wood.png", "images/preview/glass.png"}
+                local previewImg = "images/preview/sky.png"
+
                 if not IsValid(OptionsPanel) then
                     local OptionsPanel = MainMenu:Add("OptionsPanel")
                     local OptionsSlideoutPanel = MainMenu:Add("OptionsSlideoutPanel")
@@ -2925,7 +2928,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockHitmarker = vgui.Create("DPanel", OptionsScroller)
                     DockHitmarker:Dock(TOP)
-                    DockHitmarker:SetSize(0, 315)
+                    DockHitmarker:SetSize(0, 550)
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
@@ -3470,9 +3473,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     previewOpacitySlider:SetSize(150, 20)
                     previewOpacitySlider:SetSlideX(1)
 
-                    local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png", "images/preview/grass.png", "images/preview/devtexture.png", "images/preview/wood.png", "images/preview/glass.png"}
-                    local previewImg = "images/preview/sky.png"
-
                     local crosshairPreviewImage = DockCrosshair:Add("DImageButton")
                     crosshairPreviewImage:SetPos(375, 10)
                     crosshairPreviewImage:SetSize(200, 200)
@@ -3558,22 +3558,137 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("HITMARKER", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Scale", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", 145, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", 145, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", 145, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Opacity", "SettingsLabel", 145, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Duration", "SettingsLabel", 145, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hit Color", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Headshot Color", "SettingsLabel", 245 , 425, white, TEXT_ALIGN_LEFT)
+
+                        draw.SimpleText("Click to show hitmarker", "QuoteText", 475, 215, white, TEXT_ALIGN_CENTER)
                     end
 
                     local hitmarkerToggle = DockHitmarker:Add("DCheckBox")
                     hitmarkerToggle:SetPos(20, 70)
-                    hitmarkerToggle:SetConVar("cl_tfa_hud_hitmarker_enabled")
+                    hitmarkerToggle:SetConVar("tm_hud_hitmarker")
                     hitmarkerToggle:SetSize(30, 30)
                     function hitmarkerToggle:OnChange() TriggerSound("click") end
 
-                    local hitmarkerScale = DockHitmarker:Add("DNumSlider")
-                    hitmarkerScale:SetPos(-85, 110)
-                    hitmarkerScale:SetSize(250, 30)
-                    hitmarkerScale:SetConVar("cl_tfa_hud_hitmarker_scale")
-                    hitmarkerScale:SetMin(0.2)
-                    hitmarkerScale:SetMax(2)
-                    hitmarkerScale:SetDecimals(1)
+                    local hitmarkerLength = DockHitmarker:Add("DNumSlider")
+                    hitmarkerLength:SetPos(-85, 110)
+                    hitmarkerLength:SetSize(250, 30)
+                    hitmarkerLength:SetConVar("tm_hud_hitmarker_size")
+                    hitmarkerLength:SetMin(1)
+                    hitmarkerLength:SetMax(50)
+                    hitmarkerLength:SetDecimals(0)
+                    function hitmarkerLength:OnValueChanged() end
+
+                    local hitmarkerThickness = DockHitmarker:Add("DNumSlider")
+                    hitmarkerThickness:SetPos(-85, 150)
+                    hitmarkerThickness:SetSize(250, 30)
+                    hitmarkerThickness:SetConVar("tm_hud_hitmarker_thickness")
+                    hitmarkerThickness:SetMin(1)
+                    hitmarkerThickness:SetMax(20)
+                    hitmarkerThickness:SetDecimals(0)
+                    function hitmarkerThickness:OnValueChanged() end
+
+                    local hitmarkerGap = DockHitmarker:Add("DNumSlider")
+                    hitmarkerGap:SetPos(-85, 190)
+                    hitmarkerGap:SetSize(250, 30)
+                    hitmarkerGap:SetConVar("tm_hud_hitmarker_gap")
+                    hitmarkerGap:SetMin(0)
+                    hitmarkerGap:SetMax(50)
+                    hitmarkerGap:SetDecimals(0)
+                    function hitmarkerGap:OnValueChanged() end
+
+                    local hitmarkerOpacity = DockHitmarker:Add("DNumSlider")
+                    hitmarkerOpacity:SetPos(-85, 230)
+                    hitmarkerOpacity:SetSize(250, 30)
+                    hitmarkerOpacity:SetConVar("tm_hud_hitmarker_opacity")
+                    hitmarkerOpacity:SetMin(0)
+                    hitmarkerOpacity:SetMax(255)
+                    hitmarkerOpacity:SetDecimals(0)
+                    function hitmarkerOpacity:OnValueChanged() end
+
+                    local hitmarkerDuration = DockHitmarker:Add("DNumSlider")
+                    hitmarkerDuration:SetPos(-85, 270)
+                    hitmarkerDuration:SetSize(250, 30)
+                    hitmarkerDuration:SetConVar("tm_hud_hitmarker_duration")
+                    hitmarkerDuration:SetMin(1)
+                    hitmarkerDuration:SetMax(5)
+                    hitmarkerDuration:SetDecimals(1)
+                    function hitmarkerDuration:OnValueChanged() end
+
+                    local hitmarkerMixer = vgui.Create("DColorMixer", DockHitmarker)
+                    hitmarkerMixer:SetPos(20, 310)
+                    hitmarkerMixer:SetSize(215, 110)
+                    hitmarkerMixer:SetConVarR("tm_hud_hitmarker_color_hit_r")
+                    hitmarkerMixer:SetConVarG("tm_hud_hitmarker_color_hit_g")
+                    hitmarkerMixer:SetConVarB("tm_hud_hitmarker_color_hit_b")
+                    hitmarkerMixer:SetAlphaBar(false)
+                    hitmarkerMixer:SetPalette(false)
+                    hitmarkerMixer:SetWangs(true)
+
+                    local hitmarkerHeadMixer = vgui.Create("DColorMixer", DockHitmarker)
+                    hitmarkerHeadMixer:SetPos(20, 430)
+                    hitmarkerHeadMixer:SetSize(215, 110)
+                    hitmarkerHeadMixer:SetConVarR("tm_hud_hitmarker_color_head_r")
+                    hitmarkerHeadMixer:SetConVarG("tm_hud_hitmarker_color_head_g")
+                    hitmarkerHeadMixer:SetConVarB("tm_hud_hitmarker_color_head_b")
+                    hitmarkerHeadMixer:SetAlphaBar(false)
+                    hitmarkerHeadMixer:SetPalette(false)
+                    hitmarkerHeadMixer:SetWangs(true)
+
+                    local hitmarker = {}
+                    local hitmarkerFade = 0
+                    local hitColor = "hit"
+
+                    local hitmarkerPreviewImage = DockHitmarker:Add("DImageButton")
+                    hitmarkerPreviewImage:SetPos(375, 10)
+                    hitmarkerPreviewImage:SetSize(200, 200)
+                    hitmarkerPreviewImage:SetImage("images/preview/white.png")
+                    hitmarkerPreviewImage:SetColor(Color(255, 255, 255, 0))
+                    hitmarkerPreviewImage.DoClick = function()
+                        hitmarkerFade = hitmarker["duration"]
+                        if math.random(0, 1) == 0 then hitColor = "hit" else hitColor = "head" end
+                    end
+
+                    local function UpdateHitmarker()
+                        hitmarker = {
+                            ["enabled"] = GetConVar("tm_hud_hitmarker"):GetInt(),
+                            ["gap"] = GetConVar("tm_hud_hitmarker_gap"):GetInt(),
+                            ["size"] = GetConVar("tm_hud_hitmarker_size"):GetInt(),
+                            ["thickness"] = GetConVar("tm_hud_hitmarker_thickness"):GetInt(),
+                            ["opacity"] = GetConVar("tm_hud_hitmarker_opacity"):GetInt(),
+                            ["duration"] = GetConVar("tm_hud_hitmarker_duration"):GetInt(),
+                            ["hit_r"] = GetConVar("tm_hud_hitmarker_color_hit_r"):GetInt(),
+                            ["hit_g"] = GetConVar("tm_hud_hitmarker_color_hit_g"):GetInt(),
+                            ["hit_b"] = GetConVar("tm_hud_hitmarker_color_hit_b"):GetInt(),
+                            ["head_r"] = GetConVar("tm_hud_hitmarker_color_head_r"):GetInt(),
+                            ["head_g"] = GetConVar("tm_hud_hitmarker_color_head_g"):GetInt(),
+                            ["head_b"] = GetConVar("tm_hud_hitmarker_color_head_b"):GetInt(),
+                        }
+                    end
+                    UpdateHitmarker()
+
+                    HitmarkerPreview = vgui.Create("DFrame", DockHitmarker)
+                    HitmarkerPreview:SetSize(200, 200)
+                    HitmarkerPreview:SetPos(375, 10)
+                    HitmarkerPreview:SetMouseInputEnabled(false)
+                    HitmarkerPreview:SetTitle("")
+                    HitmarkerPreview:SetDraggable(false)
+                    HitmarkerPreview:ShowCloseButton(false)
+                    HitmarkerPreview.Paint = function(self, w, h)
+                        UpdateHitmarker()
+
+                        hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, hitmarker["duration"])
+                        surface.SetDrawColor(hitmarker[hitColor .. "_r"], hitmarker[hitColor .. "_g"], hitmarker[hitColor .. "_b"], hitmarker["opacity"] * math.min(1, hitmarkerFade))
+                        surface.DrawTexturedRectRotated(w / 2 - hitmarker["gap"], h / 2 - hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 45)
+                        surface.DrawTexturedRectRotated(w / 2 + hitmarker["gap"], h / 2 - hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 135)
+                        surface.DrawTexturedRectRotated(w / 2 + hitmarker["gap"], h / 2 + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 225)
+                        surface.DrawTexturedRectRotated(w / 2 - hitmarker["gap"], h / 2 + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 315)
+                    end
 
                     DockPerformance.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
