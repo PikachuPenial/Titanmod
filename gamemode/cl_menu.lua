@@ -3667,7 +3667,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             ["hit_b"] = GetConVar("tm_hud_hitmarker_color_hit_b"):GetInt(),
                             ["head_r"] = GetConVar("tm_hud_hitmarker_color_head_r"):GetInt(),
                             ["head_g"] = GetConVar("tm_hud_hitmarker_color_head_g"):GetInt(),
-                            ["head_b"] = GetConVar("tm_hud_hitmarker_color_head_b"):GetInt(),
+                            ["head_b"] = GetConVar("tm_hud_hitmarker_color_head_b"):GetInt()
                         }
                     end
                     UpdateHitmarker()
@@ -3684,6 +3684,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                         hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, hitmarker["duration"])
                         surface.SetDrawColor(hitmarker[hitColor .. "_r"], hitmarker[hitColor .. "_g"], hitmarker[hitColor .. "_b"], hitmarker["opacity"] * math.min(1, hitmarkerFade))
+                        draw.NoTexture()
                         surface.DrawTexturedRectRotated(w / 2 - hitmarker["gap"], h / 2 - hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 45)
                         surface.DrawTexturedRectRotated(w / 2 + hitmarker["gap"], h / 2 - hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 135)
                         surface.DrawTexturedRectRotated(w / 2 + hitmarker["gap"], h / 2 + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 225)

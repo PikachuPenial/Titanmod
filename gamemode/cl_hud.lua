@@ -53,6 +53,7 @@ function UpdateHUD()
         ["size"] = GetConVar("tm_hud_hitmarker_size"):GetInt(),
         ["thickness"] = GetConVar("tm_hud_hitmarker_thickness"):GetInt(),
         ["opacity"] = GetConVar("tm_hud_hitmarker_opacity"):GetInt(),
+        ["duration"] = GetConVar("tm_hud_hitmarker_duration"):GetInt(),
         ["hit_r"] = GetConVar("tm_hud_hitmarker_color_hit_r"):GetInt(),
         ["hit_g"] = GetConVar("tm_hud_hitmarker_color_hit_g"):GetInt(),
         ["hit_b"] = GetConVar("tm_hud_hitmarker_color_hit_b"):GetInt(),
@@ -501,12 +502,13 @@ function HUDAlive(client)
 
     -- Hitmarkers
     if hitmarker["enabled"] == 1 then
-        hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, 2)
+        hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, hitmarker["duration"])
         surface.SetDrawColor(hitmarker[hitColor .. "_r"], hitmarker[hitColor .. "_g"], hitmarker[hitColor .. "_b"], hitmarker["opacity"] * math.min(1, hitmarkerFade))
-        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y - hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 45)
-        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y - hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 135)
-        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 225)
-        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"], hitmarker["size"], 315)
+        draw.NoTexture()
+        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y - hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 45)
+        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y- hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 135)
+        surface.DrawTexturedRectRotated(center_x + hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 225)
+        surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 315)
     end
 
     -- Health
@@ -941,7 +943,7 @@ net.Receive("SendHitmarker", function(len, pl)
     local hit_reg_head = "hitsound/hit_head_" .. sounds["hit"] .. ".wav"
 
     local hitgroup = net.ReadUInt(4)
-    hitmarkerFade = 2
+    hitmarkerFade = hitmarker["duration"]
     hitColor = "hit"
     local soundfile = hit_reg
 
@@ -2053,6 +2055,9 @@ cvars.AddChangeCallback("tm_hud_hitmarker_thickness", function(convar_name, valu
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_hitmarker_opacity", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_hitmarker_duration", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_hitmarker_color_hit_r", function(convar_name, value_old, value_new)

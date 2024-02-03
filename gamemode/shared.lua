@@ -167,7 +167,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_hitmarker_size", 8, true, false, "Adjusts the hitmarker size", 0, 100)
     CreateClientConVar("tm_hud_hitmarker_thickness", 2, true, false, "Adjusts the hitmarker thickness", 0, 20)
     CreateClientConVar("tm_hud_hitmarker_opacity", 200, true, false, "Adjusts the hitmarker opacity", 0, 255)
-    CreateClientConVar("tm_hud_hitmarker_duration", 2, true, false, "Adjusts the hitmarker opacity", 1, 5)
+    CreateClientConVar("tm_hud_hitmarker_duration", 2.5, true, false, "Adjusts the hitmarker opacity", 1, 5)
     CreateClientConVar("tm_hud_hitmarker_color_hit_r", 255, true, false, "Adjusts the red coloring for the hitmarker", 0, 255)
     CreateClientConVar("tm_hud_hitmarker_color_hit_g", 255, true, false, "Adjusts the green coloring for the hitmarker", 0, 255)
     CreateClientConVar("tm_hud_hitmarker_color_hit_b", 255, true, false, "Adjusts the blue coloring for the hitmarker", 0, 255)
@@ -416,7 +416,7 @@ modelArray[26] = {"models/player/skeleton.mdl", "Bones", "matches", 200}
 modelArray[27] = {"models/halo2/spartan_blue.mdl", "Blue", "wins", 1}
 modelArray[28] = {"models/player/alyx.mdl", "", "wins", 3}
 modelArray[29] = {"models/COW MW22 Horangi/Horangi.mdl", "Horangi", "wins", 10}
-modelArray[30] = {"models/player/gman_high.mdl", "", "wins", 20}
+modelArray[30] = {"models/dap_blood/playermodel/dap_blood.mdl", "V1", "wins", 20}
 modelArray[31] = {"models/paynamia/bms/gordon_survivor_player.mdl", "", "wins", 50}
 modelArray[32] = {"models/player/zombie_fast.mdl", "Infected", "wins", 100}
 modelArray[33] = {"models/paynamia/bms/gordon_survivor_player.mdl", "Gordon", "headshot", 125}
