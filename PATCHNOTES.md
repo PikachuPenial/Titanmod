@@ -6,6 +6,7 @@
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Fixed HUD code importing not working
 
 
 
