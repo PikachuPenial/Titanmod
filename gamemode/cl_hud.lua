@@ -1259,7 +1259,7 @@ net.Receive("EndOfGame", function(len, ply)
         gradRColor = Color(100, 0, 255, 12)
     end
 
-    timer.Create("timeUntilNextMatch", 33, 1, function()
+    timer.Create("timeUntilNextMatch", 32, 1, function()
         hook.Add("Think", "RenderBehindPauseMenu", function()
             if !IsValid(LoadingPrompt) then return end
             if !gui.IsGameUIVisible() then LoadingPrompt:Show() else LoadingPrompt:Hide() end

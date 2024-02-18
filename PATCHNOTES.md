@@ -10,6 +10,8 @@
 **>QOL & BUG FIXES**   
 - Fixed HUD code importing not working
 
+- Fixed loading notice not appearing for players with high ping
+
 
 
 # Febuary 3rd, 2024 (1/3/24)    
