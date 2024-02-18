@@ -8,8 +8,7 @@ rare events mid match, double XP as an example for 1 minute
 unlockable melee weapons w/ all new melees still being throwable
 seperate grapple hook from melee, allow for both in a loadout
 
-TRANSITION SCREEN AT END OF MATCH
-cant send empty chat messages at end of game
+slightly show intermission early to fix it not always appearing
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

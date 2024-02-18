@@ -1,5 +1,7 @@
 # Unreleased Update
 **>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **Howa Type 64**, **L85**, **MP5** and **Spike X1S** that rework their gun stats
 
 **>MAPS**   
 
