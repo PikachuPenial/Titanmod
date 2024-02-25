@@ -1,13 +1,15 @@
 # Unreleased Update
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AA-12**, **AK-47**, **FG 42**, **Howa Type 64**, **L85**, **MP5** and **Spike X1S** that rework their gun stats
+- Added new attachment types to the **AA-12**, **AK-47**, **AKS-74U**, **Colt 9mm**, **CZ 75**, **FG 42**, **Groza**, **HK53**, **Honey Badger**, **Howa Type 64**, **Imbel IA2**, **L85**, **M1911**, **M3 Grease Gun**, **MP5**, **OSP-18**, **PPSH**, **RFB** and **Spike X1S** that rework their gun stats
 
 **>MAPS**   
 
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Adjusted the firing sound effects for various weapons
+
 - Fixed HUD code importing not working
 
 - Fixed loading notice not appearing for players with high ping
