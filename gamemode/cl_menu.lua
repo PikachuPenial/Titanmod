@@ -3324,12 +3324,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local hitSoundsType = DockAudio:Add("DComboBox")
                     hitSoundsType:SetPos(20, 230)
                     hitSoundsType:SetSize(100, 30)
-                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") end
+                    if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_hitsoundtype"):GetInt() == 5 then hitSoundsType:SetValue("Overwatch") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
                     hitSoundsType:AddChoice("Apex Legends")
                     hitSoundsType:AddChoice("Bad Business")
                     hitSoundsType:AddChoice("Call Of Duty")
+                    hitSoundsType:AddChoice("Overwatch")
                     hitSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/hit_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_hitsoundtype", value - 1)
@@ -3338,12 +3339,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local killSoundsType = DockAudio:Add("DComboBox")
                     killSoundsType:SetPos(20, 270)
                     killSoundsType:SetSize(100, 30)
-                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_killsoundtype"):GetInt() == 4 then killSoundsType:SetValue("Counter Strike")  end
+                    if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_killsoundtype"):GetInt() == 4 then killSoundsType:SetValue("Counter Strike") elseif GetConVar("tm_killsoundtype"):GetInt() == 5 then killSoundsType:SetValue("Overwatch") end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType:AddChoice("TABG")
                     killSoundsType:AddChoice("Bad Business")
                     killSoundsType:AddChoice("Apex Legends")
                     killSoundsType:AddChoice("Counter Strike")
+                    killSoundsType:AddChoice("Overwatch")
                     killSoundsType.OnSelect = function(self, value)
                         surface.PlaySound("hitsound/kill_" .. value - 1 .. ".wav")
                         RunConsoleCommand("tm_killsoundtype", value - 1)

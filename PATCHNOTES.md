@@ -1,11 +1,28 @@
 # Unreleased Update
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AA-12**, **AK-47**, **AKS-74U**, **Colt 9mm**, **CZ 75**, **FG 42**, **Groza**, **HK53**, **Honey Badger**, **Howa Type 64**, **Imbel IA2**, **L85**, **M1911**, **M3 Grease Gun**, **MP5**, **OSP-18**, **PPSH**, **RFB** and **Spike X1S** that rework their gun stats
+- Added new attachment types to the **AA-12**, **AK-47**, **AKS-74U**, **Colt 9mm**, **CZ 75**, **FG 42**, **G28**, **Groza**, **HK53**, **Honey Badger**, **Howa Type 64**, **Imbel IA2**, **L85**, **M1911**, **M3 Grease Gun**, **Mare's Leg**, **MP-443**, **MP5**, **OSP-18**, **PPSH**, **RFB**, **Spike X1S**, **StG 44** and **Webley** that rework their gun stats
+
+*NEW HITSOUND OPTIONS*
+- Overwatch
+
+*NEW KILLSOUND OPTIONS*
+- Overwatch
 
 **>MAPS**   
 
 **>BALANCE** 
+*G28*
+- Decreased damage to 49 (previously 57)
+
+*RFB*
+- Decreased damage to 40 (previously 45)
+
+*Thompson M1928*
+- Decreased damage to 31 (previously 36)
+
+*Thompson M1A1*
+- Decreased damage to 32 (previously 36)
 
 **>QOL & BUG FIXES**   
 - Adjusted the firing sound effects for various weapons
@@ -15,6 +32,10 @@
 - Fixed loading notice not appearing for players with high ping
 
 - Fixed duplicate barrel attachments on the AA-12
+
+- Fixed reload speed being longer than intended when using the RFB with the Foregrip attachment
+
+- Fixed firing sound being delayed when firing the Webley
 
 
 
