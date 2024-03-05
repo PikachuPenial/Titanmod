@@ -1,14 +1,11 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
-fix foregrip reloads in content #1 pack
 fix spawning inside players
 space map with low gravity
 config option to disable map/mode voting seperately
 rare events mid match, double XP as an example for 1 minute
 unlockable melee weapons w/ all new melees still being throwable
 seperate grapple hook from melee, allow for both in a loadout
-
-slightly show intermission early to fix it not always appearing
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

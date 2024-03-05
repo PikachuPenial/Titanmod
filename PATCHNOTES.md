@@ -1,7 +1,18 @@
 # Unreleased Update
 **>GAMEPLAY**   
+
+**>MAPS**   
+
+**>BALANCE** 
+
+**>QOL & BUG FIXES**   
+
+
+
+# March 5th, 2024 (3/5/24)  
+**>GAMEPLAY**   
 *AMMO CONVERSIONS*
-- Added new attachment types to the **AA-12**, **AK-47**, **AKS-74U**, **Colt 9mm**, **CZ 75**, **FG 42**, **G28**, **Groza**, **HK53**, **Honey Badger**, **Howa Type 64**, **Imbel IA2**, **L85**, **M1911**, **M3 Grease Gun**, **Mare's Leg**, **MP-443**, **MP5**, **OSP-18**, **PPSH**, **RFB**, **Spike X1S**, **StG 44** and **Webley** that rework their gun stats
+- Added new attachment types to the **AA-12**, **AK-47**, **AKS-74U**, **Bren**, **Colt 9mm**, **CZ 75**, **FG 42**, **G28**, **Groza**, **HK53**, **Honey Badger**, **Howa Type 64**, **Imbel IA2**, **L85**, **Lewis**, **M1911**, **M1918**, **M1919**, **M3 Grease Gun**, **Mare's Leg**, **MG 34**, **MG 42**, **MP-443**, **MP5**, **OSP-18**, **PPSH**, **RFB**, **Spike X1S**, **StG 44** and **Webley** that rework their gun stats
 
 *NEW HITSOUND OPTIONS*
 - Overwatch
@@ -39,7 +50,7 @@
 
 
 
-# Febuary 3rd, 2024 (1/3/24)    
+# Febuary 3rd, 2024 (2/3/24)    
 **>GAMEPLAY**   
 *NEW WEAPON*
 - **ASh-12** (Primary, Rifle)
