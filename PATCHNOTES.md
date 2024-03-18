@@ -7,8 +7,12 @@
 **>MAPS**   
 
 **>BALANCE** 
+*Point Shooting Attachment*
+- Added ADS spread (50% to the weapons hip fire spread)
+- Increased ADS time decrease to 50% (previously 25%)
 
 **>QOL & BUG FIXES**   
+- Renamed "Tactical Point Shooting" attachment to "Point Shooting"
 
 
 
