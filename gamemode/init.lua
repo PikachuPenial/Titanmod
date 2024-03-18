@@ -162,11 +162,16 @@ function GM:PlayerInitialSpawn(ply)
 end
 
 net.Receive("BeginSpectate", function(len, ply)
+	if timer.Exists(ply:SteamID() .. "respawnTime") then return end
 	if ply:Alive() then return end
 	if GetGlobal2Bool("tm_intermission") then return end
 	ply:SetNWBool("mainmenu", false)
 	ply:UnSpectate()
 	ply:Spectate(OBS_MODE_ROAMING)
+	net.Start("SendNotification")
+	net.WriteString("Press your menu bind to return to the main menu")
+	net.WriteString("warning")
+	net.Send(ply)
 end )
 
 net.Receive("GrabLeaderboardData", function(len, ply)

@@ -132,7 +132,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                 PrestigeButton:SetSize(180, 30)
                 local textAnim = 0
                 local prestigeConfirm = 0
+                local rainbowSpeed = 160
+                local rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
                 PrestigeButton.Paint = function()
+                    rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
                     if PrestigeButton:IsHovered() then
                         textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     else
@@ -140,7 +143,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     if prestigeConfirm == 0 then
-                        draw.DrawText("PRESTIGE TO P" .. LocalPly:GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                        draw.DrawText("PRESTIGE TO P" .. LocalPly:GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, rainbowColor, TEXT_ALIGN_LEFT)
                     else
                         draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, solidRed, TEXT_ALIGN_LEFT)
                     end
@@ -393,6 +396,7 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePicker:SetValue("Spectate...")
             SpectatePicker:AddChoice("Freecam")
             SpectatePicker.OnSelect = function(_, _, value, id)
+                if timer.Exists("respawnTimeLeft") then return end
                 if GetGlobal2Bool("tm_intermission") then return end
                 net.Start("BeginSpectate")
                 net.SendToServer()

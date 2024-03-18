@@ -12,7 +12,13 @@
 - Increased ADS time decrease to 50% (previously 25%)
 
 **>QOL & BUG FIXES**   
+- Added a notification when entering spectator mode
+
 - Renamed "Tactical Point Shooting" attachment to "Point Shooting"
+
+- Prestige button text is now rainbow to help visibility
+
+- Spectating is no longer possible if you are on a respawn timer
 
 
 
