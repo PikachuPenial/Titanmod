@@ -12,7 +12,6 @@ seperate grapple hook from melee, allow for both in a loadout
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
 explosive arrows for bow/crossbow
-knifes thrown come back after 5-10 seconds
 party mode (random effects throughout match)
 dont allow reload canceling near end of reload
 overwrite networked values with my own custom system that isnt horrible

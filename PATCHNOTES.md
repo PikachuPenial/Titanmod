@@ -1,5 +1,8 @@
 # Unreleased Update
-**>GAMEPLAY**   
+**>GAMEPLAY**  
+*RELOADING QUALITY OF LIFE* 
+- All reloads can now be started while aiming down sights (reload canceling is still only possible from the hip)
+- Players can now aim down sights during a reload
 
 **>MAPS**   
 
