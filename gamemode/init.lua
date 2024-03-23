@@ -857,6 +857,16 @@ if table.HasValue(availableMaps, game.GetMap()) then
 	concommand.Add("tm_forceendmatch", ForceEndMatchCommand)
 end
 
+function AddMatchTimeCommand(ply, cmd, args)
+	if ply:IsAdmin() then SetGlobal2Int("tm_matchtime", GetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt()) + args[1]) end
+end
+concommand.Add("tm_addmatchtime", AddMatchTimeCommand)
+
+function ReduceMatchTimeCommand(ply, cmd, args)
+	if ply:IsAdmin() then SetGlobal2Int("tm_matchtime", GetGlobal2Int("tm_matchtime", GetConVar("tm_matchlengthtimer"):GetInt()) - args[1]) end
+end
+concommand.Add("tm_reducematchtime", ReduceMatchTimeCommand)
+
 -- Modifies base game voice chat to be proximity based
 hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then

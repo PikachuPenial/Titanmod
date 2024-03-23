@@ -16,7 +16,9 @@
 
 - Added a notification when entering spectator mode
 
-- Added the "sv_tm_matchvoting" ConVar that can forcefully enable/disable map and gamemode voting at the end of matches ((BROKEN FIX TOMORROW OR SMTH IM BORED OF DOING IT NOW))
+- Added "tm_addmatchtime" and "tm_reducematchtime" commands, allowing admins to add or remove seconds to the remaining match time
+
+- Added the "sv_tm_matchvoting" ConVar that can forcefully enable/disable map and gamemode voting at the end of matches
 
 - Renamed "Tactical Point Shooting" attachment to "Point Shooting"
 
