@@ -12,6 +12,8 @@
 - Increased ADS time decrease to 50% (previously 25%)
 
 **>QOL & BUG FIXES**   
+- Added interchangable map and gamemode votes, allowing players to now change which item they vote for during the voting period
+
 - Added a notification when entering spectator mode
 
 - Added the "sv_tm_matchvoting" ConVar that can forcefully enable/disable map and gamemode voting at the end of matches ((BROKEN FIX TOMORROW OR SMTH IM BORED OF DOING IT NOW))

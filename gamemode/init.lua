@@ -772,53 +772,83 @@ if table.HasValue(availableMaps, game.GetMap()) then
 	timer.Create("matchStatusCheck", 1, 0, MatchStatusCheck)
 
 	net.Receive("ReceiveMapVote", function(len, ply)
-		if playersVoted != nil then
-			for k, v in pairs(playersVoted) do
-				if v == ply then return end
-			end
-		end
-
 		if mapVoteOpen == false then return end
 
 		local votedMap = net.ReadString()
+		local unvotedMap = net.ReadString()
 		local mapIndex = net.ReadUInt(2)
-		local validMapVote = false
+		local revote = false
 
-		for k, v in pairs(availableMaps) do
-			if v == votedMap then
-				validMapVote = true
-				mapVotes[k] = mapVotes[k] + 1
-				table.insert(playersVoted, ply)
+		if playersVoted != nil then
+			for k, v in pairs(playersVoted) do
+				if v == ply then revote = true end
 			end
 		end
 
-		if validMapVote == false then return end
-		if mapIndex	== 1 then SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) end
+		if revote == false then
+			for k, v in pairs(availableMaps) do
+				if v == votedMap then
+					mapVotes[k] = mapVotes[k] + 1
+					table.insert(playersVoted, ply)
+					if mapIndex	== 1 then SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) end
+				end
+			end
+		else
+			for k, v in pairs(availableMaps) do
+				if v == votedMap then
+					mapVotes[k] = mapVotes[k] + 1
+					if mapIndex	== 1 then
+						SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0)
+						SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) - 1, 0) 
+					elseif mapIndex == 2 then
+						SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) 
+						SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) - 1, 0)
+					end
+				end
+
+				if v == unvotedMap then mapVotes[k] = mapVotes[k] - 1 end
+			end
+		end
 	end )
 
 	net.Receive("ReceiveModeVote", function(len, ply)
-		if playersVotedMode != nil then
-			for k, v in pairs(playersVotedMode) do
-				if v == ply then return end
-			end
-		end
-
 		if mapVoteOpen == false then return end
 
 		local votedMode = net.ReadInt(4)
+		local unvotedMode = net.ReadInt(4)
 		local modeIndex = net.ReadUInt(2)
-		local validModeVote = false
+		local revote = false
 
-		for k, v in pairs(gamemodeArray) do
-			if v[1] == votedMode then
-				validModeVote = true
-				modeVotes[k] = modeVotes[k] + 1
-				table.insert(playersVotedMode, ply)
+		if playersVotedMode != nil then
+			for k, v in pairs(playersVotedMode) do
+				if v == ply then revote = true end
 			end
 		end
 
-		if validModeVote == false then return end
-		if modeIndex == 1 then SetGlobal2Int("VotesOnModeOne", GetGlobal2Int("VotesOnModeOne", 0) + 1, 0) elseif modeIndex == 2 then SetGlobal2Int("VotesOnModeTwo", GetGlobal2Int("VotesOnModeTwo", 0) + 1, 0) end
+		if revote == false then
+			for k, v in pairs(gamemodeArray) do
+				if v[1] == votedMode then
+					modeVotes[k] = modeVotes[k] + 1
+					table.insert(playersVotedMode, ply)
+					if modeIndex == 1 then SetGlobal2Int("VotesOnModeOne", GetGlobal2Int("VotesOnModeOne", 0) + 1, 0) elseif modeIndex == 2 then SetGlobal2Int("VotesOnModeTwo", GetGlobal2Int("VotesOnModeTwo", 0) + 1, 0) end
+				end
+			end
+		else
+			for k, v in pairs(gamemodeArray) do
+				if v[1] == votedMode then
+					modeVotes[k] = modeVotes[k] + 1
+					if modeIndex == 1 then
+						SetGlobal2Int("VotesOnModeOne", GetGlobal2Int("VotesOnModeOne", 0) + 1, 0)
+						SetGlobal2Int("VotesOnModeTwo", GetGlobal2Int("VotesOnModeTwo", 0) - 1, 0) 
+					elseif modeIndex == 2 then
+						SetGlobal2Int("VotesOnModeTwo", GetGlobal2Int("VotesOnModeTwo", 0) + 1, 0) 
+						SetGlobal2Int("VotesOnModeOne", GetGlobal2Int("VotesOnModeOne", 0) - 1, 0)
+					end
+				end
+
+				if v[1] == unvotedMode then modeVotes[k] = modeVotes[k] - 1 end
+			end
+		end
 	end )
 
 	function ForceEndMatchCommand(ply, cmd, args)

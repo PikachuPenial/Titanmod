@@ -1518,6 +1518,7 @@ net.Receive("EndOfGame", function(len, ply)
         MapChoice.DoClick = function()
             net.Start("ReceiveMapVote")
             net.WriteString(firstMap)
+            net.WriteString(secondMap)
             net.WriteUInt(1, 2)
             net.SendToServer()
             votedOnMap = true
@@ -1527,7 +1528,7 @@ net.Receive("EndOfGame", function(len, ply)
             MapChoice:SetPos(20, 80)
             MapChoice:SetSize(155, 155)
             MapChoice:SetEnabled(false)
-            MapChoiceTwo:SetEnabled(false)
+            MapChoiceTwo:SetEnabled(true)
         end
 
         MapChoiceTwo:SetPos(290, 70)
@@ -1537,6 +1538,7 @@ net.Receive("EndOfGame", function(len, ply)
         MapChoiceTwo.DoClick = function()
             net.Start("ReceiveMapVote")
             net.WriteString(secondMap)
+            net.WriteString(firstMap)
             net.WriteUInt(2, 2)
             net.SendToServer()
             votedOnMap = true
@@ -1545,7 +1547,7 @@ net.Receive("EndOfGame", function(len, ply)
 
             MapChoiceTwo:SetPos(300, 80)
             MapChoiceTwo:SetSize(155, 155)
-            MapChoice:SetEnabled(false)
+            MapChoice:SetEnabled(true)
             MapChoiceTwo:SetEnabled(false)
         end
 
@@ -1556,6 +1558,7 @@ net.Receive("EndOfGame", function(len, ply)
         ModeChoice.DoClick = function()
             net.Start("ReceiveModeVote")
             net.WriteInt(firstMode, 4)
+            net.WriteInt(secondMode, 4)
             net.WriteUInt(1, 2)
             net.SendToServer()
             votedOnGamemode = true
@@ -1563,7 +1566,7 @@ net.Receive("EndOfGame", function(len, ply)
             surface.PlaySound("buttons/button15.wav")
 
             ModeChoice:SetEnabled(false)
-            ModeChoiceTwo:SetEnabled(false)
+            ModeChoiceTwo:SetEnabled(true)
         end
 
         ModeChoiceTwo:SetPos(290, 70)
@@ -1573,13 +1576,14 @@ net.Receive("EndOfGame", function(len, ply)
         ModeChoiceTwo.DoClick = function()
             net.Start("ReceiveModeVote")
             net.WriteInt(secondMode, 4)
+            net.WriteInt(firstMode, 4)
             net.WriteUInt(2, 2)
             net.SendToServer()
             votedOnGamemode = true
             gamemodePicked = 2
             surface.PlaySound("buttons/button15.wav")
 
-            ModeChoice:SetEnabled(false)
+            ModeChoice:SetEnabled(true)
             ModeChoiceTwo:SetEnabled(false)
         end
 
