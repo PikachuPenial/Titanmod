@@ -35,6 +35,7 @@ if UseConfigConvars then
     grappleKillReset = GetConVar("sv_tm_grapple_killreset"):GetBool()
     grappleRange = GetConVar("sv_tm_grapple_range"):GetInt()
     proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
+    matchVoting = GetConVar("sv_tm_matchvoting"):GetBool()
     customMovement = GetConVar("sv_tm_player_custommovement"):GetBool()
     deathCamera = GetConVar("sv_tm_deathcam"):GetBool()
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
@@ -84,6 +85,7 @@ else
     grappleKillReset = true         -- Enable or disable the grapple cooldown reset on a player kill
     grappleRange = 850              -- The length (in units) that the grappling hook can travel too before despawning
     proxChatRange = 1000            -- The thresehold in distance where players can hear other players over proximity voice chat
+    matchVoting = true              -- Enable or disable the end of match map and gamemode vote (disabling this will select a map and gamemode at random after a match ends)
     customMovement = true           -- Enable or disable Titanmod's custom movement mechanics (wall running/jumping, sliding, vaulting)
     deathCamera = true              -- Enable or disable Titanmod's custom death camera on a players death (showing the killers POV after a death), this can still be disabled by players client-side
 

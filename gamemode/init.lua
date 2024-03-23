@@ -53,6 +53,7 @@ util.AddNetworkString("SendNotification")
 util.AddNetworkString("KillFeedUpdate")
 util.AddNetworkString("EndOfGame")
 util.AddNetworkString("MapVoteCompleted")
+util.AddNetworkString("MapVoteSkipped")
 util.AddNetworkString("ReceiveMapVote")
 util.AddNetworkString("ReceiveModeVote")
 util.AddNetworkString("ReceivePostGameMute")
@@ -693,45 +694,60 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			end
 		end
 
-		timer.Create("mapVoteStatus", 23, 1, function()
-			local newMapTable = {}
-			local newModeTable = {}
-			local maxMapVotes = 0
-			local maxModeVotes = 0
+		if matchVoting == true then
+			timer.Create("mapVoteStatus", 23, 1, function()
+				local newMapTable = {}
+				local newModeTable = {}
+				local maxMapVotes = 0
+				local maxModeVotes = 0
 
-			for k, v in pairs(mapVotes) do
-				if v > maxMapVotes then
-					maxMapVotes = v
+				for k, v in pairs(mapVotes) do
+					if v > maxMapVotes then
+						maxMapVotes = v
+					end
 				end
-			end
 
-			for k, v in pairs(availableMaps) do
-				if mapVotes[k] == maxMapVotes then
-					table.insert(newMapTable, v)
+				for k, v in pairs(availableMaps) do
+					if mapVotes[k] == maxMapVotes then
+						table.insert(newMapTable, v)
+					end
 				end
-			end
 
-			for k, v in pairs(modeVotes) do
-				if v > maxModeVotes then
-					maxModeVotes = v
+				for k, v in pairs(modeVotes) do
+					if v > maxModeVotes then
+						maxModeVotes = v
+					end
 				end
-			end
 
-			for k, v in pairs(gamemodeArray) do
-				if modeVotes[k] == maxModeVotes then
-					table.insert(newModeTable, v[1])
+				for k, v in pairs(gamemodeArray) do
+					if modeVotes[k] == maxModeVotes then
+						table.insert(newModeTable, v[1])
+					end
 				end
-			end
 
+				mapVoteOpen = false
+				newMap = newMapTable[math.random(#newMapTable)]
+				newMode = newModeTable[math.random(#newModeTable)]
+
+				net.Start("MapVoteCompleted")
+				net.WriteString(newMap)
+				net.WriteInt(newMode, 4)
+				net.Broadcast()
+			end)
+		else
 			mapVoteOpen = false
-			newMap = newMapTable[math.random(#newMapTable)]
-			newMode = newModeTable[math.random(#newModeTable)]
+			newMap = mapPoolSecondary[1]
+			if math.random(0, 1) == 0 then
+				newMode = modePool[1]
+			else
+				newMode = modePoolSecondary[1]
+			end
 
-			net.Start("MapVoteCompleted")
+			net.Start("MapVoteSkipped")
 			net.WriteString(newMap)
 			net.WriteInt(newMode, 4)
 			net.Broadcast()
-		end)
+		end
 
 		timer.Create("newMapCooldown", 33, 1, function()
 			RunConsoleCommand("changelevel", newMap)

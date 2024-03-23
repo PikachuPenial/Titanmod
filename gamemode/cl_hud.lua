@@ -1176,9 +1176,16 @@ net.Receive("EndOfGame", function(len, ply)
     local gamemodePicked
     local mapDecided = false
     local gamemodeDecided = false
+    local decidedMap
+    local decidedMode
     local VOIPActive = false
     local MuteActive = false
     local bonusXP = 750
+
+    net.Receive("MapVoteSkipped", function(len, ply)
+        decidedMap = net.ReadString()
+        decidedMode = net.ReadInt(4)
+    end)
 
     if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
@@ -1576,9 +1583,7 @@ net.Receive("EndOfGame", function(len, ply)
             ModeChoiceTwo:SetEnabled(false)
         end
 
-        net.Receive("MapVoteCompleted", function(len, ply)
-            local decidedMap = net.ReadString()
-            local decidedMode = net.ReadInt(4)
+        function MapVoteCompleted()
             for u, p in pairs(mapArray) do
                 if decidedMap == p[1] then
                     decidedMapName = p[2]
@@ -1604,6 +1609,14 @@ net.Receive("EndOfGame", function(len, ply)
             DecidedMapThumb:SetText("")
             DecidedMapThumb:SetSize(175, 175)
             DecidedMapThumb:SetImage(decidedMapThumb)
+        end
+
+        if matchVoting == false then MapVoteCompleted() end
+
+        net.Receive("MapVoteCompleted", function(len, ply)
+            decidedMap = net.ReadString()
+            decidedMode = net.ReadInt(4)
+            MapVoteCompleted()
         end )
 
         local DiscordButton = vgui.Create("DButton", EndOfGameUI)

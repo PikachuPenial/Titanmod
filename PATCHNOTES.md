@@ -14,11 +14,15 @@
 **>QOL & BUG FIXES**   
 - Added a notification when entering spectator mode
 
+- Added the "sv_tm_matchvoting" ConVar that can forcefully enable/disable map and gamemode voting at the end of matches ((BROKEN FIX TOMORROW OR SMTH IM BORED OF DOING IT NOW))
+
 - Renamed "Tactical Point Shooting" attachment to "Point Shooting"
 
 - Prestige button text is now rainbow to help visibility
 
 - Spectating is no longer possible if you are on a respawn timer
+
+- Fixed incorrect attachment description for the QBZ-97 5.56 conversion
 
 
 
