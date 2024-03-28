@@ -1,10 +1,19 @@
 # Unreleased Update
 **>GAMEPLAY**  
+
+**>MAPS**   
+
+**>BALANCE** 
+
+**>QOL & BUG FIXES**   
+
+
+
+# March 27th, 2024 (3/27/24)  
+**>GAMEPLAY**  
 *RELOADING QUALITY OF LIFE* 
 - All reloads can now be started while aiming down sights (reload canceling is still only possible from the hip)
 - Players can now aim down sights during a reload
-
-**>MAPS**   
 
 **>BALANCE** 
 *Point Shooting Attachment*
@@ -15,6 +24,8 @@
 - Added interchangable map and gamemode votes, allowing players to now change which item they vote for during the voting period
 
 - Added a notification when entering spectator mode
+
+- Added text for when the player is on a leaderboard switching cooldown
 
 - Added "tm_addmatchtime" and "tm_reducematchtime" commands, allowing admins to add or remove seconds to the remaining match time
 
@@ -27,6 +38,8 @@
 - Spectating is no longer possible if you are on a respawn timer
 
 - Fixed incorrect attachment description for the QBZ-97 5.56 conversion
+
+- New end of match quotes from community members
 
 
 
