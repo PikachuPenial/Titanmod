@@ -1,16 +1,15 @@
 HIGH PRIORItY | Currently working on or is being focused, will most likely make it into the gamemode
 
-CHANGE VOTED OPTION FOR GAMEMODE/MAP
 fix spawning inside players
 space map with low gravity
-rare events mid match, double XP as an example for 1 minute
-unlockable melee weapons w/ all new melees still being throwable
 seperate grapple hook from melee, allow for both in a loadout
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 LOW PRIORITY | Backlog for new features and adjustments that are not important, may or may not happen
 
+rare events mid match, double XP as an example for 1 minute
+unlockable melee weapons w/ all new melees still being throwable
 explosive arrows for bow/crossbow
 party mode (random effects throughout match)
 dont allow reload canceling near end of reload

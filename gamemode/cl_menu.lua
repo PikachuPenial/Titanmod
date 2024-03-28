@@ -221,6 +221,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                         draw.SimpleText("Entries update on match start/player disconnect | Only top 100 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
 
                         if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
+                        if timer.Exists("SendBoardDataRequestCooldown") then draw.SimpleText(math.Round(timer.TimeLeft("SendBoardDataRequestCooldown"), 1), "StreakText", 41, 156, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
                         draw.SimpleText("#", "StreakText", 20, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Name", "StreakText", 85, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Stat", "StreakText", 710, 185, white, TEXT_ALIGN_RIGHT)
