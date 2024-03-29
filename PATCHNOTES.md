@@ -6,6 +6,9 @@
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Fixed incorrect description for the VIP gamemode
+
+- Fixed info panel being visible when selecting the MPX from the HL2 weapon selector
 
 
 
