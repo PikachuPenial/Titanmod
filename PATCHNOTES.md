@@ -6,6 +6,12 @@
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Decreased gamemode file size by 500mb~
+
+- Added mute/unmute player buttons when interacting with a player through the scoreboard
+
+- Added player tags for steam friends and muted players
+
 - Fixed incorrect description for the VIP gamemode
 
 - Fixed info panel being visible when selecting the MPX from the HL2 weapon selector

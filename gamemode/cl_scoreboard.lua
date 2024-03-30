@@ -124,6 +124,9 @@ function GM:ScoreboardShow()
 			local ratio
 			local score = v:GetNWInt("playerScoreMatch")
 
+			surface.SetFont("StreakText")
+			local pingLength = select(1, surface.GetTextSize(ping))
+
 			local usergroup
 			if v:IsUserGroup("dev") then usergroup = "dev" elseif v:IsUserGroup("mod") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
 
@@ -159,7 +162,30 @@ function GM:ScoreboardShow()
 				draw.SimpleText(ratioRounded, "Health", 470, 35, Color(255, 255, 0), TEXT_ALIGN_CENTER)
 				draw.SimpleText(score, "Health", 540, 35, white, TEXT_ALIGN_CENTER)
 
-				if usergroup == "dev" then draw.SimpleText("Developer", "StreakText", 315, 72, Color(205, 255, 0), TEXT_ALIGN_LEFT) elseif usergroup == "mod" then draw.SimpleText("Moderator", "StreakText", 315, 72, Color(255, 0, 100), TEXT_ALIGN_LEFT) elseif usergroup == "contributor" then draw.SimpleText("Contributor", "StreakText", 315, 72, Color(0, 110, 255), TEXT_ALIGN_LEFT) end
+				surface.SetFont("CaliberText")
+				local roleLength = 0
+				local mutedLength = 0
+
+				if usergroup == "dev" then
+					draw.SimpleText("(dev)", "CaliberText", pingLength + 285, 74, Color(205, 255, 0), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(dev)"))
+				elseif usergroup == "mod" then
+					draw.SimpleText("(mod)", "CaliberText", pingLength + 285, 74, Color(255, 0, 100), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(mod)"))
+				elseif usergroup == "contributor" then
+					draw.SimpleText("(contributor)", "CaliberText", pingLength + 285, 74, Color(0, 110, 255), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(contributor)"))
+				end
+
+				if v:IsMuted() then
+					draw.SimpleText("(muted)", "CaliberText", pingLength + roleLength + 285, 74, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+					mutedLength = select(1, surface.GetTextSize("(muted)"))
+				end
+
+				if v:GetFriendStatus() == "friend" then
+					draw.SimpleText("(friend)", "CaliberText", pingLength + roleLength + mutedLength + 285, 74, Color(0, 255, 0), TEXT_ALIGN_LEFT)
+					mutedLength = select(1, surface.GetTextSize("(friend)"))
+				end
 			end
 
 			local PlayerCallingCard = vgui.Create("DImage", PlayerPanel)
@@ -221,6 +247,12 @@ function GM:ScoreboardShow()
 				local copyMenu = Menu:AddSubMenu("Copy...")
 				copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
 				copyMenu:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+
+				local muteToggle = Menu:AddOption("Mute Player", function(self)
+					if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
+				end)
+
+				if v:IsMuted() then muteToggle:SetIcon("icon16/sound.png") muteToggle:SetText("Unmute Player") else muteToggle:SetIcon("icon16/sound_mute.png") muteToggle:SetText("Mute Player") end
 
 				Menu:Open()
 			end

@@ -3,7 +3,8 @@ HIGH PRIORItY | Currently working on or is being focused, will most likely make 
 fix spawning inside players
 space map with low gravity
 seperate grapple hook from melee, allow for both in a loadout
-mute players through scoreboard
+add player tags to end of game scoreboard
+add player interacting to end of game scoreboard (stats, muting)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
