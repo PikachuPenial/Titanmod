@@ -340,6 +340,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		if victim:GetInfoNum("tm_deathcam", 1) == 1 and deathCamera == true then
 			victim:SpectateEntity(attacker)
+			victim:SetupHands(attacker)
 			victim:Spectate(OBS_MODE_DEATHCAM)
 
 			timer.Simple(0.75, function()
@@ -695,7 +696,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		if matchVoting == true then
-			timer.Create("mapVoteStatus", 23, 1, function()
+			timer.Create("mapVoteStatus", 22, 1, function()
 				local newMapTable = {}
 				local newModeTable = {}
 				local maxMapVotes = 0

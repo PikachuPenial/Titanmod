@@ -2937,7 +2937,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 360)
+                    DockPerformance:SetSize(0, 400)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -3703,10 +3703,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Render Body", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Render Hands", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local renderBody = DockPerformance:Add("DCheckBox")
@@ -3715,32 +3716,38 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     renderBody:SetSize(30, 30)
                     function renderBody:OnChange() TriggerSound("click") end
 
+                    local renderHands = DockPerformance:Add("DCheckBox")
+                    renderHands:SetPos(20, 110)
+                    renderHands:SetConVar("tm_renderhands")
+                    renderHands:SetSize(30, 30)
+                    function renderHands:OnChange() TriggerSound("click") end
+
                     local menuDOF = DockPerformance:Add("DCheckBox")
-                    menuDOF:SetPos(20, 110)
+                    menuDOF:SetPos(20, 150)
                     menuDOF:SetConVar("tm_menudof")
                     menuDOF:SetSize(30, 30)
                     function menuDOF:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 150)
+                    ironSightDOF:SetPos(20, 190)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 190)
+                    inspectionDOF:SetPos(20, 230)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 230)
+                    screenFlashing:SetPos(20, 270)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 310)
+                    WipeAccountButton:SetPos(17.5, 350)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0

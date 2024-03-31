@@ -6,11 +6,30 @@
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
-- Decreased gamemode file size by 500mb~
+
+
+
+# March 31th, 2024 (3/31/24)  
+**>GAMEPLAY**  
+*NEW SETTING*
+- Render Hands
+
+**>QOL & BUG FIXES**   
+- Decreased gamemode file size by 500 MB~
+
+- Player hands are now rendered during the death cam
 
 - Added mute/unmute player buttons when interacting with a player through the scoreboard
 
+- Added ability to interact with a player through the end or round scoreboard
+
 - Added player tags for steam friends and muted players
+
+- Improved responsiveness of map/gamemode voting completion
+
+- Cleaned up Holosun 510C sight lens
+
+- Cleaned up EOTech XPS 3 sight lens
 
 - Fixed incorrect description for the VIP gamemode
 

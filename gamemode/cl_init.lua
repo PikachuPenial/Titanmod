@@ -15,6 +15,22 @@ function GM:InitPostEntity()
 	net.SendToServer()
 end
 
+if GetConVar("tm_renderhands"):GetInt() == 0 then
+	hook.Add("PreDrawPlayerHands", "DisableHandRendering", function()
+		return true
+	end )
+end
+
+cvars.AddChangeCallback("tm_renderhands", function(convar_name, value_old, value_new)
+    if value_new == "1" then
+		hook.Remove("PreDrawPlayerHands", "DisableHandRendering")
+	else
+		hook.Add("PreDrawPlayerHands", "DisableHandRendering", function()
+			return true
+		end )
+	end
+end)
+
 function UpdateFonts()
 	surface.CreateFont("GunPrintName", {
 		font = "Arial",

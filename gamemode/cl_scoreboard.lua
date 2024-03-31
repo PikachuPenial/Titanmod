@@ -248,11 +248,13 @@ function GM:ScoreboardShow()
 				copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
 				copyMenu:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
 
-				local muteToggle = Menu:AddOption("Mute Player", function(self)
-					if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
-				end)
+				if v != LocalPlayer then
+					local muteToggle = Menu:AddOption("Mute Player", function(self)
+						if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
+					end)
 
-				if v:IsMuted() then muteToggle:SetIcon("icon16/sound.png") muteToggle:SetText("Unmute Player") else muteToggle:SetIcon("icon16/sound_mute.png") muteToggle:SetText("Mute Player") end
+					if v:IsMuted() then muteToggle:SetIcon("icon16/sound.png") muteToggle:SetText("Unmute Player") else muteToggle:SetIcon("icon16/sound_mute.png") muteToggle:SetText("Mute Player") end
+				end
 
 				Menu:Open()
 			end

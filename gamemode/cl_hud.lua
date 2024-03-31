@@ -1724,6 +1724,9 @@ net.Receive("EndOfGame", function(len, ply)
             local ratio
             local score = v:GetNWInt("playerScoreMatch")
 
+            surface.SetFont("Health")
+            local nameLength = select(1, surface.GetTextSize(name .. " | " .. "P" .. prestige .. " L" .. level))
+
             -- Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
             if v:Frags() <= 0 then
                 ratio = 0
@@ -1747,6 +1750,31 @@ net.Receive("EndOfGame", function(len, ply)
                 draw.SimpleText(deaths, "Health", 285, 60, Color(255, 0, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(ratioRounded .. "", "Health", 285, 85, Color(255, 255, 0), TEXT_ALIGN_LEFT)
                 draw.SimpleText(score, "Health", 427, 85, white, TEXT_ALIGN_RIGHT)
+
+                surface.SetFont("CaliberText")
+				local roleLength = 0
+				local mutedLength = 0
+
+				if usergroup == "dev" then
+					draw.SimpleText("(dev)", "CaliberText", nameLength + 15, 5, Color(205, 255, 0), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(dev)"))
+				elseif usergroup == "mod" then
+					draw.SimpleText("(mod)", "CaliberText", nameLength + 15, 5, Color(255, 0, 100), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(mod)"))
+				elseif usergroup == "contributor" then
+					draw.SimpleText("(contributor)", "CaliberText", nameLength + 15, 5, Color(0, 110, 255), TEXT_ALIGN_LEFT)
+					roleLength = select(1, surface.GetTextSize("(contributor)"))
+				end
+
+				if v:IsMuted() then
+					draw.SimpleText("(muted)", "CaliberText", nameLength + roleLength + 15, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+					mutedLength = select(1, surface.GetTextSize("(muted)"))
+				end
+
+				if v:GetFriendStatus() == "friend" then
+					draw.SimpleText("(friend)", "CaliberText", nameLength + roleLength + mutedLength + 15, 5, Color(0, 255, 0), TEXT_ALIGN_LEFT)
+					mutedLength = select(1, surface.GetTextSize("(friend)"))
+				end
             end
 
             local KillsIcon = vgui.Create("DImage", PlayerPanel)
@@ -1775,10 +1803,70 @@ net.Receive("EndOfGame", function(len, ply)
 
             if IsValid(v) then PlayerCallingCard:SetImage(v:GetNWString("chosenPlayercard"), "cards/color/black.png") end
 
-            local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerCallingCard)
-            PlayerProfilePicture:SetPos(5, 5)
+            local PlayerProfilePicture = vgui.Create("AvatarImage", PlayerPanel)
+            PlayerProfilePicture:SetPos(15, 40)
             PlayerProfilePicture:SetSize(70, 70)
             PlayerProfilePicture:SetPlayer(v, 184)
+
+            -- Allows the players profile to be clicked to display various options revolving around the specific player
+			PlayerProfilePicture.OnMousePressed = function()
+				local Menu = DermaMenu()
+
+				local profileButton = Menu:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
+				profileButton:SetIcon("icon16/page_find.png")
+
+				Menu:AddSpacer()
+
+				local statistics = Menu:AddSubMenu("View Stats")
+				local accolades = Menu:AddSubMenu("View Accolades")
+				local weaponstatistics = Menu:AddSubMenu("View Weapon Stats")
+				local weaponKills = weaponstatistics:AddSubMenu("Kills With")
+				weaponKills:SetMaxHeight(ScrH() / 1.5)
+
+				if v:GetInfoNum("tm_hidestatsfromothers", 0) == 0 or v == LocalPly then
+					statistics:AddOption("Prestige " .. v:GetNWInt("playerPrestige") .. " Level " .. v:GetNWInt("playerLevel"))
+					statistics:AddOption("Score: " .. v:GetNWInt("playerScore"))
+					statistics:AddOption("Kills: " .. v:GetNWInt("playerKills"))
+					statistics:AddOption("Deaths: " .. v:GetNWInt("playerDeaths"))
+					statistics:AddOption("K/D Ratio: " .. math.Round(v:GetNWInt("playerKills") / v:GetNWInt("playerDeaths"), 3))
+					statistics:AddOption("Highest Killstreak: " .. v:GetNWInt("highestKillStreak"))
+					statistics:AddOption("Highest Kill Game: " .. v:GetNWInt("highestKillGame"))
+					statistics:AddOption("Farthest Kill: " .. v:GetNWInt("farthestKill") .. "m")
+					statistics:AddOption("Matches Played: " .. v:GetNWInt("matchesPlayed"))
+					statistics:AddOption("Matches Won: " .. v:GetNWInt("matchesWon"))
+					statistics:AddOption("W/L Ratio: " .. math.Round((v:GetNWInt("matchesWon") / v:GetNWInt("matchesPlayed")) * 100) .. "%")
+					accolades:AddOption("Headshot Kills: " .. v:GetNWInt("playerAccoladeHeadshot"))
+					accolades:AddOption("Smackdowns (Melee Kills): " .. v:GetNWInt("playerAccoladeSmackdown"))
+					accolades:AddOption("Clutches (Kills with less than 15 HP): " .. v:GetNWInt("playerAccoladeClutch"))
+					accolades:AddOption("Longshots: " .. v:GetNWInt("playerAccoladeLongshot"))
+					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
+					accolades:AddOption("On Streaks (Kill Streaks Started): " .. v:GetNWInt("playerAccoladeOnStreak"))
+					accolades:AddOption("Buzz Kills (Kill Streaks Ended): " .. v:GetNWInt("playerAccoladeBuzzkill"))
+					for p, t in pairs(weaponArray) do
+						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+					end
+				else
+					statistics:AddOption("This player has their stats hidden.")
+					accolades:AddOption("This player has their stats hidden.")
+					weaponKills:AddOption("This player has their stats hidden.")
+				end
+
+				Menu:AddSpacer()
+
+				local copyMenu = Menu:AddSubMenu("Copy...")
+				copyMenu:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
+				copyMenu:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+
+				if v != LocalPly then
+					local muteToggle = Menu:AddOption("Mute Player", function(self)
+						if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
+					end)
+
+					if v:IsMuted() then muteToggle:SetIcon("icon16/sound.png") muteToggle:SetText("Unmute Player") else muteToggle:SetIcon("icon16/sound_mute.png") muteToggle:SetText("Mute Player") end
+				end
+
+				Menu:Open()
+            end
         end
     end
 
