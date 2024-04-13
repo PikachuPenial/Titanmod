@@ -9,6 +9,16 @@
 
 
 
+# April 13th, 2024 (4/13/24)  
+**>GAMEPLAY**   
+*NEW SETTING*
+- Precache Gamemode Files
+
+**>QOL & BUG FIXES**   
+- The setting above is a fix for users experiencing a CVEngineServer overflow when joining a Titanmod server, players with mechanical hard drives will also experience much faster load times with this setting disabled (while experiencing more in game stutters)
+
+
+
 # March 31th, 2024 (3/31/24)  
 **>GAMEPLAY**  
 *NEW SETTING*

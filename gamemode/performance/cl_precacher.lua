@@ -149,4 +149,8 @@ function PrecacheAll()
     PrecacheDir("sound/weapons/tfre/winchester/")
 end
 
-if GetConVar("tm_developermode"):GetInt() == 0 then PrecacheAll() end
+timer.Create("CheckPrecacheEligibility", 1, 0, function()
+    if GetConVar("tm_precachefiles"):GetInt() == nil then return end
+    if GetConVar("tm_developermode"):GetInt() == 0 and GetConVar("tm_precachefiles"):GetInt() == 1 then PrecacheAll() end
+    timer.Remove("CheckPrecacheEligibility")
+end)

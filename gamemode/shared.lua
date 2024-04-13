@@ -75,6 +75,7 @@ if CLIENT then
     CreateClientConVar("tm_sensitivity_4x", 60, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_8x", 40, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
     CreateClientConVar("tm_renderhands", 1, true, false, "Enable/disable the rendering of your own hands", 0, 1)
+    CreateClientConVar("tm_precachefiles", 1, true, false, "Enable/disable the pre-caching of game models/sounds when loading into a map", 0, 1)
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
     CreateClientConVar("tm_hud_bounds_x", 15, true, false, "Adjust the HUD bounds on the X axis, moving all hud elements from the edge of your screen", 0, ScrW() / 4)
