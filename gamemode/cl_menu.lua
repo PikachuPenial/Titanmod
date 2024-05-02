@@ -3211,6 +3211,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     deathCam:SetSize(30, 30)
                     function deathCam:OnChange() TriggerSound("click") end
 
+                    local EotechPreview = vgui.Create("DImage", DockGameplay)
+                    EotechPreview:SetPos(180, 295)
+                    EotechPreview:SetSize(48, 48)
+                    EotechPreview:SetImage("images/reticles/eotech.png")
+                    EotechPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+
+                    local KobraPreview = vgui.Create("DImage", DockGameplay)
+                    KobraPreview:SetPos(224, 295)
+                    KobraPreview:SetSize(48, 48)
+                    KobraPreview:SetImage("images/reticles/kobra.png")
+                    KobraPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+
+                    local AimpointPreview = vgui.Create("DImage", DockGameplay)
+                    AimpointPreview:SetPos(268, 295)
+                    AimpointPreview:SetSize(48, 48)
+                    AimpointPreview:SetImage("images/reticles/aimpoint.png")
+                    AimpointPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+
                     local reticleMixer = vgui.Create("DColorMixer", DockGameplay)
                     reticleMixer:SetPos(20, 230)
                     reticleMixer:SetSize(215, 110)
@@ -3220,6 +3238,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     reticleMixer:SetAlphaBar(false)
                     reticleMixer:SetPalette(false)
                     reticleMixer:SetWangs(true)
+                    function reticleMixer:ValueChanged()
+                        EotechPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+                        KobraPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+                        AimpointPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
+                    end
 
                     DockUI.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)

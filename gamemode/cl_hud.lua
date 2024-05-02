@@ -339,7 +339,7 @@ local function CrosshairStateUpdate(client, wep)
         gap = gap + wep.Primary.Spread * 300
         if ply:KeyDown(IN_ATTACK) then gap = gap + 5 end
     end
-    if client:Crouching() then gap = gap - 5 end
+    if client:Crouching() or client:IsWalking() then gap = gap - 5 end
     if !client:OnGround() then gap = gap + 7 end
     gap = gap + velocity / 55
 

@@ -6,6 +6,9 @@
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Added reticle previews while editing the Optic Reticle Color setting
+
+- Walking now affects dynamic crosshairs
 
 
 
