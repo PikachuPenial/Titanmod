@@ -1,11 +1,16 @@
 # Unreleased Update
 **>GAMEPLAY**  
+*NEW SETTINGS*
+- Menu Scale
+- HUD Scale
 
 **>MAPS**   
 
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Menus and UI now properly scale to different resolutions and aspect ratios and will look identical on any screen
+
 - Added reticle previews while editing the Optic Reticle Color setting
 
 - Walking now affects dynamic crosshairs
