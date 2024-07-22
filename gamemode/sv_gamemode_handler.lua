@@ -35,7 +35,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to FFA
 if activeGamemode == "FFA" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
@@ -48,7 +48,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to Fiesta
 if activeGamemode == "Fiesta" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
@@ -67,7 +67,7 @@ end
 
 -- Generate weapon ladder if the gamemode is set to Gun Game
 if activeGamemode == "Gun Game" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "melee" or v[3] == "gadget" then
             table.insert(ggRandMelee, v[1])
         end
@@ -77,7 +77,7 @@ if activeGamemode == "Gun Game" then
     local itemsAdded = 0
     table.Shuffle(ggWeaponArray)
 
-    for k, v in pairs(ggWeaponArray) do
+    for k, v in ipairs(ggWeaponArray) do
         if (v[3] == "primary" or v[3] == "secondary") and v[1] != "st_stim_pistol" and v[1] != "swat_shield" and v[1] != "tfa_ins2_ak400" and v[1] != "tfa_ins2_cq300" and v[1] != "tfa_ins2_ump45" and v[1] != "tfa_ins2_eftm4a1" and v[1] != "tfa_howa_type_64" and v[1] != "rust_bow" and v[1] != "rust_crossbow" and itemsAdded < (ggLadderSize - 1) then
             table.insert(ggLadder, {v[1], ggRandMelee[math.random(#ggRandMelee)]})
             itemsAdded = itemsAdded + 1
@@ -88,7 +88,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to Shotty Snipers
 if activeGamemode == "Shotty Snipers" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[4] == "sniper" and v[1] != "rust_bow" and v[1] != "rust_crossbow" and v[1] != "tfa_ins2_saiga_spike" then
             table.insert(randPrimary, v[1])
         elseif v[4] == "shotgun" then
@@ -101,7 +101,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to Cranked
 if activeGamemode == "Cranked" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
@@ -119,7 +119,7 @@ if activeGamemode == "KOTH" then
         kothOBJ:Spawn()
     end )
 
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
@@ -151,7 +151,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to Quickdraw
 if activeGamemode == "Quickdraw" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" and v[1] != "st_stim_pistol" then
             table.insert(randSecondary, v[1])
         elseif v[3] == "melee" or v[3] == "gadget" then
@@ -162,7 +162,7 @@ end
 
 -- Generate the table of available weapons if the gamemode is set to VIP
 if activeGamemode == "VIP" then
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then

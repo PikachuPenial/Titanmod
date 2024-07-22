@@ -64,7 +64,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         MainMenu:SetDeleteOnClose(false)
         MainMenu:MakePopup()
 
-        for m, t in pairs(mapArray) do
+        for m, t in ipairs(mapArray) do
             if game.GetMap() == t[1] then
                 mapID = t[1]
                 mapName = t[2]
@@ -274,7 +274,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                         local weaponstatistics = BoardSelection:AddSubMenu("Weapons")
                         weaponstatistics:SetMaxHeight(scrH / 2)
-                        for p, t in pairs(weaponArray) do
+                        for p, t in ipairs(weaponArray) do
                             weaponstatistics:AddOption("Kills w/ " .. t[2], function() LeaderboardSelected("Kills w/ " .. t[2], "killsWith_" .. t[1]) end)
                         end
 
@@ -659,7 +659,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             SpawnButton:SetSize(535, 100)
             SpawnButton.Paint = function()
                 SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
-                if not timer.Exists("respawnTimeLeft") then
+                if !timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
                         spawnTextAnim = math.Clamp(spawnTextAnim + 200 * RealFrameTime(), 0, 20)
                     else
@@ -667,7 +667,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
-                    for k, v in pairs(weaponArray) do
+                    for k, v in ipairs(weaponArray) do
                         if activeGamemode == "Gun Game" then
                             draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT)
                         else
@@ -790,7 +790,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
                     -- Checking for the players currently equipped card
-                    for k, v in pairs(cardArray) do
+                    for k, v in ipairs(cardArray) do
                         if v[1] == currentCard then
                             newCard = v[1]
                             newCardName = v[2]
@@ -1384,7 +1384,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local function FillCardListsAll()
                         local lockedCards = {}
-                        for k, v in pairs(cardArray) do
+                        for k, v in ipairs(cardArray) do
                             if v[4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(v[1])
@@ -1530,7 +1530,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             end
                         end
 
-                        for k, v in pairs(lockedCards) do
+                        for k, v in ipairs(lockedCards) do
                             if v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
                                 local card = vgui.Create("DImageButton", DockStatCards)
                                 card:SetImage(v[1])
@@ -1640,7 +1640,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local function FillCardListsUnlocked()
-                        for k, v in pairs(cardArray) do
+                        for k, v in ipairs(cardArray) do
                             if v[4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(v[1])
@@ -2021,7 +2021,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("click")
                         local rand = math.random(1, totalCards)
 
-                        for k, v in pairs(cardArray) do
+                        for k, v in ipairs(cardArray) do
                             if k == rand then
                                 newCard = v[1]
                                 newCardName = v[2]
@@ -2087,7 +2087,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local accoladeModelsUnlocked = 0
 
                     -- Checking for the players currently equipped model
-                    for k, v in pairs(modelArray) do
+                    for k, v in ipairs(modelArray) do
                         if v[1] == currentModel then
                             newModel = v[1]
                             newModelName = v[2]
@@ -2507,7 +2507,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local function FillModelListsAll()
                         local lockedModels = {}
-                        for k, v in pairs(modelArray) do
+                        for k, v in ipairs(modelArray) do
                             if v[3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(v[1])
@@ -2578,7 +2578,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             end
                         end
 
-                        for k, v in pairs(lockedModels) do
+                        for k, v in ipairs(lockedModels) do
                             if v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                 icon:SetModel(v[1])
@@ -2624,7 +2624,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local function FillModelListsUnlocked()
-                        for k, v in pairs(modelArray) do
+                        for k, v in ipairs(modelArray) do
                             if v[3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(v[1])
@@ -2817,7 +2817,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("click")
                         local rand = math.random(1, totalModels)
 
-                        for k, v in pairs(modelArray) do
+                        for k, v in ipairs(modelArray) do
                             if k == rand then
                                 newModel = v[1]
                                 newModelName = v[2]

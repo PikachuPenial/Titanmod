@@ -7,7 +7,7 @@ local mapName
 local mapThumb
 local dof
 
-for m, t in pairs(mapArray) do
+for m, t in ipairs(mapArray) do
 	if game.GetMap() == t[1] then
 		mapName = t[2]
 		mapThumb = t[3]
@@ -233,7 +233,7 @@ function GM:ScoreboardShow()
 					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
 					accolades:AddOption("On Streaks (Kill Streaks Started): " .. v:GetNWInt("playerAccoladeOnStreak"))
 					accolades:AddOption("Buzz Kills (Kill Streaks Ended): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-					for p, t in pairs(weaponArray) do
+					for p, t in ipairs(weaponArray) do
 						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
 					end
 				else

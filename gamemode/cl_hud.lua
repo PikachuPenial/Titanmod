@@ -1219,7 +1219,7 @@ net.Receive("EndOfGame", function(len, ply)
     local secondModeName
     local decidedModeName
 
-    for m, t in pairs(mapArray) do
+    for m, t in ipairs(mapArray) do
         if game.GetMap() == t[1] then
             mapPlayedOn = t[2]
         end
@@ -1235,7 +1235,7 @@ net.Receive("EndOfGame", function(len, ply)
         end
     end
 
-    for g, t in pairs(gamemodeArray) do
+    for g, t in ipairs(gamemodeArray) do
         if firstMode == t[1] then
             firstModeName = tostring(t[2])
             firstModeDesc = tostring(t[3])
@@ -1588,14 +1588,14 @@ net.Receive("EndOfGame", function(len, ply)
         end
 
         function MapVoteCompleted()
-            for u, p in pairs(mapArray) do
+            for u, p in ipairs(mapArray) do
                 if decidedMap == p[1] then
                     decidedMapName = p[2]
                     decidedMapThumb = p[3]
                 end
             end
 
-            for u, m in pairs(gamemodeArray) do
+            for u, m in ipairs(gamemodeArray) do
                 if decidedMode == m[1] then
                     decidedModeName = m[2]
                 end
@@ -1842,7 +1842,7 @@ net.Receive("EndOfGame", function(len, ply)
 					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
 					accolades:AddOption("On Streaks (Kill Streaks Started): " .. v:GetNWInt("playerAccoladeOnStreak"))
 					accolades:AddOption("Buzz Kills (Kill Streaks Ended): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-					for p, t in pairs(weaponArray) do
+					for p, t in ipairs(weaponArray) do
 						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
 					end
 				else
@@ -1897,7 +1897,7 @@ function ShowLoadoutOnSpawn(ply)
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""
-    for k, v in pairs(weaponArray) do
+    for k, v in ipairs(weaponArray) do
         if v[1] == ply:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
         if v[1] == ply:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
         if v[1] == ply:GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end

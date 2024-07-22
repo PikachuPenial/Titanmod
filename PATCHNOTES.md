@@ -1,19 +1,22 @@
 # Unreleased Update
 **>GAMEPLAY**  
-*NEW SETTINGS*
-- Menu Scale
-- HUD Scale
+*MOVEMENT CHANGES*
+- Player acceleration is now 60% faster (moving from a complete stop or changing direction will be quicker)
 
 **>MAPS**   
 
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
-- Menus and UI now properly scale to different resolutions and aspect ratios and will look identical on any screen
+- Optimized array usage
 
 - Added reticle previews while editing the Optic Reticle Color setting
 
 - Walking now affects dynamic crosshairs
+
+- Improved loading times for customization menus on first launch
+
+- Fixed client precahcer error when connecting to a server
 
 
 

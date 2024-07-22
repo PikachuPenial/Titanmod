@@ -130,7 +130,7 @@ mapArray[17] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
 mapArray[18] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
-for m, v in pairs(mapArray) do
+for m, v in ipairs(mapArray) do
     if v[4] == true then table.insert(availableMaps, v[1]) end
 end
 
@@ -361,6 +361,7 @@ if SERVER then
     RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
 
     -- Player Acceleration
+    RunConsoleCommand("sv_accelerate", "16")
     RunConsoleCommand("sv_airaccelerate", "1000")
 
     -- Gunplay Specific TFA Configuration

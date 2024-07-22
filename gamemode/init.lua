@@ -68,10 +68,10 @@ util.AddNetworkString("FOVUpdate")
 local modelFiles = {}
 local cardFiles = {}
 
-for k, v in pairs(modelArray) do
+for k, v in ipairs(modelArray) do
 	table.insert(modelFiles, v[1])
 end
-for k, v in pairs(cardArray) do
+for k, v in ipairs(cardArray) do
 	table.insert(cardFiles, v[1])
 end
 
@@ -147,13 +147,15 @@ function GM:PlayerInitialSpawn(ply)
 	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
 	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
 	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
-	for k, v in pairs(weaponArray) do InitializeNetworkInt(ply, "killsWith_" .. v[1], 0) end
+	for i = 1, #weaponArray do
+		InitializeNetworkInt(ply, "killsWith_" .. weaponArray[i][1], 0)
+	end
 
 	ply:SetCanZoom(false)
 	HandlePlayerInitialSpawn(ply)
 
 	-- Updates the players XP to next level based on their current level
-	for k, v in pairs(levelArray) do
+	for k, v in ipairs(levelArray) do
 		if ply:GetNWInt("playerLevel") == v[1] and v[2] != "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 	end
 
@@ -185,15 +187,15 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 	end
 
 	local tbl
-	--[[ if key == "level" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 100;")
-	elseif key == "kd" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
-	elseif key == "wl" then
-		tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
-	else
-		tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;")
-	end --]]
+	-- if key == "level" then
+		-- tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') AS prestige, (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') AS level, ((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerPrestige') + 1) * 60 + (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerLevel') - 60 AS Value FROM PlayerData64 P GROUP BY P.steamid ORDER BY Value DESC LIMIT 100;")
+	-- elseif key == "kd" then
+		-- tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerKills') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'playerDeaths') AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
+	-- elseif key == "wl" then
+		-- tbl = sql.Query("SELECT P.steamid AS SteamID, p.steamname AS SteamName, CAST((SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesWon') as float) / (SELECT value FROM PlayerData64 WHERE SteamID = P.steamid AND key = 'matchesPlayed') * 100 AS Value FROM PlayerData64 P GROUP BY p.steamid ORDER BY Value DESC LIMIT 100;")
+	-- else
+		-- tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;")
+	-- end
 
 	tbl = sql.Query("SELECT SteamID, SteamName, Value FROM PlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;")
 
@@ -421,7 +423,7 @@ function CheckForPlayerLevel(ply)
 		ply:SetNWInt("playerLevel", curLvl + 1)
 		ply:SetNWInt("playerXP", curExp)
 
-		for k, v in pairs(levelArray) do
+		for k, v in ipairs(levelArray) do
 			if (curLvl + 1) == v[1] then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 		end
 
@@ -449,7 +451,7 @@ end
 -- Allows the Main Menu to change the players current playermodel
 net.Receive("PlayerModelChange", function(len, ply)
 	local selectedModel = net.ReadString()
-	for k, v in pairs(modelArray) do
+	for k, v in ipairs(modelArray) do
 		if selectedModel == v[1] then
 			local modelID = v[1]
 			local modelUnlock = v[3]
@@ -488,7 +490,7 @@ end )
 net.Receive("PlayerCardChange", function(len, ply)
 	local selectedCard = net.ReadString()
 	local masteryUnlockReq = 50
-	for k, v in pairs(cardArray) do
+	for k, v in ipairs(cardArray) do
 		if selectedCard == v[1] then
 			local cardID = v[1]
 			local cardUnlock = v[4]
@@ -626,7 +628,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		-- Remove maps from primary map pool if they are not fit for current player count
-		for p, v in pairs(mapArray) do
+		for p, v in ipairs(mapArray) do
 			if player.GetCount() > 5 and v[5] != 0 then table.RemoveByValue(mapPool, v[1]) end
 			if player.GetCount() <= 5 and v[5] == 0 then table.RemoveByValue(mapPool, v[1]) end
 		end
@@ -708,7 +710,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 					end
 				end
 
-				for k, v in pairs(availableMaps) do
+				for k, v in ipairs(availableMaps) do
 					if mapVotes[k] == maxMapVotes then
 						table.insert(newMapTable, v)
 					end
@@ -720,7 +722,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 					end
 				end
 
-				for k, v in pairs(gamemodeArray) do
+				for k, v in ipairs(gamemodeArray) do
 					if modeVotes[k] == maxModeVotes then
 						table.insert(newModeTable, v[1])
 					end
@@ -787,7 +789,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		if revote == false then
-			for k, v in pairs(availableMaps) do
+			for k, v in ipairs(availableMaps) do
 				if v == votedMap then
 					mapVotes[k] = mapVotes[k] + 1
 					table.insert(playersVoted, ply)
@@ -795,7 +797,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 				end
 			end
 		else
-			for k, v in pairs(availableMaps) do
+			for k, v in ipairs(availableMaps) do
 				if v == votedMap then
 					mapVotes[k] = mapVotes[k] + 1
 					if mapIndex	== 1 then
@@ -827,7 +829,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		if revote == false then
-			for k, v in pairs(gamemodeArray) do
+			for k, v in ipairs(gamemodeArray) do
 				if v[1] == votedMode then
 					modeVotes[k] = modeVotes[k] + 1
 					table.insert(playersVotedMode, ply)
@@ -835,7 +837,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 				end
 			end
 		else
-			for k, v in pairs(gamemodeArray) do
+			for k, v in ipairs(gamemodeArray) do
 				if v[1] == votedMode then
 					modeVotes[k] = modeVotes[k] + 1
 					if modeIndex == 1 then
@@ -914,8 +916,8 @@ function GM:PlayerDisconnected(ply)
 	UninitializeNetworkInt(ply, "playerAccoladeClutch")
 
 	-- Weapon Statistics
-	for p, t in pairs(weaponArray) do
-		UninitializeNetworkInt(ply, "killsWith_" .. t[1])
+	for i = 1, #weaponArray do
+		UninitializeNetworkInt(ply, "killsWith_" .. weaponArray[i][1])
 	end
 
 	sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:GetNWString("playerName")) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
@@ -953,8 +955,8 @@ function GM:ShutDown()
 		UninitializeNetworkInt(v, "playerAccoladeClutch")
 
 		-- Weapon Statistics
-		for p, t in pairs(weaponArray) do
-			UninitializeNetworkInt(v, "killsWith_" .. t[1])
+		for i = 1, #weaponArray do
+			UninitializeNetworkInt(v, "killsWith_" .. weaponArray[i][1])
 		end
 
 		sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(v:GetNWString("playerName")) .. " WHERE SteamID = " .. v:SteamID64() .. ";")

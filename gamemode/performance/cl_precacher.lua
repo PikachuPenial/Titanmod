@@ -149,8 +149,8 @@ function PrecacheAll()
     PrecacheDir("sound/weapons/tfre/winchester/")
 end
 
-timer.Create("CheckPrecacheEligibility", 1, 0, function()
-    if GetConVar("tm_precachefiles"):GetInt() == nil then return end
+hook.Add("InitPostEntity", "PrecacheOnLoad", function()
+    if !ConVarExists("tm_precachefiles") then return end -- skip if convar isn't loaded because gmod loves to do that sometimes
     if GetConVar("tm_developermode"):GetInt() == 0 and GetConVar("tm_precachefiles"):GetInt() == 1 then PrecacheAll() end
     timer.Remove("CheckPrecacheEligibility")
-end)
+end )
