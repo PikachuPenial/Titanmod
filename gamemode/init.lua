@@ -1,3 +1,4 @@
+
 AddCSLuaFile("performance/sh_optimization.lua")
 AddCSLuaFile("performance/cl_precacher.lua")
 AddCSLuaFile("performance/cl_rewrite_entity_index.lua")
@@ -90,7 +91,6 @@ net.Receive("PlayerInitialSpawn", function(len, ply)
 	sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:Name()) .. " WHERE SteamID = " .. ply:SteamID64() .. ";")
 end)
 
--- Player setup
 function GM:PlayerSpawn(ply)
 	ply:UnSpectate()
 	ply:SetGravity(.72 * playerGravityMulti)
@@ -126,7 +126,8 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("playerID64", ply:SteamID64())
 	ply:SetNWString("playerName", ply:Name())
 
-	-- Checking if PData exists for the player. If the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
+	-- checking if PData exists for the player
+	-- if the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
 	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
 	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
 	InitializeNetworkInt(ply, "playerKills", 0)
@@ -154,12 +155,12 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetCanZoom(false)
 	HandlePlayerInitialSpawn(ply)
 
-	-- Updates the players XP to next level based on their current level
+	-- updates the players XP to next level based on their current level
 	for k, v in ipairs(levelArray) do
 		if ply:GetNWInt("playerLevel") == v[1] and v[2] != "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
 	end
 
-	-- Checks for potential save file corruption and will fix it accordingly
+	-- checks for potential save file corruption and will fix it accordingly
 	if not table.HasValue(modelFiles, ply:GetNWString("chosenPlayermodel")) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") end
 	if not table.HasValue(cardFiles, ply:GetNWString("chosenPlayercard")) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") end
 end
@@ -204,7 +205,6 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 	net.Send(ply)
 end )
 
--- Calculate how much damage should be done to a player based on the hitgroup that was damaged, and send a hitsound to the inflictor of the damage
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end --Custom gamemode damage profile
 	if not dmginfo:GetAttacker():IsPlayer() then return end
@@ -213,7 +213,7 @@ function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	net.Send(dmginfo:GetAttacker())
 end
 
--- Check if a spawn point is suitable to spawn in (if another player is within proximity of this spawn point, do not spawn the player there)
+-- check if a spawn point is suitable to spawn in (if another player is within proximity of this spawn point, do not spawn the player there)
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
@@ -230,8 +230,8 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
 	return true
 end )
 
--- Rocket jumping
-local function ReduceRocketDamage(ent, dmginfo)
+-- self-explosive knockback
+local function ExplosiveKnockback(ent, dmginfo)
 	if not dmginfo:IsExplosionDamage() then return end
 	if not ent:IsPlayer() then return end
 
@@ -244,9 +244,8 @@ local function ReduceRocketDamage(ent, dmginfo)
 	ent:SetVelocity(newForce / 70)
 	dmginfo:ScaleDamage(0.3)
 end
-hook.Add("EntityTakeDamage", "RocketJumpEntityTakeDamage", ReduceRocketDamage)
+hook.Add("EntityTakeDamage", "ExplosiveKnockback", ExplosiveKnockback)
 
--- Tracking statistics and sending the Kill/Death UI on a players death
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
@@ -272,7 +271,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker.HealthRegenNext = 0
 	end
 
-	-- Decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu
+	-- decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu
 	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim != nil then
 			if not IsValid(victim) then return end
@@ -301,7 +300,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		return
 	end
 
-	-- Sends the Kill and Death UI, as well as initiating the Kill Cam
 	local weaponInfo
 	local weaponName
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
@@ -362,7 +360,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if distance >= attacker:GetNWInt("farthestKill") then attacker:SetNWInt("farthestKill", distance) end
 
-	-- This scores attackers based on the Accolades they earned on a given kill, this looks pretty messy but its okay, I think
 	if attacker:GetNWInt("killStreak") >= 3 then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 10 * attacker:GetNWInt("killStreak"))
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 10 * attacker:GetNWInt("killStreak"))
@@ -441,14 +438,12 @@ net.Receive("CloseMainMenu", function(len, ply)
 	end
 end )
 
--- Overwritting the default respawn mechanics to lock players behind a spwan countdown
 function GM:PlayerDeathThink(ply)
 	if timer.Exists(ply:SteamID() .. "respawnTime") then
 		return false
 	end
 end
 
--- Allows the Main Menu to change the players current playermodel
 net.Receive("PlayerModelChange", function(len, ply)
 	local selectedModel = net.ReadString()
 	for k, v in ipairs(modelArray) do
@@ -486,7 +481,6 @@ net.Receive("PlayerModelChange", function(len, ply)
 	end
 end )
 
--- Allows the Main Menu to change the players current playercard
 net.Receive("PlayerCardChange", function(len, ply)
 	local selectedCard = net.ReadString()
 	local masteryUnlockReq = 50
@@ -530,7 +524,6 @@ net.Receive("PlayerCardChange", function(len, ply)
 	end
 end )
 
--- Player health regeneration after not being hit for a period of time
 if healthRegeneration == true then
 	local function Regeneration()
 		for _, ply in pairs(player.GetAll()) do
@@ -565,7 +558,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 	local firstMode
 	local secondMode
 
-	-- Begins the process of ending a match
+	-- begins the process of ending a match
 	function EndMatch()
 		SetGlobal2Int("VotesOnModeOne", 0)
 		SetGlobal2Int("VotesOnModeTwo", 0)
@@ -612,13 +605,13 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		local modePool = {}
 		local modePoolSecondary = {}
 
-		-- Primary map pool will only contain maps suitable for the current player count
-		-- Secondary map pool will contain every map in the game
+		-- primary map pool will only contain maps suitable for the current player count
+		-- secondary map pool will contain every map in the game
 
-		-- Primary mode pool will only contain modes that are simplistic in nature
-		-- Secondary mode pool will only contain modes with complicated elements (objectives, weird modifiers, etc)
+		-- primary mode pool will only contain modes that are simplistic in nature
+		-- secondary mode pool will only contain modes with complicated elements (objectives, weird modifiers, etc)
 
-		-- Makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool
+		-- makes sure that the map currently being played is not added to the map pool, and check if maps are allowed to be added to the map pool
 		for m, v in RandomPairs(availableMaps) do
 			if game.GetMap() != v then table.insert(mapPool, v) end
 		end
@@ -627,7 +620,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			if game.GetMap() != v then table.insert(mapPoolSecondary, v) end
 		end
 
-		-- Remove maps from primary map pool if they are not fit for current player count
+		-- remove maps from primary map pool if they are not fit for current player count
 		for p, v in ipairs(mapArray) do
 			if player.GetCount() > 5 and v[5] != 0 then table.RemoveByValue(mapPool, v[1]) end
 			if player.GetCount() <= 5 and v[5] == 0 then table.RemoveByValue(mapPool, v[1]) end
@@ -642,19 +635,19 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 
 		firstMap = mapPool[1]
-		table.RemoveByValue(mapPoolSecondary, firstMap) --Make sure that the same map isnt on both votes.
+		table.RemoveByValue(mapPoolSecondary, firstMap) -- make sure that the same map isnt on both votes
 		secondMap = mapPoolSecondary[1]
 
 		firstMode = modePool[1]
 		secondMode = modePoolSecondary[2]
 
 		hook.Add("PlayerDisconnected", "ServerEmptyDuringVoteCheck", function()
-			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() --Delaying by a few seconds, just in case.
+			timer.Create("DelayBeforeEmptyCheck", 5, 1, function() -- delaying by a few seconds, just in case
 				if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) end
 			end)
 		end )
 
-		-- Failsafe for empty servers, will skip to a new map if there are no players connected to the server
+		-- failsafe for empty servers, will skip to a new map if there are no players connected to the server
 		if player.GetCount() == 0 then RunConsoleCommand("changelevel", firstMap) return end
 
 		for k, v in pairs(player.GetAll()) do
@@ -662,7 +655,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 			v:SetNWBool("PostGameMute", false)
 		end
 
-		-- Failsafe in case map votes are just not generated
+		-- failsafe in case map votes are just not generated
 		if firstMap == nil then firstMap = "tm_arctic" end
 		if secondMap == nil then secondMap = "tm_mall" end
 
@@ -758,7 +751,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end)
 	end
 
-	-- Calls for a match end once the match timer has concluded
+	-- calls for a match end once the match timer has concluded
 	local function MatchStatusCheck()
 		local currentTime = math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime())
 		if CurTime() > GetGlobal2Int("tm_matchtime", 0) then EndMatch() end
@@ -771,7 +764,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		end
 	end
 
-	-- Checking the match time periodically to determine when a match should end
+	-- checking the match time periodically to determine when a match should end
 	timer.Create("matchStatusCheck", 1, 0, MatchStatusCheck)
 
 	net.Receive("ReceiveMapVote", function(len, ply)
@@ -870,7 +863,7 @@ function ReduceMatchTimeCommand(ply, cmd, args)
 end
 concommand.Add("tm_reducematchtime", ReduceMatchTimeCommand)
 
--- Modifies base game voice chat to be proximity based
+-- modifies base game voice chat to be proximity based
 hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > proxChatRange) then
 		return false, false
@@ -879,15 +872,14 @@ hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	end
 end )
 
--- Disable traditional suiciding when in the intermission phase
+-- disable traditional suiciding when in the intermission phase
 hook.Add("CanPlayerSuicide", "IntermissionBlocksSuicide", function(ply)
 	if GetGlobal2Bool("tm_intermission") then return false end
 end )
 
--- Saves the players statistics when they leave, or when the server shuts down
 function GM:PlayerDisconnected(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-	-- Statistics
+	-- stats
 	UninitializeNetworkInt(ply, "playerKills")
 	UninitializeNetworkInt(ply, "playerDeaths")
 	UninitializeNetworkInt(ply, "playerScore")
@@ -897,16 +889,16 @@ function GM:PlayerDisconnected(ply)
 	UninitializeNetworkInt(ply, "highestKillGame")
 	UninitializeNetworkInt(ply, "farthestKill")
 
-	-- Leveling
+	-- leveling
 	UninitializeNetworkInt(ply, "playerLevel")
 	UninitializeNetworkInt(ply, "playerPrestige")
 	UninitializeNetworkInt(ply, "playerXP")
 
-	-- Customizatoin
+	-- customizatoin
 	UninitializeNetworkString(ply, "chosenPlayermodel")
 	UninitializeNetworkString(ply, "chosenPlayercard")
 
-	-- Accolades
+	-- accolades
 	UninitializeNetworkInt(ply, "playerAccoladeOnStreak")
 	UninitializeNetworkInt(ply, "playerAccoladeBuzzkill")
 	UninitializeNetworkInt(ply, "playerAccoladeLongshot")
@@ -915,7 +907,7 @@ function GM:PlayerDisconnected(ply)
 	UninitializeNetworkInt(ply, "playerAccoladeHeadshot")
 	UninitializeNetworkInt(ply, "playerAccoladeClutch")
 
-	-- Weapon Statistics
+	-- weapon stats
 	for i = 1, #weaponArray do
 		UninitializeNetworkInt(ply, "killsWith_" .. weaponArray[i][1])
 	end
@@ -926,7 +918,7 @@ end
 function GM:ShutDown()
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
 	for k, v in pairs(player.GetHumans()) do
-		-- Statistics
+		-- stats
 		UninitializeNetworkInt(v, "playerKills")
 		UninitializeNetworkInt(v, "playerDeaths")
 		UninitializeNetworkInt(v, "playerScore")
@@ -936,16 +928,16 @@ function GM:ShutDown()
 		UninitializeNetworkInt(v, "highestKillGame")
 		UninitializeNetworkInt(v, "farthestKill")
 
-		-- Leveling
+		-- leveling
 		UninitializeNetworkInt(v, "playerLevel")
 		UninitializeNetworkInt(v, "playerPrestige")
 		UninitializeNetworkInt(v, "playerXP")
 
-		-- Customizatoin
+		-- customizatoin
 		UninitializeNetworkString(v, "chosenPlayermodel")
 		UninitializeNetworkString(v, "chosenPlayercard")
 
-		-- Accolades
+		-- accolades
 		UninitializeNetworkInt(v, "playerAccoladeOnStreak")
 		UninitializeNetworkInt(v, "playerAccoladeBuzzkill")
 		UninitializeNetworkInt(v, "playerAccoladeLongshot")
@@ -954,7 +946,7 @@ function GM:ShutDown()
 		UninitializeNetworkInt(v, "playerAccoladeHeadshot")
 		UninitializeNetworkInt(v, "playerAccoladeClutch")
 
-		-- Weapon Statistics
+		-- weapon stats
 		for i = 1, #weaponArray do
 			UninitializeNetworkInt(v, "killsWith_" .. weaponArray[i][1])
 		end

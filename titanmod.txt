@@ -1,9 +1,9 @@
 "titanmod"
 {
-	"base"		"base"
-	"title"		"Titanmod"
-	"category"	"pvp"
-	"maps"		"^tm_"
+	"base"			"base"
+	"title"			"Titanmod"
+	"category"		"pvp"
+	"maps"			"^tm_"
 	"menusystem"	"1"
 	"workshopid"	"3002938569"
 

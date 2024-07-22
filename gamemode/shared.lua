@@ -1,3 +1,4 @@
+
 include("performance/cl_precacher.lua")
 include("performance/cl_rewrite_entity_index.lua")
 include("performance/cl_rewrite_player_index.lua")
@@ -9,7 +10,6 @@ GM.Author = "Penial"
 GM.Email = "glass campers on tm_mall turning around to see a bald man crouching with a AA-12"
 GM.Website = "https://github.com/PikachuPenial/Titanmod"
 
--- Creating server ConVars and initializing the config
 if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 7) end
 if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() >= 7 then SetGlobal2String("ActiveGamemode", "VIP") end
 
@@ -51,7 +51,6 @@ if !ConVarExists("sv_tm_player_jumpsliding") then CreateConVar("sv_tm_player_jum
 if !ConVarExists("sv_tm_deathcam") then CreateConVar("sv_tm_deathcam", "1", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "Enable or disable Titanmod's custom death camera on a players death (showing the killers POV after a death), this can still be disabled by players client-side (1 by default)") end
 include("config.lua")
 
--- Creating client ConVars, mostly for use in the Options menu
 if CLIENT then
     CreateClientConVar("tm_menusounds", 1, true, false, "Enable/disable the menu sounds", 0, 1)
     CreateClientConVar("tm_hitsounds", 1, true, false, "Enable/disable the hitsounds", 0, 1)
@@ -182,12 +181,11 @@ if CLIENT then
     CreateClientConVar("tm_hud_voiceindicator", 1, true, false, "Enable/disable the voice indicator", 0, 1)
 end
 
--- Sets up keybinds
-if not game.SinglePlayer() then
+if !game.SinglePlayer() then
     if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
-                -- Weapon quick switching
+                -- weapon quick switching
                 if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
                 if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
                     ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
@@ -199,7 +197,7 @@ if not game.SinglePlayer() then
                     ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
                 end
 
-                -- Main Menu
+                -- menu
                 if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
                     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
                         ply:KillSilent()
@@ -216,7 +214,7 @@ if not game.SinglePlayer() then
             end
             if CLIENT then
                 if GetGlobal2Bool("tm_intermission") then return end
-                -- Grenade
+                -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
                 hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
                     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
@@ -226,7 +224,7 @@ if not game.SinglePlayer() then
     else
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
-                -- Weapon quick switching
+                -- weapon quick switching
                 if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
                 if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
                     ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
@@ -238,7 +236,7 @@ if not game.SinglePlayer() then
                     ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
                 end
 
-                -- Main Menu
+                -- menu
                 if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
                     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
                         ply:KillSilent()
@@ -255,7 +253,7 @@ if not game.SinglePlayer() then
             end
             if CLIENT then
                 if GetGlobal2Bool("tm_intermission") then return end
-                -- Grenade
+                -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
                 hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
                     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
@@ -264,11 +262,11 @@ if not game.SinglePlayer() then
         end)
     end
 else
-    -- Client sided binds do NOT work in single player, therefore it all needs to be server side.
+    -- client sided binds do NOT work in single player, therefore it all needs to be server side
     if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
-                -- Weapon quick switching
+                -- weapon quick switching
                 if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
                 if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
                     ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
@@ -280,7 +278,7 @@ else
                     ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
                 end
 
-                -- Main Menu
+                -- menu
                 if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
                     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
                         ply:KillSilent()
@@ -296,7 +294,7 @@ else
                 end
                 if GetGlobal2Bool("tm_intermission") then return end
 
-                -- Grenade
+                -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
                 hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
                     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
@@ -306,7 +304,7 @@ else
     else
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
-                -- Weapon quick switching
+                -- weapon quick switching
                 if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
                 if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
                     ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
@@ -318,7 +316,7 @@ else
                     ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
                 end
 
-                -- Main Menu
+                -- menu
                 if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
                     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
                         ply:KillSilent()
@@ -334,7 +332,7 @@ else
                 end
                 if GetGlobal2Bool("tm_intermission") then return end
 
-                -- Grenade
+                -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
                 hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
                     if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("-quicknade") end
@@ -344,18 +342,15 @@ else
     end
 end
 
--- Disabling footsteps if a player is crouched
 hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound, volume, ktoslishet)
     if !ply:Crouching() then return end
     return true
 end)
 
--- Disable the default HL2 death sound
 hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
     return true
 end)
 
--- Disable fake TFA bullet tracers (clutters up gameplay because most weapons are hitscan)
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "TracerCount" then return 1 end
     if stat == "TracerName" then return "Tracer" end
@@ -367,7 +362,6 @@ hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "IronSightsReloadLock" then return false end
 end)
 
--- Disable various TFA related effects when firing a weapon
 hook.Add("TFA_MakeShell", "DisableShells", function(Weapon)
     return false
 end)
@@ -384,14 +378,14 @@ hook.Add("TFA_MuzzleSmoke", "DisableMuzzleSmoke", function(Weapon)
     return false
 end)
 
--- Disable specific TFA attachments
+-- disable specific TFA attachments
 hook.Add("TFABase_ShouldLoadAttachment", "DisableUBGL", function(id, path)
     if id and (id == "ins2_fg_gp25" or id == "ins2_fg_m203" or id == "r6s_flashhider_2" or id == "r6s_h_barrel" or id == "am_gib" or id == "am_magnum" or id == "am_match" or id == "flashlight" or id == "flashlight_lastac" or id == "ins2_eft_lastac2" or id == "tfa_at_fml_flashlight" or id == "un_flashlight" or id == "ins2_ub_flashlight") then
         return false
     end
 end)
 
--- Model Array Formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
+-- model array formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
 modelArray = {}
 modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "default", "default"}
 modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "default", "default"}
@@ -454,7 +448,7 @@ modelArray[58] = {"models/pacagma/humans/heroes/imc_hero_viper_player.mdl", "Vip
 modelArray[59] = {"models/auditor/titanfall2/cooper/chr_jackcooper.mdl", "Cooper", "buzzkills", 200}
 modelArray[60] = {"models/auditor/re2/chr_hunk_pmrig.mdl", "Hunk", "buzzkills", 320}
 
--- Calling Card Array Formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
+-- calling card array formatting (Image File, Card Name, Card Description, Unlock Style, Unlock Value)
 cardArray = {}
 cardArray[1] = {"cards/default/barrels.png", "Barrels", "", "default", "default"}
 cardArray[2] = {"cards/default/carbon.png", "Carbon", "", "default", "default"}
@@ -532,8 +526,6 @@ cardArray[73] = {"cards/color/brown.png", "Brown", "Solid brown color", "color",
 cardArray[74] = {"cards/color/gray.png", "Gray", "Solid gray color", "color", "color"}
 cardArray[75] = {"cards/color/white.png", "White", "Solid white color", "color", "color"}
 cardArray[76] = {"cards/color/black.png", "Black", "Solid black color", "color", "color"}
-
--- Mastery Cards
 cardArray[77] = {"cards/mastery/aa12.png", "Close Up", "AA-12 mastery", "mastery", "tfa_ins2_aa12"}
 cardArray[78] = {"cards/mastery/acr.png", "Posted Up", "ACR mastery", "mastery", "tfa_ins2_acrc"}
 cardArray[79] = {"cards/mastery/aek971.png", "Stalker", "AEK-971 mastery", "mastery", "tfa_ins2_aek971"}
@@ -664,8 +656,6 @@ cardArray[203] = {"cards/mastery/vhsd2.png", "Liminal", "VHS-D2 mastery", "maste
 cardArray[204] = {"cards/mastery/waltherp99.png", "Advisory", "Walther P99 mastery", "mastery", "tfa_ins2_walther_p99"}
 cardArray[205] = {"cards/mastery/webley.png", "Bear", "Webley mastery", "mastery", "tfa_doi_webley"}
 cardArray[206] = {"cards/mastery/xm8.png", "Ragdoll", "XM8 mastery", "mastery", "tfa_ins2_xm8"}
-
--- Leveling Cards
 cardArray[207] = {"cards/leveling/5.png", "Mist", "Prestige 0 Level 5", "level", 5}
 cardArray[208] = {"cards/leveling/10.png", "Tech", "Prestige 0 Level 10", "level", 10}
 cardArray[209] = {"cards/leveling/15.png", "Processing", "Prestige 0 Level 15", "level", 15}
@@ -714,8 +704,6 @@ cardArray[251] = {"cards/leveling/225.png", "Darkness", "Prestige 3 Level 45", "
 cardArray[252] = {"cards/leveling/230.png", "Arctic", "Prestige 3 Level 50", "level", 230}
 cardArray[253] = {"cards/leveling/235.png", "Modern", "Prestige 3 Level 55", "level", 235}
 cardArray[254] = {"cards/leveling/240.png", "Childhood", "Prestige 3 Level 60", "level", 240}
-
--- Pride cards
 cardArray[255] = {"cards/pride/pride.png", "Pride", "<3", "pride", "pride"}
 cardArray[256] = {"cards/pride/bi.png", "Bi", "<3", "pride", "pride"}
 cardArray[257] = {"cards/pride/pan.png", "Pan", "<3", "pride", "pride"}
@@ -729,7 +717,8 @@ cardArray[264] = {"cards/pride/nonbinary.png", "Nonbinary", "<3", "pride", "prid
 cardArray[265] = {"cards/pride/agender.png", "Agender", "<3", "pride", "pride"}
 cardArray[266] = {"cards/pride/zedo.png", "Zedo", "", "pride", "pride"}
 
--- Creating a leveling array, this removes the consistency of the leveling, using set XP requierments per level instead of a formula. Is this time consuming? Yes, very much, but its better trust me bro
+-- creating a leveling array, this removes the consistency of the leveling, using set XP requierments per level instead of a formula
+-- is this time consuming? yes, very much so, but its better trust me bro!
 levelArray = {}
 levelArray[1] = {1, 750} -- +75 XP
 levelArray[2] = {2, 825}
@@ -792,11 +781,7 @@ levelArray[58] = {58, 8650}
 levelArray[59] = {59, 8850}
 levelArray[60] = {60, "prestige"}
 
--- Hints, are displayed at the bottom of the Main Menu
 hintArray = {"Winning the match nets you bonus XP", "Suppressors might make your gun sound badass, but it will also lower your damage", "Be vigilant with the acidic flood while playing on the Mephitic map", "Follow CaptainBear on the Steam Workshop", "Switching to your secondary is 'usually' faster than reloading", "To win a match, a player must have more score than the rest of the competing players", "Voice chat is proximity based, do with this information as you see fit", "Slug ammunition turns your traditional shotgun into a marksman rifle", "Try personalizing yourself in the cuztomization menus", "Crouching completely eliminates your footstep audio, embrace the sneaky", "You can cycle through firing modes by using your Interact + Reload keys", "All melee weapons can be thrown with the reload key", "Air strafing is extremely useful, try to incorperate it into your playstyle", "Frag ammunition deafens hit players for a few seconds, and slows down their movement speed", "Explosive barrels can be used as a funny distraction", "Players can not shoot most weapons while submerged in water, use this to your advantage", "Almost everything you do in game is tracked, check out the stats page to compare yourself with others", "The grappling hook can easily be used to start favorable engagments", "Jumping and/or being in mid air gives your weapons less accuracy", "Sliding provides the same accuracy and recoil benefits as crouching", "Chaining multiple accolades together can give a big score/XP boost", "Accolades grant good amounts of score and XP", "Running any optic lowers your weapons ADS speed", "There are over 130+ weapons, try to get consistent with many different loadouts", "There is no scope glint, hardscope all you want", "Hip fire is an effective strategy while on the move", "Other players can see your flashlight, be cautious", "Certain playermodels may shine or stand out in dark enviroments", "Combine wall running and jumping for extremely unpredictable movement", "Wall running through a chokepoint can catch opponents off guard", "Wall jumping constantly allows for continuous climbing of said wall", "All melee weapons have a left and right click attack, learn how effective each are", "Attachments save throughout play sessions, tweak your guns once and you are done", "Some snipers and hand cannons can one shot to the torso", "Explosives hurt, don't aim downwards if you want to stay alive", "Crouching drastically increases your accuracy and recoil control", "Each weapon has its own distinct recoil pattern to master", "Your grappling hook cooldown refreshes on each kill", "Shooting the torso and/or head will guarintee good damage per shot", "You can sprint and/or slide in any direction, not just forwards", "Don't stand still, potshotters will have an easy time killing you", "The vehicles can be mounted and surfed on while playing the Bridge map", "Bunny hopping will help perserve velocity after landing from a grapple/slide"}
-
--- Quotes, are displayed on the victory/defeat screeen
 quoteArray = {'"thank you for playing my gamemode <3" -Penial', '"a jeep wrangler is less aerodynamic than a lobster" -P0w', '"meow" -Megu', '"my grandma drowned, drowned in drip" -RandomSZ', '"skill issue" -Strike Force Lightning', '"told my wife im going to the bank, didnt tell her which one" -stiel', '"go lick a gas pump" -Bomca', '"justice for cradle, we the people demand" -RandomSZ', '"women fear me, fish want me" -Tomato', '"gang where are you, blud where are you" -White Guy', '"any kief slayers" -Cream', '"if i was a tree, i would have no reason to love a human" -suomij', '"i wish someone wanted me like plankton wanted the formula" -Seven', '"but your honor, babies kick pregnant women all the time" -MegaSlayer', '"by the nine im tweakin" -MegaSlayer', '"ball torture is $4 usd on steam" -Portanator', '"your walls are never safe from the drywall muncher" -Vertex', '"im obviously not racist, ive kissed a black man" -Mattimeo', '"my balls are made of one thing..." -RubberBalls', '"im like that" -Homeless', '"i need about tree fiddy" -Random Films', '"bring out the whole ocean" -Robo', '"can we ban this guy" -Poopy', '"root beer" -Plat', '"never forget 9/11" -afiais', '"praise o monolith" -Medinator', '"why is he there" -Smity', '"shut it mate yer da sells avon" -zee!', '"holy fishpaste" -Zenthic', '"titanmod servers are as stable as a girl with blue hair" -TheBean', '"titanmod is my favorite tactical shooter" -Computery'}
 
--- Derives the gamemode with Sandbox if Developer Mode is enabled on server start
 if GetConVar("tm_developermode"):GetInt() == 1 then DeriveGamemode("sandbox") end

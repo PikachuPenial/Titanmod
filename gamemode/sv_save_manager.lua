@@ -1,3 +1,4 @@
+
 hook.Add("Initialize", "InitPlayerNetworking", function()
     sql.Query("CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT, SteamName TEXT);")
 end )
@@ -6,10 +7,10 @@ end )
 function SetPlayerData(steamID64, key, value)
     local query = sql.Query("SELECT Value FROM PlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";")
 
-    -- If we need to make a new PData entry
+    -- if we need to make a new PData entry
     if query == nil then sql.Query("INSERT INTO PlayerData64 ( SteamID, Key, Value ) VALUES( " .. steamID64 .. ", " .. SQLStr( key ) .. ", " .. SQLStr( value ) .. ");") end
 
-    -- If we need to update an existing entry
+    -- if we need to update an existing entry
     if query != nil then sql.Query("UPDATE PlayerData64 SET Value = " .. SQLStr( value ) .. " WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";") end
 end
 

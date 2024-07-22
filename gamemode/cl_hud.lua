@@ -1,3 +1,4 @@
+
 scrW, scrH = ScrW(), ScrH()
 center_x, center_y = ScrW() / 2, ScrH() / 2
 scale = center_y * (2 / 1080)
@@ -25,7 +26,7 @@ local sounds = {}
 local convars = {}
 
 function UpdateHUD()
-    -- Calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame
+    -- calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame
     crosshair = {
         ["enabled"] = GetConVar("tm_hud_crosshair"):GetInt(),
         ["style"] = GetConVar("tm_hud_crosshair_style"):GetInt(),
@@ -347,7 +348,7 @@ local function CrosshairStateUpdate(client, wep)
 end
 
 function HUDAlways(client)
-    -- Remaining match time
+    -- remaining match time
     timeText = string.FormattedTime(GetGlobal2Int("tm_matchtime", 0) - CurTime(), "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
@@ -366,7 +367,7 @@ function HUDAlways(client)
         end
     end
 
-    -- Kill feed
+    -- kill feed
     surface.SetFont("HUD_StreakText")
     for k, v in pairs(feedArray) do
         if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, feedHUD["opacity"]) else surface.SetDrawColor(50, 50, 50, feedHUD["opacity"]) end
@@ -376,7 +377,7 @@ function HUDAlways(client)
         draw.SimpleText(v[1], "HUD_StreakText", 2.5 + feedHUD["x"], scrH - 10 + ((k - 1) * feedEntryPadding) - feedHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
-    -- Objective indicator
+    -- objective indicator
     if activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Empty" then
             hillColor = Color(objHUD["obj_empty_r"], objHUD["obj_empty_g"], objHUD["obj_empty_b"], 3)
@@ -478,7 +479,7 @@ function HUDAlive(client)
     LerpCrosshair()
 
     if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
-    -- Crosshair
+    -- crosshair
     if crosshair["style"] == 1 then
         dyn = CrosshairStateUpdate(client, weapon)
         LerpCrosshair(client)
@@ -500,7 +501,7 @@ function HUDAlive(client)
         if crosshair["dot"] == 1 then surface.DrawRect(center_x - math.floor(crosshair["thickness"] / 2), center_y - math.floor(crosshair["thickness"] / 2), crosshair["thickness"], crosshair["thickness"]) end
     end
 
-    -- Hitmarkers
+    -- hitmarkers
     if hitmarker["enabled"] == 1 then
         hitmarkerFade = math.Clamp(hitmarkerFade - 7 * RealFrameTime(), 0, hitmarker["duration"])
         surface.SetDrawColor(hitmarker[hitColor .. "_r"], hitmarker[hitColor .. "_g"], hitmarker[hitColor .. "_b"], hitmarker["opacity"] * math.min(1, hitmarkerFade))
@@ -511,7 +512,7 @@ function HUDAlive(client)
         surface.DrawTexturedRectRotated(center_x - hitmarker["gap"], center_y + hitmarker["gap"], hitmarker["thickness"] * math.min(1, hitmarkerFade), hitmarker["size"], 315)
     end
 
-    -- Health
+    -- health
     LerpHealth()
     surface.SetDrawColor(50, 50, 50, 80)
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"], 30)
@@ -529,10 +530,10 @@ function HUDAlive(client)
     surface.DrawRect(healthHUD["x"], scrH - 30 - healthHUD["y"], healthHUD["size"] * (math.max(0, smoothHP) / client:GetMaxHealth()), 30)
     draw.SimpleText(health, "HUD_Health", healthHUD["size"] + healthHUD["x"] - 10, scrH - 15 - healthHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-    -- Ammo/Weapon
+    -- ammo/weapon
     if weapon == NULL then return end
     if convars["ammo_style"] == 0 then
-        -- Numeric Style
+        -- numeric style
         draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - 20 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 155 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
 
@@ -551,7 +552,7 @@ function HUDAlive(client)
 
         draw.SimpleText(ammoText, "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - 100 - weaponHUD["y"], ammoColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     elseif convars["ammo_style"] == 1 then
-        -- Bar Style
+        -- bar style
 
         draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW + 2 - weaponHUD["x"], scrH - 35 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
         if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - 85 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
@@ -578,7 +579,7 @@ function HUDAlive(client)
 
     if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
 
-    -- Equipment
+    -- equipment
     local grappleMat = Material("icons/grapplehudicon.png", "noclamp smooth")
     local nadeMat = Material("icons/grenadehudicon.png", "noclamp smooth")
     local grappleText
@@ -633,7 +634,7 @@ function HUDAlive(client)
         end
     end
 
-    -- Keypress Overlay
+    -- keypress overlay
     if convars["keypress_overlay"] == 1 then
         KPOKeyCheck(client)
         surface.SetMaterial(keyMat)
@@ -663,16 +664,16 @@ function HUDAlive(client)
         draw.SimpleText("DUCK", "HUD_StreakText", 105 + kpoHUD["x"], 165 + kpoHUD["y"], cColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
-    -- Velocity Counter
+    -- velocity counter
     if convars["velocity_counter"] == 1 then draw.SimpleText(tostring(math.Round(LocalPlayer():GetVelocity():Length())) .. " u/s", "HUD_Health", velocityHUD["x"], velocityHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP) end
 
-    -- Disclaimer for players connecting during an active gamemode and map vote
+    -- disclaimer for players connecting during an active gamemode and map vote
     if GetGlobal2Bool("tm_matchended") == true then
         draw.SimpleText("Match has ended", "HUD_GunPrintName", scrW / 2, scrH / 2 - 160, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         draw.SimpleText("Sit tight, another match is about to begin!", "HUD_Health", scrW / 2, scrH / 2 - 120, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
-    -- Cranked Bar
+    -- cranked Bar
     if activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then
         surface.SetDrawColor(50, 50, 50, 80)
         surface.DrawRect(scrW / 2 - 75, 60 + matchHUD["y"], 150, 10)
@@ -682,7 +683,7 @@ function HUDAlive(client)
     end
 end
 
--- Create the HUD hook depending on the gamemode being played
+-- create the HUD hook depending on the gamemode being played
 function CreateHUDHook()
     if activeGamemode == "KOTH" then
         -- KOTH rendering
@@ -866,7 +867,7 @@ net.Receive("SendNotification", function(len, ply)
     end)
 end )
 
--- Hides the players info that shows up when aiming at another player
+-- hides the players info that shows up when aiming at another player
 function DrawTarget()
     return false
 end
@@ -898,7 +899,7 @@ local chudlist = {
     ["CHudCrosshair"] = true
 }
 
--- Hides default HL2 HUD elements
+-- hides default HL2 HUD elements
 hook.Add("HUDShouldDraw", "HideHL2HUD", function(name)
     if (chudlist[name]) then return false end
 end )
@@ -936,7 +937,7 @@ hook.Add("PlayerEndVoice", "ImageOnVoice", function()
     hook.Remove("HUDPaint", "VoiceIndicator")
 end)
 
--- Plays the received hitsound if a player hits another player
+-- plays the received hitsound if a player hits another player
 net.Receive("SendHitmarker", function(len, pl)
     if sounds["hit_enabled"] == 0 then return end
     local hit_reg = "hitsound/hit_" .. sounds["hit"] .. ".wav"
@@ -976,7 +977,7 @@ net.Receive("KillFeedUpdate", function(len, ply)
     end
 end )
 
--- Displays after a player kills another player
+-- displays after a player kills another player
 net.Receive("NotifyKill", function(len, ply)
     if convars["hud_enable"] == 0 then return end
     if gameEnded then return end
@@ -1007,7 +1008,7 @@ net.Receive("NotifyKill", function(len, ply)
     KillIcon:SetImage("icons/killicon.png")
     KillIcon:SizeTo(50, 50, 0.75, 0, 0.1)
 
-    -- Displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg
+    -- displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg
     if lastHitIn == 1 then
         accoladeList = accoladeList .. "Headshot +20 | "
         KillIcon:SetImageColor(red)
@@ -1047,7 +1048,7 @@ net.Receive("NotifyKill", function(len, ply)
     local rainbowSpeed = 160
     local rainbowColor = HSVToColor((CurTime() * rainbowSpeed) % 360, 1, 1)
 
-    -- Dynamic text color depending on the killstreak of the player
+    -- dynamic text color depending on the killstreak of the player
     if killStreak <= 2 then
         streakColor = white
     elseif killStreak <= 4 then
@@ -1086,7 +1087,7 @@ net.Receive("NotifyKill", function(len, ply)
     end)
 end )
 
---Displays after a player dies to another player
+-- displays after a player dies to another player
 net.Receive("NotifyDeath", function(len, ply)
     hook.Remove("Tick", "KeyOverlayTracking")
     if timer.Exists("CounterUpdate") then timer.Remove("CounterUpdate") end
@@ -1162,7 +1163,7 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:SetKeyboardInputEnabled(false)
 end )
 
--- Displays to all players when a map vote begins
+-- displays to all players when a map vote begins
 net.Receive("EndOfGame", function(len, ply)
     LocalPly = LocalPlayer()
     gameEnded = true
@@ -1170,8 +1171,6 @@ net.Receive("EndOfGame", function(len, ply)
     local dof
     local winningPlayer
     local wonMatch = false
-    local votedOnMap = false
-    local votedOnGamemode = false
     local mapPicked
     local gamemodePicked
     local mapDecided = false
@@ -1302,7 +1301,7 @@ net.Receive("EndOfGame", function(len, ply)
         StartVotingPhase()
     end)
 
-    -- Determine who won the match
+    -- determine who won the match
     for k, v in pairs(connectedPlayers) do
         if k == 1 then winningPlayer = v end
     end
@@ -1521,7 +1520,6 @@ net.Receive("EndOfGame", function(len, ply)
             net.WriteString(secondMap)
             net.WriteUInt(1, 2)
             net.SendToServer()
-            votedOnMap = true
             mapPicked = 1
             surface.PlaySound("buttons/button15.wav")
 
@@ -1541,7 +1539,6 @@ net.Receive("EndOfGame", function(len, ply)
             net.WriteString(firstMap)
             net.WriteUInt(2, 2)
             net.SendToServer()
-            votedOnMap = true
             mapPicked = 2
             surface.PlaySound("buttons/button15.wav")
 
@@ -1561,7 +1558,6 @@ net.Receive("EndOfGame", function(len, ply)
             net.WriteInt(secondMode, 4)
             net.WriteUInt(1, 2)
             net.SendToServer()
-            votedOnGamemode = true
             gamemodePicked = 1
             surface.PlaySound("buttons/button15.wav")
 
@@ -1579,7 +1575,6 @@ net.Receive("EndOfGame", function(len, ply)
             net.WriteInt(firstMode, 4)
             net.WriteUInt(2, 2)
             net.SendToServer()
-            votedOnGamemode = true
             gamemodePicked = 2
             surface.PlaySound("buttons/button15.wav")
 
@@ -1714,7 +1709,7 @@ net.Receive("EndOfGame", function(len, ply)
         PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
 
         for k, v in pairs(connectedPlayers) do
-            -- Constants for basic player information, much more optimized than checking every frame
+            -- constants for basic player information, much more optimized than checking every frame
             if !IsValid(v) then return end
             local name = v:GetName()
             local prestige = v:GetNWInt("playerPrestige")
@@ -1727,7 +1722,7 @@ net.Receive("EndOfGame", function(len, ply)
             surface.SetFont("Health")
             local nameLength = select(1, surface.GetTextSize(name .. " | " .. "P" .. prestige .. " L" .. level))
 
-            -- Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
+            -- format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
             if v:Frags() <= 0 then
                 ratio = 0
             elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -1808,7 +1803,7 @@ net.Receive("EndOfGame", function(len, ply)
             PlayerProfilePicture:SetSize(70, 70)
             PlayerProfilePicture:SetPlayer(v, 184)
 
-            -- Allows the players profile to be clicked to display various options revolving around the specific player
+            -- allows the players profile to be clicked to display various options revolving around the specific player
 			PlayerProfilePicture.OnMousePressed = function()
 				local Menu = DermaMenu()
 
@@ -1842,8 +1837,8 @@ net.Receive("EndOfGame", function(len, ply)
 					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
 					accolades:AddOption("On Streaks (Kill Streaks Started): " .. v:GetNWInt("playerAccoladeOnStreak"))
 					accolades:AddOption("Buzz Kills (Kill Streaks Ended): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-					for p, t in ipairs(weaponArray) do
-						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+					for i = 1, #weaponArray do
+						weaponKills:AddOption(weaponArray[i][2] .. ": " .. v:GetNWInt("killsWith_" .. weaponArray[i][1]))
 					end
 				else
 					statistics:AddOption("This player has their stats hidden.")
@@ -1879,7 +1874,7 @@ net.Receive("SendChatMessage", function(len, ply)
     table.insert(chatArray, text)
 end)
 
--- Updates the players time until self destruct on Cranked
+-- updates the players time until self destruct on Cranked
 net.Receive("NotifyCranked", function(len, ply)
     timeUntilSelfDestruct = crankedSelfDestructTime
     timer.Create("CrankedTimeUntilDeath", crankedSelfDestructTime, 1, function()
@@ -1891,16 +1886,16 @@ net.Receive("NotifyCranked", function(len, ply)
     end)
 end)
 
--- Shows the players loadout on the bottom left hand side of their screen
+-- shows the players loadout on the bottom left hand side of their screen
 function ShowLoadoutOnSpawn(ply)
     if !IsValid(ply) then return end
     local primaryWeapon = ""
     local secondaryWeapon = ""
     local meleeWeapon = ""
-    for k, v in ipairs(weaponArray) do
-        if v[1] == ply:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = v[2] end
-        if v[1] == ply:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = v[2] end
-        if v[1] == ply:GetNWString("loadoutMelee") and useMelee then meleeWeapon = v[2] end
+    for i = 1, #weaponArray do
+        if weaponArray[i][1] == ply:GetNWString("loadoutPrimary") and usePrimary then primaryWeapon = weaponArray[i][2] end
+        if weaponArray[i][1] == ply:GetNWString("loadoutSecondary") and useSecondary then secondaryWeapon = weaponArray[i][2] end
+        if weaponArray[i][1] == ply:GetNWString("loadoutMelee") and useMelee then meleeWeapon = weaponArray[i][2] end
     end
     notification.AddProgress("LoadoutText", "Current Loadout:\n" .. primaryWeapon .. "\n" .. secondaryWeapon .. "\n" .. meleeWeapon)
     timer.Simple(2.5, function()
@@ -1908,7 +1903,7 @@ function ShowLoadoutOnSpawn(ply)
     end)
 end
 
--- ConVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings
+-- conVar callbacks related to HUD editing, much more optimized and cleaner looking than repeadetly checking the players settings
 cvars.AddChangeCallback("tm_hud_health_size", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)

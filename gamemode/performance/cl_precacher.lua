@@ -1,3 +1,4 @@
+
 function PrecacheDir(dir)
     local files, directories = file.Find(dir .. "*", "THIRDPARTY")
     for _, fdir in pairs(directories) do
@@ -25,7 +26,7 @@ function PrecacheDir(dir)
 end
 
 function PrecacheAll()
-    -- Models
+    -- models
     PrecacheDir("models/")
     PrecacheDir("models/weapons/")
     PrecacheDir("models/weapons/akms/")
@@ -50,7 +51,7 @@ function PrecacheAll()
     PrecacheDir("models/weapons/tfa_ins2/mp443/")
     PrecacheDir("models/weapons/tfa_ins2/zm_lr300")
 
-    -- Sounds
+    -- sounds
     PrecacheDir("sound/")
     PrecacheDir("sound/hitsound/")
     PrecacheDir("sound/fml/")

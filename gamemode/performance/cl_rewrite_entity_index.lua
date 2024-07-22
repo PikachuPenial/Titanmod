@@ -1,3 +1,4 @@
+
 local M_Entity = FindMetaTable("Entity")
 
 local E_GetTable = M_Entity.GetTable

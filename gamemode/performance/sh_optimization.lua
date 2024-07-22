@@ -1,4 +1,5 @@
--- Removing unneccessary hooks for optimization purposes
+
+-- removing unneccessary hooks for optimization purposes
 hook.Add("Initialize", "Optimization", function()
     hook.Remove("PlayerTick", "TickWidgets")
     if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
@@ -56,7 +57,7 @@ hook.Add("InitPostEntityMap", "DisableShadowControl", function()
 	end
 end)
 
--- Optimized surface and draw functions
+-- optimized surface and draw functions
 if SERVER or SurfaceRewrite then return end
 SurfaceRewrite = true
 

@@ -1,3 +1,4 @@
+
 local M_Weapon = FindMetaTable("Weapon")
 local M_Entity = FindMetaTable("Entity")
 

@@ -1,3 +1,4 @@
+
 local white = Color(255, 255, 255, 255)
 
 local ScoreboardDerma
@@ -7,10 +8,10 @@ local mapName
 local mapThumb
 local dof
 
-for m, t in ipairs(mapArray) do
-	if game.GetMap() == t[1] then
-		mapName = t[2]
-		mapThumb = t[3]
+for i = 1, #mapArray do
+	if game.GetMap() == mapArray[i][1] then
+		mapName = mapArray[i][2]
+		mapThumb = mapArray[i][3]
 	end
 end
 
@@ -116,7 +117,7 @@ function GM:ScoreboardShow()
 		if activeGamemode == "Gun Game" then table.sort(connectedPlayers, function(a, b) return a:GetNWInt("ladderPosition") > b:GetNWInt("ladderPosition") end) else table.sort(connectedPlayers, function(a, b) return a:GetNWInt("playerScoreMatch") > b:GetNWInt("playerScoreMatch") end) end
 
 		for k, v in pairs(connectedPlayers) do
-			-- Constants for basic player information, much more optimized than checking every frame
+			-- constants for basic player information, much more optimized than checking every frame
 			local name = v:GetName()
 			local prestige = v:GetNWInt("playerPrestige")
 			local level = v:GetNWInt("playerLevel")
@@ -130,7 +131,7 @@ function GM:ScoreboardShow()
 			local usergroup
 			if v:IsUserGroup("dev") then usergroup = "dev" elseif v:IsUserGroup("mod") then usergroup = "mod" elseif v:IsUserGroup("contributor") then usergroup = "contributor" end
 
-			-- Used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
+			-- used to format the K/D Ratio of a player, stops it from displaying INF when the player has gotten a kill, but has also not died yet
 			if v:Frags() <= 0 then
 				ratio = 0
 			elseif v:Frags() >= 1 and v:Deaths() == 0 then
@@ -199,7 +200,7 @@ function GM:ScoreboardShow()
 			PlayerProfilePicture:SetSize(70, 70)
 			PlayerProfilePicture:SetPlayer(v, 184)
 
-			-- Allows the players profile to be clicked to display various options revolving around the specific player
+			-- allows the players profile to be clicked to display various options revolving around the specific player
 			PlayerProfilePicture.OnMousePressed = function()
 				local Menu = DermaMenu()
 
@@ -233,8 +234,8 @@ function GM:ScoreboardShow()
 					accolades:AddOption("Point Blanks: " .. v:GetNWInt("playerAccoladePointblank"))
 					accolades:AddOption("On Streaks (Kill Streaks Started): " .. v:GetNWInt("playerAccoladeOnStreak"))
 					accolades:AddOption("Buzz Kills (Kill Streaks Ended): " .. v:GetNWInt("playerAccoladeBuzzkill"))
-					for p, t in ipairs(weaponArray) do
-						weaponKills:AddOption(t[2] .. ": " .. v:GetNWInt("killsWith_" .. t[1]))
+					for i = 1, #weaponArray do
+						weaponKills:AddOption(weaponArray[i][2] .. ": " .. v:GetNWInt("killsWith_" .. weaponArray[i][1]))
 					end
 				else
 					statistics:AddOption("This player has their stats hidden.")

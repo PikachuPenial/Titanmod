@@ -1,3 +1,4 @@
+
 local white = Color(255, 255, 255, 255)
 local gray = Color(50, 50, 50, 185)
 local lightGray = Color(40, 40, 40, 200)
@@ -64,10 +65,10 @@ net.Receive("OpenMainMenu", function(len, ply)
         MainMenu:SetDeleteOnClose(false)
         MainMenu:MakePopup()
 
-        for m, t in ipairs(mapArray) do
-            if game.GetMap() == t[1] then
-                mapID = t[1]
-                mapName = t[2]
+        for i = 1, #mapArray do
+            if game.GetMap() == mapArray[i][1] then
+                mapID = mapArray[i][1]
+                mapName = mapArray[i][2]
             end
         end
 
@@ -274,8 +275,8 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                         local weaponstatistics = BoardSelection:AddSubMenu("Weapons")
                         weaponstatistics:SetMaxHeight(scrH / 2)
-                        for p, t in ipairs(weaponArray) do
-                            weaponstatistics:AddOption("Kills w/ " .. t[2], function() LeaderboardSelected("Kills w/ " .. t[2], "killsWith_" .. t[1]) end)
+                        for i = 1, #weaponArray do
+                            weaponstatistics:AddOption("Kills w/ " .. weaponArray[i][2], function() LeaderboardSelected("Kills w/ " .. weaponArray[i][2], "killsWith_" .. weaponArray[i][1]) end)
                         end
 
                         BoardSelection:Open()
@@ -573,7 +574,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
             end
 
-            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- Force shows the Tutorial is a player joins for the first time
+            if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
             TutorialButton:SetPos(8, scrH - 96)
@@ -667,13 +668,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
-                    for k, v in ipairs(weaponArray) do
+                    for i = 1, #weaponArray do
                         if activeGamemode == "Gun Game" then
                             draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT)
                         else
-                            if v[1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT) end
-                            if v[1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                            if v[1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(v[2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 65, white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 40 , white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 65, white, TEXT_ALIGN_LEFT) end
                         end
                     end
                 else
@@ -789,14 +790,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
 
-                    -- Checking for the players currently equipped card
-                    for k, v in ipairs(cardArray) do
-                        if v[1] == currentCard then
-                            newCard = v[1]
-                            newCardName = v[2]
-                            newCardDesc = v[3]
-                            newCardUnlockType = v[4]
-                            newCardUnlockValue = v[5]
+                    -- checking for the players currently equipped card
+                    for i = 1, #cardArray do
+                        if cardArray[i][1] == currentCard then
+                            newCard = cardArray[i][1]
+                            newCardName = cardArray[i][2]
+                            newCardDesc = cardArray[i][3]
+                            newCardUnlockType = cardArray[i][4]
+                            newCardUnlockValue = cardArray[i][5]
                         end
                     end
 
@@ -835,7 +836,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedCards:SetSize(20, 20)
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
-                    -- Default Playercards
+                    -- default cards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 85)
@@ -844,7 +845,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockDefaultCards:Dock(TOP)
                     DockDefaultCards:SetSize(0, 340)
 
-                    -- Leveling related Playercards
+                    -- leveling related cards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
                     TextLevel:Dock(TOP)
                     TextLevel:SetSize(0, 85)
@@ -853,7 +854,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockLevelCards:Dock(TOP)
                     DockLevelCards:SetSize(0, 1360)
 
-                    -- Kill related Playercards
+                    -- kill related cards
                     local TextStats = vgui.Create("DPanel", CardScroller)
                     TextStats:Dock(TOP)
                     TextStats:SetSize(0, 85)
@@ -862,7 +863,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockStatCards:Dock(TOP)
                     DockStatCards:SetSize(0, 680)
 
-                    -- Accolade related Playercards
+                    -- accolade related cards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 85)
@@ -871,7 +872,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockAccoladeCards:Dock(TOP)
                     DockAccoladeCards:SetSize(0, 850)
 
-                    -- Mastery related Playercards
+                    -- mastery related cards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
                     TextMastery:SetSize(0, 85)
@@ -880,7 +881,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockMasteryCards:Dock(TOP)
                     DockMasteryCards:SetSize(0, 3745)
 
-                    -- Color related Playercards
+                    -- color related cards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
                     TextColor:SetSize(0, 85)
@@ -889,7 +890,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockColorCards:Dock(TOP)
                     DockColorCards:SetSize(0, 340)
 
-                    -- Pride related Playercards
+                    -- pride related cards
                     local TextPride = vgui.Create("DPanel", CardScroller)
                     TextPride:Dock(TOP)
                     TextPride:SetSize(0, 85)
@@ -898,7 +899,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockPrideCards:Dock(TOP)
                     DockPrideCards:SetSize(0, 335)
 
-                    -- Creating playercard lists
+                    -- creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
                     DefaultCardList:Dock(TOP)
                     DefaultCardList:SetSpaceY(5)
@@ -1384,10 +1385,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local function FillCardListsAll()
                         local lockedCards = {}
-                        for k, v in ipairs(cardArray) do
-                            if v[4] == "default" then
+                        for i = 1, #cardArray do
+                            if cardArray[i][4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 DefaultCardList:Add(card)
 
@@ -1396,60 +1397,60 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultCardsUnlocked = defaultCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
+                            elseif cardArray[i][4] == "kills" or cardArray[i][4] == "streak" or cardArray[i][4] == "matches" or cardArray[i][4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
 
-                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") < v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[5] or v[4] == "matches" and LocalPly:GetNWInt("matchesPlayed") < v[5] or v[4] == "wins" and LocalPly:GetNWInt("matchesWon") < v[5] then
-                                    table.insert(lockedCards, v)
+                                if cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") < cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") < cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") < cardArray[i][5] then
+                                    table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockStatCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     StatCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                            elseif cardArray[i][4] == "headshot" or cardArray[i][4] == "smackdown" or cardArray[i][4] == "clutch" or cardArray[i][4] == "longshot" or cardArray[i][4] == "pointblank" or cardArray[i][4] == "killstreaks" or cardArray[i][4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
-                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[5] then
-                                    table.insert(lockedCards, v)
+                                if cardArray[i][4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < cardArray[i][5] or cardArray[i][4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < cardArray[i][5] or cardArray[i][4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < cardArray[i][5] or cardArray[i][4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < cardArray[i][5] or cardArray[i][4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < cardArray[i][5] or cardArray[i][4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < cardArray[i][5] or cardArray[i][4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < cardArray[i][5] then
+                                    table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     AccoladeCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "color" then
+                            elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 ColorCardList:Add(card)
 
@@ -1458,16 +1459,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 colorCardsUnlocked = colorCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "pride" then
+                            elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 PrideCardList:Add(card)
 
@@ -1476,64 +1477,64 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 prideCardsUnlocked = prideCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "level" then
+                            elseif cardArray[i][4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
 
-                                if v[4] == "level" and playerTotalLevel < v[5] then
-                                    table.insert(lockedCards, v)
+                                if cardArray[i][4] == "level" and playerTotalLevel < cardArray[i][5] then
+                                    table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockLevelCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     LevelCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "mastery" then
+                            elseif cardArray[i][4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
 
-                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) < 50 then
-                                    table.insert(lockedCards, v)
+                                if cardArray[i][4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. cardArray[i][5]) < 50 then
+                                    table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     MasteryCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
                             end
                         end
 
-                        for k, v in ipairs(lockedCards) do
-                            if v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
+                        for i = 1, #lockedCards do
+                            if lockedCards[i][4] == "kills" or lockedCards[i][4] == "streak" or lockedCards[i][4] == "matches" or lockedCards[i][4] == "wins" then
                                 local card = vgui.Create("DImageButton", DockStatCards)
-                                card:SetImage(v[1])
+                                card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
@@ -1541,7 +1542,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.DrawRect(0, h - 5, 240, 5)
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    if v[4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / v[5]) * 240, 5) elseif v[4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / v[5]) * 240, 5) elseif v[4] == "matches" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesPlayed") / v[5]) * 240, 5) elseif v[4] == "wins" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesWon") / v[5]) * 240, 5) end
+                                    if lockedCards[i][4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "matches" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesPlayed") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "wins" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesWon") / lockedCards[i][5]) * 240, 5) end
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
@@ -1550,16 +1551,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 StatCardList:Add(card)
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = lockedCards[i][1]
+                                    newCardName = lockedCards[i][2]
+                                    newCardDesc = lockedCards[i][3]
+                                    newCardUnlockType = lockedCards[i][4]
+                                    newCardUnlockValue = lockedCards[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                            elseif lockedCards[i][4] == "headshot" or lockedCards[i][4] == "smackdown" or lockedCards[i][4] == "clutch" or lockedCards[i][4] == "longshot" or lockedCards[i][4] == "pointblank" or lockedCards[i][4] == "killstreaks" or lockedCards[i][4] == "buzzkills" then
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
-                                card:SetImage(v[1])
+                                card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
@@ -1567,7 +1568,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.DrawRect(0, h - 5, 240, 5)
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    if v[4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / v[5]) * 240, 5) elseif v[4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / v[5]) * 240, 5) elseif v[4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / v[5]) * 240, 5) elseif v[4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / v[5]) * 240, 5) elseif v[4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / v[5]) * 240, 5) elseif v[4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / v[5]) * 240, 5) elseif v[4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / v[5]) * 240, 5) end
+                                    if lockedCards[i][4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / lockedCards[i][5]) * 240, 5) end
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
@@ -1576,16 +1577,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 AccoladeCardList:Add(card)
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = lockedCards[i][1]
+                                    newCardName = lockedCards[i][2]
+                                    newCardDesc = lockedCards[i][3]
+                                    newCardUnlockType = lockedCards[i][4]
+                                    newCardUnlockValue = lockedCards[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "level" then
+                            elseif lockedCards[i][4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
-                                card:SetImage(v[1])
+                                card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
@@ -1593,7 +1594,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.DrawRect(0, h - 5, 240, 5)
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    surface.DrawRect(0, h - 5, (playerTotalLevel / v[5]) * 240, 5)
+                                    surface.DrawRect(0, h - 5, (playerTotalLevel / lockedCards[i][5]) * 240, 5)
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
@@ -1602,16 +1603,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 LevelCardList:Add(card)
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = lockedCards[i][1]
+                                    newCardName = lockedCards[i][2]
+                                    newCardDesc = lockedCards[i][3]
+                                    newCardUnlockType = lockedCards[i][4]
+                                    newCardUnlockValue = lockedCards[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "mastery" then
+                            elseif lockedCards[i][4] == "mastery" then
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
-                                card:SetImage(v[1])
+                                card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
@@ -1619,7 +1620,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     surface.DrawRect(0, h - 5, 240, 5)
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. v[5]) / 50    ) * 240, 5)
+                                    surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. lockedCards[i][5]) / 50    ) * 240, 5)
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
@@ -1628,11 +1629,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 MasteryCardList:Add(card)
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = lockedCards[i][1]
+                                    newCardName = lockedCards[i][2]
+                                    newCardDesc = lockedCards[i][3]
+                                    newCardUnlockType = lockedCards[i][4]
+                                    newCardUnlockValue = lockedCards[i][5]
                                     TriggerSound("click")
                                 end
                             end
@@ -1640,10 +1641,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local function FillCardListsUnlocked()
-                        for k, v in ipairs(cardArray) do
-                            if v[4] == "default" then
+                        for i = 1, #cardArray do
+                            if cardArray[i][4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 DefaultCardList:Add(card)
 
@@ -1652,18 +1653,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultCardsUnlocked = defaultCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "kills" or v[4] == "streak" or v[4] == "matches" or v[4] == "wins" then
+                            elseif cardArray[i][4] == "kills" or cardArray[i][4] == "streak" or cardArray[i][4] == "matches" or cardArray[i][4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
-                                if v[4] == "kills" and LocalPly:GetNWInt("playerKills") >= v[5] or v[4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[5] or v[4] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= v[5] or v[4] == "wins" and LocalPly:GetNWInt("matchesWon") >= v[5] then
+                                if cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") >= cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockStatCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     StatCardList:Add(card)
 
@@ -1671,19 +1672,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     statCardsUnlocked = statCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "headshot" or v[4] == "smackdown" or v[4] == "clutch" or v[4] == "longshot" or v[4] == "pointblank" or v[4] == "killstreaks" or v[4] == "buzzkills" then
+                            elseif cardArray[i][4] == "headshot" or cardArray[i][4] == "smackdown" or cardArray[i][4] == "clutch" or cardArray[i][4] == "longshot" or cardArray[i][4] == "pointblank" or cardArray[i][4] == "killstreaks" or cardArray[i][4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
-                                if v[4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[5] or v[4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[5] or v[4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[5] or v[4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[5] or v[4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[5] or v[4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[5] or v[4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[5] then
+                                if cardArray[i][4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= cardArray[i][5] or cardArray[i][4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= cardArray[i][5] or cardArray[i][4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= cardArray[i][5] or cardArray[i][4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= cardArray[i][5] or cardArray[i][4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= cardArray[i][5] or cardArray[i][4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= cardArray[i][5] or cardArray[i][4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     AccoladeCardList:Add(card)
 
@@ -1691,17 +1692,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "color" then
+                            elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 ColorCardList:Add(card)
 
@@ -1710,16 +1711,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 colorCardsUnlocked = colorCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "pride" then
+                            elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
-                                card:SetImage(v[1])
+                                card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
                                 PrideCardList:Add(card)
 
@@ -1728,18 +1729,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 prideCardsUnlocked = prideCardsUnlocked + 1
 
                                 card.DoClick = function(card)
-                                    newCard = v[1]
-                                    newCardName = v[2]
-                                    newCardDesc = v[3]
-                                    newCardUnlockType = v[4]
-                                    newCardUnlockValue = v[5]
+                                    newCard = cardArray[i][1]
+                                    newCardName = cardArray[i][2]
+                                    newCardDesc = cardArray[i][3]
+                                    newCardUnlockType = cardArray[i][4]
+                                    newCardUnlockValue = cardArray[i][5]
                                     TriggerSound("click")
                                 end
-                            elseif v[4] == "level" then
+                            elseif cardArray[i][4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
-                                if v[4] == "level" and playerTotalLevel >= v[5] then
+                                if cardArray[i][4] == "level" and playerTotalLevel >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockLevelCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     LevelCardList:Add(card)
 
@@ -1747,19 +1748,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     levelCardsUnlocked = levelCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[4] == "mastery" then
+                            elseif cardArray[i][4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
-                                if v[4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. v[5]) >= 50 then
+                                if cardArray[i][4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. cardArray[i][5]) >= 50 then
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
-                                    card:SetImage(v[1])
+                                    card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
                                     MasteryCardList:Add(card)
 
@@ -1767,11 +1768,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
 
                                     card.DoClick = function(card)
-                                        newCard = v[1]
-                                        newCardName = v[2]
-                                        newCardDesc = v[3]
-                                        newCardUnlockType = v[4]
-                                        newCardUnlockValue = v[5]
+                                        newCard = cardArray[i][1]
+                                        newCardName = cardArray[i][2]
+                                        newCardDesc = cardArray[i][3]
+                                        newCardUnlockType = cardArray[i][4]
+                                        newCardUnlockValue = cardArray[i][5]
                                         TriggerSound("click")
                                     end
                                 end
@@ -2021,13 +2022,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("click")
                         local rand = math.random(1, totalCards)
 
-                        for k, v in ipairs(cardArray) do
+                        for i = 1, #cardArray do
                             if k == rand then
-                                newCard = v[1]
-                                newCardName = v[2]
-                                newCardDesc = v[3]
-                                newCardUnlockType = v[4]
-                                newCardUnlockValue = v[5]
+                                newCard = cardArray[i][1]
+                                newCardName = cardArray[i][2]
+                                newCardDesc = cardArray[i][3]
+                                newCardUnlockType = cardArray[i][4]
+                                newCardUnlockValue = cardArray[i][5]
                             end
                         end
                     end
@@ -2086,13 +2087,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
 
-                    -- Checking for the players currently equipped model
-                    for k, v in ipairs(modelArray) do
-                        if v[1] == currentModel then
-                            newModel = v[1]
-                            newModelName = v[2]
-                            newModelUnlockType = v[3]
-                            newModelUnlockValue = v[4]
+                    -- checking for the players currently equipped model
+                    for i = 1, #modelArray do
+                        if modelArray[i][1] == currentModel then
+                            newModel = modelArray[i][1]
+                            newModelName = modelArray[i][2]
+                            newModelUnlockType = modelArray[i][3]
+                            newModelUnlockValue = modelArray[i][4]
                         end
                     end
 
@@ -2133,7 +2134,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     HideLockedModels:SetSize(20, 20)
                     function HideLockedModels:OnChange() TriggerSound("click") end
 
-                    -- Default Playermodels
+                    -- default models
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
                     TextDefault:Dock(TOP)
                     TextDefault:SetSize(0, 90)
@@ -2142,7 +2143,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModels:Dock(TOP)
                     DockModels:SetSize(0, 310)
 
-                    -- Stats Playermodels
+                    -- stats models
                     local TextStats = vgui.Create("DPanel", CustomizeScroller)
                     TextStats:Dock(TOP)
                     TextStats:SetSize(0, 90)
@@ -2151,6 +2152,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsStats:Dock(TOP)
                     DockModelsStats:SetSize(0, 930)
 
+                    -- accolade models
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
                     TextAccolade:SetSize(0, 90)
@@ -2159,7 +2161,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     DockModelsAccolade:Dock(TOP)
                     DockModelsAccolade:SetSize(0, 1080)
 
-                    -- Creating playermodel lists
+                    -- creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
                     DefaultModelList:SetSpaceY(5)
@@ -2507,11 +2509,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local function FillModelListsAll()
                         local lockedModels = {}
-                        for k, v in ipairs(modelArray) do
-                            if v[3] == "default" then
+                        for i = 1, #modelArray do
+                            if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
-                                icon:SetModel(v[1])
-                                icon:SetTooltip(v[2])
+                                icon:SetModel(modelArray[i][1])
+                                icon:SetTooltip(modelArray[i][2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -2520,57 +2522,55 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
                                 icon.DoClick = function(icon)
-                                    newModel = v[1]
-                                    newModelName = v[2]
-                                    newModelUnlockType = v[3]
-                                    newModelUnlockValue = v[4]
+                                    newModel = modelArray[i][1]
+                                    newModelName = modelArray[i][2]
+                                    newModelUnlockType = modelArray[i][3]
+                                    newModelUnlockValue = modelArray[i][4]
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
-                            elseif v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
+                            elseif modelArray[i][3] == "kills" or modelArray[i][3] == "streak" or modelArray[i][3] == "matches" or modelArray[i][3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
 
-                                if v[3] == "kills" and LocalPly:GetNWInt("playerKills") < v[4] or v[3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < v[4] or v[3] == "matches" and LocalPly:GetNWInt("matchesPlayed") < v[4] or v[3] == "wins" and LocalPly:GetNWInt("matchesWon") < v[4] then
-                                    table.insert(lockedModels, v)
+                                if modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") < modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") < modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") < modelArray[i][4] then
+                                    table.insert(lockedModels, modelArray[i])
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2])
+                                    icon:SetModel(modelArray[i][1])
+                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     StatModelList:Add(icon)
                                     statModelsUnlocked = statModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
-
+                                        newModel = modelArray[i][1]
+                                        newModelName = modelArray[i][2]
+                                        newModelUnlockType = modelArray[i][3]
+                                        newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
-
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
+                            elseif modelArray[i][3] == "headshot" or modelArray[i][3] == "smackdown" or modelArray[i][3] == "clutch" or modelArray[i][3] == "longshot" or modelArray[i][3] == "pointblank" or modelArray[i][3] == "killstreaks" or modelArray[i][3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < v[4] or v[3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < v[4] or v[3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < v[4] or v[3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < v[4] or v[3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < v[4] or v[3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < v[4] or v[3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < v[4] then
-                                    table.insert(lockedModels, v)
+                                if modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < modelArray[i][4] then
+                                    table.insert(lockedModels, modelArray[i])
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2])
+                                    icon:SetModel(modelArray[i][1])
+                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     AccoladeModelList:Add(icon)
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
+                                        newModel = modelArray[i][1]
+                                        newModelName = modelArray[i][2]
+                                        newModelUnlockType = modelArray[i][3]
+                                        newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
                                         TriggerSound("click")
                                     end
@@ -2578,11 +2578,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             end
                         end
 
-                        for k, v in ipairs(lockedModels) do
-                            if v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
+                        for i = 1, #lockedModels do
+                            if lockedModels[i][3] == "kills" or lockedModels[i][3] == "streak" or lockedModels[i][3] == "matches" or lockedModels[i][3] == "wins" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
-                                icon:SetModel(v[1])
-                                icon:SetTooltip(v[2])
+                                icon:SetModel(lockedModels[i][1])
+                                icon:SetTooltip(lockedModels[i][2])
                                 icon:SetSize(150, 150)
                                 StatModelList:Add(icon)
 
@@ -2592,17 +2592,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
 
                                 icon.DoClick = function(icon)
-                                    newModel = v[1]
-                                    newModelName = v[2]
-                                    newModelUnlockType = v[3]
-                                    newModelUnlockValue = v[4]
+                                    newModel = lockedModels[i][1]
+                                    newModelName = lockedModels[i][2]
+                                    newModelUnlockType = lockedModels[i][3]
+                                    newModelUnlockValue = lockedModels[i][4]
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
-                            elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
+                            elseif lockedModels[i][3] == "headshot" or lockedModels[i][3] == "smackdown" or lockedModels[i][3] == "clutch" or lockedModels[i][3] == "longshot" or lockedModels[i][3] == "pointblank" or lockedModels[i][3] == "killstreaks" or lockedModels[i][3] == "buzzkills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
-                                icon:SetModel(v[1])
-                                icon:SetTooltip(v[2])
+                                icon:SetModel(lockedModels[i][1])
+                                icon:SetTooltip(lockedModels[i][2])
                                 icon:SetSize(150, 150)
                                 AccoladeModelList:Add(icon)
 
@@ -2612,10 +2612,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
 
                                 icon.DoClick = function(icon)
-                                    newModel = v[1]
-                                    newModelName = v[2]
-                                    newModelUnlockType = v[3]
-                                    newModelUnlockValue = v[4]
+                                    newModel = lockedModels[i][1]
+                                    newModelName = lockedModels[i][2]
+                                    newModelUnlockType = lockedModels[i][3]
+                                    newModelUnlockValue = lockedModels[i][4]
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
@@ -2624,11 +2624,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local function FillModelListsUnlocked()
-                        for k, v in ipairs(modelArray) do
-                            if v[3] == "default" then
+                        for i = 1, #modelArray do
+                            if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
-                                icon:SetModel(v[1])
-                                icon:SetTooltip(v[2])
+                                icon:SetModel(modelArray[i][1])
+                                icon:SetTooltip(modelArray[i][2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -2637,21 +2637,21 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
                                 icon.DoClick = function(icon)
-                                    newModel = v[1]
-                                    newModelName = v[2]
-                                    newModelUnlockType = v[3]
-                                    newModelUnlockValue = v[4]
+                                    newModel = modelArray[i][1]
+                                    newModelName = modelArray[i][2]
+                                    newModelUnlockType = modelArray[i][3]
+                                    newModelUnlockValue = modelArray[i][4]
 
                                     PreviewNewModel(newModel)
 
                                     TriggerSound("click")
                                 end
-                            elseif v[3] == "kills" or v[3] == "streak" or v[3] == "matches" or v[3] == "wins" then
+                            elseif modelArray[i][3] == "kills" or modelArray[i][3] == "streak" or modelArray[i][3] == "matches" or modelArray[i][3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
-                                if v[3] == "kills" and LocalPly:GetNWInt("playerKills") >= v[4] or v[3] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= v[4] or v[3] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= v[4] or v[3] == "wins" and LocalPly:GetNWInt("matchesWon") >= v[4] then
+                                if modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") >= modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2])
+                                    icon:SetModel(modelArray[i][1])
+                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     StatModelList:Add(icon)
 
@@ -2659,23 +2659,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
+                                        newModel = modelArray[i][1]
+                                        newModelName = modelArray[i][2]
+                                        newModelUnlockType = modelArray[i][3]
+                                        newModelUnlockValue = modelArray[i][4]
 
                                         PreviewNewModel(newModel)
 
                                         TriggerSound("click")
                                     end
                                 end
-                            elseif v[3] == "headshot" or v[3] == "smackdown" or v[3] == "clutch" or v[3] == "longshot" or v[3] == "pointblank" or v[3] == "killstreaks" or v[3] == "buzzkills" then
+                            elseif modelArray[i][3] == "headshot" or modelArray[i][3] == "smackdown" or modelArray[i][3] == "clutch" or modelArray[i][3] == "longshot" or modelArray[i][3] == "pointblank" or modelArray[i][3] == "killstreaks" or modelArray[i][3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if v[3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= v[4] or v[3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= v[4] or v[3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= v[4] or v[3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= v[4] or v[3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= v[4] or v[3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= v[4] or v[3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= v[4] then
+                                if modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
-                                    icon:SetModel(v[1])
-                                    icon:SetTooltip(v[2])
+                                    icon:SetModel(modelArray[i][1])
+                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     AccoladeModelList:Add(icon)
 
@@ -2683,10 +2683,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.DoClick = function(icon)
-                                        newModel = v[1]
-                                        newModelName = v[2]
-                                        newModelUnlockType = v[3]
-                                        newModelUnlockValue = v[4]
+                                        newModel = modelArray[i][1]
+                                        newModelName = modelArray[i][2]
+                                        newModelUnlockType = modelArray[i][3]
+                                        newModelUnlockValue = modelArray[i][4]
 
                                         PreviewNewModel(newModel)
 
@@ -2817,12 +2817,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("click")
                         local rand = math.random(1, totalModels)
 
-                        for k, v in ipairs(modelArray) do
+                        for i = 1, #modelArray do
                             if k == rand then
-                                newModel = v[1]
-                                newModelName = v[2]
-                                newModelUnlockType = v[3]
-                                newModelUnlockValue = v[4]
+                                newModel = modelArray[i][1]
+                                newModelName = modelArray[i][2]
+                                newModelUnlockType = modelArray[i][3]
+                                newModelUnlockValue = modelArray[i][4]
 
                                 PreviewNewModel(newModel)
                             end

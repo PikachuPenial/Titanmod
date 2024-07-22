@@ -1,3 +1,4 @@
+
 if customMovement == true then
 local meta = FindMetaTable("Player")
 function meta:GetWJTime()
@@ -188,7 +189,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:ViewPunch(slidepunch)
         ply:SetDuckSpeed(0.2)
         ply:SetUnDuckSpeed(0.2)
-        ply:SetWalkSpeed(458) -- This is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore.
+        ply:SetWalkSpeed(458) -- this is such a HORRIBLE way of fixing a exploit that allows people to cancel a slide at a certain time to crouch at sprint speed, but ive been trying to fix this well for multiple hours and can't take this anymore
         ply:SetLandingVelocity(mv:GetVelocity():Length())
         ply:SetSlidingAngle(mv:GetVelocity():Angle())
         ply:SetSlopedSpeed(1)
@@ -277,7 +278,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             end
         end
 
-        --WR Left
+        -- WR Left
         if sprinting and not onground then
             if ply:GetWRTime() > CT then return end
 
@@ -374,4 +375,4 @@ hook.Add("FinishMove", "TM_FinishMove", function(ply, mv)
     ply:SetNetworkOrigin(mv:GetOrigin())
 end)
 end
--- ^^ Original Sliding portion of script created by datæ
+-- original Sliding portion of script created by datæ
