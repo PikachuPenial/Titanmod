@@ -37,6 +37,7 @@ if UseConfigConvars then
     proxChatRange = GetConVar("sv_tm_voip_range"):GetInt()
     matchVoting = GetConVar("sv_tm_matchvoting"):GetBool()
     customMovement = GetConVar("sv_tm_player_custommovement"):GetBool()
+    jumpSliding = GetConVar("sv_tm_player_jumpsliding"):GetBool()
     deathCamera = GetConVar("sv_tm_deathcam"):GetBool()
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()
 else
@@ -87,6 +88,7 @@ else
     proxChatRange = 1000            -- The thresehold in distance where players can hear other players over proximity voice chat
     matchVoting = true              -- Enable or disable the end of match map and gamemode vote (disabling this will select a map and gamemode at random after a match ends)
     customMovement = true           -- Enable or disable Titanmod's custom movement mechanics (wall running/jumping, sliding, vaulting)
+    jumpSliding = false             -- Removes the jump sliding patch, making movement more in line with older Titanmod versions
     deathCamera = true              -- Enable or disable Titanmod's custom death camera on a players death (showing the killers POV after a death), this can still be disabled by players client-side
 
     matchLengthTime = GetConVar("tm_matchlengthtimer"):GetInt()    -- The time in seconds until a map vote starts, can be replaced with a whole number to override the ConVar
