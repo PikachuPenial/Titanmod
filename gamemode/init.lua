@@ -157,7 +157,7 @@ function GM:PlayerInitialSpawn(ply)
 
 	-- updates the players XP to next level based on their current level
 	for k, v in ipairs(levelArray) do
-		if ply:GetNWInt("playerLevel") == v[1] and v[2] != "prestige" then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+		if ply:GetNWInt("playerLevel") == k and v != "prestige" then ply:SetNWInt("playerXPToNextLevel", v) end
 	end
 
 	-- checks for potential save file corruption and will fix it accordingly
@@ -421,7 +421,7 @@ function CheckForPlayerLevel(ply)
 		ply:SetNWInt("playerXP", curExp)
 
 		for k, v in ipairs(levelArray) do
-			if (curLvl + 1) == v[1] then ply:SetNWInt("playerXPToNextLevel", v[2]) end
+			if (curLvl + 1) == k then ply:SetNWInt("playerXPToNextLevel", v) end
 		end
 
 		net.Start("SendNotification")
