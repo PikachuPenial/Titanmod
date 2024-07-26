@@ -23,8 +23,8 @@ function ForceSave(ply, cmd, args)
 	UninitializeNetworkInt(ply, "playerAccoladeSmackdown")
 	UninitializeNetworkInt(ply, "playerAccoladeHeadshot")
 	UninitializeNetworkInt(ply, "playerAccoladeClutch")
-	for p, t in ipairs(weaponArray) do
-		UninitializeNetworkInt(ply, "killsWith_" .. t[1])
+	for i = 1, #weaponArray do
+		UninitializeNetworkInt(ply, "killsWith_" .. weaponArray[i][1])
 	end
 end
 concommand.Add("tm_forcesave", ForceSave)
@@ -95,8 +95,8 @@ function PlayerAccountWipe(ply, cmd, args)
 	ply:SetNWInt("playerAccoladeBuzzkill", 0)
 	ply:SetNWInt("playerAccoladeClutch", 0)
 
-	for k, v in ipairs(weaponArray) do
-		ply:SetNWInt("killsWith_" .. v[1], 0)
+	for i = 1, #weaponArray do
+		ply:SetNWInt("killsWith_" .. weaponArray[i][1], 0)
 	end
 end
 concommand.Add("tm_wipeplayeraccount_cannotbeundone", PlayerAccountWipe)

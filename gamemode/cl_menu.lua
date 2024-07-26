@@ -20,6 +20,13 @@ else
     gradRColor = Color(100, 0, 255, 12)
 end
 
+local function TriggerSound(type)
+    if GetConVar("tm_menusounds"):GetInt() == 0 then return end
+    if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 3) .. ".wav") end
+    if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
+    if type == "back" then surface.PlaySound("tmui/clickback.wav") end
+end
+
 local MainMenu
 
 net.Receive("OpenMainMenu", function(len, ply)
@@ -47,13 +54,6 @@ net.Receive("OpenMainMenu", function(len, ply)
     local hintList = hintArray
     table.Shuffle(hintList)
     local hintText = table.concat(hintList, "                ")
-
-    local function TriggerSound(type)
-        if GetConVar("tm_menusounds"):GetInt() == 0 then return end
-        if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 3) .. ".wav") end
-        if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
-        if type == "back" then surface.PlaySound("tmui/clickback.wav") end
-    end
 
     if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")

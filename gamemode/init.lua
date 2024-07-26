@@ -69,11 +69,11 @@ util.AddNetworkString("FOVUpdate")
 local modelFiles = {}
 local cardFiles = {}
 
-for k, v in ipairs(modelArray) do
-	table.insert(modelFiles, v[1])
+for i = 1, #modelArray do
+	table.insert(modelFiles, modelArray[i][1])
 end
-for k, v in ipairs(cardArray) do
-	table.insert(cardFiles, v[1])
+for i = 1, #cardArray do
+	table.insert(cardFiles, cardArray[i][1])
 end
 
 RunConsoleCommand("mp_friendlyfire", "1")
@@ -446,11 +446,11 @@ end
 
 net.Receive("PlayerModelChange", function(len, ply)
 	local selectedModel = net.ReadString()
-	for k, v in ipairs(modelArray) do
-		if selectedModel == v[1] then
-			local modelID = v[1]
-			local modelUnlock = v[3]
-			local modelValue = v[4]
+	for i = 1, #modelArray do
+		if selectedModel == modelArray[i][1] then
+			local modelID = modelArray[i][1]
+			local modelUnlock = modelArray[i][3]
+			local modelValue = modelArray[i][4]
 
 			if modelUnlock == "default" then
 				ply:SetNWString("chosenPlayermodel", modelID)
@@ -484,11 +484,11 @@ end )
 net.Receive("PlayerCardChange", function(len, ply)
 	local selectedCard = net.ReadString()
 	local masteryUnlockReq = 50
-	for k, v in ipairs(cardArray) do
-		if selectedCard == v[1] then
-			local cardID = v[1]
-			local cardUnlock = v[4]
-			local cardValue = v[5]
+	for i = 1, #cardArray do
+		if selectedCard == cardArray[i][1] then
+			local cardID = cardArray[i][1]
+			local cardUnlock = cardArray[i][4]
+			local cardValue = cardArray[i][5]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
 			if cardUnlock == "default" or cardUnlock == "color" or cardUnlock == "pride" then
