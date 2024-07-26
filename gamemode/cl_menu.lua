@@ -3181,7 +3181,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("FOV Value", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death Cam", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death Camera", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 225, white, TEXT_ALIGN_LEFT)
                     end
 
