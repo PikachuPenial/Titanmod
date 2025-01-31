@@ -6,7 +6,6 @@ local PlayerList
 
 local mapName
 local mapThumb
-local dof
 
 for i = 1, #mapArray do
 	if game.GetMap() == mapArray[i][1] then
@@ -18,7 +17,6 @@ end
 function GM:ScoreboardShow()
 	local LocalPlayer = LocalPlayer()
 	if not IsValid(ScoreboardDerma) then
-		if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
 		ScoreboardDerma = vgui.Create("DFrame")
 		if player.GetCount() < 5 then ScoreboardDerma:SizeTo(640, 164 + (player.GetCount() * 100), 0.5, 0, 0.1) else ScoreboardDerma:SizeTo(640, 664, 0.5, 0, 0.1) end
@@ -27,19 +25,17 @@ function GM:ScoreboardShow()
 		ScoreboardDerma:SetDraggable(false)
 		ScoreboardDerma:ShowCloseButton(false)
 		ScoreboardDerma:SetBackgroundBlur(true)
+		ScoreboardDerma:SetAlpha(0)
+
+		ScoreboardDerma:AlphaTo(255, 0.1, 0)
+
 		ScoreboardDerma.Paint = function()
 			ScoreboardDerma:SetPos(ScrW() / 2 - ScoreboardDerma:GetWide() / 2, ScrH() / 2 - ScoreboardDerma:GetTall() / 2)
-			if dof == true then
-				DrawBokehDOF(2.5, 1, 12)
-			end
+
+			BlurPanel(ScoreboardDerma, 10)
 
 			draw.RoundedBox(4, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleText("Titanmod", "StreakText", 15, 15, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-
-			draw.SimpleText("Kills", "StreakText", 380, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Deaths", "StreakText", 425, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("K/D", "StreakText", 475, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("Score", "StreakText", 545, 15, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleTextOutlined("TITANMOD", "TitleText", 15, 15, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0.5, Color(0, 0, 0, 100))
 		end
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
@@ -65,18 +61,20 @@ function GM:ScoreboardShow()
 		MapInfoPanel:SetSize(0, 100)
 
 		local PlayersIcon = vgui.Create("DImage", MapInfoPanel)
-		PlayersIcon:SetPos(102, 37)
 		PlayersIcon:SetSize(30, 30)
 		PlayersIcon:SetImage("icons/playericon.png")
 
 		MapInfoPanel.Paint = function()
 			if mapName != nil then
-				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 132, 40, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Playing " .. activeGamemode .. " on " .. mapName, "StreakText", 102, 60, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Match ends in " .. math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()) .. "s", "StreakText", 102, 80, white, TEXT_ALIGN_LEFT)
+				PlayersIcon:SetPos(102, 52)
+
+				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 142, 55, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(activeGamemode .. " on " .. mapName, "StreakText", 102, 75, white, TEXT_ALIGN_LEFT)
 			else
-				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 132, 40, white, TEXT_ALIGN_LEFT)
-				draw.SimpleText("Playing " .. activeGamemode .. " on " .. game.GetMap(), "StreakText", 2.5, 75, white, TEXT_ALIGN_LEFT)
+				PlayersIcon:SetPos(0, 52)
+
+				draw.SimpleText(player.GetCount() .. " / " .. game.MaxPlayers(), "StreakText", 40, 55, white, TEXT_ALIGN_LEFT)
+				draw.SimpleText(activeGamemode .. " on " .. game.GetMap(), "StreakText", 0, 75, white, TEXT_ALIGN_LEFT)
 			end
 		end
 
@@ -265,4 +263,4 @@ function GM:ScoreboardShow()
 	end
 end
 
-function GM:ScoreboardHide() if IsValid(ScoreboardDerma) then ScoreboardDerma:Remove() end end
+function GM:ScoreboardHide() if IsValid(ScoreboardDerma) then ScoreboardDerma:AlphaTo(0, 0.05, 0, function() ScoreboardDerma:Remove() end) end end

@@ -49,7 +49,6 @@ net.Receive("OpenMainMenu", function(len, ply)
     local canPrestige
     if LocalPly:GetNWInt("playerLevel") != 60 then canPrestige = false else canPrestige = true end
     if scrW < 1024 and scrH < 768 then belowMinimumRes = true else belowMinimumRes = false end
-    if GetConVar("tm_menudof"):GetInt() == 1 then dof = true end
 
     local hintList = hintArray
     table.Shuffle(hintList)
@@ -64,6 +63,9 @@ net.Receive("OpenMainMenu", function(len, ply)
         MainMenu:ShowCloseButton(false)
         MainMenu:SetDeleteOnClose(false)
         MainMenu:MakePopup()
+        MainMenu:SetAlpha(0)
+
+        MainMenu:AlphaTo(255, 0.1, 0)
 
         for i = 1, #mapArray do
             if game.GetMap() == mapArray[i][1] then
@@ -73,7 +75,7 @@ net.Receive("OpenMainMenu", function(len, ply)
         end
 
         MainMenu.Paint = function()
-            if dof == true then DrawBokehDOF(4, 1, 12) end
+            BlurPanel(MainMenu, 10)
             surface.SetDrawColor(35, 35, 35, 165)
             surface.DrawRect(0, 0, MainMenu:GetWide(), MainMenu:GetTall())
 
@@ -85,7 +87,12 @@ net.Receive("OpenMainMenu", function(len, ply)
             surface.SetDrawColor(gradRColor)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
 
-            if GetGlobal2Bool("tm_matchended") == true then MainMenu:Remove() return end
+            if GetGlobal2Bool("tm_matchended") == true then 
+                
+                MainMenu:Remove()
+                return
+
+            end
         end
 
         gui.EnableScreenClicker(true)
@@ -686,11 +693,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if timer.Exists("respawnTimeLeft") then return end
                 TriggerSound("click")
                 CreateHUDHook()
-                MainMenu:Remove()
-                gui.EnableScreenClicker(false)
-                hook.Remove("Think", "RenderBehindPauseMenu")
-                net.Start("CloseMainMenu")
-                net.SendToServer()
+                MainMenu:AlphaTo(0, 0.05, 0, function()
+
+                    MainMenu:Remove()
+                    gui.EnableScreenClicker(false)
+                    hook.Remove("Think", "RenderBehindPauseMenu")
+                    net.Start("CloseMainMenu")
+                    net.SendToServer()
+
+                end)
             end
 
             local CustomizeButton = vgui.Create("DButton", MainPanel)
@@ -2940,7 +2951,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 440)
+                    DockPerformance:SetSize(0, 400)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -2963,6 +2974,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     InputsJump:SetTooltip("Input")
                     InputsJump:SetImage("icons/inputicon.png")
                     InputsJump.DoClick = function()
+                        TriggerSound("click")
                         OptionsScroller:ScrollToChild(DockInputs)
                     end
 
@@ -3731,10 +3743,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Precache Gamemode Files", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Render Body", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Render Hands", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Menu DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
                     end
 
                     local precacheGamemodeFiles = DockPerformance:Add("DCheckBox")
@@ -3756,32 +3767,26 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     renderHands:SetSize(30, 30)
                     function renderHands:OnChange() TriggerSound("click") end
 
-                    local menuDOF = DockPerformance:Add("DCheckBox")
-                    menuDOF:SetPos(20, 190)
-                    menuDOF:SetConVar("tm_menudof")
-                    menuDOF:SetSize(30, 30)
-                    function menuDOF:OnChange() TriggerSound("click") end
-
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 230)
+                    ironSightDOF:SetPos(20, 190)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 270)
+                    inspectionDOF:SetPos(20, 230)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 310)
+                    screenFlashing:SetPos(20, 270)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 390)
+                    WipeAccountButton:SetPos(17.5, 350)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0
@@ -3972,11 +3977,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local EditorPanel = vgui.Create("DFrame", FakeHUD)
                 EditorPanel:SetSize(435, scrH * 0.7)
                 EditorPanel:MakePopup()
-                EditorPanel:SetTitle("HUD Editor")
+                EditorPanel:SetTitle("")
                 EditorPanel:Center()
                 EditorPanel:SetScreenLock(true)
                 EditorPanel:GetBackgroundBlur(false)
                 EditorPanel.Paint = function(self, w, h)
+                    BlurPanel(EditorPanel, 2)
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                 end
                 EditorPanel.OnClose = function()

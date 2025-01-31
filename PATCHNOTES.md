@@ -1,17 +1,26 @@
 
-# Unreleased Update
+# Unreleased Update 
 **>GAMEPLAY**  
-*CAMERA SHAKE*
-- Firing a weapon now causes a slight amount of camera shake to be applied
-- This was done because Titanmod's recoil tends to have very little shake, making the firing feel bland
-- A weapons camera shake value is determined by its recoil and it is affected by recoil reducing attachments
-
-*MOVEMENT CHANGES*
-- Player acceleration is now 60% faster (moving from a complete stop or changing direction will be quicker)
 
 **>MAPS**   
 
 **>BALANCE** 
+
+**>QOL & BUG FIXES**   
+- Numerous menu and interface improvments, redesigns, optimizations and fixes
+
+
+
+# August 1st, 2024 (8/1/24)  
+**>GAMEPLAY**  
+*CAMERA SHAKE*
+- Firing a weapon now causes a slight amount of camera shake to be applied
+- This was done because Titanmod's recoil tends to have very little shake, making the firing feel bland
+- A weapons camera shake value is determined by its recoil, RPM and it is affected by recoil/RPM reducing attachments
+
+*MOVEMENT CHANGES*
+- Player acceleration is now 60% faster (moving from a complete stop or changing direction will be quicker)
+
 
 **>QOL & BUG FIXES**   
 - Optimized array usage

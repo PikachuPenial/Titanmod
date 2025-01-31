@@ -31,6 +31,25 @@ cvars.AddChangeCallback("tm_renderhands", function(convar_name, value_old, value
 	end
 end)
 
+local blurMat = Material("pp/blurscreen")
+function BlurPanel(panel, strength)
+
+    surface.SetMaterial(blurMat)
+    surface.SetDrawColor(255, 255, 255, 255)
+
+    local blurX, blurY = panel:LocalToScreen(0, 0)
+
+    for i = 0.33, 1, 0.33 do
+
+        blurMat:SetFloat("$blur", strength * i)
+        blurMat:Recompute()
+        if (render) then render.UpdateScreenEffectTexture() end
+        surface.DrawTexturedRect(blurX * -1, blurY * -1, ScrW(), ScrH())
+
+    end
+
+end
+
 function UpdateFonts()
 	surface.CreateFont("GunPrintName", {
 		font = "Arial",
@@ -216,6 +235,24 @@ function UpdateFonts()
 		font = "Tahoma",
 		extended = false,
 		size = 22,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
+
+	surface.CreateFont("TitleText", {
+		font = "BenderBold",
+		extended = false,
+		size = 32,
 		weight = 500,
 		blursize = 0,
 		scanlines = 0,

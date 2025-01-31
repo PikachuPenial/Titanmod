@@ -168,7 +168,6 @@ function UpdateHUD()
         ["killfeed_enable"] = GetConVar("tm_hud_enablekillfeed"):GetInt(),
         ["killfeed_limit"] = GetConVar("tm_hud_killfeed_limit"):GetInt(),
         ["screen_flashes"] = GetConVar("tm_screenflashes"):GetInt(),
-        ["menu_dof"] = GetConVar("tm_menudof"):GetInt(),
         ["music_volume"] = GetConVar("tm_musicvolume"):GetFloat()
     }
 
@@ -1168,7 +1167,6 @@ net.Receive("EndOfGame", function(len, ply)
     LocalPly = LocalPlayer()
     gameEnded = true
     DeleteHUDHook()
-    local dof
     local winningPlayer
     local wonMatch = false
     local mapPicked
@@ -1200,8 +1198,6 @@ net.Receive("EndOfGame", function(len, ply)
         if !IsValid(EndOfGameUI) then return end
         if !gui.IsGameUIVisible() then EndOfGameUI:Show() else EndOfGameUI:Hide() end
     end)
-
-    if convars["menu_dof"] == 1 then dof = true end
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
@@ -1281,7 +1277,7 @@ net.Receive("EndOfGame", function(len, ply)
         LoadingPrompt:MakePopup()
 
         LoadingPrompt.Paint = function(self, w, h)
-            if dof == true then DrawBokehDOF(4, 1, 12) end
+            BlurPanel(LoadingPrompt, 10)
             surface.SetDrawColor(35, 35, 35, 165)
             surface.DrawRect(0, 0, LoadingPrompt:GetWide(), LoadingPrompt:GetTall())
 
@@ -1418,7 +1414,7 @@ net.Receive("EndOfGame", function(len, ply)
     EndOfGameUI:MakePopup()
     EndOfGameUI.Paint = function(self, w, h)
         if VotingActive == false then return end
-        if dof == true then DrawBokehDOF(4, 1, 0) end
+        BlurPanel(EndOfGameUI, 10)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
         if timeUntilNextMatch > 10 then
             draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", 485, scrH - 35, white, TEXT_ALIGN_LEFT)
@@ -2115,9 +2111,6 @@ cvars.AddChangeCallback("tm_hud_killfeed_limit", function(convar_name, value_old
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_screenflashes", function(convar_name, value_old, value_new)
-    UpdateHUD()
-end)
-cvars.AddChangeCallback("tm_menudof", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_musicvolume", function(convar_name, value_old, value_new)
