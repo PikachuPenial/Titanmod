@@ -192,11 +192,15 @@ net.Receive("OpenMainMenu", function(len, ply)
             LeaderboardButton.DoClick = function()
                 if IsValid(LeaderboardPanel) then return end
                 TriggerSound("click")
-                MainPanel:Hide()
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
 
                 if !IsValid(LeaderboardPanel) then
                     local LeaderboardPanel = MainMenu:Add("LeaderboardPanel")
                     local LeaderboardSlideoutPanel = MainMenu:Add("LeaderboardSlideoutPanel")
+                    LeaderboardPanel:SetAlpha(0)
+                    LeaderboardSlideoutPanel:SetAlpha(0)
+                    LeaderboardPanel:AlphaTo(255, 0.05, 0.025)
+                    LeaderboardSlideoutPanel:AlphaTo(255, 0.05, 0.025)
 
                     local LeaderboardQuickjumpHolder = vgui.Create("DPanel", LeaderboardSlideoutPanel)
                     LeaderboardQuickjumpHolder:Dock(TOP)
@@ -301,9 +305,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
                         TriggerSound("back")
+                        LeaderboardPanel:AlphaTo(0, 0.05, 0, function() LeaderboardPanel:Hide() end)
+                        LeaderboardSlideoutPanel:AlphaTo(0, 0.05, 0, function() LeaderboardSlideoutPanel:Hide() end)
                         MainPanel:Show()
-                        LeaderboardPanel:Hide()
-                        LeaderboardSlideoutPanel:Hide()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
                     end
 
                     local LeaderboardContents = vgui.Create("DPanel", LeaderboardScroller)
@@ -743,13 +748,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeCardButton.DoClick = function()
                 if IsValid(CardPanel) then return end
                 TriggerSound("click")
-                MainPanel:Hide()
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
                 local currentCard = LocalPly:GetNWString("chosenPlayercard")
 
-                if not IsValid(CardPanel) then
+                if !IsValid(CardPanel) then
                     local CardPanel = vgui.Create("DPanel", MainMenu)
                     CardPanel:SetSize(745, scrH)
                     CardPanel:SetPos(56, 0)
+                    CardPanel:SetAlpha(0)
                     CardPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -757,6 +763,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local CardSlideoutPanel = vgui.Create("DPanel", MainMenu)
                     CardSlideoutPanel:SetSize(56, scrH)
                     CardSlideoutPanel:SetPos(0, 0)
+                    CardSlideoutPanel:SetAlpha(0)
                     CardSlideoutPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -764,10 +771,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local CardQuickjumpHolder = vgui.Create("DPanel", CardSlideoutPanel)
                     CardQuickjumpHolder:Dock(TOP)
                     CardQuickjumpHolder:SetSize(0, scrH)
+                    CardQuickjumpHolder:SetAlpha(0)
                     CardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
                         draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
                     end
+
+                    CardPanel:AlphaTo(255, 0.05, 0.025)
+                    CardSlideoutPanel:AlphaTo(255, 0.05, 0.025)
+                    CardQuickjumpHolder:AlphaTo(255, 0.05, 0.025)
 
                     local newCard
                     local newCardName
@@ -1004,10 +1016,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             net.WriteString(newCard)
                             net.SendToServer()
                             plyCallingCard:SetImage(newCard)
+                            CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                            CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                            CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            CardPanel:Hide()
-                            CardPreviewPanel:Hide()
-                            CardSlideoutPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 surface.PlaySound("common/wpn_denyselect.wav")
@@ -1017,10 +1030,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
@@ -1031,10 +1045,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "matches" then
                             if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
@@ -1045,10 +1060,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "wins" then
                             if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
@@ -1059,10 +1075,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
@@ -1073,10 +1090,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
@@ -1087,10 +1105,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
@@ -1101,10 +1120,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
@@ -1115,10 +1135,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
@@ -1129,10 +1150,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
@@ -1143,10 +1165,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
@@ -1157,10 +1180,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
@@ -1171,10 +1195,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
@@ -1185,10 +1210,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 net.WriteString(newCard)
                                 net.SendToServer()
                                 plyCallingCard:SetImage(newCard)
+                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                                 MainPanel:Show()
-                                CardPanel:Hide()
-                                CardPreviewPanel:Hide()
-                                CardSlideoutPanel:Hide()
+                                MainPanel:AlphaTo(255, 0.05, 0.025)
                             end
                         end
                     end
@@ -2051,10 +2077,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
                         TriggerSound("back")
+                        CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                        CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                        CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
                         MainPanel:Show()
-                        CardPanel:Hide()
-                        CardPreviewPanel:Hide()
-                        CardSlideoutPanel:Hide()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
                     end
                 end
             end
@@ -2062,14 +2089,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeModelButton.DoClick = function()
                 if IsValid(ModelPanel) then return end
                 TriggerSound("click")
-                MainPanel:Hide()
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
 
                 local currentModel = LocalPly:GetNWString("chosenPlayermodel")
 
-                if not IsValid(ModelPanel) then
+                if !IsValid(ModelPanel) then
                     local ModelPanel = vgui.Create("DPanel", MainMenu)
                     ModelPanel:SetSize(630, scrH)
                     ModelPanel:SetPos(56, 0)
+                    ModelPanel:SetAlpha(0)
                     ModelPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -2077,6 +2105,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local ModelSlideoutPanel = vgui.Create("DPanel", MainMenu)
                     ModelSlideoutPanel:SetSize(56, scrH)
                     ModelSlideoutPanel:SetPos(0, 0)
+                    ModelSlideoutPanel:SetAlpha(0)
                     ModelSlideoutPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -2116,6 +2145,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
                         draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
                     end
+
+                    ModelPanel:AlphaTo(255, 0.05, 0.025)
+                    ModelSlideoutPanel:AlphaTo(255, 0.05, 0.025)
 
                     local CustomizeScroller = vgui.Create("DScrollPanel", ModelPanel)
                     CustomizeScroller:Dock(FILL)
@@ -2203,9 +2235,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local ModelPreviewPanel = vgui.Create("DPanel", MainMenu)
                     ModelPreviewPanel:SetSize(500, scrH)
                     ModelPreviewPanel:SetPos(686, 0)
+                    ModelPreviewPanel:SetAlpha(0)
                     ModelPreviewPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
+
+                    ModelPreviewPanel:AlphaTo(255, 0.05, 0.025)
 
                     local SelectedModelHolder = vgui.Create("DPanel", ModelPreviewPanel)
                     SelectedModelHolder:SetSize(300, 1000)
@@ -2231,113 +2266,126 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "kills" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "streak" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "matches" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "wins" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "headshot" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "smackdown" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "clutch" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "longshot" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "pointblank" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "killstreaks" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         elseif newModelUnlockType == "buzzkills" then
                             surface.PlaySound("tmui/uisuccess.wav")
                             net.Start("PlayerModelChange")
                             net.WriteString(newModel)
                             net.SendToServer()
+                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                             MainPanel:Show()
-                            ModelSlideoutPanel:Hide()
-                            ModelPanel:Hide()
-                            ModelPreviewPanel:Hide()
+                            MainPanel:AlphaTo(255, 0.05, 0.025)
                         end
                     end
 
                     PreviewModelTextHolder.Paint = function(self, w, h)
+                        BlurPanel(PreviewModelTextHolder, 2)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
                         draw.RoundedBox(0, 0, 0, w, h, previewColor)
 
@@ -2513,7 +2561,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                         SelectedModelDisplay:SetSize(750, 750)
                         SelectedModelDisplay:SetPos(-225, 235)
+                        SelectedModelDisplay:SetMouseInputEnabled(true)
+                        SelectedModelDisplay:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
+                        SelectedModelDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
+                        SelectedModelDisplay:SetAnimated(true)
                         SelectedModelDisplay:SetModel(model)
+
+                        SelectedModelDisplay.Entity:SetAngles(Angle(0, 40, 0))
+
+                        function SelectedModelDisplay:LayoutEntity(Entity)
+                            if !IsValid(Entity) then return end
+                            SelectedModelDisplay:RunAnimation()
+                        end
                     end
 
                     PreviewNewModel(newModel)
@@ -2847,10 +2906,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
                         TriggerSound("back")
+                        ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                        ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                        ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
                         MainPanel:Show()
-                        ModelSlideoutPanel:Hide()
-                        ModelPanel:Hide()
-                        ModelPreviewPanel:Hide()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
                     end
                 end
             end
@@ -2891,14 +2951,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
             OptionsSettingsButton.DoClick = function()
                 if IsValid(OptionsPanel) then return end
-                MainPanel:Hide()
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
 
                 local previewPool = {"images/preview/sky.png", "images/preview/sky2.png", "images/preview/metal.png", "images/preview/water.png", "images/preview/grass.png", "images/preview/devtexture.png", "images/preview/wood.png", "images/preview/glass.png"}
                 local previewImg = "images/preview/sky.png"
 
                 if not IsValid(OptionsPanel) then
                     local OptionsPanel = MainMenu:Add("OptionsPanel")
+                    OptionsPanel:SetAlpha(0)
                     local OptionsSlideoutPanel = MainMenu:Add("OptionsSlideoutPanel")
+                    OptionsSlideoutPanel:SetAlpha(0)
+
+                    OptionsPanel:AlphaTo(255, 0.05, 0.025)
+                    OptionsSlideoutPanel:AlphaTo(255, 0.05, 0.025)
 
                     local OptionsQuickjumpHolder = vgui.Create("DPanel", OptionsSlideoutPanel)
                     OptionsQuickjumpHolder:Dock(TOP)
@@ -3045,9 +3110,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
                         TriggerSound("back")
+                        OptionsPanel:AlphaTo(0, 0.05, 0, function() OptionsPanel:Hide() end)
+                        OptionsSlideoutPanel:AlphaTo(0, 0.05, 0, function() OptionsSlideoutPanel:Hide() end)
                         MainPanel:Show()
-                        OptionsSlideoutPanel:Hide()
-                        OptionsPanel:Hide()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
                         timer.Remove("CrosshairDynamicPreview")
                     end
 
@@ -3819,7 +3885,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
             OptionsHUDButton.DoClick = function()
                 if IsValid(FakeHUD) then return end
-                MainPanel:Hide()
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
                 TriggerSound("click")
 
                 local ShowHiddenOptions = false
@@ -3851,6 +3917,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end)
 
                 local FakeHUD = MainMenu:Add("HUDEditorPanel")
+                FakeHUD:SetAlpha(0)
+                FakeHUD:AlphaTo(255, 0.05, 0.025)
                 MainMenu:SetMouseInputEnabled(false)
                 FakeHUD.Paint = function(self, w, h)
                     convars = {
@@ -3988,8 +4056,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 EditorPanel.OnClose = function()
                     TriggerSound("back")
                     MainMenu:SetMouseInputEnabled(true)
-                    FakeHUD:Hide()
+                    FakeHUD:AlphaTo(0, 0.05, 0, function() FakeHUD:Hide() end)
                     MainPanel:Show()
+                    MainPanel:AlphaTo(255, 0.05, 0.025)
                     timer.Remove("previewLoop")
                     hook.Remove("Tick", "KeyOverlayTracking")
                     UpdateHUD()

@@ -1,12 +1,18 @@
 
 # Unreleased Update 
 **>GAMEPLAY**  
+*MOVEMENT CHANGES*
+- Wall Running now carries over the players previous forward momentum if it exceeds the base wall run momentum
+- Wall Running minimum velocity increase reduced by 20% to compensate for momentum conservation
+- Wall Jumping no longer stalls a players forward momentum, instead slowing said momentum by 25%
 
 **>MAPS**   
 
 **>BALANCE** 
 
 **>QOL & BUG FIXES**   
+- Removed sight bobbing while mid-air
+
 - Numerous menu and interface improvments, redesigns, optimizations and fixes
 
 

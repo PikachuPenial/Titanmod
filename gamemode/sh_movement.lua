@@ -162,6 +162,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     local onground = ply:OnGround()
     local sliding = ply:GetSliding()
     local speed = mv:GetVelocity():Length()
+    local speed2d = mv:GetVelocity():Length2D()
     local runspeed = ply:GetRunSpeed()
     local ducking = mv:KeyDown(IN_DUCK)
     local crouching = ply:Crouching()
@@ -268,10 +269,11 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             local traceWallLeft = util.TraceLine(tracedata)
 
             if (traceWallLeft.Hit) then
+                ang.x = 0 ang.z = 0
                 ply:SetWJTime(CT + wallJumpTime)
                 ply:ViewPunch(walljumpleftpunch)
                 if SERVER then ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80) end
-                vel = Vector(0, 0, 280) + ((ang:Right() * -1) * 175)
+                vel = Vector(0, 0, 280) + ((ang:Right() * -1) * 175) + (ang:Forward() * speed2d * 0.75)
                 mv:SetVelocity(vel)
                 mv:SetOrigin(pos)
                 return
@@ -305,7 +307,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
                 ply:SetWRTime(CT + wallRunTime)
                 ply:ViewPunch(wallrunleftpunch)
                 if SERVER then ply:EmitSound("wallrun.wav") end
-                vel = Vector(0, 0, 210) + (ang:Right() * -200) + (ang:Forward() * 360)
+                vel = Vector(0, 0, 210) + (ang:Right() * -200) + (ang:Forward() * math.max(300, speed2d))
                 mv:SetVelocity(vel)
                 mv:SetOrigin(pos)
                 return
@@ -325,10 +327,11 @@ hook.Add("Move", "TM_Move", function(ply, mv)
             local traceWallRight = util.TraceLine(tracedata)
 
             if (traceWallRight.Hit) then
+                ang.x = 0 ang.z = 0
                 ply:SetWJTime(CT + wallJumpTime)
                 ply:ViewPunch(walljumprightpunch)
                 if SERVER then ply:EmitSound("player/footsteps/tile" .. math.random(1, 4) .. ".wav", 70, 80) end
-                vel = Vector(0, 0, 280) + ((ang:Right() * 1) * 175)
+                vel = Vector(0, 0, 280) + ((ang:Right() * 1) * 175) + (ang:Forward() * speed2d * 0.75)
                 mv:SetVelocity(vel)
                 mv:SetOrigin(pos)
                 return
@@ -362,7 +365,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
                 ply:SetWRTime(CT + wallRunTime)
                 ply:ViewPunch(wallrunrightpunch)
                 if SERVER then ply:EmitSound("wallrun.wav") end
-                vel = Vector(0, 0, 210) + (ang:Right() * 200) + (ang:Forward() * 360)
+                vel = Vector(0, 0, 210) + (ang:Right() * 200) + (ang:Forward() * math.max(300, speed2d))
                 mv:SetVelocity(vel)
                 mv:SetOrigin(pos)
                 return
