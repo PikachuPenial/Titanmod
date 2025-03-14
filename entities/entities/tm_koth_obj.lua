@@ -1,4 +1,3 @@
-
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 if activeGamemode ~= "KOTH" then return end
 

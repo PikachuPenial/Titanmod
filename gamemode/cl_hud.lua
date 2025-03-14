@@ -1,4 +1,3 @@
-
 scrW, scrH = ScrW(), ScrH()
 center_x, center_y = ScrW() / 2, ScrH() / 2
 scale = center_y * (2 / 1080)
@@ -257,8 +256,11 @@ local function MatchStartPopup(ply)
     GamemodePopup:SetDraggable(false)
     GamemodePopup:ShowCloseButton(false)
     GamemodePopup.Paint = function(self, w, h)
+        BlurPanel(GamemodePopup, 5)
         GamemodePopup:SetY(GamemodePopup:GetTall())
-        draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(50, 50, 50, 100))
+        surface.SetDrawColor(255, 255, 255, 128)
+        surface.DrawRect(0, 0, GamemodePopup:GetWide(), 1)
+        draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(0, 0, 0, 75))
         draw.SimpleText(gm, "AmmoCountSmall", w / 2, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
@@ -276,8 +278,11 @@ local function MatchStartPopup(ply)
         GamemodeDesc:SetDraggable(false)
         GamemodeDesc:ShowCloseButton(false)
         GamemodeDesc.Paint = function(self, w, h)
+            BlurPanel(GamemodeDesc, 5)
             GamemodeDesc:SetX(scrW / 2 - (textW / 2))
-            draw.RoundedBox(0, 0, 0, GamemodeDesc:GetWide(), GamemodeDesc:GetTall(), Color(50, 50, 50, 100))
+            surface.SetDrawColor(255, 255, 255, 128)
+            surface.DrawRect(0, 0, GamemodeDesc:GetWide(), 1)
+            draw.RoundedBox(0, 0, 0, GamemodeDesc:GetWide(), GamemodeDesc:GetTall(), Color(0, 0, 0, 75))
             draw.SimpleText(desc, "HUD_Health", w / 2, descTextH / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText(winCondition, "HUD_Health", w / 2, descTextH + (winTextH / 2), white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
@@ -811,28 +816,28 @@ net.Receive("SendNotification", function(len, ply)
     if notiType == "time" then
         surface.PlaySound("tmui/timenotif.wav")
         notiIcon = notiClock
-        notiColor = Color(100, 0, 0, 155)
+        notiColor = Color(100, 0, 0, 125)
         notiSecondaryColor = Color(255, 0, 0, 50)
     elseif notiType == "level" then
         if convars["screen_flashes"] == 1 then LocalPly:ScreenFade(SCREENFADE.IN, Color(255, 255, 0, 25), 0.3, 0) end
         surface.PlaySound("tmui/levelup.wav")
         notiIcon = notiLevel
-        notiColor = Color(100, 100, 0, 155)
+        notiColor = Color(100, 100, 0, 125)
         notiSecondaryColor = Color(255, 255, 0, 50)
     elseif notiType == "gungame" then
         surface.PlaySound("tmui/timenotif.wav")
         notiIcon = notiKnife
-        notiColor = Color(100, 0, 100, 155)
+        notiColor = Color(100, 0, 100, 125)
         notiSecondaryColor = Color(255, 0, 255, 50)
     elseif notiType == "warning" then
         surface.PlaySound("tmui/warning.wav")
         notiIcon = notiWarning
-        notiColor = Color(100, 0, 0, 155)
+        notiColor = Color(100, 0, 0, 125)
         notiSecondaryColor = Color(255, 0, 0, 50)
     elseif notiType == "success" then
         surface.PlaySound("tmui/success.wav")
         notiIcon = notiSuccess
-        notiColor = Color(0, 100, 0, 155)
+        notiColor = Color(0, 100, 0, 125)
         notiSecondaryColor = Color(0, 255, 0, 50)
     end
 
@@ -845,7 +850,13 @@ net.Receive("SendNotification", function(len, ply)
     Notif:SetDraggable(false)
     Notif:ShowCloseButton(false)
     Notif.Paint = function(self, w, h)
+        BlurPanel(Notif, 3)
         Notif:SetX(scrW - Notif:GetWide() - notis["x"])
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, 1)
+        surface.DrawRect(0, h - 1, w, 1)
+        surface.DrawRect(0, 0, 1, h)
+        surface.DrawRect(w - 1, 0, 1, h)
         draw.RoundedBox(0, 0, 0, Notif:GetWide(), Notif:GetTall(), notiColor)
         draw.RoundedBox(0, 0, 0, 42, 42, notiSecondaryColor)
         surface.SetMaterial(notiIcon)

@@ -19,8 +19,6 @@ include("sv_gamemode_handler.lua")
 include("sh_movement.lua")
 include("concommands.lua")
 
-hook.Remove("PlayerTick", "TickWidgets")
-
 local activeGamemode
 SetGlobal2Bool("tm_matchended", false)
 

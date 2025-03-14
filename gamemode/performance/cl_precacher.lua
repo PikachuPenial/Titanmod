@@ -1,4 +1,3 @@
-
 function PrecacheDir(dir)
     local files, directories = file.Find(dir .. "*", "THIRDPARTY")
     for _, fdir in pairs(directories) do

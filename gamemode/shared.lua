@@ -1,8 +1,4 @@
-
 include("performance/cl_precacher.lua")
-include("performance/cl_rewrite_entity_index.lua")
-include("performance/cl_rewrite_player_index.lua")
-include("performance/cl_rewrite_weapon_index.lua")
 include("performance/sh_optimization.lua")
 
 GM.Name = "Titanmod"
@@ -346,35 +342,17 @@ hook.Add("PlayerFootstep", "MuteCrouchFootsteps", function(ply, pos, foot, sound
     return true
 end)
 
-hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply)
-    return true
-end)
+hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply) return true end)
 
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
-    if stat == "TracerCount" then return 1 end
-    if stat == "TracerName" then return "Tracer" end
+    if stat == "TracerCount" then return 0 end
+    if stat == "TracerName" then return "nil" or false end
     if stat == "DisableChambering" then return true end
     if stat == "Secondary.IronFOV_MX4" then return 64 end
     if stat == "CrouchRecoilMultiplier" then return 0.8 end
     if stat == "CrouchSpreadMultiplier" then return 0.7 end
     if stat == "IronSightsReloadEnabled" then return true end
     if stat == "IronSightsReloadLock" then return false end
-end)
-
-hook.Add("TFA_MakeShell", "DisableShells", function(Weapon)
-    return false
-end)
-
-hook.Add("TFA_EjectionSmoke", "DisableEjectionSmoke", function(Weapon)
-    return false
-end)
-
-hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon)
-    return false
-end)
-
-hook.Add("TFA_MuzzleSmoke", "DisableMuzzleSmoke", function(Weapon)
-    return false
 end)
 
 -- disable specific TFA attachments

@@ -448,15 +448,19 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TutorialPanel:SetScreenLock(true)
                 TutorialPanel:GetBackgroundBlur(false)
                 TutorialPanel:SetDraggable(false)
-                TutorialPanel:SetDeleteOnClose(true)
+                TutorialPanel:SetDeleteOnClose(false)
+                TutorialPanel:SetAlpha(0)
                 MainMenu:SetMouseInputEnabled(false)
+                TutorialPanel:AlphaTo(255, 0.1, 0)
                 TutorialPanel.Paint = function(self, w, h)
                     DrawBokehDOF(4, 1, 12)
                     draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
                 end
                 TutorialPanel.OnClose = function()
+                    TutorialPanel:AlphaTo(0, 0.05, 0, function() TutorialPanel:Remove() end)
                     TriggerSound("click")
                     MainMenu:SetMouseInputEnabled(true)
+                    return false
                 end
 
                 local TutorialScroller = vgui.Create("DScrollPanel", TutorialPanel)
@@ -2566,7 +2570,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         SelectedModelDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
                         SelectedModelDisplay:SetAnimated(true)
                         SelectedModelDisplay:SetModel(model)
-
                         SelectedModelDisplay.Entity:SetAngles(Angle(0, 40, 0))
 
                         function SelectedModelDisplay:LayoutEntity(Entity)
@@ -3016,7 +3019,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 400)
+                    DockPerformance:SetSize(0, 360)
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(12, 12)
@@ -3821,38 +3824,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     precacheGamemodeFiles:SetTooltip("Recommended when your game is installed on a SSD/solid state drive, disable if you are encountering CVEngineServer overflows")
                     function precacheGamemodeFiles:OnChange() TriggerSound("click") end
 
-                    local renderBody = DockPerformance:Add("DCheckBox")
-                    renderBody:SetPos(20, 110)
-                    renderBody:SetConVar("cl_ec2_enabled")
-                    renderBody:SetSize(30, 30)
-                    function renderBody:OnChange() TriggerSound("click") end
-
                     local renderHands = DockPerformance:Add("DCheckBox")
-                    renderHands:SetPos(20, 150)
+                    renderHands:SetPos(20, 110)
                     renderHands:SetConVar("tm_renderhands")
                     renderHands:SetSize(30, 30)
                     function renderHands:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 190)
+                    ironSightDOF:SetPos(20, 150)
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(30, 30)
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 230)
+                    inspectionDOF:SetPos(20, 190)
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(30, 30)
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 270)
+                    screenFlashing:SetPos(20, 230)
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(30, 30)
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 350)
+                    WipeAccountButton:SetPos(17.5, 310)
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(500, 40)
                     local textAnim = 0

@@ -1,38 +1,135 @@
+-- removing unneccessary server hook
+if SERVER then
+	hook.Add("Initialize", "SVHookRemoval", function() if timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end end)
+end
 
--- removing unneccessary hooks for optimization purposes
-hook.Add("Initialize", "Optimization", function()
-    hook.Remove("PlayerTick", "TickWidgets")
-    if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
-    if CLIENT then
-        hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
-        hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
-        hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
-        hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")
-        hook.Remove("RenderScreenspaceEffects", "RenderSobel")
-        hook.Remove("RenderScreenspaceEffects", "RenderSharpen")
-        hook.Remove("RenderScreenspaceEffects", "RenderMaterialOverlay")
-        hook.Remove("RenderScreenspaceEffects", "RenderMotionBlur")
-        hook.Remove("RenderScene", "RenderStereoscopy")
-        hook.Remove("RenderScene", "RenderSuperDoF")
-        hook.Remove("GUIMousePressed", "SuperDOFMouseDown")
-        hook.Remove("GUIMouseReleased", "SuperDOFMouseUp")
-        hook.Remove("PreventScreenClicks", "SuperDOFPreventClicks")
-        hook.Remove("PostRender", "RenderFrameBlend")
-        hook.Remove("PreRender", "PreRenderFrameBlend")
-        hook.Remove("Think", "DOFThink")
-        hook.Remove("RenderScreenspaceEffects", "RenderBokeh")
-        hook.Remove("NeedsDepthPass", "NeedsDepthPass_Bokeh")
-        hook.Remove("PostDrawEffects", "RenderWidgets")
-        hook.Remove("PostDrawEffects", "RenderHalos")
-    end
+if CLIENT then
+	-- optimized indexs
+	local function RWEnt()
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+
+		local val
+		local et
+		function M_Entity:__index(key)
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			et = E_GetTable(self)
+			if et then
+				return et[key]
+			end
+		end
+	end
+
+	local function RWPly()
+		local M_Player = FindMetaTable("Player")
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+
+		local val
+		local pt
+		function M_Player:__index(key)
+			val = M_Player[key]
+			if val != nil then return val end
+
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			pt = E_GetTable(self)
+			if pt then
+				return pt[key]
+			end
+		end
+	end
+
+	local function RWWep()
+		local M_Weapon = FindMetaTable("Weapon")
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+		local E_GetOwner = M_Entity.GetOwner
+
+		local val
+		local wt
+		function M_Weapon:__index(key)
+			val = M_Weapon[key]
+			if val != nil then return val end
+
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			if key == "Owner" then return E_GetOwner(self) end
+
+			wt = E_GetTable(self)
+			if wt then
+				return wt[key]
+			end
+		end
+	end
+
+	RWEnt()
+	RWPly()
+	RWWep()
+
+	-- removing unneccessary client hooks
+	hook.Add("InitPostEntity", "CLHookRemoval", function()
+		hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
+		hook.Remove("RenderScreenspaceEffects", "RenderBloom")
+		hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
+		hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
+		hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")
+		hook.Remove("RenderScreenspaceEffects", "RenderSobel")
+		hook.Remove("RenderScreenspaceEffects", "RenderSharpen")
+		hook.Remove("RenderScreenspaceEffects", "RenderMaterialOverlay")
+		hook.Remove("RenderScreenspaceEffects", "RenderMotionBlur")
+		hook.Remove("RenderScene", "RenderStereoscopy")
+		hook.Remove("RenderScene", "RenderSuperDoF")
+		hook.Remove("GUIMousePressed", "SuperDOFMouseDown")
+		hook.Remove("GUIMouseReleased", "SuperDOFMouseUp")
+		hook.Remove("PreventScreenClicks", "SuperDOFPreventClicks")
+		hook.Remove("PostRender", "RenderFrameBlend")
+		hook.Remove("PreRender", "PreRenderFrameBlend")
+		hook.Remove("Think", "DOFThink")
+		hook.Remove("RenderScreenspaceEffects", "RenderBokeh")
+		hook.Remove("NeedsDepthPass", "NeedsDepthPass_Bokeh")
+		hook.Remove("PostDrawEffects", "RenderWidgets")
+		hook.Remove("PostDrawEffects", "RenderHalos")
+	end)
+
+	-- remove widget code every tick
+	local function CLTickRemoval(ent)
+		if ent:IsWidget() then
+			hook.Add("PlayerTick", "TickWidgets", function(pl, mv) widgets.PlayerTick(pl, mv) end)
+			hook.Remove("OnEntityCreated", "WidgetCreated")
+		end
+	end
+	hook.Add("OnEntityCreated", "WidgetCreated", CLTickRemoval)
+end
+
+-- force multicore for clients
+hook.Add("InitPostEntity", "CLMulticore", function()
+
+	timer.Simple(3, function() -- just in case
+
+		RunConsoleCommand("gmod_mcore_test", "1")
+		RunConsoleCommand("mat_queue_mode", "-1")
+		RunConsoleCommand("cl_threaded_bone_setup", "1")
+		RunConsoleCommand("cl_threaded_client_leaf_system", "1")
+		RunConsoleCommand("r_threaded_client_shadow_manager", "1")
+		RunConsoleCommand("r_threaded_particles", "1")
+		RunConsoleCommand("r_threaded_renderables", "1")
+		RunConsoleCommand("r_queued_ropes", "1")
+		RunConsoleCommand("studio_queue_mode", "1")
+
+	end)
+
 end)
 
-hook.Add("PlayerInitialSpawn", "anti-crash", function(ply)
-	ply:SendLua("RunConsoleCommand('r_drawmodeldecals', 0)")
-	ply:SendLua("RunConsoleCommand('r_maxmodeldecal', 50)")
-end)
-
-hook.Add("InitPostEntityMap", "DisableShadowControl", function()
+-- map optimization
+hook.Add("InitPostEntityMap", "MapOptimization", function()
 	local shadowexists = 0
 
 	for _, ent in pairs(ents.FindByClass("shadow_control")) do
@@ -48,13 +145,14 @@ hook.Add("InitPostEntityMap", "DisableShadowControl", function()
 		end
 	end
 
-	for _, ent in pairs(ents.FindByClass("func_precipitation")) do
-		ent:Remove()
-	end
+	for _, ent in pairs(ents.FindByClass("func_precipitation")) do ent:Remove() end
+	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do ent:Remove() end
+end)
 
-	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do
-		ent:Remove()
-	end
+-- prevent model related crashes
+hook.Add("PlayerInitialSpawn", "CLPreventCrash", function(ply)
+	ply:SendLua("RunConsoleCommand('r_drawmodeldecals', 0)")
+	ply:SendLua("RunConsoleCommand('r_maxmodeldecal', 50)")
 end)
 
 -- optimized surface and draw functions
@@ -132,6 +230,7 @@ local function draw_DrawText(text, font, x, y, colour, xalign )
 	local curString = ""
 
 	surface_SetFont(font)
+	local sizeX, lineHeight = surface_GetTextSize("\n")
 
 	for i = 1, #text do
 		local ch = string_sub(text, i, i)
@@ -236,6 +335,8 @@ end
 
 function draw.RoundedBoxEx(bordersize, x, y, w, h, color, a, b, c, d)
 	surface_SetDrawColor(color)
+
+	-- Draw as much of the rect as we can without textures
 	surface_DrawRect(x + bordersize, y, w - bordersize * 2, h)
 	surface_DrawRect(x, y + bordersize, bordersize, h - bordersize * 2)
 	surface_DrawRect(x + w - bordersize, y + bordersize, bordersize, h - bordersize * 2)
@@ -271,8 +372,8 @@ function draw.SimpleTextOutlined(text, font, x, y, colour, xalign, yalign, outli
 	local steps = (outlinewidth * 2) / 3
 	if steps < 1 then steps = 1 end
 
-	for _x = -outlinewidth, outlinewidth, steps do
-		for _y = -outlinewidth, outlinewidth, steps do
+	for _x=-outlinewidth, outlinewidth, steps do
+		for _y=-outlinewidth, outlinewidth, steps do
 			draw_SimpleText(text, font, x + _x, y + _y, outlinecolour, xalign, yalign)
 		end
 	end

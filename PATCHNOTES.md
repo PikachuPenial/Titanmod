@@ -1,19 +1,53 @@
+# Unreleased  
+**>GAMEPLAY**  
+*DYNAMIC MUZZLE FLASH*
+- Reintroduced muzzle flash that now creates light around the weapon being fired
 
-# Unreleased Update 
+*GRAPHICAL CHANGES*
+- Added Lens Flare effect
+- Removed bullet tracers due to being redundant
+
+**>QOL & BUG FIXES**   
+- Extensive micro-optimization throughout the gamemode
+
+
+
+# February 1st, 2025 (2/1/25)  
 **>GAMEPLAY**  
 *MOVEMENT CHANGES*
 - Wall Running now carries over the players previous forward momentum if it exceeds the base wall run momentum
 - Wall Running minimum velocity increase reduced by 20% to compensate for momentum conservation
 - Wall Jumping no longer stalls a players forward momentum, instead slowing said momentum by 25%
-
-**>MAPS**   
-
-**>BALANCE** 
+- Base crouching/uncrouching speeds increased by 25%, speed following a slide is unchanged
 
 **>QOL & BUG FIXES**   
 - Removed sight bobbing while mid-air
 
-- Numerous menu and interface improvments, redesigns, optimizations and fixes
+- Numerous menu and HUD improvements, redesigns, optimizations and fixes
+
+
+
+# August 1st, 2024 (8/1/24)  
+**>GAMEPLAY**  
+*CAMERA SHAKE*
+- Firing a weapon now causes a slight amount of camera shake to be applied
+- This was done because Titanmod's recoil tends to have very little shake, making the firing feel bland
+- A weapons camera shake value is determined by its recoil, RPM and it is affected by recoil/RPM reducing attachments
+
+*MOVEMENT CHANGES*
+- Player acceleration is now 60% faster (moving from a complete stop or changing direction will be quicker)
+
+
+**>QOL & BUG FIXES**   
+- Optimized array usage
+
+- Added reticle previews while editing the Optic Reticle Color setting
+
+- Walking now affects dynamic crosshairs
+
+- Improved loading times for customization menus on first launch
+
+- Fixed client precahcer error when connecting to a server
 
 
 
@@ -154,7 +188,7 @@
 
 
 
-# Febuary 3rd, 2024 (2/3/24)    
+# February 3rd, 2024 (2/3/24)    
 **>GAMEPLAY**   
 *NEW WEAPON*
 - **ASh-12** (Primary, Rifle)
@@ -407,8 +441,6 @@
 - Renamed OTs-14 Groza Veresk to Groza
 - Renamed SIG P320 Veresk to P320
 - Renamed UZK-BR99 Veresk to BR99
-
-**>MAPS**   
 
 **>BALANCE**    
 - All melee weapons have been standardized stat-wise and will all deal the same damage and have the same swing cooldown
@@ -1468,7 +1500,6 @@
 - Music now properly loops again
 
 *OTHER ADJUSTMENTS*
-
 - A bunch of optimization has been implemented, expect more consistent frame rates
 
 - Added SFX after a successful prestige
@@ -1978,9 +2009,13 @@
 
 **>QOL & BUG FIXES**    
 - Health regeneration begins instantly upon getting a kill
+
 - Disabled default HL2 ammo and weapon pickup notifications
+
 - Removed 'tm_endless' server option due to incompatibility with new gamemode
+
 - Being hit by a syringe now flashes your screen green instead of blue
+
 - Laser attachments that also triggered a flashlight no longer trigger a flashlight (just like the standalone flashlight attachment, this is useless bc of Titanmod's custom lights)
 
 
