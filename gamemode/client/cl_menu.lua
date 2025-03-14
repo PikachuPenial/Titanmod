@@ -1,4 +1,3 @@
-
 local white = Color(255, 255, 255, 255)
 local gray = Color(50, 50, 50, 185)
 local lightGray = Color(40, 40, 40, 200)

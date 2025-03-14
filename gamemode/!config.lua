@@ -1,4 +1,3 @@
-
 --[[
     Titanmod Config File
     This is primarily for server owners that are trying to fine tune their experience.
@@ -356,10 +355,6 @@ weaponArray[133] = {"tfa_ins2_xm8", "XM8", "primary", "rifle"}
 -- convars
 if SERVER then
     RunConsoleCommand("sbox_noclip", "0")
-
-    RunConsoleCommand("sv_ec2_dynamicheight", "0")
-    RunConsoleCommand("sv_ec2_dynamicheight_min", "42")
-    RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
 
     RunConsoleCommand("sv_accelerate", "16")
     RunConsoleCommand("sv_airaccelerate", "1000")

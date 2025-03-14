@@ -1,4 +1,3 @@
-
 if customMovement == true then
 local meta = FindMetaTable("Player")
 function meta:GetWJTime()

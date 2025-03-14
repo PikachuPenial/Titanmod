@@ -1,4 +1,3 @@
-
 -- allows the player to save their local stats to the sv.db file without having to leave the server
 function ForceSave(ply, cmd, args)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
@@ -29,7 +28,6 @@ function ForceSave(ply, cmd, args)
 end
 concommand.Add("tm_forcesave", ForceSave)
 
--- allows the player to prestige if they have hit the max level cap (Level 60)
 function PlayerPrestige(ply, cmd, args)
 	if ply:GetNWInt("playerLevel") == 60 then
 		ply:SetNWInt("playerLevel", 1)

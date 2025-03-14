@@ -1,4 +1,3 @@
-
 local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 
 local randPrimary = {}
