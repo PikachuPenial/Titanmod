@@ -1,7 +1,23 @@
 # Unreleased  
 **>GAMEPLAY**  
+*NEW WEAPON*
+- **American-180** (Primary, SMG)
+- **Dual Mac 10s** (Primary, SMG)
+
+*GRAPPLING HOOK OVERHAUL*
+- Grappling Hook is now always available in every gamemode
+- 25% increase to hook travel speed
+- Seperated grappling hook from the melee slot, allowing for both to be in a loadout
+- New first person animations when using the grappling hook
+- Improved visual effects when grappling
+- New grappling related sound effects
+- Optimized various aspects of grappling hooks
+
 *DYNAMIC MUZZLE FLASH*
 - Reintroduced muzzle flash that now creates light around the weapon being fired
+
+*FALL DAMAGE*
+- Removed all sources of fall damage
 
 *GRAPHICAL CHANGES*
 - Added Lens Flare effect
@@ -9,6 +25,8 @@
 
 **>QOL & BUG FIXES**   
 - Extensive micro-optimization throughout the gamemode
+
+- Fixed issues caused by recent TFA Base updates
 
 
 

@@ -581,14 +581,14 @@ function HUDAlive(client)
         end
     end
 
-    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end if weapon:GetPrintName() == "Grappling Hook" then draw.SimpleText("Press [" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "] to use your grappling hook.", "HUD_Health", scrW / 2, scrH / 2 + 75, Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
+    if convars["reload_hints"] == 1 and weapon:Clip1() == 0 then draw.SimpleText("[RELOAD]", "HUD_WepNameKill", scrW / 2, scrH / 2 + 200, red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
 
     -- equipment
     local grappleMat = Material("icons/grapplehudicon.png", "noclamp smooth")
     local nadeMat = Material("icons/grenadehudicon.png", "noclamp smooth")
     local grappleText
 
-    if client:HasWeapon("fres_grapple") and client:GetAmmoCount("Grenade") > 0 then
+    if client:GetAmmoCount("Grenade") > 0 then
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat", CurTime()) - CurTime()) * 0.2, 0, 500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
@@ -604,7 +604,7 @@ function HUDAlive(client)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
         draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-    elseif client:HasWeapon("fres_grapple") then
+    else
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
@@ -622,19 +622,6 @@ function HUDAlive(client)
         else
             surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
             draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        end
-    elseif client:GetAmmoCount("Grenade") > 0 then
-        surface.SetMaterial(nadeMat)
-        surface.SetDrawColor(255,255,255,255)
-        if equipAnchor == "left" then
-            surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        elseif equipAnchor == "center" then
-            surface.DrawTexturedRect(equipmentHUD["x"] - 17.5, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"], scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        else
-            surface.DrawTexturedRect(equipmentHUD["x"] + 10, scrH - 40 - equipmentHUD["y"], 35, 40)
-            draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] + 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         end
     end
 

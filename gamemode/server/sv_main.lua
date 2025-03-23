@@ -180,8 +180,9 @@ net.Receive("GrabLeaderboardData", function(len, ply)
 	net.Send(ply)
 end )
 
+-- custom gamemode damage profile
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
-	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end --Custom gamemode damage profile
+	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end
 	if not dmginfo:GetAttacker():IsPlayer() then return end
 	net.Start("SendHitmarker", true)
 	net.WriteUInt(hitgroup, 4)
@@ -203,6 +204,9 @@ local function ExplosiveKnockback(ent, dmginfo)
 	dmginfo:ScaleDamage(0.3)
 end
 hook.Add("EntityTakeDamage", "ExplosiveKnockback", ExplosiveKnockback)
+
+-- disable fall damage
+hook.Add("GetFallDamage", "DisableFallDmg", function(ply, speed) return false end)
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then

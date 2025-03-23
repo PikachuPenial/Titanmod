@@ -80,7 +80,7 @@ if activeGamemode == "Gun Game" then
             itemsAdded = itemsAdded + 1
         end
     end
-    table.insert(ggLadder, {"tfa_km2000_knife", "fres_grapple"})
+    table.insert(ggLadder, {"tfa_km2000_knife"})
 end
 
 if activeGamemode == "Shotty Snipers" then
