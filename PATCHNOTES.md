@@ -3,6 +3,8 @@
 *NEW WEAPON*
 - **American-180** (Primary, SMG)
 - **Dual Mac 10s** (Primary, SMG)
+- **Galil** (Primary, Rifle)
+- **WA-2000** (Primary, Sniper)
 
 *GRAPPLING HOOK OVERHAUL*
 - Grappling Hook is now always available in every gamemode
