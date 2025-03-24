@@ -1,9 +1,12 @@
 # Unreleased  
 **>GAMEPLAY**  
-*NEW WEAPON*
+*NEW WEAPONS*
 - **American-180** (Primary, SMG)
+- **AVT-40** (Primary, SMG)
 - **Dual Mac 10s** (Primary, SMG)
 - **Galil** (Primary, Rifle)
+- **Karambit** (Melee)
+- **KS-23** (Primary, Shotgun)
 - **WA-2000** (Primary, Sniper)
 
 *GRAPPLING HOOK OVERHAUL*
@@ -14,6 +17,12 @@
 - Improved visual effects when grappling
 - New grappling related sound effects
 - Optimized various aspects of grappling hooks
+
+*MELEE OVERHAUL*
+- All melee weapons now have consistent swing distance values
+- Light swings (LMB) reach 1 meter / 52 hammer units
+- Heavy swings (RMB) reach 1.5 meters / 78 hammer units
+- Heavy swings have double the cooldown of light swings
 
 *DYNAMIC MUZZLE FLASH*
 - Reintroduced muzzle flash that now creates light around the weapon being fired
