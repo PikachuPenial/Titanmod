@@ -7,6 +7,7 @@
 - **Galil** (Primary, Rifle)
 - **Karambit** (Melee)
 - **KS-23** (Primary, Shotgun)
+- **SR-25** (Primary, Rifle)
 - **WA-2000** (Primary, Sniper)
 
 *GRAPPLING HOOK OVERHAUL*
@@ -36,6 +37,11 @@
 - Removed bullet tracers due to being redundant
 
 **>BALANCE** 
+*Shotguns*
+- Spread has been tripled to quadrupled across all shotguns
+- ADS spread now matches the hip fire spread on all shotguns
+- Slug Ammunition now makes shotguns completely accurate while ADSing
+
 *Point Shooting Attachment*
 - Added Point Shooting to the GSH-18, M1911, Mac 10 and PM-9
 
@@ -45,6 +51,12 @@
 - Ammo text while using melee weapons now displays the keybind to throw the melee weapon
 
 - Adjusted view model for the Riot Shield
+
+- Fixed AA-12 being considered a rifle instead of a shotgun
+
+- Fixed HK53 being considered a LMG instead of a rifle
+
+- Fixed Tariq being considered a "9x19" instead of a pistol (2023 Penial was on crack fucking cocaine)
 
 - Fixed issues caused by recent TFA Base updates
 
