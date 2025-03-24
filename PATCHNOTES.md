@@ -26,9 +26,6 @@
 - Heavy swings have double the cooldown of light swings
 - Adjusted melee animations to better account for the delay between a swings start and finish
 
-*DYNAMIC MUZZLE FLASH*
-- Reintroduced muzzle flash that now creates light around the weapon being fired
-
 *FALL DAMAGE*
 - Removed all sources of fall damage
 
@@ -49,6 +46,8 @@
 - Extensive micro-optimization throughout the gamemode
 
 - Ammo text while using melee weapons now displays the keybind to throw the melee weapon
+
+- Bullet penetration decals are now properly synced between clients
 
 - Adjusted view model for the Riot Shield
 

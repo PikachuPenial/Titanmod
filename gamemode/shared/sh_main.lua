@@ -166,6 +166,8 @@ end)
 
 hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply) return true end)
 
+hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon) return false end)
+
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "TracerCount" then return 0 end
     if stat == "TracerName" then return "nil" or false end

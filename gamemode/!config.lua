@@ -405,7 +405,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_door_respawn", "-1")
     RunConsoleCommand("sv_tfa_dynamicaccuracy", "1")
     RunConsoleCommand("sv_tfa_force_multiplier", "1")
-    RunConsoleCommand("sv_tfa_fx_penetration_decal", "0")
+    RunConsoleCommand("sv_tfa_fx_penetration_decal", "1")
     RunConsoleCommand("sv_tfa_holdtype_dynamic", "1")
     RunConsoleCommand("sv_tfa_jamming", "0")
     RunConsoleCommand("sv_tfa_melee_doordestruction", "1")

@@ -1,4 +1,5 @@
 include("shared.lua")
+include("!config.lua")
 
 for _, v in ipairs(file.Find("gamemodes/titanmod/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	include("shared/" .. v)
