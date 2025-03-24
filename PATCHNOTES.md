@@ -23,6 +23,7 @@
 - Light swings (LMB) reach 1 meter / 52 hammer units
 - Heavy swings (RMB) reach 1.5 meters / 78 hammer units
 - Heavy swings have double the cooldown of light swings
+- Adjusted melee animations to better account for the delay between a swings start and finish
 
 *DYNAMIC MUZZLE FLASH*
 - Reintroduced muzzle flash that now creates light around the weapon being fired
@@ -34,10 +35,20 @@
 - Added Lens Flare effect
 - Removed bullet tracers due to being redundant
 
+**>BALANCE** 
+*Point Shooting Attachment*
+- Added Point Shooting to the GSH-18, M1911, Mac 10 and PM-9
+
 **>QOL & BUG FIXES**   
 - Extensive micro-optimization throughout the gamemode
 
+- Ammo text while using melee weapons now displays the keybind to throw the melee weapon
+
+- Adjusted view model for the Riot Shield
+
 - Fixed issues caused by recent TFA Base updates
+
+- Removed sound when switching weapons via quick weapon switching
 
 
 

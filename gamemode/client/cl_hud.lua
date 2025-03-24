@@ -23,6 +23,7 @@ local velocityHUD = {}
 local objHUD = {}
 local sounds = {}
 local convars = {}
+local reloadBind = "Reload Bind"
 
 function UpdateHUD()
     -- calling GetConVar() is pretty expensive so we cache ConVars here so GetConVar() isn't ran multiple times a frame
@@ -174,6 +175,8 @@ function UpdateHUD()
     inactiveColor = Color(kpoHUD["inactive_r"], kpoHUD["inactive_g"], kpoHUD["inactive_b"])
     if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then feedEntryPadding = -20 else feedEntryPadding = 20 end
     if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then equipAnchor = "left" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then equipAnchor = "center" elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 2 then equipAnchor = "right" end
+
+    if input.LookupBinding("+reload") != nil then reloadBind = input.LookupBinding("+reload") end
 end
 UpdateHUD()
 
@@ -577,7 +580,7 @@ function HUDAlive(client)
             draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400, 30)
-            draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText("[" .. string.upper(reloadBind) .. "] THROW", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 18 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -864,25 +867,16 @@ net.Receive("SendNotification", function(len, ply)
     end)
 end )
 
--- hides the players info that shows up when aiming at another player
-function DrawTarget()
-    return false
-end
+function DrawTarget() return false end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
-function DrawAmmoInfo()
-    return false
-end
+function DrawAmmoInfo() return false end
 hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
 
-function DrawWeaponInfo()
-    return false
-end
+function DrawWeaponInfo() return false end
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
 
-function DrawItemInfo()
-    return false
-end
+function DrawItemInfo() return false end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 local chudlist = {
@@ -897,24 +891,13 @@ local chudlist = {
 }
 
 -- hides default HL2 HUD elements
-hook.Add("HUDShouldDraw", "HideHL2HUD", function(name)
-    if (chudlist[name]) then return false end
-end )
+hook.Add("HUDShouldDraw", "HideHL2HUD", function(name) if (chudlist[name]) then return false end end )
 
 function GM:PlayerBindPress(ply, bind, pressed)
     if convars["quick_switching"] == 0 then return end
-    if string.find(bind, "slot1") and pressed then
-        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
-        return true
-    end
-    if string.find(bind, "slot2") and pressed then
-        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
-        return true
-    end
-    if string.find(bind, "slot3") and pressed then
-        LocalPlayer():EmitSound("common/talk.wav", 50, 180)
-        return true
-    end
+    if string.find(bind, "slot1") and pressed then return true end
+    if string.find(bind, "slot2") and pressed then return true end
+    if string.find(bind, "slot3") and pressed then return true end
 end
 
 local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
