@@ -21,6 +21,18 @@ function meta:SetWRTime(value)
     return self:SetDTFloat(22, value)
 end
 
+function meta:GetAutoSprinting()
+    return self:GetDTBool(8)
+end
+function meta:SetAutoSprinting(value)
+    return self:SetDTBool(8, value)
+end
+function meta:GetAutoSprintingDelay()
+    return self:GetDTFloat(9)
+end
+function meta:SetAutoSprintingDelay(value)
+    return self:SetDTFloat(9, value)
+end
 function meta:GetSliding()
     return self:GetDTBool(24)
 end
@@ -104,6 +116,7 @@ local slidepunch = Angle(-1, 0, -2.5)
 local trace_down = Vector(0, 0, 32)
 local trace_tbl = {}
 
+local autoSprintStopDelay = 0.3
 local wallJumpTime = 1
 local wallRunTime = 1.25
 local slideTime = playerSlideDuration
@@ -124,7 +137,12 @@ local function SlideSurfaceSound(ply, pos)
     end
 end
 
-hook.Add("StartCommand", "SlideControl", function(ply, cmd)
+hook.Add("StartCommand", "TM_MoveCommand", function(ply, cmd)
+    -- auto sprint
+    local autoSprintDelay = (ply:GetAutoSprintingDelay() - ply:GetCT())
+    if ply:GetInfoNum("tm_autosprint", 0) == 1 and (ply:GetAutoSprinting()) and not (autoSprintDelay > 0) then cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_SPEED)) end
+
+    -- sliding
     if ply:GetSliding() then
         cmd:ClearMovement()
         cmd:RemoveKey(IN_SPEED)
@@ -147,17 +165,15 @@ hook.Add("StartCommand", "SlideControl", function(ply, cmd)
 end)
 
 hook.Add("Move", "TM_Move", function(ply, mv)
-    if not ply.OldDuckSpeed then
-        ply.OldDuckSpeed = ply:GetDuckSpeed()
-        ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
-        ply.OldWalkSpeed = ply:GetWalkSpeed()
-        ply.OldRunSpeed = ply:GetRunSpeed()
-    end
-
     local sprinting = mv:KeyDown(IN_SPEED)
+    local goingForward = mv:KeyDown(IN_FORWARD)
+    local goingBackwards = mv:KeyDown(IN_BACK)
     local goingLeft = mv:KeyDown(IN_MOVELEFT)
     local goingRight = mv:KeyDown(IN_MOVERIGHT)
+    local lmb = mv:KeyDown(IN_ATTACK)
+    local rmb = mv:KeyDown(IN_ATTACK2)
     local jumping = mv:KeyDown(IN_JUMP)
+    local walking = mv:KeyDown(IN_WALK)
     local onground = ply:OnGround()
     local sliding = ply:GetSliding()
     local speed = mv:GetVelocity():Length()
@@ -171,6 +187,25 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     local pos = mv:GetOrigin()
     local eyepos = pos + Vector(0, 0, 64)
     local vel = mv:GetVelocity()
+
+    ply:SetCT(CT)
+
+    -- auto sprint
+    if (goingForward or goingBackwards or goingLeft or goingRight) and not (lmb or rmb or walking) then
+        ply:SetAutoSprinting(true)
+    else
+        ply:SetAutoSprinting(false)
+    end
+
+    if (lmb or rmb) then ply:SetAutoSprintingDelay(CT + ply:GetInfoNum("tm_autosprint_delay", 0.25)) end
+
+    -- sliding and wall related movement
+    if not ply.OldDuckSpeed then
+        ply.OldDuckSpeed = ply:GetDuckSpeed()
+        ply.OldUnDuckSpeed = ply:GetUnDuckSpeed()
+        ply.OldWalkSpeed = ply:GetWalkSpeed()
+        ply.OldRunSpeed = ply:GetRunSpeed()
+    end
 
     if onground then
         ply:SetWJTime(CT)
@@ -209,7 +244,6 @@ hook.Add("Move", "TM_Move", function(ply, mv)
     sliding = ply:GetSliding()
 
     if sliding and mv:KeyDown(IN_DUCK) then
-        ply:SetCT(CT)
         if ply:GetSlideLastPosZ() == 0 then
             ply:SetSlideLastPosZ(pos.z)
         end

@@ -39,7 +39,7 @@ if activeGamemode == "FFA" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -51,7 +51,7 @@ if activeGamemode == "Fiesta" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -65,7 +65,7 @@ end
 
 if activeGamemode == "Gun Game" then
     for k, v in ipairs(weaponArray) do
-        if v[3] == "melee" or v[3] == "gadget" then
+        if v[3] == "melee" then
             table.insert(ggRandMelee, v[1])
         end
     end
@@ -80,7 +80,7 @@ if activeGamemode == "Gun Game" then
             itemsAdded = itemsAdded + 1
         end
     end
-    table.insert(ggLadder, {"tfa_km2000_knife"})
+    table.insert(ggLadder, {ggRandMelee[math.random(#ggRandMelee)]})
 end
 
 if activeGamemode == "Shotty Snipers" then
@@ -89,7 +89,7 @@ if activeGamemode == "Shotty Snipers" then
             table.insert(randPrimary, v[1])
         elseif v[4] == "shotgun" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -101,7 +101,7 @@ if activeGamemode == "Cranked" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -118,7 +118,7 @@ if activeGamemode == "KOTH" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -147,7 +147,7 @@ if activeGamemode == "Quickdraw" then
     for k, v in ipairs(weaponArray) do
         if v[3] == "secondary" and v[1] != "rust_bow" and v[1] != "swat_shield" and v[1] != "st_stim_pistol" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -159,7 +159,7 @@ if activeGamemode == "VIP" then
             table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
             table.insert(randSecondary, v[1])
-        elseif v[3] == "melee" or v[3] == "gadget" then
+        elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
@@ -266,7 +266,7 @@ if activeGamemode == "Gun Game" then
     end
 
     function HandlePlayerDeath(ply, weaponName)
-        if (weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
+        if (weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Karambit" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
     end
 end
 

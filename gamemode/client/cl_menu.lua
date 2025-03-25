@@ -2113,6 +2113,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
+                    local equippedModel
+                    local equippedModelName
+                    local equippedModelUnlockType
+                    local equippedModelUnlockValue
+
                     local newModel
                     local newModelName
                     local newModelUnlockType
@@ -2133,6 +2138,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     -- checking for the players currently equipped model
                     for i = 1, #modelArray do
                         if modelArray[i][1] == currentModel then
+                            equippedModel = modelArray[i][1]
+                            equippedModelName = modelArray[i][2]
+                            equippedModelUnlockType = modelArray[i][3]
+                            equippedModelUnlockValue = modelArray[i][4]
+
                             newModel = modelArray[i][1]
                             newModelName = modelArray[i][2]
                             newModelUnlockType = modelArray[i][3]
@@ -2251,317 +2261,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
-                    local PreviewModelTextHolder = vgui.Create("DPanel", ModelPreviewPanel)
-                    PreviewModelTextHolder:SetSize(315, 155)
-                    PreviewModelTextHolder:SetPos(5, 160)
-
-                    local previewRed = Color(255, 0, 0, 5)
-                    local previewGreen = Color(0, 255, 0, 5)
-                    local previewColor = previewGreen
-
-                    local ApplyModelButton = vgui.Create("DButton", PreviewModelTextHolder)
-                    ApplyModelButton:SetText("APPLY")
-                    ApplyModelButton:SetPos(5, 130)
-                    ApplyModelButton:SetSize(50, 20)
-                    ApplyModelButton.DoClick = function()
-                        if newModelUnlockType == "default" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "kills" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "streak" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "matches" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "wins" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "headshot" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "smackdown" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "clutch" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "longshot" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "pointblank" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "killstreaks" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newModelUnlockType == "buzzkills" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerModelChange")
-                            net.WriteString(newModel)
-                            net.SendToServer()
-                            ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
-                            ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
-                            ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        end
-                    end
-
-                    PreviewModelTextHolder.Paint = function(self, w, h)
-                        BlurPanel(PreviewModelTextHolder, 2)
-                        draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.RoundedBox(0, 0, 0, w, h, previewColor)
-
-                        if currentModel != nil then
-                            draw.SimpleText(newModelName, "PlayerNotiName", 5, 5, white, TEXT_ALIGN_LEFT)
-                        end
-
-                        if newModelUnlockType == "default" or newModelUnlockType == "color" or newModelUnlockType == "pride" then
-                            draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                            previewColor = previewGreen
-                            PreviewModelTextHolder:SetSize(315, 155)
-                            ApplyModelButton:Show()
-                        elseif newModelUnlockType == "kills" then
-                            if LocalPly:GetNWInt("playerKills") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "streak" then
-                            if LocalPly:GetNWInt("highestKillStreak") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "matches" then
-                            if LocalPly:GetNWInt("matchesPlayed") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "wins" then
-                            if LocalPly:GetNWInt("matchesWon") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "headshot" then
-                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "smackdown" then
-                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "clutch" then
-                            if LocalPly:GetNWInt("playerAccoladeClutch") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "longshot" then
-                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "pointblank" then
-                            if LocalPly:GetNWInt("playerAccoladePointblank") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "killstreaks" then
-                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        elseif newModelUnlockType == "buzzkills" then
-                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newModelUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 5, 55, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidRed, TEXT_ALIGN_LEFT)
-                                previewColor = previewRed
-                                PreviewModelTextHolder:SetSize(315, 135)
-                                ApplyModelButton:Hide()
-                            else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 5, 55, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "MainMenuDescription", 5, 102, solidGreen, TEXT_ALIGN_LEFT)
-                                previewColor = previewGreen
-                                PreviewModelTextHolder:SetSize(315, 155)
-                                ApplyModelButton:Show()
-                            end
-                        end
-                    end
-
                     local SelectedModelDisplay
                     local function PreviewNewModel(model)
                         if IsValid(SelectedModelDisplay) then SelectedModelDisplay:Remove() end
                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
+                        SelectedModelDisplay:SetAlpha(0)
                         SelectedModelDisplay:SetSize(750, 750)
                         SelectedModelDisplay:SetPos(-225, 235)
                         SelectedModelDisplay:SetMouseInputEnabled(true)
@@ -2575,9 +2279,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if !IsValid(Entity) then return end
                             SelectedModelDisplay:RunAnimation()
                         end
+
+                        SelectedModelDisplay:AlphaTo(255, 0.05, 0.025)
                     end
 
                     PreviewNewModel(newModel)
+
+                    local x, y = 0, 0
+                    local sideH, sideV
 
                     local function FillModelListsAll()
                         local lockedModels = {}
@@ -2585,7 +2294,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
-                                icon:SetTooltip(modelArray[i][2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -2593,14 +2301,63 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 modelsUnlocked = modelsUnlocked + 1
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
-                                icon.DoClick = function(icon)
+                                icon.OnCursorEntered = function()
+                                    x, y = ModelPanel:LocalCursorPos()
+                                    TriggerSound("click")
+
                                     newModel = modelArray[i][1]
                                     newModelName = modelArray[i][2]
                                     newModelUnlockType = modelArray[i][3]
                                     newModelUnlockValue = modelArray[i][4]
                                     PreviewNewModel(newModel)
-                                    TriggerSound("click")
+
+                                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                    modelPopOut = vgui.Create("DPanel", ModelPanel)
+                                    modelPopOut:SetSize(200, 60)
+                                    UpdatePopOutPos(modelPopOut, sideH, sideV, x, y)
+                                    modelPopOut:SetAlpha(0)
+                                    modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                    modelPopOut:SetMouseInputEnabled(false)
+
+                                    modelPopOut.Paint = function(s, w, h)
+
+                                        if !IsValid(s) then return end
+
+                                        BlurPanel(s, 3)
+
+                                        -- panel position follows mouse position
+                                        x, y = ModelPanel:LocalCursorPos()
+
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, x, y)
+
+                                        surface.SetDrawColor(Color(0, 0, 0, 205))
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                                        surface.DrawRect(0, 0, w, 1)
+                                        surface.DrawRect(0, h - 1, w, 1)
+                                        surface.DrawRect(0, 0, 1, h)
+                                        surface.DrawRect(w - 1, 0, 1, h)
+
+                                        draw.SimpleTextOutlined(newModelName, "PlayerNotiName", 5, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                    end
                                 end
+
+                                icon.OnCursorExited = function()
+                                    modelPopOut:Remove()
+
+                                    newModel = equippedModel
+                                    newModelName = equippedModelName
+                                    newModelUnlockType = equippedModelUnlockType
+                                    newModelUnlockValue = equippedModelUnlockValue
+                                    PreviewNewModel(equippedModel)
+                                end
+
+                                icon.DoClick = function() ApplyModel() end
                             elseif modelArray[i][3] == "kills" or modelArray[i][3] == "streak" or modelArray[i][3] == "matches" or modelArray[i][3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
 
@@ -2609,13 +2366,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     StatModelList:Add(icon)
                                     statModelsUnlocked = statModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
-                                    icon.DoClick = function(icon)
+                                    icon.OnCursorEntered = function()
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
@@ -2623,6 +2379,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         PreviewNewModel(newModel)
                                         TriggerSound("click")
                                     end
+
+                                    icon.OnCursorExited = function()
+                                        newModel = equippedModel
+                                        newModelName = equippedModelName
+                                        newModelUnlockType = equippedModelUnlockType
+                                        newModelUnlockValue = equippedModelUnlockValue
+                                        PreviewNewModel(equippedModel)
+                                    end
+
+                                    icon.DoClick = function() ApplyModel() end
                                 end
                             elseif modelArray[i][3] == "headshot" or modelArray[i][3] == "smackdown" or modelArray[i][3] == "clutch" or modelArray[i][3] == "longshot" or modelArray[i][3] == "pointblank" or modelArray[i][3] == "killstreaks" or modelArray[i][3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
@@ -2632,13 +2398,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     AccoladeModelList:Add(icon)
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
-                                    icon.DoClick = function(icon)
+                                    icon.OnCursorEntered = function()
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
@@ -2646,6 +2411,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         PreviewNewModel(newModel)
                                         TriggerSound("click")
                                     end
+
+                                    icon.OnCursorExited = function()
+                                        newModel = equippedModel
+                                        newModelName = equippedModelName
+                                        newModelUnlockType = equippedModelUnlockType
+                                        newModelUnlockValue = equippedModelUnlockValue
+                                        PreviewNewModel(equippedModel)
+                                    end
+
+                                    icon.DoClick = function() ApplyModel() end
                                 end
                             end
                         end
@@ -2654,7 +2429,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if lockedModels[i][3] == "kills" or lockedModels[i][3] == "streak" or lockedModels[i][3] == "matches" or lockedModels[i][3] == "wins" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                 icon:SetModel(lockedModels[i][1])
-                                icon:SetTooltip(lockedModels[i][2])
                                 icon:SetSize(150, 150)
                                 StatModelList:Add(icon)
 
@@ -2663,7 +2437,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:SetSize(96, 96)
                                 lockIndicator:Center()
 
-                                icon.DoClick = function(icon)
+                                icon.OnCursorEntered = function()
                                     newModel = lockedModels[i][1]
                                     newModelName = lockedModels[i][2]
                                     newModelUnlockType = lockedModels[i][3]
@@ -2671,10 +2445,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
+
+                                icon.OnCursorExited = function()
+                                    newModel = equippedModel
+                                    newModelName = equippedModelName
+                                    newModelUnlockType = equippedModelUnlockType
+                                    newModelUnlockValue = equippedModelUnlockValue
+                                    PreviewNewModel(equippedModel)
+                                end
+
+                                icon.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             elseif lockedModels[i][3] == "headshot" or lockedModels[i][3] == "smackdown" or lockedModels[i][3] == "clutch" or lockedModels[i][3] == "longshot" or lockedModels[i][3] == "pointblank" or lockedModels[i][3] == "killstreaks" or lockedModels[i][3] == "buzzkills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                 icon:SetModel(lockedModels[i][1])
-                                icon:SetTooltip(lockedModels[i][2])
                                 icon:SetSize(150, 150)
                                 AccoladeModelList:Add(icon)
 
@@ -2683,7 +2466,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:SetSize(96, 96)
                                 lockIndicator:Center()
 
-                                icon.DoClick = function(icon)
+                                icon.OnCursorEntered = function()
                                     newModel = lockedModels[i][1]
                                     newModelName = lockedModels[i][2]
                                     newModelUnlockType = lockedModels[i][3]
@@ -2691,6 +2474,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     PreviewNewModel(newModel)
                                     TriggerSound("click")
                                 end
+
+                                icon.OnCursorExited = function()
+                                    newModel = equippedModel
+                                    newModelName = equippedModelName
+                                    newModelUnlockType = equippedModelUnlockType
+                                    newModelUnlockValue = equippedModelUnlockValue
+                                    PreviewNewModel(equippedModel)
+                                end
+
+                                icon.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             end
                         end
                     end
@@ -2700,7 +2493,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
-                                icon:SetTooltip(modelArray[i][2])
                                 icon:SetSize(150, 150)
                                 DefaultModelList:Add(icon)
 
@@ -2708,38 +2500,53 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 modelsUnlocked = modelsUnlocked + 1
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
-                                icon.DoClick = function(icon)
+                                icon.OnCursorEntered = function()
                                     newModel = modelArray[i][1]
                                     newModelName = modelArray[i][2]
                                     newModelUnlockType = modelArray[i][3]
                                     newModelUnlockValue = modelArray[i][4]
-
                                     PreviewNewModel(newModel)
-
                                     TriggerSound("click")
                                 end
+
+                                icon.OnCursorExited = function()
+                                    newModel = equippedModel
+                                    newModelName = equippedModelName
+                                    newModelUnlockType = equippedModelUnlockType
+                                    newModelUnlockValue = equippedModelUnlockValue
+                                    PreviewNewModel(equippedModel)
+                                end
+
+                                icon.DoClick = function() ApplyModel() end
                             elseif modelArray[i][3] == "kills" or modelArray[i][3] == "streak" or modelArray[i][3] == "matches" or modelArray[i][3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
                                 if modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") >= modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     StatModelList:Add(icon)
 
                                     statModelsUnlocked = statModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
-                                    icon.DoClick = function(icon)
+                                    icon.OnCursorEntered = function()
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
-
                                         PreviewNewModel(newModel)
-
                                         TriggerSound("click")
                                     end
+
+                                    icon.OnCursorExited = function()
+                                        newModel = equippedModel
+                                        newModelName = equippedModelName
+                                        newModelUnlockType = equippedModelUnlockType
+                                        newModelUnlockValue = equippedModelUnlockValue
+                                        PreviewNewModel(equippedModel)
+                                    end
+
+                                    icon.DoClick = function() ApplyModel() end
                                 end
                             elseif modelArray[i][3] == "headshot" or modelArray[i][3] == "smackdown" or modelArray[i][3] == "clutch" or modelArray[i][3] == "longshot" or modelArray[i][3] == "pointblank" or modelArray[i][3] == "killstreaks" or modelArray[i][3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
@@ -2747,23 +2554,30 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetTooltip(modelArray[i][2])
                                     icon:SetSize(150, 150)
                                     AccoladeModelList:Add(icon)
 
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
-                                    icon.DoClick = function(icon)
+                                    icon.OnCursorEntered = function()
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
-
                                         PreviewNewModel(newModel)
-
                                         TriggerSound("click")
                                     end
+
+                                    icon.OnCursorExited = function()
+                                        newModel = equippedModel
+                                        newModelName = equippedModelName
+                                        newModelUnlockType = equippedModelUnlockType
+                                        newModelUnlockValue = equippedModelUnlockValue
+                                        PreviewNewModel(equippedModel)
+                                    end
+
+                                    icon.DoClick = function(icon) ApplyModel() end
                                 end
                             end
                         end
@@ -2994,7 +2808,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 560)
+                    DockInputs:SetSize(0, 640)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -3136,22 +2950,38 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 155, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("8x ADS Sensitivity", "SettingsLabel", 155, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 155, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 155, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", 155, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 585, white, TEXT_ALIGN_LEFT)
                     end
 
+                    local autoSprint = DockInputs:Add("DCheckBox")
+                    autoSprint:SetPos(20, 70)
+                    autoSprint:SetConVar("tm_autosprint")
+                    autoSprint:SetSize(30, 30)
+                    function autoSprint:OnChange() TriggerSound("click") end
+
+                    local autoSprintDelay = DockInputs:Add("DNumSlider")
+                    autoSprintDelay:SetPos(-85, 110)
+                    autoSprintDelay:SetSize(250, 30)
+                    autoSprintDelay:SetConVar("tm_autosprint_delay")
+                    autoSprintDelay:SetMin(0.25)
+                    autoSprintDelay:SetMax(0.50)
+                    autoSprintDelay:SetDecimals(2)
+
                     local adsSensitivity = DockInputs:Add("DNumSlider")
-                    adsSensitivity:SetPos(-85, 70)
+                    adsSensitivity:SetPos(-85, 150)
                     adsSensitivity:SetSize(250, 30)
                     adsSensitivity:SetConVar("tm_sensitivity_1x")
                     adsSensitivity:SetMin(0)
@@ -3159,7 +2989,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     adsSensitivity:SetDecimals(0)
 
                     local twoadsSensitivity = DockInputs:Add("DNumSlider")
-                    twoadsSensitivity:SetPos(-85, 110)
+                    twoadsSensitivity:SetPos(-85, 190)
                     twoadsSensitivity:SetSize(250, 30)
                     twoadsSensitivity:SetConVar("tm_sensitivity_2x")
                     twoadsSensitivity:SetMin(0)
@@ -3167,29 +2997,29 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     twoadsSensitivity:SetDecimals(0)
 
                     local fouradsSensitivity = DockInputs:Add("DNumSlider")
-                    fouradsSensitivity:SetPos(-85, 150)
+                    fouradsSensitivity:SetPos(-85, 230)
                     fouradsSensitivity:SetSize(250, 30)
                     fouradsSensitivity:SetConVar("tm_sensitivity_4x")
                     fouradsSensitivity:SetMin(0)
                     fouradsSensitivity:SetMax(100)
                     fouradsSensitivity:SetDecimals(0)
 
-                    local eightadsSensitivity = DockInputs:Add("DNumSlider")
-                    eightadsSensitivity:SetPos(-85, 190)
-                    eightadsSensitivity:SetSize(250, 30)
-                    eightadsSensitivity:SetConVar("tm_sensitivity_8x")
-                    eightadsSensitivity:SetMin(0)
-                    eightadsSensitivity:SetMax(100)
-                    eightadsSensitivity:SetDecimals(0)
+                    local sixadsSensitivity = DockInputs:Add("DNumSlider")
+                    sixadsSensitivity:SetPos(-85, 270)
+                    sixadsSensitivity:SetSize(250, 30)
+                    sixadsSensitivity:SetConVar("tm_sensitivity_6x")
+                    sixadsSensitivity:SetMin(0)
+                    sixadsSensitivity:SetMax(100)
+                    sixadsSensitivity:SetDecimals(0)
 
                     local compensateSensWithFOV = DockInputs:Add("DCheckBox")
-                    compensateSensWithFOV:SetPos(20, 230)
+                    compensateSensWithFOV:SetPos(20, 310)
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
                     compensateSensWithFOV:SetSize(30, 30)
                     function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 270)
+                    mainMenuBind:SetPos(22.5, 350)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     function mainMenuBind:OnChange(num)
@@ -3199,7 +3029,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 310)
+                    grenadeBind:SetPos(22.5, 390)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     function grenadeBind:OnChange(num)
@@ -3209,7 +3039,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 350)
+                    grappleBind:SetPos(22.5, 430)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     function grappleBind:OnChange(num)
@@ -3219,13 +3049,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local quickWeaponSwitching = DockInputs:Add("DCheckBox")
-                    quickWeaponSwitching:SetPos(20, 390)
+                    quickWeaponSwitching:SetPos(20, 470)
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
                     quickWeaponSwitching:SetSize(30, 30)
                     function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
-                    primaryBind:SetPos(22.5, 430)
+                    primaryBind:SetPos(22.5, 510)
                     primaryBind:SetSize(100, 30)
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
                     function primaryBind:OnChange(num)
@@ -3235,7 +3065,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local secondaryBind = DockInputs:Add("DBinder")
-                    secondaryBind:SetPos(22.5, 470)
+                    secondaryBind:SetPos(22.5, 550)
                     secondaryBind:SetSize(100, 30)
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
                     function secondaryBind:OnChange(num)
@@ -3245,7 +3075,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local meleeBind = DockInputs:Add("DBinder")
-                    meleeBind:SetPos(22.5, 510)
+                    meleeBind:SetPos(22.5, 590)
                     meleeBind:SetSize(100, 30)
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
                     function meleeBind:OnChange(num)

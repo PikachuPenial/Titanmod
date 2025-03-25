@@ -2,13 +2,18 @@
 **>GAMEPLAY**  
 *NEW WEAPONS*
 - **American-180** (Primary, SMG)
-- **AVT-40** (Primary, SMG)
+- **AVT-40** (Primary, Rifle)
 - **Dual Mac 10s** (Primary, SMG)
 - **Galil** (Primary, Rifle)
 - **Karambit** (Melee)
 - **KS-23** (Primary, Shotgun)
 - **SR-25** (Primary, Rifle)
 - **WA-2000** (Primary, Sniper)
+
+*SCOPE OVERHAUL*
+- All high magnification scopes have had thier magnification reduced by an average of 25%
+- All scopes have less FOV (appear closer up, allowing you to see more)
+- Removed all 3x scopes
 
 *GRAPPLING HOOK OVERHAUL*
 - Grappling Hook is now always available in every gamemode
@@ -33,11 +38,18 @@
 - Added Lens Flare effect
 - Removed bullet tracers due to being redundant
 
+*NEW SETTINGS*
+- Auto Sprint
+- Auto Sprint Interaction Delay
+
 **>BALANCE** 
 *Shotguns*
 - Spread has been tripled to quadrupled across all shotguns
 - ADS spread now matches the hip fire spread on all shotguns
 - Slug Ammunition now makes shotguns completely accurate while ADSing
+
+*Makarov*
+- Increased damage to 33 (previously 26)
 
 *Point Shooting Attachment*
 - Added Point Shooting to the GSH-18, M1911, Mac 10 and PM-9
@@ -51,6 +63,8 @@
 
 - Adjusted view model for the Riot Shield
 
+- The melee at the end of a gun game ladder is now randomized
+
 - Fixed AA-12 being considered a rifle instead of a shotgun
 
 - Fixed HK53 being considered a LMG instead of a rifle
@@ -59,7 +73,17 @@
 
 - Fixed issues caused by recent TFA Base updates
 
+- Fixed instances of iron sights clipping inside of scopes
+
+- Fixed instances of scopes being misaligned from the center of the screen
+
+- Changed 8x sensitivity setting to 6x sensitivity setting with a new default value
+
 - Removed sound when switching weapons via quick weapon switching
+
+- New end of match quotes from community members
+
+- Removed an end of match quote that was created by a pedophile (lmao)
 
 
 

@@ -37,6 +37,20 @@ function BlurPanel(panel, strength)
 
 end
 
+function UpdatePopOutPos(panel, sideH, sideV, x, y)
+	if sideH == true then
+		panel:SetX(math.Clamp(x + 15, 10, ScrW() - panel:GetWide() - 10))
+	else
+		panel:SetX(math.Clamp(x - panel:GetWide() - 15, 10, ScrW() - panel:GetWide() - 10))
+	end
+
+	if sideV == true then
+		panel:SetY(math.Clamp(y + 15, 60, ScrH() - panel:GetTall() - 20))
+	else
+		panel:SetY(math.Clamp(y - panel:GetTall() + 15, 60, ScrH() - panel:GetTall() - 20))
+	end
+end
+
 hook.Add("OnScreenSizeChanged", "ResChange", function()
 	scrW, scrH = ScrW(), ScrH()
 

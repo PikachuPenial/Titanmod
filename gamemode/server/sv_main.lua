@@ -75,10 +75,11 @@ function GM:PlayerSpawn(ply)
 	ply:SetWalkSpeed(165 * playerSpeedMulti)
 	ply:SetJumpPower(150 * playerJumpMulti)
 	ply:SetLadderClimbSpeed(155 * playerSpeedMulti)
-	ply:SetSlowWalkSpeed(78 * playerSpeedMulti)
+	ply:SetSlowWalkSpeed(165 * playerSpeedMulti)
 	ply:SetCrouchedWalkSpeed(0.6 * playerCrouchWalkSpeedMulti)
 	ply:SetDuckSpeed(0.4 * playerDuckStateMulti)
 	ply:SetUnDuckSpeed(0.4 * playerDuckStateMulti)
+	ply:SetCanWalk(false)
 	ply:SetModel(ply:GetNWString("chosenPlayermodel"))
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
@@ -234,7 +235,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	-- decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu
-	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
+	timer.Create(victim:SteamID() .. "respawnTime", 0.01, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim != nil then
 			if not IsValid(victim) then return end
 			if GetGlobal2Bool("tm_matchended") == true then return end
@@ -355,7 +356,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + (20 * xpMultiplier))
 	end
 
-	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" then
+	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Karambit" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)

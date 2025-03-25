@@ -61,7 +61,7 @@ else
     -- universal settings
     usePrimary = true               -- Enable primary weapons for the players loadout
     useSecondary = true             -- Enable secondary weapons for the players loadout
-    useMelee = true                 -- Enable melee weapons/gadgets  for the players loadout
+    useMelee = true                 -- Enable melee weapons for the players loadout
     grappleCooldown = 15            -- The cooldown (in sceonds) of the grappling hook after being used
 
     -- fiesta settings
