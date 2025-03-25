@@ -65,7 +65,7 @@ if CLIENT then
     CreateClientConVar("tm_sensitivity_1x", 75, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_2x", 70, true, true, "Adjust the sensitivity when using medium zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_4x", 60, true, true, "Adjust the sensitivity when using medium-high zoom optics", 1, 100)
-    CreateClientConVar("tm_sensitivity_6x", 35, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_6x", 30, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
     CreateClientConVar("tm_renderhands", 1, true, false, "Enable/disable the rendering of your own hands", 0, 1)
     CreateClientConVar("tm_precachefiles", 1, true, false, "Enable/disable the pre-caching of game models/sounds when loading into a map", 0, 1)
     CreateClientConVar("tm_autosprint", 0, true, true, "Enable/disable automatic sprinting while moving", 0, 1)

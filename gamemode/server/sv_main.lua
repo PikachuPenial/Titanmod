@@ -235,7 +235,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	-- decides if the player should respawn, or if they should not, for instances where the player is in the Main Menu
-	timer.Create(victim:SteamID() .. "respawnTime", 0.01, 1, function()
+	timer.Create(victim:SteamID() .. "respawnTime", 4, 1, function()
 		if victim:GetNWBool("mainmenu") == false and victim != nil then
 			if not IsValid(victim) then return end
 			if GetGlobal2Bool("tm_matchended") == true then return end

@@ -24,6 +24,7 @@ local function TriggerSound(type)
     if type == "click" then surface.PlaySound("tmui/click" .. math.random(1, 3) .. ".wav") end
     if type == "forward" then surface.PlaySound("tmui/clickforward.wav") end
     if type == "back" then surface.PlaySound("tmui/clickback.wav") end
+    if type == "hover" then surface.PlaySound("tmui/hover.wav") end
 end
 
 local MainMenu
@@ -52,6 +53,9 @@ net.Receive("OpenMainMenu", function(len, ply)
     local hintList = hintArray
     table.Shuffle(hintList)
     local hintText = table.concat(hintList, "                ")
+
+    local mouseX = 0
+    local mouseY = 0
 
     if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
@@ -85,6 +89,8 @@ net.Receive("OpenMainMenu", function(len, ply)
             surface.SetMaterial(gradientR)
             surface.SetDrawColor(gradRColor)
             surface.DrawTexturedRect(0, 0, scrW, scrH)
+
+            mouseX, mouseY = MainMenu:LocalCursorPos()
 
             if GetGlobal2Bool("tm_matchended") == true then 
                 
@@ -2135,6 +2141,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local accoladeModelsTotal = 0
                     local accoladeModelsUnlocked = 0
 
+                    local previewRed = Color(255, 0, 0, 5)
+                    local previewGreen = Color(0, 255, 0, 5)
+
                     -- checking for the players currently equipped model
                     for i = 1, #modelArray do
                         if modelArray[i][1] == currentModel then
@@ -2246,7 +2255,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local ModelPreviewPanel = vgui.Create("DPanel", MainMenu)
-                    ModelPreviewPanel:SetSize(500, scrH)
+                    ModelPreviewPanel:SetSize(1450, scrH)
                     ModelPreviewPanel:SetPos(686, 0)
                     ModelPreviewPanel:SetAlpha(0)
                     ModelPreviewPanel.Paint = function(self, w, h)
@@ -2256,7 +2265,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ModelPreviewPanel:AlphaTo(255, 0.05, 0.025)
 
                     local SelectedModelHolder = vgui.Create("DPanel", ModelPreviewPanel)
-                    SelectedModelHolder:SetSize(300, 1000)
+                    SelectedModelHolder:SetSize(600, 2000)
                     SelectedModelHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -2266,14 +2275,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         if IsValid(SelectedModelDisplay) then SelectedModelDisplay:Remove() end
                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                         SelectedModelDisplay:SetAlpha(0)
-                        SelectedModelDisplay:SetSize(750, 750)
-                        SelectedModelDisplay:SetPos(-225, 235)
+                        SelectedModelDisplay:SetSize(1450, scrH)
+                        SelectedModelDisplay:SetPos(-525, 0)
                         SelectedModelDisplay:SetMouseInputEnabled(true)
                         SelectedModelDisplay:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
                         SelectedModelDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
                         SelectedModelDisplay:SetAnimated(true)
                         SelectedModelDisplay:SetModel(model)
-                        SelectedModelDisplay.Entity:SetAngles(Angle(0, 40, 0))
+                        SelectedModelDisplay.Entity:SetAngles(Angle(0, 20, 0))
+                        SelectedModelDisplay.Entity:SetPos(Vector(0, 0, -5))
 
                         function SelectedModelDisplay:LayoutEntity(Entity)
                             if !IsValid(Entity) then return end
@@ -2285,7 +2295,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     PreviewNewModel(newModel)
 
-                    local x, y = 0, 0
+                    local function ApplyModel()
+                        surface.PlaySound("tmui/uisuccess.wav")
+                        net.Start("PlayerModelChange")
+                        net.WriteString(newModel)
+                        net.SendToServer()
+                        ModelPanel:AlphaTo(0, 0.05, 0, function() ModelPanel:Hide() end)
+                        ModelPreviewPanel:AlphaTo(0, 0.05, 0, function() ModelPreviewPanel:Hide() end)
+                        ModelSlideoutPanel:AlphaTo(0, 0.05, 0, function() ModelSlideoutPanel:Hide() end)
+                        MainPanel:Show()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
+                    end
+
                     local sideH, sideV
 
                     local function FillModelListsAll()
@@ -2295,6 +2316,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
                                 icon:SetSize(150, 150)
+                                icon:SetTooltip(nil)
                                 DefaultModelList:Add(icon)
 
                                 defaultModelsTotal = defaultModelsTotal + 1
@@ -2302,8 +2324,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
                                 icon.OnCursorEntered = function()
-                                    x, y = ModelPanel:LocalCursorPos()
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
 
                                     newModel = modelArray[i][1]
                                     newModelName = modelArray[i][2]
@@ -2311,13 +2332,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newModelUnlockValue = modelArray[i][4]
                                     PreviewNewModel(newModel)
 
-                                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
-                                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
+                                    if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                    if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                    surface.SetFont("PlayerNotiName")
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
 
                                     if IsValid(modelPopOut) then modelPopOut:Remove() end
-                                    modelPopOut = vgui.Create("DPanel", ModelPanel)
-                                    modelPopOut:SetSize(200, 60)
-                                    UpdatePopOutPos(modelPopOut, sideH, sideV, x, y)
+                                    modelPopOut = vgui.Create("DPanel", MainMenu)
+                                    modelPopOut:SetSize(modelNameTextSize + 10, 70)
+                                    UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                     modelPopOut:SetAlpha(0)
                                     modelPopOut:AlphaTo(255, 0.1, 0, function() end)
                                     modelPopOut:SetMouseInputEnabled(false)
@@ -2329,11 +2353,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         BlurPanel(s, 3)
 
                                         -- panel position follows mouse position
-                                        x, y = ModelPanel:LocalCursorPos()
-
-                                        UpdatePopOutPos(modelPopOut, sideH, sideV, x, y)
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
 
                                         surface.SetDrawColor(Color(0, 0, 0, 205))
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(previewGreen)
                                         surface.DrawRect(0, 0, w, h)
 
                                         surface.SetDrawColor(Color(255, 255, 255, 155))
@@ -2342,7 +2367,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         surface.DrawRect(0, 0, 1, h)
                                         surface.DrawRect(w - 1, 0, 1, h)
 
-                                        draw.SimpleTextOutlined(newModelName, "PlayerNotiName", 5, 5, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
 
                                     end
                                 end
@@ -2367,20 +2393,78 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
                                     icon:SetSize(150, 150)
+                                    icon:SetTooltip(nil)
                                     StatModelList:Add(icon)
                                     statModelsUnlocked = statModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.OnCursorEntered = function()
+                                        TriggerSound("hover")
+
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
-                                        TriggerSound("click")
+
+                                        if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                        if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                        surface.SetFont("PlayerNotiName")
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                        modelPopOut = vgui.Create("DPanel", MainMenu)
+                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                        modelPopOut:SetAlpha(0)
+                                        modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                        modelPopOut:SetMouseInputEnabled(false)
+
+                                        modelPopOut.Paint = function(s, w, h)
+
+                                            if !IsValid(s) then return end
+
+                                            BlurPanel(s, 3)
+
+                                            -- panel position follows mouse position
+                                            UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                            surface.SetDrawColor(Color(0, 0, 0, 205))
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(previewGreen)
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                                            surface.DrawRect(0, 0, w, 1)
+                                            surface.DrawRect(0, h - 1, w, 1)
+                                            surface.DrawRect(0, 0, 1, h)
+                                            surface.DrawRect(w - 1, 0, 1, h)
+
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                            if newModelUnlockType == "kills" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "streak" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "matches" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "wins" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            end
+
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
                                     end
 
                                     icon.OnCursorExited = function()
+                                        modelPopOut:Remove()
+
                                         newModel = equippedModel
                                         newModelName = equippedModelName
                                         newModelUnlockType = equippedModelUnlockType
@@ -2399,20 +2483,86 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
                                     icon:SetSize(150, 150)
+                                    icon:SetTooltip(nil)
                                     AccoladeModelList:Add(icon)
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.OnCursorEntered = function()
+                                        TriggerSound("hover")
+
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
-                                        TriggerSound("click")
+
+                                        if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                        if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                        surface.SetFont("PlayerNotiName")
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                        modelPopOut = vgui.Create("DPanel", MainMenu)
+                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                        modelPopOut:SetAlpha(0)
+                                        modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                        modelPopOut:SetMouseInputEnabled(false)
+
+                                        modelPopOut.Paint = function(s, w, h)
+                                            if !IsValid(s) then return end
+
+                                            BlurPanel(s, 3)
+
+                                            -- panel position follows mouse position
+                                            UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                            surface.SetDrawColor(Color(0, 0, 0, 205))
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(previewGreen)
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                                            surface.DrawRect(0, 0, w, 1)
+                                            surface.DrawRect(0, h - 1, w, 1)
+                                            surface.DrawRect(0, 0, 1, h)
+                                            surface.DrawRect(w - 1, 0, 1, h)
+
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                            if newModelUnlockType == "headshot" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "smackdown" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "clutch" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "longshot" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "pointblank" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "killstreaks" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "buzzkills" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            end
+
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
                                     end
 
                                     icon.OnCursorExited = function()
+                                        modelPopOut:Remove()
+
                                         newModel = equippedModel
                                         newModelName = equippedModelName
                                         newModelUnlockType = equippedModelUnlockType
@@ -2430,6 +2580,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                 icon:SetModel(lockedModels[i][1])
                                 icon:SetSize(150, 150)
+                                icon:SetTooltip(nil)
                                 StatModelList:Add(icon)
 
                                 local lockIndicator = vgui.Create("DImage", icon)
@@ -2438,15 +2589,69 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
 
                                 icon.OnCursorEntered = function()
+                                    TriggerSound("hover")
+
                                     newModel = lockedModels[i][1]
                                     newModelName = lockedModels[i][2]
                                     newModelUnlockType = lockedModels[i][3]
                                     newModelUnlockValue = lockedModels[i][4]
                                     PreviewNewModel(newModel)
-                                    TriggerSound("click")
+
+                                    if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                    if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                    surface.SetFont("PlayerNotiName")
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                    modelPopOut = vgui.Create("DPanel", MainMenu)
+                                    modelPopOut:SetSize(modelNameTextSize + 10, 110)
+                                    UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                    modelPopOut:SetAlpha(0)
+                                    modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                    modelPopOut:SetMouseInputEnabled(false)
+
+                                    modelPopOut.Paint = function(s, w, h)
+                                        if !IsValid(s) then return end
+
+                                        BlurPanel(s, 3)
+
+                                        -- panel position follows mouse position
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                        surface.SetDrawColor(Color(0, 0, 0, 205))
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(previewRed)
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                                        surface.DrawRect(0, 0, w, 1)
+                                        surface.DrawRect(0, h - 1, w, 1)
+                                        surface.DrawRect(0, 0, 1, h)
+                                        surface.DrawRect(w - 1, 0, 1, h)
+
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                        if newModelUnlockType == "kills" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "streak" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "matches" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "wins" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
+                                    end
                                 end
 
                                 icon.OnCursorExited = function()
+                                    modelPopOut:Remove()
+
                                     newModel = equippedModel
                                     newModelName = equippedModelName
                                     newModelUnlockType = equippedModelUnlockType
@@ -2459,6 +2664,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                 icon:SetModel(lockedModels[i][1])
                                 icon:SetSize(150, 150)
+                                icon:SetTooltip(nil)
                                 AccoladeModelList:Add(icon)
 
                                 local lockIndicator = vgui.Create("DImage", icon)
@@ -2467,15 +2673,78 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
 
                                 icon.OnCursorEntered = function()
+                                    TriggerSound("hover")
+
                                     newModel = lockedModels[i][1]
                                     newModelName = lockedModels[i][2]
                                     newModelUnlockType = lockedModels[i][3]
                                     newModelUnlockValue = lockedModels[i][4]
                                     PreviewNewModel(newModel)
-                                    TriggerSound("click")
+
+                                    if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                    if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                    surface.SetFont("PlayerNotiName")
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                    modelPopOut = vgui.Create("DPanel", MainMenu)
+                                    modelPopOut:SetSize(modelNameTextSize + 10, 110)
+                                    UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                    modelPopOut:SetAlpha(0)
+                                    modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                    modelPopOut:SetMouseInputEnabled(false)
+
+                                    modelPopOut.Paint = function(s, w, h)
+                                        if !IsValid(s) then return end
+
+                                        BlurPanel(s, 3)
+
+                                        -- panel position follows mouse position
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                        surface.SetDrawColor(Color(0, 0, 0, 205))
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(previewRed)
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                                        surface.DrawRect(0, 0, w, 1)
+                                        surface.DrawRect(0, h - 1, w, 1)
+                                        surface.DrawRect(0, 0, 1, h)
+                                        surface.DrawRect(w - 1, 0, 1, h)
+
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                        if newModelUnlockType == "headshot" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "smackdown" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "clutch" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "longshot" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "pointblank" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "killstreaks" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        elseif newModelUnlockType == "buzzkills" then
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
+                                    end
                                 end
 
                                 icon.OnCursorExited = function()
+                                    modelPopOut:Remove()
+
                                     newModel = equippedModel
                                     newModelName = equippedModelName
                                     newModelUnlockType = equippedModelUnlockType
@@ -2494,6 +2763,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
                                 icon:SetSize(150, 150)
+                                icon:SetTooltip(nil)
                                 DefaultModelList:Add(icon)
 
                                 defaultModelsTotal = defaultModelsTotal + 1
@@ -2501,15 +2771,58 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 defaultModelsUnlocked = defaultModelsUnlocked + 1
 
                                 icon.OnCursorEntered = function()
+                                    TriggerSound("hover")
+
                                     newModel = modelArray[i][1]
                                     newModelName = modelArray[i][2]
                                     newModelUnlockType = modelArray[i][3]
                                     newModelUnlockValue = modelArray[i][4]
                                     PreviewNewModel(newModel)
-                                    TriggerSound("click")
+
+                                    if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                    if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                    surface.SetFont("PlayerNotiName")
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                    modelPopOut = vgui.Create("DPanel", MainMenu)
+                                    modelPopOut:SetSize(modelNameTextSize + 10, 70)
+                                    UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                    modelPopOut:SetAlpha(0)
+                                    modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                    modelPopOut:SetMouseInputEnabled(false)
+
+                                    modelPopOut.Paint = function(s, w, h)
+
+                                        if !IsValid(s) then return end
+
+                                        BlurPanel(s, 3)
+
+                                        -- panel position follows mouse position
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                        surface.SetDrawColor(Color(0, 0, 0, 205))
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(previewGreen)
+                                        surface.DrawRect(0, 0, w, h)
+
+                                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                                        surface.DrawRect(0, 0, w, 1)
+                                        surface.DrawRect(0, h - 1, w, 1)
+                                        surface.DrawRect(0, 0, 1, h)
+                                        surface.DrawRect(w - 1, 0, 1, h)
+
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                    end
                                 end
 
                                 icon.OnCursorExited = function()
+                                    modelPopOut:Remove()
+
                                     newModel = equippedModel
                                     newModelName = equippedModelName
                                     newModelUnlockType = equippedModelUnlockType
@@ -2524,26 +2837,74 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
                                     icon:SetSize(150, 150)
+                                    icon:SetTooltip(nil)
                                     StatModelList:Add(icon)
 
                                     statModelsUnlocked = statModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.OnCursorEntered = function()
+                                        TriggerSound("hover")
+
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
-                                        TriggerSound("click")
-                                    end
 
-                                    icon.OnCursorExited = function()
-                                        newModel = equippedModel
-                                        newModelName = equippedModelName
-                                        newModelUnlockType = equippedModelUnlockType
-                                        newModelUnlockValue = equippedModelUnlockValue
-                                        PreviewNewModel(equippedModel)
+                                        if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                        if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                        surface.SetFont("PlayerNotiName")
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                        modelPopOut = vgui.Create("DPanel", MainMenu)
+                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                        modelPopOut:SetAlpha(0)
+                                        modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                        modelPopOut:SetMouseInputEnabled(false)
+
+                                        modelPopOut.Paint = function(s, w, h)
+
+                                            if !IsValid(s) then return end
+
+                                            BlurPanel(s, 3)
+
+                                            -- panel position follows mouse position
+                                            UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                            surface.SetDrawColor(Color(0, 0, 0, 205))
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(previewGreen)
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                                            surface.DrawRect(0, 0, w, 1)
+                                            surface.DrawRect(0, h - 1, w, 1)
+                                            surface.DrawRect(0, 0, 1, h)
+                                            surface.DrawRect(w - 1, 0, 1, h)
+
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                            if newModelUnlockType == "kills" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "streak" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "matches" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "wins" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            end
+
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
                                     end
 
                                     icon.DoClick = function() ApplyModel() end
@@ -2555,21 +2916,87 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
                                     icon:SetSize(150, 150)
+                                    icon:SetTooltip(nil)
                                     AccoladeModelList:Add(icon)
 
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
                                     modelsUnlocked = modelsUnlocked + 1
 
                                     icon.OnCursorEntered = function()
+                                        TriggerSound("hover")
+
                                         newModel = modelArray[i][1]
                                         newModelName = modelArray[i][2]
                                         newModelUnlockType = modelArray[i][3]
                                         newModelUnlockValue = modelArray[i][4]
                                         PreviewNewModel(newModel)
-                                        TriggerSound("click")
+
+                                        if mouseX <= (ScrW() / 2) then sideH = true else sideH = false end
+                                        if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                                        surface.SetFont("PlayerNotiName")
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
+                                        modelPopOut = vgui.Create("DPanel", MainMenu)
+                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+                                        modelPopOut:SetAlpha(0)
+                                        modelPopOut:AlphaTo(255, 0.1, 0, function() end)
+                                        modelPopOut:SetMouseInputEnabled(false)
+
+                                        modelPopOut.Paint = function(s, w, h)
+                                            if !IsValid(s) then return end
+
+                                            BlurPanel(s, 3)
+
+                                            -- panel position follows mouse position
+                                            UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
+
+                                            surface.SetDrawColor(Color(0, 0, 0, 205))
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(previewGreen)
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                                            surface.DrawRect(0, 0, w, 1)
+                                            surface.DrawRect(0, h - 1, w, 1)
+                                            surface.DrawRect(0, 0, 1, h)
+                                            surface.DrawRect(w - 1, 0, 1, h)
+
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+
+                                            if newModelUnlockType == "headshot" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "smackdown" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "clutch" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "longshot" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "pointblank" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "killstreaks" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            elseif newModelUnlockType == "buzzkills" then
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            end
+
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        end
                                     end
 
                                     icon.OnCursorExited = function()
+                                        modelPopOut:Remove()
+
                                         newModel = equippedModel
                                         newModelName = equippedModelName
                                         newModelUnlockType = equippedModelUnlockType
@@ -2577,7 +3004,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         PreviewNewModel(equippedModel)
                                     end
 
-                                    icon.DoClick = function(icon) ApplyModel() end
+                                    icon.DoClick = function() ApplyModel() end
                                 end
                             end
                         end
