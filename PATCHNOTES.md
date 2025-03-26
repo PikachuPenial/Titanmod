@@ -16,6 +16,7 @@
 - All low magnification sights have had their magnification unified (this includes every weapons iron sights)
 - All high magnification scopes have had thier magnification reduced by an average of 25%
 - Removed all 3x scopes
+- Fixed inconsistent sight magnification across weapons
 
 *GRAPPLING HOOK OVERHAUL*
 - Grappling Hook is now always available in every gamemode
@@ -36,8 +37,9 @@
 *FALL DAMAGE*
 - Removed all sources of fall damage
 
-*GRAPHICAL CHANGES*
+*GRAPHICAL IMPROVMENTS*
 - Added Lens Flare effect
+- Added dynamic lighting when a player fires their weapon, when an explosion triggers, etc
 - Removed bullet tracers due to being redundant
 
 *NEW SETTINGS*
@@ -50,13 +52,26 @@
 - ADS spread now matches the hip fire spread on all shotguns
 - Slug Ammunition now makes shotguns completely accurate while ADSing
 
+*GSH-18*
+- Increased damage to 28 (previously 25)
+
 *Makarov*
 - Increased damage to 33 (previously 26)
+
+*Mas 38*
+- Decreased vertical recoil to 25 (previously 45)
+- Decreased horizontal recoil to 10 (previously 15)
+
+*KRISS Vector*
+- Decreased vertical recoil to -15 (previously -25)
+- Decreased horizontal recoil to 10 (previously 15)
 
 *Point Shooting Attachment*
 - Added Point Shooting to the GSH-18, M1911, Mac 10 and PM-9
 
 **>QOL & BUG FIXES**   
+- Brand new spawn logic that should avoid spawns with other players nearby and should fix instances of spawning inside other players
+
 - Extensive micro-optimization throughout the gamemode
 
 - The maximum FOV for the custom FOV system has been increased to 144 (previously 125)
@@ -67,6 +82,8 @@
 
 - Default sensitivity values have been changed
 
+- Overhauled player model and player card selection menus
+
 - Ammo text while using melee weapons now displays the keybind to throw the melee weapon
 
 - Bullet penetration decals are now properly synced between clients
@@ -74,6 +91,8 @@
 - Adjusted view model for the Riot Shield
 
 - The melee at the end of a gun game ladder is now randomized
+
+- Renamed the Lewis to the Lewis Gun
 
 - Fixed AA-12 being considered a rifle instead of a shotgun
 
@@ -86,6 +105,8 @@
 - Fixed instances of iron sights clipping inside of scopes
 
 - Fixed instances of scopes being misaligned from the center of the screen
+
+- Fixed manual value input not updating the optic reticle color preview
 
 - Removed sound when switching weapons via quick weapon switching
 

@@ -166,7 +166,7 @@ end)
 
 hook.Add("PlayerDeathSound", "OverrideDeathSound", function(ply) return true end)
 
-hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon) return false end)
+-- hook.Add("TFA_MuzzleFlash", "DisableMuzzleFlash", function(Weapon) return false end)
 
 hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "TracerCount" then return 0 end
@@ -378,7 +378,7 @@ cardArray[122] = {"cards/mastery/krissvector.png", "Narkotica", "KRISS Vector ma
 cardArray[123] = {"cards/mastery/ksg.png", "Flames", "KSG mastery", "mastery", "tfa_ins2_ksg"}
 cardArray[124] = {"cards/mastery/l85.png", "Groves", "L85 mastery", "mastery", "tfa_ins2_l85a2"}
 cardArray[125] = {"cards/mastery/leeenfield.png", "Minecraft", "Lee Enfield master", "mastery", "tfa_doi_enfield"}
-cardArray[126] = {"cards/mastery/lewis.png", "Big Bang", "Lewis mastery", "mastery", "tfa_doilewis"}
+cardArray[126] = {"cards/mastery/lewis.png", "Big Bang", "Lewis Gun mastery", "mastery", "tfa_doilewis"}
 cardArray[127] = {"cards/mastery/lr300.png", "Oil Rig", "LR-300 mastery", "mastery", "tfa_ins2_zm_lr300"}
 cardArray[128] = {"cards/mastery/m1garand.png", "Underworld", "M1 Garand mastery", "mastery", "tfa_doi_garand"}
 cardArray[129] = {"cards/mastery/m14.png", "Bridge", "M14 mastery", "mastery", "tfa_ins2_m14retro"}

@@ -3533,7 +3533,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     customFOVSlider:SetSize(250, 30)
                     customFOVSlider:SetConVar("tm_customfov_value")
                     customFOVSlider:SetMin(100)
-                    customFOVSlider:SetMax(125)
+                    customFOVSlider:SetMax(144)
                     customFOVSlider:SetDecimals(0)
 
                     local centeredVM = DockGameplay:Add("DCheckBox")

@@ -96,6 +96,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
 	ply:SetNWFloat("linat", 0)
+
+	ply:SetViewOffsetDucked(Vector(0, 0, 42))
 end
 
 function GM:PlayerInitialSpawn(ply)

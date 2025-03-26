@@ -62,7 +62,7 @@ if CLIENT then
     CreateClientConVar("tm_deathcam", 1, true, true, "Enable/disable the custom death camera when killed by another player", 0, 1)
     CreateClientConVar("tm_customfov", 0, true, true, "Enable/disable Titanmod's custom FOV system", 0, 1)
     CreateClientConVar("tm_customfov_value", 100, true, true, "Adjust the players FOV while using Titanmod's custom FOV system", 100, 144)
-    CreateClientConVar("tm_sensitivity_1x", 75, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_1x", 80, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_2x", 50, true, true, "Adjust the sensitivity when using medium zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_4x", 33, true, true, "Adjust the sensitivity when using medium-high zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_6x", 16, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
