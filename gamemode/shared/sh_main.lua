@@ -176,6 +176,9 @@ hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
     if stat == "CrouchSpreadMultiplier" then return 0.7 end
     if stat == "IronSightsReloadEnabled" then return true end
     if stat == "IronSightsReloadLock" then return false end
+
+    if stat == "Secondary.IronFOV" then return 70 end
+    if stat == "Secondary.Point_Shooting_FOV" then return 70 end
 end)
 
 -- disable specific TFA attachments

@@ -10,9 +10,11 @@
 - **SR-25** (Primary, Rifle)
 - **WA-2000** (Primary, Sniper)
 
-*SCOPE OVERHAUL*
+*SCOPES AND SIGHTS OVERHAUL*
+- All sights in the game now share the same FOV value
+- Every weapon has had its available sites and position of sites updated
+- All low magnification sights have had their magnification unified (this includes every weapons iron sights)
 - All high magnification scopes have had thier magnification reduced by an average of 25%
-- All scopes have less FOV (appear closer up, allowing you to see more)
 - Removed all 3x scopes
 
 *GRAPPLING HOOK OVERHAUL*
@@ -57,6 +59,14 @@
 **>QOL & BUG FIXES**   
 - Extensive micro-optimization throughout the gamemode
 
+- The maximum FOV for the custom FOV system has been increased to 144 (previously 125)
+
+- Weapon Viewmodel FOV is now persistent across all FOV values (this includes FOV while aiming down sights)
+
+- Changed 8x sensitivity setting to 6x sensitivity setting
+
+- Default sensitivity values have been changed
+
 - Ammo text while using melee weapons now displays the keybind to throw the melee weapon
 
 - Bullet penetration decals are now properly synced between clients
@@ -76,8 +86,6 @@
 - Fixed instances of iron sights clipping inside of scopes
 
 - Fixed instances of scopes being misaligned from the center of the screen
-
-- Changed 8x sensitivity setting to 6x sensitivity setting with a new default value
 
 - Removed sound when switching weapons via quick weapon switching
 

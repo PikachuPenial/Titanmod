@@ -302,17 +302,11 @@ local function MatchStartPopup(ply)
     end)
 end
 
-local TitanmodFOV = GetConVar("tm_customfov_value"):GetInt()
 net.Receive("PlayerSpawn", function(len, pl)
-    if GetConVar("tm_customfov"):GetInt() == 0 then RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", "1") else RunConsoleCommand("cl_tfa_viewmodel_multiplier_fov", tostring((TitanmodFOV / -100) + 2)) end
     if convars["hud_enable"] == 0 then return end
     if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
     if matchStartPopupSeen == false then MatchStartPopup(LocalPly) end
 end )
-
-cvars.AddChangeCallback("tm_customfov_value", function(convar_name, value_old, value_new)
-    TitanmodFOV = value_new
-end)
 
 hook.Add("RenderScreenspaceEffects", "IntermissionPostProcess", function()
     if GetGlobal2Int("tm_matchtime", 0) - CurTime() < (GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt()) then
