@@ -27,6 +27,9 @@ local function TriggerSound(type)
     if type == "hover" then surface.PlaySound("tmui/hover.wav") end
 end
 
+local playedIntro = false
+local seenResWarning = false
+
 local MainMenu
 
 net.Receive("OpenMainMenu", function(len, ply)
@@ -56,6 +59,9 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     local mouseX = 0
     local mouseY = 0
+
+    local ContextBind = "Context Menu Bind"
+    if input.LookupBinding("+menu_context") != nil then ContextBind = input.LookupBinding("+menu_context") end
 
     if !IsValid(MainMenu) then
         MainMenu = vgui.Create("DFrame")
@@ -100,6 +106,11 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
         end
 
+        if !playedIntro then
+            -- surface.PlaySound("tmui/intro.wav")
+            playedIntro = true
+        end
+
         gui.EnableScreenClicker(true)
 
         local MainPanel = MainMenu:Add("MainPanel")
@@ -112,9 +123,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                 draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
 
                 if LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") != 60 then
-                    draw.SimpleText("Prestige " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
                 elseif LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") == 60 then
-                    draw.SimpleText("Prestige " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
                 end
 
                 if LocalPly:GetNWInt("playerLevel") != 60 then
@@ -442,8 +453,6 @@ net.Receive("OpenMainMenu", function(len, ply)
 
             local function ShowTutorial()
                 if IsValid(TutorialPanel) then return end
-                local ContextBind = "Context Menu Bind"
-                if input.LookupBinding("+menu_context") != nil then ContextBind = input.LookupBinding("+menu_context") end
 
                 local TutorialPanel = vgui.Create("DFrame", MainMenu)
                 TutorialPanel:SetSize(864, 768)
@@ -790,6 +799,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CardSlideoutPanel:AlphaTo(255, 0.05, 0.025)
                     CardQuickjumpHolder:AlphaTo(255, 0.05, 0.025)
 
+                    local equippedCard
+                    local equippedCardName
+                    local equippedCardDesc
+                    local equippedCardUnlockType
+                    local equippedCardUnlockValue
+
                     local newCard
                     local newCardName
                     local newCardDesc
@@ -830,6 +845,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             newCardDesc = cardArray[i][3]
                             newCardUnlockType = cardArray[i][4]
                             newCardUnlockValue = cardArray[i][5]
+
+                            equippedCard = cardArray[i][1]
+                            equippedCardName = cardArray[i][2]
+                            equippedCardDesc = cardArray[i][3]
+                            equippedCardUnlockType = cardArray[i][4]
+                            equippedCardUnlockValue = cardArray[i][5]
                         end
                     end
 
@@ -852,8 +873,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CARDS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " unlocked", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playercards", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("hide locked playercards", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
                     local CardPreviewPanel = vgui.Create("DPanel", CardPanel)
@@ -1013,219 +1034,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local previewGreen = Color(0, 255, 0, 5)
                     local previewColor = previewGreen
 
-                    local ApplyCardButton = vgui.Create("DButton", PreviewCardTextHolder)
-                    ApplyCardButton:SetText("APPLY")
-                    ApplyCardButton:SetPos(347, 95)
-                    ApplyCardButton:SetSize(50, 20)
-                    ApplyCardButton.DoClick = function()
-                        local masteryUnlock = 50
-                        if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            surface.PlaySound("tmui/uisuccess.wav")
-                            net.Start("PlayerCardChange")
-                            net.WriteString(newCard)
-                            net.SendToServer()
-                            plyCallingCard:SetImage(newCard)
-                            CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                            CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                            CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                            MainPanel:Show()
-                            MainPanel:AlphaTo(255, 0.05, 0.025)
-                        elseif newCardUnlockType == "kills" then
-                            if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "streak" then
-                            if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "matches" then
-                            if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "wins" then
-                            if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "headshot" then
-                            if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "smackdown" then
-                            if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "clutch" then
-                            if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "longshot" then
-                            if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "pointblank" then
-                            if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "killstreaks" then
-                            if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "buzzkills" then
-                            if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "level" then
-                            if playerTotalLevel < newCardUnlockValue then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        elseif newCardUnlockType == "mastery" then
-                            if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < masteryUnlock then
-                                surface.PlaySound("common/wpn_denyselect.wav")
-                            else
-                                surface.PlaySound("tmui/uisuccess.wav")
-                                net.Start("PlayerCardChange")
-                                net.WriteString(newCard)
-                                net.SendToServer()
-                                plyCallingCard:SetImage(newCard)
-                                CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
-                                CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
-                                CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
-                                MainPanel:Show()
-                                MainPanel:AlphaTo(255, 0.05, 0.025)
-                            end
-                        end
+                    local function ApplyCard()
+                        surface.PlaySound("tmui/uisuccess.wav")
+                        net.Start("PlayerCardChange")
+                        net.WriteString(newCard)
+                        net.SendToServer()
+                        plyCallingCard:SetImage(newCard)
+                        CardPanel:AlphaTo(0, 0.05, 0, function() CardPanel:Hide() end)
+                        CardPreviewPanel:AlphaTo(0, 0.05, 0, function() CardPreviewPanel:Hide() end)
+                        CardSlideoutPanel:AlphaTo(0, 0.05, 0, function() CardSlideoutPanel:Hide() end)
+                        MainPanel:Show()
+                        MainPanel:AlphaTo(255, 0.05, 0.025)
                     end
 
                     PreviewCardTextHolder.Paint = function(self, w, h)
@@ -1240,189 +1059,135 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
                             draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                             previewColor = previewGreen
-                            CardPreviewPanel:SetSize(0, 120)
-                            ApplyCardButton:Show()
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "matches" then
                             if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "wins" then
                             if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
                                 draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
-                                CardPreviewPanel:SetSize(0, 100)
-                                ApplyCardButton:Hide()
                             else
                                 draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
                                 draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
-                                CardPreviewPanel:SetSize(0, 120)
-                                ApplyCardButton:Show()
                             end
                         end
 
@@ -1442,14 +1207,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 defaultCardsUnlocked = defaultCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "kills" or cardArray[i][4] == "streak" or cardArray[i][4] == "matches" or cardArray[i][4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
 
@@ -1463,14 +1238,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "headshot" or cardArray[i][4] == "smackdown" or cardArray[i][4] == "clutch" or cardArray[i][4] == "longshot" or cardArray[i][4] == "pointblank" or cardArray[i][4] == "killstreaks" or cardArray[i][4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
@@ -1485,14 +1270,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
@@ -1504,14 +1299,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 colorCardsUnlocked = colorCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
@@ -1522,14 +1327,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 prideCardsUnlocked = prideCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
 
@@ -1543,14 +1358,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
@@ -1565,14 +1390,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             end
                         end
@@ -1596,14 +1431,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
                                 StatCardList:Add(card)
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = lockedCards[i][1]
                                     newCardName = lockedCards[i][2]
                                     newCardDesc = lockedCards[i][3]
                                     newCardUnlockType = lockedCards[i][4]
                                     newCardUnlockValue = lockedCards[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             elseif lockedCards[i][4] == "headshot" or lockedCards[i][4] == "smackdown" or lockedCards[i][4] == "clutch" or lockedCards[i][4] == "longshot" or lockedCards[i][4] == "pointblank" or lockedCards[i][4] == "killstreaks" or lockedCards[i][4] == "buzzkills" then
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
                                 card:SetImage(lockedCards[i][1])
@@ -1622,14 +1467,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
                                 AccoladeCardList:Add(card)
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = lockedCards[i][1]
                                     newCardName = lockedCards[i][2]
                                     newCardDesc = lockedCards[i][3]
                                     newCardUnlockType = lockedCards[i][4]
                                     newCardUnlockValue = lockedCards[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             elseif lockedCards[i][4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
                                 card:SetImage(lockedCards[i][1])
@@ -1648,14 +1503,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
                                 LevelCardList:Add(card)
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = lockedCards[i][1]
                                     newCardName = lockedCards[i][2]
                                     newCardDesc = lockedCards[i][3]
                                     newCardUnlockType = lockedCards[i][4]
                                     newCardUnlockValue = lockedCards[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             elseif lockedCards[i][4] == "mastery" then
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
                                 card:SetImage(lockedCards[i][1])
@@ -1674,14 +1539,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 lockIndicator:Center()
                                 MasteryCardList:Add(card)
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = lockedCards[i][1]
                                     newCardName = lockedCards[i][2]
                                     newCardDesc = lockedCards[i][3]
                                     newCardUnlockType = lockedCards[i][4]
                                     newCardUnlockValue = lockedCards[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() surface.PlaySound("tmui/warning.wav") end
                             end
                         end
                     end
@@ -1698,14 +1573,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 defaultCardsUnlocked = defaultCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "kills" or cardArray[i][4] == "streak" or cardArray[i][4] == "matches" or cardArray[i][4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
                                 if cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") >= cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") >= cardArray[i][5] then
@@ -1717,14 +1602,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "headshot" or cardArray[i][4] == "smackdown" or cardArray[i][4] == "clutch" or cardArray[i][4] == "longshot" or cardArray[i][4] == "pointblank" or cardArray[i][4] == "killstreaks" or cardArray[i][4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
@@ -1737,14 +1632,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
@@ -1756,14 +1661,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 colorCardsUnlocked = colorCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
@@ -1774,14 +1689,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 cardsUnlocked = cardsUnlocked + 1
                                 prideCardsUnlocked = prideCardsUnlocked + 1
 
-                                card.DoClick = function(card)
+                                card.OnCursorEntered = function()
                                     newCard = cardArray[i][1]
                                     newCardName = cardArray[i][2]
                                     newCardDesc = cardArray[i][3]
                                     newCardUnlockType = cardArray[i][4]
                                     newCardUnlockValue = cardArray[i][5]
-                                    TriggerSound("click")
+                                    TriggerSound("hover")
                                 end
+
+                                card.OnCursorExited = function()
+                                    newCard = equippedCard
+                                    newCardName = equippedCardName
+                                    newCardDesc = equippedCardDesc
+                                    newCardUnlockType = equippedCardUnlockType
+                                    newCardUnlockValue = equippedCardUnlockValue
+                                end
+
+                                card.DoClick = function() ApplyCard() end
                             elseif cardArray[i][4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
                                 if cardArray[i][4] == "level" and playerTotalLevel >= cardArray[i][5] then
@@ -1793,14 +1718,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             elseif cardArray[i][4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
@@ -1813,14 +1748,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
 
-                                    card.DoClick = function(card)
+                                    card.OnCursorEntered = function()
                                         newCard = cardArray[i][1]
                                         newCardName = cardArray[i][2]
                                         newCardDesc = cardArray[i][3]
                                         newCardUnlockType = cardArray[i][4]
                                         newCardUnlockValue = cardArray[i][5]
-                                        TriggerSound("click")
+                                        TriggerSound("hover")
                                     end
+
+                                    card.OnCursorExited = function()
+                                        newCard = equippedCard
+                                        newCardName = equippedCardName
+                                        newCardDesc = equippedCardDesc
+                                        newCardUnlockType = equippedCardUnlockType
+                                        newCardUnlockValue = equippedCardUnlockValue
+                                    end
+
+                                    card.DoClick = function() ApplyCard() end
                                 end
                             end
                         end
@@ -2190,8 +2135,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " unlocked", "Health", w / 2, 85, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("Hide locked playermodels", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("hide locked playermodels", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
@@ -3235,7 +3180,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 640)
+                    DockInputs:SetSize(0, 720)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -3391,6 +3336,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspect Bind", "SettingsLabel", 135, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Attachments Bind (none = [" .. string.upper(ContextBind) .. "])", "SettingsLabel", 135, 665, white, TEXT_ALIGN_LEFT)
                     end
 
                     local autoSprint = DockInputs:Add("DCheckBox")
@@ -3509,6 +3456,26 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         TriggerSound("forward")
                         selectedMeleeBind = meleeBind:GetSelectedNumber()
                         RunConsoleCommand("tm_meleebind", selectedMeleeBind)
+                    end
+
+                    local inspectBind = DockInputs:Add("DBinder")
+                    inspectBind:SetPos(22.5, 630)
+                    inspectBind:SetSize(100, 30)
+                    inspectBind:SetSelectedNumber(GetConVar("cl_tfa_keys_inspect"):GetInt())
+                    function inspectBind:OnChange(num)
+                        TriggerSound("forward")
+                        selectedInspectBind = inspectBind:GetSelectedNumber()
+                        RunConsoleCommand("cl_tfa_keys_inspect", selectedInspectBind)
+                    end
+
+                    local customizeBind = DockInputs:Add("DBinder")
+                    customizeBind:SetPos(22.5, 670)
+                    customizeBind:SetSize(100, 30)
+                    customizeBind:SetSelectedNumber(GetConVar("cl_tfa_keys_customize"):GetInt())
+                    function customizeBind:OnChange(num)
+                        TriggerSound("forward")
+                        selectedCustomizeBind = customizeBind:GetSelectedNumber()
+                        RunConsoleCommand("cl_tfa_keys_customize", selectedCustomizeBind)
                     end
 
                     DockGameplay.Paint = function(self, w, h)
@@ -5024,7 +4991,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
     end
 
-    if belowMinimumRes == true and LocalPly:GetNWBool("seenResWarning") != true then
+    if belowMinimumRes == true and seenResWarning != true then
         local ResWarning = vgui.Create("DPanel")
         ResWarning:SetPos(0, 0)
         ResWarning:SetSize(scrW, scrH)
@@ -5036,7 +5003,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
         ResWarningLabel:SizeToContents()
         ResWarningLabel:SetDark(1)
 
-        LocalPly:SetNWBool("seenResWarning", true)
+        seenResWarning = true
 
         timer.Create("removeResWarning", 8, 1, function()
             ResWarning:Remove()

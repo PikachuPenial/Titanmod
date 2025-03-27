@@ -179,6 +179,9 @@ hook.Add("TFA_GetStat", "AdjustTFAWepStats", function(weapon, stat, value)
 
     if stat == "Secondary.IronFOV" then return 70 end
     if stat == "Secondary.Point_Shooting_FOV" then return 70 end
+
+    if stat == "Primary.Range" then return 0.6 * (3280 * 16) end
+    if stat == "Primary.RangeFalloff" then return 1 end
 end)
 
 -- disable specific TFA attachments

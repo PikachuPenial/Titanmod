@@ -572,6 +572,9 @@ function HUDAlive(client)
             LerpAmmo()
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(math.max(0, smoothAmmo) / weapon:GetMaxClip1(), 0, 1)), 30)
             draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        elseif weapon:GetPrintName() == "M134 Minigun" then
+            surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400, 30)
+            draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 18 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400, 30)
             draw.SimpleText("[" .. string.upper(reloadBind) .. "] THROW", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 18 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -1466,8 +1469,8 @@ net.Receive("EndOfGame", function(len, ply)
                     modeOneVotes = math.Round(GetGlobal2Int("VotesOnModeOne", 0) / (GetGlobal2Int("VotesOnModeOne", 0) + GetGlobal2Int("VotesOnModeTwo", 0)) * 100)
                     modeTwoVotes = math.Round(GetGlobal2Int("VotesOnModeTwo") / (GetGlobal2Int("VotesOnModeTwo", 0) + GetGlobal2Int("VotesOnModeOne", 0)) * 100)
                 end
-                if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 20, Color(50, 125, 50, 75)) end
-                if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 20, Color(50, 125, 50, 75)) end
+                if gamemodePicked == 1 then draw.RoundedBox(0, 10, 62.5, 175, 9, Color(50, 125, 50, 75)) end
+                if gamemodePicked == 2 then draw.RoundedBox(0, 290, 62.5, 175, 9, Color(50, 125, 50, 75)) end
                 draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, 5, white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(modeOneVotes .. "% | " .. modeTwoVotes .. "%", "StreakText", w / 2, 70, white, TEXT_ALIGN_CENTER)
             else

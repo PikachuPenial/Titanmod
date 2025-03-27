@@ -174,3 +174,11 @@ if CLIENT then
     CreateClientConVar("tm_hud_notifications", 1, true, false, "Enable/disable HUD notifications", 0, 1)
     CreateClientConVar("tm_hud_voiceindicator", 1, true, false, "Enable/disable the voice indicator", 0, 1)
 end
+
+-- include derma skin
+if SERVER then
+    AddCSLuaFile("skins/tm.lua")
+elseif CLIENT then
+    include("skins/tm.lua")
+    hook.Add("ForceDermaSkin", "EFGMDermaSkin", function() return "Titanmod Derma Skin" end)
+end

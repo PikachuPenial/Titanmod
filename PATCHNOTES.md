@@ -3,11 +3,19 @@
 *NEW WEAPONS*
 - **American-180** (Primary, SMG)
 - **AVT-40** (Primary, Rifle)
+- **Dagger** (Melee)
 - **Dual Mac 10s** (Primary, SMG)
 - **Galil** (Primary, Rifle)
+- **Kar98k** (Primary, Sniper)
 - **Karambit** (Melee)
 - **KS-23** (Primary, Shotgun)
+- **Kukri** (Melee)
+- **M134 Minigun** (Primary, LMG)
+- **M9 Bayonet** (Melee)
+- **Nailgun** (Secondary, Pistol)
+- **Red Rebel** (Melee)
 - **SR-25** (Primary, Rifle)
+- **Tri-Dagger** (Melee)
 - **WA-2000** (Primary, Sniper)
 
 *SCOPES AND SIGHTS OVERHAUL*
@@ -45,6 +53,8 @@
 *NEW SETTINGS*
 - Auto Sprint
 - Auto Sprint Interaction Delay
+- Inspect Bind
+- Attachments Bind (overrides default context key to open attachments menu)
 
 **>BALANCE** 
 *Shotguns*
@@ -71,6 +81,8 @@
 
 **>QOL & BUG FIXES**   
 - Brand new spawn logic that should avoid spawns with other players nearby and should fix instances of spawning inside other players
+
+- Brand new derma skin ported from EFGMR, improving visuals on all default Garry's Mod UI assets
 
 - Extensive micro-optimization throughout the gamemode
 
