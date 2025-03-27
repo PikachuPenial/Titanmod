@@ -77,7 +77,8 @@
 - Decreased horizontal recoil to 10 (previously 15)
 
 *Point Shooting Attachment*
-- Added Point Shooting to the GSH-18, M1911, Mac 10 and PM-9
+- Added Point Shooting to the many new weapons
+- Aiming down sights while using the attachment will no longer make your crosshair fade out
 
 **>QOL & BUG FIXES**   
 - Brand new spawn logic that should avoid spawns with other players nearby and should fix instances of spawning inside other players

@@ -28,18 +28,24 @@ function GM:ScoreboardShow()
 
 		ScoreboardDerma:AlphaTo(255, 0.1, 0)
 
-		ScoreboardDerma.Paint = function()
+		ScoreboardDerma.Paint = function(self, w, h)
 			ScoreboardDerma:SetPos(ScrW() / 2 - ScoreboardDerma:GetWide() / 2, ScrH() / 2 - ScoreboardDerma:GetTall() / 2)
 
-			BlurPanel(ScoreboardDerma, 10)
+			BlurPanel(ScoreboardDerma, 5)
 
-			draw.RoundedBox(4, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
+			draw.RoundedBox(0, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
 			draw.SimpleTextOutlined("TITANMOD", "TitleText", 15, 15, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0.5, Color(0, 0, 0, 100))
+
+			surface.SetDrawColor(Color(255, 255, 255, 155))
+			surface.DrawRect(0, 0, w, 1)
+			surface.DrawRect(0, h - 1, w, 1)
+			surface.DrawRect(0, 0, 1, h)
+			surface.DrawRect(w - 1, 0, 1, h)
 		end
 
 		local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
 		PlayerScrollPanel:Dock(TOP)
-		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(640, player.GetCount() * 100) else PlayerScrollPanel:SetSize(640, 500) end
+		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(630, player.GetCount() * 100) else PlayerScrollPanel:SetSize(630, 500) end
 		PlayerScrollPanel:SetPos(0, 0)
 
         local sbar = PlayerScrollPanel:GetVBar()
@@ -54,6 +60,14 @@ function GM:ScoreboardShow()
 		PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
 		PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
 		PlayerList:SetPos(0, 0)
+		PlayerList.Paint = function(self, w, h)
+			BlurPanel(PlayerList, 5)
+			surface.SetDrawColor(Color(255, 255, 255, 25))
+			surface.DrawRect(0, 0, w, 1)
+			surface.DrawRect(0, h - 1, w, 1)
+			surface.DrawRect(0, 0, 1, h)
+			surface.DrawRect(w - 1, 0, 1, h)
+		end
 
 		local MapInfoPanel = vgui.Create("DPanel", ScoreboardDerma)
 		MapInfoPanel:Dock(TOP)
@@ -145,11 +159,11 @@ function GM:ScoreboardShow()
 			PlayerPanel.Paint = function(w, h)
 				if not IsValid(v) then return end
 				if v:GetNWBool("mainmenu") == true then
-					draw.RoundedBox(6, 0, 0, 630, h, Color(35, 35, 100, 100))
+					draw.RoundedBox(0, 0, 0, 630, h, Color(35, 35, 100, 100))
 				elseif not v:Alive() then
-					draw.RoundedBox(6, 0, 0, 630, h, Color(100, 35, 35, 100))
+					draw.RoundedBox(0, 0, 0, 630, h, Color(100, 35, 35, 100))
 				else
-					draw.RoundedBox(6, 0, 0, 630, h, Color(35, 35, 35, 100))
+					draw.RoundedBox(0, 0, 0, 630, h, Color(35, 35, 35, 100))
 				end
 
 				draw.SimpleText(name, "Health", 255, 5, white, TEXT_ALIGN_LEFT)

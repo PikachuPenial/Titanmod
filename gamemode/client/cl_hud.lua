@@ -479,7 +479,7 @@ function HUDAlive(client)
     weapon = client:GetActiveWeapon()
     LerpCrosshair()
 
-    if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
+    if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights() and weapon:GetStat("PointFiring") == false) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
     -- crosshair
     if crosshair["style"] == 1 then
         dyn = CrosshairStateUpdate(client, weapon)
