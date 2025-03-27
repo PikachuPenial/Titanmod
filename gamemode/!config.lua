@@ -417,7 +417,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_melee_blocking_anglemult", "1")
     RunConsoleCommand("sv_tfa_melee_blocking_deflection", "1")
     RunConsoleCommand("sv_tfa_melee_blocking_timed", "1")
-    RunConsoleCommand("sv_tfa_melee_damage_ply", "0.85")
+    RunConsoleCommand("sv_tfa_melee_damage_ply", "1")
     RunConsoleCommand("sv_tfa_nearlyempty", "1")
     RunConsoleCommand("sv_tfa_npc_burst", "0")
     RunConsoleCommand("sv_tfa_npc_randomize_atts", "0")
