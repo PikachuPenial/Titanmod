@@ -728,6 +728,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local CustomizeButton = vgui.Create("DButton", MainPanel)
+            local CustomizeLoadoutButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeModelButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeCardButton = vgui.Create("DButton", CustomizeButton)
             CustomizeButton:SetPos(0, scrH / 2 + 50)
@@ -735,7 +736,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CustomizeButton:SetSize(530, 100)
             local textAnim = 0
             CustomizeButton.Paint = function()
-                if CustomizeButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
+                if CustomizeButton:IsHovered() or CustomizeLoadoutButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * RealFrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
@@ -749,18 +750,348 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
-            CustomizeModelButton:SetPos(0, 100)
+            CustomizeLoadoutButton:SetPos(0, 100)
+            CustomizeLoadoutButton:SetText("")
+            CustomizeLoadoutButton:SetSize(180, 100)
+            CustomizeLoadoutButton.Paint = function()
+                draw.DrawText("GEAR", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+            end
+
+            CustomizeModelButton:SetPos(180, 100)
             CustomizeModelButton:SetText("")
             CustomizeModelButton:SetSize(180, 100)
             CustomizeModelButton.Paint = function()
                 draw.DrawText("MODEL", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
             end
 
-            CustomizeCardButton:SetPos(180, 100)
+            CustomizeCardButton:SetPos(380, 100)
             CustomizeCardButton:SetText("")
             CustomizeCardButton:SetSize(160, 100)
             CustomizeCardButton.Paint = function()
                 draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+            end
+
+            CustomizeLoadoutButton.DoClick = function()
+                if IsValid(GearPanel) then return end
+                TriggerSound("click")
+                MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
+                local currentMelee = LocalPly:GetNWString("chosenMelee")
+
+                local GearPanel = vgui.Create("DPanel", MainMenu)
+                GearPanel:SetSize(745, scrH)
+                GearPanel:SetPos(56, 0)
+                GearPanel:SetAlpha(0)
+                GearPanel.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                local GearSlideoutPanel = vgui.Create("DPanel", MainMenu)
+                GearSlideoutPanel:SetSize(56, scrH)
+                GearSlideoutPanel:SetPos(0, 0)
+                GearSlideoutPanel:SetAlpha(0)
+                GearSlideoutPanel.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                local GearQuickjumpHolder = vgui.Create("DPanel", GearSlideoutPanel)
+                GearQuickjumpHolder:Dock(TOP)
+                GearQuickjumpHolder:SetSize(0, scrH)
+                GearQuickjumpHolder:SetAlpha(0)
+                GearQuickjumpHolder.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, lightGray)
+                    draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                end
+
+                GearPanel:AlphaTo(255, 0.05, 0.025)
+                GearSlideoutPanel:AlphaTo(255, 0.05, 0.025)
+                GearQuickjumpHolder:AlphaTo(255, 0.05, 0.025)
+
+                local equippedGear
+                local equippedGearName
+                local equippedGearModel
+                local equippedGearUnlockType
+                local equippedGearUnlockKills
+                local equippedGearUnlockLevel
+
+                local newGear
+                local newGearName
+                local newGearModel
+                local newGearUnlockType
+                local newGearUnlockKills
+                local newGearUnlockLevel
+
+                local totalGear = table.Count(gearArray)
+                local gearUnlocked = 0
+
+                local defaultGearTotal = 0
+                local defaultGearUnlocked = 0
+
+                local progressionGearTotal = 0
+                local progressionGearUnlocked = 0
+
+                local playerTotalLevel = (LocalPly:GetNWInt("playerPrestige") * 60) + LocalPly:GetNWInt("playerLevel")
+
+                -- checking for the players currently equipped gear
+                for i = 1, #gearArray do
+                    if gearArray[i][1] == currentGear then
+                        equippedGear = gearArray[i][1]
+                        equippedGearName = gearArray[i][2]
+                        equippedGearModel = gearArray[i][3]
+                        equippedGearUnlockType = gearArray[i][4]
+                        equippedGearUnlockKills = gearArray[i][5]
+                        equippedGearUnlockLevel = gearArray[i][6]
+
+                        newGear = gearArray[i][1]
+                        newGearName = gearArray[i][2]
+                        newGearModel = gearArray[i][3]
+                        newGearUnlockType = gearArray[i][4]
+                        newGearUnlockKills = gearArray[i][5]
+                        newGearUnlockLevel = gearArray[i][6]
+                    end
+                end
+
+                local GearScroller = vgui.Create("DScrollPanel", GearPanel)
+                GearScroller:Dock(FILL)
+
+                local sbar = GearScroller:GetVBar()
+                sbar:SetHideButtons(true)
+                function sbar:Paint(w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                end
+                function sbar.btnGrip:Paint(w, h)
+                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                end
+
+                local GearTextHolder = vgui.Create("DPanel", GearPanel)
+                GearTextHolder:Dock(TOP)
+                GearTextHolder:SetSize(0, 160)
+
+                GearTextHolder.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.SimpleText("GEAR", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(gearUnlocked .. " / " .. totalGear .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("hide locked gear", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                end
+
+                local HideLockedGear = GearTextHolder:Add("DCheckBox")
+                HideLockedGear:SetPos(298, 122.5)
+                HideLockedGear:SetSize(20, 20)
+                function HideLockedGear:OnChange() TriggerSound("click") end
+
+                -- default cards
+                local TextDefault = vgui.Create("DPanel", GearScroller)
+                TextDefault:Dock(TOP)
+                TextDefault:SetSize(0, 85)
+
+                local DockDefaultGear = vgui.Create("DPanel", GearScroller)
+                DockDefaultGear:Dock(TOP)
+                DockDefaultGear:SetSize(0, 400)
+
+                local DefaultGearList = vgui.Create("DIconLayout", DockDefaultGear)
+                DefaultGearList:Dock(TOP)
+                DefaultGearList:SetSpaceY(0)
+                DefaultGearList:SetSpaceX(0)
+
+                DefaultGearList.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                TextDefault.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(defaultGearTotal .. " / " .. defaultGearUnlocked, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                end
+
+                -- progression cards
+                local TextProgression = vgui.Create("DPanel", GearScroller)
+                TextProgression:Dock(TOP)
+                TextProgression:SetSize(0, 85)
+
+                local DockProgressionGear = vgui.Create("DPanel", GearScroller)
+                DockProgressionGear:Dock(TOP)
+                DockProgressionGear:SetSize(0, 1100)
+
+                local ProgressionGearList = vgui.Create("DIconLayout", DockProgressionGear)
+                ProgressionGearList:Dock(TOP)
+                ProgressionGearList:SetSpaceY(0)
+                ProgressionGearList:SetSpaceX(0)
+
+                ProgressionGearList.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                TextProgression.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.SimpleText("PROGRESSION", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                end
+
+                local function ApplyGear()
+                    surface.PlaySound("tmui/uisuccess.wav")
+                    net.Start("PlayerGearChange")
+                    net.WriteString(newGear)
+                    net.SendToServer()
+                    GearPanel:AlphaTo(0, 0.05, 0, function() GearPanel:Hide() end)
+                    // GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
+                    GearSlideoutPanel:AlphaTo(0, 0.05, 0, function() GearSlideoutPanel:Hide() end)
+                    MainPanel:Show()
+                    MainPanel:AlphaTo(255, 0.05, 0.025)
+                end
+
+                local previewRed = Color(255, 0, 0, 5)
+                local previewGreen = Color(0, 255, 0, 5)
+
+                local function FillGearListsAll()
+                    local lockedGear = {}
+                    for i = 1, #gearArray do
+                        if gearArray[i][4] == "default" then
+                            local gear = vgui.Create("DButton", DockDefaultGear)
+                            gear:SetSize(735, 100)
+                            gear:SetText("")
+                            gear.Paint = function(self, w, h)
+                                draw.RoundedBox(0, 0, 0, w, h, previewGreen)
+
+                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                            end
+
+                            DefaultGearList:Add(gear)
+
+                            defaultGearTotal = defaultGearTotal + 1
+                            gearUnlocked = gearUnlocked + 1
+                            defaultGearUnlocked = defaultGearUnlocked + 1
+
+                            gear.OnCursorEntered = function()
+                                newGear = gearArray[i][1]
+                                newGearName = gearArray[i][2]
+                                newGearModel = gearArray[i][3]
+                                newGearUnlockType = gearArray[i][4]
+                                newGearUnlockKills = gearArray[i][5]
+                                newGearUnlockLevel = gearArray[i][6]
+                                TriggerSound("hover")
+                            end
+
+                            gear.OnCursorExited = function()
+                                newGear = equippedGear
+                                newGearName = equippedGearName
+                                newGearModel = equippedGearModel
+                                newGearUnlockType = equippedGearUnlockType
+                                newGearUnlockKills = equippedGearUnlockKills
+                                newGearUnlockLevel = equippedGearUnlockLevel
+                            end
+
+                            gear.DoClick = function() ApplyGear() end
+                        elseif gearArray[i][4] == "melee" then
+                            progressionGearTotal = progressionGearTotal + 1
+
+                            if gearArray[i][4] == "melee" and LocalPly:GetNWInt("playerAccoladeSmackdown") < gearArray[i][5] and gearArray[i][4] == "melee" and playerTotalLevel < gearArray[i][6] then
+                                table.insert(lockedGear, gearArray[i])
+                            else
+                                local gear = vgui.Create("DButton", DockProgressionGear)
+                                gear:SetSize(735, 100)
+                                gear:SetText("")
+                                gear.Paint = function(self, w, h)
+                                    draw.RoundedBox(0, 0, 0, w, h, previewGreen)
+
+                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+
+                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 725, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 725, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 725, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                end
+
+                                ProgressionGearList:Add(gear)
+
+                                gearUnlocked = gearUnlocked + 1
+                                progressionGearUnlocked = progressionGearUnlocked + 1
+
+                                gear.OnCursorEntered = function()
+                                    newGear = gearArray[i][1]
+                                    newGearName = gearArray[i][2]
+                                    newGearModel = gearArray[i][3]
+                                    newGearUnlockType = gearArray[i][4]
+                                    newGearUnlockKills = gearArray[i][5]
+                                    newGearUnlockLevel = gearArray[i][6]
+                                    TriggerSound("hover")
+                                end
+
+                                gear.OnCursorExited = function()
+                                    newGear = equippedGear
+                                    newGearName = equippedGearName
+                                    newGearModel = equippedGearModel
+                                    newGearUnlockType = equippedGearUnlockType
+                                    newGearUnlockKills = equippedGearUnlockKills
+                                    newGearUnlockLevel = equippedGearUnlockLevel
+                                end
+
+                                gear.DoClick = function() ApplyGear() end
+                            end
+                        end
+                    end
+
+                    for i = 1, #lockedGear do
+                        if lockedGear[i][4] == "melee" then
+                            local gear = vgui.Create("DButton", DockProgressionGear)
+                            gear:SetSize(735, 100)
+                            gear:SetText("")
+                            gear.Paint = function(self, w, h)
+                                draw.RoundedBox(0, 0, 0, w, h, previewRed)
+
+                                draw.SimpleTextOutlined(string.upper(lockedGear[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Locked", "PlayerNotiName", 5, 50, solidRed, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+
+                                draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. lockedGear[i][5], "MainMenuDescription", 725, 25, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("OR", "MainMenuDescription", 725, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. lockedGear[i][6], "MainMenuDescription", 725, 65, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                            end
+
+                            ProgressionGearList:Add(gear)
+
+                            gear.OnCursorEntered = function()
+                                newGear = lockedGear[i][1]
+                                newGearName = lockedGear[i][2]
+                                newGearModel = lockedGear[i][3]
+                                newGearUnlockType = lockedGear[i][4]
+                                newGearUnlockKills = lockedGear[i][5]
+                                newGearUnlockLevel = lockedGear[i][6]
+                                TriggerSound("hover")
+                            end
+
+                            gear.OnCursorExited = function()
+                                newGear = equippedGear
+                                newGearName = equippedGearName
+                                newGearModel = equippedGearModel
+                                newGearUnlockType = equippedGearUnlockType
+                                newGearUnlockKills = equippedGearUnlockKills
+                                newGearUnlockLevel = equippedGearUnlockLevel
+                            end
+
+                            gear.DoClick = function() surface.PlaySound("tmui/warning.wav") end
+                        end
+                    end
+                end
+
+                FillGearListsAll()
+
+                local GearIcon = vgui.Create("DImage", GearQuickjumpHolder)
+                GearIcon:SetPos(12, 12)
+                GearIcon:SetSize(32, 32)
+                GearIcon:SetImage("icons/gearicon.png")
+
+                local BackButtonSlideout = vgui.Create("DImageButton", GearQuickjumpHolder)
+                BackButtonSlideout:SetPos(12, scrH - 44)
+                BackButtonSlideout:SetSize(32, 32)
+                BackButtonSlideout:SetImage("icons/exiticon.png")
+                BackButtonSlideout:SetTooltip("Return to Main Menu")
+                BackButtonSlideout.DoClick = function()
+                    TriggerSound("back")
+                    GearPanel:AlphaTo(0, 0.05, 0, function() GearPanel:Hide() end)
+                    -- GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
+                    GearSlideoutPanel:AlphaTo(0, 0.05, 0, function() GearSlideoutPanel:Hide() end)
+                    MainPanel:Show()
+                    MainPanel:AlphaTo(255, 0.05, 0.025)
+                end
             end
 
             CustomizeCardButton.DoClick = function()
@@ -2319,7 +2650,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 end
 
                                 icon.OnCursorExited = function()
-                                    modelPopOut:Remove()
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                     newModel = equippedModel
                                     newModelName = equippedModelName
@@ -2408,7 +2739,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     end
 
                                     icon.OnCursorExited = function()
-                                        modelPopOut:Remove()
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                         newModel = equippedModel
                                         newModelName = equippedModelName
@@ -2506,7 +2837,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     end
 
                                     icon.OnCursorExited = function()
-                                        modelPopOut:Remove()
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                         newModel = equippedModel
                                         newModelName = equippedModelName
@@ -2595,7 +2926,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 end
 
                                 icon.OnCursorExited = function()
-                                    modelPopOut:Remove()
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                     newModel = equippedModel
                                     newModelName = equippedModelName
@@ -2688,7 +3019,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 end
 
                                 icon.OnCursorExited = function()
-                                    modelPopOut:Remove()
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                     newModel = equippedModel
                                     newModelName = equippedModelName
@@ -2766,7 +3097,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 end
 
                                 icon.OnCursorExited = function()
-                                    modelPopOut:Remove()
+                                    if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                     newModel = equippedModel
                                     newModelName = equippedModelName
@@ -2940,7 +3271,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     end
 
                                     icon.OnCursorExited = function()
-                                        modelPopOut:Remove()
+                                        if IsValid(modelPopOut) then modelPopOut:Remove() end
 
                                         newModel = equippedModel
                                         newModelName = equippedModelName
@@ -3323,11 +3654,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Auto Sprint", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 155, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 155, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 155, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", 155, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 165, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
@@ -3483,7 +3814,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("GAMEPLAY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("FOV Value", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FOV Value", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Death Camera", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 225, white, TEXT_ALIGN_LEFT)
@@ -3622,7 +3953,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Menu SFX", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Music Volume", "SettingsLabel", 155, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Music Volume", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker SFX", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Kill SFX", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker SFX Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
@@ -3693,9 +4024,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Enable", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Style", "SettingsLabel", 125, 105, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Center Dot", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", 145, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", 145, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", 145, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Color/Opacity", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Outline", "SettingsLabel", 55, 425, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Outline Color", "SettingsLabel", 245 , 465, white, TEXT_ALIGN_LEFT)
@@ -3895,11 +4226,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("HITMARKER", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", 145, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", 145, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", 145, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Opacity", "SettingsLabel", 145, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Duration", "SettingsLabel", 145, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", 165, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Opacity", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Duration", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hit Color", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Headshot Color", "SettingsLabel", 245 , 425, white, TEXT_ALIGN_LEFT)
 
@@ -4309,8 +4640,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD X Bounds", "Health", 150, 90, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Y Bounds", "Health", 150, 130, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD X Bounds", "Health", 165, 90, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Y Bounds", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
                 end
 
@@ -4412,9 +4743,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("HEALTH", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Size", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Size", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar X Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Y Offset", "Health", 165, 110, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("High HP Color", "Health", 210, 145, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Mid HP Color", "Health", 210, 225, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Low HP Color", "Health", 210, 305, white, TEXT_ALIGN_LEFT)
@@ -4481,8 +4812,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("EQUIPMENT UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Equipment Anchoring", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Equipment X Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Equipment Y Offset", "Health", 150, 110, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Equipment X Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Equipment Y Offset", "Health", 165, 110, white, TEXT_ALIGN_LEFT)
                 end
 
                 local EquipmentAnchor = EquipmentEditor:Add("DComboBox")
@@ -4528,10 +4859,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Enable Kill Feed", "Health", 55, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Feed Entry Style", "Health", 125, 85, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Item Limit", "Health", 150, 115, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed X Offset", "Health", 150, 145, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Y Offset", "Health", 150, 175, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Opacity", "Health", 150, 205, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Item Limit", "Health", 165, 115, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed X Offset", "Health", 165, 145, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Y Offset", "Health", 165, 175, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Opacity", "Health", 165, 205, white, TEXT_ALIGN_LEFT)
                 end
 
                 local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
@@ -4617,8 +4948,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KillDeathEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("KILL/DEATH UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Kill Icon Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
                 end
 
@@ -4655,7 +4986,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjectiveEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("OBJECTIVE UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("OBJ Text Scale", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("OBJ Text Scale", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Empty Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Occupied Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Contested Color", "Health", 210, 245, white, TEXT_ALIGN_LEFT)
@@ -4711,7 +5042,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("DAMAGE INDICATOR", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Indicator Color", "Health", 210, 45, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Indicator Opacity", "Health", 150, 130, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Indicator Opacity", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
                 end
                 local IndicatorColor = vgui.Create("DColorMixer", DamageIndicatorOverlay)
                 IndicatorColor:SetPos(20, 50)
@@ -4742,8 +5073,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressOverlay.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("KEYPRESS OVERLAY", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Overlay X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Overlay Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Overlay X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Overlay Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Unpressed Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Actuated Color", "Health", 210, 195, white, TEXT_ALIGN_LEFT)
                 end
@@ -4795,8 +5126,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 VelocityCounter.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("VELOCITY COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter X Offset", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter Y Offset", "Health", 150, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
                     draw.SimpleText("Text Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
                 end
 
@@ -4972,12 +5303,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local CreditsButton = vgui.Create("DButton", MainPanel)
-            CreditsButton:SetPos(scrW - 110, scrH - 52)
+            CreditsButton:SetPos(scrW - 110, scrH - 84)
             CreditsButton:SetText("")
             CreditsButton:SetSize(110, 32)
             local textAnim = 20
             CreditsButton.Paint = function()
-                CreditsButton:SetPos(scrW - 110, scrH - 52)
+                CreditsButton:SetPos(scrW - 110, scrH - 84)
                 if CreditsButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else
@@ -4988,6 +5319,25 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             CreditsButton.DoClick = function()
                 TriggerSound("click")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod#credits")
+            end
+
+            local PatchNotesButton = vgui.Create("DButton", MainPanel)
+            PatchNotesButton:SetPos(scrW - 150, scrH - 84)
+            PatchNotesButton:SetText("")
+            PatchNotesButton:SetSize(150, 32)
+            local textAnim = 20
+            PatchNotesButton.Paint = function()
+                PatchNotesButton:SetPos(scrW - 150, scrH - 52)
+                if PatchNotesButton:IsHovered() then
+                    textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
+                else
+                    textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
+                end
+                draw.DrawText("PATCH NOTES", "StreakText", 125 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
+            end
+            PatchNotesButton.DoClick = function()
+                TriggerSound("click")
+                gui.OpenURL("https://github.com/PikachuPenial/Titanmod/blob/main/PATCHNOTES.md")
             end
     end
 

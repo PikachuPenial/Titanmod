@@ -54,7 +54,7 @@
 
 *MELEE PROGRESSION*
 - Players can now equip their perferred melee weapon and they will always receive it (unless playing Gun Game or Fiesta)
-- A brand new melee weapon is unlocked every 150 melee kills OR every prestige, only one needs to be fulfilled
+- A brand new melee weapon is unlocked every 100 melee kills OR every prestige, only one needs to be fulfilled
 
 *FALL DAMAGE*
 - Removed all sources of fall damage
@@ -117,7 +117,11 @@
 
 - Adjusted view model for the Riot Shield
 
+- Removed post processing when exiting a body of water
+
 - The melee at the end of a gun game ladder is now randomized
+
+- Added patch notes button to the main menu
 
 - Renamed the Lewis to the Lewis Gun
 
@@ -134,6 +138,8 @@
 - Fixed instances of scopes being misaligned from the center of the screen
 
 - Fixed manual value input not updating the optic reticle color preview
+
+- Fixed inconsistency with reload canceling
 
 - Fixed instances where spawning in triggered a players cranked countdown if they killed themselves
 

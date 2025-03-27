@@ -191,7 +191,25 @@ hook.Add("TFABase_ShouldLoadAttachment", "DisableUBGL", function(id, path)
     end
 end)
 
--- model array formatting (Model ID, Model Name, Model Description, Unlock Style, Unlock Value)
+-- gear array formatting (Gear ID, Gear Name, Gear Model, Unlock Style, Unlock Kills, Unlock Level)
+gearArray = {}
+gearArray[1] = {"tfa_bo3_fists", "Fists", "", "default", "default", "default"}
+gearArray[2] = {"tfa_km2000_knife", "KM-2000", "", "default", "default", "default"}
+gearArray[3] = {"tfa_ararebo_bf1", "Mace", "", "default", "default", "default"}
+gearArray[4] = {"tfa_japanese_exclusive_tanto", "Tanto", "", "default", "default", "default"}
+gearArray[5] = {"yurie_eft_semin_push_dagger", "Dagger", "", "melee", 100, 60}
+gearArray[6] = {"tfa_ins2_tridagger", "Tri-Dagger", "", "melee", 200, 120}
+gearArray[7] = {"tfa_ilopn_m9_phrobis", "M9 Bayonet", "", "melee", 300, 180}
+gearArray[8] = {"tfa_bo3_bowiezm", "Bowie Knife", "", "melee", 400, 240}
+gearArray[9] = {"yurie_eft_united_cutlery_m48_kukri", "Kukri", "", "melee", 500, 300}
+gearArray[10] = {"tfa_bo3_bowie", "Carver", "", "melee", 600, 360}
+gearArray[11] = {"tfa_karambit", "Karambit", "", "melee", 700, 420}
+gearArray[12] = {"tfa_bo3_butterfly", "Butterfly Knife", "", "melee", 800, 480}
+gearArray[13] = {"tfa_bo3_nunchucks", "Nunchucks", "", "melee", 900, 540}
+gearArray[14] = {"tfa_bo3_axe", "Fire Axe", "", "melee", 1000, 600}
+gearArray[15] = {"yurie_eft_red_rebel_axe", "Red Rebel", "", "melee", 1100, 660}
+
+-- model array formatting (Model ID, Model Name, Unlock Style, Unlock Value)
 modelArray = {}
 modelArray[1] = {"models/player/Group03/male_02.mdl", "Male", "default", "default"}
 modelArray[2] = {"models/player/Group03/female_02.mdl", "Female", "default", "default"}

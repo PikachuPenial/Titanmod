@@ -34,6 +34,7 @@ util.AddNetworkString("ReceiveMapVote")
 util.AddNetworkString("ReceiveModeVote")
 util.AddNetworkString("ReceivePostGameMute")
 util.AddNetworkString("BeginSpectate")
+util.AddNetworkString("PlayerGearChange")
 util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
 util.AddNetworkString("GrabLeaderboardData")
@@ -409,6 +410,39 @@ function GM:PlayerDeathThink(ply)
 		return false
 	end
 end
+
+net.Receive("PlayerGearChange", function(len, ply)
+	local selecterGear = net.ReadString()
+	for i = 1, #gearArray do
+		if selecterGear == gearArray[i][1] then
+			local gearID = gearArray[i][1]
+			local gearUnlock = gearArray[i][4]
+			local gearKills = gearArray[i][5]
+			local gearLevel = gearArray[i][6]
+			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
+
+			if gearUnlock == "default" then
+				ply:SetNWString("chosenMelee", gearID)
+
+				if activeGamemode != "Gun Game" and activeGamemode != "Fiesta" then
+					ply:SetNWString("loadoutMelee", gearID)
+				end
+			elseif gearUnlock == "melee" and ply:GetNWInt("playerAccoladeSmackdown") >= gearKills then
+				ply:SetNWString("chosenMelee", gearID)
+
+				if activeGamemode != "Gun Game" and activeGamemode != "Fiesta" then
+					ply:SetNWString("loadoutMelee", gearID)
+				end
+			elseif gearUnlock == "melee" and playerTotalLevel >= gearLevel then
+				ply:SetNWString("chosenMelee", gearID)
+
+				if activeGamemode != "Gun Game" and activeGamemode != "Fiesta" then
+					ply:SetNWString("loadoutMelee", gearID)
+				end
+			end
+		end
+	end
+end )
 
 net.Receive("PlayerModelChange", function(len, ply)
 	local selectedModel = net.ReadString()
