@@ -775,10 +775,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if IsValid(GearPanel) then return end
                 TriggerSound("click")
                 MainPanel:AlphaTo(0, 0.05, 0, function() MainPanel:Hide() end)
-                local currentMelee = LocalPly:GetNWString("chosenMelee")
+                local currentGear = LocalPly:GetNWString("chosenMelee")
 
                 local GearPanel = vgui.Create("DPanel", MainMenu)
-                GearPanel:SetSize(745, scrH)
+                GearPanel:SetSize(645, scrH)
                 GearPanel:SetPos(56, 0)
                 GearPanel:SetAlpha(0)
                 GearPanel.Paint = function(self, w, h)
@@ -874,7 +874,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local HideLockedGear = GearTextHolder:Add("DCheckBox")
-                HideLockedGear:SetPos(298, 122.5)
+                HideLockedGear:SetPos(248, 122.5)
                 HideLockedGear:SetSize(20, 20)
                 function HideLockedGear:OnChange() TriggerSound("click") end
 
@@ -926,13 +926,49 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
                 end
 
+                local GearPreviewPanel = vgui.Create("DPanel", MainMenu)
+                GearPreviewPanel:SetSize(1450, scrH)
+                GearPreviewPanel:SetPos(700, 0)
+                GearPreviewPanel:SetAlpha(0)
+                GearPreviewPanel.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                GearPreviewPanel:AlphaTo(255, 0.05, 0.025)
+
+                local SelectedGearHolder = vgui.Create("DPanel", GearPreviewPanel)
+                SelectedGearHolder:SetSize(600, 2000)
+                SelectedGearHolder.Paint = function(self, w, h)
+                    draw.RoundedBox(0, 0, 0, w, h, transparent)
+                end
+
+                local SelectedGearDisplay
+                local function PreviewNewGear(model)
+                    if IsValid(SelectedGearDisplay) then SelectedGearDisplay:Remove() end
+                    SelectedGearDisplay = vgui.Create("DModelPanel", SelectedGearHolder)
+                    SelectedGearDisplay:SetAlpha(0)
+                    SelectedGearDisplay:SetSize(1450, scrH)
+                    SelectedGearDisplay:SetPos(-525, 0)
+                    SelectedGearDisplay:SetMouseInputEnabled(true)
+                    SelectedGearDisplay:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
+                    SelectedGearDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
+                    SelectedGearDisplay:SetAnimated(true)
+                    SelectedGearDisplay:SetModel(model)
+                    SelectedGearDisplay.Entity:SetAngles(Angle(-10, 20, 10))
+                    SelectedGearDisplay.Entity:SetPos(Vector(6, 5, 35))
+
+                    SelectedGearDisplay:AlphaTo(255, 0.05, 0.025)
+                end
+
+                PreviewNewGear(newGearModel)
+
                 local function ApplyGear()
                     surface.PlaySound("tmui/uisuccess.wav")
                     net.Start("PlayerGearChange")
                     net.WriteString(newGear)
                     net.SendToServer()
                     GearPanel:AlphaTo(0, 0.05, 0, function() GearPanel:Hide() end)
-                    // GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
+                    GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
                     GearSlideoutPanel:AlphaTo(0, 0.05, 0, function() GearSlideoutPanel:Hide() end)
                     MainPanel:Show()
                     MainPanel:AlphaTo(255, 0.05, 0.025)
@@ -946,7 +982,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     for i = 1, #gearArray do
                         if gearArray[i][4] == "default" then
                             local gear = vgui.Create("DButton", DockDefaultGear)
-                            gear:SetSize(735, 100)
+                            gear:SetSize(635, 100)
                             gear:SetText("")
                             gear.Paint = function(self, w, h)
                                 draw.RoundedBox(0, 0, 0, w, h, previewGreen)
@@ -969,6 +1005,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 newGearUnlockKills = gearArray[i][5]
                                 newGearUnlockLevel = gearArray[i][6]
                                 TriggerSound("hover")
+                                PreviewNewGear(newGearModel)
                             end
 
                             gear.OnCursorExited = function()
@@ -978,6 +1015,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 newGearUnlockType = equippedGearUnlockType
                                 newGearUnlockKills = equippedGearUnlockKills
                                 newGearUnlockLevel = equippedGearUnlockLevel
+                                PreviewNewGear(equippedGearModel)
                             end
 
                             gear.DoClick = function() ApplyGear() end
@@ -988,7 +1026,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 table.insert(lockedGear, gearArray[i])
                             else
                                 local gear = vgui.Create("DButton", DockProgressionGear)
-                                gear:SetSize(735, 100)
+                                gear:SetSize(635, 100)
                                 gear:SetText("")
                                 gear.Paint = function(self, w, h)
                                     draw.RoundedBox(0, 0, 0, w, h, previewGreen)
@@ -996,9 +1034,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
                                     draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
 
-                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 725, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 725, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 725, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 625, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 625, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                                 end
 
                                 ProgressionGearList:Add(gear)
@@ -1014,6 +1052,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newGearUnlockKills = gearArray[i][5]
                                     newGearUnlockLevel = gearArray[i][6]
                                     TriggerSound("hover")
+                                    PreviewNewGear(newGearModel)
                                 end
 
                                 gear.OnCursorExited = function()
@@ -1023,6 +1062,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     newGearUnlockType = equippedGearUnlockType
                                     newGearUnlockKills = equippedGearUnlockKills
                                     newGearUnlockLevel = equippedGearUnlockLevel
+                                    PreviewNewGear(equippedGearModel)
                                 end
 
                                 gear.DoClick = function() ApplyGear() end
@@ -1033,7 +1073,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     for i = 1, #lockedGear do
                         if lockedGear[i][4] == "melee" then
                             local gear = vgui.Create("DButton", DockProgressionGear)
-                            gear:SetSize(735, 100)
+                            gear:SetSize(635, 100)
                             gear:SetText("")
                             gear.Paint = function(self, w, h)
                                 draw.RoundedBox(0, 0, 0, w, h, previewRed)
@@ -1041,9 +1081,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 draw.SimpleTextOutlined(string.upper(lockedGear[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
                                 draw.SimpleTextOutlined("Locked", "PlayerNotiName", 5, 50, solidRed, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
 
-                                draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. lockedGear[i][5], "MainMenuDescription", 725, 25, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("OR", "MainMenuDescription", 725, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. lockedGear[i][6], "MainMenuDescription", 725, 65, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. lockedGear[i][5], "MainMenuDescription", 625, 25, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. lockedGear[i][6], "MainMenuDescription", 625, 65, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                             end
 
                             ProgressionGearList:Add(gear)
@@ -1056,6 +1096,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 newGearUnlockKills = lockedGear[i][5]
                                 newGearUnlockLevel = lockedGear[i][6]
                                 TriggerSound("hover")
+                                PreviewNewGear(newGearModel)
                             end
 
                             gear.OnCursorExited = function()
@@ -1065,6 +1106,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 newGearUnlockType = equippedGearUnlockType
                                 newGearUnlockKills = equippedGearUnlockKills
                                 newGearUnlockLevel = equippedGearUnlockLevel
+                                PreviewNewGear(equippedGearModel)
                             end
 
                             gear.DoClick = function() surface.PlaySound("tmui/warning.wav") end
@@ -1072,7 +1114,126 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
                 end
 
+                local function FillGearListsUnlocked()
+                    for i = 1, #gearArray do
+                        if gearArray[i][4] == "default" then
+                            local gear = vgui.Create("DButton", DockDefaultGear)
+                            gear:SetSize(635, 100)
+                            gear:SetText("")
+                            gear.Paint = function(self, w, h)
+                                draw.RoundedBox(0, 0, 0, w, h, previewGreen)
+
+                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                            end
+
+                            DefaultGearList:Add(gear)
+
+                            defaultGearTotal = defaultGearTotal + 1
+                            gearUnlocked = gearUnlocked + 1
+                            defaultGearUnlocked = defaultGearUnlocked + 1
+
+                            gear.OnCursorEntered = function()
+                                newGear = gearArray[i][1]
+                                newGearName = gearArray[i][2]
+                                newGearModel = gearArray[i][3]
+                                newGearUnlockType = gearArray[i][4]
+                                newGearUnlockKills = gearArray[i][5]
+                                newGearUnlockLevel = gearArray[i][6]
+                                TriggerSound("hover")
+                                PreviewNewGear(newGearModel)
+                            end
+
+                            gear.OnCursorExited = function()
+                                newGear = equippedGear
+                                newGearName = equippedGearName
+                                newGearModel = equippedGearModel
+                                newGearUnlockType = equippedGearUnlockType
+                                newGearUnlockKills = equippedGearUnlockKills
+                                newGearUnlockLevel = equippedGearUnlockLevel
+                                PreviewNewGear(equippedGearModel)
+                            end
+
+                            gear.DoClick = function() ApplyGear() end
+                        elseif gearArray[i][4] == "melee" then
+                            progressionGearTotal = progressionGearTotal + 1
+
+                            if gearArray[i][4] == "melee" and LocalPly:GetNWInt("playerAccoladeSmackdown") < gearArray[i][5] and gearArray[i][4] == "melee" and playerTotalLevel < gearArray[i][6] then
+                                return
+                            else
+                                local gear = vgui.Create("DButton", DockProgressionGear)
+                                gear:SetSize(635, 100)
+                                gear:SetText("")
+                                gear.Paint = function(self, w, h)
+                                    draw.RoundedBox(0, 0, 0, w, h, previewGreen)
+
+                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+
+                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 625, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 625, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                end
+
+                                ProgressionGearList:Add(gear)
+
+                                gearUnlocked = gearUnlocked + 1
+                                progressionGearUnlocked = progressionGearUnlocked + 1
+
+                                gear.OnCursorEntered = function()
+                                    newGear = gearArray[i][1]
+                                    newGearName = gearArray[i][2]
+                                    newGearModel = gearArray[i][3]
+                                    newGearUnlockType = gearArray[i][4]
+                                    newGearUnlockKills = gearArray[i][5]
+                                    newGearUnlockLevel = gearArray[i][6]
+                                    TriggerSound("hover")
+                                    PreviewNewGear(newGearModel)
+                                end
+
+                                gear.OnCursorExited = function()
+                                    newGear = equippedGear
+                                    newGearName = equippedGearName
+                                    newGearModel = equippedGearModel
+                                    newGearUnlockType = equippedGearUnlockType
+                                    newGearUnlockKills = equippedGearUnlockKills
+                                    newGearUnlockLevel = equippedGearUnlockLevel
+                                    PreviewNewGear(equippedGearModel)
+                                end
+
+                                gear.DoClick = function() ApplyGear() end
+                            end
+                        end
+                    end
+                end
+
                 FillGearListsAll()
+
+                function HideLockedGear:OnChange(bVal)
+                    if (bVal) then
+                        DefaultGearList:Clear()
+                        ProgressionGearList:Clear()
+                        gearUnlocked = 0
+                        defaultGearTotal = 0
+                        defaultGearUnlocked = 0
+                        progressionGearTotal = 0
+                        progressionGearUnlocked = 0
+                        FillGearListsUnlocked()
+                        DockDefaultGear:SetSize(0, 400)
+                        DockProgressionGear:SetSize(0, progressionGearUnlocked * 100)
+                    else
+                        DefaultGearList:Clear()
+                        ProgressionGearList:Clear()
+                        gearUnlocked = 0
+                        defaultGearTotal = 0
+                        defaultGearUnlocked = 0
+                        progressionGearTotal = 0
+                        progressionGearUnlocked = 0
+                        FillGearListsAll()
+                        DockDefaultGear:SetSize(0, 400)
+                        DockProgressionGear:SetSize(0, 1100)
+                    end
+                end
 
                 local GearIcon = vgui.Create("DImage", GearQuickjumpHolder)
                 GearIcon:SetPos(12, 12)
@@ -1087,7 +1248,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 BackButtonSlideout.DoClick = function()
                     TriggerSound("back")
                     GearPanel:AlphaTo(0, 0.05, 0, function() GearPanel:Hide() end)
-                    -- GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
+                    GearPreviewPanel:AlphaTo(0, 0.05, 0, function() GearPreviewPanel:Hide() end)
                     GearSlideoutPanel:AlphaTo(0, 0.05, 0, function() GearSlideoutPanel:Hide() end)
                     MainPanel:Show()
                     MainPanel:AlphaTo(255, 0.05, 0.025)
@@ -1263,7 +1424,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 3745)
+                    DockMasteryCards:SetSize(0, 4345)
 
                     -- color related cards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1532,6 +1693,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 DefaultCardList:Add(card)
 
                                 defaultCardsTotal = defaultCardsTotal + 1
@@ -1565,6 +1727,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     StatCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     statCardsUnlocked = statCardsUnlocked + 1
@@ -1597,6 +1760,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     AccoladeCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     accoladeCardsUnlocked = accoladeCardsUnlocked + 1
@@ -1624,6 +1788,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 ColorCardList:Add(card)
 
                                 colorCardsTotal = colorCardsTotal + 1
@@ -1652,6 +1817,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 PrideCardList:Add(card)
 
                                 prideCardsTotal = prideCardsTotal + 1
@@ -1685,6 +1851,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     LevelCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     levelCardsUnlocked = levelCardsUnlocked + 1
@@ -1717,6 +1884,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     MasteryCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
                                     masteryCardsUnlocked = masteryCardsUnlocked + 1
@@ -1748,6 +1916,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockStatCards)
                                 card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
@@ -1784,6 +1953,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
                                 card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
@@ -1820,6 +1990,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockLevelCards)
                                 card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
@@ -1856,6 +2027,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
                                 card:SetImage(lockedCards[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
@@ -1898,6 +2070,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 DefaultCardList:Add(card)
 
                                 defaultCardsTotal = defaultCardsTotal + 1
@@ -1928,6 +2101,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     StatCardList:Add(card)
 
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1958,6 +2132,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     AccoladeCardList:Add(card)
 
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1986,6 +2161,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 ColorCardList:Add(card)
 
                                 colorCardsTotal = colorCardsTotal + 1
@@ -2014,6 +2190,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
                                 card:SetSize(240, 80)
+                                card:SetDepressImage(false)
                                 PrideCardList:Add(card)
 
                                 prideCardsTotal = prideCardsTotal + 1
@@ -2044,6 +2221,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     LevelCardList:Add(card)
 
                                     cardsUnlocked = cardsUnlocked + 1
@@ -2074,6 +2252,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(cardArray[i][1])
                                     card:SetSize(240, 80)
+                                    card:SetDepressImage(false)
                                     MasteryCardList:Add(card)
 
                                     cardsUnlocked = cardsUnlocked + 1
@@ -2254,7 +2433,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockStatCards:SetSize(0, 680)
                             DockAccoladeCards:SetSize(0, 850)
                             DockLevelCards:SetSize(0, 1360)
-                            DockMasteryCards:SetSize(0, 3745)
+                            DockMasteryCards:SetSize(0, 4345)
                             DockColorCards:SetSize(0, 340)
                             DockPrideCards:SetSize(0, 335)
                         end
@@ -2333,26 +2512,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     PrideJump.DoClick = function()
                         TriggerSound("click")
                         CardScroller:ScrollToChild(TextPride)
-                    end
-
-                    local RandomizeButton = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    RandomizeButton:SetPos(12, scrH - 96)
-                    RandomizeButton:SetSize(32, 32)
-                    RandomizeButton:SetImage("icons/diceicon.png")
-                    RandomizeButton:SetTooltip("Choose random card")
-                    RandomizeButton.DoClick = function()
-                        TriggerSound("click")
-                        local rand = math.random(1, totalCards)
-
-                        for i = 1, #cardArray do
-                            if k == rand then
-                                newCard = cardArray[i][1]
-                                newCardName = cardArray[i][2]
-                                newCardDesc = cardArray[i][3]
-                                newCardUnlockType = cardArray[i][4]
-                                newCardUnlockValue = cardArray[i][5]
-                            end
-                        end
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
@@ -3395,27 +3554,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     AccoladeJump.DoClick = function()
                         TriggerSound("click")
                         CustomizeScroller:ScrollToChild(TextAccolade)
-                    end
-
-                    local RandomizeButton = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    RandomizeButton:SetPos(12, scrH - 96)
-                    RandomizeButton:SetSize(32, 32)
-                    RandomizeButton:SetImage("icons/diceicon.png")
-                    RandomizeButton:SetTooltip("Choose random model")
-                    RandomizeButton.DoClick = function()
-                        TriggerSound("click")
-                        local rand = math.random(1, totalModels)
-
-                        for i = 1, #modelArray do
-                            if k == rand then
-                                newModel = modelArray[i][1]
-                                newModelName = modelArray[i][2]
-                                newModelUnlockType = modelArray[i][3]
-                                newModelUnlockValue = modelArray[i][4]
-
-                                PreviewNewModel(newModel)
-                            end
-                        end
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)

@@ -229,6 +229,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		if inflictor:GetClass() == "npc_grenade_frag" then
 			attacker:SetNWInt("killsWith_grenade", attacker:GetNWInt("killsWith_grenade") + 1)
+		elseif inflictor:GetClass() == "tm_thrown_blade" then
+			attacker:SetNWInt("killsWith_" .. attacker:GetNWString("chosenMelee"), attacker:GetNWInt("killsWith_" .. attacker:GetNWString("chosenMelee")) + 1)
 		elseif (attacker:GetActiveWeapon():IsValid()) then
 			weaponClassName = attacker:GetActiveWeapon():GetClass()
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
@@ -275,6 +277,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if inflictor:GetClass() == "npc_grenade_frag" then
 		weaponName = "Grenade"
+	elseif inflictor:GetClass() == "tm_thrown_blade" then
+		weaponName = "Thrown Knife"
 	elseif (attacker:GetActiveWeapon():IsValid()) then
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 		weaponName = weaponInfo["PrintName"]
@@ -360,7 +364,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + (20 * xpMultiplier))
 	end
 
-	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Bowie Knife" or weaponName == "Butterfly Knife" or weaponName == "Carver" or weaponName == "Dagger" or weaponName == "Fire Axe" or weaponName == "Fists" or weaponName == "Karambit" or weaponName == "Kukri" or weaponName == "M9 Bayonet" or weaponName == "Nunchucks" or weaponName == "Red Rebel" or weaponName == "Tri-Dagger" then
+	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Bowie Knife" or weaponName == "Butterfly Knife" or weaponName == "Carver" or weaponName == "Dagger" or weaponName == "Fire Axe" or weaponName == "Fists" or weaponName == "Karambit" or weaponName == "Kukri" or weaponName == "M9 Bayonet" or weaponName == "Nunchucks" or weaponName == "Red Rebel" or weaponName == "Tri-Dagger" or weaponName == "Thrown Knife" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)

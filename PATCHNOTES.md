@@ -1,4 +1,4 @@
-# Unreleased  
+# March 27th, 2025 (3/27/25)  
 **>GAMEPLAY**  
 *NEW WEAPONS*
 - **American-180** (Primary, SMG)
@@ -50,6 +50,7 @@
 - Heavy swings (RMB) now always do 100 damage and reach reach 1.5 meters / 78 hammer units
 - Heavy swings have double the cooldown of light swings
 - Thrown melee weapons damage is now determined by the velocity, now being able to one shot if fast enough
+- Thrown melee kills now count as a kill for your equipped melee
 - Adjusted melee animations to better account for the delay between a swings start and finish
 
 *MELEE PROGRESSION*
@@ -70,7 +71,7 @@
 - Inspect Bind
 - Attachments Bind (overrides default context key to open attachments menu)
 
-**>BALANCE** 
+**>BALANCE**    
 *Shotguns*
 - Spread has been tripled to quadrupled across all shotguns
 - ADS spread now matches the hip fire spread on all shotguns
@@ -147,7 +148,7 @@
 
 - New end of match quotes from community members
 
-- Removed an end of match quote that was created by a pedophile (lmao)
+- Removed an end of match quote that was created by a pdf file (lmao)
 
 
 
@@ -258,7 +259,7 @@
 - All reloads can now be started while aiming down sights (reload canceling is still only possible from the hip)
 - Players can now aim down sights during a reload
 
-**>BALANCE** 
+**>BALANCE**    
 *Point Shooting Attachment*
 - Added ADS spread (50% to the weapons hip fire spread)
 - Increased ADS time decrease to 50% (previously 25%)
@@ -299,7 +300,7 @@
 
 **>MAPS**   
 
-**>BALANCE** 
+**>BALANCE**    
 *G28*
 - Decreased damage to 49 (previously 57)
 
@@ -387,7 +388,7 @@
 *Wreck*
 - Reduced amount of props
 
-**>BALANCE**  
+**>BALANCE**    
 - Crouching/sliding recoil reduction is now a flat 20% on every weapon
 - Crouching/sliding spread reduction is now a flat 30% on every weapon
 
