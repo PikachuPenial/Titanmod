@@ -1009,7 +1009,7 @@ net.Receive("NotifyKill", function(len, ply)
         accoladeList = accoladeList .. "Point Blank +20 | "
     end
 
-    if killedWith == "Tanto" or killedWith == "Mace" or killedWith == "KM-2000" or killedWith == "Karambit" then
+    if killedWith == "Tanto" or killedWith == "Mace" or killedWith == "KM-2000" or killedWith == "Bowie Knife" or killedWith == "Butterfly Knife" or killedWith == "Carver" or killedWith == "Dagger" or killedWith == "Fire Axe" or killedWith == "Fists" or killedWith == "Karambit" or killedWith == "Kukri" or killedWith == "M9 Bayonet" or killedWith == "Nunchucks" or killedWith == "Red Rebel" or killedWith == "Tri-Dagger" then
         accoladeList = accoladeList .. "Smackdown +20 |"
     end
 

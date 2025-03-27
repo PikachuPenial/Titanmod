@@ -108,6 +108,7 @@ function GM:PlayerInitialSpawn(ply)
 	-- if the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
 	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
 	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
+	InitializeNetworkString(ply, "chosenMelee", "tfa_km2000_knife")
 	InitializeNetworkInt(ply, "playerKills", 0)
 	InitializeNetworkInt(ply, "playerDeaths", 0)
 	InitializeNetworkInt(ply, "playerScore", 0)
@@ -358,7 +359,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		attacker:SetNWInt("playerXP", attacker:GetNWInt("playerXP") + (20 * xpMultiplier))
 	end
 
-	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Karambit" then
+	if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Bowie Knife" or weaponName == "Butterfly Knife" or weaponName == "Carver" or weaponName == "Dagger" or weaponName == "Fire Axe" or weaponName == "Fists" or weaponName == "Karambit" or weaponName == "Kukri" or weaponName == "M9 Bayonet" or weaponName == "Nunchucks" or weaponName == "Red Rebel" or weaponName == "Tri-Dagger" then
 		attacker:SetNWInt("playerScore", attacker:GetNWInt("playerScore") + 20)
 		attacker:SetNWInt("playerScoreMatch", attacker:GetNWInt("playerScoreMatch") + 20)
 		attacker:SetNWInt("playerAccoladeSmackdown", attacker:GetNWInt("playerAccoladeSmackdown") + 1)

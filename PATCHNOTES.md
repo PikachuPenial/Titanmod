@@ -127,6 +127,8 @@
 
 - Fixed manual value input not updating the optic reticle color preview
 
+- Fixed instances where spawning in triggered a players cranked countdown if they killed themselves
+
 - Removed sound when switching weapons via quick weapon switching
 
 - New end of match quotes from community members

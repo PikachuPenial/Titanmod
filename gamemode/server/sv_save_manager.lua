@@ -76,6 +76,7 @@ function GM:PlayerDisconnected(ply)
 	-- customizatoin
 	UninitializeNetworkString(ply, "chosenPlayermodel")
 	UninitializeNetworkString(ply, "chosenPlayercard")
+	UninitializeNetworkString(ply, "chosenMelee")
 
 	-- accolades
 	UninitializeNetworkInt(ply, "playerAccoladeOnStreak")
@@ -115,6 +116,7 @@ function GM:ShutDown()
 		-- customizatoin
 		UninitializeNetworkString(v, "chosenPlayermodel")
 		UninitializeNetworkString(v, "chosenPlayercard")
+		UninitializeNetworkString(ply, "chosenMelee")
 
 		-- accolades
 		UninitializeNetworkInt(v, "playerAccoladeOnStreak")

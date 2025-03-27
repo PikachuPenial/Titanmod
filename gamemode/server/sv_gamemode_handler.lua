@@ -185,7 +185,7 @@ if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemo
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 
     function HandlePlayerSpawn(ply)
@@ -208,7 +208,7 @@ if activeGamemode == "FFA" or activeGamemode == "Shotty Snipers" or activeGamemo
     function HandlePlayerDeath(ply, weaponName)
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 end
 
@@ -266,7 +266,7 @@ if activeGamemode == "Gun Game" then
     end
 
     function HandlePlayerDeath(ply, weaponName)
-        if (weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Karambit" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
+        if (weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Bowie Knife" or weaponName == "Butterfly Knife" or weaponName == "Carver" or weaponName == "Dagger" or weaponName == "Fire Axe" or weaponName == "Fists" or weaponName == "Karambit" or weaponName == "Kukri" or weaponName == "M9 Bayonet" or weaponName == "Nunchucks" or weaponName == "Red Rebel" or weaponName == "Tri-Dagger" or weaponName == "Suicide") and ply:GetNWInt("ladderPosition") != 0 then ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") - 1) end
     end
 end
 
@@ -275,7 +275,7 @@ if activeGamemode == "Cranked" then
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 
     function HandlePlayerSpawn(ply)
@@ -289,6 +289,8 @@ if activeGamemode == "Cranked" then
             ply:Give(ply:GetNWString("loadoutMelee"))
         end
         ply:SetAmmo(1, "Grenade")
+
+        if timer.Exists(ply:SteamID() .. "CrankedTimer") then timer.Remove(ply:SteamID() .. "CrankedTimer") end
     end
 
     function HandlePlayerKill(ply, victim)
@@ -320,7 +322,7 @@ if activeGamemode == "Cranked" then
     function HandlePlayerDeath(ply, weaponName)
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
 
         if timer.Exists(ply:SteamID() .. "CrankedTimer") then timer.Remove(ply:SteamID() .. "CrankedTimer") end
     end
@@ -330,7 +332,7 @@ end
 if activeGamemode == "Quickdraw" then
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 
     function HandlePlayerSpawn(ply)
@@ -349,7 +351,7 @@ if activeGamemode == "Quickdraw" then
 
     function HandlePlayerDeath(ply, weaponName)
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 end
 
@@ -358,7 +360,7 @@ if activeGamemode == "VIP" then
     function HandlePlayerInitialSpawn(ply)
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 
     function HandlePlayerSpawn(ply)
@@ -386,6 +388,6 @@ if activeGamemode == "VIP" then
         end
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
-        ply:SetNWString("loadoutMelee", randMelee[math.random(#randMelee)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 end
