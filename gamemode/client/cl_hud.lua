@@ -247,6 +247,9 @@ local function MatchStartPopup(ply)
     elseif gm == "VIP" then
         desc = "Track down and kill the VIP, defend the status for yourself"
         winCondition = "Get the most score to WIN"
+    elseif gm == "OVERKILL" then
+        desc = "Eliminate other players with no weapon restrictions"
+        winCondition = "Get the most score to WIN"
     end
 
     if IsValid(GamemodePopup) then GamemodePopup:Remove() end

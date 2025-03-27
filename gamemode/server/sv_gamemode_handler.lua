@@ -11,6 +11,8 @@ local fiestaPrimary
 local fiestaSecondary
 local fiestaMelee
 
+local randOverkill = {}
+
 util.AddNetworkString("NotifyCranked")
 
 function ShuffleFiestaLoadout()
@@ -177,6 +179,20 @@ if activeGamemode == "VIP" then
         vip:SetNWInt("playerScore", vip:GetNWInt("playerScore") + vipScore)
         vip:SetNWInt("playerScoreMatch", vip:GetNWInt("playerScoreMatch") + vipScore)
     end)
+end
+
+if activeGamemode == "Overkill" then
+    for k, v in ipairs(weaponArray) do
+        if v[3] == "primary" then
+            table.insert(randOverkill, v[1])
+        elseif v[3] == "secondary" then
+            table.insert(randOverkill, v[1])
+        elseif v[3] == "melee" then
+            table.insert(randMelee, v[1])
+        end
+    end
+
+    table.Shuffle(randOverkill)
 end
 
 -- setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played
@@ -388,6 +404,40 @@ if activeGamemode == "VIP" then
         end
         ply:SetNWString("loadoutPrimary", randPrimary[math.random(#randPrimary)])
         ply:SetNWString("loadoutSecondary", randSecondary[math.random(#randSecondary)])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
+    end
+end
+
+-- Overkill
+if activeGamemode == "Overkill" then
+    function HandlePlayerInitialSpawn(ply)
+        table.Shuffle(randOverkill)
+        ply:SetNWString("loadoutPrimary", randOverkill[1])
+        ply:SetNWString("loadoutSecondary", randOverkill[2])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
+    end
+
+    function HandlePlayerSpawn(ply)
+        if usePrimary == true then
+            ply:Give(ply:GetNWString("loadoutPrimary"))
+        end
+        if useSecondary == true then
+            ply:Give(ply:GetNWString("loadoutSecondary"))
+        end
+        if useMelee == true then
+            ply:Give(ply:GetNWString("loadoutMelee"))
+        end
+        ply:SetAmmo(1, "Grenade")
+    end
+
+    function HandlePlayerKill(ply, victim)
+        return
+    end
+
+    function HandlePlayerDeath(ply, weaponName)
+        table.Shuffle(randOverkill)
+        ply:SetNWString("loadoutPrimary", randOverkill[1])
+        ply:SetNWString("loadoutSecondary", randOverkill[2])
         ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 end

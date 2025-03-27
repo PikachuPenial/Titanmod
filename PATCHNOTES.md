@@ -24,6 +24,9 @@
 - **Tri-Dagger** (Melee)
 - **WA-2000** (Primary, Sniper)
 
+*NEW GAMEMODE*
+- **Overkill**, typical FFA but with no weapon restrictions (ramdonly receive two weapons instead of one primary and one secondary)
+
 *SCOPES AND SIGHTS OVERHAUL*
 - All sights in the game now share the same FOV value
 - Every weapon has had its available sites and position of sites updated
@@ -43,10 +46,15 @@
 
 *MELEE OVERHAUL*
 - All melee weapons now have consistent swing distance values
-- Light swings (LMB) reach 1 meter / 52 hammer units
-- Heavy swings (RMB) reach 1.5 meters / 78 hammer units
+- Light swings (LMB) now always do 50 damage and reach 1 meter / 52 hammer units
+- Heavy swings (RMB) now always do 100 damage and reach reach 1.5 meters / 78 hammer units
 - Heavy swings have double the cooldown of light swings
+- Thrown melee weapons damage is now determined by the velocity, now being able to one shot if fast enough
 - Adjusted melee animations to better account for the delay between a swings start and finish
+
+*MELEE PROGRESSION*
+- Players can now equip their perferred melee weapon and they will always receive it (unless playing Gun Game or Fiesta)
+- A brand new melee weapon is unlocked every 150 melee kills OR every prestige, only one needs to be fulfilled
 
 *FALL DAMAGE*
 - Removed all sources of fall damage

@@ -105,6 +105,7 @@ gamemodeArray[5] = {4, "Fiesta", "FFA with every player sharing the same loadout
 gamemodeArray[6] = {5, "Quickdraw", "FFA with secondaries only.", true}
 gamemodeArray[7] = {6, "KOTH", "FFA with a specific part of the map giving score if inside of said area.", false}
 gamemodeArray[8] = {7, "VIP", "FFA with players fighting over VIP status, said status giving them score.", false}
+gamemodeArray[9] = {8, "Overkill", "FFA with no weapon restrictions.", true}
 
 -- MAPS
 -- if you want to use custom maps, or want to add or remove certain maps, edit this array
