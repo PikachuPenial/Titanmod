@@ -1013,7 +1013,7 @@ net.Receive("NotifyKill", function(len, ply)
     end
 
     if killedWith == "Tanto" or killedWith == "Mace" or killedWith == "KM-2000" or killedWith == "Bowie Knife" or killedWith == "Butterfly Knife" or killedWith == "Carver" or killedWith == "Dagger" or killedWith == "Fire Axe" or killedWith == "Fists" or killedWith == "Karambit" or killedWith == "Kukri" or killedWith == "M9 Bayonet" or killedWith == "Nunchucks" or killedWith == "Red Rebel" or killedWith == "Tri-Dagger" or killedWith == "Thrown Knife" then
-        accoladeList = accoladeList .. "Smackdown +20 |"
+        accoladeList = accoladeList .. "Smackdown +20 | "
     end
 
     if killStreak >= 3 then
@@ -1166,7 +1166,7 @@ net.Receive("EndOfGame", function(len, ply)
 
     net.Receive("MapVoteSkipped", function(len, ply)
         decidedMap = net.ReadString()
-        decidedMode = net.ReadInt(4)
+        decidedMode = net.ReadInt(5)
     end)
 
     if IsValid(KillNotif) then KillNotif:Remove() end
@@ -1186,8 +1186,8 @@ net.Receive("EndOfGame", function(len, ply)
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
-    local firstMode = net.ReadInt(4)
-    local secondMode = net.ReadInt(4)
+    local firstMode = net.ReadInt(5)
+    local secondMode = net.ReadInt(5)
 
     local firstMapName
     local firstMapThumb
@@ -1535,8 +1535,8 @@ net.Receive("EndOfGame", function(len, ply)
         ModeChoice:SetTooltip(firstModeDesc)
         ModeChoice.DoClick = function()
             net.Start("ReceiveModeVote")
-            net.WriteInt(firstMode, 4)
-            net.WriteInt(secondMode, 4)
+            net.WriteInt(firstMode, 5)
+            net.WriteInt(secondMode, 5)
             net.WriteUInt(1, 2)
             net.SendToServer()
             gamemodePicked = 1
@@ -1552,8 +1552,8 @@ net.Receive("EndOfGame", function(len, ply)
         ModeChoiceTwo:SetTooltip(secondModeDesc)
         ModeChoiceTwo.DoClick = function()
             net.Start("ReceiveModeVote")
-            net.WriteInt(secondMode, 4)
-            net.WriteInt(firstMode, 4)
+            net.WriteInt(secondMode, 5)
+            net.WriteInt(firstMode, 5)
             net.WriteUInt(2, 2)
             net.SendToServer()
             gamemodePicked = 2
@@ -1595,7 +1595,7 @@ net.Receive("EndOfGame", function(len, ply)
 
         net.Receive("MapVoteCompleted", function(len, ply)
             decidedMap = net.ReadString()
-            decidedMode = net.ReadInt(4)
+            decidedMode = net.ReadInt(5)
             MapVoteCompleted()
         end )
 

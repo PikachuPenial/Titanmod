@@ -96,7 +96,7 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
-	ply:SetNWFloat("linat", 0)
+	ply:SetNWFloat("linat", 5)
 
 	ply:SetViewOffsetDucked(Vector(0, 0, 42))
 end
@@ -187,7 +187,12 @@ end )
 
 -- custom gamemode damage profile
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
-	if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end
+	if not dmginfo:IsDamageType(DMG_SLASH) then
+		if (hitgroup == HITGROUP_HEAD) then dmginfo:ScaleDamage(1.25) elseif (hitgroup == HITGROUP_CHEST) or (hitgroup == HITGROUP_STOMACH) then dmginfo:ScaleDamage(1) elseif (hitgroup == HITGROUP_LEFTARM) or (hitgroup == HITGROUP_RIGHTARM) or (hitgroup == HITGROUP_LEFTLEG) or (hitgroup == HITGROUP_RIGHTLEG) then dmginfo:ScaleDamage(0.75) end
+	else
+		dmginfo:ScaleDamage(1)
+	end
+
 	if not dmginfo:GetAttacker():IsPlayer() then return end
 	net.Start("SendHitmarker", true)
 	net.WriteUInt(hitgroup, 4)
@@ -236,7 +241,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 			attacker:SetNWInt("killsWith_" .. weaponClassName, attacker:GetNWInt("killsWith_" .. weaponClassName) + 1)
 		end
 
-		if grappleKillReset == true then attacker:SetNWFloat("linat", 0) end
+		if grappleKillReset == true then attacker:SetNWFloat("linat", attacker:GetNWFloat("linat", 20) - 10) end
 		attacker.HealthRegenNext = 0
 	end
 
@@ -666,8 +671,8 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		net.Start("EndOfGame")
 		net.WriteString(firstMap)
 		net.WriteString(secondMap)
-		net.WriteInt(firstMode, 4)
-		net.WriteInt(secondMode, 4)
+		net.WriteInt(firstMode, 5)
+		net.WriteInt(secondMode, 5)
 		net.Broadcast()
 
 		timer.Create("killAfterDelay", 8, 1, function()
@@ -731,7 +736,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 				net.Start("MapVoteCompleted")
 				net.WriteString(newMap)
-				net.WriteInt(newMode, 4)
+				net.WriteInt(newMode, 5)
 				net.Broadcast()
 			end)
 		else
@@ -745,7 +750,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 			net.Start("MapVoteSkipped")
 			net.WriteString(newMap)
-			net.WriteInt(newMode, 4)
+			net.WriteInt(newMode, 5)
 			net.Broadcast()
 		end
 
@@ -814,8 +819,8 @@ if table.HasValue(availableMaps, game.GetMap()) then
 	net.Receive("ReceiveModeVote", function(len, ply)
 		if mapVoteOpen == false then return end
 
-		local votedMode = net.ReadInt(4)
-		local unvotedMode = net.ReadInt(4)
+		local votedMode = net.ReadInt(5)
+		local unvotedMode = net.ReadInt(5)
 		local modeIndex = net.ReadUInt(2)
 		local revote = false
 

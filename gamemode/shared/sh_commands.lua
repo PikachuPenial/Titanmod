@@ -30,7 +30,7 @@ end
 concommand.Add("tm_forcesave", ForceSave)
 
 function PlayerPrestige(ply, cmd, args)
-	if ply:GetNWInt("playerLevel") == 60 then
+	if ply:GetNWInt("playerLevel") >= 60 then
 		ply:SetNWInt("playerLevel", 1)
 		ply:SetNWInt("playerPrestige", ply:GetNWInt("playerPrestige") + 1)
 		ply:SetNWInt("playerXP", 0)

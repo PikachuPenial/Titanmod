@@ -1,3 +1,27 @@
+# March 28th, 2025 (3/28 /25)  
+**>GAMEPLAY**  
+*MELEE OVER-OVERHAUL*
+- Melee damage is now identical no matter the limb hit
+- Both swing types now do 75 damage
+- Both swings now reach 0.75 meters / 39.15 hammer units
+- Heavy swings can now backstab, one shotting the enemy if hit in the back (180 degrees from the back)
+
+**>BALANCE**    
+*Shotguns*
+- Spread has been reduced by 20-30% across all shotguns
+
+*Grappling Hook*
+- Cooldown increased to 20 seconds (previously 15)
+- Players now spawn with 5 seconds on the cooldown (previously 0)
+- Players now reduce the cooldown by 10 seconds for each kill (previously 20)
+
+**>QOL & BUG FIXES**   
+- Fixed multiple bugs introduced in the last major update
+
+- Melees can no longer be thrown in the Gun Game gamemode
+
+
+
 # March 27th, 2025 (3/27/25)  
 **>GAMEPLAY**  
 *NEW WEAPONS*
@@ -47,7 +71,7 @@
 *MELEE OVERHAUL*
 - All melee weapons now have consistent swing distance values
 - Light swings (LMB) now always do 50 damage and reach 1 meter / 52 hammer units
-- Heavy swings (RMB) now always do 100 damage and reach reach 1.5 meters / 78 hammer units
+- Heavy swings (RMB) now always do 100 damage and reach 1.5 meters / 78 hammer units
 - Heavy swings have double the cooldown of light swings
 - Thrown melee weapons damage is now determined by the velocity, now being able to one shot if fast enough
 - Thrown melee kills now count as a kill for your equipped melee

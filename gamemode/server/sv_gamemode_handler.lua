@@ -261,7 +261,8 @@ if activeGamemode == "Gun Game" then
     function HandlePlayerSpawn(ply)
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
-        ply:Give(wepToGive[2])
+
+        if not ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then ply:Give(wepToGive[2]) end
     end
 
     function HandlePlayerKill(ply, victim)
@@ -272,13 +273,14 @@ if activeGamemode == "Gun Game" then
 
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
-        ply:Give(wepToGive[2])
         if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
             net.Start("SendNotification")
             net.WriteString(ply:Name() .. " has reached the knife!")
             net.WriteString("gungame")
             net.Broadcast()
+            return
         end
+        ply:Give(wepToGive[2])
     end
 
     function HandlePlayerDeath(ply, weaponName)

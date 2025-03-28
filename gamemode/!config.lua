@@ -62,7 +62,7 @@ else
     usePrimary = true               -- Enable primary weapons for the players loadout
     useSecondary = true             -- Enable secondary weapons for the players loadout
     useMelee = true                 -- Enable melee weapons for the players loadout
-    grappleCooldown = 15            -- The cooldown (in sceonds) of the grappling hook after being used
+    grappleCooldown = 20            -- The cooldown (in sceonds) of the grappling hook after being used
 
     -- fiesta settings
     fiestaShuffleTime = 30          -- Sets the amount of weapons a player needs to get kills with to win a match
