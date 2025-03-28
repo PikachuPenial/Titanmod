@@ -538,4 +538,9 @@ if CLIENT then
     RunConsoleCommand("tpf_cl_farz", "750")
     RunConsoleCommand("tpf_cl_fov", "75")
     RunConsoleCommand("tpf_cl_shadows", "0")
+
+    RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "1")
+    if game.GetMap() == "tm_initial" then RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "0") end
+    if game.GetMap() == "tm_rust" then RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "0") end
+    if game.GetMap() == "tm_shipment" then RunConsoleCommand("cl_tfa_rms_muzzleflash_dynlight", "0") end
 end

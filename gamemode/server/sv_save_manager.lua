@@ -116,7 +116,7 @@ function GM:ShutDown()
 		-- customizatoin
 		UninitializeNetworkString(v, "chosenPlayermodel")
 		UninitializeNetworkString(v, "chosenPlayercard")
-		UninitializeNetworkString(ply, "chosenMelee")
+		UninitializeNetworkString(v, "chosenMelee")
 
 		-- accolades
 		UninitializeNetworkInt(v, "playerAccoladeOnStreak")
