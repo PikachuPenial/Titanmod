@@ -116,7 +116,6 @@ local slidepunch = Angle(-1, 0, -2.5)
 local trace_down = Vector(0, 0, 32)
 local trace_tbl = {}
 
-local autoSprintStopDelay = 0.3
 local wallJumpTime = 1
 local wallRunTime = 1.25
 local slideTime = playerSlideDuration
@@ -144,7 +143,7 @@ hook.Add("StartCommand", "TM_MoveCommand", function(ply, cmd)
 
     -- sliding
     if ply:GetSliding() then
-        cmd:ClearMovement()
+        -- cmd:ClearMovement()
         cmd:RemoveKey(IN_SPEED)
         cmd:RemoveKey(IN_JUMP)
         slideLock = 0.79

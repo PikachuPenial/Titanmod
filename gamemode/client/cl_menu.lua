@@ -178,7 +178,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                         prestigeConfirm = 1
                     else
                         surface.PlaySound("tmui/prestige.wav")
-                        LocalPly:ConCommand("tm_prestige")
+                        net.Start("PlayerPrestige")
+                        net.SendToServer()
                         PrestigeButton:Hide()
                     end
 
@@ -3649,7 +3650,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 720)
+                    DockInputs:SetSize(0, 760)
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
@@ -3661,11 +3662,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
-                    DockAudio:SetSize(0, 320)
+                    DockAudio:SetSize(0, 360)
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
-                    DockCrosshair:SetSize(0, 630)
+                    DockCrosshair:SetSize(0, 670)
 
                     local DockHitmarker = vgui.Create("DPanel", OptionsScroller)
                     DockHitmarker:Dock(TOP)
@@ -3797,16 +3798,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 505, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 585, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspect Bind", "SettingsLabel", 135, 625, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Attachments Bind (none = [" .. string.upper(ContextBind) .. "])", "SettingsLabel", 135, 665, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Sensitivity Transition Style", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspect Bind", "SettingsLabel", 135, 665, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Attachments Bind (none = [" .. string.upper(ContextBind) .. "])", "SettingsLabel", 135, 705, white, TEXT_ALIGN_LEFT)
                     end
 
                     local autoSprint = DockInputs:Add("DCheckBox")
@@ -3855,14 +3857,22 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     sixadsSensitivity:SetMax(100)
                     sixadsSensitivity:SetDecimals(0)
 
+                    local sensitivityTransition = DockInputs:Add("DComboBox")
+                    sensitivityTransition:SetPos(20, 310)
+                    sensitivityTransition:SetSize(100, 30)
+                    if GetConVar("tm_sensitivity_transition"):GetInt() == 0 then sensitivityTransition:SetValue("Instant") elseif GetConVar("tm_sensitivity_transition"):GetInt() == 1 then sensitivityTransition:SetValue("Gradual") end
+                    sensitivityTransition:AddChoice("Instant")
+                    sensitivityTransition:AddChoice("Gradual")
+                    sensitivityTransition.OnSelect = function(self, value) RunConsoleCommand("tm_sensitivity_transition", value - 1) TriggerSound("forward") end
+
                     local compensateSensWithFOV = DockInputs:Add("DCheckBox")
-                    compensateSensWithFOV:SetPos(20, 310)
+                    compensateSensWithFOV:SetPos(20, 350)
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
                     compensateSensWithFOV:SetSize(30, 30)
                     function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 350)
+                    mainMenuBind:SetPos(22.5, 390)
                     mainMenuBind:SetSize(100, 30)
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     function mainMenuBind:OnChange(num)
@@ -3872,7 +3882,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 390)
+                    grenadeBind:SetPos(22.5, 430)
                     grenadeBind:SetSize(100, 30)
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     function grenadeBind:OnChange(num)
@@ -3882,7 +3892,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 430)
+                    grappleBind:SetPos(22.5, 470)
                     grappleBind:SetSize(100, 30)
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     function grappleBind:OnChange(num)
@@ -3892,13 +3902,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local quickWeaponSwitching = DockInputs:Add("DCheckBox")
-                    quickWeaponSwitching:SetPos(20, 470)
+                    quickWeaponSwitching:SetPos(20, 510)
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
                     quickWeaponSwitching:SetSize(30, 30)
                     function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
-                    primaryBind:SetPos(22.5, 510)
+                    primaryBind:SetPos(22.5, 550)
                     primaryBind:SetSize(100, 30)
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
                     function primaryBind:OnChange(num)
@@ -3908,7 +3918,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local secondaryBind = DockInputs:Add("DBinder")
-                    secondaryBind:SetPos(22.5, 550)
+                    secondaryBind:SetPos(22.5, 590)
                     secondaryBind:SetSize(100, 30)
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
                     function secondaryBind:OnChange(num)
@@ -3918,7 +3928,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local meleeBind = DockInputs:Add("DBinder")
-                    meleeBind:SetPos(22.5, 590)
+                    meleeBind:SetPos(22.5, 630)
                     meleeBind:SetSize(100, 30)
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
                     function meleeBind:OnChange(num)
@@ -3928,7 +3938,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local inspectBind = DockInputs:Add("DBinder")
-                    inspectBind:SetPos(22.5, 630)
+                    inspectBind:SetPos(22.5, 670)
                     inspectBind:SetSize(100, 30)
                     inspectBind:SetSelectedNumber(GetConVar("cl_tfa_keys_inspect"):GetInt())
                     function inspectBind:OnChange(num)
@@ -3938,7 +3948,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local customizeBind = DockInputs:Add("DBinder")
-                    customizeBind:SetPos(22.5, 670)
+                    customizeBind:SetPos(22.5, 710)
                     customizeBind:SetSize(100, 30)
                     customizeBind:SetSelectedNumber(GetConVar("cl_tfa_keys_customize"):GetInt())
                     function customizeBind:OnChange(num)
@@ -4096,8 +4106,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Kill SFX", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker SFX Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Kill SFX Style", "SettingsLabel", 125, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Headshot Kill SFX Style", "SettingsLabel", 125, 305, white, TEXT_ALIGN_LEFT)
                     end
-
 
                     local menuSoundsButton = DockAudio:Add("DCheckBox")
                     menuSoundsButton:SetPos(20, 70)
@@ -4155,25 +4165,41 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         RunConsoleCommand("tm_killsoundtype", value - 1)
                     end
 
+                    local headshotKillSoundsType = DockAudio:Add("DComboBox")
+                    headshotKillSoundsType:SetPos(20, 310)
+                    headshotKillSoundsType:SetSize(100, 30)
+                    if GetConVar("tm_headshotkillsoundtype"):GetInt() == 0 then headshotKillSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 1 then headshotKillSoundsType:SetValue("TABG") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 2 then headshotKillSoundsType:SetValue("Bad Business") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 3 then headshotKillSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 4 then headshotKillSoundsType:SetValue("Counter Strike") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 5 then headshotKillSoundsType:SetValue("Overwatch") end
+                    headshotKillSoundsType:AddChoice("Call Of Duty")
+                    headshotKillSoundsType:AddChoice("TABG")
+                    headshotKillSoundsType:AddChoice("Bad Business")
+                    headshotKillSoundsType:AddChoice("Apex Legends")
+                    headshotKillSoundsType:AddChoice("Counter Strike")
+                    headshotKillSoundsType:AddChoice("Overwatch")
+                    headshotKillSoundsType.OnSelect = function(self, value)
+                        surface.PlaySound("hitsound/kill_" .. value - 1 .. ".wav")
+                        RunConsoleCommand("tm_headshotkillsoundtype", value - 1)
+                    end
+
                     DockCrosshair.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Style", "SettingsLabel", 125, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Center Dot", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Color/Opacity", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline", "SettingsLabel", 55, 425, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Top", "SettingsLabel", 55, 585, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Bottom", "SettingsLabel", 155, 585, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Left", "SettingsLabel", 300, 585, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Right", "SettingsLabel", 395, 585, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Show When Sprinting", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Style", "SettingsLabel", 125, 145, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Center Dot", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", 165, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Color/Opacity", "SettingsLabel", 245 , 345, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 505, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Top", "SettingsLabel", 55, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Bottom", "SettingsLabel", 155, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Left", "SettingsLabel", 300, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Right", "SettingsLabel", 395, 625, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 225, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 265, white, TEXT_ALIGN_CENTER)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
@@ -4182,8 +4208,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairToggle:SetSize(30, 30)
                     function crosshairToggle:OnChange() TriggerSound("click") end
 
+                    local crosshairSprint = DockCrosshair:Add("DCheckBox")
+                    crosshairSprint:SetPos(20, 110)
+                    crosshairSprint:SetConVar("tm_hud_crosshair_sprint")
+                    crosshairSprint:SetSize(30, 30)
+                    function crosshairSprint:OnChange() TriggerSound("click") end
+
                     local crosshairStyle = DockCrosshair:Add("DComboBox")
-                    crosshairStyle:SetPos(20, 110)
+                    crosshairStyle:SetPos(20, 150)
                     crosshairStyle:SetSize(100, 30)
                     if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
                     crosshairStyle:AddChoice("Static")
@@ -4191,13 +4223,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) TriggerSound("forward") end
 
                     local crosshairDot = DockCrosshair:Add("DCheckBox")
-                    crosshairDot:SetPos(20, 150)
+                    crosshairDot:SetPos(20, 190)
                     crosshairDot:SetConVar("tm_hud_crosshair_dot")
                     crosshairDot:SetSize(30, 30)
                     function crosshairDot:OnChange() TriggerSound("click") end
 
                     local crosshairLength = DockCrosshair:Add("DNumSlider")
-                    crosshairLength:SetPos(-85, 190)
+                    crosshairLength:SetPos(-85, 230)
                     crosshairLength:SetSize(250, 30)
                     crosshairLength:SetConVar("tm_hud_crosshair_size")
                     crosshairLength:SetMin(1)
@@ -4206,7 +4238,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairLength:OnValueChanged() end
 
                     local crosshairThickness = DockCrosshair:Add("DNumSlider")
-                    crosshairThickness:SetPos(-85, 230)
+                    crosshairThickness:SetPos(-85, 270)
                     crosshairThickness:SetSize(250, 30)
                     crosshairThickness:SetConVar("tm_hud_crosshair_thickness")
                     crosshairThickness:SetMin(1)
@@ -4215,7 +4247,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairThickness:OnValueChanged() end
 
                     local crosshairGap = DockCrosshair:Add("DNumSlider")
-                    crosshairGap:SetPos(-85, 270)
+                    crosshairGap:SetPos(-85, 310)
                     crosshairGap:SetSize(250, 30)
                     crosshairGap:SetConVar("tm_hud_crosshair_gap")
                     crosshairGap:SetMin(0)
@@ -4224,7 +4256,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairGap:OnValueChanged() end
 
                     local crosshairMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    crosshairMixer:SetPos(20, 310)
+                    crosshairMixer:SetPos(20, 350)
                     crosshairMixer:SetSize(215, 110)
                     crosshairMixer:SetConVarR("tm_hud_crosshair_color_r")
                     crosshairMixer:SetConVarG("tm_hud_crosshair_color_g")
@@ -4235,13 +4267,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairMixer:SetWangs(true)
 
                     local crosshairOutline = DockCrosshair:Add("DCheckBox")
-                    crosshairOutline:SetPos(20, 430)
+                    crosshairOutline:SetPos(20, 470)
                     crosshairOutline:SetConVar("tm_hud_crosshair_outline")
                     crosshairOutline:SetSize(30, 30)
                     function crosshairOutline:OnChange() TriggerSound("click") end
 
                     local crosshairOutlineMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    crosshairOutlineMixer:SetPos(20, 470)
+                    crosshairOutlineMixer:SetPos(20, 510)
                     crosshairOutlineMixer:SetSize(215, 110)
                     crosshairOutlineMixer:SetConVarR("tm_hud_crosshair_outline_color_r")
                     crosshairOutlineMixer:SetConVarG("tm_hud_crosshair_outline_color_g")
@@ -4251,31 +4283,31 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairOutlineMixer:SetWangs(true)
 
                     local crosshairTop = DockCrosshair:Add("DCheckBox")
-                    crosshairTop:SetPos(20, 590)
+                    crosshairTop:SetPos(20, 630)
                     crosshairTop:SetConVar("tm_hud_crosshair_show_t")
                     crosshairTop:SetSize(30, 30)
                     function crosshairTop:OnChange() TriggerSound("click") end
 
                     local crosshairBottom = DockCrosshair:Add("DCheckBox")
-                    crosshairBottom:SetPos(120, 590)
+                    crosshairBottom:SetPos(120, 630)
                     crosshairBottom:SetConVar("tm_hud_crosshair_show_b")
                     crosshairBottom:SetSize(30, 30)
                     function crosshairBottom:OnChange() TriggerSound("click") end
 
                     local crosshairLeft = DockCrosshair:Add("DCheckBox")
-                    crosshairLeft:SetPos(265, 590)
+                    crosshairLeft:SetPos(265, 630)
                     crosshairLeft:SetConVar("tm_hud_crosshair_show_l")
                     crosshairLeft:SetSize(30, 30)
                     function crosshairLeft:OnChange() TriggerSound("click") end
 
                     local crosshairRight = DockCrosshair:Add("DCheckBox")
-                    crosshairRight:SetPos(360, 590)
+                    crosshairRight:SetPos(360, 630)
                     crosshairRight:SetConVar("tm_hud_crosshair_show_r")
                     crosshairRight:SetSize(30, 30)
                     function crosshairRight:OnChange() TriggerSound("click") end
 
                     local previewOpacitySlider = DockCrosshair:Add("DSlider")
-                    previewOpacitySlider:SetPos(400, 210)
+                    previewOpacitySlider:SetPos(400, 250)
                     previewOpacitySlider:SetSize(150, 20)
                     previewOpacitySlider:SetSlideX(1)
 

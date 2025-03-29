@@ -62,7 +62,7 @@ else
     usePrimary = true               -- Enable primary weapons for the players loadout
     useSecondary = true             -- Enable secondary weapons for the players loadout
     useMelee = true                 -- Enable melee weapons for the players loadout
-    grappleCooldown = 20            -- The cooldown (in sceonds) of the grappling hook after being used
+    grappleCooldown = 15            -- The cooldown (in sceonds) of the grappling hook after being used
 
     -- fiesta settings
     fiestaShuffleTime = 30          -- Sets the amount of weapons a player needs to get kills with to win a match
@@ -106,6 +106,7 @@ gamemodeArray[6] = {5, "Quickdraw", "FFA with secondaries only.", true}
 gamemodeArray[7] = {6, "KOTH", "FFA with a specific part of the map giving score if inside of said area.", false}
 gamemodeArray[8] = {7, "VIP", "FFA with players fighting over VIP status, said status giving them score.", false}
 gamemodeArray[9] = {8, "Overkill", "FFA with no weapon restrictions.", true}
+gamemodeArray[10] = {9, "Fisticuffs", "FFA with only melee weapons.", false}
 
 -- MAPS
 -- if you want to use custom maps, or want to add or remove certain maps, edit this array

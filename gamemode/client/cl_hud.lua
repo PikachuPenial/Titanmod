@@ -45,7 +45,8 @@ function UpdateHUD()
         ["show_t"] = GetConVar("tm_hud_crosshair_show_t"):GetInt(),
         ["show_b"] = GetConVar("tm_hud_crosshair_show_b"):GetInt(),
         ["show_l"] = GetConVar("tm_hud_crosshair_show_l"):GetInt(),
-        ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt()
+        ["show_r"] = GetConVar("tm_hud_crosshair_show_r"):GetInt(),
+        ["sprint"] = GetConVar("tm_hud_crosshair_sprint"):GetInt()
     }
 
     hitmarker = {
@@ -147,7 +148,8 @@ function UpdateHUD()
         ["hit_enabled"] = GetConVar("tm_hitsounds"):GetInt(),
         ["kill_enabled"] = GetConVar("tm_killsound"):GetInt(),
         ["hit"] = GetConVar("tm_hitsoundtype"):GetInt(),
-        ["kill"] = GetConVar("tm_killsoundtype"):GetInt()
+        ["kill"] = GetConVar("tm_killsoundtype"):GetInt(),
+        ["hs_kill"] = GetConVar("tm_headshotkillsoundtype"):GetInt()
     }
 
     convars = {
@@ -250,6 +252,9 @@ local function MatchStartPopup(ply)
     elseif gm == "OVERKILL" then
         desc = "Eliminate other players with no weapon restrictions"
         winCondition = "Get the most score to WIN"
+    elseif gm == "FISTICUFFS" then
+        desc = "Eliminate other players with melee weapons"
+        winCondition = "Get the most score to WIN"
     end
 
     if IsValid(GamemodePopup) then GamemodePopup:Remove() end
@@ -307,7 +312,7 @@ end
 
 net.Receive("PlayerSpawn", function(len, pl)
     if convars["hud_enable"] == 0 then return end
-    if activeGamemode != "Gun Game" then ShowLoadoutOnSpawn(LocalPly) end
+    if activeGamemode != "Gun Game" and activeGamemode != "Fisticuffs" then ShowLoadoutOnSpawn(LocalPly) end
     if matchStartPopupSeen == false then MatchStartPopup(LocalPly) end
 end )
 
@@ -482,7 +487,7 @@ function HUDAlive(client)
     weapon = client:GetActiveWeapon()
     LerpCrosshair()
 
-    if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights() and weapon:GetStat("PointFiring") == false) or (client:IsSprinting() and client:OnGround()) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
+    if (type(weapon.GetIronSights) == "function" and weapon:GetIronSights() and weapon:GetStat("PointFiring") == false) or (client:IsSprinting() and client:OnGround() and crosshair["sprint"] == 0) then adsFade = math.Clamp(adsFade - 7 * RealFrameTime(), 0, 1) else adsFade = math.Clamp(adsFade + 4 * RealFrameTime(), 0, 1) end
     -- crosshair
     if crosshair["style"] == 1 then
         dyn = CrosshairStateUpdate(client, weapon)
@@ -579,7 +584,7 @@ function HUDAlive(client)
             LerpAmmo()
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400 * (math.Clamp(math.max(0, smoothAmmo) / weapon:GetMaxClip1(), 0, 1)), 30)
             draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 15 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" then
+        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
             surface.DrawRect(scrW - 400 - weaponHUD["x"], scrH - 30 - weaponHUD["y"], 400, 30)
             draw.SimpleText("∞", "HUD_Health", scrW - 390 - weaponHUD["x"], scrH - 18 - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
@@ -602,7 +607,7 @@ function HUDAlive(client)
             grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime() + 1) + 0,5)
         end
         surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
         draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - 27.5, scrH - 42.5 - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
@@ -618,7 +623,7 @@ function HUDAlive(client)
             grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime()) + 0,5)
+            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime() + 1) + 0,5)
         end
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - 45, scrH - 40 - equipmentHUD["y"], 35, 40)
@@ -1056,7 +1061,9 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:SetMouseInputEnabled(false)
     KillNotif:SetKeyboardInputEnabled(false)
 
-    if sounds["kill_enabled"] == 1 then surface.PlaySound("hitsound/kill_" .. sounds["kill"] .. ".wav") end
+    if sounds["kill_enabled"] == 1 then
+        if lastHitIn == 1 then surface.PlaySound("hitsound/kill_" .. sounds["hs_kill"] .. ".wav") else surface.PlaySound("hitsound/kill_" .. sounds["kill"] .. ".wav") end
+    end
 
     timer.Create("killNotification", 3.5, 1, function()
         if IsValid(KillNotif) then
@@ -2056,6 +2063,9 @@ end)
 cvars.AddChangeCallback("tm_killsoundtype", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
+cvars.AddChangeCallback("tm_headshotkillsoundtype", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
 cvars.AddChangeCallback("tm_hud_enable", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
@@ -2161,6 +2171,9 @@ cvars.AddChangeCallback("tm_hud_crosshair_show_l", function(convar_name, value_o
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_crosshair_show_r", function(convar_name, value_old, value_new)
+    UpdateHUD()
+end)
+cvars.AddChangeCallback("tm_hud_crosshair_sprint", function(convar_name, value_old, value_new)
     UpdateHUD()
 end)
 cvars.AddChangeCallback("tm_hud_hitmarker", function(convar_name, value_old, value_new)

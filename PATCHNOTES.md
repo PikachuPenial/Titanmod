@@ -1,4 +1,55 @@
-# March 28th, 2025 (3/28 /25)  
+# Unreleased
+**>GAMEPLAY**  
+*NEW SETTINGS*
+- Headshot Kill SFX Style
+- Sensitivity Transition Style (Gradual and Instant)
+- Show Crosshair When Sprinting
+
+**>BALANCE**    
+*M134 Minigun*
+- Can now be fired while sprinting
+
+**>QOL & BUG FIXES**   
+- Strafing inputs can now be inputted while sliding to very slightly redirect your sliding angle
+
+- Fixed players spawning abnormally if no suitable spawn points were fonud on the map
+
+- Fixed inconsistent scoreboard visuals
+
+- Refactored prestiging system to hopefully fix bugs related to progression
+
+- Cleaned up info that is seen when changing weapon attachments
+
+- Grappling hook cooldown timer is now more accurate
+
+- Melee throw indicators no longer appear in gamemodes that disable melee throwing
+
+- Resolved some server console errors
+
+- Improved spawning systems detection for suitable spawns
+
+
+
+# March 28th, 2025 (3/28/25)  
+**>GAMEPLAY**  
+*NEW GAMEMODE*
+- **Fisticuffs**, typical FFA but with only melee weapons
+
+**>BALANCE**    
+*Grappling Hook*
+- Cooldown reduced to 15 seconds (previously 20)
+- Players now spawn with 3 seconds on the cooldown (previously 5)
+- Players now reduce the cooldown by 10 seconds for each kill (previously 20)
+
+*Melee*
+- Both swings now reach 1.25 meters / 65 hammer units
+
+**>QOL & BUG FIXES**   
+- Fixed multiple bugs introduced in the last major update
+
+
+
+# March 28th, 2025 (3/28/25)  
 **>GAMEPLAY**  
 *MELEE OVER-OVERHAUL*
 - Melee damage is now identical no matter the limb hit

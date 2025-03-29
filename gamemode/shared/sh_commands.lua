@@ -29,16 +29,6 @@ function ForceSave(ply, cmd, args)
 end
 concommand.Add("tm_forcesave", ForceSave)
 
-function PlayerPrestige(ply, cmd, args)
-	if ply:GetNWInt("playerLevel") >= 60 then
-		ply:SetNWInt("playerLevel", 1)
-		ply:SetNWInt("playerPrestige", ply:GetNWInt("playerPrestige") + 1)
-		ply:SetNWInt("playerXP", 0)
-		ply:SetNWInt("playerXPToNextLevel", 750)
-	end
-end
-concommand.Add("tm_prestige", PlayerPrestige)
-
 -- allows the player to test the look and feel of their customized kill/death/level up UI's
 function HUDTestKill(ply, cmd, args)
 	net.Start("NotifyKill")

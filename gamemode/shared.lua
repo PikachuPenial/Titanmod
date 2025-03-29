@@ -3,8 +3,8 @@ GM.Author = "Penial"
 GM.Email = "glass campers on tm_mall turning around to see a bald man crouching with a AA-12"
 GM.Website = "https://github.com/PikachuPenial/Titanmod"
 
-if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 8) end
-if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() == 7 then SetGlobal2String("ActiveGamemode", "VIP") elseif GetConVar("tm_gamemode"):GetInt() >= 8 then SetGlobal2String("ActiveGamemode", "Overkill") end
+if !ConVarExists("tm_gamemode") then CreateConVar("tm_gamemode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the desired gamemode, will be replaced with gamemode voting eventually", 0, 9) end
+if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode", "FFA") elseif GetConVar("tm_gamemode"):GetInt() == 1 then SetGlobal2String("ActiveGamemode", "Cranked") elseif GetConVar("tm_gamemode"):GetInt() == 2 then SetGlobal2String("ActiveGamemode", "Gun Game") elseif GetConVar("tm_gamemode"):GetInt() == 3 then SetGlobal2String("ActiveGamemode", "Shotty Snipers") elseif GetConVar("tm_gamemode"):GetInt() == 4 then SetGlobal2String("ActiveGamemode", "Fiesta") elseif GetConVar("tm_gamemode"):GetInt() == 5 then SetGlobal2String("ActiveGamemode", "Quickdraw") elseif GetConVar("tm_gamemode"):GetInt() == 6 then SetGlobal2String("ActiveGamemode", "KOTH") elseif GetConVar("tm_gamemode"):GetInt() == 7 then SetGlobal2String("ActiveGamemode", "VIP") elseif GetConVar("tm_gamemode"):GetInt() == 8 then SetGlobal2String("ActiveGamemode", "Overkill") elseif GetConVar("tm_gamemode"):GetInt() >= 9 then SetGlobal2String("ActiveGamemode", "Fisticuffs") end
 
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
 if !ConVarExists("tm_intermissiontimer") then CreateConVar("tm_intermissiontimer", "30", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the intermission length to the selected value in seconds", 0, 600) end
@@ -51,6 +51,7 @@ if CLIENT then
     CreateClientConVar("tm_musicvolume", 1, true, false, "Increase or lower the volume of music", 0, 1)
     CreateClientConVar("tm_hitsoundtype", 0, true, false, "Switch between the multiple styles of hitsounds", 0, 5)
     CreateClientConVar("tm_killsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds", 0, 5)
+    CreateClientConVar("tm_headshotkillsoundtype", 0, true, false, "Switch between the multiple styles of kill sounds when getting a headshot kill", 0, 5)
     CreateClientConVar("tm_nadebind", KEY_4, true, true, "Determines the keybind that will begin cocking a grenade")
     CreateClientConVar("tm_mainmenubind", KEY_M, true, true, "Determines the keybind that will open the main menu")
     CreateClientConVar("tm_quickswitching", 1, true, true, "Enable/disable quick weapon switching via keybinds", 0, 1)
@@ -64,8 +65,9 @@ if CLIENT then
     CreateClientConVar("tm_customfov_value", 100, true, true, "Adjust the players FOV while using Titanmod's custom FOV system", 100, 144)
     CreateClientConVar("tm_sensitivity_1x", 80, true, true, "Adjust the sensitivity when using iron sights/low zoom optics", 1, 100)
     CreateClientConVar("tm_sensitivity_2x", 50, true, true, "Adjust the sensitivity when using medium zoom optics", 1, 100)
-    CreateClientConVar("tm_sensitivity_4x", 33, true, true, "Adjust the sensitivity when using medium-high zoom optics", 1, 100)
-    CreateClientConVar("tm_sensitivity_6x", 16, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_4x", 25, true, true, "Adjust the sensitivity when using medium-high zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_6x", 12, true, true, "Adjust the sensitivity when using high zoom optics", 1, 100)
+    CreateClientConVar("tm_sensitivity_transition", 1, true, true, "Adjust the style of transition between different zoom sensitivities", 0, 1)
     CreateClientConVar("tm_renderhands", 1, true, false, "Enable/disable the rendering of your own hands", 0, 1)
     CreateClientConVar("tm_precachefiles", 1, true, false, "Enable/disable the pre-caching of game models/sounds when loading into a map", 0, 1)
     CreateClientConVar("tm_autosprint", 0, true, true, "Enable/disable automatic sprinting while moving", 0, 1)
@@ -159,6 +161,7 @@ if CLIENT then
     CreateClientConVar("tm_hud_crosshair_show_b", 1, true, false, "Enable/disable the bottom of the crosshair", 0, 1)
     CreateClientConVar("tm_hud_crosshair_show_l", 1, true, false, "Enable/disable the left of the crosshair", 0, 1)
     CreateClientConVar("tm_hud_crosshair_show_r", 1, true, false, "Enable/disable the right of the crosshair", 0, 1)
+    CreateClientConVar("tm_hud_crosshair_sprint", 0, true, false, "Enable/disable the crosshair while sprinting", 0, 1)
     CreateClientConVar("tm_hud_hitmarker", 1, true, false, "Enable/disable the hitmarker", 0, 1)
     CreateClientConVar("tm_hud_hitmarker_gap", 8, true, false, "Adjusts the hitmarker gap", 0, 100)
     CreateClientConVar("tm_hud_hitmarker_size", 8, true, false, "Adjusts the hitmarker size", 0, 100)

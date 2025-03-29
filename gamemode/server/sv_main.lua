@@ -37,6 +37,7 @@ util.AddNetworkString("BeginSpectate")
 util.AddNetworkString("PlayerGearChange")
 util.AddNetworkString("PlayerModelChange")
 util.AddNetworkString("PlayerCardChange")
+util.AddNetworkString("PlayerPrestige")
 util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("SendChatMessage")
@@ -96,7 +97,7 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetNWBool("mainmenu", false)
 	ply:SetNWInt("killStreak", 0)
-	ply:SetNWFloat("linat", 5)
+	ply:SetNWFloat("linat", CurTime() + 3)
 
 	ply:SetViewOffsetDucked(Vector(0, 0, 42))
 end
@@ -529,6 +530,24 @@ net.Receive("PlayerCardChange", function(len, ply)
 			elseif cardUnlock == "mastery" and ply:GetNWInt("killsWith_" .. cardValue) >= masteryUnlockReq then
 				ply:SetNWString("chosenPlayercard", cardID)
 			end
+		end
+	end
+end )
+
+net.Receive("PlayerPrestige", function(len, ply)
+	if ply:GetNWInt("playerLevel") >= 60 then
+		local pres = ply:GetNWInt("playerPrestige", 0)
+		local nextPres = pres + 1
+		ply:SetNWInt("playerLevel", 1)
+		ply:SetNWInt("playerPrestige", nextPres)
+		ply:SetNWInt("playerXP", 0)
+		ply:SetNWInt("playerXPToNextLevel", 750)
+
+		-- force save to the file early
+		if GetConVar("tm_developermode"):GetInt() == 0 then
+			UninitializeNetworkInt(ply, "playerLevel")
+			UninitializeNetworkInt(ply, "playerPrestige")
+			UninitializeNetworkInt(ply, "playerXP")
 		end
 	end
 end )

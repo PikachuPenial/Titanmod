@@ -181,18 +181,16 @@ if activeGamemode == "VIP" then
     end)
 end
 
-if activeGamemode == "Overkill" then
+if activeGamemode == "Fisticuffs" then
     for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
-            table.insert(randOverkill, v[1])
+            table.insert(randPrimary, v[1])
         elseif v[3] == "secondary" then
-            table.insert(randOverkill, v[1])
+            table.insert(randSecondary, v[1])
         elseif v[3] == "melee" then
             table.insert(randMelee, v[1])
         end
     end
-
-    table.Shuffle(randOverkill)
 end
 
 -- setting up functions depeneding on the gamemode being played, this does not look pretty, but it will stop us from running a shit ton of if statements to check which gamemode is being played
@@ -261,8 +259,7 @@ if activeGamemode == "Gun Game" then
     function HandlePlayerSpawn(ply)
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
-
-        if not ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then ply:Give(wepToGive[2]) end
+        if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then ply:Give(wepToGive[2]) end
     end
 
     function HandlePlayerKill(ply, victim)
@@ -273,7 +270,7 @@ if activeGamemode == "Gun Game" then
 
         local wepToGive = ggLadder[ply:GetNWInt("ladderPosition") + 1]
         ply:Give(wepToGive[1])
-        if ply:GetNWInt("ladderPosition") == (ggLadderSize - 1) then
+        if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == true then
             net.Start("SendNotification")
             net.WriteString(ply:Name() .. " has reached the knife!")
             net.WriteString("gungame")
@@ -440,6 +437,26 @@ if activeGamemode == "Overkill" then
         table.Shuffle(randOverkill)
         ply:SetNWString("loadoutPrimary", randOverkill[1])
         ply:SetNWString("loadoutSecondary", randOverkill[2])
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
+    end
+end
+
+if activeGamemode == "Fisticuffs" then
+    function HandlePlayerInitialSpawn(ply)
+        ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
+    end
+
+    function HandlePlayerSpawn(ply)
+        if useMelee == true then
+            ply:Give(ply:GetNWString("loadoutMelee"))
+        end
+    end
+
+    function HandlePlayerKill(ply, victim)
+        return
+    end
+
+    function HandlePlayerDeath(ply, weaponName)
         ply:SetNWString("loadoutMelee", ply:GetNWString("chosenMelee"))
     end
 end

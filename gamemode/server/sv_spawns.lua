@@ -1,7 +1,7 @@
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-512, -512, -128), pos + Vector(512, 512, 128))
+	local entities = ents.FindInBox(pos + Vector(-512, -512, -512), pos + Vector(512, 512, 512))
 	local entsBlocking = 0
 
 	for _, v in ipairs(entities) do
@@ -26,5 +26,6 @@ function GM:PlayerSelectSpawn(ply)
 		end
 	end
 
+	local randomSpawn = math.random(#spawns)
 	return spawns[randomSpawn]
 end
