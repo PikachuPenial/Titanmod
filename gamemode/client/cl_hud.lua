@@ -555,7 +555,7 @@ function HUDAlive(client)
             end
             ammoColor = Color(convars["text_r"], convars["text_g"], convars["text_b"])
             ammoText = weapon:Clip1()
-        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" then
+        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
             ammoColor = Color(convars["text_r"], convars["text_g"], convars["text_b"])
             ammoText = "∞"
         else

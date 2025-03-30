@@ -1,4 +1,14 @@
-# Unreleased
+# March 29th, 2025 (3/29/25)
+**>QOL & BUG FIXES**   
+- Fixed the Overkill gamemode from not fucking working
+
+- Fixed melee throw checks not being ran when using the numeric ammo style
+
+- Fixed certain melees doing more damage than intended
+
+
+
+# March 29th, 2025 (3/29/25)
 **>GAMEPLAY**  
 *NEW SETTINGS*
 - Headshot Kill SFX Style

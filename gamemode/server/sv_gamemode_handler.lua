@@ -181,6 +181,20 @@ if activeGamemode == "VIP" then
     end)
 end
 
+if activeGamemode == "Overkill" then
+    for k, v in ipairs(weaponArray) do
+        if v[3] == "primary" then
+            table.insert(randOverkill, v[1])
+        elseif v[3] == "secondary" then
+            table.insert(randOverkill, v[1])
+        elseif v[3] == "melee" then
+            table.insert(randMelee, v[1])
+        end
+    end
+
+    table.Shuffle(randOverkill)
+end
+
 if activeGamemode == "Fisticuffs" then
     for k, v in ipairs(weaponArray) do
         if v[3] == "primary" then
