@@ -149,6 +149,12 @@ hook.Add("StartCommand", "TM_MoveCommand", function(ply, cmd)
         slideLock = 0.79
         local trueSlideTime = (ply:GetSlidingCD() - ply:GetCT())
 
+        local ViewAngles = cmd:GetViewAngles()
+
+        local limit_p = 60
+        if limit_p > 0 and ViewAngles.p > limit_p then ViewAngles.p = limit_p end
+        cmd:SetViewAngles(ViewAngles)
+
         if trueSlideTime < 0.79 and ply:KeyDown(IN_DUCK) == false then
             cmd:RemoveKey(IN_DUCK)
             ply:SetSliding(false)
@@ -228,11 +234,8 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetSlidingAngle(mv:GetVelocity():Angle())
         ply:SetSlopedSpeed(1)
 
-        if SERVER then
-            SlideSurfaceSound(ply, pos)
-        elseif VManip then
-            VManip:PlayAnim("vault")
-        end
+        if SERVER then SlideSurfaceSound(ply, pos) end
+
     elseif (not ducking or not onground) and sliding then
         ply:SetCanSlide(true)
         ply:SetSliding(false)

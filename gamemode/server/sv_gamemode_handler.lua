@@ -276,8 +276,11 @@ if activeGamemode == "Gun Game" then
         if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then ply:Give(wepToGive[2]) end
     end
 
-    function HandlePlayerKill(ply, victim)
+    function HandlePlayerKill(ply, victim, weaponName)
         if not ply:IsPlayer() or (ply == victim) then return end
+        if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then
+            if weaponName == "Tanto" or weaponName == "Mace" or weaponName == "KM-2000" or weaponName == "Bowie Knife" or weaponName == "Butterfly Knife" or weaponName == "Carver" or weaponName == "Dagger" or weaponName == "Fire Axe" or weaponName == "Fists" or weaponName == "Karambit" or weaponName == "Kukri" or weaponName == "M9 Bayonet" or weaponName == "Nunchucks" or weaponName == "Red Rebel" or weaponName == "Tri-Dagger" then return end
+        end
         ply:SetNWInt("ladderPosition", ply:GetNWInt("ladderPosition") + 1)
         ply:StripWeapons()
         if ply:GetNWInt("ladderPosition") >= ggLadderSize then EndMatch() return end

@@ -48,7 +48,6 @@ function GM:ScoreboardShow()
 		if player.GetCount() < 5 then PlayerScrollPanel:SetSize(630, player.GetCount() * 100) else PlayerScrollPanel:SetSize(630, 500) end
 		PlayerScrollPanel:SetPos(0, 0)
 		PlayerScrollPanel.Paint = function(self, w, h)
-			BlurPanel(PlayerList, 5)
 			surface.SetDrawColor(Color(255, 255, 255, 25))
 			surface.DrawRect(0, 0, w, 1)
 			surface.DrawRect(0, h - 1, w, 1)

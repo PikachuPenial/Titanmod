@@ -333,7 +333,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	HandlePlayerDeath(victim, weaponName)
-	HandlePlayerKill(attacker, victim)
+	HandlePlayerKill(attacker, victim, weaponName)
 
 	if distance >= attacker:GetNWInt("farthestKill") then attacker:SetNWInt("farthestKill", distance) end
 

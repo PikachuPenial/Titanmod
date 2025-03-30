@@ -1,3 +1,24 @@
+# March 30th, 2025 (3/30/25)
+**>BALANCE**    
+*Melee*
+- Thrown melee will now despawn instantly upon colliding with a surface
+- Melee kills will no longer advance a player in the Gun Game ladder if they are not on the final weapon
+
+**>QOL & BUG FIXES**   
+- Added viewmodel animation when opening doors
+
+- Adjusted sliding viewmodel animation
+
+- Fixed reload cancelling
+
+- Fixed the SR-25 having an incorrect weapon slot on the HL2 UI
+
+- Fixed broken scoreboard post processing
+
+- Potential fix for erroring world models while holding the WA-2000
+
+
+
 # March 29th, 2025 (3/29/25)
 **>QOL & BUG FIXES**   
 - Fixed the Overkill gamemode from not fucking working
