@@ -74,6 +74,7 @@ if CLIENT then
     CreateClientConVar("tm_autosprint_delay", 0.25, true, true, "Adjust the time between pressing a mouse button and being able to auto sprint again", 0.25, 0.50)
 
     CreateClientConVar("tm_hud_enable", 1, true, false, "Enable/disable any custom HUD elements created by the gamemode", 0, 1)
+    CreateClientConVar("tm_hud_scale", 1, true, false, "Adjust the scale for all HUD items", 0.5, 2)
     CreateClientConVar("tm_hud_bounds_x", 15, true, false, "Adjust the HUD bounds on the X axis, moving all hud elements from the edge of your screen", 0, ScrW() / 4)
     CreateClientConVar("tm_hud_bounds_y", 15, true, false, "Adjust the HUD bounds on the Y axis, moving all hud elements from the edge of your screen", 0, ScrH() / 4)
     CreateClientConVar("tm_hud_text_color_r", 255, true, false, "Adjusts the red coloring of the HUD text", 0, 255)

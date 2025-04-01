@@ -1,418 +1,178 @@
 function UpdateFonts()
+	-- MENUS
 	surface.CreateFont("GunPrintName", {
 		font = "Arial",
-		extended = false,
-		size = 56,
+		size = TM.MenuScale(56),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("MainMenuLoadoutWeapons", {
 		font = "Arial",
-		extended = false,
-		size = 26,
+		size = TM.MenuScale(26),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("MainMenuDescription", {
 		font = "Arial",
-		extended = false,
-		size = 24,
+		size = TM.MenuScale(24),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("MainMenuTitle", {
 		font = "Arial",
-		extended = false,
-		size = 45,
+		size = TM.MenuScale(45),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("MatchEndText", {
 		font = "Arial",
-		extended = false,
-		size = 180,
+		size = TM.MenuScale(180),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("QuoteText", {
 		font = "Tahoma",
-		extended = false,
-		size = 22,
+		size = TM.MenuScale(22),
 		weight = 200,
-		blursize = 0,
-		scanlines = 0,
 		antialias = true,
-		underline = false,
-		italic = true,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = true,
-		additive = false,
-		outline = false,
+		italic = true
 	} )
 
 	surface.CreateFont("AmmoCountESmall", {
 		font = "Arial",
-		extended = false,
-		size = 48,
+		size = TM.MenuScale(48),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("AmmoCountSmall", {
 		font = "Arial",
-		extended = false,
-		size = 96,
+		size = TM.MenuScale(96),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("OptionsHeader", {
 		font = "Arial",
-		extended = false,
-		size = 64,
+		size = TM.MenuScale(64),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("Health", {
 		font = "Tahoma",
-		extended = false,
-		size = 30,
+		size = TM.MenuScale(30),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("StreakText", {
 		font = "Tahoma",
-		extended = false,
-		size = 22,
+		size = TM.MenuScale(22),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("TitleText", {
 		font = "BenderBold",
-		extended = false,
-		size = 32,
+		size = TM.MenuScale(32),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("CaliberText", {
 		font = "Tahoma",
-		extended = false,
-		size = 18,
+		size = TM.MenuScale(18),
 		weight = 550,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("PlayerNotiName", {
 		font = "Arial",
-		extended = false,
-		size = 52,
+		size = TM.MenuScale(52),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("SettingsLabel", {
 		font = "Arial",
-		extended = false,
-		size = 38,
+		size = TM.MenuScale(38),
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
-
+	-- HUD
 	surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 56,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_AmmoCount", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 128,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_WepNameKill", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 28,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_Health", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 30,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_StreakText", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 22,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_PlayerNotiName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 52,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_PlayerDeathName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 36,
 		weight = 500,
-		blursize = 0,
-		scanlines = 0,
-		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = false,
+		antialias = true
 	} )
 
 	surface.CreateFont("HUD_IntermissionText", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		extended = false,
 		size = 180,
 		weight = 600,
-		blursize = 0,
-		scanlines = 0,
 		antialias = true,
-		underline = false,
-		italic = false,
-		strikeout = false,
-		symbol = false,
-		rotary = false,
-		shadow = false,
-		additive = false,
-		outline = true,
+		outline = true
+	} )
+
+	surface.CreateFont("HUD_AmmoCountSmall", {
+		font = "Arial",
+		size = 96,
+		weight = 500,
+		antialias = true
 	} )
 end
 UpdateFonts()
+
+hook.Add("OnScreenSizeChanged", "ResolutionChange", function() UpdateFonts() end)
 cvars.AddChangeCallback("tm_hud_font", function(convar_name, value_old, value_new) UpdateFonts() end)
+cvars.AddChangeCallback("tm_hud_scale", function(convar_name, value_old, value_new) UpdateFonts() end)

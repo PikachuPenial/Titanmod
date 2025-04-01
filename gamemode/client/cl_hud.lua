@@ -222,7 +222,7 @@ local function MatchStartPopup(ply)
     local desc
     local winCondition
     matchStartPopupSeen = true
-    surface.SetFont("AmmoCountSmall")
+    surface.SetFont("HUD_AmmoCountSmall")
     local popupW, popupH = select(1, surface.GetTextSize(gm))
 
     if gm == "FFA" then
@@ -272,7 +272,7 @@ local function MatchStartPopup(ply)
         surface.SetDrawColor(255, 255, 255, 128)
         surface.DrawRect(0, 0, GamemodePopup:GetWide(), 1)
         draw.RoundedBox(0, 0, 0, GamemodePopup:GetWide(), GamemodePopup:GetTall(), Color(0, 0, 0, 75))
-        draw.SimpleText(gm, "AmmoCountSmall", w / 2, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gm, "HUD_AmmoCountSmall", w / 2, h / 2, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     timer.Create("addAdditionalPopupInfo", 1.5, 1, function()

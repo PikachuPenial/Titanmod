@@ -4805,18 +4805,27 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                 GeneralEditor:Dock(TOP)
-                GeneralEditor:SetSize(0, 250)
+                GeneralEditor:SetSize(0, 290)
                 GeneralEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                     draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Font", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD X Bounds", "Health", 165, 90, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Y Bounds", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Text Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Scale", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Font", "Health", 125, 90, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD X Bounds", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Y Bounds", "Health", 165, 170, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Text Color", "Health", 210, 205, white, TEXT_ALIGN_LEFT)
                 end
 
+                local HUDScale = GeneralEditor:Add("DNumSlider")
+                HUDScale:SetPos(-85, 50)
+                HUDScale:SetSize(250, 30)
+                HUDScale:SetConVar("tm_hud_scale")
+                HUDScale:SetMin(0.5)
+                HUDScale:SetMax(2)
+                HUDScale:SetDecimals(2)
+
                 local HUDFont = GeneralEditor:Add("DComboBox")
-                HUDFont:SetPos(20, 50)
+                HUDFont:SetPos(20, 90)
                 HUDFont:SetSize(100, 30)
                 HUDFont:SetValue(GetConVar("tm_hud_font"):GetString())
                 HUDFont:AddChoice("Arial")
@@ -4837,7 +4846,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local CustomFontInput = GeneralEditor:Add("DTextEntry")
                 CustomFontInput:SetPlaceholderText("Enter a custom font...")
-                CustomFontInput:SetPos(275, 50)
+                CustomFontInput:SetPos(275, 90)
                 CustomFontInput:SetSize(125, 30)
                 CustomFontInput.OnEnter = function(self)
                     RunConsoleCommand("tm_hud_font", self:GetValue())
@@ -4846,7 +4855,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local HUDXBounds = GeneralEditor:Add("DNumSlider")
-                HUDXBounds:SetPos(-85, 90)
+                HUDXBounds:SetPos(-85, 130)
                 HUDXBounds:SetSize(250, 30)
                 HUDXBounds:SetConVar("tm_hud_bounds_x")
                 HUDXBounds:SetMin(0)
@@ -4854,7 +4863,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDXBounds:SetDecimals(0)
 
                 local HUDYBounds = GeneralEditor:Add("DNumSlider")
-                HUDYBounds:SetPos(-85, 130)
+                HUDYBounds:SetPos(-85, 170)
                 HUDYBounds:SetSize(250, 30)
                 HUDYBounds:SetConVar("tm_hud_bounds_y")
                 HUDYBounds:SetMin(0)
@@ -4862,7 +4871,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDYBounds:SetDecimals(0)
 
                 local WepTextColor = vgui.Create("DColorMixer", GeneralEditor)
-                WepTextColor:SetPos(20, 170)
+                WepTextColor:SetPos(20, 210)
                 WepTextColor:SetSize(185, 70)
                 WepTextColor:SetConVarR("tm_hud_text_color_r")
                 WepTextColor:SetConVarG("tm_hud_text_color_g")

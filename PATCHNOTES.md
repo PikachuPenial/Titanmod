@@ -1,3 +1,78 @@
+# Unreleased
+**>BALANCE**    
+*AK-12*
+- Reduced vertical recoil to 55 (previously 70)
+- Reduced horizontal recoil to 10 (previously 20)
+
+*AK-400*
+- Reduced vertical recoil to 45 (previously 55)
+- Reduced horizontal recoil to 20 (previously 25)
+
+*AK-47*
+- Reduced vertical recoil to 62 (previously 82)
+- Reduced horizontal recoil to 25 (previously 35)
+- Readjusted iron sights to better match aiming point
+
+*AKS-74U*
+- Reduced vertical recoil to 40 (previously 67)
+- Reduced horizontal recoil to 20 (previously 30)
+
+*AN-94*
+- Reduced horizontal recoil to 20 (previously 30)
+
+*AVT-40*
+- Reduced vertical recoil to 55 (previously 95)
+
+*Galil*
+- Reduced vertical recoil to 40 (previously 60)
+
+*Honey Badger*
+- Reduced vertical recoil to 35 (previously 45)
+- Reduced horizontal recoil to 20 (previously 25)
+
+*LR-300*
+- Reduced vertical recoil to 40 (previously 43)
+- Reduced horizontal recoil to 5 (previously 15)
+
+*MK18*
+- Reduced vertical recoil to 48 (previously 53)
+- Reduced horizontal recoil to 20 (previously 25)
+
+*Pindad SS2*
+- Reduced horizontal recoil to 10 (previously 20)
+
+*PKP*
+- Reduced vertical recoil to 47.5 (previously 52.5)
+- Reduced horizontal recoil to 25 (previously 37.5)
+
+*RPK-74M*
+- Reduced vertical recoil to 60 (previously 88)
+- Reduced horizontal recoil to 25 (previously 45)
+
+*SCAR-H*
+- Reduced vertical recoil to 65 (previously 115)
+
+*Spectre M4*
+- Reduced vertical recoil to 20 (previously 22.5)
+- Adjusted ADS firing animation to better match aiming point
+
+*SR-25*
+- Reduced vertical recoil to 50 (previously 70)
+- Reduced horizontal recoil to 20 (previously 47)
+
+*VHS-D2*
+- Reduced vertical recoil to 37 (previously 45)
+- Reduced horizontal recoil to 20 (previously 47)
+
+*XM8*
+- Reduced vertical recoil to 25 (previously 30)
+- Reduced horizontal recoil to 5 (previously 10)
+
+**>QOL & BUG FIXES**   
+- Removed unnecessary parameters from fonts created by the gamemode
+
+
+
 # March 30th, 2025 (3/30/25)
 **>BALANCE**    
 *Melee*
