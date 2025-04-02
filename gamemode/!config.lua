@@ -420,6 +420,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_default_clip", "1000")
     RunConsoleCommand("sv_tfa_door_respawn", "-1")
     RunConsoleCommand("sv_tfa_dynamicaccuracy", "1")
+    RunConsoleCommand("sv_tfa_first_draw_anim_enabled", "0")
     RunConsoleCommand("sv_tfa_force_multiplier", "1")
     RunConsoleCommand("sv_tfa_fx_penetration_decal", "1")
     RunConsoleCommand("sv_tfa_holdtype_dynamic", "1")

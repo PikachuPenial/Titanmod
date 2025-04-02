@@ -5,7 +5,7 @@ TM = {}
 
 -- all interfaces and fonts are developed on a 1920x1080 monitor
 local tm_hud_scale = GetConVar("tm_hud_scale")
-TM.ScreenScale = function(size)
+TM.HUDScale = function(size)
 	if size > 0 then
         return math.max(1, size / 3 * (ScrW() / 640) * tm_hud_scale:GetFloat())
     else

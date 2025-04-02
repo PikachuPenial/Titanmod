@@ -122,6 +122,7 @@ end)
 
 local SetMaterial, SetDrawColor, DrawTexturedRectRotated = surface.SetMaterial, surface.SetDrawColor, surface.DrawTexturedRectRotated
 local min, max, atan2, sin, cos = math.min, math.max, math.atan2, math.sin, math.cos
+local scale = center_y * (2 / 1080)
 hook.Add("HUDPaint", "DamageIndicator", function()
 	if not head then return end
 	if not (IsValid(localply) and localply:Alive()) then

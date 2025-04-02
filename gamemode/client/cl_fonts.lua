@@ -109,56 +109,56 @@ function UpdateFonts()
 	-- HUD
 	surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 56,
+		size = TM.HUDScale(56),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_AmmoCount", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 128,
+		size = TM.HUDScale(128),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_WepNameKill", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 28,
+		size = TM.HUDScale(28),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_Health", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 30,
+		size = TM.HUDScale(30),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_StreakText", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 22,
+		size = TM.HUDScale(22),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_PlayerNotiName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 52,
+		size = TM.HUDScale(52),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_PlayerDeathName", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 36,
+		size = TM.HUDScale(36),
 		weight = 500,
 		antialias = true
 	} )
 
 	surface.CreateFont("HUD_IntermissionText", {
 		font = GetConVar("tm_hud_font"):GetString(),
-		size = 180,
+		size = TM.HUDScale(180),
 		weight = 600,
 		antialias = true,
 		outline = true
@@ -166,7 +166,7 @@ function UpdateFonts()
 
 	surface.CreateFont("HUD_AmmoCountSmall", {
 		font = "Arial",
-		size = 96,
+		size = TM.HUDScale(96),
 		weight = 500,
 		antialias = true
 	} )

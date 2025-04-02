@@ -24,7 +24,7 @@ function GM:ScoreboardShow()
 			BlurPanel(ScoreboardDerma, 5)
 
 			draw.RoundedBox(0, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(35, 35, 35, 150))
-			draw.SimpleTextOutlined("TITANMOD", "TitleText", TM.MenuScale(15), TM.MenuScale(15), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 0.5, Color(0, 0, 0, 100))
+			draw.SimpleTextOutlined("TITANMOD", "TitleText", TM.MenuScale(15), TM.MenuScale(0), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0.5, Color(0, 0, 0, 100))
 
 			surface.SetDrawColor(Color(255, 255, 255, 155))
 			surface.DrawRect(0, 0, w, TM.MenuScale(1))
