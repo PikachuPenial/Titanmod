@@ -543,7 +543,7 @@ function HUDAlive(client)
     if convars["ammo_style"] == 0 then
         -- numeric style
         draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - TM.HUDScale(50) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)
-        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW + 2 - weaponHUD["x"], scrH - TM.HUDScale(170) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT) end
+        if convars["kill_tracker"] == 1 then draw.SimpleText(client:GetNWInt("killsWith_" .. weapon:GetClass()) .. " kills", "HUD_StreakText", scrW - TM.MenuScale(5) - weaponHUD["x"], scrH - TM.HUDScale(170) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT) end
 
         local ammoColor
         local ammoText
@@ -562,7 +562,7 @@ function HUDAlive(client)
             ammoText = "[" .. string.upper(reloadBind) .. "] THROW"
         end
 
-        draw.SimpleText(ammoText, "HUD_AmmoCount", scrW + 2 - weaponHUD["x"], scrH - TM.HUDScale(165) - weaponHUD["y"], ammoColor, TEXT_ALIGN_RIGHT)
+        draw.SimpleText(ammoText, "HUD_AmmoCount", scrW - weaponHUD["x"], scrH - TM.HUDScale(165) - weaponHUD["y"], ammoColor, TEXT_ALIGN_RIGHT)
     elseif convars["ammo_style"] == 1 then
         -- bar style
         draw.SimpleText(weapon:GetPrintName(), "HUD_GunPrintName", scrW - weaponHUD["x"], scrH - TM.HUDScale(90) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)

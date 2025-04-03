@@ -216,6 +216,14 @@ local function ExplosiveKnockback(ent, dmginfo)
 end
 hook.Add("EntityTakeDamage", "ExplosiveKnockback", ExplosiveKnockback)
 
+-- change explosive audio distortion
+hook.Add("OnDamagedByExplosion", "TinnitusSoundOnExplosion", function(ply, dmginfo)
+    if IsValid(ply) and ply:IsPlayer() then
+        ply:SetDSP(32, false)
+        return false
+    end
+end)
+
 -- disable fall damage
 hook.Add("GetFallDamage", "DisableFallDmg", function(ply, speed) return false end)
 

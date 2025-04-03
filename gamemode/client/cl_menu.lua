@@ -28,7 +28,6 @@ local function TriggerSound(type)
 end
 
 local playedIntro = false
-local seenResWarning = false
 
 local MainMenu
 
@@ -45,13 +44,11 @@ net.Receive("OpenMainMenu", function(len, ply)
 
     DeleteHUDHook()
 
-    local dof
     local mapID
     local mapName
 
     local canPrestige
     if LocalPly:GetNWInt("playerLevel") != 60 then canPrestige = false else canPrestige = true end
-    if scrW < 1024 and scrH < 768 then belowMinimumRes = true else belowMinimumRes = false end
 
     local hintList = hintArray
     table.Shuffle(hintList)
@@ -99,10 +96,8 @@ net.Receive("OpenMainMenu", function(len, ply)
             mouseX, mouseY = MainMenu:LocalCursorPos()
 
             if GetGlobal2Bool("tm_matchended") == true then 
-                
                 MainMenu:Remove()
                 return
-
             end
         end
 
@@ -120,40 +115,40 @@ net.Receive("OpenMainMenu", function(len, ply)
             local hintTextAnim = 0
 
             MainPanel.Paint = function()
-                draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", 440, -5, white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(LocalPly:GetNWInt("playerLevel"), "AmmoCountSmall", TM.MenuScale(440), TM.MenuScale(-5), white, TEXT_ALIGN_LEFT)
 
                 if LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") != 60 then
-                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 660, 37.5, white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", TM.MenuScale(660), TM.MenuScale(37.5), white, TEXT_ALIGN_RIGHT)
                 elseif LocalPly:GetNWInt("playerPrestige") != 0 and LocalPly:GetNWInt("playerLevel") == 60 then
-                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", 535, 37.5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("PRESTIGE " .. LocalPly:GetNWInt("playerPrestige"), "StreakText", TM.MenuScale(535), TM.MenuScale(37.5), white, TEXT_ALIGN_LEFT)
                 end
 
                 if LocalPly:GetNWInt("playerLevel") != 60 then
-                    draw.SimpleText(math.Round(LocalPly:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPly:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", 660, 57.5, white, TEXT_ALIGN_RIGHT)
-                    draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", 665, 72.5, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText(math.Round(LocalPly:GetNWInt("playerXP"), 0) .. " / " .. math.Round(LocalPly:GetNWInt("playerXPToNextLevel"), 0) .. "XP", "StreakText", TM.MenuScale(660), TM.MenuScale(57.5), white, TEXT_ALIGN_RIGHT)
+                    draw.SimpleText(LocalPly:GetNWInt("playerLevel") + 1, "StreakText", TM.MenuScale(665), TM.MenuScale(72.5), white, TEXT_ALIGN_LEFT)
 
                     surface.SetDrawColor(30, 30, 30, 125)
-                    surface.DrawRect(440, 80, 220, 10)
+                    surface.DrawRect(TM.MenuScale(440), TM.MenuScale(80), TM.MenuScale(220), TM.MenuScale(10))
 
                     surface.SetDrawColor(200, 200, 0, 130)
-                    surface.DrawRect(440, 80, (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * 220, 10)
+                    surface.DrawRect(TM.MenuScale(440), TM.MenuScale(80), (LocalPly:GetNWInt("playerXP") / LocalPly:GetNWInt("playerXPToNextLevel")) * TM.MenuScale(220), TM.MenuScale(10))
                 else
-                    draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", 535, 55, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", TM.MenuScale(535), TM.MenuScale(55), white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", 5 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", 10 + spawnTextAnim, scrH / 2 - 60 - pushSpawnItems, white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", TM.MenuScale(5 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", TM.MenuScale(10 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 50 * RealFrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 125)
-                surface.DrawRect(0, scrH - 24, scrW, 24)
-                draw.SimpleText(hintText, "StreakText", 5 - hintTextAnim, scrH - 13, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                surface.DrawRect(0, scrH - TM.MenuScale(24), scrW, TM.MenuScale(24))
+                draw.SimpleText(hintText, "StreakText", TM.MenuScale(5) - TM.MenuScale(hintTextAnim), scrH - TM.MenuScale(13), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             if canPrestige == true then
                 local PrestigeButton = vgui.Create("DButton", MainPanel)
-                PrestigeButton:SetPos(437.5, 67.5)
+                PrestigeButton:SetPos(TM.MenuScale(437.5), TM.MenuScale(67.5))
                 PrestigeButton:SetText("")
-                PrestigeButton:SetSize(180, 30)
+                PrestigeButton:SetSize(TM.MenuScale(180), TM.MenuScale(30))
                 local textAnim = 0
                 local prestigeConfirm = 0
                 local rainbowSpeed = 160
@@ -167,9 +162,9 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     if prestigeConfirm == 0 then
-                        draw.DrawText("PRESTIGE TO P" .. LocalPly:GetNWInt("playerPrestige") + 1, "StreakText", 5 + textAnim, 5, rainbowColor, TEXT_ALIGN_LEFT)
+                        draw.DrawText("PRESTIGE TO P" .. LocalPly:GetNWInt("playerPrestige") + 1, "StreakText", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), rainbowColor, TEXT_ALIGN_LEFT)
                     else
-                        draw.DrawText("ARE YOU SURE?", "StreakText", 5 + textAnim, 5, solidRed, TEXT_ALIGN_LEFT)
+                        draw.DrawText("ARE YOU SURE?", "StreakText", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
                     end
                 end
                 PrestigeButton.DoClick = function()
@@ -188,13 +183,13 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             plyCallingCard = vgui.Create("DImage", MainPanel)
-            plyCallingCard:SetPos(190, 10)
-            plyCallingCard:SetSize(240, 80)
+            plyCallingCard:SetPos(TM.MenuScale(190), TM.MenuScale(10))
+            plyCallingCard:SetSize(TM.MenuScale(240), TM.MenuScale(80))
             plyCallingCard:SetImage(LocalPly:GetNWString("chosenPlayercard"), "cards/color/black.png")
 
             playerProfilePicture = vgui.Create("AvatarImage", MainPanel)
-            playerProfilePicture:SetPos(195, 15)
-            playerProfilePicture:SetSize(70, 70)
+            playerProfilePicture:SetPos(TM.MenuScale(195), TM.MenuScale(15))
+            playerProfilePicture:SetSize(TM.MenuScale(70), TM.MenuScale(70))
             playerProfilePicture:SetPlayer(LocalPly, 184)
 
             local SelectedBoard
@@ -202,9 +197,9 @@ net.Receive("OpenMainMenu", function(len, ply)
             local LeaderboardProfiles
             local ProfilesHolder
             local LeaderboardButton = vgui.Create("DImageButton", MainPanel)
-            LeaderboardButton:SetPos(10, 10)
+            LeaderboardButton:SetPos(TM.MenuScale(10), TM.MenuScale(10))
             LeaderboardButton:SetImage("icons/leaderboardicon.png")
-            LeaderboardButton:SetSize(80, 80)
+            LeaderboardButton:SetSize(TM.MenuScale(80), TM.MenuScale(80))
             LeaderboardButton:SetTooltip("Leaderboards")
             LeaderboardButton.DoClick = function()
                 if IsValid(LeaderboardPanel) then return end
@@ -225,7 +220,7 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     LeaderboardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                        draw.RoundedBox(0, TM.MenuScale(4), scrH - TM.MenuScale(52), TM.MenuScale(48), TM.MenuScale(48), transparentRed)
                     end
 
                     local LeaderboardScroller = vgui.Create("DScrollPanel", LeaderboardPanel)
@@ -233,27 +228,28 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                     local sbar = LeaderboardScroller:GetVBar()
                     sbar:SetHideButtons(true)
+                    sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                     function sbar:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                        draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                     end
 
                     local LeaderboardTextHolder = vgui.Create("DPanel", LeaderboardPanel)
                     LeaderboardTextHolder:Dock(TOP)
-                    LeaderboardTextHolder:SetSize(0, 210)
+                    LeaderboardTextHolder:SetSize(0, TM.MenuScale(210))
 
                     LeaderboardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", 20, 20, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Entries update on match start/player disconnect | Only top 100 are shown", "StreakText", 25, 100, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("LEADERBOARDS", "AmmoCountSmall", TM.MenuScale(20), TM.MenuScale(20), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Entries update on match start/player disconnect | Only top 100 are shown", "StreakText", TM.MenuScale(25), TM.MenuScale(100), white, TEXT_ALIGN_LEFT)
 
-                        if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", 85, 156, white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) end
-                        if timer.Exists("SendBoardDataRequestCooldown") then draw.SimpleText(math.Round(timer.TimeLeft("SendBoardDataRequestCooldown"), 1), "StreakText", 41, 156, white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) end
-                        draw.SimpleText("#", "StreakText", 20, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Name", "StreakText", 85, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Stat", "StreakText", 710, 185, white, TEXT_ALIGN_RIGHT)
+                        if SelectedBoardName != nil then draw.SimpleText(SelectedBoardName, "OptionsHeader", TM.MenuScale(85), TM.MenuScale(124), white, TEXT_ALIGN_LEFT) end
+                        if timer.Exists("SendBoardDataRequestCooldown") then draw.SimpleText(math.Round(timer.TimeLeft("SendBoardDataRequestCooldown"), 1), "StreakText", TM.MenuScale(41), TM.MenuScale(145), white, TEXT_ALIGN_CENTER) end
+                        draw.SimpleText("#", "StreakText", TM.MenuScale(20), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Name", "StreakText", TM.MenuScale(85), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Stat", "StreakText", TM.MenuScale(710), TM.MenuScale(185), white, TEXT_ALIGN_RIGHT)
                     end
 
                     local LeaderboardPickerButton
@@ -273,8 +269,8 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     LeaderboardPickerButton = vgui.Create("DImageButton", LeaderboardTextHolder)
-                    LeaderboardPickerButton:SetPos(25, 140)
-                    LeaderboardPickerButton:SetSize(32, 32)
+                    LeaderboardPickerButton:SetPos(TM.MenuScale(25), TM.MenuScale(140))
+                    LeaderboardPickerButton:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     LeaderboardPickerButton:SetTooltip("Switch shown Leaderboard")
                     LeaderboardPickerButton:SetImage("icons/changeicon.png")
                     LeaderboardPickerButton.DoClick = function()
@@ -311,13 +307,13 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
 
                     local StatsIcon = vgui.Create("DImage", LeaderboardQuickjumpHolder)
-                    StatsIcon:SetPos(12, 12)
-                    StatsIcon:SetSize(32, 32)
+                    StatsIcon:SetPos(TM.MenuScale(12), TM.MenuScale(12))
+                    StatsIcon:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     StatsIcon:SetImage("icons/leaderboardslideouticon.png")
 
                     local BackButtonSlideout = vgui.Create("DImageButton", LeaderboardQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, scrH - 44)
-                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetPos(TM.MenuScale(12), scrH - TM.MenuScale(44))
+                    BackButtonSlideout:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
@@ -338,44 +334,44 @@ net.Receive("OpenMainMenu", function(len, ply)
                         for p, t in pairs(SelectedBoard) do
                             if t.Value == "NULL" then return end
                             if t.SteamName != LocalPly:GetName() then
-                                draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT)
-                                if t.SteamName != "NULL" then draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", 85, (p - 1) * 41.25, white, TEXT_ALIGN_LEFT) end
+                                draw.SimpleText(p, "SettingsLabel", TM.MenuScale(20), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_LEFT)
+                                if t.SteamName != "NULL" then draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", TM.MenuScale(85), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_LEFT) else draw.SimpleText(t.SteamID, "SettingsLabel", TM.MenuScale(85), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_LEFT) end
                             else
-                                draw.SimpleText(p, "SettingsLabel", 20, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
-                                draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", 85, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(p, "SettingsLabel", TM.MenuScale(20), (p - 1) * TM.MenuScale(41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
+                                draw.SimpleText(string.sub(t.SteamName, 1, 21), "SettingsLabel", TM.MenuScale(85), (p - 1) * TM.MenuScale(41.25), Color(255, 255, 0), TEXT_ALIGN_LEFT)
                             end
 
                             if SelectedBoardName == "W/L Ratio" then
                                 if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_RIGHT)
                                 else
-                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value) .. "%", "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             elseif SelectedBoardName == "Farthest Kill" then
                                 if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_RIGHT)
                                 else
-                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value, 2) .. "m", "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             else
                                 if t.SteamName != LocalPly:GetName() then
-                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, (p - 1) * 41.25, white, TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), white, TEXT_ALIGN_RIGHT)
                                 else
-                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", 710, (p - 1) * 41.25, Color(255, 255, 0), TEXT_ALIGN_RIGHT)
+                                    draw.SimpleText(math.Round(t.Value, 2), "SettingsLabel", TM.MenuScale(710), (p - 1) * TM.MenuScale(41.25), Color(255, 255, 0), TEXT_ALIGN_RIGHT)
                                 end
                             end
                         end
                     end
 
                     LeaderboardProfiles = vgui.Create("DPanel", LeaderboardScroller)
-                    LeaderboardProfiles:SetPos(720, 0)
+                    LeaderboardProfiles:SetPos(TM.MenuScale(720), 0)
                     LeaderboardProfiles.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     ProfilesHolder = vgui.Create("DIconLayout", LeaderboardProfiles)
                     ProfilesHolder:Dock(TOP)
-                    ProfilesHolder:SetSpaceY(1.25)
+                    ProfilesHolder:SetSpaceY(TM.MenuScale(1.25))
 
                     net.Start("GrabLeaderboardData")
                     net.WriteString("playerKills")
@@ -393,7 +389,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 for p, t in pairs(ReceivedBoard) do
                     local SteamProfile = vgui.Create("DImageButton", ProfilesHolder)
                     SteamProfile:SetImage("icons/linkicon.png")
-                    SteamProfile:SetSize(40, 40)
+                    SteamProfile:SetSize(TM.MenuScale(40), TM.MenuScale(40))
                     SteamProfile:SetTooltip("Open " .. t.SteamName .. "'s Steam Profile")
                     ProfilesHolder:Add(SteamProfile)
 
@@ -403,27 +399,27 @@ net.Receive("OpenMainMenu", function(len, ply)
                     end
                 end
 
-                LeaderboardProfiles:SetSize(45, math.max(table.Count(ReceivedBoard) * 41.25 + 5, 870))
+                LeaderboardProfiles:SetSize(TM.MenuScale(45), math.max(table.Count(ReceivedBoard) * TM.MenuScale(41.25) + TM.MenuScale(5), TM.MenuScale(870)))
                 SelectedBoard = ReceivedBoard
             end )
 
             local SpectatePanel = vgui.Create("DPanel", MainPanel)
-            SpectatePanel:SetSize(170, 0)
-            SpectatePanel:SetPos(10, 100)
+            SpectatePanel:SetSize(TM.MenuScale(170), 0)
+            SpectatePanel:SetPos(TM.MenuScale(10), TM.MenuScale(100))
             SpectatePanel.Paint = function(self, w, h)
                 draw.RoundedBox(0, 0, 0, w, h, gray)
             end
 
             local SpectateTextHeader = vgui.Create("DPanel", SpectatePanel)
             SpectateTextHeader:Dock(TOP)
-            SpectateTextHeader:SetSize(0, 70)
+            SpectateTextHeader:SetSize(0, TM.MenuScale(70))
             SpectateTextHeader.Paint = function(self, w, h)
-                draw.SimpleText("SPECTATE", "MainMenuDescription", w / 2, 20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText("SPECTATE", "MainMenuDescription", w / 2, TM.MenuScale(8), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
             end
 
             local SpectatePicker = SpectateTextHeader:Add("DComboBox")
-            SpectatePicker:SetPos(0, 40)
-            SpectatePicker:SetSize(170, 30)
+            SpectatePicker:SetPos(0, TM.MenuScale(40))
+            SpectatePicker:SetSize(TM.MenuScale(170), TM.MenuScale(30))
             SpectatePicker:SetValue("Spectate...")
             SpectatePicker:AddChoice("Freecam")
             SpectatePicker.OnSelect = function(_, _, value, id)
@@ -436,19 +432,19 @@ net.Receive("OpenMainMenu", function(len, ply)
             end
 
             local SpectateButton = vgui.Create("DImageButton", MainPanel)
-            SpectateButton:SetPos(100, 10)
+            SpectateButton:SetPos(TM.MenuScale(100), TM.MenuScale(10))
             SpectateButton:SetImage("icons/spectateicon.png")
-            SpectateButton:SetSize(80, 80)
+            SpectateButton:SetSize(TM.MenuScale(80), TM.MenuScale(80))
             SpectateButton:SetTooltip("Spectate")
             local spectatePanelOpen = 0
             SpectateButton.DoClick = function()
                 TriggerSound("click")
                 if (spectatePanelOpen == 0) then
                     spectatePanelOpen = 1
-                    SpectatePanel:SizeTo(-1, 70, 0.75, 0, 0.1)
+                    SpectatePanel:SizeTo(TM.MenuScale(-1), TM.MenuScale(70), 0.75, 0, 0.1)
                 else
                     spectatePanelOpen = 0
-                    SpectatePanel:SizeTo(-1, 0, 0.75, 0, 0.1)
+                    SpectatePanel:SizeTo(TM.MenuScale(-1), 0, 0.75, 0, 0.1)
                 end
             end
 
@@ -456,7 +452,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 if IsValid(TutorialPanel) then return end
 
                 local TutorialPanel = vgui.Create("DFrame", MainMenu)
-                TutorialPanel:SetSize(864, 768)
+                TutorialPanel:SetSize(TM.MenuScale(864), TM.MenuScale(768))
                 TutorialPanel:MakePopup()
                 TutorialPanel:SetTitle("")
                 TutorialPanel:Center()
@@ -483,38 +479,39 @@ net.Receive("OpenMainMenu", function(len, ply)
 
                 local sbar = TutorialScroller:GetVBar()
                 sbar:SetHideButtons(true)
+                sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                    draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                 end
 
                 local TitleText = vgui.Create("DPanel", TutorialScroller)
                 TitleText:Dock(TOP)
-                TitleText:SetSize(0, 160)
+                TitleText:SetSize(0, TM.MenuScale(160))
                 TitleText.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 100))
-                    draw.SimpleText("WELCOME TO", "SettingsLabel", w / 2, 5, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("WELCOME TO", "SettingsLabel", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
                 end
 
                 local TitanmodLogo = vgui.Create("DImage", TutorialScroller)
-                TitanmodLogo:SetPos(112, 25)
-                TitanmodLogo:SetSize(641, 128)
+                TitanmodLogo:SetPos(TM.MenuScale(112), TM.MenuScale(25))
+                TitanmodLogo:SetSize(TM.MenuScale(641), TM.MenuScale(128))
                 TitanmodLogo:SetImage("gamemodes/titanmod/logo.png")
 
                 local WeaponrySection = vgui.Create("DPanel", TutorialScroller)
                 WeaponrySection:Dock(TOP)
-                WeaponrySection:SetSize(0, 280)
+                WeaponrySection:SetSize(0, TM.MenuScale(280))
                 WeaponrySection.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-                    draw.SimpleText("WEAPONS", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("WEAPONS", "OptionsHeader", TM.MenuScale(280), 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
                 end
 
                 local WeaponryLabel = vgui.Create("DLabel", WeaponrySection)
-                WeaponryLabel:SetPos(280, 30)
-                WeaponryLabel:SetSize(554, 230)
-                WeaponryLabel:SetFont("GModNotify")
+                WeaponryLabel:SetPos(TM.MenuScale(280), TM.MenuScale(40))
+                WeaponryLabel:SetSize(TM.MenuScale(554), TM.MenuScale(230))
+                WeaponryLabel:SetFont("Menu_GModNotify")
                 WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
 You can use your Context Menu key []] .. string.upper(ContextBind) .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
 Each weapon has its own unique recoil pattern to learn.
@@ -523,22 +520,22 @@ Bullets are hitscan and can penetrate through surfaces.
                 WeaponryLabel:SetWrap(true)
 
                 local WeaponryImage = vgui.Create("DImage", WeaponrySection)
-                WeaponryImage:SetPos(10, 10)
-                WeaponryImage:SetSize(260, 260)
+                WeaponryImage:SetPos(TM.MenuScale(10), TM.MenuScale(10))
+                WeaponryImage:SetSize(TM.MenuScale(260), TM.MenuScale(260))
                 WeaponryImage:SetImage("images/attach.png")
 
                 local MovementSection = vgui.Create("DPanel", TutorialScroller)
                 MovementSection:Dock(TOP)
-                MovementSection:SetSize(0, 280)
+                MovementSection:SetSize(0, TM.MenuScale(280))
                 MovementSection.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-                    draw.SimpleText("MOVEMENT", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("MOVEMENT", "OptionsHeader", TM.MenuScale(280), 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
                 end
 
                 local MovementLabel = vgui.Create("DLabel", MovementSection)
-                MovementLabel:SetPos(280, 35)
-                MovementLabel:SetSize(554, 230)
-                MovementLabel:SetFont("GModNotify")
+                MovementLabel:SetPos(TM.MenuScale(280), TM.MenuScale(35))
+                MovementLabel:SetSize(TM.MenuScale(554), TM.MenuScale(230))
+                MovementLabel:SetFont("Menu_GModNotify")
                 MovementLabel:SetText([[Titanmod has an assortment of movement mechanics to learn and use on your opponents!
 Here are a few things to look out for:
 Sliding                     Bunny Hopping
@@ -549,22 +546,22 @@ Rocket Jumping      Grappling
                 MovementLabel:SetWrap(true)
 
                 local MovementImage = vgui.Create("DImage", MovementSection)
-                MovementImage:SetPos(10, 10)
-                MovementImage:SetSize(260, 260)
+                MovementImage:SetPos(TM.MenuScale(10), TM.MenuScale(10))
+                MovementImage:SetSize(TM.MenuScale(260), TM.MenuScale(260))
                 MovementImage:SetImage("images/movement.png")
 
                 local PersonalizeSection = vgui.Create("DPanel", TutorialScroller)
                 PersonalizeSection:Dock(TOP)
-                PersonalizeSection:SetSize(0, 280)
+                PersonalizeSection:SetSize(0, TM.MenuScale(280))
                 PersonalizeSection.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-                    draw.SimpleText("CUSTOMIZATION", "OptionsHeader", 280, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("CUSTOMIZATION", "OptionsHeader", TM.MenuScale(280), 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
                 end
 
                 local PersonalizeLabel = vgui.Create("DLabel", PersonalizeSection)
-                PersonalizeLabel:SetPos(280, 45)
-                PersonalizeLabel:SetSize(554, 230)
-                PersonalizeLabel:SetFont("GModNotify")
+                PersonalizeLabel:SetPos(TM.MenuScale(280), TM.MenuScale(40))
+                PersonalizeLabel:SetSize(TM.MenuScale(554), TM.MenuScale(230))
+                PersonalizeLabel:SetFont("Menu_GModNotify")
                 PersonalizeLabel:SetText([[There are over 300+ items to unlock in Titanmod!
 There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
 Check out the CUSTOMIZE page to see what is on offer.
@@ -573,24 +570,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 PersonalizeLabel:SetWrap(true)
 
                 local PersonalizeImage = vgui.Create("DImage", PersonalizeSection)
-                PersonalizeImage:SetPos(10, 10)
-                PersonalizeImage:SetSize(260, 260)
+                PersonalizeImage:SetPos(TM.MenuScale(10), TM.MenuScale(10))
+                PersonalizeImage:SetSize(TM.MenuScale(260), TM.MenuScale(260))
                 PersonalizeImage:SetImage("images/personalize.png")
 
                 local EndingLabel = vgui.Create("DPanel", TutorialScroller)
                 EndingLabel:Dock(TOP)
-                EndingLabel:SetSize(0, 115)
+                EndingLabel:SetSize(0, TM.MenuScale(115))
                 EndingLabel.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
-                    draw.SimpleText("Join our Discord server!", "SettingsLabel", 90, 8, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Find people to play with or keep up wtih new updates and teasers", "GModNotify", 90, 48, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("^   click me please :)", "GModNotify", 44, 80, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Join our Discord server!", "SettingsLabel", TM.MenuScale(90), TM.MenuScale(8), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Find people to play with or keep up wtih new updates and teasers", "Menu_GModNotify", TM.MenuScale(90), TM.MenuScale(48), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("^   click me please :)", "Menu_GModNotify", TM.MenuScale(44), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
                 end
 
                 local DiscordButton = vgui.Create("DImageButton", EndingLabel)
-                DiscordButton:SetPos(15, 8)
+                DiscordButton:SetPos(TM.MenuScale(15), TM.MenuScale(8))
                 DiscordButton:SetImage("icons/discordicon.png")
-                DiscordButton:SetSize(64, 64)
+                DiscordButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
                 DiscordButton:SetTooltip("Discord")
                 DiscordButton.DoClick = function()
                     TriggerSound("click")
@@ -608,9 +605,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
-            TutorialButton:SetPos(8, scrH - 96)
+            TutorialButton:SetPos(TM.MenuScale(8), scrH - TM.MenuScale(96))
             TutorialButton:SetImage("icons/tutorialicon.png")
-            TutorialButton:SetSize(64, 64)
+            TutorialButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             TutorialButton:SetTooltip("Tutorial")
             TutorialButton.DoClick = function()
                 TriggerSound("click")
@@ -618,9 +615,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local DiscordButton = vgui.Create("DImageButton", MainPanel)
-            DiscordButton:SetPos(108, scrH - 96)
+            DiscordButton:SetPos(TM.MenuScale(108), scrH - TM.MenuScale(96))
             DiscordButton:SetImage("icons/discordicon.png")
-            DiscordButton:SetSize(64, 64)
+            DiscordButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             DiscordButton:SetTooltip("Discord")
             DiscordButton.DoClick = function()
                 TriggerSound("click")
@@ -635,9 +632,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(180, scrH - 96)
+            WorkshopButton:SetPos(TM.MenuScale(180), scrH - TM.MenuScale(96))
             WorkshopButton:SetImage("icons/workshopicon.png")
-            WorkshopButton:SetSize(64, 64)
+            WorkshopButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             WorkshopButton:SetTooltip("Steam Workshop")
             WorkshopButton.DoClick = function()
                 TriggerSound("click")
@@ -652,9 +649,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(252, scrH - 96)
+            YouTubeButton:SetPos(TM.MenuScale(252), scrH - TM.MenuScale(96))
             YouTubeButton:SetImage("icons/youtubeicon.png")
-            YouTubeButton:SetSize(64, 64)
+            YouTubeButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             YouTubeButton:SetTooltip("YouTube")
             YouTubeButton.DoClick = function()
                 TriggerSound("click")
@@ -669,9 +666,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(324, scrH - 96)
+            GithubButton:SetPos(TM.MenuScale(324), scrH - TM.MenuScale(96))
             GithubButton:SetImage("icons/githubicon.png")
-            GithubButton:SetSize(64, 64)
+            GithubButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             GithubButton:SetTooltip("GitHub")
             GithubButton.DoClick = function()
                 TriggerSound("click")
@@ -686,11 +683,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local SpawnButton = vgui.Create("DButton", MainPanel)
-            SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
+            SpawnButton:SetPos(0, scrH / 2 - TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
             SpawnButton:SetText("")
-            SpawnButton:SetSize(535, 100)
+            SpawnButton:SetSize(TM.MenuScale(535), TM.MenuScale(100))
             SpawnButton.Paint = function()
-                SpawnButton:SetPos(0, scrH / 2 - 50 - pushSpawnItems)
+                SpawnButton:SetPos(0, scrH / 2 - TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
                 if !timer.Exists("respawnTimeLeft") then
                     if SpawnButton:IsHovered() then
                         spawnTextAnim = math.Clamp(spawnTextAnim + 200 * RealFrameTime(), 0, 20)
@@ -698,19 +695,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         spawnTextAnim = math.Clamp(spawnTextAnim - 200 * RealFrameTime(), 0, 20)
                     end
 
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(spawnTextAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
                     for i = 1, #weaponArray do
                         if activeGamemode == "Gun Game" then
-                            draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(LocalPly:GetNWInt("ladderPosition") .. " / " .. ggLadderSize .. " kills", "MainMenuLoadoutWeapons", TM.MenuScale(325) + TM.MenuScale(spawnTextAnim), TM.MenuScale(15), white, TEXT_ALIGN_LEFT)
                         else
-                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 15, white, TEXT_ALIGN_LEFT) end
-                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 40 , white, TEXT_ALIGN_LEFT) end
-                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", 325 + spawnTextAnim, 65, white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutPrimary") and usePrimary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", TM.MenuScale(325) + TM.MenuScale(spawnTextAnim), TM.MenuScale(15), white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutSecondary") and useSecondary then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", TM.MenuScale(325) + TM.MenuScale(spawnTextAnim), TM.MenuScale(40) , white, TEXT_ALIGN_LEFT) end
+                            if weaponArray[i][1] == LocalPly:GetNWString("loadoutMelee") and useMelee then draw.SimpleText(weaponArray[i][2], "MainMenuLoadoutWeapons", TM.MenuScale(325) + TM.MenuScale(spawnTextAnim), TM.MenuScale(65), white, TEXT_ALIGN_LEFT) end
                         end
                     end
                 else
-                    draw.DrawText("SPAWN", "AmmoCountSmall", 5 + spawnTextAnim, 5, Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
-                    draw.DrawText("" .. math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", 350 + spawnTextAnim, 5, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("SPAWN", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(spawnTextAnim), TM.MenuScale(5), Color(250, 100, 100, 255), TEXT_ALIGN_LEFT)
+                    draw.DrawText("" .. math.Round(timer.TimeLeft("respawnTimeLeft"), 2), "AmmoCountSmall", TM.MenuScale(350) + TM.MenuScale(spawnTextAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
                 end
             end
             SpawnButton.DoClick = function()
@@ -732,44 +729,44 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local CustomizeLoadoutButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeModelButton = vgui.Create("DButton", CustomizeButton)
             local CustomizeCardButton = vgui.Create("DButton", CustomizeButton)
-            CustomizeButton:SetPos(0, scrH / 2 + 50)
+            CustomizeButton:SetPos(0, scrH / 2 + TM.MenuScale(50))
             CustomizeButton:SetText("")
-            CustomizeButton:SetSize(530, 100)
+            CustomizeButton:SetSize(TM.MenuScale(530), TM.MenuScale(100))
             local textAnim = 0
             CustomizeButton.Paint = function()
                 if CustomizeButton:IsHovered() or CustomizeLoadoutButton:IsHovered() or CustomizeModelButton:IsHovered() or CustomizeCardButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * RealFrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
-                    CustomizeButton:SizeTo(-1, 200, 0, 0, 1)
+                    CustomizeButton:SetPos(0, scrH / 2 + TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
+                    CustomizeButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(200), 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems - 600 * RealFrameTime(), 100, 150)
-                    CustomizeButton:SetPos(0, scrH / 2 + 50 - pushSpawnItems)
-                    CustomizeButton:SizeTo(-1, 100, 0, 0, 1)
+                    CustomizeButton:SetPos(0, scrH / 2 + TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
+                    CustomizeButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(100), 0, 0, 1)
                 end
-                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("CUSTOMIZE", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
-            CustomizeLoadoutButton:SetPos(0, 100)
+            CustomizeLoadoutButton:SetPos(0, TM.MenuScale(100))
             CustomizeLoadoutButton:SetText("")
-            CustomizeLoadoutButton:SetSize(180, 100)
+            CustomizeLoadoutButton:SetSize(TM.MenuScale(180), TM.MenuScale(100))
             CustomizeLoadoutButton.Paint = function()
-                draw.DrawText("GEAR", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("GEAR", "AmmoCountESmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
-            CustomizeModelButton:SetPos(180, 100)
+            CustomizeModelButton:SetPos(TM.MenuScale(180), TM.MenuScale(100))
             CustomizeModelButton:SetText("")
-            CustomizeModelButton:SetSize(180, 100)
+            CustomizeModelButton:SetSize(TM.MenuScale(180), TM.MenuScale(100))
             CustomizeModelButton.Paint = function()
-                draw.DrawText("MODEL", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("MODEL", "AmmoCountESmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
-            CustomizeCardButton:SetPos(380, 100)
+            CustomizeCardButton:SetPos(TM.MenuScale(380), TM.MenuScale(100))
             CustomizeCardButton:SetText("")
-            CustomizeCardButton:SetSize(160, 100)
+            CustomizeCardButton:SetSize(TM.MenuScale(160), TM.MenuScale(100))
             CustomizeCardButton.Paint = function()
-                draw.DrawText("CARD", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("CARD", "AmmoCountESmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
             CustomizeLoadoutButton.DoClick = function()
@@ -779,15 +776,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local currentGear = LocalPly:GetNWString("chosenMelee")
 
                 local GearPanel = vgui.Create("DPanel", MainMenu)
-                GearPanel:SetSize(645, scrH)
-                GearPanel:SetPos(56, 0)
+                GearPanel:SetSize(TM.MenuScale(645), scrH)
+                GearPanel:SetPos(TM.MenuScale(56), 0)
                 GearPanel:SetAlpha(0)
                 GearPanel.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, transparent)
                 end
 
                 local GearSlideoutPanel = vgui.Create("DPanel", MainMenu)
-                GearSlideoutPanel:SetSize(56, scrH)
+                GearSlideoutPanel:SetSize(TM.MenuScale(56), scrH)
                 GearSlideoutPanel:SetPos(0, 0)
                 GearSlideoutPanel:SetAlpha(0)
                 GearSlideoutPanel.Paint = function(self, w, h)
@@ -800,7 +797,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 GearQuickjumpHolder:SetAlpha(0)
                 GearQuickjumpHolder.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                    draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                    draw.RoundedBox(0, TM.MenuScale(4), scrH - TM.MenuScale(52), TM.MenuScale(48), TM.MenuScale(48), transparentRed)
                 end
 
                 GearPanel:AlphaTo(255, 0.05, 0.025)
@@ -856,37 +853,38 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local sbar = GearScroller:GetVBar()
                 sbar:SetHideButtons(true)
+                sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                 function sbar:Paint(w, h)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                    draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                 end
 
                 local GearTextHolder = vgui.Create("DPanel", GearPanel)
                 GearTextHolder:Dock(TOP)
-                GearTextHolder:SetSize(0, 160)
+                GearTextHolder:SetSize(0, TM.MenuScale(160))
 
                 GearTextHolder.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
-                    draw.SimpleText("GEAR", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(gearUnlocked .. " / " .. totalGear .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
-                    draw.SimpleText("hide locked gear", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("GEAR", "AmmoCountSmall", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(gearUnlocked .. " / " .. totalGear .. " UNLOCKED", "MainMenuDescription", w / 2, TM.MenuScale(85), white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("hide locked gear", "StreakText", w / 2 + TM.MenuScale(20), TM.MenuScale(120), white, TEXT_ALIGN_CENTER)
                 end
 
                 local HideLockedGear = GearTextHolder:Add("DCheckBox")
-                HideLockedGear:SetPos(248, 122.5)
-                HideLockedGear:SetSize(20, 20)
+                HideLockedGear:SetPos(TM.MenuScale(248), TM.MenuScale(122.5))
+                HideLockedGear:SetSize(TM.MenuScale(20), TM.MenuScale(20))
                 function HideLockedGear:OnChange() TriggerSound("click") end
 
                 -- default cards
                 local TextDefault = vgui.Create("DPanel", GearScroller)
                 TextDefault:Dock(TOP)
-                TextDefault:SetSize(0, 85)
+                TextDefault:SetSize(0, TM.MenuScale(85))
 
                 local DockDefaultGear = vgui.Create("DPanel", GearScroller)
                 DockDefaultGear:Dock(TOP)
-                DockDefaultGear:SetSize(0, 400)
+                DockDefaultGear:SetSize(0, TM.MenuScale(400))
 
                 local DefaultGearList = vgui.Create("DIconLayout", DockDefaultGear)
                 DefaultGearList:Dock(TOP)
@@ -899,18 +897,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 TextDefault.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
-                    draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(defaultGearTotal .. " / " .. defaultGearUnlocked, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(defaultGearTotal .. " / " .. defaultGearUnlocked, "MainMenuDescription", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                 end
 
                 -- progression cards
                 local TextProgression = vgui.Create("DPanel", GearScroller)
                 TextProgression:Dock(TOP)
-                TextProgression:SetSize(0, 85)
+                TextProgression:SetSize(0, TM.MenuScale(85))
 
                 local DockProgressionGear = vgui.Create("DPanel", GearScroller)
                 DockProgressionGear:Dock(TOP)
-                DockProgressionGear:SetSize(0, 1100)
+                DockProgressionGear:SetSize(0, TM.MenuScale(1100))
 
                 local ProgressionGearList = vgui.Create("DIconLayout", DockProgressionGear)
                 ProgressionGearList:Dock(TOP)
@@ -923,13 +921,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 TextProgression.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
-                    draw.SimpleText("PROGRESSION", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                    draw.SimpleText("PROGRESSION", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                 end
 
                 local GearPreviewPanel = vgui.Create("DPanel", MainMenu)
-                GearPreviewPanel:SetSize(1450, scrH)
-                GearPreviewPanel:SetPos(700, 0)
+                GearPreviewPanel:SetSize(TM.MenuScale(1450), scrH)
+                GearPreviewPanel:SetPos(TM.MenuScale(700), 0)
                 GearPreviewPanel:SetAlpha(0)
                 GearPreviewPanel.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -938,7 +936,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 GearPreviewPanel:AlphaTo(255, 0.05, 0.025)
 
                 local SelectedGearHolder = vgui.Create("DPanel", GearPreviewPanel)
-                SelectedGearHolder:SetSize(600, 2000)
+                SelectedGearHolder:SetSize(TM.MenuScale(600), TM.MenuScale(2000))
                 SelectedGearHolder.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, transparent)
                 end
@@ -948,8 +946,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     if IsValid(SelectedGearDisplay) then SelectedGearDisplay:Remove() end
                     SelectedGearDisplay = vgui.Create("DModelPanel", SelectedGearHolder)
                     SelectedGearDisplay:SetAlpha(0)
-                    SelectedGearDisplay:SetSize(1450, scrH)
-                    SelectedGearDisplay:SetPos(-525, 0)
+                    SelectedGearDisplay:SetSize(TM.MenuScale(1450), scrH)
+                    SelectedGearDisplay:SetPos(TM.MenuScale(-525), 0)
                     SelectedGearDisplay:SetMouseInputEnabled(true)
                     SelectedGearDisplay:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
                     SelectedGearDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
@@ -983,13 +981,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     for i = 1, #gearArray do
                         if gearArray[i][4] == "default" then
                             local gear = vgui.Create("DButton", DockDefaultGear)
-                            gear:SetSize(635, 100)
+                            gear:SetSize(TM.MenuScale(635), TM.MenuScale(100))
                             gear:SetText("")
                             gear.Paint = function(self, w, h)
                                 draw.RoundedBox(0, 0, 0, w, h, previewGreen)
 
-                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", TM.MenuScale(5), 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", TM.MenuScale(5), TM.MenuScale(50), solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                             end
 
                             DefaultGearList:Add(gear)
@@ -1027,17 +1025,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 table.insert(lockedGear, gearArray[i])
                             else
                                 local gear = vgui.Create("DButton", DockProgressionGear)
-                                gear:SetSize(635, 100)
+                                gear:SetSize(TM.MenuScale(635), TM.MenuScale(100))
                                 gear:SetText("")
                                 gear.Paint = function(self, w, h)
                                     draw.RoundedBox(0, 0, 0, w, h, previewGreen)
 
-                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", TM.MenuScale(5), 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", TM.MenuScale(5), TM.MenuScale(50), solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
 
-                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 625, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 625, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(25), solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(65), solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                                 end
 
                                 ProgressionGearList:Add(gear)
@@ -1074,17 +1072,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     for i = 1, #lockedGear do
                         if lockedGear[i][4] == "melee" then
                             local gear = vgui.Create("DButton", DockProgressionGear)
-                            gear:SetSize(635, 100)
+                            gear:SetSize(TM.MenuScale(635), TM.MenuScale(100))
                             gear:SetText("")
                             gear.Paint = function(self, w, h)
                                 draw.RoundedBox(0, 0, 0, w, h, previewRed)
 
-                                draw.SimpleTextOutlined(string.upper(lockedGear[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("Locked", "PlayerNotiName", 5, 50, solidRed, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined(string.upper(lockedGear[i][2]), "PlayerNotiName", TM.MenuScale(5), 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Locked", "PlayerNotiName", TM.MenuScale(5), TM.MenuScale(50), solidRed, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
 
-                                draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. lockedGear[i][5], "MainMenuDescription", 625, 25, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. lockedGear[i][6], "MainMenuDescription", 625, 65, solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. lockedGear[i][5], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(25), solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("OR", "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. lockedGear[i][6], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(65), solidRed, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                             end
 
                             ProgressionGearList:Add(gear)
@@ -1119,13 +1117,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     for i = 1, #gearArray do
                         if gearArray[i][4] == "default" then
                             local gear = vgui.Create("DButton", DockDefaultGear)
-                            gear:SetSize(635, 100)
+                            gear:SetSize(TM.MenuScale(635), TM.MenuScale(100))
                             gear:SetText("")
                             gear.Paint = function(self, w, h)
                                 draw.RoundedBox(0, 0, 0, w, h, previewGreen)
 
-                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", TM.MenuScale(5), 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", TM.MenuScale(5), TM.MenuScale(50), solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                             end
 
                             DefaultGearList:Add(gear)
@@ -1163,17 +1161,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 return
                             else
                                 local gear = vgui.Create("DButton", DockProgressionGear)
-                                gear:SetSize(635, 100)
+                                gear:SetSize(TM.MenuScale(635), TM.MenuScale(100))
                                 gear:SetText("")
                                 gear.Paint = function(self, w, h)
                                     draw.RoundedBox(0, 0, 0, w, h, previewGreen)
 
-                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", 5, 50, solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined(string.upper(gearArray[i][2]), "PlayerNotiName", TM.MenuScale(5), 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Unlocked", "PlayerNotiName", TM.MenuScale(5), TM.MenuScale(50), solidGreen, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
 
-                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", 625, 25, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", 625, 45, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", 625, 65, solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. gearArray[i][5], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(25), solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("OR", "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                    draw.SimpleTextOutlined("Total Levels: " .. playerTotalLevel .. "/" .. gearArray[i][6], "MainMenuDescription", TM.MenuScale(625), TM.MenuScale(65), solidGreen, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 0, Color(0, 0, 0, 205))
                                 end
 
                                 ProgressionGearList:Add(gear)
@@ -1220,8 +1218,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         progressionGearTotal = 0
                         progressionGearUnlocked = 0
                         FillGearListsUnlocked()
-                        DockDefaultGear:SetSize(0, 400)
-                        DockProgressionGear:SetSize(0, progressionGearUnlocked * 100)
+                        DockDefaultGear:SetSize(0, TM.MenuScale(400))
+                        DockProgressionGear:SetSize(0, progressionGearUnlocked * TM.MenuScale(100))
                     else
                         DefaultGearList:Clear()
                         ProgressionGearList:Clear()
@@ -1231,19 +1229,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         progressionGearTotal = 0
                         progressionGearUnlocked = 0
                         FillGearListsAll()
-                        DockDefaultGear:SetSize(0, 400)
-                        DockProgressionGear:SetSize(0, 1100)
+                        DockDefaultGear:SetSize(0, TM.MenuScale(400))
+                        DockProgressionGear:SetSize(0, TM.MenuScale(1100))
                     end
                 end
 
                 local GearIcon = vgui.Create("DImage", GearQuickjumpHolder)
-                GearIcon:SetPos(12, 12)
-                GearIcon:SetSize(32, 32)
+                GearIcon:SetPos(TM.MenuScale(12), TM.MenuScale(12))
+                GearIcon:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                 GearIcon:SetImage("icons/gearicon.png")
 
                 local BackButtonSlideout = vgui.Create("DImageButton", GearQuickjumpHolder)
-                BackButtonSlideout:SetPos(12, scrH - 44)
-                BackButtonSlideout:SetSize(32, 32)
+                BackButtonSlideout:SetPos(TM.MenuScale(12), scrH - TM.MenuScale(44))
+                BackButtonSlideout:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                 BackButtonSlideout:SetImage("icons/exiticon.png")
                 BackButtonSlideout:SetTooltip("Return to Main Menu")
                 BackButtonSlideout.DoClick = function()
@@ -1264,15 +1262,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 if !IsValid(CardPanel) then
                     local CardPanel = vgui.Create("DPanel", MainMenu)
-                    CardPanel:SetSize(745, scrH)
-                    CardPanel:SetPos(56, 0)
+                    CardPanel:SetSize(TM.MenuScale(745), scrH)
+                    CardPanel:SetPos(TM.MenuScale(56), 0)
                     CardPanel:SetAlpha(0)
                     CardPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local CardSlideoutPanel = vgui.Create("DPanel", MainMenu)
-                    CardSlideoutPanel:SetSize(56, scrH)
+                    CardSlideoutPanel:SetSize(TM.MenuScale(56), scrH)
                     CardSlideoutPanel:SetPos(0, 0)
                     CardSlideoutPanel:SetAlpha(0)
                     CardSlideoutPanel.Paint = function(self, w, h)
@@ -1285,7 +1283,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     CardQuickjumpHolder:SetAlpha(0)
                     CardQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                        draw.RoundedBox(0, TM.MenuScale(4), scrH - TM.MenuScale(52), TM.MenuScale(48), TM.MenuScale(48), transparentRed)
                     end
 
                     CardPanel:AlphaTo(255, 0.05, 0.025)
@@ -1352,134 +1350,135 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local sbar = CardScroller:GetVBar()
                     sbar:SetHideButtons(true)
+                    sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                     function sbar:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                        draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                     end
 
                     local CardTextHolder = vgui.Create("DPanel", CardPanel)
                     CardTextHolder:Dock(TOP)
-                    CardTextHolder:SetSize(0, 160)
+                    CardTextHolder:SetSize(0, TM.MenuScale(160))
 
                     CardTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("CARDS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("hide locked playercards", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("CARDS", "AmmoCountSmall", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(cardsUnlocked .. " / " .. totalCards .. " UNLOCKED", "MainMenuDescription", w / 2, TM.MenuScale(85), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("hide locked playercards", "StreakText", w / 2 + TM.MenuScale(20), TM.MenuScale(120), white, TEXT_ALIGN_CENTER)
                     end
 
                     local CardPreviewPanel = vgui.Create("DPanel", CardPanel)
                     CardPreviewPanel:Dock(TOP)
-                    CardPreviewPanel:SetSize(0, 100)
+                    CardPreviewPanel:SetSize(0, TM.MenuScale(100))
                     CardPreviewPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local HideLockedCards = CardTextHolder:Add("DCheckBox")
-                    HideLockedCards:SetPos(268, 122.5)
-                    HideLockedCards:SetSize(20, 20)
+                    HideLockedCards:SetPos(TM.MenuScale(268), TM.MenuScale(122.5))
+                    HideLockedCards:SetSize(TM.MenuScale(20), TM.MenuScale(20))
                     function HideLockedCards:OnChange() TriggerSound("click") end
 
                     -- default cards
                     local TextDefault = vgui.Create("DPanel", CardScroller)
                     TextDefault:Dock(TOP)
-                    TextDefault:SetSize(0, 85)
+                    TextDefault:SetSize(0, TM.MenuScale(85))
 
                     local DockDefaultCards = vgui.Create("DPanel", CardScroller)
                     DockDefaultCards:Dock(TOP)
-                    DockDefaultCards:SetSize(0, 340)
+                    DockDefaultCards:SetSize(0, TM.MenuScale(340))
 
                     -- leveling related cards
                     local TextLevel = vgui.Create("DPanel", CardScroller)
                     TextLevel:Dock(TOP)
-                    TextLevel:SetSize(0, 85)
+                    TextLevel:SetSize(0, TM.MenuScale(85))
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, 1360)
+                    DockLevelCards:SetSize(0, TM.MenuScale(1360))
 
                     -- kill related cards
                     local TextStats = vgui.Create("DPanel", CardScroller)
                     TextStats:Dock(TOP)
-                    TextStats:SetSize(0, 85)
+                    TextStats:SetSize(0, TM.MenuScale(85))
 
                     local DockStatCards = vgui.Create("DPanel", CardScroller)
                     DockStatCards:Dock(TOP)
-                    DockStatCards:SetSize(0, 680)
+                    DockStatCards:SetSize(0, TM.MenuScale(680))
 
                     -- accolade related cards
                     local TextAccolade = vgui.Create("DPanel", CardScroller)
                     TextAccolade:Dock(TOP)
-                    TextAccolade:SetSize(0, 85)
+                    TextAccolade:SetSize(0, TM.MenuScale(85))
 
                     local DockAccoladeCards = vgui.Create("DPanel", CardScroller)
                     DockAccoladeCards:Dock(TOP)
-                    DockAccoladeCards:SetSize(0, 850)
+                    DockAccoladeCards:SetSize(0, TM.MenuScale(850))
 
                     -- mastery related cards
                     local TextMastery = vgui.Create("DPanel", CardScroller)
                     TextMastery:Dock(TOP)
-                    TextMastery:SetSize(0, 85)
+                    TextMastery:SetSize(0, TM.MenuScale(85))
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, 4345)
+                    DockMasteryCards:SetSize(0, TM.MenuScale(4345))
 
                     -- color related cards
                     local TextColor = vgui.Create("DPanel", CardScroller)
                     TextColor:Dock(TOP)
-                    TextColor:SetSize(0, 85)
+                    TextColor:SetSize(0, TM.MenuScale(85))
 
                     local DockColorCards = vgui.Create("DPanel", CardScroller)
                     DockColorCards:Dock(TOP)
-                    DockColorCards:SetSize(0, 340)
+                    DockColorCards:SetSize(0, TM.MenuScale(340))
 
                     -- pride related cards
                     local TextPride = vgui.Create("DPanel", CardScroller)
                     TextPride:Dock(TOP)
-                    TextPride:SetSize(0, 85)
+                    TextPride:SetSize(0, TM.MenuScale(85))
 
                     local DockPrideCards = vgui.Create("DPanel", CardScroller)
                     DockPrideCards:Dock(TOP)
-                    DockPrideCards:SetSize(0, 335)
+                    DockPrideCards:SetSize(0, TM.MenuScale(335))
 
                     -- creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
                     DefaultCardList:Dock(TOP)
-                    DefaultCardList:SetSpaceY(5)
-                    DefaultCardList:SetSpaceX(5)
+                    DefaultCardList:SetSpaceY(TM.MenuScale(5))
+                    DefaultCardList:SetSpaceX(TM.MenuScale(4))
 
                     local StatCardList = vgui.Create("DIconLayout", DockStatCards)
                     StatCardList:Dock(TOP)
-                    StatCardList:SetSpaceY(5)
-                    StatCardList:SetSpaceX(5)
+                    StatCardList:SetSpaceY(TM.MenuScale(5))
+                    StatCardList:SetSpaceX(TM.MenuScale(4))
 
                     local AccoladeCardList = vgui.Create("DIconLayout", DockAccoladeCards)
                     AccoladeCardList:Dock(TOP)
-                    AccoladeCardList:SetSpaceY(5)
-                    AccoladeCardList:SetSpaceX(5)
+                    AccoladeCardList:SetSpaceY(TM.MenuScale(5))
+                    AccoladeCardList:SetSpaceX(TM.MenuScale(4))
 
                     local LevelCardList = vgui.Create("DIconLayout", DockLevelCards)
                     LevelCardList:Dock(TOP)
-                    LevelCardList:SetSpaceY(5)
-                    LevelCardList:SetSpaceX(5)
+                    LevelCardList:SetSpaceY(TM.MenuScale(5))
+                    LevelCardList:SetSpaceX(TM.MenuScale(4))
 
                     local MasteryCardList = vgui.Create("DIconLayout", DockMasteryCards)
                     MasteryCardList:Dock(TOP)
-                    MasteryCardList:SetSpaceY(5)
-                    MasteryCardList:SetSpaceX(5)
+                    MasteryCardList:SetSpaceY(TM.MenuScale(5))
+                    MasteryCardList:SetSpaceX(TM.MenuScale(4))
 
                     local ColorCardList = vgui.Create("DIconLayout", DockColorCards)
                     ColorCardList:Dock(TOP)
-                    ColorCardList:SetSpaceY(5)
-                    ColorCardList:SetSpaceX(5)
+                    ColorCardList:SetSpaceY(TM.MenuScale(5))
+                    ColorCardList:SetSpaceX(TM.MenuScale(4))
 
                     local PrideCardList = vgui.Create("DIconLayout", DockPrideCards)
                     PrideCardList:Dock(TOP)
-                    PrideCardList:SetSpaceY(5)
-                    PrideCardList:SetSpaceX(5)
+                    PrideCardList:SetSpaceY(TM.MenuScale(5))
+                    PrideCardList:SetSpaceX(TM.MenuScale(4))
 
                     DefaultCardList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -1511,16 +1510,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local PreviewCardTextHolder = vgui.Create("DPanel", CardPreviewPanel)
                     PreviewCardTextHolder:Dock(FILL)
-                    PreviewCardTextHolder:SetSize(0, 100)
+                    PreviewCardTextHolder:SetSize(0, TM.MenuScale(100))
 
                     CallingCard = vgui.Create("DImage", PreviewCardTextHolder)
-                    CallingCard:SetPos(245, 10)
-                    CallingCard:SetSize(240, 80)
+                    CallingCard:SetPos(TM.MenuScale(245), TM.MenuScale(10))
+                    CallingCard:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                     CallingCard:SetImage(newCard)
 
                     ProfilePicture = vgui.Create("AvatarImage", CallingCard)
-                    ProfilePicture:SetPos(5, 5)
-                    ProfilePicture:SetSize(70, 70)
+                    ProfilePicture:SetPos(TM.MenuScale(5), TM.MenuScale(5))
+                    ProfilePicture:SetSize(TM.MenuScale(70), TM.MenuScale(70))
                     ProfilePicture:SetPlayer(LocalPly, 184)
 
                     local previewRed = Color(255, 0, 0, 5)
@@ -1545,141 +1544,141 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, previewColor)
 
                         if currentCard != nil then
-                            draw.SimpleText(newCardName, "PlayerNotiName", 240, 5, white, TEXT_ALIGN_RIGHT)
-                            draw.SimpleText(newCardDesc, "MainMenuDescription", 240, 65, white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(newCardName, "PlayerNotiName", TM.MenuScale(240), TM.MenuScale(5), white, TEXT_ALIGN_RIGHT)
+                            draw.SimpleText(newCardDesc, "MainMenuDescription", TM.MenuScale(240), TM.MenuScale(65), white, TEXT_ALIGN_RIGHT)
                         end
 
                         if newCardUnlockType == "default" or newCardUnlockType == "color" or newCardUnlockType == "pride" then
-                            draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
+                            draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
                             previewColor = previewGreen
                         elseif newCardUnlockType == "kills" then
                             if LocalPly:GetNWInt("playerKills") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills: " .. LocalPly:GetNWInt("playerKills") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "streak" then
                             if LocalPly:GetNWInt("highestKillStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Highest Streak: " .. LocalPly:GetNWInt("highestKillStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "matches" then
                             if LocalPly:GetNWInt("matchesPlayed") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Played: " .. LocalPly:GetNWInt("matchesPlayed") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "wins" then
                             if LocalPly:GetNWInt("matchesWon") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Matches Won: " .. LocalPly:GetNWInt("matchesWon") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "headshot" then
                             if LocalPly:GetNWInt("playerAccoladeHeadshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Headshots: " .. LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "smackdown" then
                             if LocalPly:GetNWInt("playerAccoladeSmackdown") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Melee Kills: " .. LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "clutch" then
                             if LocalPly:GetNWInt("playerAccoladeClutch") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Clutches: " .. LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "longshot" then
                             if LocalPly:GetNWInt("playerAccoladeLongshot") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Longshots: " .. LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "pointblank" then
                             if LocalPly:GetNWInt("playerAccoladePointblank") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Point Blanks: " .. LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "killstreaks" then
                             if LocalPly:GetNWInt("playerAccoladeOnStreak") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Streaks Started: " .. LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "buzzkills" then
                             if LocalPly:GetNWInt("playerAccoladeBuzzkill") < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Buzzkills: " .. LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "level" then
                             if playerTotalLevel < newCardUnlockValue then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Total Levels: " .. playerTotalLevel .. "/" .. newCardUnlockValue, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         elseif newCardUnlockType == "mastery" then
                             if LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) < 50 then
-                                draw.SimpleText("Locked", "PlayerNotiName", 490, 5, solidRed, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Locked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidRed, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidRed, TEXT_ALIGN_LEFT)
                                 previewColor = previewRed
                             else
-                                draw.SimpleText("Unlocked", "PlayerNotiName", 490, 5, solidGreen, TEXT_ALIGN_LEFT)
-                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", 490, 65, solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Unlocked", "PlayerNotiName", TM.MenuScale(490), TM.MenuScale(5), solidGreen, TEXT_ALIGN_LEFT)
+                                draw.SimpleText("Kills w/ gun: " .. LocalPly:GetNWInt("killsWith_" .. newCardUnlockValue) .. "/" .. 50, "MainMenuDescription", TM.MenuScale(490), TM.MenuScale(65), solidGreen, TEXT_ALIGN_LEFT)
                                 previewColor = previewGreen
                             end
                         end
@@ -1693,7 +1692,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if cardArray[i][4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 DefaultCardList:Add(card)
 
@@ -1727,7 +1726,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     StatCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1760,7 +1759,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     AccoladeCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1788,7 +1787,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 ColorCardList:Add(card)
 
@@ -1817,7 +1816,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 PrideCardList:Add(card)
 
@@ -1851,7 +1850,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     LevelCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1884,7 +1883,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     MasteryCardList:Add(card)
                                     cardsUnlocked = cardsUnlocked + 1
@@ -1916,19 +1915,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if lockedCards[i][4] == "kills" or lockedCards[i][4] == "streak" or lockedCards[i][4] == "matches" or lockedCards[i][4] == "wins" then
                                 local card = vgui.Create("DImageButton", DockStatCards)
                                 card:SetImage(lockedCards[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
-                                    surface.DrawRect(0, h - 5, 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), TM.MenuScale(240), TM.MenuScale(5))
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    if lockedCards[i][4] == "kills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerKills") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "streak" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("highestKillStreak") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "matches" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesPlayed") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "wins" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("matchesWon") / lockedCards[i][5]) * 240, 5) end
+                                    if lockedCards[i][4] == "kills" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerKills") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "streak" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("highestKillStreak") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "matches" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("matchesPlayed") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "wins" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("matchesWon") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) end
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                                 lockIndicator:Center()
                                 StatCardList:Add(card)
 
@@ -1953,19 +1952,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif lockedCards[i][4] == "headshot" or lockedCards[i][4] == "smackdown" or lockedCards[i][4] == "clutch" or lockedCards[i][4] == "longshot" or lockedCards[i][4] == "pointblank" or lockedCards[i][4] == "killstreaks" or lockedCards[i][4] == "buzzkills" then
                                 local card = vgui.Create("DImageButton", DockAccoladeCards)
                                 card:SetImage(lockedCards[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
-                                    surface.DrawRect(0, h - 5, 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), TM.MenuScale(240), TM.MenuScale(5))
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    if lockedCards[i][4] == "headshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeHeadshot") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "smackdown" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeSmackdown") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "clutch" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeClutch") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "longshot" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeLongshot") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "pointblank" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladePointblank") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "killstreaks" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeOnStreak") / lockedCards[i][5]) * 240, 5) elseif lockedCards[i][4] == "buzzkills" then surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("playerAccoladeBuzzkill") / lockedCards[i][5]) * 240, 5) end
+                                    if lockedCards[i][4] == "headshot" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeHeadshot") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "smackdown" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeSmackdown") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "clutch" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeClutch") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "longshot" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeLongshot") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "pointblank" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladePointblank") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "killstreaks" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeOnStreak") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) elseif lockedCards[i][4] == "buzzkills" then surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("playerAccoladeBuzzkill") / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5)) end
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                                 lockIndicator:Center()
                                 AccoladeCardList:Add(card)
 
@@ -1990,19 +1989,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif lockedCards[i][4] == "level" then
                                 local card = vgui.Create("DImageButton", DockLevelCards)
                                 card:SetImage(lockedCards[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
-                                    surface.DrawRect(0, h - 5, 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), TM.MenuScale(240), TM.MenuScale(5))
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    surface.DrawRect(0, h - 5, (playerTotalLevel / lockedCards[i][5]) * 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), (playerTotalLevel / lockedCards[i][5]) * TM.MenuScale(240), TM.MenuScale(5))
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                                 lockIndicator:Center()
                                 LevelCardList:Add(card)
 
@@ -2027,19 +2026,19 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif lockedCards[i][4] == "mastery" then
                                 local card = vgui.Create("DImageButton", DockMasteryCards)
                                 card:SetImage(lockedCards[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 card:SetColor(Color(100, 100, 100, 150))
                                 card.Paint = function(self, w, h)
                                     surface.SetDrawColor(35, 35, 35, 255)
-                                    surface.DrawRect(0, h - 5, 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), TM.MenuScale(240), TM.MenuScale(5))
 
                                     surface.SetDrawColor(255, 255, 0, 100)
-                                    surface.DrawRect(0, h - 5, (LocalPly:GetNWInt("killsWith_" .. lockedCards[i][5]) / 50    ) * 240, 5)
+                                    surface.DrawRect(0, h - TM.MenuScale(5), (LocalPly:GetNWInt("killsWith_" .. lockedCards[i][5]) / TM.MenuScale(50)) * TM.MenuScale(240), TM.MenuScale(5))
                                 end
                                 local lockIndicator = vgui.Create("DImage", card)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(48, 48)
+                                lockIndicator:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                                 lockIndicator:Center()
                                 MasteryCardList:Add(card)
 
@@ -2070,7 +2069,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if cardArray[i][4] == "default" then
                                 local card = vgui.Create("DImageButton", DockDefaultCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 DefaultCardList:Add(card)
 
@@ -2101,7 +2100,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") >= cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockStatCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     StatCardList:Add(card)
 
@@ -2132,7 +2131,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if cardArray[i][4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= cardArray[i][5] or cardArray[i][4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= cardArray[i][5] or cardArray[i][4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= cardArray[i][5] or cardArray[i][4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= cardArray[i][5] or cardArray[i][4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= cardArray[i][5] or cardArray[i][4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= cardArray[i][5] or cardArray[i][4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     AccoladeCardList:Add(card)
 
@@ -2161,7 +2160,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "color" then
                                 local card = vgui.Create("DImageButton", DockColorCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 ColorCardList:Add(card)
 
@@ -2190,7 +2189,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "pride" then
                                 local card = vgui.Create("DImageButton", DockPrideCards)
                                 card:SetImage(cardArray[i][1])
-                                card:SetSize(240, 80)
+                                card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                 card:SetDepressImage(false)
                                 PrideCardList:Add(card)
 
@@ -2221,7 +2220,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if cardArray[i][4] == "level" and playerTotalLevel >= cardArray[i][5] then
                                     local card = vgui.Create("DImageButton", DockLevelCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     LevelCardList:Add(card)
 
@@ -2252,7 +2251,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if cardArray[i][4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. cardArray[i][5]) >= 50 then
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
                                     card:SetImage(cardArray[i][1])
-                                    card:SetSize(240, 80)
+                                    card:SetSize(TM.MenuScale(240), TM.MenuScale(80))
                                     card:SetDepressImage(false)
                                     MasteryCardList:Add(card)
 
@@ -2286,64 +2285,64 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "MainMenuDescription", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultCardsUnlocked .. " / " .. defaultCardsUnlocked, "MainMenuDescription", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextStats.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("STATS", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("STATS", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
 
                         if statCardsUnlocked == statCardsTotal then
-                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statCardsUnlocked .. " / " .. statCardsTotal, "Health", w / 2, TM.MenuScale(50), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextAccolade.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("ACCOLADES", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("ACCOLADES", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
 
                         if accoladeCardsUnlocked == accoladeCardsTotal then
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeCardsUnlocked .. " / " .. accoladeCardsTotal, "Health", w / 2, TM.MenuScale(50), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextLevel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("LEVELING", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("LEVELING", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
 
                         if levelCardsUnlocked == levelCardsTotal then
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(levelCardsUnlocked .. " / " .. levelCardsTotal, "Health", w / 2, TM.MenuScale(50), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextMastery.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("MASTERY", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("MASTERY", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
 
                         if masteryCardsUnlocked == masteryCardsTotal then
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, 50, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(masteryCardsUnlocked .. " / " .. masteryCardsTotal, "Health", w / 2, TM.MenuScale(50), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
                     TextColor.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("COLORS", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("COLORS", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(colorCardsUnlocked .. " / " .. colorCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextPride.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("PRIDE", "OptionsHeader", w / 2, -5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(prideCardsUnlocked .. " / " .. prideCardsTotal, "Health", w / 2, 50, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("PRIDE", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(prideCardsUnlocked .. " / " .. prideCardsTotal, "Health", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     DockDefaultCards.Paint = function(self, w, h)
@@ -2399,13 +2398,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsTotal = 0
                             prideCardsUnlocked = 0
                             FillCardListsUnlocked()
-                            DockDefaultCards:SetSize(0, 340)
-                            DockStatCards:SetSize(0, (statCardsUnlocked * 28.34) + 28.34)
-                            DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * 28.34) + 28.34)
-                            DockLevelCards:SetSize(0, (levelCardsUnlocked * 28.34) + 28.34)
-                            DockMasteryCards:SetSize(0, (masteryCardsUnlocked * 28.34) + 28.34)
-                            DockColorCards:SetSize(0, 340)
-                            DockPrideCards:SetSize(0, 355)
+                            DockDefaultCards:SetSize(0, TM.MenuScale(340))
+                            DockStatCards:SetSize(0, (statCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
+                            DockAccoladeCards:SetSize(0, (accoladeCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
+                            DockLevelCards:SetSize(0, (levelCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
+                            DockMasteryCards:SetSize(0, (masteryCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
+                            DockColorCards:SetSize(0, TM.MenuScale(340))
+                            DockPrideCards:SetSize(0, TM.MenuScale(355))
                         else
                             DefaultCardList:Clear()
                             StatCardList:Clear()
@@ -2430,24 +2429,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             prideCardsTotal = 0
                             prideCardsUnlocked = 0
                             FillCardListsAll()
-                            DockDefaultCards:SetSize(0, 340)
-                            DockStatCards:SetSize(0, 680)
-                            DockAccoladeCards:SetSize(0, 850)
-                            DockLevelCards:SetSize(0, 1360)
-                            DockMasteryCards:SetSize(0, 4345)
-                            DockColorCards:SetSize(0, 340)
-                            DockPrideCards:SetSize(0, 335)
+                            DockDefaultCards:SetSize(0, TM.MenuScale(340))
+                            DockStatCards:SetSize(0, TM.MenuScale(680))
+                            DockAccoladeCards:SetSize(0, TM.MenuScale(850))
+                            DockLevelCards:SetSize(0, TM.MenuScale(1360))
+                            DockMasteryCards:SetSize(0, TM.MenuScale(4345))
+                            DockColorCards:SetSize(0, TM.MenuScale(340))
+                            DockPrideCards:SetSize(0, TM.MenuScale(335))
                         end
                     end
 
                     local CardIcon = vgui.Create("DImage", CardQuickjumpHolder)
-                    CardIcon:SetPos(12, 12)
-                    CardIcon:SetSize(32, 32)
+                    CardIcon:SetPos(TM.MenuScale(12), TM.MenuScale(12))
+                    CardIcon:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     CardIcon:SetImage("icons/cardicon.png")
 
                     local DefaultJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    DefaultJump:SetPos(4, 100)
-                    DefaultJump:SetSize(48, 48)
+                    DefaultJump:SetPos(TM.MenuScale(4), TM.MenuScale(100))
+                    DefaultJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
@@ -2456,8 +2455,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local LevelJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    LevelJump:SetPos(4, 152)
-                    LevelJump:SetSize(48, 48)
+                    LevelJump:SetPos(TM.MenuScale(4), TM.MenuScale(152))
+                    LevelJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     LevelJump:SetImage("icons/performanceicon.png")
                     LevelJump:SetTooltip("Leveling")
                     LevelJump.DoClick = function()
@@ -2466,8 +2465,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local StatsJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    StatsJump:SetPos(4, 204)
-                    StatsJump:SetSize(48, 48)
+                    StatsJump:SetPos(TM.MenuScale(4), TM.MenuScale(204))
+                    StatsJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     StatsJump:SetImage("icons/uikillicon.png")
                     StatsJump:SetTooltip("Stats")
                     StatsJump.DoClick = function()
@@ -2476,8 +2475,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local AccoladeJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    AccoladeJump:SetPos(4, 256)
-                    AccoladeJump:SetSize(48, 48)
+                    AccoladeJump:SetPos(TM.MenuScale(4), TM.MenuScale(256))
+                    AccoladeJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
@@ -2486,8 +2485,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local WeaponJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    WeaponJump:SetPos(4, 308)
-                    WeaponJump:SetSize(48, 48)
+                    WeaponJump:SetPos(TM.MenuScale(4), TM.MenuScale(308))
+                    WeaponJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     WeaponJump:SetImage("icons/weaponicon.png")
                     WeaponJump:SetTooltip("Mastery")
                     WeaponJump.DoClick = function()
@@ -2496,8 +2495,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local ColorJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    ColorJump:SetPos(4, 360)
-                    ColorJump:SetSize(48, 48)
+                    ColorJump:SetPos(TM.MenuScale(4), TM.MenuScale(360))
+                    ColorJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     ColorJump:SetImage("icons/paletteicon.png")
                     ColorJump:SetTooltip("Colors")
                     ColorJump.DoClick = function()
@@ -2506,8 +2505,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local PrideJump = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    PrideJump:SetPos(4, 412)
-                    PrideJump:SetSize(48, 48)
+                    PrideJump:SetPos(TM.MenuScale(4), TM.MenuScale(412))
+                    PrideJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     PrideJump:SetImage("icons/hearticon.png")
                     PrideJump:SetTooltip("Pride")
                     PrideJump.DoClick = function()
@@ -2516,8 +2515,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", CardQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, scrH - 44)
-                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetPos(TM.MenuScale(12), scrH - TM.MenuScale(44))
+                    BackButtonSlideout:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
@@ -2540,15 +2539,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 if !IsValid(ModelPanel) then
                     local ModelPanel = vgui.Create("DPanel", MainMenu)
-                    ModelPanel:SetSize(630, scrH)
-                    ModelPanel:SetPos(56, 0)
+                    ModelPanel:SetSize(TM.MenuScale(630), scrH)
+                    ModelPanel:SetPos(TM.MenuScale(56), 0)
                     ModelPanel:SetAlpha(0)
                     ModelPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local ModelSlideoutPanel = vgui.Create("DPanel", MainMenu)
-                    ModelSlideoutPanel:SetSize(56, scrH)
+                    ModelSlideoutPanel:SetSize(TM.MenuScale(56), scrH)
                     ModelSlideoutPanel:SetPos(0, 0)
                     ModelSlideoutPanel:SetAlpha(0)
                     ModelSlideoutPanel.Paint = function(self, w, h)
@@ -2601,7 +2600,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     ModelQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                        draw.RoundedBox(0, TM.MenuScale(4), scrH - TM.MenuScale(52), TM.MenuScale(48), TM.MenuScale(48), transparentRed)
                     end
 
                     ModelPanel:AlphaTo(255, 0.05, 0.025)
@@ -2612,61 +2611,62 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local sbar = CustomizeScroller:GetVBar()
                     sbar:SetHideButtons(true)
+                    sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                     function sbar:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                        draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                     end
 
                     local CustomizeTextHolder = vgui.Create("DPanel", ModelPanel)
                     CustomizeTextHolder:Dock(TOP)
-                    CustomizeTextHolder:SetSize(0, 160)
+                    CustomizeTextHolder:SetSize(0, TM.MenuScale(160))
 
                     CustomizeTextHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, 5, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " UNLOCKED", "MainMenuDescription", w / 2, 85, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("hide locked playermodels", "StreakText", w / 2 + 20, 120, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("MODELS", "AmmoCountSmall", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(modelsUnlocked .. " / " .. totalModels .. " UNLOCKED", "MainMenuDescription", w / 2, TM.MenuScale(85), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("hide locked playermodels", "StreakText", w / 2 + TM.MenuScale(20), TM.MenuScale(120), white, TEXT_ALIGN_CENTER)
                     end
 
                     local HideLockedModels = CustomizeTextHolder:Add("DCheckBox")
-                    HideLockedModels:SetPos(205, 122.5)
-                    HideLockedModels:SetSize(20, 20)
+                    HideLockedModels:SetPos(TM.MenuScale(205), TM.MenuScale(122.5))
+                    HideLockedModels:SetSize(TM.MenuScale(20), TM.MenuScale(20))
                     function HideLockedModels:OnChange() TriggerSound("click") end
 
                     -- default models
                     local TextDefault = vgui.Create("DPanel", CustomizeScroller)
                     TextDefault:Dock(TOP)
-                    TextDefault:SetSize(0, 90)
+                    TextDefault:SetSize(0, TM.MenuScale(90))
 
                     local DockModels = vgui.Create("DPanel", CustomizeScroller)
                     DockModels:Dock(TOP)
-                    DockModels:SetSize(0, 310)
+                    DockModels:SetSize(0, TM.MenuScale(310))
 
                     -- stats models
                     local TextStats = vgui.Create("DPanel", CustomizeScroller)
                     TextStats:Dock(TOP)
-                    TextStats:SetSize(0, 90)
+                    TextStats:SetSize(0, TM.MenuScale(90))
 
                     local DockModelsStats = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsStats:Dock(TOP)
-                    DockModelsStats:SetSize(0, 930)
+                    DockModelsStats:SetSize(0, TM.MenuScale(930))
 
                     -- accolade models
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
                     TextAccolade:Dock(TOP)
-                    TextAccolade:SetSize(0, 90)
+                    TextAccolade:SetSize(0, TM.MenuScale(90))
 
                     local DockModelsAccolade = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsAccolade:Dock(TOP)
-                    DockModelsAccolade:SetSize(0, 1080)
+                    DockModelsAccolade:SetSize(0, TM.MenuScale(1080))
 
                     -- creating playermodel lists
                     local DefaultModelList = vgui.Create("DIconLayout", DockModels)
                     DefaultModelList:Dock(TOP)
-                    DefaultModelList:SetSpaceY(5)
-                    DefaultModelList:SetSpaceX(5)
+                    DefaultModelList:SetSpaceY(TM.MenuScale(5))
+                    DefaultModelList:SetSpaceX(TM.MenuScale(5))
 
                     DefaultModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -2674,8 +2674,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local StatModelList = vgui.Create("DIconLayout", DockModelsStats)
                     StatModelList:Dock(TOP)
-                    StatModelList:SetSpaceY(5)
-                    StatModelList:SetSpaceX(5)
+                    StatModelList:SetSpaceY(TM.MenuScale(5))
+                    StatModelList:SetSpaceX(TM.MenuScale(5))
 
                     StatModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -2683,16 +2683,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local AccoladeModelList = vgui.Create("DIconLayout", DockModelsAccolade)
                     AccoladeModelList:Dock(TOP)
-                    AccoladeModelList:SetSpaceY(5)
-                    AccoladeModelList:SetSpaceX(5)
+                    AccoladeModelList:SetSpaceY(TM.MenuScale(5))
+                    AccoladeModelList:SetSpaceX(TM.MenuScale(5))
 
                     AccoladeModelList.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
 
                     local ModelPreviewPanel = vgui.Create("DPanel", MainMenu)
-                    ModelPreviewPanel:SetSize(1450, scrH)
-                    ModelPreviewPanel:SetPos(686, 0)
+                    ModelPreviewPanel:SetSize(TM.MenuScale(1450), scrH)
+                    ModelPreviewPanel:SetPos(TM.MenuScale(686), 0)
                     ModelPreviewPanel:SetAlpha(0)
                     ModelPreviewPanel.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
@@ -2701,7 +2701,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     ModelPreviewPanel:AlphaTo(255, 0.05, 0.025)
 
                     local SelectedModelHolder = vgui.Create("DPanel", ModelPreviewPanel)
-                    SelectedModelHolder:SetSize(600, 2000)
+                    SelectedModelHolder:SetSize(TM.MenuScale(600), TM.MenuScale(2000))
                     SelectedModelHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, transparent)
                     end
@@ -2711,8 +2711,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         if IsValid(SelectedModelDisplay) then SelectedModelDisplay:Remove() end
                         SelectedModelDisplay = vgui.Create("DModelPanel", SelectedModelHolder)
                         SelectedModelDisplay:SetAlpha(0)
-                        SelectedModelDisplay:SetSize(1450, scrH)
-                        SelectedModelDisplay:SetPos(-525, 0)
+                        SelectedModelDisplay:SetSize(TM.MenuScale(1450), scrH)
+                        SelectedModelDisplay:SetPos(TM.MenuScale(-525), 0)
                         SelectedModelDisplay:SetMouseInputEnabled(true)
                         SelectedModelDisplay:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
                         SelectedModelDisplay:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
@@ -2751,7 +2751,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
-                                icon:SetSize(150, 150)
+                                icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                 icon:SetTooltip(nil)
                                 DefaultModelList:Add(icon)
 
@@ -2772,11 +2772,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                     surface.SetFont("PlayerNotiName")
-                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(200))
 
                                     if IsValid(modelPopOut) then modelPopOut:Remove() end
                                     modelPopOut = vgui.Create("DPanel", MainMenu)
-                                    modelPopOut:SetSize(modelNameTextSize + 10, 70)
+                                    modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(70))
                                     UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                     modelPopOut:SetAlpha(0)
                                     modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -2798,13 +2798,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         surface.DrawRect(0, 0, w, h)
 
                                         surface.SetDrawColor(Color(255, 255, 255, 155))
-                                        surface.DrawRect(0, 0, w, 1)
-                                        surface.DrawRect(0, h - 1, w, 1)
-                                        surface.DrawRect(0, 0, 1, h)
-                                        surface.DrawRect(w - 1, 0, 1, h)
+                                        surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                        surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                        surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                        surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                     end
                                 end
@@ -2828,7 +2828,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetSize(150, 150)
+                                    icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                     icon:SetTooltip(nil)
                                     StatModelList:Add(icon)
                                     statModelsUnlocked = statModelsUnlocked + 1
@@ -2847,11 +2847,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                         surface.SetFont("PlayerNotiName")
-                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(200))
 
                                         if IsValid(modelPopOut) then modelPopOut:Remove() end
                                         modelPopOut = vgui.Create("DPanel", MainMenu)
-                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(130))
                                         UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                         modelPopOut:SetAlpha(0)
                                         modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -2873,28 +2873,28 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                             surface.DrawRect(0, 0, w, h)
 
                                             surface.SetDrawColor(Color(255, 255, 255, 155))
-                                            surface.DrawRect(0, 0, w, 1)
-                                            surface.DrawRect(0, h - 1, w, 1)
-                                            surface.DrawRect(0, 0, 1, h)
-                                            surface.DrawRect(w - 1, 0, 1, h)
+                                            surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                            surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                            surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                            surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                             if newModelUnlockType == "kills" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "streak" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "matches" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "wins" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             end
 
-                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(105), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
 
@@ -2918,7 +2918,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetSize(150, 150)
+                                    icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                     icon:SetTooltip(nil)
                                     AccoladeModelList:Add(icon)
                                     accoladeModelsUnlocked = accoladeModelsUnlocked + 1
@@ -2937,11 +2937,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                         surface.SetFont("PlayerNotiName")
-                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(220))
 
                                         if IsValid(modelPopOut) then modelPopOut:Remove() end
                                         modelPopOut = vgui.Create("DPanel", MainMenu)
-                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(130))
                                         UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                         modelPopOut:SetAlpha(0)
                                         modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -2962,37 +2962,37 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                             surface.DrawRect(0, 0, w, h)
 
                                             surface.SetDrawColor(Color(255, 255, 255, 155))
-                                            surface.DrawRect(0, 0, w, 1)
-                                            surface.DrawRect(0, h - 1, w, 1)
-                                            surface.DrawRect(0, 0, 1, h)
-                                            surface.DrawRect(w - 1, 0, 1, h)
+                                            surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                            surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                            surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                            surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                             if newModelUnlockType == "headshot" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "smackdown" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "clutch" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "longshot" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "pointblank" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "killstreaks" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "buzzkills" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             end
 
-                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(105), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
 
@@ -3015,13 +3015,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if lockedModels[i][3] == "kills" or lockedModels[i][3] == "streak" or lockedModels[i][3] == "matches" or lockedModels[i][3] == "wins" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                 icon:SetModel(lockedModels[i][1])
-                                icon:SetSize(150, 150)
+                                icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                 icon:SetTooltip(nil)
                                 StatModelList:Add(icon)
 
                                 local lockIndicator = vgui.Create("DImage", icon)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:SetSize(TM.MenuScale(96), TM.MenuScale(96))
                                 lockIndicator:Center()
 
                                 icon.OnCursorEntered = function()
@@ -3037,11 +3037,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                     surface.SetFont("PlayerNotiName")
-                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(200))
 
                                     if IsValid(modelPopOut) then modelPopOut:Remove() end
                                     modelPopOut = vgui.Create("DPanel", MainMenu)
-                                    modelPopOut:SetSize(modelNameTextSize + 10, 110)
+                                    modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(110))
                                     UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                     modelPopOut:SetAlpha(0)
                                     modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -3062,25 +3062,25 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         surface.DrawRect(0, 0, w, h)
 
                                         surface.SetDrawColor(Color(255, 255, 255, 155))
-                                        surface.DrawRect(0, 0, w, 1)
-                                        surface.DrawRect(0, h - 1, w, 1)
-                                        surface.DrawRect(0, 0, 1, h)
-                                        surface.DrawRect(w - 1, 0, 1, h)
+                                        surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                        surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                        surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                        surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                         if newModelUnlockType == "kills" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "streak" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "matches" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "wins" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
                                 end
@@ -3099,13 +3099,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif lockedModels[i][3] == "headshot" or lockedModels[i][3] == "smackdown" or lockedModels[i][3] == "clutch" or lockedModels[i][3] == "longshot" or lockedModels[i][3] == "pointblank" or lockedModels[i][3] == "killstreaks" or lockedModels[i][3] == "buzzkills" then
                                 local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                 icon:SetModel(lockedModels[i][1])
-                                icon:SetSize(150, 150)
+                                icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                 icon:SetTooltip(nil)
                                 AccoladeModelList:Add(icon)
 
                                 local lockIndicator = vgui.Create("DImage", icon)
                                 lockIndicator:SetImage("icons/lockicon.png")
-                                lockIndicator:SetSize(96, 96)
+                                lockIndicator:SetSize(TM.MenuScale(96), TM.MenuScale(96))
                                 lockIndicator:Center()
 
                                 icon.OnCursorEntered = function()
@@ -3121,11 +3121,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                     surface.SetFont("PlayerNotiName")
-                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(220))
 
                                     if IsValid(modelPopOut) then modelPopOut:Remove() end
                                     modelPopOut = vgui.Create("DPanel", MainMenu)
-                                    modelPopOut:SetSize(modelNameTextSize + 10, 110)
+                                    modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(110))
                                     UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                     modelPopOut:SetAlpha(0)
                                     modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -3146,34 +3146,34 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         surface.DrawRect(0, 0, w, h)
 
                                         surface.SetDrawColor(Color(255, 255, 255, 155))
-                                        surface.DrawRect(0, 0, w, 1)
-                                        surface.DrawRect(0, h - 1, w, 1)
-                                        surface.DrawRect(0, 0, 1, h)
-                                        surface.DrawRect(w - 1, 0, 1, h)
+                                        surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                        surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                        surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                        surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                         if newModelUnlockType == "headshot" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "smackdown" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "clutch" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "longshot" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
-                                            draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "pointblank" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
-                                            draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "killstreaks" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(2550, 0, 0, 15))
-                                            draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(2550, 0, 0, 15))
+                                            draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         elseif newModelUnlockType == "buzzkills" then
-                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 15))
-                                            draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(255, 0, 0, 15))
+                                            draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
                                 end
@@ -3198,7 +3198,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             if modelArray[i][3] == "default" then
                                 local icon = vgui.Create("SpawnIcon", DockModels)
                                 icon:SetModel(modelArray[i][1])
-                                icon:SetSize(150, 150)
+                                icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                 icon:SetTooltip(nil)
                                 DefaultModelList:Add(icon)
 
@@ -3219,11 +3219,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                     if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                     surface.SetFont("PlayerNotiName")
-                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+                                    local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(200))
 
                                     if IsValid(modelPopOut) then modelPopOut:Remove() end
                                     modelPopOut = vgui.Create("DPanel", MainMenu)
-                                    modelPopOut:SetSize(modelNameTextSize + 10, 70)
+                                    modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(70))
                                     UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                     modelPopOut:SetAlpha(0)
                                     modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -3245,13 +3245,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         surface.DrawRect(0, 0, w, h)
 
                                         surface.SetDrawColor(Color(255, 255, 255, 155))
-                                        surface.DrawRect(0, 0, w, 1)
-                                        surface.DrawRect(0, h - 1, w, 1)
-                                        surface.DrawRect(0, 0, 1, h)
-                                        surface.DrawRect(w - 1, 0, 1, h)
+                                        surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                        surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                        surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                        surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
-                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
+                                        draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                     end
                                 end
@@ -3272,7 +3272,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") >= modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") >= modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") >= modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetSize(150, 150)
+                                    icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                     icon:SetTooltip(nil)
                                     StatModelList:Add(icon)
 
@@ -3292,11 +3292,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                         surface.SetFont("PlayerNotiName")
-                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 200)
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(200))
 
                                         if IsValid(modelPopOut) then modelPopOut:Remove() end
                                         modelPopOut = vgui.Create("DPanel", MainMenu)
-                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(130))
                                         UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                         modelPopOut:SetAlpha(0)
                                         modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -3318,28 +3318,28 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                             surface.DrawRect(0, 0, w, h)
 
                                             surface.SetDrawColor(Color(255, 255, 255, 155))
-                                            surface.DrawRect(0, 0, w, 1)
-                                            surface.DrawRect(0, h - 1, w, 1)
-                                            surface.DrawRect(0, 0, 1, h)
-                                            surface.DrawRect(w - 1, 0, 1, h)
+                                            surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                            surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                            surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                            surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                             if newModelUnlockType == "kills" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerKills") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "streak" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("highestKillStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HIGHEST STREAK", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "matches" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesPlayed") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES PLAYED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "wins" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("matchesWon") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MATCHES WON", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             end
 
-                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(105), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
 
@@ -3351,7 +3351,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                 if modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") >= modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") >= modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") >= modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") >= modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") >= modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") >= modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") >= modelArray[i][4] then
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
                                     icon:SetModel(modelArray[i][1])
-                                    icon:SetSize(150, 150)
+                                    icon:SetSize(TM.MenuScale(150), TM.MenuScale(150))
                                     icon:SetTooltip(nil)
                                     AccoladeModelList:Add(icon)
 
@@ -3371,11 +3371,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                         if mouseY <= (ScrH() / 2) then sideV = true else sideV = false end
 
                                         surface.SetFont("PlayerNotiName")
-                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), 220)
+                                        local modelNameTextSize = math.max(surface.GetTextSize(string.upper(newModelName)), TM.MenuScale(220))
 
                                         if IsValid(modelPopOut) then modelPopOut:Remove() end
                                         modelPopOut = vgui.Create("DPanel", MainMenu)
-                                        modelPopOut:SetSize(modelNameTextSize + 10, 130)
+                                        modelPopOut:SetSize(modelNameTextSize + TM.MenuScale(10), TM.MenuScale(130))
                                         UpdatePopOutPos(modelPopOut, sideH, sideV, mouseX, mouseY)
                                         modelPopOut:SetAlpha(0)
                                         modelPopOut:AlphaTo(255, 0.1, 0, function() end)
@@ -3396,37 +3396,37 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                                             surface.DrawRect(0, 0, w, h)
 
                                             surface.SetDrawColor(Color(255, 255, 255, 155))
-                                            surface.DrawRect(0, 0, w, 1)
-                                            surface.DrawRect(0, h - 1, w, 1)
-                                            surface.DrawRect(0, 0, 1, h)
-                                            surface.DrawRect(w - 1, 0, 1, h)
+                                            surface.DrawRect(0, 0, w, TM.MenuScale(1))
+                                            surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+                                            surface.DrawRect(0, 0, TM.MenuScale(1), h)
+                                            surface.DrawRect(w - TM.MenuScale(1), 0, TM.MenuScale(1), h)
 
-                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined(string.upper(newModelName), "PlayerNotiName", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
 
                                             if newModelUnlockType == "headshot" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeHeadshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("HEADSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "smackdown" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeSmackdown") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("MELEE KILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "clutch" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeClutch") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("CLUTCHES", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "longshot" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeLongshot") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("LONGSHOTS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "pointblank" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladePointblank") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("POINT BLANKS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "killstreaks" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeOnStreak") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("STREAKS STARTED", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             elseif newModelUnlockType == "buzzkills" then
-                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, 45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 255, 0, 15))
-                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, 75, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                                draw.SimpleTextOutlined(LocalPly:GetNWInt("playerAccoladeBuzzkill") .. "/" .. newModelUnlockValue, "Health", w / 2, TM.MenuScale(45), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 255, 0, 15))
+                                                draw.SimpleTextOutlined("BUZZKILLS", "Health", w / 2, TM.MenuScale(75), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                             end
 
-                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, 105, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 0, 0, 205))
+                                            draw.SimpleTextOutlined("click to equip", "StreakText", w / 2, TM.MenuScale(105), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, TM.MenuScale(1), Color(0, 0, 0, 205))
                                         end
                                     end
 
@@ -3451,7 +3451,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     TextDefault.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("DEFAULT", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
-                        draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(defaultModelsUnlocked .. " / " .. defaultModelsTotal, "Health", w / 2, TM.MenuScale(55), solidGreen, TEXT_ALIGN_CENTER)
                     end
 
                     TextStats.Paint = function(self, w, h)
@@ -3459,9 +3459,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("STATS", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if statModelsUnlocked == statModelsTotal then
-                            draw.SimpleText(statModelsUnlocked .. " / " .. statModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statModelsUnlocked .. " / " .. statModelsTotal, "Health", w / 2, TM.MenuScale(55), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(statModelsUnlocked .. " / " .. statModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(statModelsUnlocked .. " / " .. statModelsTotal, "Health", w / 2, TM.MenuScale(55), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
@@ -3470,9 +3470,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("ACCOLADES", "OptionsHeader", w / 2, 0, white, TEXT_ALIGN_CENTER)
 
                         if accoladeModelsUnlocked == accoladeModelsTotal then
-                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, solidGreen, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, TM.MenuScale(55), solidGreen, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, 55, white, TEXT_ALIGN_CENTER)
+                            draw.SimpleText(accoladeModelsUnlocked .. " / " .. accoladeModelsTotal, "Health", w / 2, TM.MenuScale(55), white, TEXT_ALIGN_CENTER)
                         end
                     end
 
@@ -3501,9 +3501,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             accoladeModelsTotal = 0
                             accoladeModelsUnlocked = 0
                             FillModelListsUnlocked()
-                            DockModels:SetSize(0, 310)
-                            DockModelsStats:SetSize(0, (statModelsTotal * 38.75) + 103.2)
-                            DockModelsAccolade:SetSize(0, (accoladeModelsUnlocked * 38.75) + 103.2)
+                            DockModels:SetSize(0, TM.MenuScale(310))
+                            DockModelsStats:SetSize(0, (statModelsTotal * TM.MenuScale(38.75)) + TM.MenuScale(103.2))
+                            DockModelsAccolade:SetSize(0, (accoladeModelsUnlocked * TM.MenuScale(38.75)) + TM.MenuScale(103.2))
                         else
                             DefaultModelList:Clear()
                             StatModelList:Clear()
@@ -3516,20 +3516,20 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             accoladeModelsTotal = 0
                             accoladeModelsUnlocked = 0
                             FillModelListsAll()
-                            DockModels:SetSize(0, 310)
-                            DockModelsStats:SetSize(0, 930)
-                            DockModelsAccolade:SetSize(0, 1080)
+                            DockModels:SetSize(0, TM.MenuScale(310))
+                            DockModelsStats:SetSize(0, TM.MenuScale(930))
+                            DockModelsAccolade:SetSize(0, TM.MenuScale(1080))
                         end
                     end
 
                     local ModelIcon = vgui.Create("DImage", ModelQuickjumpHolder)
-                    ModelIcon:SetPos(12, 12)
-                    ModelIcon:SetSize(32, 32)
+                    ModelIcon:SetPos(TM.MenuScale(12), TM.MenuScale(12))
+                    ModelIcon:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     ModelIcon:SetImage("icons/modelicon.png")
 
                     local DefaultJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    DefaultJump:SetPos(4, 100)
-                    DefaultJump:SetSize(48, 48)
+                    DefaultJump:SetPos(TM.MenuScale(4), TM.MenuScale(100))
+                    DefaultJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     DefaultJump:SetImage("icons/unlockedicon.png")
                     DefaultJump:SetTooltip("Default")
                     DefaultJump.DoClick = function()
@@ -3538,8 +3538,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local StatsJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    StatsJump:SetPos(4, 152)
-                    StatsJump:SetSize(48, 48)
+                    StatsJump:SetPos(TM.MenuScale(4), TM.MenuScale(152))
+                    StatsJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     StatsJump:SetImage("icons/uikillicon.png")
                     StatsJump:SetTooltip("Kills")
                     StatsJump.DoClick = function()
@@ -3548,8 +3548,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local AccoladeJump = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    AccoladeJump:SetPos(4, 204)
-                    AccoladeJump:SetSize(48, 48)
+                    AccoladeJump:SetPos(TM.MenuScale(4), TM.MenuScale(204))
+                    AccoladeJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AccoladeJump:SetImage("icons/accoladeicon.png")
                     AccoladeJump:SetTooltip("Accolades")
                     AccoladeJump.DoClick = function()
@@ -3558,8 +3558,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", ModelQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, scrH - 44)
-                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetPos(TM.MenuScale(12), scrH - TM.MenuScale(44))
+                    BackButtonSlideout:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout.DoClick = function()
@@ -3576,35 +3576,35 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             local OptionsButton = vgui.Create("DButton", MainPanel)
             local OptionsSettingsButton = vgui.Create("DButton", OptionsButton)
             local OptionsHUDButton = vgui.Create("DButton", OptionsButton)
-            OptionsButton:SetPos(0, scrH / 2 + 50)
+            OptionsButton:SetPos(0, scrH / 2 + TM.MenuScale(50))
             OptionsButton:SetText("")
-            OptionsButton:SetSize(405, 100)
+            OptionsButton:SetSize(TM.MenuScale(405), TM.MenuScale(100))
             local textAnim = 0
             OptionsButton.Paint = function()
                 if OptionsButton:IsHovered() or OptionsSettingsButton:IsHovered() or OptionsHUDButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems + 600 * RealFrameTime(), 100, 150)
-                    OptionsButton:SizeTo(-1, 200, 0, 0, 1)
+                    OptionsButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(200), 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems - 600 * RealFrameTime(), 100, 150)
-                    OptionsButton:SizeTo(-1, 100, 0, 0, 1)
+                    OptionsButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(100), 0, 0, 1)
                 end
-                draw.DrawText("OPTIONS", "AmmoCountSmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("OPTIONS", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
-            OptionsSettingsButton:SetPos(0, 100)
+            OptionsSettingsButton:SetPos(0, TM.MenuScale(100))
             OptionsSettingsButton:SetText("")
-            OptionsSettingsButton:SetSize(235, 100)
+            OptionsSettingsButton:SetSize(TM.MenuScale(235), TM.MenuScale(100))
             OptionsSettingsButton.Paint = function()
-                draw.DrawText("SETTINGS", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("SETTINGS", "AmmoCountESmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
-            OptionsHUDButton:SetPos(240, 100)
+            OptionsHUDButton:SetPos(TM.MenuScale(240), TM.MenuScale(100))
             OptionsHUDButton:SetText("")
-            OptionsHUDButton:SetSize(245, 100)
+            OptionsHUDButton:SetSize(TM.MenuScale(245), TM.MenuScale(100))
             OptionsHUDButton.Paint = function()
-                draw.DrawText("HUD", "AmmoCountESmall", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                draw.DrawText("HUD", "AmmoCountESmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
 
             OptionsSettingsButton.DoClick = function()
@@ -3629,7 +3629,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     OptionsQuickjumpHolder.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, lightGray)
-                        draw.RoundedBox(0, 4, scrH - 52, 48, 48, transparentRed)
+                        draw.RoundedBox(0, TM.MenuScale(4), scrH - TM.MenuScale(52), TM.MenuScale(48), TM.MenuScale(48), transparentRed)
                     end
 
                     local OptionsScroller = vgui.Create("DScrollPanel", OptionsPanel)
@@ -3637,53 +3637,54 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local sbar = OptionsScroller:GetVBar()
                     sbar:SetHideButtons(true)
+                    sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                     function sbar:Paint(w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                     end
                     function sbar.btnGrip:Paint(w, h)
-                        draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                        draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                     end
 
                     local DockAccount = vgui.Create("DPanel", OptionsScroller)
                     DockAccount:Dock(TOP)
-                    DockAccount:SetSize(0, 110)
+                    DockAccount:SetSize(0, TM.MenuScale(110))
 
                     local DockInputs = vgui.Create("DPanel", OptionsScroller)
                     DockInputs:Dock(TOP)
-                    DockInputs:SetSize(0, 760)
+                    DockInputs:SetSize(0, TM.MenuScale(760))
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
-                    DockGameplay:SetSize(0, 355)
+                    DockGameplay:SetSize(0, TM.MenuScale(355))
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
-                    DockUI:SetSize(0, 435)
+                    DockUI:SetSize(0, TM.MenuScale(435))
 
                     local DockAudio = vgui.Create("DPanel", OptionsScroller)
                     DockAudio:Dock(TOP)
-                    DockAudio:SetSize(0, 360)
+                    DockAudio:SetSize(0, TM.MenuScale(360))
 
                     local DockCrosshair = vgui.Create("DPanel", OptionsScroller)
                     DockCrosshair:Dock(TOP)
-                    DockCrosshair:SetSize(0, 670)
+                    DockCrosshair:SetSize(0, TM.MenuScale(670))
 
                     local DockHitmarker = vgui.Create("DPanel", OptionsScroller)
                     DockHitmarker:Dock(TOP)
-                    DockHitmarker:SetSize(0, 550)
+                    DockHitmarker:SetSize(0, TM.MenuScale(550))
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, 360)
+                    DockPerformance:SetSize(0, TM.MenuScale(360))
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
-                    SettingsCog:SetPos(12, 12)
-                    SettingsCog:SetSize(32, 32)
+                    SettingsCog:SetPos(TM.MenuScale(12), TM.MenuScale(12))
+                    SettingsCog:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     SettingsCog:SetImage("icons/settingsicon.png")
 
                     local AccountJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    AccountJump:SetPos(4, 100)
-                    AccountJump:SetSize(48, 48)
+                    AccountJump:SetPos(TM.MenuScale(4), TM.MenuScale(100))
+                    AccountJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AccountJump:SetTooltip("Account")
                     AccountJump:SetImage("icons/accounticon.png")
                     AccountJump.DoClick = function()
@@ -3692,8 +3693,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local InputsJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    InputsJump:SetPos(4, 152)
-                    InputsJump:SetSize(48, 48)
+                    InputsJump:SetPos(TM.MenuScale(4), TM.MenuScale(152))
+                    InputsJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     InputsJump:SetTooltip("Input")
                     InputsJump:SetImage("icons/inputicon.png")
                     InputsJump.DoClick = function()
@@ -3702,8 +3703,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local GameplayJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    GameplayJump:SetPos(4, 204)
-                    GameplayJump:SetSize(48, 48)
+                    GameplayJump:SetPos(TM.MenuScale(4), TM.MenuScale(204))
+                    GameplayJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     GameplayJump:SetTooltip("Gameplay")
                     GameplayJump:SetImage("icons/weaponicon.png")
                     GameplayJump.DoClick = function()
@@ -3712,8 +3713,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local UIJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    UIJump:SetPos(4, 256)
-                    UIJump:SetSize(48, 48)
+                    UIJump:SetPos(TM.MenuScale(4), TM.MenuScale(256))
+                    UIJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     UIJump:SetTooltip("Interface")
                     UIJump:SetImage("icons/interfaceicon.png")
                     UIJump.DoClick = function()
@@ -3722,8 +3723,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local AudioJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    AudioJump:SetPos(4, 308)
-                    AudioJump:SetSize(48, 48)
+                    AudioJump:SetPos(TM.MenuScale(4), TM.MenuScale(308))
+                    AudioJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AudioJump:SetTooltip("Audio")
                     AudioJump:SetImage("icons/audioicon.png")
                     AudioJump.DoClick = function()
@@ -3732,8 +3733,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local CrosshairJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    CrosshairJump:SetPos(4, 360)
-                    CrosshairJump:SetSize(48, 48)
+                    CrosshairJump:SetPos(TM.MenuScale(4), TM.MenuScale(360))
+                    CrosshairJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     CrosshairJump:SetTooltip("Crosshair")
                     CrosshairJump:SetImage("icons/crosshairicon.png")
                     CrosshairJump.DoClick = function()
@@ -3742,8 +3743,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local HitmarkerJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    HitmarkerJump:SetPos(4, 412)
-                    HitmarkerJump:SetSize(48, 48)
+                    HitmarkerJump:SetPos(TM.MenuScale(4), TM.MenuScale(412))
+                    HitmarkerJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     HitmarkerJump:SetTooltip("Hitmarker")
                     HitmarkerJump:SetImage("icons/hitmarkericon.png")
                     HitmarkerJump.DoClick = function()
@@ -3752,8 +3753,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local PerformanceJump = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    PerformanceJump:SetPos(4, 464)
-                    PerformanceJump:SetSize(48, 48)
+                    PerformanceJump:SetPos(TM.MenuScale(4), TM.MenuScale(464))
+                    PerformanceJump:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     PerformanceJump:SetTooltip("Performance")
                     PerformanceJump:SetImage("icons/performanceicon.png")
                     PerformanceJump.DoClick = function()
@@ -3762,8 +3763,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local BackButtonSlideout = vgui.Create("DImageButton", OptionsQuickjumpHolder)
-                    BackButtonSlideout:SetPos(12, scrH - 44)
-                    BackButtonSlideout:SetSize(32, 32)
+                    BackButtonSlideout:SetPos(TM.MenuScale(12), scrH - TM.MenuScale(44))
+                    BackButtonSlideout:SetSize(TM.MenuScale(32), TM.MenuScale(32))
                     BackButtonSlideout:SetTooltip("Return to Main Menu")
                     BackButtonSlideout:SetImage("icons/exiticon.png")
                     BackButtonSlideout.DoClick = function()
@@ -3777,103 +3778,103 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockAccount.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("ACCOUNT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ACCOUNT", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hide Lifetime Stats From Others", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
                     end
 
                     local hideStatsFromOthers = DockAccount:Add("DCheckBox")
-                    hideStatsFromOthers:SetPos(20, 70)
+                    hideStatsFromOthers:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     hideStatsFromOthers:SetConVar("tm_hidestatsfromothers")
-                    hideStatsFromOthers:SetSize(30, 30)
+                    hideStatsFromOthers:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function hideStatsFromOthers:OnChange() TriggerSound("click") end
 
                     DockInputs.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("INPUT", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("INPUT", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Auto Sprint", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", 165, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Sensitivity Transition Style", "SettingsLabel", 135, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Main Menu Bind", "SettingsLabel", 135, 385, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grenade Bind", "SettingsLabel", 135, 425, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", 135, 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", 55, 505, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", 135, 545, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", 135, 585, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", 135, 625, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspect Bind", "SettingsLabel", 135, 665, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Attachments Bind (none = [" .. string.upper(ContextBind) .. "])", "SettingsLabel", 135, 705, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Sensitivity Transition Style", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Main Menu Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(385), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grenade Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(425), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Grappling Hook Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(465), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Quick Weapon Switching", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(505), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Primary Weapon Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(545), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Secondary Weapon Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(585), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Melee Weapon Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspect Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(665), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Attachments Bind (none = [" .. string.upper(ContextBind) .. "])", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(705), white, TEXT_ALIGN_LEFT)
                     end
 
                     local autoSprint = DockInputs:Add("DCheckBox")
-                    autoSprint:SetPos(20, 70)
+                    autoSprint:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     autoSprint:SetConVar("tm_autosprint")
-                    autoSprint:SetSize(30, 30)
+                    autoSprint:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function autoSprint:OnChange() TriggerSound("click") end
 
                     local autoSprintDelay = DockInputs:Add("DNumSlider")
-                    autoSprintDelay:SetPos(-85, 110)
-                    autoSprintDelay:SetSize(250, 30)
+                    autoSprintDelay:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                    autoSprintDelay:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     autoSprintDelay:SetConVar("tm_autosprint_delay")
                     autoSprintDelay:SetMin(0.25)
                     autoSprintDelay:SetMax(0.50)
                     autoSprintDelay:SetDecimals(2)
 
                     local adsSensitivity = DockInputs:Add("DNumSlider")
-                    adsSensitivity:SetPos(-85, 150)
-                    adsSensitivity:SetSize(250, 30)
+                    adsSensitivity:SetPos(TM.MenuScale(-85), TM.MenuScale(150))
+                    adsSensitivity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     adsSensitivity:SetConVar("tm_sensitivity_1x")
                     adsSensitivity:SetMin(0)
                     adsSensitivity:SetMax(100)
                     adsSensitivity:SetDecimals(0)
 
                     local twoadsSensitivity = DockInputs:Add("DNumSlider")
-                    twoadsSensitivity:SetPos(-85, 190)
-                    twoadsSensitivity:SetSize(250, 30)
+                    twoadsSensitivity:SetPos(TM.MenuScale(-85), TM.MenuScale(190))
+                    twoadsSensitivity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     twoadsSensitivity:SetConVar("tm_sensitivity_2x")
                     twoadsSensitivity:SetMin(0)
                     twoadsSensitivity:SetMax(100)
                     twoadsSensitivity:SetDecimals(0)
 
                     local fouradsSensitivity = DockInputs:Add("DNumSlider")
-                    fouradsSensitivity:SetPos(-85, 230)
-                    fouradsSensitivity:SetSize(250, 30)
+                    fouradsSensitivity:SetPos(TM.MenuScale(-85), TM.MenuScale(230))
+                    fouradsSensitivity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     fouradsSensitivity:SetConVar("tm_sensitivity_4x")
                     fouradsSensitivity:SetMin(0)
                     fouradsSensitivity:SetMax(100)
                     fouradsSensitivity:SetDecimals(0)
 
                     local sixadsSensitivity = DockInputs:Add("DNumSlider")
-                    sixadsSensitivity:SetPos(-85, 270)
-                    sixadsSensitivity:SetSize(250, 30)
+                    sixadsSensitivity:SetPos(TM.MenuScale(-85), TM.MenuScale(270))
+                    sixadsSensitivity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     sixadsSensitivity:SetConVar("tm_sensitivity_6x")
                     sixadsSensitivity:SetMin(0)
                     sixadsSensitivity:SetMax(100)
                     sixadsSensitivity:SetDecimals(0)
 
                     local sensitivityTransition = DockInputs:Add("DComboBox")
-                    sensitivityTransition:SetPos(20, 310)
-                    sensitivityTransition:SetSize(100, 30)
+                    sensitivityTransition:SetPos(TM.MenuScale(20), TM.MenuScale(310))
+                    sensitivityTransition:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     if GetConVar("tm_sensitivity_transition"):GetInt() == 0 then sensitivityTransition:SetValue("Instant") elseif GetConVar("tm_sensitivity_transition"):GetInt() == 1 then sensitivityTransition:SetValue("Gradual") end
                     sensitivityTransition:AddChoice("Instant")
                     sensitivityTransition:AddChoice("Gradual")
                     sensitivityTransition.OnSelect = function(self, value) RunConsoleCommand("tm_sensitivity_transition", value - 1) TriggerSound("forward") end
 
                     local compensateSensWithFOV = DockInputs:Add("DCheckBox")
-                    compensateSensWithFOV:SetPos(20, 350)
+                    compensateSensWithFOV:SetPos(TM.MenuScale(20), TM.MenuScale(350))
                     compensateSensWithFOV:SetConVar("cl_tfa_scope_sensitivity_autoscale")
-                    compensateSensWithFOV:SetSize(30, 30)
+                    compensateSensWithFOV:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function compensateSensWithFOV:OnChange() TriggerSound("click") end
 
                     local mainMenuBind = DockInputs:Add("DBinder")
-                    mainMenuBind:SetPos(22.5, 390)
-                    mainMenuBind:SetSize(100, 30)
+                    mainMenuBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(390))
+                    mainMenuBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     mainMenuBind:SetSelectedNumber(GetConVar("tm_mainmenubind"):GetInt())
                     function mainMenuBind:OnChange(num)
                         TriggerSound("forward")
@@ -3882,8 +3883,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grenadeBind = DockInputs:Add("DBinder")
-                    grenadeBind:SetPos(22.5, 430)
-                    grenadeBind:SetSize(100, 30)
+                    grenadeBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(430))
+                    grenadeBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     grenadeBind:SetSelectedNumber(GetConVar("tm_nadebind"):GetInt())
                     function grenadeBind:OnChange(num)
                         TriggerSound("forward")
@@ -3892,8 +3893,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local grappleBind = DockInputs:Add("DBinder")
-                    grappleBind:SetPos(22.5, 470)
-                    grappleBind:SetSize(100, 30)
+                    grappleBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(470))
+                    grappleBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     grappleBind:SetSelectedNumber(GetConVar("frest_bindg"):GetInt())
                     function grappleBind:OnChange(num)
                         TriggerSound("forward")
@@ -3902,14 +3903,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local quickWeaponSwitching = DockInputs:Add("DCheckBox")
-                    quickWeaponSwitching:SetPos(20, 510)
+                    quickWeaponSwitching:SetPos(TM.MenuScale(20), TM.MenuScale(510))
                     quickWeaponSwitching:SetConVar("tm_quickswitching")
-                    quickWeaponSwitching:SetSize(30, 30)
+                    quickWeaponSwitching:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function quickWeaponSwitching:OnChange() TriggerSound("click") end
 
                     local primaryBind = DockInputs:Add("DBinder")
-                    primaryBind:SetPos(22.5, 550)
-                    primaryBind:SetSize(100, 30)
+                    primaryBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(550))
+                    primaryBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     primaryBind:SetSelectedNumber(GetConVar("tm_primarybind"):GetInt())
                     function primaryBind:OnChange(num)
                         TriggerSound("forward")
@@ -3918,8 +3919,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local secondaryBind = DockInputs:Add("DBinder")
-                    secondaryBind:SetPos(22.5, 590)
-                    secondaryBind:SetSize(100, 30)
+                    secondaryBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(590))
+                    secondaryBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     secondaryBind:SetSelectedNumber(GetConVar("tm_secondarybind"):GetInt())
                     function secondaryBind:OnChange(num)
                         TriggerSound("forward")
@@ -3928,8 +3929,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local meleeBind = DockInputs:Add("DBinder")
-                    meleeBind:SetPos(22.5, 630)
-                    meleeBind:SetSize(100, 30)
+                    meleeBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(630))
+                    meleeBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     meleeBind:SetSelectedNumber(GetConVar("tm_meleebind"):GetInt())
                     function meleeBind:OnChange(num)
                         TriggerSound("forward")
@@ -3938,8 +3939,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local inspectBind = DockInputs:Add("DBinder")
-                    inspectBind:SetPos(22.5, 670)
-                    inspectBind:SetSize(100, 30)
+                    inspectBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(670))
+                    inspectBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     inspectBind:SetSelectedNumber(GetConVar("cl_tfa_keys_inspect"):GetInt())
                     function inspectBind:OnChange(num)
                         TriggerSound("forward")
@@ -3948,8 +3949,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local customizeBind = DockInputs:Add("DBinder")
-                    customizeBind:SetPos(22.5, 710)
-                    customizeBind:SetSize(100, 30)
+                    customizeBind:SetPos(TM.MenuScale(22.5), TM.MenuScale(710))
+                    customizeBind:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     customizeBind:SetSelectedNumber(GetConVar("cl_tfa_keys_customize"):GetInt())
                     function customizeBind:OnChange(num)
                         TriggerSound("forward")
@@ -3959,62 +3960,62 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockGameplay.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("GAMEPLAY", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("GAMEPLAY", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Increase FOV", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("FOV Value", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death Camera", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", 245, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Increase FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FOV Value", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death Camera", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
                     end
 
                     local customFOV = DockGameplay:Add("DCheckBox")
-                    customFOV:SetPos(20, 70)
+                    customFOV:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     customFOV:SetConVar("tm_customfov")
-                    customFOV:SetSize(30, 30)
+                    customFOV:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function customFOV:OnChange() TriggerSound("click") end
 
                     local customFOVSlider = DockGameplay:Add("DNumSlider")
-                    customFOVSlider:SetPos(-85, 110)
-                    customFOVSlider:SetSize(250, 30)
+                    customFOVSlider:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                    customFOVSlider:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     customFOVSlider:SetConVar("tm_customfov_value")
                     customFOVSlider:SetMin(100)
                     customFOVSlider:SetMax(144)
                     customFOVSlider:SetDecimals(0)
 
                     local centeredVM = DockGameplay:Add("DCheckBox")
-                    centeredVM:SetPos(20, 150)
+                    centeredVM:SetPos(TM.MenuScale(20), TM.MenuScale(150))
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
-                    centeredVM:SetSize(30, 30)
+                    centeredVM:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function centeredVM:OnChange() TriggerSound("click") end
 
                     local deathCam = DockGameplay:Add("DCheckBox")
-                    deathCam:SetPos(20, 190)
+                    deathCam:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     deathCam:SetConVar("tm_deathcam")
-                    deathCam:SetSize(30, 30)
+                    deathCam:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function deathCam:OnChange() TriggerSound("click") end
 
                     local EotechPreview = vgui.Create("DImage", DockGameplay)
-                    EotechPreview:SetPos(180, 295)
-                    EotechPreview:SetSize(48, 48)
+                    EotechPreview:SetPos(TM.MenuScale(245), TM.MenuScale(270))
+                    EotechPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     EotechPreview:SetImage("images/reticles/eotech.png")
                     EotechPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local KobraPreview = vgui.Create("DImage", DockGameplay)
-                    KobraPreview:SetPos(224, 295)
-                    KobraPreview:SetSize(48, 48)
+                    KobraPreview:SetPos(TM.MenuScale(289), TM.MenuScale(270))
+                    KobraPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     KobraPreview:SetImage("images/reticles/kobra.png")
                     KobraPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local AimpointPreview = vgui.Create("DImage", DockGameplay)
-                    AimpointPreview:SetPos(268, 295)
-                    AimpointPreview:SetSize(48, 48)
+                    AimpointPreview:SetPos(TM.MenuScale(333), TM.MenuScale(270))
+                    AimpointPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AimpointPreview:SetImage("images/reticles/aimpoint.png")
                     AimpointPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local reticleMixer = vgui.Create("DColorMixer", DockGameplay)
-                    reticleMixer:SetPos(20, 230)
-                    reticleMixer:SetSize(215, 110)
+                    reticleMixer:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                    reticleMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     reticleMixer:SetConVarR("cl_tfa_reticule_color_r")
                     reticleMixer:SetConVarG("cl_tfa_reticule_color_g")
                     reticleMixer:SetConVarB("cl_tfa_reticule_color_b")
@@ -4029,115 +4030,115 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockUI.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("INTERFACE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("INTERFACE", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("HUD", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Notifications", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Damage Indicator", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Reload Hints", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Loadout Hints", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill Tracker", "SettingsLabel", 55, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Keypress Overlay", "SettingsLabel", 55, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Velocity Counter", "SettingsLabel", 55, 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Voice Chat Indicator", "SettingsLabel", 55, 385, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("HUD", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Notifications", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Damage Indicator", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Reload Hints", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Loadout Hints", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill Tracker", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Keypress Overlay", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Velocity Counter", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Voice Chat Indicator", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(385), white, TEXT_ALIGN_LEFT)
                     end
 
                     local HUDtoggle = DockUI:Add("DCheckBox")
-                    HUDtoggle:SetPos(20, 70)
+                    HUDtoggle:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     HUDtoggle:SetConVar("tm_hud_enable")
-                    HUDtoggle:SetSize(30, 30)
+                    HUDtoggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function HUDtoggle:OnChange() TriggerSound("click") end
 
                     local notificationToggle = DockUI:Add("DCheckBox")
-                    notificationToggle:SetPos(20, 110)
+                    notificationToggle:SetPos(TM.MenuScale(20), TM.MenuScale(110))
                     notificationToggle:SetConVar("tm_hud_notifications")
-                    notificationToggle:SetSize(30, 30)
+                    notificationToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function notificationToggle:OnChange() TriggerSound("click") end
 
                     local dmgIndicatorToggle = DockUI:Add("DCheckBox")
-                    dmgIndicatorToggle:SetPos(20, 150)
+                    dmgIndicatorToggle:SetPos(TM.MenuScale(20), TM.MenuScale(150))
                     dmgIndicatorToggle:SetConVar("tm_hud_dmgindicator")
-                    dmgIndicatorToggle:SetSize(30, 30)
+                    dmgIndicatorToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function dmgIndicatorToggle:OnChange() TriggerSound("click") end
 
                     local reloadHintsToggle = DockUI:Add("DCheckBox")
-                    reloadHintsToggle:SetPos(20, 190)
+                    reloadHintsToggle:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     reloadHintsToggle:SetConVar("tm_hud_reloadhint")
-                    reloadHintsToggle:SetSize(30, 30)
+                    reloadHintsToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function reloadHintsToggle:OnChange() TriggerSound("click") end
 
                     local loadoutHintsToggle = DockUI:Add("DCheckBox")
-                    loadoutHintsToggle:SetPos(20, 230)
+                    loadoutHintsToggle:SetPos(TM.MenuScale(20), TM.MenuScale(230))
                     loadoutHintsToggle:SetConVar("tm_hud_loadouthint")
-                    loadoutHintsToggle:SetSize(30, 30)
+                    loadoutHintsToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function loadoutHintsToggle:OnChange() TriggerSound("click") end
 
                     local killTrackerToggle = DockUI:Add("DCheckBox")
-                    killTrackerToggle:SetPos(20, 270)
+                    killTrackerToggle:SetPos(TM.MenuScale(20), TM.MenuScale(270))
                     killTrackerToggle:SetConVar("tm_hud_killtracker")
-                    killTrackerToggle:SetSize(30, 30)
+                    killTrackerToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function killTrackerToggle:OnChange() TriggerSound("click") end
 
                     local keypressOverlayToggle = DockUI:Add("DCheckBox")
-                    keypressOverlayToggle:SetPos(20, 310)
+                    keypressOverlayToggle:SetPos(TM.MenuScale(20), TM.MenuScale(310))
                     keypressOverlayToggle:SetConVar("tm_hud_keypressoverlay")
-                    keypressOverlayToggle:SetSize(30, 30)
+                    keypressOverlayToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function keypressOverlayToggle:OnChange() TriggerSound("click") end
 
                     local VelocityCounterToggle = DockUI:Add("DCheckBox")
-                    VelocityCounterToggle:SetPos(20, 350)
+                    VelocityCounterToggle:SetPos(TM.MenuScale(20), TM.MenuScale(350))
                     VelocityCounterToggle:SetConVar("tm_hud_velocitycounter")
-                    VelocityCounterToggle:SetSize(30, 30)
+                    VelocityCounterToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function VelocityCounterToggle:OnChange() TriggerSound("click") end
 
                     local VoiceChatIndicatorToggle = DockUI:Add("DCheckBox")
-                    VoiceChatIndicatorToggle:SetPos(20, 390)
+                    VoiceChatIndicatorToggle:SetPos(TM.MenuScale(20), TM.MenuScale(390))
                     VoiceChatIndicatorToggle:SetConVar("tm_hud_voiceindicator")
-                    VoiceChatIndicatorToggle:SetSize(30, 30)
+                    VoiceChatIndicatorToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function VoiceChatIndicatorToggle:OnChange() TriggerSound("click") end
 
                     DockAudio.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("AUDIO", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("AUDIO", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Menu SFX", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Music Volume", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker SFX", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill SFX", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hitmarker SFX Style", "SettingsLabel", 125, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Kill SFX Style", "SettingsLabel", 125, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Headshot Kill SFX Style", "SettingsLabel", 125, 305, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Menu SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Music Volume", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hitmarker SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hitmarker SFX Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Kill SFX Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Headshot Kill SFX Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                     end
 
                     local menuSoundsButton = DockAudio:Add("DCheckBox")
-                    menuSoundsButton:SetPos(20, 70)
+                    menuSoundsButton:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     menuSoundsButton:SetConVar("tm_menusounds")
-                    menuSoundsButton:SetSize(30, 30)
+                    menuSoundsButton:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function menuSoundsButton:OnChange() TriggerSound("click") end
 
                     local musicVolume = DockAudio:Add("DNumSlider")
-                    musicVolume:SetPos(-85, 110)
-                    musicVolume:SetSize(250, 30)
+                    musicVolume:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                    musicVolume:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     musicVolume:SetConVar("tm_musicvolume")
                     musicVolume:SetMin(0)
                     musicVolume:SetMax(1)
                     musicVolume:SetDecimals(2)
 
                     local hitSoundsButton = DockAudio:Add("DCheckBox")
-                    hitSoundsButton:SetPos(20, 150)
+                    hitSoundsButton:SetPos(TM.MenuScale(20), TM.MenuScale(150))
                     hitSoundsButton:SetConVar("tm_hitsounds")
-                    hitSoundsButton:SetSize(30, 30)
+                    hitSoundsButton:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function hitSoundsButton:OnChange() TriggerSound("click") end
 
                     local killSoundButton = DockAudio:Add("DCheckBox")
-                    killSoundButton:SetPos(20, 190)
+                    killSoundButton:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     killSoundButton:SetConVar("tm_killsound")
-                    killSoundButton:SetSize(30, 30)
+                    killSoundButton:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function killSoundButton:OnChange() TriggerSound("click") end
 
                     local hitSoundsType = DockAudio:Add("DComboBox")
-                    hitSoundsType:SetPos(20, 230)
-                    hitSoundsType:SetSize(100, 30)
+                    hitSoundsType:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                    hitSoundsType:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     if GetConVar("tm_hitsoundtype"):GetInt() == 0 then hitSoundsType:SetValue("Rust") elseif GetConVar("tm_hitsoundtype"):GetInt() == 1 then hitSoundsType:SetValue("TABG") elseif GetConVar("tm_hitsoundtype"):GetInt() == 2 then hitSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_hitsoundtype"):GetInt() == 3 then hitSoundsType:SetValue("Bad Business") elseif GetConVar("tm_hitsoundtype"):GetInt() == 4 then hitSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_hitsoundtype"):GetInt() == 5 then hitSoundsType:SetValue("Overwatch") end
                     hitSoundsType:AddChoice("Rust")
                     hitSoundsType:AddChoice("TABG")
@@ -4151,8 +4152,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local killSoundsType = DockAudio:Add("DComboBox")
-                    killSoundsType:SetPos(20, 270)
-                    killSoundsType:SetSize(100, 30)
+                    killSoundsType:SetPos(TM.MenuScale(20), TM.MenuScale(270))
+                    killSoundsType:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     if GetConVar("tm_killsoundtype"):GetInt() == 0 then killSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_killsoundtype"):GetInt() == 1 then killSoundsType:SetValue("TABG") elseif GetConVar("tm_killsoundtype"):GetInt() == 2 then killSoundsType:SetValue("Bad Business") elseif GetConVar("tm_killsoundtype"):GetInt() == 3 then killSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_killsoundtype"):GetInt() == 4 then killSoundsType:SetValue("Counter Strike") elseif GetConVar("tm_killsoundtype"):GetInt() == 5 then killSoundsType:SetValue("Overwatch") end
                     killSoundsType:AddChoice("Call Of Duty")
                     killSoundsType:AddChoice("TABG")
@@ -4166,8 +4167,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     local headshotKillSoundsType = DockAudio:Add("DComboBox")
-                    headshotKillSoundsType:SetPos(20, 310)
-                    headshotKillSoundsType:SetSize(100, 30)
+                    headshotKillSoundsType:SetPos(TM.MenuScale(20), TM.MenuScale(310))
+                    headshotKillSoundsType:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     if GetConVar("tm_headshotkillsoundtype"):GetInt() == 0 then headshotKillSoundsType:SetValue("Call Of Duty") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 1 then headshotKillSoundsType:SetValue("TABG") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 2 then headshotKillSoundsType:SetValue("Bad Business") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 3 then headshotKillSoundsType:SetValue("Apex Legends") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 4 then headshotKillSoundsType:SetValue("Counter Strike") elseif GetConVar("tm_headshotkillsoundtype"):GetInt() == 5 then headshotKillSoundsType:SetValue("Overwatch") end
                     headshotKillSoundsType:AddChoice("Call Of Duty")
                     headshotKillSoundsType:AddChoice("TABG")
@@ -4182,55 +4183,55 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockCrosshair.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("CROSSHAIR", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("CROSSHAIR", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Show When Sprinting", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Style", "SettingsLabel", 125, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Center Dot", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", 165, 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Color/Opacity", "SettingsLabel", 245 , 345, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline", "SettingsLabel", 55, 465, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Outline Color", "SettingsLabel", 245 , 505, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Top", "SettingsLabel", 55, 625, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Bottom", "SettingsLabel", 155, 625, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Left", "SettingsLabel", 300, 625, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Right", "SettingsLabel", 395, 625, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Show When Sprinting", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Center Dot", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Color/Opacity", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(465), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Outline Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(505), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Top", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Bottom", "SettingsLabel", TM.MenuScale(155), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Left", "SettingsLabel", TM.MenuScale(300), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Right", "SettingsLabel", TM.MenuScale(395), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Click to cycle image", "QuoteText", 475, 265, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Click to cycle image", "QuoteText", TM.MenuScale(475), TM.MenuScale(265), white, TEXT_ALIGN_CENTER)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
-                    crosshairToggle:SetPos(20, 70)
+                    crosshairToggle:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     crosshairToggle:SetConVar("tm_hud_crosshair")
-                    crosshairToggle:SetSize(30, 30)
+                    crosshairToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairToggle:OnChange() TriggerSound("click") end
 
                     local crosshairSprint = DockCrosshair:Add("DCheckBox")
-                    crosshairSprint:SetPos(20, 110)
+                    crosshairSprint:SetPos(TM.MenuScale(20), TM.MenuScale(110))
                     crosshairSprint:SetConVar("tm_hud_crosshair_sprint")
-                    crosshairSprint:SetSize(30, 30)
+                    crosshairSprint:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairSprint:OnChange() TriggerSound("click") end
 
                     local crosshairStyle = DockCrosshair:Add("DComboBox")
-                    crosshairStyle:SetPos(20, 150)
-                    crosshairStyle:SetSize(100, 30)
+                    crosshairStyle:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    crosshairStyle:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                     if GetConVar("tm_hud_crosshair_style"):GetInt() == 0 then crosshairStyle:SetValue("Static") elseif GetConVar("tm_hud_crosshair_style"):GetInt() == 1 then crosshairStyle:SetValue("Dynamic") end
                     crosshairStyle:AddChoice("Static")
                     crosshairStyle:AddChoice("Dynamic")
                     crosshairStyle.OnSelect = function(self, value) RunConsoleCommand("tm_hud_crosshair_style", value - 1) TriggerSound("forward") end
 
                     local crosshairDot = DockCrosshair:Add("DCheckBox")
-                    crosshairDot:SetPos(20, 190)
+                    crosshairDot:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     crosshairDot:SetConVar("tm_hud_crosshair_dot")
-                    crosshairDot:SetSize(30, 30)
+                    crosshairDot:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairDot:OnChange() TriggerSound("click") end
 
                     local crosshairLength = DockCrosshair:Add("DNumSlider")
-                    crosshairLength:SetPos(-85, 230)
-                    crosshairLength:SetSize(250, 30)
+                    crosshairLength:SetPos(TM.MenuScale(-85), TM.MenuScale(230))
+                    crosshairLength:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     crosshairLength:SetConVar("tm_hud_crosshair_size")
                     crosshairLength:SetMin(1)
                     crosshairLength:SetMax(50)
@@ -4238,8 +4239,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairLength:OnValueChanged() end
 
                     local crosshairThickness = DockCrosshair:Add("DNumSlider")
-                    crosshairThickness:SetPos(-85, 270)
-                    crosshairThickness:SetSize(250, 30)
+                    crosshairThickness:SetPos(TM.MenuScale(-85), TM.MenuScale(270))
+                    crosshairThickness:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     crosshairThickness:SetConVar("tm_hud_crosshair_thickness")
                     crosshairThickness:SetMin(1)
                     crosshairThickness:SetMax(50)
@@ -4247,8 +4248,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairThickness:OnValueChanged() end
 
                     local crosshairGap = DockCrosshair:Add("DNumSlider")
-                    crosshairGap:SetPos(-85, 310)
-                    crosshairGap:SetSize(250, 30)
+                    crosshairGap:SetPos(TM.MenuScale(-85), TM.MenuScale(310))
+                    crosshairGap:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     crosshairGap:SetConVar("tm_hud_crosshair_gap")
                     crosshairGap:SetMin(0)
                     crosshairGap:SetMax(50)
@@ -4256,8 +4257,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairGap:OnValueChanged() end
 
                     local crosshairMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    crosshairMixer:SetPos(20, 350)
-                    crosshairMixer:SetSize(215, 110)
+                    crosshairMixer:SetPos(TM.MenuScale(20), TM.MenuScale(350))
+                    crosshairMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     crosshairMixer:SetConVarR("tm_hud_crosshair_color_r")
                     crosshairMixer:SetConVarG("tm_hud_crosshair_color_g")
                     crosshairMixer:SetConVarB("tm_hud_crosshair_color_b")
@@ -4267,14 +4268,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairMixer:SetWangs(true)
 
                     local crosshairOutline = DockCrosshair:Add("DCheckBox")
-                    crosshairOutline:SetPos(20, 470)
+                    crosshairOutline:SetPos(TM.MenuScale(20), TM.MenuScale(470))
                     crosshairOutline:SetConVar("tm_hud_crosshair_outline")
-                    crosshairOutline:SetSize(30, 30)
+                    crosshairOutline:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairOutline:OnChange() TriggerSound("click") end
 
                     local crosshairOutlineMixer = vgui.Create("DColorMixer", DockCrosshair)
-                    crosshairOutlineMixer:SetPos(20, 510)
-                    crosshairOutlineMixer:SetSize(215, 110)
+                    crosshairOutlineMixer:SetPos(TM.MenuScale(20), TM.MenuScale(510))
+                    crosshairOutlineMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     crosshairOutlineMixer:SetConVarR("tm_hud_crosshair_outline_color_r")
                     crosshairOutlineMixer:SetConVarG("tm_hud_crosshair_outline_color_g")
                     crosshairOutlineMixer:SetConVarB("tm_hud_crosshair_outline_color_b")
@@ -4283,37 +4284,37 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     crosshairOutlineMixer:SetWangs(true)
 
                     local crosshairTop = DockCrosshair:Add("DCheckBox")
-                    crosshairTop:SetPos(20, 630)
+                    crosshairTop:SetPos(TM.MenuScale(20), TM.MenuScale(630))
                     crosshairTop:SetConVar("tm_hud_crosshair_show_t")
-                    crosshairTop:SetSize(30, 30)
+                    crosshairTop:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairTop:OnChange() TriggerSound("click") end
 
                     local crosshairBottom = DockCrosshair:Add("DCheckBox")
-                    crosshairBottom:SetPos(120, 630)
+                    crosshairBottom:SetPos(TM.MenuScale(120), TM.MenuScale(630))
                     crosshairBottom:SetConVar("tm_hud_crosshair_show_b")
-                    crosshairBottom:SetSize(30, 30)
+                    crosshairBottom:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairBottom:OnChange() TriggerSound("click") end
 
                     local crosshairLeft = DockCrosshair:Add("DCheckBox")
-                    crosshairLeft:SetPos(265, 630)
+                    crosshairLeft:SetPos(TM.MenuScale(265), TM.MenuScale(630))
                     crosshairLeft:SetConVar("tm_hud_crosshair_show_l")
-                    crosshairLeft:SetSize(30, 30)
+                    crosshairLeft:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairLeft:OnChange() TriggerSound("click") end
 
                     local crosshairRight = DockCrosshair:Add("DCheckBox")
-                    crosshairRight:SetPos(360, 630)
+                    crosshairRight:SetPos(TM.MenuScale(360), TM.MenuScale(630))
                     crosshairRight:SetConVar("tm_hud_crosshair_show_r")
-                    crosshairRight:SetSize(30, 30)
+                    crosshairRight:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function crosshairRight:OnChange() TriggerSound("click") end
 
                     local previewOpacitySlider = DockCrosshair:Add("DSlider")
-                    previewOpacitySlider:SetPos(400, 250)
-                    previewOpacitySlider:SetSize(150, 20)
+                    previewOpacitySlider:SetPos(TM.MenuScale(400), TM.MenuScale(250))
+                    previewOpacitySlider:SetSize(TM.MenuScale(150), TM.MenuScale(20))
                     previewOpacitySlider:SetSlideX(1)
 
                     local crosshairPreviewImage = DockCrosshair:Add("DImageButton")
-                    crosshairPreviewImage:SetPos(375, 10)
-                    crosshairPreviewImage:SetSize(200, 200)
+                    crosshairPreviewImage:SetPos(TM.MenuScale(375), TM.MenuScale(10))
+                    crosshairPreviewImage:SetSize(TM.MenuScale(200), TM.MenuScale(200))
                     crosshairPreviewImage:SetImage(previewImg)
                     crosshairPreviewImage.DoClick = function()
                         local imagePool = table.Copy(previewPool)
@@ -4369,8 +4370,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end)
 
                     CrosshairPreview = vgui.Create("DPanel", DockCrosshair)
-                    CrosshairPreview:SetSize(200, 200)
-                    CrosshairPreview:SetPos(375, 10)
+                    CrosshairPreview:SetSize(TM.MenuScale(200), TM.MenuScale(200))
+                    CrosshairPreview:SetPos(TM.MenuScale(375), TM.MenuScale(10))
                     CrosshairPreview:SetMouseInputEnabled(false)
                     CrosshairPreview.Paint = function(self, w, h)
                         UpdateCrosshair()
@@ -4393,29 +4394,29 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockHitmarker.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("HITMARKER", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("HITMARKER", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Enable", "SettingsLabel", 55 , 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", 165, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", 165, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", 165, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Opacity", "SettingsLabel", 165, 225, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Duration", "SettingsLabel", 165, 265, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Hit Color", "SettingsLabel", 245 , 305, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Headshot Color", "SettingsLabel", 245 , 425, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Enable", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Opacity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Duration", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Hit Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Headshot Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(425), white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Click to show hitmarker", "QuoteText", 475, 215, white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Click to show hitmarker", "QuoteText", TM.MenuScale(475), TM.MenuScale(215), white, TEXT_ALIGN_CENTER)
                     end
 
                     local hitmarkerToggle = DockHitmarker:Add("DCheckBox")
-                    hitmarkerToggle:SetPos(20, 70)
+                    hitmarkerToggle:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     hitmarkerToggle:SetConVar("tm_hud_hitmarker")
-                    hitmarkerToggle:SetSize(30, 30)
+                    hitmarkerToggle:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function hitmarkerToggle:OnChange() TriggerSound("click") end
 
                     local hitmarkerLength = DockHitmarker:Add("DNumSlider")
-                    hitmarkerLength:SetPos(-85, 110)
-                    hitmarkerLength:SetSize(250, 30)
+                    hitmarkerLength:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                    hitmarkerLength:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     hitmarkerLength:SetConVar("tm_hud_hitmarker_size")
                     hitmarkerLength:SetMin(1)
                     hitmarkerLength:SetMax(50)
@@ -4423,8 +4424,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function hitmarkerLength:OnValueChanged() end
 
                     local hitmarkerThickness = DockHitmarker:Add("DNumSlider")
-                    hitmarkerThickness:SetPos(-85, 150)
-                    hitmarkerThickness:SetSize(250, 30)
+                    hitmarkerThickness:SetPos(TM.MenuScale(-85), TM.MenuScale(150))
+                    hitmarkerThickness:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     hitmarkerThickness:SetConVar("tm_hud_hitmarker_thickness")
                     hitmarkerThickness:SetMin(1)
                     hitmarkerThickness:SetMax(20)
@@ -4432,8 +4433,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function hitmarkerThickness:OnValueChanged() end
 
                     local hitmarkerGap = DockHitmarker:Add("DNumSlider")
-                    hitmarkerGap:SetPos(-85, 190)
-                    hitmarkerGap:SetSize(250, 30)
+                    hitmarkerGap:SetPos(TM.MenuScale(-85), TM.MenuScale(190))
+                    hitmarkerGap:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     hitmarkerGap:SetConVar("tm_hud_hitmarker_gap")
                     hitmarkerGap:SetMin(0)
                     hitmarkerGap:SetMax(50)
@@ -4441,8 +4442,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function hitmarkerGap:OnValueChanged() end
 
                     local hitmarkerOpacity = DockHitmarker:Add("DNumSlider")
-                    hitmarkerOpacity:SetPos(-85, 230)
-                    hitmarkerOpacity:SetSize(250, 30)
+                    hitmarkerOpacity:SetPos(TM.MenuScale(-85), TM.MenuScale(230))
+                    hitmarkerOpacity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     hitmarkerOpacity:SetConVar("tm_hud_hitmarker_opacity")
                     hitmarkerOpacity:SetMin(0)
                     hitmarkerOpacity:SetMax(255)
@@ -4450,8 +4451,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function hitmarkerOpacity:OnValueChanged() end
 
                     local hitmarkerDuration = DockHitmarker:Add("DNumSlider")
-                    hitmarkerDuration:SetPos(-85, 270)
-                    hitmarkerDuration:SetSize(250, 30)
+                    hitmarkerDuration:SetPos(TM.MenuScale(-85), TM.MenuScale(270))
+                    hitmarkerDuration:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                     hitmarkerDuration:SetConVar("tm_hud_hitmarker_duration")
                     hitmarkerDuration:SetMin(1)
                     hitmarkerDuration:SetMax(5)
@@ -4459,8 +4460,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function hitmarkerDuration:OnValueChanged() end
 
                     local hitmarkerMixer = vgui.Create("DColorMixer", DockHitmarker)
-                    hitmarkerMixer:SetPos(20, 310)
-                    hitmarkerMixer:SetSize(215, 110)
+                    hitmarkerMixer:SetPos(TM.MenuScale(20), TM.MenuScale(310))
+                    hitmarkerMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     hitmarkerMixer:SetConVarR("tm_hud_hitmarker_color_hit_r")
                     hitmarkerMixer:SetConVarG("tm_hud_hitmarker_color_hit_g")
                     hitmarkerMixer:SetConVarB("tm_hud_hitmarker_color_hit_b")
@@ -4469,8 +4470,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     hitmarkerMixer:SetWangs(true)
 
                     local hitmarkerHeadMixer = vgui.Create("DColorMixer", DockHitmarker)
-                    hitmarkerHeadMixer:SetPos(20, 430)
-                    hitmarkerHeadMixer:SetSize(215, 110)
+                    hitmarkerHeadMixer:SetPos(TM.MenuScale(20), TM.MenuScale(430))
+                    hitmarkerHeadMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     hitmarkerHeadMixer:SetConVarR("tm_hud_hitmarker_color_head_r")
                     hitmarkerHeadMixer:SetConVarG("tm_hud_hitmarker_color_head_g")
                     hitmarkerHeadMixer:SetConVarB("tm_hud_hitmarker_color_head_b")
@@ -4483,8 +4484,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     local hitColor = "hit"
 
                     local hitmarkerPreviewImage = DockHitmarker:Add("DImageButton")
-                    hitmarkerPreviewImage:SetPos(375, 10)
-                    hitmarkerPreviewImage:SetSize(200, 200)
+                    hitmarkerPreviewImage:SetPos(TM.MenuScale(375), TM.MenuScale(10))
+                    hitmarkerPreviewImage:SetSize(TM.MenuScale(200), TM.MenuScale(200))
                     hitmarkerPreviewImage:SetImage("images/preview/white.png")
                     hitmarkerPreviewImage:SetColor(Color(255, 255, 255, 0))
                     hitmarkerPreviewImage.DoClick = function()
@@ -4511,8 +4512,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     UpdateHitmarker()
 
                     HitmarkerPreview = vgui.Create("DFrame", DockHitmarker)
-                    HitmarkerPreview:SetSize(200, 200)
-                    HitmarkerPreview:SetPos(375, 10)
+                    HitmarkerPreview:SetSize(TM.MenuScale(200), TM.MenuScale(200))
+                    HitmarkerPreview:SetPos(TM.MenuScale(375), TM.MenuScale(10))
                     HitmarkerPreview:SetMouseInputEnabled(false)
                     HitmarkerPreview:SetTitle("")
                     HitmarkerPreview:SetDraggable(false)
@@ -4531,50 +4532,50 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     DockPerformance.Paint = function(self, w, h)
                         draw.RoundedBox(0, 0, 0, w, h, gray)
-                        draw.SimpleText("PERFORMANCE", "OptionsHeader", 20, 0, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("PERFORMANCE", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Precache Gamemode Files", "SettingsLabel", 55, 65, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Render Hands", "SettingsLabel", 55, 105, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", 55, 145, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", 55, 185, white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", 55, 225, white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Precache Gamemode Files", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Render Hands", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS DOF", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection DOF", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
                     end
 
                     local precacheGamemodeFiles = DockPerformance:Add("DCheckBox")
-                    precacheGamemodeFiles:SetPos(20, 70)
+                    precacheGamemodeFiles:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     precacheGamemodeFiles:SetConVar("tm_precachefiles")
-                    precacheGamemodeFiles:SetSize(30, 30)
+                    precacheGamemodeFiles:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     precacheGamemodeFiles:SetTooltip("Recommended when your game is installed on a SSD/solid state drive, disable if you are encountering CVEngineServer overflows")
                     function precacheGamemodeFiles:OnChange() TriggerSound("click") end
 
                     local renderHands = DockPerformance:Add("DCheckBox")
-                    renderHands:SetPos(20, 110)
+                    renderHands:SetPos(TM.MenuScale(20), TM.MenuScale(110))
                     renderHands:SetConVar("tm_renderhands")
-                    renderHands:SetSize(30, 30)
+                    renderHands:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function renderHands:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(20, 150)
+                    ironSightDOF:SetPos(TM.MenuScale(20), TM.MenuScale(150))
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
-                    ironSightDOF:SetSize(30, 30)
+                    ironSightDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(20, 190)
+                    inspectionDOF:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
-                    inspectionDOF:SetSize(30, 30)
+                    inspectionDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(20, 230)
+                    screenFlashing:SetPos(TM.MenuScale(20), TM.MenuScale(230))
                     screenFlashing:SetConVar("tm_screenflashes")
-                    screenFlashing:SetSize(30, 30)
+                    screenFlashing:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(17.5, 310)
+                    WipeAccountButton:SetPos(TM.MenuScale(17.5), TM.MenuScale(310))
                     WipeAccountButton:SetText("")
-                    WipeAccountButton:SetSize(500, 40)
+                    WipeAccountButton:SetSize(TM.MenuScale(500), TM.MenuScale(40))
                     local textAnim = 0
                     local wipeConfirm = 0
                     WipeAccountButton.Paint = function()
@@ -4584,9 +4585,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                         end
                         if (wipeConfirm == 0) then
-                            draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", 5 + textAnim, 5, white, TEXT_ALIGN_LEFT)
+                            draw.DrawText("WIPE PLAYER ACCOUNT", "SettingsLabel", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
                         else
-                            draw.DrawText("ARE YOU SURE?", "SettingsLabel", 5 + textAnim, 5, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                            draw.DrawText("ARE YOU SURE?", "SettingsLabel", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), Color(255, 0, 0), TEXT_ALIGN_LEFT)
                         end
                     end
                     WipeAccountButton.DoClick = function()
@@ -4624,7 +4625,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local nadeMat = Material("icons/grenadehudicon.png")
                 local hillEmptyMat = Material("icons/kothempty.png")
                 local border = Material("overlay/objborder.png")
-                local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
                 local timeText = " ∞"
                 timer.Create("previewLoop", 1, 0, function()
                     mode = modePool[math.random(#modePool)]
@@ -4648,20 +4648,20 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     }
                     draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
                     if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 155 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER) end
-                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 100 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(50) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - TM.HUDScale(5) - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(170) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT) end
+                        draw.SimpleText(ammo, "HUD_AmmoCount", scrW - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(165) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)
                     elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
-                        draw.SimpleText(wep, "HUD_GunPrintName", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 35 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW + 2 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 85 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM) end
+                        draw.SimpleText(wep, "HUD_GunPrintName", scrW - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(90) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)
+                        if GetConVar("tm_hud_killtracker"):GetInt() == 1 then draw.SimpleText(health .. " kills", "HUD_StreakText", scrW - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(105) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT) end
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_g"):GetInt() - 205, GetConVar("tm_hud_ammo_bar_color_b"):GetInt() - 205, 80)
-                        surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400, 30)
+                        surface.DrawRect(scrW - TM.HUDScale(400) - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(400), TM.HUDScale(30))
                         surface.SetDrawColor(GetConVar("tm_hud_ammo_bar_color_r"):GetInt(), GetConVar("tm_hud_ammo_bar_color_g"):GetInt(), GetConVar("tm_hud_ammo_bar_color_b"):GetInt(), 175)
-                        surface.DrawRect(scrW - 400 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_bounds_y"):GetInt(), 400 * (ammo / 30), 30)
-                        draw.SimpleText(ammo, "HUD_Health", scrW - 390 - GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(scrW - TM.HUDScale(400) - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(400) * (ammo / 30), TM.HUDScale(30))
+                        draw.SimpleText(ammo, "HUD_Health", scrW - TM.HUDScale(390) - TM.HUDScale(GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT)
                     end
                     surface.SetDrawColor(50, 50, 50, 80)
-                    surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt(), 30)
+                    surface.DrawRect(TM.HUDScale(GetConVar("tm_hud_health_offset_x"):GetInt() + (GetConVar("tm_hud_bounds_x"):GetInt())), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_health_offset_y"):GetInt() + (GetConVar("tm_hud_bounds_y"):GetInt())), TM.HUDScale(GetConVar("tm_hud_health_size"):GetInt()), TM.HUDScale(30))
                     if health <= 66 then
                         if health <= 33 then
                             surface.SetDrawColor(GetConVar("tm_hud_health_color_low_r"):GetInt(), GetConVar("tm_hud_health_color_low_g"):GetInt(), GetConVar("tm_hud_health_color_low_b"):GetInt(), 120)
@@ -4671,32 +4671,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         surface.SetDrawColor(GetConVar("tm_hud_health_color_high_r"):GetInt(), GetConVar("tm_hud_health_color_high_g"):GetInt(), GetConVar("tm_hud_health_color_high_b"):GetInt(), 120)
                     end
-                    surface.DrawRect(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 30 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), GetConVar("tm_hud_health_size"):GetInt() * (health / 100), 30)
-                    draw.SimpleText(health, "HUD_Health", GetConVar("tm_hud_health_size"):GetInt() + GetConVar("tm_hud_health_offset_x"):GetInt() - 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 15 - GetConVar("tm_hud_health_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    surface.DrawRect(TM.HUDScale(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_health_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(GetConVar("tm_hud_health_size"):GetInt()) * (health / 100), TM.HUDScale(30))
+                    draw.SimpleText(health, "HUD_Health", TM.HUDScale(GetConVar("tm_hud_health_size"):GetInt()) + TM.HUDScale(GetConVar("tm_hud_health_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) - TM.HUDScale(10), scrH - TM.HUDScale(30) - TM.HUDScale(GetConVar("tm_hud_health_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_RIGHT)
                     local feedStyle
                     if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
-                        feedStyle = -20
+                        feedStyle = TM.HUDScale(-20)
                     else
-                        feedStyle = 20
+                        feedStyle = TM.HUDScale(20)
                     end
+                    surface.SetFont("HUD_StreakText")
                     for k, v in pairs(fakeFeedArray) do
                         if v[2] == 1 and v[2] != nil then surface.SetDrawColor(150, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) else surface.SetDrawColor(50, 50, 50, GetConVar("tm_hud_killfeed_opacity"):GetInt()) end
                         local nameLength = select(1, surface.GetTextSize(v[1]))
 
-                        surface.DrawRect(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 20 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), nameLength + 5, 20)
-                        draw.SimpleText(v[1], "HUD_StreakText", 2.5 + GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 10 + ((k - 1) * feedStyle) - GetConVar("tm_hud_killfeed_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        surface.DrawRect(TM.HUDScale(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(20) + ((k - 1) * feedStyle) - TM.HUDScale(GetConVar("tm_hud_killfeed_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), nameLength + TM.HUDScale(5), TM.HUDScale(20))
+                        draw.SimpleText(v[1], "HUD_StreakText", TM.HUDScale(2.5) + TM.HUDScale(GetConVar("tm_hud_killfeed_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()), scrH - TM.HUDScale(22) + ((k - 1) * feedStyle) - TM.HUDScale(GetConVar("tm_hud_killfeed_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT)
                     end
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() - 45 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("frest_bindg"):GetInt())) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() - 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    surface.DrawTexturedRect(TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(45), scrH - TM.HUDScale(40) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(35), TM.HUDScale(40))
+                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("frest_bindg"):GetInt())) .. "]", "HUD_StreakText", TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(27.5), scrH - TM.HUDScale(65) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(GetConVar("tm_hud_equipment_offset_x"):GetInt() + 10 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 40 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt(), 35, 40)
-                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("tm_nadebind"):GetInt())) .. "]", "HUD_StreakText", GetConVar("tm_hud_equipment_offset_x"):GetInt() + 27.5 + GetConVar("tm_hud_bounds_x"):GetInt(), scrH - 42.5 - GetConVar("tm_hud_equipment_offset_y"):GetInt() - GetConVar("tm_hud_bounds_y"):GetInt() , Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+                    surface.DrawTexturedRect(TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(10), scrH - TM.HUDScale(40) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(35), TM.HUDScale(40))
                     if GetConVar("tm_hud_keypressoverlay"):GetInt() == 1 then
-                        local keyX = GetConVar("tm_hud_keypressoverlay_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()
-                        local keyY = GetConVar("tm_hud_keypressoverlay_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()
+                        local keyX = TM.HUDScale(GetConVar("tm_hud_keypressoverlay_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt())
+                        local keyY = TM.HUDScale(GetConVar("tm_hud_keypressoverlay_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt())
                         local actuatedColor = Color(GetConVar("tm_hud_keypressoverlay_actuated_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_actuated_b"):GetInt())
                         local inactiveColor = Color(GetConVar("tm_hud_keypressoverlay_inactive_r"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_g"):GetInt(), GetConVar("tm_hud_keypressoverlay_inactive_b"):GetInt())
                         local keyMat = Material("icons/keyicon.png")
@@ -4704,58 +4704,58 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         local keyMatLong = Material("icons/keyiconlong.png")
                         surface.SetMaterial(keyMat)
                         surface.SetDrawColor(actuatedColor)
-                        surface.DrawTexturedRect(48 + keyX, 0 + keyY, 42, 42)
+                        surface.DrawTexturedRect(TM.HUDScale(48) + keyX, 0 + keyY, TM.HUDScale(42), TM.HUDScale(42))
                         surface.SetDrawColor(actuatedColor)
-                        surface.DrawTexturedRect(0 + keyX, 48 + keyY, 42, 42)
+                        surface.DrawTexturedRect(0 + keyX, TM.HUDScale(48) + keyY, TM.HUDScale(42), TM.HUDScale(42))
                         surface.SetDrawColor(inactiveColor)
-                        surface.DrawTexturedRect(48 + keyX, 48 + keyY, 42, 42)
+                        surface.DrawTexturedRect(TM.HUDScale(48) + keyX, TM.HUDScale(48) + keyY, TM.HUDScale(42), TM.HUDScale(42))
                         surface.SetDrawColor(inactiveColor)
-                        surface.DrawTexturedRect(96 + keyX, 48 + keyY, 42, 42)
+                        surface.DrawTexturedRect(TM.HUDScale(96) + keyX, TM.HUDScale(48) + keyY, TM.HUDScale(42), TM.HUDScale(42))
                         surface.SetMaterial(keyMatLong)
                         surface.SetDrawColor(actuatedColor)
-                        surface.DrawTexturedRect(0 + keyX, 96 + keyY, 138, 42)
+                        surface.DrawTexturedRect(0 + keyX, TM.HUDScale(96) + keyY, TM.HUDScale(138), TM.HUDScale(42))
                         surface.SetMaterial(keyMatMed)
                         surface.SetDrawColor(inactiveColor)
-                        surface.DrawTexturedRect(0 + keyX, 144 + keyY, 66, 42)
+                        surface.DrawTexturedRect(0 + keyX, TM.HUDScale(144) + keyY, TM.HUDScale(66), TM.HUDScale(42))
                         surface.SetDrawColor(actuatedColor)
-                        surface.DrawTexturedRect(72 + keyX, 144 + keyY, 66, 42)
-                        draw.SimpleText("W", "HUD_StreakText", 69 + keyX, 21 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("A", "HUD_StreakText", 21 + keyX, 69 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("S", "HUD_StreakText", 69 + keyX, 69 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("D", "HUD_StreakText", 117 + keyX, 69 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("JUMP", "HUD_StreakText", 69 + keyX, 117 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("RUN", "HUD_StreakText", 33 + keyX, 165 + keyY, inactiveColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText("DUCK", "HUD_StreakText", 105 + keyX, 165 + keyY, actuatedColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                        surface.DrawTexturedRect(TM.HUDScale(72) + keyX, TM.HUDScale(144) + keyY, TM.HUDScale(66), TM.HUDScale(42))
+                        draw.SimpleText("W", "HUD_StreakText", TM.HUDScale(69) + keyX, TM.HUDScale(10) + keyY, actuatedColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("A", "HUD_StreakText", TM.HUDScale(21) + keyX, TM.HUDScale(58) + keyY, actuatedColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("S", "HUD_StreakText", TM.HUDScale(69) + keyX, TM.HUDScale(58) + keyY, inactiveColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("D", "HUD_StreakText", TM.HUDScale(117) + keyX, TM.HUDScale(58) + keyY, inactiveColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("JUMP", "HUD_StreakText", TM.HUDScale(69) + keyX, TM.HUDScale(106) + keyY, actuatedColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("RUN", "HUD_StreakText", TM.HUDScale(33) + keyX, TM.HUDScale(154) + keyY, inactiveColor, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("DUCK", "HUD_StreakText", TM.HUDScale(105) + keyX, TM.HUDScale(154) + keyY, actuatedColor, TEXT_ALIGN_CENTER)
                     end
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
-                        draw.SimpleText(velocity .. " u/s", "HUD_Health", GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt(), GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.SimpleText(velocity .. " u/s", "HUD_Health", TM.HUDScale(GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()), TM.HUDScale(GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                     timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
-                    draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, -5 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, TM.HUDScale(-5) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
 
                     if mode == "Gun Game" then
-                        draw.SimpleText(ggGuns  .. " kills left", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(ggGuns  .. " kills left", "HUD_Health", scrW / 2, TM.HUDScale(25) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                     elseif mode == "Fiesta" then
-                        draw.SimpleText(modeTimeText, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(modeTimeText, "HUD_Health", scrW / 2, TM.HUDScale(25) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                     elseif mode == "Cranked" then
-                        draw.SimpleText(modeTime, "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(modeTime, "HUD_Health", scrW / 2, TM.HUDScale(25) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                         surface.SetDrawColor(50, 50, 50, 80)
-                        surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150, 10)
+                        surface.DrawRect(scrW / 2 - TM.HUDScale(75), TM.HUDScale(60) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(150), TM.HUDScale(10))
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 80)
-                        surface.DrawRect(scrW / 2 - 75, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 150 * (modeTime / 45), 10)
+                        surface.DrawRect(scrW / 2 - TM.HUDScale(75), TM.HUDScale(60) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(150) * (modeTime / 45), TM.HUDScale(10))
                     elseif mode == "KOTH" then
-                        draw.SimpleText("Contested", "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText("Contested", "HUD_Health", scrW / 2, TM.HUDScale(25) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 100)
                         surface.SetMaterial(hillEmptyMat)
-                        surface.DrawTexturedRect(scrW / 2 - 21, 60 + GetConVar("tm_hud_bounds_y"):GetInt(), 42, 42)
+                        surface.DrawTexturedRect(scrW / 2 - TM.HUDScale(21), TM.HUDScale(60) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(42), TM.HUDScale(42))
                         surface.SetMaterial(border)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_contested_r"):GetInt(), GetConVar("tm_hud_obj_color_contested_g"):GetInt(), GetConVar("tm_hud_obj_color_contested_b"):GetInt(), 175)
                         surface.DrawTexturedRect(0, 0, scrW, scrH)
                     elseif mode == "VIP" then
-                        draw.SimpleText(LocalPly:GetName(), "HUD_Health", scrW / 2, 25 + GetConVar("tm_hud_bounds_y"):GetInt(), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                        draw.SimpleText(LocalPly:GetName(), "HUD_Health", scrW / 2, TM.HUDScale(25) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 225)
                         surface.SetMaterial(hillEmptyMat)
-                        surface.DrawTexturedRect(scrW / 2 - 24, 57 + GetConVar("tm_hud_bounds_y"):GetInt(), 48, 48)
+                        surface.DrawTexturedRect(scrW / 2 - TM.HUDScale(24), TM.HUDScale(57) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(48), TM.HUDScale(48))
                         surface.SetMaterial(border)
                         surface.SetDrawColor(GetConVar("tm_hud_obj_color_occupied_r"):GetInt(), GetConVar("tm_hud_obj_color_occupied_g"):GetInt(), GetConVar("tm_hud_obj_color_occupied_b"):GetInt(), 175)
                         surface.DrawTexturedRect(0, 0, scrW, scrH)
@@ -4763,7 +4763,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local EditorPanel = vgui.Create("DFrame", FakeHUD)
-                EditorPanel:SetSize(435, scrH * 0.7)
+                EditorPanel:SetSize(TM.MenuScale(435), TM.MenuScale(756))
                 EditorPanel:MakePopup()
                 EditorPanel:SetTitle("")
                 EditorPanel:Center()
@@ -4789,11 +4789,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local sbar = EditorScroller:GetVBar()
                 sbar:SetHideButtons(true)
+                sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
+                    draw.RoundedBox(0, 0, 0, w, h, gray)
                 end
                 function sbar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(0, 5, 8, 5, h - 16, Color(255, 255, 255, 175))
+                    draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
                 end
 
                 local HiddenOptionsScroller = vgui.Create("DPanel", EditorPanel)
@@ -4805,28 +4806,28 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local GeneralEditor = vgui.Create("DPanel", EditorScroller)
                 GeneralEditor:Dock(TOP)
-                GeneralEditor:SetSize(0, 290)
+                GeneralEditor:SetSize(0, TM.MenuScale(290))
                 GeneralEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("GENERAL", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Scale", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Font", "Health", 125, 90, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD X Bounds", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("HUD Y Bounds", "Health", 165, 170, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Text Color", "Health", 210, 205, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("GENERAL", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Scale", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Font", "Health", TM.MenuScale(125), TM.MenuScale(90), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD X Bounds", "Health", TM.MenuScale(165), TM.MenuScale(130), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HUD Y Bounds", "Health", TM.MenuScale(165), TM.MenuScale(170), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Text Color", "Health", TM.MenuScale(210), TM.MenuScale(205), white, TEXT_ALIGN_LEFT)
                 end
 
                 local HUDScale = GeneralEditor:Add("DNumSlider")
-                HUDScale:SetPos(-85, 50)
-                HUDScale:SetSize(250, 30)
+                HUDScale:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                HUDScale:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HUDScale:SetConVar("tm_hud_scale")
                 HUDScale:SetMin(0.5)
                 HUDScale:SetMax(2)
                 HUDScale:SetDecimals(2)
 
                 local HUDFont = GeneralEditor:Add("DComboBox")
-                HUDFont:SetPos(20, 90)
-                HUDFont:SetSize(100, 30)
+                HUDFont:SetPos(TM.MenuScale(20), TM.MenuScale(90))
+                HUDFont:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                 HUDFont:SetValue(GetConVar("tm_hud_font"):GetString())
                 HUDFont:AddChoice("Arial")
                 HUDFont:AddChoice("Comic Sans MS")
@@ -4846,8 +4847,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local CustomFontInput = GeneralEditor:Add("DTextEntry")
                 CustomFontInput:SetPlaceholderText("Enter a custom font...")
-                CustomFontInput:SetPos(275, 90)
-                CustomFontInput:SetSize(125, 30)
+                CustomFontInput:SetPos(TM.MenuScale(275), TM.MenuScale(90))
+                CustomFontInput:SetSize(TM.MenuScale(125), TM.MenuScale(30))
                 CustomFontInput.OnEnter = function(self)
                     RunConsoleCommand("tm_hud_font", self:GetValue())
                     HUDFont:SetValue(self:GetValue())
@@ -4855,24 +4856,24 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local HUDXBounds = GeneralEditor:Add("DNumSlider")
-                HUDXBounds:SetPos(-85, 130)
-                HUDXBounds:SetSize(250, 30)
+                HUDXBounds:SetPos(TM.MenuScale(-85), TM.MenuScale(130))
+                HUDXBounds:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HUDXBounds:SetConVar("tm_hud_bounds_x")
                 HUDXBounds:SetMin(0)
-                HUDXBounds:SetMax(scrW / 4)
+                HUDXBounds:SetMax(1920)
                 HUDXBounds:SetDecimals(0)
 
                 local HUDYBounds = GeneralEditor:Add("DNumSlider")
-                HUDYBounds:SetPos(-85, 170)
-                HUDYBounds:SetSize(250, 30)
+                HUDYBounds:SetPos(TM.MenuScale(-85), TM.MenuScale(170))
+                HUDYBounds:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HUDYBounds:SetConVar("tm_hud_bounds_y")
                 HUDYBounds:SetMin(0)
-                HUDYBounds:SetMax(scrH / 4)
+                HUDYBounds:SetMax(1080)
                 HUDYBounds:SetDecimals(0)
 
                 local WepTextColor = vgui.Create("DColorMixer", GeneralEditor)
-                WepTextColor:SetPos(20, 210)
-                WepTextColor:SetSize(185, 70)
+                WepTextColor:SetPos(TM.MenuScale(20), TM.MenuScale(210))
+                WepTextColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 WepTextColor:SetConVarR("tm_hud_text_color_r")
                 WepTextColor:SetConVarG("tm_hud_text_color_g")
                 WepTextColor:SetConVarB("tm_hud_text_color_b")
@@ -4882,17 +4883,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local AmmoEditor = vgui.Create("DPanel", EditorScroller)
                 AmmoEditor:Dock(TOP)
-                AmmoEditor:SetSize(0, 170)
+                AmmoEditor:SetSize(0, TM.MenuScale(170))
                 AmmoEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("AMMO", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Style", "Health", 125, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("AMMO", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Style", "Health", TM.MenuScale(125), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Color", "Health", TM.MenuScale(210), TM.MenuScale(85), white, TEXT_ALIGN_LEFT)
                 end
 
                 local AmmoStyle = AmmoEditor:Add("DComboBox")
-                AmmoStyle:SetPos(20, 50)
-                AmmoStyle:SetSize(100, 30)
+                AmmoStyle:SetPos(TM.MenuScale(20), TM.MenuScale(50))
+                AmmoStyle:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                 if GetConVar("tm_hud_ammo_style"):GetInt() == 0 then
                     AmmoStyle:SetValue("Numeric")
                 elseif GetConVar("tm_hud_ammo_style"):GetInt() == 1 then
@@ -4907,8 +4908,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local AmmoBarColor = vgui.Create("DColorMixer", AmmoEditor)
-                AmmoBarColor:SetPos(20, 90)
-                AmmoBarColor:SetSize(185, 70)
+                AmmoBarColor:SetPos(TM.MenuScale(20), TM.MenuScale(90))
+                AmmoBarColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 AmmoBarColor:SetConVarR("tm_hud_ammo_bar_color_r")
                 AmmoBarColor:SetConVarG("tm_hud_ammo_bar_color_g")
                 AmmoBarColor:SetConVarB("tm_hud_ammo_bar_color_b")
@@ -4918,45 +4919,45 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local HealthEditor = vgui.Create("DPanel", EditorScroller)
                 HealthEditor:Dock(TOP)
-                HealthEditor:SetSize(0, 390)
+                HealthEditor:SetSize(0, TM.MenuScale(390))
                 HealthEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("HEALTH", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Size", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar X Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Bar Y Offset", "Health", 165, 110, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("High HP Color", "Health", 210, 145, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Mid HP Color", "Health", 210, 225, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Low HP Color", "Health", 210, 305, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("HEALTH", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Size", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar X Offset", "Health", TM.MenuScale(165), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Bar Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(110), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("High HP Color", "Health", TM.MenuScale(210), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Mid HP Color", "Health", TM.MenuScale(210), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Low HP Color", "Health", TM.MenuScale(210), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                 end
 
                 local HealthBarSize = HealthEditor:Add("DNumSlider")
-                HealthBarSize:SetPos(-85, 50)
-                HealthBarSize:SetSize(250, 30)
+                HealthBarSize:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                HealthBarSize:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HealthBarSize:SetConVar("tm_hud_health_size")
                 HealthBarSize:SetMin(100)
                 HealthBarSize:SetMax(1000)
                 HealthBarSize:SetDecimals(0)
 
                 local HealthBarX = HealthEditor:Add("DNumSlider")
-                HealthBarX:SetPos(-85, 80)
-                HealthBarX:SetSize(250, 30)
+                HealthBarX:SetPos(TM.MenuScale(-85), TM.MenuScale(80))
+                HealthBarX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HealthBarX:SetConVar("tm_hud_health_offset_x")
                 HealthBarX:SetMin(0)
-                HealthBarX:SetMax(scrW)
+                HealthBarX:SetMax(1920)
                 HealthBarX:SetDecimals(0)
 
                 local HealthBarY = HealthEditor:Add("DNumSlider")
-                HealthBarY:SetPos(-85, 110)
-                HealthBarY:SetSize(250, 30)
+                HealthBarY:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                HealthBarY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HealthBarY:SetConVar("tm_hud_health_offset_y")
                 HealthBarY:SetMin(0)
-                HealthBarY:SetMax(scrH)
+                HealthBarY:SetMax(1080)
                 HealthBarY:SetDecimals(0)
 
                 local HealthHighColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthHighColor:SetPos(20, 150)
-                HealthHighColor:SetSize(185, 70)
+                HealthHighColor:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                HealthHighColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 HealthHighColor:SetConVarR("tm_hud_health_color_high_r")
                 HealthHighColor:SetConVarG("tm_hud_health_color_high_g")
                 HealthHighColor:SetConVarB("tm_hud_health_color_high_b")
@@ -4965,8 +4966,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthHighColor:SetWangs(true)
 
                 local HealthMidColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthMidColor:SetPos(20, 230)
-                HealthMidColor:SetSize(185, 70)
+                HealthMidColor:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                HealthMidColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 HealthMidColor:SetConVarR("tm_hud_health_color_mid_r")
                 HealthMidColor:SetConVarG("tm_hud_health_color_mid_g")
                 HealthMidColor:SetConVarB("tm_hud_health_color_mid_b")
@@ -4975,8 +4976,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HealthMidColor:SetWangs(true)
 
                 local HealthLowColor = vgui.Create("DColorMixer", HealthEditor)
-                HealthLowColor:SetPos(20, 310)
-                HealthLowColor:SetSize(185, 70)
+                HealthLowColor:SetPos(TM.MenuScale(20), TM.MenuScale(310))
+                HealthLowColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 HealthLowColor:SetConVarR("tm_hud_health_color_low_r")
                 HealthLowColor:SetConVarG("tm_hud_health_color_low_g")
                 HealthLowColor:SetConVarB("tm_hud_health_color_low_b")
@@ -4986,18 +4987,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local EquipmentEditor = vgui.Create("DPanel", EditorScroller)
                 EquipmentEditor:Dock(TOP)
-                EquipmentEditor:SetSize(0, 150)
+                EquipmentEditor:SetSize(TM.MenuScale(0), TM.MenuScale(150))
                 EquipmentEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("EQUIPMENT UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Equipment Anchoring", "Health", 150, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Equipment X Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Equipment Y Offset", "Health", 165, 110, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("EQUIPMENT UI", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Equipment Anchoring", "Health", TM.MenuScale(150), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Equipment X Offset", "Health", TM.MenuScale(165), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Equipment Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(110), white, TEXT_ALIGN_LEFT)
                 end
 
                 local EquipmentAnchor = EquipmentEditor:Add("DComboBox")
-                EquipmentAnchor:SetPos(20, 50)
-                EquipmentAnchor:SetSize(100, 30)
+                EquipmentAnchor:SetPos(TM.MenuScale(20), TM.MenuScale(50))
+                EquipmentAnchor:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                 if GetConVar("tm_hud_equipment_anchor"):GetInt() == 0 then
                     EquipmentAnchor:SetValue("Left")
                 elseif GetConVar("tm_hud_equipment_anchor"):GetInt() == 1 then
@@ -5015,39 +5016,39 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local EquipmentX = EquipmentEditor:Add("DNumSlider")
-                EquipmentX:SetPos(-85, 80)
-                EquipmentX:SetSize(250, 30)
+                EquipmentX:SetPos(TM.MenuScale(-85), TM.MenuScale(80))
+                EquipmentX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 EquipmentX:SetConVar("tm_hud_equipment_offset_x")
                 EquipmentX:SetMin(0)
-                EquipmentX:SetMax(scrW)
+                EquipmentX:SetMax(1920)
                 EquipmentX:SetDecimals(0)
 
                 local EquipmentY = EquipmentEditor:Add("DNumSlider")
-                EquipmentY:SetPos(-85, 110)
-                EquipmentY:SetSize(250, 30)
+                EquipmentY:SetPos(TM.MenuScale(-85), TM.MenuScale(110))
+                EquipmentY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 EquipmentY:SetConVar("tm_hud_equipment_offset_y")
                 EquipmentY:SetMin(0)
-                EquipmentY:SetMax(scrH)
+                EquipmentY:SetMax(1080)
                 EquipmentY:SetDecimals(0)
 
                 local KillFeedEditor = vgui.Create("DPanel", EditorScroller)
                 KillFeedEditor:Dock(TOP)
-                KillFeedEditor:SetSize(0, 245)
+                KillFeedEditor:SetSize(0, TM.MenuScale(245))
                 KillFeedEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("KILL FEED", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Enable Kill Feed", "Health", 55, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Entry Style", "Health", 125, 85, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Item Limit", "Health", 165, 115, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed X Offset", "Health", 165, 145, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Y Offset", "Health", 165, 175, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Feed Opacity", "Health", 165, 205, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("KILL FEED", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Enable Kill Feed", "Health", TM.MenuScale(55), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Entry Style", "Health", TM.MenuScale(125), TM.MenuScale(85), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Item Limit", "Health", TM.MenuScale(165), TM.MenuScale(115), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed X Offset", "Health", TM.MenuScale(165), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(175), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Feed Opacity", "Health", TM.MenuScale(165), TM.MenuScale(205), white, TEXT_ALIGN_LEFT)
                 end
 
                 local AddFeedEntryButton = vgui.Create("DButton", KillFeedEditor)
-                AddFeedEntryButton:SetPos(190, 17.5)
+                AddFeedEntryButton:SetPos(TM.MenuScale(190), TM.MenuScale(17.5))
                 AddFeedEntryButton:SetText("")
-                AddFeedEntryButton:SetSize(145, 40)
+                AddFeedEntryButton:SetSize(TM.MenuScale(145), TM.MenuScale(40))
                 local textAnim = 0
                 AddFeedEntryButton.Paint = function()
                     if AddFeedEntryButton:IsHovered() then
@@ -5055,7 +5056,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Add Feed Entry", "StreakText", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Add Feed Entry", "StreakText", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 AddFeedEntryButton.DoClick = function()
                     if GetConVar("tm_hud_enablekillfeed"):GetInt() == 0 then return end
@@ -5067,14 +5068,14 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local EnableKillFeed = KillFeedEditor:Add("DCheckBox")
-                EnableKillFeed:SetPos(20, 50)
+                EnableKillFeed:SetPos(TM.MenuScale(20), TM.MenuScale(50))
                 EnableKillFeed:SetConVar("tm_hud_enablekillfeed")
-                EnableKillFeed:SetSize(30, 30)
+                EnableKillFeed:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                 function EnableKillFeed:OnChange() TriggerSound("click") end
 
                 local KillFeedStyle = KillFeedEditor:Add("DComboBox")
-                KillFeedStyle:SetPos(20, 85)
-                KillFeedStyle:SetSize(100, 30)
+                KillFeedStyle:SetPos(TM.MenuScale(20), TM.MenuScale(85))
+                KillFeedStyle:SetSize(TM.MenuScale(100), TM.MenuScale(30))
                 if GetConVar("tm_hud_killfeed_style"):GetInt() == 0 then
                     KillFeedStyle:SetValue("Ascending")
                 elseif GetConVar("tm_hud_killfeed_style"):GetInt() == 1 then
@@ -5089,32 +5090,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local KillFeedItemLimit = KillFeedEditor:Add("DNumSlider")
-                KillFeedItemLimit:SetPos(-85, 115)
-                KillFeedItemLimit:SetSize(250, 30)
+                KillFeedItemLimit:SetPos(TM.MenuScale(-85), TM.MenuScale(115))
+                KillFeedItemLimit:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillFeedItemLimit:SetConVar("tm_hud_killfeed_limit")
                 KillFeedItemLimit:SetMin(1)
                 KillFeedItemLimit:SetMax(10)
                 KillFeedItemLimit:SetDecimals(0)
 
                 local KillFeedX = KillFeedEditor:Add("DNumSlider")
-                KillFeedX:SetPos(-85, 145)
-                KillFeedX:SetSize(250, 30)
+                KillFeedX:SetPos(TM.MenuScale(-85), TM.MenuScale(145))
+                KillFeedX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillFeedX:SetConVar("tm_hud_killfeed_offset_x")
                 KillFeedX:SetMin(0)
-                KillFeedX:SetMax(scrW)
+                KillFeedX:SetMax(1920)
                 KillFeedX:SetDecimals(0)
 
                 local KillFeedY = KillFeedEditor:Add("DNumSlider")
-                KillFeedY:SetPos(-85, 175)
-                KillFeedY:SetSize(250, 30)
+                KillFeedY:SetPos(TM.MenuScale(-85), TM.MenuScale(175))
+                KillFeedY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillFeedY:SetConVar("tm_hud_killfeed_offset_y")
                 KillFeedY:SetMin(0)
-                KillFeedY:SetMax(scrH)
+                KillFeedY:SetMax(1080)
                 KillFeedY:SetDecimals(0)
 
                 local KillFeedOpacity = KillFeedEditor:Add("DNumSlider")
-                KillFeedOpacity:SetPos(-85, 205)
-                KillFeedOpacity:SetSize(250, 30)
+                KillFeedOpacity:SetPos(TM.MenuScale(-85), TM.MenuScale(205))
+                KillFeedOpacity:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillFeedOpacity:SetConVar("tm_hud_killfeed_opacity")
                 KillFeedOpacity:SetMin(0)
                 KillFeedOpacity:SetMax(255)
@@ -5123,34 +5124,34 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local KillDeathEditor
                 KillDeathEditor = vgui.Create("DPanel", EditorScroller)
                 KillDeathEditor:Dock(TOP)
-                KillDeathEditor:SetSize(0, 200)
+                KillDeathEditor:SetSize(0, TM.MenuScale(200))
                 KillDeathEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("KILL/DEATH UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("UI Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Kill Icon Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("KILL/DEATH UI", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI X Offset", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("UI Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Kill Icon Color", "Health", TM.MenuScale(210), TM.MenuScale(115), white, TEXT_ALIGN_LEFT)
                 end
 
                 local KillDeathX = KillDeathEditor:Add("DNumSlider")
-                KillDeathX:SetPos(-85, 50)
-                KillDeathX:SetSize(250, 30)
+                KillDeathX:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                KillDeathX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillDeathX:SetConVar("tm_hud_killdeath_offset_x")
-                KillDeathX:SetMin(scrW / -2)
-                KillDeathX:SetMax(scrW / 2)
+                KillDeathX:SetMin(-960)
+                KillDeathX:SetMax(960)
                 KillDeathX:SetDecimals(0)
 
                 local KillDeathY = KillDeathEditor:Add("DNumSlider")
-                KillDeathY:SetPos(-85, 80)
-                KillDeathY:SetSize(250, 30)
+                KillDeathY:SetPos(TM.MenuScale(-85), TM.MenuScale(80))
+                KillDeathY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KillDeathY:SetConVar("tm_hud_killdeath_offset_y")
                 KillDeathY:SetMin(0)
-                KillDeathY:SetMax(scrH)
+                KillDeathY:SetMax(1080)
                 KillDeathY:SetDecimals(0)
 
                 local KillColor = vgui.Create("DColorMixer", KillDeathEditor)
-                KillColor:SetPos(20, 120)
-                KillColor:SetSize(185, 70)
+                KillColor:SetPos(TM.MenuScale(20), TM.MenuScale(120))
+                KillColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 KillColor:SetConVarR("tm_hud_kill_iconcolor_r")
                 KillColor:SetConVarG("tm_hud_kill_iconcolor_g")
                 KillColor:SetConVarB("tm_hud_kill_iconcolor_b")
@@ -5161,27 +5162,27 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local ObjectiveEditor
                 ObjectiveEditor = vgui.Create("DPanel", EditorScroller)
                 ObjectiveEditor:Dock(TOP)
-                ObjectiveEditor:SetSize(0, 330)
+                ObjectiveEditor:SetSize(0, TM.MenuScale(330))
                 ObjectiveEditor.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("OBJECTIVE UI", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("OBJ Text Scale", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Empty Color", "Health", 210, 85, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Occupied Color", "Health", 210, 165, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Contested Color", "Health", 210, 245, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("OBJECTIVE UI", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("OBJ Text Scale", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Empty Color", "Health", TM.MenuScale(210), TM.MenuScale(85), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Occupied Color", "Health", TM.MenuScale(210), TM.MenuScale(165), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Contested Color", "Health", TM.MenuScale(210), TM.MenuScale(245), white, TEXT_ALIGN_LEFT)
                 end
 
                 local ObjScale = ObjectiveEditor:Add("DNumSlider")
-                ObjScale:SetPos(-85, 50)
-                ObjScale:SetSize(250, 30)
+                ObjScale:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                ObjScale:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 ObjScale:SetConVar("tm_hud_obj_scale")
                 ObjScale:SetMin(0.5)
                 ObjScale:SetMax(3.0)
                 ObjScale:SetDecimals(2)
 
                 local ObjEmptyBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
-                ObjEmptyBrushColor:SetPos(20, 90)
-                ObjEmptyBrushColor:SetSize(185, 70)
+                ObjEmptyBrushColor:SetPos(TM.MenuScale(20), TM.MenuScale(90))
+                ObjEmptyBrushColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 ObjEmptyBrushColor:SetConVarR("tm_hud_obj_color_empty_r")
                 ObjEmptyBrushColor:SetConVarG("tm_hud_obj_color_empty_g")
                 ObjEmptyBrushColor:SetConVarB("tm_hud_obj_color_empty_b")
@@ -5190,8 +5191,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjEmptyBrushColor:SetWangs(true)
 
                 local ObjOccupiedBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
-                ObjOccupiedBrushColor:SetPos(20, 170)
-                ObjOccupiedBrushColor:SetSize(185, 70)
+                ObjOccupiedBrushColor:SetPos(TM.MenuScale(20), TM.MenuScale(170))
+                ObjOccupiedBrushColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 ObjOccupiedBrushColor:SetConVarR("tm_hud_obj_color_occupied_r")
                 ObjOccupiedBrushColor:SetConVarG("tm_hud_obj_color_occupied_g")
                 ObjOccupiedBrushColor:SetConVarB("tm_hud_obj_color_occupied_b")
@@ -5200,8 +5201,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 ObjOccupiedBrushColor:SetWangs(true)
 
                 local ObjContestedBrushColor = vgui.Create("DColorMixer", ObjectiveEditor)
-                ObjContestedBrushColor:SetPos(20, 250)
-                ObjContestedBrushColor:SetSize(185, 70)
+                ObjContestedBrushColor:SetPos(TM.MenuScale(20), TM.MenuScale(250))
+                ObjContestedBrushColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 ObjContestedBrushColor:SetConVarR("tm_hud_obj_color_contested_r")
                 ObjContestedBrushColor:SetConVarG("tm_hud_obj_color_contested_g")
                 ObjContestedBrushColor:SetConVarB("tm_hud_obj_color_contested_b")
@@ -5216,16 +5217,17 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 DamageIndicatorOverlay:Dock(TOP)
-                DamageIndicatorOverlay:SetSize(0, 160)
+                DamageIndicatorOverlay:SetSize(0, TM.MenuScale(160))
                 DamageIndicatorOverlay.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("DAMAGE INDICATOR", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Indicator Color", "Health", 210, 45, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Indicator Opacity", "Health", 165, 130, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("DAMAGE INDICATOR", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Indicator Color", "Health", TM.MenuScale(210), TM.MenuScale(45), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Indicator Opacity", "Health", TM.MenuScale(165), TM.MenuScale(130), white, TEXT_ALIGN_LEFT)
                 end
+
                 local IndicatorColor = vgui.Create("DColorMixer", DamageIndicatorOverlay)
-                IndicatorColor:SetPos(20, 50)
-                IndicatorColor:SetSize(185, 70)
+                IndicatorColor:SetPos(TM.MenuScale(20), TM.MenuScale(50))
+                IndicatorColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 IndicatorColor:SetConVarR("tm_hud_dmgindicator_color_r")
                 IndicatorColor:SetConVarG("tm_hud_dmgindicator_color_g")
                 IndicatorColor:SetConVarB("tm_hud_dmgindicator_color_b")
@@ -5234,8 +5236,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 IndicatorColor:SetWangs(true)
 
                 local IndicatorOpaticy = DamageIndicatorOverlay:Add("DNumSlider")
-                IndicatorOpaticy:SetPos(-85, 130)
-                IndicatorOpaticy:SetSize(250, 30)
+                IndicatorOpaticy:SetPos(TM.MenuScale(-85), TM.MenuScale(130))
+                IndicatorOpaticy:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 IndicatorOpaticy:SetConVar("tm_hud_dmgindicator_opacity")
                 IndicatorOpaticy:SetMin(0)
                 IndicatorOpaticy:SetMax(255)
@@ -5248,35 +5250,35 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 KeypressOverlay:Dock(TOP)
-                KeypressOverlay:SetSize(0, 280)
+                KeypressOverlay:SetSize(0, TM.MenuScale(280))
                 KeypressOverlay.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("KEYPRESS OVERLAY", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Overlay X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Overlay Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Unpressed Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Actuated Color", "Health", 210, 195, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("KEYPRESS OVERLAY", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Overlay X Offset", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Overlay Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Unpressed Color", "Health", TM.MenuScale(210), TM.MenuScale(115), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Actuated Color", "Health", TM.MenuScale(210), TM.MenuScale(195), white, TEXT_ALIGN_LEFT)
                 end
 
                 local KeypressOverlayX = KeypressOverlay:Add("DNumSlider")
-                KeypressOverlayX:SetPos(-85, 50)
-                KeypressOverlayX:SetSize(250, 30)
+                KeypressOverlayX:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                KeypressOverlayX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KeypressOverlayX:SetConVar("tm_hud_keypressoverlay_x")
                 KeypressOverlayX:SetMin(0)
-                KeypressOverlayX:SetMax(scrW)
+                KeypressOverlayX:SetMax(1920)
                 KeypressOverlayX:SetDecimals(0)
 
                 local KeypressOverlayY = KeypressOverlay:Add("DNumSlider")
-                KeypressOverlayY:SetPos(-85, 80)
-                KeypressOverlayY:SetSize(250, 30)
+                KeypressOverlayY:SetPos(TM.MenuScale(-85), TM.MenuScale(80))
+                KeypressOverlayY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 KeypressOverlayY:SetConVar("tm_hud_keypressoverlay_y")
                 KeypressOverlayY:SetMin(0)
-                KeypressOverlayY:SetMax(scrH)
+                KeypressOverlayY:SetMax(1080)
                 KeypressOverlayY:SetDecimals(0)
 
                 local KeypressInactiveColor = vgui.Create("DColorMixer", KeypressOverlay)
-                KeypressInactiveColor:SetPos(20, 120)
-                KeypressInactiveColor:SetSize(185, 70)
+                KeypressInactiveColor:SetPos(TM.MenuScale(20), TM.MenuScale(120))
+                KeypressInactiveColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 KeypressInactiveColor:SetConVarR("tm_hud_keypressoverlay_inactive_r")
                 KeypressInactiveColor:SetConVarG("tm_hud_keypressoverlay_inactive_g")
                 KeypressInactiveColor:SetConVarB("tm_hud_keypressoverlay_inactive_b")
@@ -5285,8 +5287,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 KeypressInactiveColor:SetWangs(true)
 
                 local KeypressActuatedColor = vgui.Create("DColorMixer", KeypressOverlay)
-                KeypressActuatedColor:SetPos(20, 200)
-                KeypressActuatedColor:SetSize(185, 70)
+                KeypressActuatedColor:SetPos(TM.MenuScale(20), TM.MenuScale(200))
+                KeypressActuatedColor:SetSize(TM.MenuScale(185), TM.MenuScale(70))
                 KeypressActuatedColor:SetConVarR("tm_hud_keypressoverlay_actuated_r")
                 KeypressActuatedColor:SetConVarG("tm_hud_keypressoverlay_actuated_g")
                 KeypressActuatedColor:SetConVarB("tm_hud_keypressoverlay_actuated_b")
@@ -5301,35 +5303,35 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 VelocityCounter:Dock(TOP)
-                VelocityCounter:SetSize(0, 110)
+                VelocityCounter:SetSize(0, TM.MenuScale(110))
                 VelocityCounter.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
-                    draw.SimpleText("VELOCITY COUNTER", "SettingsLabel", 20, 10, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter X Offset", "Health", 165, 50, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Counter Y Offset", "Health", 165, 80, white, TEXT_ALIGN_LEFT)
-                    draw.SimpleText("Text Color", "Health", 210, 115, white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("VELOCITY COUNTER", "SettingsLabel", TM.MenuScale(20), TM.MenuScale(10), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter X Offset", "Health", TM.MenuScale(165), TM.MenuScale(50), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Counter Y Offset", "Health", TM.MenuScale(165), TM.MenuScale(80), white, TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Text Color", "Health", TM.MenuScale(210), TM.MenuScale(115), white, TEXT_ALIGN_LEFT)
                 end
 
                 local VelocityCounterX = VelocityCounter:Add("DNumSlider")
-                VelocityCounterX:SetPos(-85, 50)
-                VelocityCounterX:SetSize(250, 30)
+                VelocityCounterX:SetPos(TM.MenuScale(-85), TM.MenuScale(50))
+                VelocityCounterX:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 VelocityCounterX:SetConVar("tm_hud_velocitycounter_x")
                 VelocityCounterX:SetMin(0)
-                VelocityCounterX:SetMax(scrW)
+                VelocityCounterX:SetMax(1920)
                 VelocityCounterX:SetDecimals(0)
 
                 local VelocityCounterY = VelocityCounter:Add("DNumSlider")
-                VelocityCounterY:SetPos(-85, 80)
-                VelocityCounterY:SetSize(250, 30)
+                VelocityCounterY:SetPos(TM.MenuScale(-85), TM.MenuScale(80))
+                VelocityCounterY:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 VelocityCounterY:SetConVar("tm_hud_velocitycounter_y")
                 VelocityCounterY:SetMin(0)
-                VelocityCounterY:SetMax(scrH)
+                VelocityCounterY:SetMax(1080)
                 VelocityCounterY:SetDecimals(0)
 
                 local HiddenOptionsCollapse = vgui.Create("DCollapsibleCategory", EditorScroller)
                 HiddenOptionsCollapse:SetLabel("Show options for disabled HUD elements")
                 HiddenOptionsCollapse:Dock(TOP)
-                HiddenOptionsCollapse:SetSize(250, 200)
+                HiddenOptionsCollapse:SetSize(TM.MenuScale(250), TM.MenuScale(200))
                 HiddenOptionsCollapse:SetExpanded(false)
                 HiddenOptionsCollapse:SetContents(HiddenOptionsScroller)
 
@@ -5337,15 +5339,15 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local EditorButtons = vgui.Create("DPanel", EditorScroller)
                 EditorButtons:Dock(TOP)
-                EditorButtons:SetSize(0, 290)
+                EditorButtons:SetSize(0, TM.MenuScale(290))
                 EditorButtons.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                 end
 
                 local TestKillButton = vgui.Create("DButton", EditorButtons)
-                TestKillButton:SetPos(20, 30)
+                TestKillButton:SetPos(TM.MenuScale(20), TM.MenuScale(30))
                 TestKillButton:SetText("")
-                TestKillButton:SetSize(145, 40)
+                TestKillButton:SetSize(TM.MenuScale(145), TM.MenuScale(40))
                 local textAnim = 0
                 TestKillButton.Paint = function()
                     if TestKillButton:IsHovered() then
@@ -5353,16 +5355,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Test Kill", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Test Kill", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestKillButton.DoClick = function()
                     RunConsoleCommand("tm_hud_testkill")
                 end
 
                 local TestDeathButton = vgui.Create("DButton", EditorButtons)
-                TestDeathButton:SetPos(20, 60)
+                TestDeathButton:SetPos(TM.MenuScale(20), TM.MenuScale(60))
                 TestDeathButton:SetText("")
-                TestDeathButton:SetSize(165, 40)
+                TestDeathButton:SetSize(TM.MenuScale(165), TM.MenuScale(40))
                 local textAnim = 0
                 TestDeathButton.Paint = function()
                     if TestDeathButton:IsHovered() then
@@ -5370,16 +5372,16 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Test Death", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Test Death", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestDeathButton.DoClick = function()
                     RunConsoleCommand("tm_hud_testdeath")
                 end
 
                 local TestLevelUpButton = vgui.Create("DButton", EditorButtons)
-                TestLevelUpButton:SetPos(20, 90)
+                TestLevelUpButton:SetPos(TM.MenuScale(20), TM.MenuScale(90))
                 TestLevelUpButton:SetText("")
-                TestLevelUpButton:SetSize(200, 40)
+                TestLevelUpButton:SetSize(TM.MenuScale(200), TM.MenuScale(40))
                 local textAnim = 0
                 TestLevelUpButton.Paint = function()
                     if TestLevelUpButton:IsHovered() then
@@ -5387,7 +5389,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Test Level Up", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Test Level Up", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 TestLevelUpButton.DoClick = function()
                     RunConsoleCommand("tm_hud_testlevelup")
@@ -5395,13 +5397,13 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                 local ImportCodeInput = EditorButtons:Add("DTextEntry")
                 ImportCodeInput:SetPlaceholderText("Enter a HUD code...")
-                ImportCodeInput:SetPos(250, 140)
-                ImportCodeInput:SetSize(150, 30)
+                ImportCodeInput:SetPos(TM.MenuScale(250), TM.MenuScale(140))
+                ImportCodeInput:SetSize(TM.MenuScale(150), TM.MenuScale(30))
 
                 local ImportCode = vgui.Create("DButton", EditorButtons)
-                ImportCode:SetPos(20, 140)
+                ImportCode:SetPos(TM.MenuScale(20), TM.MenuScale(140))
                 ImportCode:SetText("")
-                ImportCode:SetSize(225, 40)
+                ImportCode:SetSize(TM.MenuScale(225), TM.MenuScale(40))
                 local textAnim = 0
                 ImportCode.Paint = function()
                     if ImportCode:IsHovered() then
@@ -5409,7 +5411,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Import HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Import HUD Code", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 ImportCode.DoClick = function()
                     RunConsoleCommand("tm_importhudcode_cannotbeundone", ImportCodeInput:GetValue())
@@ -5419,8 +5421,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 local function CreateExportedCodeEntry(code)
                     if not IsValid(ExportCodeInput) then
                         ExportCodeInput = EditorButtons:Add("DTextEntry")
-                        ExportCodeInput:SetPos(250, 170)
-                        ExportCodeInput:SetSize(150, 30)
+                        ExportCodeInput:SetPos(TM.MenuScale(250), TM.MenuScale(170))
+                        ExportCodeInput:SetSize(TM.MenuScale(150), TM.MenuScale(30))
                         ExportCodeInput.AllowInput = function(self, stringValue) return true end
                         ExportCodeInput:SetValue(code)
                     else
@@ -5429,9 +5431,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local ExportCode = vgui.Create("DButton", EditorButtons)
-                ExportCode:SetPos(20, 170)
+                ExportCode:SetPos(TM.MenuScale(20), TM.MenuScale(170))
                 ExportCode:SetText("")
-                ExportCode:SetSize(225, 40)
+                ExportCode:SetSize(TM.MenuScale(225), TM.MenuScale(40))
                 local textAnim = 0
                 ExportCode.Paint = function()
                     if ExportCode:IsHovered() then
@@ -5439,10 +5441,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     else
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
-                    draw.DrawText("Export HUD Code", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                    draw.DrawText("Export HUD Code", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                 end
                 ExportCode.DoClick = function()
-                    CreateExportedCodeEntry(GetConVar("tm_hud_font"):GetString() .. "-" .. GetConVar("tm_hud_bounds_x"):GetInt() .. "-" .. GetConVar("tm_hud_bounds_y"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_g"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_style"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_g"):GetInt() .. "-"
+                    CreateExportedCodeEntry(GetConVar("tm_hud_scale"):GetFloat() .. "-" .. GetConVar("tm_hud_font"):GetString() .. "-" .. GetConVar("tm_hud_bounds_x"):GetInt() .. "-" .. GetConVar("tm_hud_bounds_y"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_g"):GetInt() .. "-" .. GetConVar("tm_hud_text_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_style"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_ammo_bar_color_g"):GetInt() .. "-"
                     .. GetConVar("tm_hud_ammo_bar_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_size"):GetInt() .. "-" .. GetConVar("tm_hud_health_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_health_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_high_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_mid_b"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_r"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_g"):GetInt() .. "-" .. GetConVar("tm_hud_health_color_low_b"):GetInt() .. "-" .. GetConVar("tm_hud_equipment_anchor"):GetInt() .. "-"
                     .. GetConVar("tm_hud_equipment_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_equipment_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_enablekillfeed"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_style"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_limit"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_killfeed_opacity"):GetInt() .. "-" .. GetConVar("tm_hud_killdeath_offset_x"):GetInt() .. "-" .. GetConVar("tm_hud_killdeath_offset_y"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_r"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_g"):GetInt() .. "-" .. GetConVar("tm_hud_kill_iconcolor_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_scale"):GetInt() .. "-"
                     .. GetConVar("tm_hud_obj_color_empty_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_empty_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_empty_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_occupied_b"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_r"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_g"):GetInt() .. "-" .. GetConVar("tm_hud_obj_color_contested_b"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_r"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_g"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_color_b"):GetInt() .. "-" .. GetConVar("tm_hud_dmgindicator_opacity"):GetInt() .. "-" .. GetConVar("tm_hud_keypressoverlay_x"):GetInt() .. "-"
@@ -5450,9 +5452,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
 
                 local ResetToDefaultButton = vgui.Create("DButton", EditorButtons)
-                ResetToDefaultButton:SetPos(20, 250)
+                ResetToDefaultButton:SetPos(TM.MenuScale(20), TM.MenuScale(250))
                 ResetToDefaultButton:SetText("")
-                ResetToDefaultButton:SetSize(360, 40)
+                ResetToDefaultButton:SetSize(TM.MenuScale(360), TM.MenuScale(40))
                 local textAnim = 0
                 local ResetToDefaultConfirm = 0
                 ResetToDefaultButton.Paint = function()
@@ -5462,9 +5464,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 25)
                     end
                     if (ResetToDefaultConfirm == 0) then
-                        draw.DrawText("Reset HUD To Default Options", "Health", 0 + textAnim, 0, white, TEXT_ALIGN_LEFT)
+                        draw.DrawText("Reset HUD To Default Options", "Health", 0 + TM.MenuScale(textAnim), 0, white, TEXT_ALIGN_LEFT)
                     else
-                        draw.DrawText("ARE YOU SURE?", "Health", 0 + textAnim, 0, Color(255, 0, 0), TEXT_ALIGN_LEFT)
+                        draw.DrawText("ARE YOU SURE?", "Health", 0 + TM.MenuScale(textAnim), 0, Color(255, 0, 0), TEXT_ALIGN_LEFT)
                     end
                 end
                 ResetToDefaultButton.DoClick = function()
@@ -5482,18 +5484,18 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local CreditsButton = vgui.Create("DButton", MainPanel)
-            CreditsButton:SetPos(scrW - 110, scrH - 84)
+            CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(84))
             CreditsButton:SetText("")
-            CreditsButton:SetSize(110, 32)
+            CreditsButton:SetSize(TM.MenuScale(110), TM.MenuScale(32))
             local textAnim = 20
             CreditsButton.Paint = function()
-                CreditsButton:SetPos(scrW - 110, scrH - 84)
+                CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(84))
                 if CreditsButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                 end
-                draw.DrawText("CREDITS", "StreakText", 85 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
+                draw.DrawText("CREDITS", "StreakText", TM.MenuScale(85) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_RIGHT)
             end
             CreditsButton.DoClick = function()
                 TriggerSound("click")
@@ -5501,42 +5503,23 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local PatchNotesButton = vgui.Create("DButton", MainPanel)
-            PatchNotesButton:SetPos(scrW - 150, scrH - 84)
+            PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(84))
             PatchNotesButton:SetText("")
-            PatchNotesButton:SetSize(150, 32)
+            PatchNotesButton:SetSize(TM.MenuScale(150), TM.MenuScale(32))
             local textAnim = 20
             PatchNotesButton.Paint = function()
-                PatchNotesButton:SetPos(scrW - 150, scrH - 52)
+                PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(52))
                 if PatchNotesButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                 end
-                draw.DrawText("PATCH NOTES", "StreakText", 125 + textAnim, 5, white, TEXT_ALIGN_RIGHT)
+                draw.DrawText("PATCH NOTES", "StreakText", TM.MenuScale(125) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_RIGHT)
             end
             PatchNotesButton.DoClick = function()
                 TriggerSound("click")
                 gui.OpenURL("https://github.com/PikachuPenial/Titanmod/blob/main/PATCHNOTES.md")
             end
-    end
-
-    if belowMinimumRes == true and seenResWarning != true then
-        local ResWarning = vgui.Create("DPanel")
-        ResWarning:SetPos(0, 0)
-        ResWarning:SetSize(scrW, scrH)
-        ResWarning:MakePopup()
-
-        local ResWarningLabel = vgui.Create("DLabel", ResWarning)
-        ResWarningLabel:SetPos(10, 10)
-        ResWarningLabel:SetText("You are playing on a resolution lower than 1024x762!" .. "\n" .. "Any problems that arise from your current resolution will not be addressed." .. "\n" .. "This popup will disappear in 8 seconds.")
-        ResWarningLabel:SizeToContents()
-        ResWarningLabel:SetDark(1)
-
-        seenResWarning = true
-
-        timer.Create("removeResWarning", 8, 1, function()
-            ResWarning:Remove()
-        end)
     end
 end )
 
@@ -5554,7 +5537,7 @@ vgui.Register("MainPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, scrH)
+    self:SetSize(TM.MenuScale(56), scrH)
     self:SetPos(0, 0)
 end
 
@@ -5566,8 +5549,8 @@ vgui.Register("OptionsSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(600, scrH)
-    self:SetPos(56, 0)
+    self:SetSize(TM.MenuScale(600), scrH)
+    self:SetPos(TM.MenuScale(56), 0)
 end
 
 function PANEL:Paint(w, h)
@@ -5578,7 +5561,7 @@ vgui.Register("OptionsPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, scrH)
+    self:SetSize(TM.MenuScale(56), scrH)
     self:SetPos(0, 0)
 end
 
@@ -5590,8 +5573,8 @@ vgui.Register("LeaderboardSlideoutPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(780, scrH)
-    self:SetPos(56, 0)
+    self:SetSize(TM.MenuScale(780), scrH)
+    self:SetPos(TM.MenuScale(56), 0)
 end
 
 function PANEL:Paint(w, h)
@@ -5602,7 +5585,7 @@ vgui.Register("LeaderboardPanel", PANEL, "Panel")
 
 PANEL = {}
 function PANEL:Init()
-    self:SetSize(56, scrH)
+    self:SetSize(TM.MenuScale(56), scrH)
     self:SetPos(0, 0)
 end
 

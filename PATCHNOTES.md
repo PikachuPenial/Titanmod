@@ -1,4 +1,8 @@
 # Unreleased
+**>GAMEPLAY**   
+*NEW SETTINGS*  
+- HUD Scale
+
 **>BALANCE**    
 *AK-12*
 - Reduced vertical recoil to 55 (previously 70)
@@ -69,7 +73,13 @@
 - Reduced horizontal recoil to 5 (previously 10)
 
 **>QOL & BUG FIXES**   
+- All interfaces and UI elements are now scaled by the users resolution to look identical no matter the resolution used
+
+- Replaced tinnitus sound effect with a less drastic effect
+
 - Removed unnecessary parameters from fonts created by the gamemode
+
+- Loadout notifcation now uses the users HUD font
 
 
 

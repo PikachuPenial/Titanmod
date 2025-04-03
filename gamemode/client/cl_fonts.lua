@@ -106,6 +106,13 @@ function UpdateFonts()
 		antialias = true
 	} )
 
+	surface.CreateFont("Menu_GModNotify", {
+		font = "Bender",
+		size = TM.MenuScale(22),
+		weight = 500,
+		antialias = true
+	} )
+
 	-- HUD
 	surface.CreateFont("HUD_GunPrintName", {
 		font = GetConVar("tm_hud_font"):GetString(),
@@ -167,6 +174,13 @@ function UpdateFonts()
 	surface.CreateFont("HUD_AmmoCountSmall", {
 		font = "Arial",
 		size = TM.HUDScale(96),
+		weight = 500,
+		antialias = true
+	} )
+
+	surface.CreateFont("GModNotify", {
+		font = GetConVar("tm_hud_font"):GetString(),
+		size = TM.MenuScale(22),
 		weight = 500,
 		antialias = true
 	} )
