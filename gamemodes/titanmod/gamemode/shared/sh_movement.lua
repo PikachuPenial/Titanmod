@@ -21,6 +21,12 @@ function meta:SetWRTime(value)
     return self:SetDTFloat(22, value)
 end
 
+function meta:GetSlidingView()
+    return self:GetDTFloat(7)
+end
+function meta:SetSlidingView(value)
+    return self:SetDTFloat(7, value)
+end
 function meta:GetAutoSprinting()
     return self:GetDTBool(8)
 end
@@ -148,10 +154,11 @@ hook.Add("StartCommand", "TM_MoveCommand", function(ply, cmd)
         cmd:RemoveKey(IN_JUMP)
         slideLock = 0.79
         local trueSlideTime = (ply:GetSlidingCD() - ply:GetCT())
+        local viewTime = (ply:GetSlidingView() - ply:GetCT())
 
         local ViewAngles = cmd:GetViewAngles()
 
-        local limit_p = 60
+        local limit_p = Lerp(viewTime * 2.5, 50, 90)
         if limit_p > 0 and ViewAngles.p > limit_p then ViewAngles.p = limit_p end
         cmd:SetViewAngles(ViewAngles)
 
@@ -225,6 +232,7 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetSlideFatigue(math.min(1, (CT + slideTime) - (ply:GetSlidingCD())))
         ply:SetCanSlide(false)
         ply:SetSlidingCD(CT + slideTime)
+        ply:SetSlidingView(CT + 0.4)
         ply:SetSlidingTime(CT + (slideTime * ply:GetSlideFatigue()))
         ply:ViewPunch(slidepunch)
         ply:SetDuckSpeed(0.2)
@@ -235,6 +243,16 @@ hook.Add("Move", "TM_Move", function(ply, mv)
         ply:SetSlopedSpeed(1)
 
         if SERVER then SlideSurfaceSound(ply, pos) end
+
+        if game.SinglePlayer() and SERVER then
+            -- ply:SendLua('if VManip then VManip:PlayAnim("vault") end')
+            ply:SendLua('if VMLegs then VMLegs:PlayAnim("slide") end')
+        end
+
+        if CLIENT and VManip then
+            -- VManip:PlayAnim("vault")
+            VMLegs:PlayAnim("slide")
+        end
 
     elseif (not ducking or not onground) and sliding then
         ply:SetCanSlide(true)

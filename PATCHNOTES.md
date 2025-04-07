@@ -11,16 +11,46 @@
 *Colt 9mm*
 - Increased mobility to 94% (previously 87.5%)
 
-*Scorpion Evo*
-- Reduced vertical recoil to 20 (previously 30)
+*CZ 75*
+- Reduced vertical recoil to 20 (previously 40)
+
+*Desert Eagle*
+- Increased horizontal recoil to 60 (previously 40)
+- Reduced vertical recoil to 80 (previously 120)
+
+*Fiveseven*
+- Reduced vertical recoil to 50 (previously 62.5)
+
+*FNP-45*
+- Reduced vertical recoil to 70 (previously 100)
+- Reduced horizontal recoil to 15 (previously 50)
 
 *M249*
 - Reduced damage to 25 (previously 26)
 - Reduced vertical recoil to 28 (previously 38)
 - Reduced horizontal recoil to 8 (previously 20)
 
+*M45A1*
+- Reduced vertical recoil to 60 (previously 98)
+- Reduced horizontal recoil to 20 (previously 58)
+
+*M9*
+- Reduced vertical recoil to 25 (previously 30)
+- Reduced horizontal recoil to 10 (previously 15)
+
+*Makarov*
+- Increased damage to 35 (previously 33)
+- Reduced horizontal recoil to 4 (previously 18)
+
+*Model 10*
+- Reduced vertical recoil to 80 (previously 120)
+
 *MP40*
 - Increased damage to 32 (previously 30)
+
+*MP-443*
+- Reduced vertical recoil to 40 (previously 60)
+- Reduced horizontal recoil to 20 (previously 30)
 
 *MP5*
 - Reduced damage to 27 (previously 28)
@@ -41,8 +71,48 @@
 - Increased iron sight recoil multiplier to 0.75 (previously 0.50)
 - Reduced horizontal recoil to 10 (previously 15)
 
+*MR-96*
+- Reduced vertical recoil to 95 (previously 120)
+- Reduced horizontal recoil to 42 (previously 72)
+
+*OSP-18*
+- Reduced vertical recoil to 55 (previously 70)
+- Reduced horizontal recoil to 20 (previously 25)
+
+*OTs-33 Pernach*
+- Reduced vertical recoil to 32 (previously 37)
+- Reduced horizontal recoil to 12 (previously 18)
+
 *Owen Gun*
 - Reworked recoil but no recoil values were tweaked
+
+*P320*
+- Reduced vertical recoil to 40 (previously 60)
+
+*PM-9*
+- Increased damage to 22 (previously 21)
+- Reduced vertical recoil to 32 (previously 35)
+- Reduced horizontal recoil to 10 (previously 13)
+
+*Scorpion Evo*
+- Reduced vertical recoil to 20 (previously 30)
+
+*USP*
+- Reduced vertical recoil to 30 (previously 40)
+- Reduced horizontal recoil to 15 (previously 20)
+
+*Walther P99*
+- Reduced vertical recoil to 37 (previously 42)
+- Reduced horizontal recoil to 12 (previously 15)
+
+*Webley*
+- Reduced vertical recoil to 60 (previously 80)
+- Reduced horizontal recoil to 25 (previously 50)
+
+**>QOL & BUG FIXES**   
+- Added new view animation while sliding and while using/retracting the grappling hook
+
+- Fixed view animations not playing in singleplayer (for people who like playing with themselves)
 
 
 
