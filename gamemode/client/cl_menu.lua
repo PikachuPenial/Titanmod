@@ -441,10 +441,10 @@ net.Receive("OpenMainMenu", function(len, ply)
                 TriggerSound("click")
                 if (spectatePanelOpen == 0) then
                     spectatePanelOpen = 1
-                    SpectatePanel:SizeTo(TM.MenuScale(-1), TM.MenuScale(70), 0.75, 0, 0.1)
+                    SpectatePanel:SizeTo(TM.MenuScale(80), TM.MenuScale(70), 0.75, 0, 0.1)
                 else
                     spectatePanelOpen = 0
-                    SpectatePanel:SizeTo(TM.MenuScale(-1), 0, 0.75, 0, 0.1)
+                    SpectatePanel:SizeTo(TM.MenuScale(80), 0, 0.75, 0, 0.1)
                 end
             end
 
@@ -738,12 +738,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems + 600 * RealFrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, scrH / 2 + TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
-                    CustomizeButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(200), 0, 0, 1)
+                    CustomizeButton:SizeTo(TM.MenuScale(530), TM.MenuScale(200), 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                     pushSpawnItems = math.Clamp(pushSpawnItems - 600 * RealFrameTime(), 100, 150)
                     CustomizeButton:SetPos(0, scrH / 2 + TM.MenuScale(50) - TM.MenuScale(pushSpawnItems))
-                    CustomizeButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(100), 0, 0, 1)
+                    CustomizeButton:SizeTo(TM.MenuScale(530), TM.MenuScale(100), 0, 0, 1)
                 end
                 draw.DrawText("CUSTOMIZE", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
@@ -3584,11 +3584,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 if OptionsButton:IsHovered() or OptionsSettingsButton:IsHovered() or OptionsHUDButton:IsHovered() then
                     textAnim = math.Clamp(textAnim + 200 * RealFrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems + 600 * RealFrameTime(), 100, 150)
-                    OptionsButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(200), 0, 0, 1)
+                    OptionsButton:SizeTo(TM.MenuScale(405), TM.MenuScale(200), 0, 0, 1)
                 else
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                     pushExitItems = math.Clamp(pushExitItems - 600 * RealFrameTime(), 100, 150)
-                    OptionsButton:SizeTo(TM.MenuScale(-1), TM.MenuScale(100), 0, 0, 1)
+                    OptionsButton:SizeTo(TM.MenuScale(405), TM.MenuScale(100), 0, 0, 1)
                 end
                 draw.DrawText("OPTIONS", "AmmoCountSmall", TM.MenuScale(5) + TM.MenuScale(textAnim), TM.MenuScale(5), white, TEXT_ALIGN_LEFT)
             end
@@ -4689,8 +4689,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
                     surface.SetMaterial(grappleMat)
                     surface.SetDrawColor(255,255,255,255)
-                    surface.DrawTexturedRect(TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(45), scrH - TM.HUDScale(40) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(35), TM.HUDScale(40))
-                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("frest_bindg"):GetInt())) .. "]", "HUD_StreakText", TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(27.5), scrH - TM.HUDScale(65) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
+                    surface.DrawTexturedRect(TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) - TM.HUDScale(45), scrH - TM.HUDScale(40) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(35), TM.HUDScale(40))
+                    draw.SimpleText("[" .. string.upper(input.GetKeyName(GetConVar("frest_bindg"):GetInt())) .. "]", "HUD_StreakText", TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) - TM.HUDScale(27.5), scrH - TM.HUDScale(65) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
                     surface.SetMaterial(nadeMat)
                     surface.SetDrawColor(255,255,255,255)
                     surface.DrawTexturedRect(TM.HUDScale(GetConVar("tm_hud_equipment_offset_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()) + TM.HUDScale(10), scrH - TM.HUDScale(40) - TM.HUDScale(GetConVar("tm_hud_equipment_offset_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), TM.HUDScale(35), TM.HUDScale(40))
@@ -4860,7 +4860,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDXBounds:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HUDXBounds:SetConVar("tm_hud_bounds_x")
                 HUDXBounds:SetMin(0)
-                HUDXBounds:SetMax(1920)
+                HUDXBounds:SetMax(480)
                 HUDXBounds:SetDecimals(0)
 
                 local HUDYBounds = GeneralEditor:Add("DNumSlider")
@@ -4868,7 +4868,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 HUDYBounds:SetSize(TM.MenuScale(250), TM.MenuScale(30))
                 HUDYBounds:SetConVar("tm_hud_bounds_y")
                 HUDYBounds:SetMin(0)
-                HUDYBounds:SetMax(1080)
+                HUDYBounds:SetMax(270)
                 HUDYBounds:SetDecimals(0)
 
                 local WepTextColor = vgui.Create("DColorMixer", GeneralEditor)

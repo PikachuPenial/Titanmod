@@ -711,7 +711,7 @@ function CreateHUDHook()
                 cam.Start3D2D(origin, playerAngle, origin:Distance(LocalPlayer():GetPos()) * 0.0015 * objHUD["scale"])
                     if IsValid(weapon) and (type(weapon.GetIronSights) == "function" and weapon:GetIronSights()) then indiFade = math.Clamp(indiFade - 7 * RealFrameTime(), 0, 1) else indiFade = math.Clamp(indiFade + 4 * RealFrameTime(), 0, 1) end
                     draw.WordBox(0, TM.HUDScale(8), TM.HUDScale(-14), "Hill", "HUD_StreakText", Color(0, 0, 0, 10 * indiFade), Color(convars["text_r"], convars["text_g"], convars["text_b"], 255 * indiFade), TEXT_ALIGN_CENTER)
-                    draw.WordBox(0, 0, TM.HudScale(11), math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10 * indiFade), Color(convars["text_r"], convars["text_g"], convars["text_b"], 255 * indiFade), TEXT_ALIGN_CENTER)
+                    draw.WordBox(0, 0, TM.HUDScale(11), math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "HUD_Health", Color(0, 0, 0, 10 * indiFade), Color(convars["text_r"], convars["text_g"], convars["text_b"], 255 * indiFade), TEXT_ALIGN_CENTER)
                 cam.End3D2D()
             cam.IgnoreZ(false)
         end )
@@ -1091,7 +1091,6 @@ net.Receive("NotifyDeath", function(len, ply)
     local lastHitIn = net.ReadInt(5)
     local respawnTimeLeft = 4
 
-    if IsValid(KillNotif) then KillNotif:Remove() end
     if IsValid(DeathNotif) then DeathNotif:Remove() end
 
     timer.Create("respawnTimeHideHud", 4, 1, function()
@@ -1099,9 +1098,7 @@ net.Receive("NotifyDeath", function(len, ply)
         hook.Remove("Think", "ShowRespawnTime")
     end)
 
-    hook.Add("Think", "ShowRespawnTime", function()
-        if timer.Exists("respawnTimeHideHud") then respawnTimeLeft = math.Round(timer.TimeLeft("respawnTimeHideHud"), 1) end
-    end)
+    hook.Add("Think", "ShowRespawnTime", function() if timer.Exists("respawnTimeHideHud") then respawnTimeLeft = math.Round(timer.TimeLeft("respawnTimeHideHud"), 1) end end)
 
     DeathNotif = vgui.Create("DFrame")
     DeathNotif:SetSize(scrW, TM.HUDScale(300))
@@ -1113,6 +1110,7 @@ net.Receive("NotifyDeath", function(len, ply)
 
     DeathNotif.Paint = function(self, w, h)
         if !IsValid(killedBy) then DeathNotif:Remove() return end
+
         if lastHitIn == 1 then
             draw.SimpleText(killedFrom .. "m" .. " HS", "HUD_WepNameKill", w / 2 + TM.HUDScale(10), TM.HUDScale(151), red, TEXT_ALIGN_LEFT)
         else
@@ -1124,6 +1122,7 @@ net.Receive("NotifyDeath", function(len, ply)
         draw.SimpleText("|", "HUD_PlayerDeathName", w / 2, TM.HUDScale(142), white, TEXT_ALIGN_CENTER)
         draw.SimpleText(killedBy:GetName(), "HUD_PlayerDeathName", w / 2 - TM.HUDScale(10), TM.HUDScale(117.5), white, TEXT_ALIGN_RIGHT)
         draw.SimpleText(killedWith, "HUD_PlayerDeathName", w / 2 + TM.HUDScale(10), TM.HUDScale(117.5), white, TEXT_ALIGN_LEFT)
+
         if killedBy:Health() <= 0 then
             draw.SimpleText("DEAD", "HUD_WepNameKill", w / 2 - TM.HUDScale(10), TM.HUDScale(151), red, TEXT_ALIGN_RIGHT)
         else

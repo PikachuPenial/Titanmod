@@ -1,7 +1,58 @@
 # Unreleased
 **>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **FN FAL** and **MP5K** that rework their gun stats
+
+**>BALANCE**    
+*Beretta Mx4*
+- Reduced damage to 25 (previously 27)
+- Reworked recoil but no recoil values were tweaked
+
+*Colt 9mm*
+- Increased mobility to 94% (previously 87.5%)
+
+*Scorpion Evo*
+- Reduced vertical recoil to 20 (previously 30)
+
+*M249*
+- Reduced damage to 25 (previously 26)
+- Reduced vertical recoil to 28 (previously 38)
+- Reduced horizontal recoil to 8 (previously 20)
+
+*MP40*
+- Increased damage to 32 (previously 30)
+
+*MP5*
+- Reduced damage to 27 (previously 28)
+- Reduced vertical recoil to 25 (previously 30)
+- Reduced horizontal recoil to 7.5 (previously 15)
+
+*MP7*
+- Reduced damage to 26 (previously 27)
+- Reduced vertical recoil to 20 (previously 22)
+- Reduced horizontal recoil to 10 (previously 12.5)
+
+*MP9*
+- Reduced vertical recoil to 20 (previously 22.5)
+- Reduced horizontal recoil to 5 (previously 9)
+
+*MPX*
+- Reduced damage to 28 (previously 30)
+- Increased iron sight recoil multiplier to 0.75 (previously 0.50)
+- Reduced horizontal recoil to 10 (previously 15)
+
+*Owen Gun*
+- Reworked recoil but no recoil values were tweaked
+
+
+
+# April 2nd, 2025 (4/2/25)
+**>GAMEPLAY**   
 *NEW SETTINGS*  
 - HUD Scale
+
+*ANIMATIONS*  
+- Disabled all first deploy animations for all weapons
 
 **>BALANCE**    
 *AK-12*
@@ -79,7 +130,7 @@
 
 - Removed unnecessary parameters from fonts created by the gamemode
 
-- Loadout notifcation now uses the users HUD font
+- Loadout notification now uses the users HUD font
 
 
 
