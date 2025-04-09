@@ -4,6 +4,10 @@
 - Added new attachment types to the **FN FAL** and **MP5K** that rework their gun stats
 
 **>BALANCE**    
+*AR-57*
+- Reduced vertical recoil to 35 (previously 45)
+- Reduced horizontal recoil to 12 (previously 15)
+
 *Beretta Mx4*
 - Reduced damage to 25 (previously 27)
 - Reworked recoil but no recoil values were tweaked
@@ -18,12 +22,24 @@
 - Increased horizontal recoil to 60 (previously 40)
 - Reduced vertical recoil to 80 (previously 120)
 
+*Dual Mac 10s*
+- Reduced vertical recoil to 50 (previously 55.5)
+
+*Dual Skorpions*
+- Reduced spread to 28.5 (previously 33.5)
+- Reduced vertical recoil to 30 (previously 37.5)
+- Reduced horizontal recoil to 20 (previously 25)
+
 *Fiveseven*
 - Reduced vertical recoil to 50 (previously 62.5)
 
 *FNP-45*
 - Reduced vertical recoil to 70 (previously 100)
 - Reduced horizontal recoil to 15 (previously 50)
+
+*G36A1*
+- Reduced vertical recoil to 33 (previously 43)
+- Reduced horizontal recoil to 11 (previously 16)
 
 *M249*
 - Reduced damage to 25 (previously 26)
@@ -97,6 +113,9 @@
 *Scorpion Evo*
 - Reduced vertical recoil to 20 (previously 30)
 
+*Spike X1S*
+- Reduced vertical recoil to 120 (previously 200)
+
 *USP*
 - Reduced vertical recoil to 30 (previously 40)
 - Reduced horizontal recoil to 15 (previously 20)
@@ -113,6 +132,8 @@
 - Added new view animation while sliding and while using/retracting the grappling hook
 
 - Fixed view animations not playing in singleplayer (for people who like playing with themselves)
+
+- Fixed kills and deaths still awarding score and affecting stats after a match has ended
 
 
 

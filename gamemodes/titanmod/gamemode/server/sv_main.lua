@@ -43,16 +43,6 @@ util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("SendChatMessage")
 util.AddNetworkString("FOVUpdate")
 
-local modelFiles = {}
-local cardFiles = {}
-
-for i = 1, #modelArray do
-	table.insert(modelFiles, modelArray[i][1])
-end
-for i = 1, #cardArray do
-	table.insert(cardFiles, cardArray[i][1])
-end
-
 RunConsoleCommand("mp_friendlyfire", "1")
 
 function OpenMainMenu(ply)
@@ -106,44 +96,10 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("playerID64", ply:SteamID64())
 	ply:SetNWString("playerName", ply:Name())
 
-	-- checking if PData exists for the player
-	-- if the PData exists, it will load the players save. If the PData does not exist, it will create a new save for the player
-	InitializeNetworkString(ply, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
-	InitializeNetworkString(ply, "chosenPlayercard", "cards/default/construct.png")
-	InitializeNetworkString(ply, "chosenMelee", "tfa_km2000_knife")
-	InitializeNetworkInt(ply, "playerKills", 0)
-	InitializeNetworkInt(ply, "playerDeaths", 0)
-	InitializeNetworkInt(ply, "playerScore", 0)
-	InitializeNetworkInt(ply, "matchesPlayed", 0)
-	InitializeNetworkInt(ply, "matchesWon", 0)
-	InitializeNetworkInt(ply, "highestKillStreak", 0)
-	InitializeNetworkInt(ply, "highestKillGame", 0)
-	InitializeNetworkInt(ply, "farthestKill", 0)
-	InitializeNetworkInt(ply, "playerLevel", 1)
-	InitializeNetworkInt(ply, "playerPrestige", 0)
-	InitializeNetworkInt(ply, "playerXP", 0)
-	InitializeNetworkInt(ply, "playerAccoladeHeadshot", 0)
-	InitializeNetworkInt(ply, "playerAccoladeSmackdown", 0)
-	InitializeNetworkInt(ply, "playerAccoladeLongshot", 0)
-	InitializeNetworkInt(ply, "playerAccoladePointblank", 0)
-	InitializeNetworkInt(ply, "playerAccoladeOnStreak", 0)
-	InitializeNetworkInt(ply, "playerAccoladeBuzzkill", 0)
-	InitializeNetworkInt(ply, "playerAccoladeClutch", 0)
-	for i = 1, #weaponArray do
-		InitializeNetworkInt(ply, "killsWith_" .. weaponArray[i][1], 0)
-	end
+	SetupPlayerData(ply)
 
 	ply:SetCanZoom(false)
 	HandlePlayerInitialSpawn(ply)
-
-	-- updates the players XP to next level based on their current level
-	for k, v in ipairs(levelArray) do
-		if ply:GetNWInt("playerLevel") == k and v != "prestige" then ply:SetNWInt("playerXPToNextLevel", v) end
-	end
-
-	-- checks for potential save file corruption and will fix it accordingly
-	if not table.HasValue(modelFiles, ply:GetNWString("chosenPlayermodel")) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") end
-	if not table.HasValue(cardFiles, ply:GetNWString("chosenPlayercard")) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") end
 end
 
 net.Receive("BeginSpectate", function(len, ply)
@@ -228,6 +184,7 @@ end)
 hook.Add("GetFallDamage", "DisableFallDmg", function(ply, speed) return false end)
 
 function GM:PlayerDeath(victim, inflictor, attacker)
+	if GetGlobal2Bool("tm_matchended") == true then return end
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
 		victim:SetNWInt("playerDeaths", victim:GetNWInt("playerDeaths") + 1)
 	else
@@ -552,11 +509,7 @@ net.Receive("PlayerPrestige", function(len, ply)
 		ply:SetNWInt("playerXPToNextLevel", 750)
 
 		-- force save to the file early
-		if GetConVar("tm_developermode"):GetInt() == 0 then
-			UninitializeNetworkInt(ply, "playerLevel")
-			UninitializeNetworkInt(ply, "playerPrestige")
-			UninitializeNetworkInt(ply, "playerXP")
-		end
+		if GetConVar("tm_developermode"):GetInt() == 0 then SavePlayerData(ply) end
 	end
 end )
 

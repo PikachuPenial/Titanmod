@@ -1423,6 +1423,8 @@ net.Receive("EndOfGame", function(len, ply)
     function StartVotingPhase()
         if IsValid(MatchWinLoseText) then MatchWinLoseText:Remove() end
         if IsValid(DetailsPanel) then DetailsPanel:Remove() end
+        LocalPly:SetDSP(0)
+        if IsValid(rue_underwater) then rue_underwater:Stop() end
         MatchEndMusic:ChangeVolume(0.2)
         VotingActive = true
         local EndOfGamePanel = vgui.Create("DPanel", EndOfGameUI)
