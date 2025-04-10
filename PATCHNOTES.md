@@ -1,9 +1,23 @@
-# Unreleased
+# April 10th, 2025 (4/10/25)
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
 - Added new attachment types to the **FN FAL** and **MP5K** that rework their gun stats
 
+*SHOTGUN CHANGES*
+- Some shotguns received a 10-25% spread reduction to help them perform better at furthur ranges
+
 **>BALANCE**    
+*Dragon's Breath Shells*
+- Reduced extra spread to +66% (previously +100%)
+- Reduced damage reduction to -40% (previously -50%)
+- Reduced extra pellets bonus to +6 (previously +8)
+
+*Flechette Shells*
+- Increased damage reduction to -60% (previously -50%)
+
+*AA-12*
+- Reduced vertical recoil to 75 (previously 100)
+
 *AR-57*
 - Reduced vertical recoil to 35 (previously 45)
 - Reduced horizontal recoil to 12 (previously 15)
@@ -30,6 +44,9 @@
 - Reduced vertical recoil to 30 (previously 37.5)
 - Reduced horizontal recoil to 20 (previously 25)
 
+*FAMAS*
+- Reduced vertical recoil to 50 (previously 62.5)
+
 *Fiveseven*
 - Reduced vertical recoil to 50 (previously 62.5)
 
@@ -40,6 +57,9 @@
 *G36A1*
 - Reduced vertical recoil to 33 (previously 43)
 - Reduced horizontal recoil to 11 (previously 16)
+
+*M134 Minigun*
+- Reduced spread to 50 (previously 77.5)
 
 *M249*
 - Reduced damage to 25 (previously 26)
@@ -116,6 +136,9 @@
 *Spike X1S*
 - Reduced vertical recoil to 120 (previously 200)
 
+*Typhoon F12*
+- Reduced vertical recoil to 50 (previously 150)
+
 *USP*
 - Reduced vertical recoil to 30 (previously 40)
 - Reduced horizontal recoil to 15 (previously 20)
@@ -129,11 +152,19 @@
 - Reduced horizontal recoil to 25 (previously 50)
 
 **>QOL & BUG FIXES**   
+- Overhauled save file system that is 175x faster on average
+
+- Improved load times when switching to a new map and gamemode
+
 - Added new view animation while sliding and while using/retracting the grappling hook
+
+- Updated various attachment descriptions
 
 - Fixed view animations not playing in singleplayer (for people who like playing with themselves)
 
 - Fixed kills and deaths still awarding score and affecting stats after a match has ended
+
+- Fixed the M45A1 from not appearing in loadouts
 
 
 

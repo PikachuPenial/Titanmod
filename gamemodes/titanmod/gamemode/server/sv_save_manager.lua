@@ -2,16 +2,14 @@ hook.Add("Initialize", "InitPlayerNetworking", function() sql.Query("CREATE TABL
 
 local modelFiles = {}
 local cardFiles = {}
+local tempCMD = nil
+local tempNewCMD = nil
 
-for i = 1, #modelArray do
-	table.insert(modelFiles, modelArray[i][1])
-end
-for i = 1, #cardArray do
-	table.insert(cardFiles, cardArray[i][1])
-end
+for i = 1, #modelArray do table.insert(modelFiles, modelArray[i][1]) end
+for i = 1, #cardArray do table.insert(cardFiles, cardArray[i][1]) end
 
 -- NETWORKING
-function InitializeNetworkInt(ply, query, key, value)
+local function InitializeNetworkInt(ply, query, key, value)
 	if query == "new" then ply:SetNWInt(key, tonumber(value)) return end
 
 	for k, v in ipairs(query) do
@@ -24,7 +22,7 @@ function InitializeNetworkInt(ply, query, key, value)
 	ply:SetNWInt(key, tonumber(value))
 end
 
-function InitializeNetworkString(ply, query, key, value)
+local function InitializeNetworkString(ply, query, key, value)
 	if query == "new" then ply:SetNWString(key, tostring(value)) return end
 
 	for k, v in ipairs(query) do
@@ -37,22 +35,43 @@ function InitializeNetworkString(ply, query, key, value)
 	ply:SetNWString(key, tostring(value))
 end
 
-function UninitializeNetworkInt(ply, query, key)
-	local id64 = ply:SteamID64() or ply:GetNWInt("playerID64")
+local function UninitializeNetworkInt(ply, query, key)
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
 	local value = tonumber(ply:GetNWInt(key))
-	if query == "new" then sql.Query("INSERT INTO PlayerData64 (SteamID, Key, Value) VALUES(" .. id64 .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ");") return end
-	sql.Query("UPDATE PlayerData64 SET Value = " .. SQLStr(value) .. " WHERE SteamID = " .. id64 .. " AND Key = " .. SQLStr(key) .. ";")
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+		if key == v.Key then
+			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
+			return
+		end
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
 end
 
-function UninitializeNetworkString(ply, query, key)
-	local id64 = ply:SteamID64() or ply:GetNWString("playerID64")
+local function UninitializeNetworkString(ply, query, key)
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
 	local value = tostring(ply:GetNWString(key))
-	if query == "new" then sql.Query("INSERT INTO PlayerData64 (SteamID, Key, Value) VALUES(" .. id64 .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ");") return end
-	sql.Query("UPDATE PlayerData64 SET Value = " .. SQLStr(value) .. " WHERE SteamID = " .. id64 .. " AND Key = " .. SQLStr(key) .. ";")
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+		if key == v.Key then
+			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
+			return
+		end
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
 end
 
 function SetupPlayerData(ply)
-	local query = sql.Query("SELECT Key, Value FROM PlayerData64 WHERE SteamID = " .. ply:SteamID64() .. ";")
+	local id64 = ply:SteamID64()
+	local query = sql.Query("SELECT Key, Value FROM PlayerData64 WHERE SteamID = " .. id64 .. ";")
 	if query == nil then query = "new" end
 
 	InitializeNetworkString(ply, query, "chosenPlayermodel", "models/player/Group03/male_02.mdl")
@@ -89,12 +108,16 @@ end
 
 function SavePlayerData(ply)
 	if GetConVar("tm_developermode"):GetInt() == 1 then return end
-	local id64 = ply:SteamID64() or ply:GetNWInt("playerID64")
+	if tempNewCMD != nil or tempCMD != nil then return end -- shouldn't be possible but just to be safe
+	local id64 = ply:SteamID64()
 	local query = sql.Query("SELECT Key, Value FROM PlayerData64 WHERE SteamID = " .. id64 .. ";")
 	if query == nil then query = "new" end
 
-	sql.Query("START TRANSACTION;")
-	sql.Query("LOCK TABLE [WRITE|READ] PlayerData64;")
+	tempNewCMD = "INSERT INTO PlayerData64 (SteamID, Key, Value, SteamName) VALUES"
+	tempCMD = "UPDATE PlayerData64 SET Value = CASE Key "
+
+	sql.Begin()
+
 	UninitializeNetworkInt(ply, query, "playerKills")
 	UninitializeNetworkInt(ply, query, "playerDeaths")
 	UninitializeNetworkInt(ply, query, "playerScore")
@@ -117,10 +140,19 @@ function SavePlayerData(ply)
 	UninitializeNetworkInt(ply, query, "playerAccoladeHeadshot")
 	UninitializeNetworkInt(ply, query, "playerAccoladeClutch")
 	for i = 1, #weaponArray do UninitializeNetworkInt(ply, query, "killsWith_" .. weaponArray[i][1]) end
-	sql.Query("UPDATE PlayerData64 SET SteamName = " .. SQLStr(ply:GetNWString("playerName")) .. " WHERE SteamID = " .. id64 .. ";")
-	sql.Query("UNLOCK TABLE PlayerData64;")
-	sql.Query("COMMIT;")
+
+	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
+	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"
+
+	if tempNewCMD != "INSERT INTO PlayerData64 (SteamID, Key, Value, SteamName) VALU;" then sql.Query(tempNewCMD) end
+	if tempCMD != "UPDATE PlayerData64 SET Value = CASE Key ELSE Value END WHERE SteamID = " .. id64 .. ";" then sql.Query(tempCMD) end
+
+	sql.Commit()
+
+	tempCMD = nil
+	tempNewCMD = nil
 end
+concommand.Add("sqlrework", SavePlayerData)
 
 function GM:PlayerDisconnected(ply) SavePlayerData(ply) end
 function GM:ShutDown() for k, v in pairs(player.GetHumans()) do SavePlayerData(v) end end
