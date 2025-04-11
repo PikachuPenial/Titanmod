@@ -1,10 +1,81 @@
+# Unreleased
+**>MAPS**   
+*Arctic*
+- Added additional player spawns
+- Removed various props
+- Reduced HDR brightness
+- Added sun to the skybox
+- Resolved texture errors
+- Added missing cubemaps
+
+*Bridge*
+- Added additional player spawns
+- Reduced HDR brightness
+- Removed fog (still persists in the 3D skybox)
+
+*Corrugated*
+- Removed various props
+- Various optimizations
+- Various geometry tweaks to help with movement fluidity
+- Resolved texture errors
+
+*Disequilibrium*
+- Added additional player spawns
+- Reduced brightness of the sun
+- Added missing cubemaps
+
+*Initial*
+- Overhauled map layout and geometry
+- Added additional player spawns
+- Removed various props
+- Added missing cubemaps
+- Lowered skybox height
+- Resolved out of bound spots
+
+*Legacy*
+- Additional rooftops can now be accessed
+- Added additional player spawns
+- Reduced brightness of the sun
+
+*Liminal Pool*
+- Added additional player spawns
+- Added missing cubemaps
+- Various optimizations
+- Resolved texture errors
+
+*Mall*
+- Can no longer exit the interior of the mall
+- Light switch now has a 30 second cooldown after being actuated
+- Added additional player spawns
+
+*Mephitic*
+- Added additional player spawns
+- Removed various props
+- Added missing cubemaps
+- Various optimizations
+- Fixed stuck spots
+
+*Nuketown*
+- Added additional player spawns
+- Removed player spawns that conflicted with the KOTH location
+
+*Oxide*
+- Added additional player spawns
+- Various optimizations
+- Fixed stuck spots
+
+*Rig*
+- Added additional player spawns
+- "The Container" is now forcefully server-sided
+- Removed player spawns that conflicted with the KOTH location
+
 # April 10th, 2025 (4/10/25)
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
 - Added new attachment types to the **FN FAL** and **MP5K** that rework their gun stats
 
 *SHOTGUN CHANGES*
-- Some shotguns received a 10-25% spread reduction to help them perform better at furthur ranges
+- Some shotguns received a 10-25% spread reduction to help them perform better at further ranges
 
 **>BALANCE**    
 *Dragon's Breath Shells*
@@ -165,6 +236,8 @@
 - Fixed kills and deaths still awarding score and affecting stats after a match has ended
 
 - Fixed the M45A1 from not appearing in loadouts
+
+- Fixed several HUD and menu related issues when playing on a resolution higher than 2560x1440
 
 
 
@@ -661,8 +734,6 @@
 
 *NEW KILLSOUND OPTIONS*
 - Overwatch
-
-**>MAPS**   
 
 **>BALANCE**    
 *G28*
