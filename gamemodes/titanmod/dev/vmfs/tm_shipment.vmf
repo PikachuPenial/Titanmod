@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "8864"
-	"mapversion" "14"
+	"editorbuild" "8869"
+	"mapversion" "28"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -14,7 +14,7 @@ viewsettings
 	"bSnapToGrid" "1"
 	"bShowGrid" "1"
 	"bShowLogicalGrid" "0"
-	"nGridSpacing" "4"
+	"nGridSpacing" "16"
 }
 palette_plus
 {
@@ -64,7 +64,24 @@ light_plus
 	"soften_cosine" "0"
 	"debug" "0"
 	"cubemap" "1"
-	"hdr" "0"
+}
+postprocess_plus
+{
+	"enable" "1"
+	"copied_from_controller" "1"
+	"bloom_scale" "0.4"
+	"bloom_exponent" "2.5"
+	"bloom_saturation" "1"
+	"auto_exposure_min" "0.5"
+	"auto_exposure_max" "2"
+	"tonemap_percent_target" "60"
+	"tonemap_percent_bright_pixels" "2"
+	"tonemap_min_avg_luminance" "3"
+	"tonemap_rate" "1"
+	"vignette_enable" "0"
+	"vignette_start" "1"
+	"vignette_end" "2"
+	"vignette_blur" "0"
 }
 bgimages_plus
 {
@@ -72,7 +89,7 @@ bgimages_plus
 world
 {
 	"id" "1"
-	"mapversion" "14"
+	"mapversion" "28"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.4.0 from tm_shipment"
 	"detailmaterial" "detail/detailsprites"
@@ -36036,6 +36053,8 @@ entity
 	"fogblend" "0"
 	"fogcolor" "255 255 255"
 	"fogcolor2" "255 255 255"
+	"fogcolor2_hdr" "0 0 0"
+	"fogcolor_hdr" "0 0 0"
 	"fogdir" "1 0 0"
 	"fogenable" "0"
 	"fogend" "2000.0"
@@ -37551,7 +37570,7 @@ entity
 	"spawnflags" "1"
 	connections
 	{
-		"OnMapSpawn" "tonemap_global,SetBloomScale,0.40,0,-1"
+		"OnMapSpawn" "tonemap_globalSetBloomScale0.400-1"
 	}
 	"origin" "48 64 448"
 	editor
@@ -37610,7 +37629,7 @@ entity
 	"overlaysize" "64"
 	"pitch" "-16"
 	"rendercolor" "51 51 51"
-	"size" "32"
+	"size" "24"
 	"use_angles" "1"
 	"origin" "16 64 448"
 	editor
@@ -46789,13 +46808,125 @@ entity
 		"logicalpos" "[2000 13500]"
 	}
 }
+entity
+{
+	"id" "82493"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "-64 960 124"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82500"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "816 -96 0"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82507"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "-892.227 51.4277 6"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82509"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "-896 800 0"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82514"
+	"classname" "info_player_start"
+	"angles" "0 180 0"
+	"origin" "224 0 -1.52588e-05"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82520"
+	"classname" "info_player_start"
+	"angles" "0 0 0"
+	"origin" "-192 0 0"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82524"
+	"classname" "info_player_start"
+	"angles" "0 90 0"
+	"origin" "0 -208 3.8147e-06"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
+entity
+{
+	"id" "82530"
+	"classname" "info_player_start"
+	"angles" "0 270 0"
+	"origin" "0 208 1.14441e-05"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 -10768]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[5511.36 -3022.44 -2184.3]"
-		"look" "[5248.94 -3033.43 -2228.73]"
+		"position" "[-26.7642 -161.08 989.189]"
+		"look" "[143.182 -204.726 788.763]"
 	}
 	camera
 	{

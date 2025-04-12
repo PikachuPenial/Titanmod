@@ -45,12 +45,13 @@
 
 *Mall*
 - Can no longer exit the interior of the mall
-- Light switch now has a 30 second cooldown after being actuated
+- Light switch now has a 20 second cooldown after being actuated
 - Added additional player spawns
 
 *Mephitic*
 - Added additional player spawns
 - Removed various props
+- Increased map brightness
 - Added missing cubemaps
 - Various optimizations
 - Fixed stuck spots
@@ -68,6 +69,31 @@
 - Added additional player spawns
 - "The Container" is now forcefully server-sided
 - Removed player spawns that conflicted with the KOTH location
+
+*Rust*
+- Added additional player spawns
+- Added missing cubemaps
+
+*Sanctuary*
+- Added additional player spawns
+- Added missing cubemaps
+- Various geometry tweaks to help with movement fluidity
+- Reduced HDR brightness
+
+*Shipment*
+- Added additional player spawns
+- Reduced brightness of the sun
+
+*Shoot House*
+- Added additional player spawns
+
+*Villa*
+- Added additional player spawns
+
+*Wreck*
+- Added additional player spawns
+
+
 
 # April 10th, 2025 (4/10/25)
 **>GAMEPLAY**   

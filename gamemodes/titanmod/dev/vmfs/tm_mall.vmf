@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8869"
-	"mapversion" "38"
+	"mapversion" "44"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -89,7 +89,7 @@ bgimages_plus
 world
 {
 	"id" "1"
-	"mapversion" "38"
+	"mapversion" "44"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.4.0 from tm_mall"
 	"detailmaterial" "detail/detailsprites"
@@ -58826,38 +58826,6 @@ entity
 }
 entity
 {
-	"id" "13527"
-	"classname" "prop_door_rotating"
-	"ajarangles" "0 0 0"
-	"angles" "0 75 0"
-	"axis" "-368 3560 62, -368 3560 62"
-	"disableshadows" "0"
-	"distance" "90"
-	"dmg" "0"
-	"fademindist" "-1"
-	"fadescale" "1"
-	"forceclosed" "0"
-	"gmod_allowphysgun" "1"
-	"hardware" "1"
-	"health" "0"
-	"model" "models/props_c17/door01_left.mdl"
-	"opendir" "0"
-	"returndelay" "-1"
-	"skin" "7"
-	"spawnflags" "10240"
-	"spawnpos" "0"
-	"speed" "100"
-	"origin" "-368 3560 62"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[3500 9500]"
-	}
-}
-entity
-{
 	"id" "15526"
 	"classname" "light"
 	"_constant_attn" "0"
@@ -63636,7 +63604,7 @@ entity
 	"fademaxdist" "0"
 	"fademindist" "-1"
 	"fadescale" "1"
-	"forceclosed" "0"
+	"forceclosed" "1"
 	"gmod_allowphysgun" "1"
 	"hardware" "1"
 	"health" "0"
@@ -63644,7 +63612,7 @@ entity
 	"opendir" "0"
 	"returndelay" "-1"
 	"skin" "2"
-	"spawnflags" "10240"
+	"spawnflags" "34816"
 	"spawnpos" "0"
 	"speed" "100"
 	"origin" "-376 2737 446"
@@ -201963,13 +201931,45 @@ entity
 		"logicalpos" "[6000 9500]"
 	}
 }
+entity
+{
+	"id" "13527"
+	"classname" "prop_door_rotating"
+	"ajarangles" "0 0 0"
+	"angles" "0 75 0"
+	"axis" "-368 3560 62, -368 3560 62"
+	"disableshadows" "0"
+	"distance" "90"
+	"dmg" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"forceclosed" "1"
+	"gmod_allowphysgun" "1"
+	"hardware" "1"
+	"health" "0"
+	"model" "models/props_c17/door01_left.mdl"
+	"opendir" "0"
+	"returndelay" "-1"
+	"skin" "7"
+	"spawnflags" "34816"
+	"spawnpos" "0"
+	"speed" "100"
+	"origin" "-368 3560 62"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[3500 9500]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[1333.49 1409.27 116.167]"
-		"look" "[1516.98 1216.61 103.153]"
+		"position" "[1461.9 1267.76 272.015]"
+		"look" "[1658.46 1090.78 240.476]"
 	}
 	camera
 	{

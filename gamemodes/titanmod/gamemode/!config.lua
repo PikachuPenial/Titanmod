@@ -408,6 +408,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_ballistics_mindist", "-1")
     RunConsoleCommand("sv_tfa_ballistics_substeps", "1")
     RunConsoleCommand("sv_tfa_bullet_doordestruction", "1")
+    if game.GetMap() == "tm_mall" then RunConsoleCommand("sv_tfa_bullet_doordestruction", "0") end
     RunConsoleCommand("sv_tfa_bullet_doordestruction_keep", "1")
     RunConsoleCommand("sv_tfa_bullet_penetration", "1")
     RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "0.7")

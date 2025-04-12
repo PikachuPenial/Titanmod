@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "8864"
-	"mapversion" "43"
+	"editorbuild" "8869"
+	"mapversion" "54"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -64,7 +64,24 @@ light_plus
 	"soften_cosine" "0"
 	"debug" "0"
 	"cubemap" "1"
-	"hdr" "0"
+}
+postprocess_plus
+{
+	"enable" "1"
+	"copied_from_controller" "1"
+	"bloom_scale" "0.5"
+	"bloom_exponent" "2.5"
+	"bloom_saturation" "1"
+	"auto_exposure_min" "0.5"
+	"auto_exposure_max" "2"
+	"tonemap_percent_target" "60"
+	"tonemap_percent_bright_pixels" "2"
+	"tonemap_min_avg_luminance" "3"
+	"tonemap_rate" "0.5"
+	"vignette_enable" "0"
+	"vignette_start" "1"
+	"vignette_end" "2"
+	"vignette_blur" "0"
 }
 bgimages_plus
 {
@@ -72,7 +89,7 @@ bgimages_plus
 world
 {
 	"id" "1"
-	"mapversion" "43"
+	"mapversion" "54"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.4.0 from gm_concrete_rooms_extended"
 	"detailmaterial" "detail/detailsprites"
@@ -34651,10 +34668,10 @@ entity
 	"spawnflags" "1"
 	connections
 	{
-		"OnMapSpawn" "tonemap,SetAutoExposureMin,.5,0,-1"
-		"OnMapSpawn" "tonemap,SetAutoExposureMax,2,0,-1"
-		"OnMapSpawn" "tonemap,SetBloomScale,.5,0,0"
-		"OnMapSpawn" "tonemap,SetTonemapRate,.5,0,-1"
+		"OnMapSpawn" "tonemapSetAutoExposureMin.50-1"
+		"OnMapSpawn" "tonemapSetAutoExposureMax20-1"
+		"OnMapSpawn" "tonemapSetBloomScale.500"
+		"OnMapSpawn" "tonemapSetTonemapRate.50-1"
 	}
 	"origin" "866.009 -875.971 136"
 	editor
@@ -53295,13 +53312,167 @@ entity
 		"logicalpos" "[3000 8000]"
 	}
 }
+entity
+{
+	"id" "27305"
+	"classname" "info_player_start"
+	"angles" "0 225 0"
+	"origin" "-664 -1064 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27312"
+	"classname" "info_player_start"
+	"angles" "0 45 0"
+	"origin" "-800 -1320 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27318"
+	"classname" "info_player_start"
+	"angles" "0 135 0"
+	"origin" "-416 -592 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27325"
+	"classname" "info_player_start"
+	"angles" "0 135 0"
+	"origin" "-40 -1312 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27332"
+	"classname" "info_player_start"
+	"angles" "0 45 0"
+	"origin" "-280 -960 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27339"
+	"classname" "info_player_start"
+	"angles" "0 315 0"
+	"origin" "-792 -80 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27345"
+	"classname" "info_player_start"
+	"angles" "0 60 0"
+	"origin" "-232 -200 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27351"
+	"classname" "info_player_start"
+	"angles" "0 60 0"
+	"origin" "72 -496 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27356"
+	"classname" "info_player_start"
+	"angles" "0 135 0"
+	"origin" "952 -312 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27364"
+	"classname" "info_player_start"
+	"angles" "0 225 0"
+	"origin" "496 -776 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
+entity
+{
+	"id" "27370"
+	"classname" "info_player_start"
+	"angles" "0 135 0"
+	"origin" "960 -952 128"
+	editor
+	{
+		"color" "0 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4000 2500]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[-83.0443 -1221.26 195.561]"
-		"look" "[-327.294 -1325.95 176.978]"
+		"position" "[-247.01 -684.481 196.772]"
+		"look" "[-10.1762 -562.766 204.209]"
 	}
 	camera
 	{
