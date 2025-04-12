@@ -14,6 +14,8 @@
 
 - Crosshair now fades out while in the weapon attachment menu
 
+- Updated gamemode key art
+
 - Fixed leveling panel on the scoreboard from not displaying when 6 or more players are connected on a server
 
 - Removed "Bones" playermodel and replaced it with the "Security" playermodel
