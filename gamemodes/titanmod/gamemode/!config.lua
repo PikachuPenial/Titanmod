@@ -449,7 +449,7 @@ if SERVER then
     RunConsoleCommand("sv_tfa_weapon_weight", "1")
     RunConsoleCommand("sv_tfa_worldmodel_culldistance", "20")
 
-    RunConsoleCommand("tpf_sv_light_forward_offset", "15")
+    RunConsoleCommand("tpf_sv_light_forward_offset", "-20")
     RunConsoleCommand("tpf_sv_max_bright", "255")
     RunConsoleCommand("tpf_sv_max_farz", "750")
     RunConsoleCommand("tpf_sv_max_fov", "75")

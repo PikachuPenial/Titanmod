@@ -93,6 +93,11 @@
 *Wreck*
 - Added additional player spawns
 
+**>QOL & BUG FIXES**   
+- Adjusted visuals of player flashlights to make the player easier to see
+
+- Fixed potential overlapping of the kill and death UI
+
 
 
 # April 10th, 2025 (4/10/25)

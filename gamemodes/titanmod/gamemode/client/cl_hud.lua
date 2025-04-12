@@ -1092,7 +1092,10 @@ net.Receive("NotifyDeath", function(len, ply)
     local lastHitIn = net.ReadInt(5)
     local respawnTimeLeft = 4
 
+    if IsValid(KillNotif) then KillNotif:Remove() end
+
     if IsValid(DeathNotif) then DeathNotif:Remove() end
+
 
     timer.Create("respawnTimeHideHud", 4, 1, function()
         DeathNotif:Remove()
