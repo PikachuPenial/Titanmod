@@ -130,8 +130,9 @@ mapArray[13] = {"tm_rust", "Rust", "maps/thumb/tm_rust.png", true, 5}
 mapArray[14] = {"tm_sanctuary", "Sanctuary", "maps/thumb/tm_sanctuary.png", true, 0}
 mapArray[15] = {"tm_shipment", "Shipment", "maps/thumb/tm_shipment.png", true, 5}
 mapArray[16] = {"tm_shoot_house", "Shoot House", "maps/thumb/tm_shoot_house.png", true, 5}
-mapArray[17] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
-mapArray[18] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
+mapArray[17] = {"tm_station", "Station", "maps/thumb/tm_station.png", true, 0}
+mapArray[18] = {"tm_villa", "Villa", "maps/thumb/tm_villa.png", true, 0}
+mapArray[19] = {"tm_wreck", "Wreck", "maps/thumb/tm_wreck.png", true, 0}
 
 availableMaps = {}
 for m, v in ipairs(mapArray) do
@@ -206,6 +207,10 @@ KOTHPos.tm_shipment = {
 KOTHPos.tm_shoot_house = {
     Origin = Vector(-168, -437, 192),
     BrushSize = Vector(168, 116.5, 63.5)
+}
+KOTHPos.tm_station = {
+    Origin = Vector(-300, 496, 468),
+    BrushSize = Vector(108, 264, 62)
 }
 KOTHPos.tm_villa = {
     Origin = Vector(128, -880, -64),

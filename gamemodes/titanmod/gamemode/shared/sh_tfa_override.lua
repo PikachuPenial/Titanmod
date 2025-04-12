@@ -1,4 +1,3 @@
-
 hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 	-- bobbing
 	local vector_origin = Vector()
@@ -45,6 +44,18 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 		if t <= 0 then return a end
 		if t >= 1 then return b end
 		return a + (b - a) * t
+	end
+
+	local function l_mathMin(a, b) return (a < b) and a or b end
+	local function l_mathMax(a, b) return (a > b) and a or b end
+	local function l_ABS(a) return (a < 0) and -a or a end
+
+	local function l_mathApproach(a, b, delta)
+		if a < b then
+			return l_mathMin(a + l_ABS(delta), b)
+		else
+			return l_mathMax(a - l_ABS(delta), b)
+		end
 	end
 
 	function SWEP:WalkBob(pos, ang, breathIntensity, walkIntensity, rate, ftv)
@@ -270,6 +281,170 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 		ang:RotateAroundAxis(ang:Forward(), counterMotion.r * 0.5 * fac * flipFactor)
 
 		return pos, ang
+	end
+
+	local sprint_cv = GetConVar("sv_tfa_sprint_enabled")
+
+	function SWEP:TFAFinishMove(ply, velocity, movedata)
+		local ft = FrameTime()
+		local self2 = self:GetTable()
+		local isply = ply:IsPlayer()
+
+		if CLIENT then
+			self2.LastUnpredictedVelocity = velocity
+		end
+
+		local speedmult = Lerp(self:GetIronSightsProgress(), sv_tfa_weapon_weight:GetBool() and self:GetStatL("RegularMoveSpeedMultiplier") or 1, self:GetStatL("AimingDownSightsSpeedMultiplier"))
+
+		local jr_targ = math.min(math.abs(velocity.z) / 500, 1)
+		self:SetJumpRatio(l_mathApproach(self:GetJumpRatio(), jr_targ, (jr_targ - self:GetJumpRatio()) * ft * 20))
+		self2.JumpRatio = self:GetJumpRatio()
+		self:SetCrouchingRatio(l_mathApproach(self:GetCrouchingRatio(), (self:IsOwnerCrouching()) and 1 or 0, ft / self2.ToCrouchTime))
+		self2.CrouchingRatio = self:GetCrouchingRatio()
+
+		local status = self2.GetStatus(self)
+		local oldsprinting, oldwalking = self:GetSprinting(), self:GetWalking()
+		local vellen = velocity:Length2D()
+
+		if sprint_cv:GetBool() and not self:GetStatL("AllowSprintAttack", false) and movedata then
+			self:SetSprinting(vellen > ply:GetRunSpeed() * 0.6 * speedmult and movedata:KeyDown(IN_SPEED) and ply:OnGround() and not ply:GetSliding() and not ply:Crouching())
+		else
+			self:SetSprinting(false)
+		end
+
+		self:SetWalking(vellen > ((isply and ply:GetWalkSpeed() or TFA.GUESS_NPC_WALKSPEED) * (sv_tfa_weapon_weight:GetBool() and self:GetStatL("RegularMoveSpeedMultiplier", 1) or 1) * .75) and ply:GetNW2Bool("TFA_IsWalking") and ply:OnGround() and not self:GetSprinting() and not self:GetCustomizing())
+
+		self2.walking_updated = oldwalking ~= self:GetWalking()
+		self2.sprinting_updated = oldsprinting ~= self:GetSprinting()
+
+		if self:GetCustomizing() and (self2.GetIronSights(self) or not TFA.Enum.ReadyStatus[status]) then
+			self:ToggleCustomize()
+		end
+
+		local spr = self:GetSprinting()
+		local walk = self:GetWalking()
+
+		local sprt = spr and 1 or 0
+		local walkt = walk and 1 or 0
+		local adstransitionspeed = (spr or walk) and 7.5 or 12.5
+
+		self:SetSprintProgress(l_mathApproach(self:GetSprintProgress(), sprt, (sprt - self:GetSprintProgress()) * ft * adstransitionspeed))
+		self:SetWalkProgress(l_mathApproach(self:GetWalkProgress(), walkt, (walkt - self:GetWalkProgress()) * ft * adstransitionspeed))
+
+		self:SetLastVelocity(vellen)
+	end
+
+	local l_CT = CurTime
+	function SWEP:IronSights()
+		local self2 = self:GetTable()
+		local owent = self:GetOwner()
+		if not IsValid(owent) then return end
+
+		ct = l_CT()
+		stat = self:GetStatus()
+
+		local issprinting = self:GetSprinting()
+		local iswalking = self:GetWalking()
+
+		local issighting = self:GetIronSightsRaw()
+		local isplayer = owent:IsPlayer()
+		local old_iron_sights_final = self:GetIronSightsOldFinal()
+
+		if TFA.Enum.ReloadStatus[stat] and self2.GetStatL(self, "IronSightsReloadLock") then
+			issighting = old_iron_sights_final
+		end
+
+		if issighting and isplayer and owent:InVehicle() and not owent:GetAllowWeaponsInVehicle() then
+			issighting = false
+			self:SetIronSightsRaw(false)
+		end
+
+		-- self:SetLastSightsStatusCached(false)
+		local userstatus = issighting
+
+		if issprinting and not owent:GetSliding() and not owent:Crouching() then
+			issighting = false
+		end
+
+		if issighting and not TFA.Enum.IronStatus[stat] and (not self:GetStatL("IronSightsReloadEnabled") or not TFA.Enum.ReloadStatus[stat]) then
+			issighting = false
+		end
+
+		if issighting and self:IsSafety() then
+			issighting = false
+		end
+
+		if stat == TFA.Enum.STATUS_FIREMODE and self:GetIsCyclingSafety() then
+			issighting = false
+		end
+
+		local isbolt = self2.GetStatL(self, "BoltAction")
+		local isbolt_forced = self2.GetStatL(self, "BoltAction_Forced")
+		if isbolt or isbolt_forced then
+			if stat == TFA.Enum.STATUS_SHOOTING and not self2.LastBoltShoot then
+				self2.LastBoltShoot = l_CT()
+			end
+
+			if self2.LastBoltShoot then
+				if stat == TFA.Enum.STATUS_SHOOTING then
+					if l_CT() > self2.LastBoltShoot + self2.GetStatL(self, "BoltTimerOffset") then
+						issighting = false
+					end
+				else
+					self2.LastBoltShoot = nil
+				end
+			end
+
+			if (stat == TFA.Enum.STATUS_IDLE and self:GetReloadLoopCancel(true)) or stat == TFA.Enum.STATUS_PUMP then
+				issighting = false
+			end
+		end
+
+		local sightsMode = self2.GetStatL(self, "Sights_Mode")
+		local sprintMode = self2.GetStatL(self, "Sprint_Mode")
+		local walkMode = self2.GetStatL(self, "Walk_Mode")
+		local customizeMode = self2.GetStatL(self, "Customize_Mode")
+
+		if old_iron_sights_final ~= issighting and sightsMode == TFA.Enum.LOCOMOTION_LUA then -- and stat == TFA.Enum.STATUS_IDLE then
+			self:SetNextIdleAnim(-1)
+		end
+
+		local smi = (sightsMode ~= TFA.Enum.LOCOMOTION_LUA)
+			and old_iron_sights_final ~= issighting
+
+		local spi = (sprintMode ~= TFA.Enum.LOCOMOTION_LUA)
+			and self2.sprinting_updated
+
+		local wmi = (walkMode ~= TFA.Enum.LOCOMOTION_LUA)
+			and self2.walking_updated
+
+		local cmi = (customizeMode ~= TFA.Enum.LOCOMOTION_LUA)
+			and self:GetCustomizeUpdated()
+
+		self:SetCustomizeUpdated(false)
+
+		if
+			(smi or spi or wmi or cmi) and
+			(self:GetStatus() == TFA.Enum.STATUS_IDLE or
+				(self:GetStatus() == TFA.Enum.STATUS_SHOOTING and self:CanInterruptShooting()))
+			and not self:GetReloadLoopCancel()
+		then
+			local toggle_is = old_iron_sights_final ~= issighting
+
+			if issighting and self:GetSprinting() then
+				toggle_is = true
+			end
+
+			local success, _ = self:Locomote(toggle_is and (sightsMode ~= TFA.Enum.LOCOMOTION_LUA), issighting, spi, issprinting, wmi, iswalking, cmi, self:GetCustomizing())
+
+			if not success and (toggle_is and smi or spi or wmi or cmi) then
+				self:SetNextIdleAnim(-1)
+			end
+		end
+
+		self:SetIronSightsOldFinal(issighting)
+
+		return userstatus, issighting
 	end
 end )
 

@@ -183,6 +183,11 @@ end)
 -- disable fall damage
 hook.Add("GetFallDamage", "DisableFallDmg", function(ply, speed) return false end)
 
+-- hit flinch
+hook.Add("EntityTakeDamage", "HitFlinch", function(target, dmginfo)
+	if IsValid(target) and target:IsPlayer() then util.ScreenShake(target:GetPos(), 0.33, 3, 0.1, 500) end
+end)
+
 function GM:PlayerDeath(victim, inflictor, attacker)
 	if GetGlobal2Bool("tm_matchended") == true then return end
 	if not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then

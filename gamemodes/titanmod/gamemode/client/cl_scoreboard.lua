@@ -64,7 +64,7 @@ function GM:ScoreboardShow()
 		local xpCountUp = 0
 
 		local LevelingPanel = vgui.Create("DPanel", ScoreboardDerma)
-		LevelingPanel:SetPos(TM.MenuScale(5), TM.MenuScale(30) + player.GetCount() * TM.MenuScale(100))
+		if player.GetCount() < 5 then LevelingPanel:SetPos(TM.MenuScale(5), TM.MenuScale(30) + player.GetCount() * TM.MenuScale(100)) else LevelingPanel:SetPos(TM.MenuScale(5), TM.MenuScale(30) + TM.MenuScale(500)) end
 		LevelingPanel:SetSize(TM.MenuScale(630), TM.MenuScale(30))
 		LevelingPanel.Paint = function(self, w, h)
 			surface.SetDrawColor(35, 35, 35, 100)

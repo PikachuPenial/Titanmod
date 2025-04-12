@@ -1,3 +1,25 @@
+# Unreleased
+**>MAPS**   
+*RETURNING MAPS*
+- Station
+
+**>QOL & BUG FIXES**   
+- Improved fluidity with weapon firing and ADSing while sprinting and sliding
+
+- Added subtle camera flinch when being hit (more obvious that you are being hit by bullets and whatnot)
+
+- Player ragdolls now transfer over any active decals applied to the player before death
+
+- Sprinting no longer locks you out of the weapon attachment menu
+
+- Crosshair now fades out while in the weapon attachment menu
+
+- Fixed leveling panel on the scoreboard from not displaying when 6 or more players are connected on a server
+
+- Removed "Bones" playermodel and replaced it with the "Security" playermodel
+
+
+
 # April 11th, 2025 (4/11/25)
 **>MAPS**   
 *Arctic*
