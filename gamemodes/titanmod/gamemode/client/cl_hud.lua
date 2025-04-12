@@ -966,6 +966,7 @@ net.Receive("KillFeedUpdate", function(len, ply)
 end )
 
 -- displays after a player kills another player
+local multiArray = {}
 net.Receive("NotifyKill", function(len, ply)
     if convars["hud_enable"] == 0 then return end
     if gameEnded then return end
@@ -978,7 +979,6 @@ net.Receive("NotifyKill", function(len, ply)
     local accoladeList = ""
 
     if IsValid(KillNotif) then KillNotif:Remove() end
-
     if IsValid(DeathNotif) then DeathNotif:Remove() end
 
     KillNotif = vgui.Create("DFrame")
@@ -990,18 +990,33 @@ net.Receive("NotifyKill", function(len, ply)
     KillNotif:ShowCloseButton(false)
     KillNotif:SizeTo(scrW, TM.HUDScale(200), 0.5, 0, 0.1)
 
-    KillIcon = vgui.Create("DImage", KillNotif)
-    KillIcon:SetPos(scrW / 2 - TM.HUDScale(25), TM.HUDScale(50))
-    KillIcon:SetSize(TM.HUDScale(50), 0)
-    KillIcon:SetImage("icons/killicon.png")
-    KillIcon:SizeTo(TM.HUDScale(50), TM.HUDScale(50), 0.75, 0, 0.1)
+    local SkullHolder = vgui.Create("DFrame", KillNotif)
+    SkullHolder:SetTitle("")
+    SkullHolder:SetDraggable(false)
+    SkullHolder:ShowCloseButton(false)
+    SkullHolder:Center()
+
+    SkullHolder.Paint = function(self, w, h) end
 
     -- displays the Accolades that the player accomplished during the kill, this is a very bad system, and I don't plan on reworking it, gg
     if lastHitIn == 1 then
         accoladeList = accoladeList .. "Headshot +20 | "
-        KillIcon:SetImageColor(red)
+        table.insert(multiArray, "1")
     else
-        KillIcon:SetImageColor(Color(killdeathHUD["killicon_r"], killdeathHUD["killicon_g"], killdeathHUD["killicon_b"]))
+        table.insert(multiArray, "0")
+    end
+
+    for k, v in pairs(multiArray) do
+        SkullHolder:SetSize(k * TM.HUDScale(55), TM.HUDScale(50))
+        SkullHolder:Center()
+        SkullHolder:SetY(TM.HUDScale(55))
+        KillIcon = vgui.Create("DImage", SkullHolder)
+        KillIcon:SetPos((k - 1) * TM.HUDScale(55) + TM.HUDScale(2.5), 0)
+        KillIcon:SetSize(TM.HUDScale(50), 0)
+        KillIcon:SetImage("icons/killicon.png")
+        KillIcon:SizeTo(TM.HUDScale(50), TM.HUDScale(50), 0.75, 0, 0.1)
+
+        if v == "1" then KillIcon:SetImageColor(red) else KillIcon:SetImageColor(Color(killdeathHUD["killicon_r"], killdeathHUD["killicon_g"], killdeathHUD["killicon_b"])) end
     end
 
     if LocalPly:Health() <= 15 then
@@ -1069,6 +1084,7 @@ net.Receive("NotifyKill", function(len, ply)
             KillNotif:MoveTo(killdeathHUD["x"], scrH, 0.5, 0, 0.15)
             KillNotif:SizeTo(scrW, 0, 0.5, 0, 0.1, function()
                 KillNotif:Remove()
+                table.Empty(multiArray)
             end)
             KillIcon:SizeTo(TM.HUDScale(50), 0, 0.25, 0, 0.1, function()
                 KillIcon:Remove()
@@ -1093,8 +1109,9 @@ net.Receive("NotifyDeath", function(len, ply)
     local respawnTimeLeft = 4
 
     if IsValid(KillNotif) then KillNotif:Remove() end
-
     if IsValid(DeathNotif) then DeathNotif:Remove() end
+
+    table.Empty(multiArray)
 
 
     timer.Create("respawnTimeHideHud", 4, 1, function()
@@ -1111,6 +1128,9 @@ net.Receive("NotifyDeath", function(len, ply)
     DeathNotif:SetTitle("")
     DeathNotif:SetDraggable(false)
     DeathNotif:ShowCloseButton(false)
+    DeathNotif:SetAlpha(0)
+
+    DeathNotif:AlphaTo(255, 0.05, 0)
 
     DeathNotif.Paint = function(self, w, h)
         if !IsValid(killedBy) then DeathNotif:Remove() return end

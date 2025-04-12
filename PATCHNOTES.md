@@ -1,4 +1,4 @@
-# Unreleased
+# April 11th, 2025 (4/11/25)
 **>MAPS**   
 *Arctic*
 - Added additional player spawns
@@ -95,6 +95,8 @@
 
 **>QOL & BUG FIXES**   
 - Adjusted visuals of player flashlights to make the player easier to see
+
+- Skulls in the kill UI now stack
 
 - Fixed potential overlapping of the kill and death UI
 
