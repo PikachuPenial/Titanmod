@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8869"
-	"mapversion" "28"
+	"mapversion" "35"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -89,7 +89,7 @@ bgimages_plus
 world
 {
 	"id" "1"
-	"mapversion" "28"
+	"mapversion" "35"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.4.0 from tm_shipment"
 	"detailmaterial" "detail/detailsprites"
@@ -6358,7 +6358,7 @@ world
 				"v" "5876 -3836 -2205.25"
 				"v" "5601 -3836 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 320] 0.0156"
 			"vaxis" "[0 -1 0 320] 0.0156"
 			"rotation" "0"
@@ -6404,7 +6404,7 @@ world
 				"v" "5601 -2131 -2205.25"
 				"v" "5601 -2944 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 320] 0.0156"
 			"vaxis" "[0 -1 0 320] 0.0156"
 			"rotation" "0"
@@ -6576,7 +6576,7 @@ world
 				"v" "5236 -2424 -2205.25"
 				"v" "5432 -2424 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 -397.129] 0.0156"
 			"vaxis" "[0 -1 0 -128] 0.0156"
 			"rotation" "0"
@@ -6730,7 +6730,7 @@ world
 				"v" "5601 -2944 -2205.25"
 				"v" "5601 -3836 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 320] 0.0156"
 			"vaxis" "[0 -1 0 320] 0.0156"
 			"rotation" "0"
@@ -20262,7 +20262,7 @@ world
 				"v" "5428 -2130 -2205.25"
 				"v" "5428 -2424 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 128] 0.0156"
 			"vaxis" "[0 -1 0 -128] 0.0156"
 			"rotation" "0"
@@ -20380,7 +20380,7 @@ world
 				"v" "5108 -2370 -2205.25"
 				"v" "5108 -3796 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 128] 0.0156"
 			"vaxis" "[0 -1 0 -128] 0.0156"
 			"rotation" "0"
@@ -20462,7 +20462,7 @@ world
 				"v" "5108 -2424 -2205.25"
 				"v" "5236 -2424 -2205.25"
 			}
-			"material" "LOSTCOAST/NATURE/SANDFLOOR007A"
+			"material" "NATURE/SANDFLOOR010A"
 			"uaxis" "[1 0 0 128] 0.0156"
 			"vaxis" "[0 -1 0 -128] 0.0156"
 			"rotation" "0"
@@ -37410,8 +37410,8 @@ entity
 {
 	"id" "1600"
 	"classname" "water_lod_control"
-	"cheapwaterenddistance" "2000"
-	"cheapwaterstartdistance" "1000"
+	"cheapwaterenddistance" "40000"
+	"cheapwaterstartdistance" "20000"
 	"origin" "0 0 0"
 	editor
 	{
@@ -37585,6 +37585,7 @@ entity
 {
 	"id" "62326"
 	"classname" "env_tonemap_controller"
+	"spawnflags" "0"
 	"targetname" "tonemap_global"
 	"origin" "32 64 448"
 	editor
@@ -37599,7 +37600,7 @@ entity
 {
 	"id" "62328"
 	"classname" "light_environment"
-	"_ambient" "172 196 204 100"
+	"_ambient" "172 196 204 150"
 	"_ambientHDR" "-1 -1 -1 -1"
 	"_AmbientScaleHDR" "1"
 	"_light" "255 255 249 448"
@@ -37615,29 +37616,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[500 -4768]"
-	}
-}
-entity
-{
-	"id" "62330"
-	"classname" "env_sun"
-	"angles" "0 14 0"
-	"HDRColorScale" ".075"
-	"material" "sprites/light_glow02_add_noz_docks"
-	"overlaycolor" "0 0 0"
-	"overlaymaterial" "sprites/light_glow02_add_noz_docks"
-	"overlaysize" "64"
-	"pitch" "-16"
-	"rendercolor" "51 51 51"
-	"size" "24"
-	"use_angles" "1"
-	"origin" "16 64 448"
-	editor
-	{
-		"color" "255 0 0"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[500 -4268]"
 	}
 }
 entity
@@ -46920,13 +46898,36 @@ entity
 		"logicalpos" "[1000 -10768]"
 	}
 }
+entity
+{
+	"id" "62330"
+	"classname" "env_sun"
+	"angles" "0 14 0"
+	"HDRColorScale" ".075"
+	"material" "sprites/light_glow02_add_noz"
+	"overlaycolor" "0 0 0"
+	"overlaymaterial" "sprites/light_glow02_add_noz"
+	"overlaysize" "64"
+	"pitch" "-16"
+	"rendercolor" "51 51 51"
+	"size" "24"
+	"use_angles" "1"
+	"origin" "16 64 448"
+	editor
+	{
+		"color" "255 0 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[500 -4268]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[-26.7642 -161.08 989.189]"
-		"look" "[143.182 -204.726 788.763]"
+		"position" "[5276.41 -3066.47 -2172.58]"
+		"look" "[5317.27 -3252.35 -2358.96]"
 	}
 	camera
 	{
