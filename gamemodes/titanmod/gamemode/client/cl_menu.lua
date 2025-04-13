@@ -136,7 +136,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                     draw.SimpleText("+ " .. math.Round(LocalPly:GetNWInt("playerXP"), 0) .. "XP", "StreakText", TM.MenuScale(535), TM.MenuScale(55), white, TEXT_ALIGN_LEFT)
                 end
 
-                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", TM.MenuScale(5 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", TM.MenuScale(10 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) end
+                if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", TM.MenuScale(5 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", TM.MenuScale(10 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) end
 
                 hintTextAnim = math.Clamp(hintTextAnim + 50 * RealFrameTime(), 0, 10000)
                 surface.SetDrawColor(30, 30, 30, 125)
@@ -922,7 +922,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 TextProgression.Paint = function(self, w, h)
                     draw.RoundedBox(0, 0, 0, w, h, gray)
                     draw.SimpleText("PROGRESSION", "OptionsHeader", w / 2, TM.MenuScale(-5), white, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
+
+                    if progressionGearUnlocked == progressionGearTotal then
+                        draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, TM.MenuScale(50), solidGreen, TEXT_ALIGN_CENTER)
+                    else
+                        draw.SimpleText(progressionGearUnlocked .. " / " .. progressionGearTotal, "MainMenuDescription", w / 2, TM.MenuScale(50), white, TEXT_ALIGN_CENTER)
+                    end
                 end
 
                 local GearPreviewPanel = vgui.Create("DPanel", MainMenu)
@@ -4730,7 +4735,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     if GetConVar("tm_hud_velocitycounter"):GetInt() == 1 then
                         draw.SimpleText(velocity .. " u/s", "HUD_Health", TM.HUDScale(GetConVar("tm_hud_velocitycounter_x"):GetInt() + GetConVar("tm_hud_bounds_x"):GetInt()), TM.HUDScale(GetConVar("tm_hud_velocitycounter_y"):GetInt() + GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
-                    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime()), "%2i:%02i")
+                    timeText = string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1), "%2i:%02i")
                     draw.SimpleText(mode .. " |" .. timeText, "HUD_Health", scrW / 2, TM.HUDScale(-5) + TM.HUDScale(GetConVar("tm_hud_bounds_y"):GetInt()), Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
 
                     if mode == "Gun Game" then

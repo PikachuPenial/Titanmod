@@ -61,9 +61,11 @@ if activeGamemode == "Fiesta" then
     fiestaPrimary = randPrimary[math.random(#randPrimary)]
     fiestaSecondary = randSecondary[math.random(#randSecondary)]
     fiestaMelee = randMelee[math.random(#randMelee)]
-    SetGlobal2Int("FiestaTime", fiestaShuffleTime)
-    timer.Create("FiestaShuffle", fiestaShuffleTime, 0, ShuffleFiestaLoadout)
+
+    SetGlobal2Int("FiestaTime", fiestaShuffleTime + GetConVar("tm_intermissiontimer"):GetInt())
 end
+
+function CreateFiestaTimer() timer.Create("FiestaShuffle", fiestaShuffleTime, 0, ShuffleFiestaLoadout) end
 
 if activeGamemode == "Gun Game" then
     for k, v in ipairs(weaponArray) do

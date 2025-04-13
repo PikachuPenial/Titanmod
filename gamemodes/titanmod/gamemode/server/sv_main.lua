@@ -12,6 +12,7 @@ function GM:InitPostEntity()
 		if time - CurTime() < (time - GetConVar("tm_intermissiontimer"):GetInt()) then
 			SetGlobal2Bool("tm_intermission", false)
 			for k, ply in pairs(player.GetAll()) do ply:Freeze(false) end
+			if activeGamemode == "Fiesta" then CreateFiestaTimer() end
 			hook.Remove("Think", "IntermissionFreeze")
 			hook.Remove("CanPlayerSuicide", "IntermissionBlocksSuicide")
 		end

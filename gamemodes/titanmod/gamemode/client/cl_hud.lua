@@ -358,10 +358,10 @@ end
 
 function HUDAlways(client)
     -- remaining match time
-    timeText = string.FormattedTime(GetGlobal2Int("tm_matchtime", 0) - CurTime(), "%2i:%02i")
+    timeText = string.FormattedTime(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1, "%2i:%02i")
     draw.SimpleText(activeGamemode .. " |" .. timeText, "HUD_Health", scrW / 2, TM.HUDScale(-5) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
 
-    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime()), "%2i:%02i"), "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "KOTH" then
+    if activeGamemode == "Gun Game" then draw.SimpleText(ggLadderSize - client:GetNWInt("ladderPosition") .. " kills left", "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "Fiesta" and (GetGlobal2Int("FiestaTime", 0) - CurTime()) > 0 then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("FiestaTime", 0) - CurTime() + 0.5), "%2i:%02i"), "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "Cranked" and timeUntilSelfDestruct != 0 then draw.SimpleText(timeUntilSelfDestruct, "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER) elseif activeGamemode == "KOTH" then
         if GetGlobal2String("tm_hillstatus") == "Occupied" then
             draw.SimpleText(GetGlobal2Entity("tm_entonhill"):GetName(), "HUD_Health", scrW / 2, TM.HUDScale(25) + matchHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
         else
@@ -603,10 +603,10 @@ function HUDAlive(client)
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat", CurTime()) - CurTime()) * 0.2, 0, 500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
+            grappleText = string.upper(input.GetKeyName(convars["grapple_bind"]))
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime() + 1) + 0,5)
+            grappleText = math.floor(client:GetNWFloat("linat", CurTime()) - CurTime() + 1)
         end
         surface.DrawTexturedRect(equipmentHUD["x"] - TM.HUDScale(45), scrH - TM.HUDScale(40) - equipmentHUD["y"], TM.HUDScale(35), TM.HUDScale(40))
         draw.SimpleText(grappleText, "HUD_StreakText", equipmentHUD["x"] - TM.HUDScale(27.5), scrH - TM.HUDScale(65) - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
@@ -614,15 +614,15 @@ function HUDAlive(client)
         surface.SetMaterial(nadeMat)
         surface.SetDrawColor(255,255,255,255)
         surface.DrawTexturedRect(equipmentHUD["x"] + TM.HUDScale(10), scrH - TM.HUDScale(40) - equipmentHUD["y"], TM.HUDScale(35), TM.HUDScale(40))
-        draw.SimpleText("[" .. string.upper(input.GetKeyName(convars["nade_bind"])) .. "]", "HUD_StreakText", equipmentHUD["x"] + TM.HUDScale(27.5), scrH - TM.HUDScale(65) - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
+        draw.SimpleText(string.upper(input.GetKeyName(convars["nade_bind"])), "HUD_StreakText", equipmentHUD["x"] + TM.HUDScale(27.5), scrH - TM.HUDScale(65) - equipmentHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_CENTER)
     else
         surface.SetMaterial(grappleMat)
         if Lerp((client:GetNWFloat("linat",CurTime()) - CurTime()) * 0.2,0,500) == 0 and !IsValid(client:SetNWEntity("lina",stando)) then
             surface.SetDrawColor(255,255,255,255)
-            grappleText = "[" .. string.upper(input.GetKeyName(convars["grapple_bind"])) .. "]"
+            grappleText = string.upper(input.GetKeyName(convars["grapple_bind"]))
         else
             surface.SetDrawColor(255,200,200,100)
-            grappleText = math.floor((client:GetNWFloat("linat",CurTime()) - CurTime() + 1) + 0,5)
+            grappleText = math.floor(client:GetNWFloat("linat",CurTime()) - CurTime() + 1)
         end
         if equipAnchor == "left" then
             surface.DrawTexturedRect(equipmentHUD["x"] - TM.HUDScale(45), scrH - TM.HUDScale(40) - equipmentHUD["y"], TM.HUDScale(35), TM.HUDScale(40))

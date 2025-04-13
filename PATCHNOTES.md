@@ -4,9 +4,33 @@
 - Three maps are now available in the map voting pool instead of two
 
 **>MAPS**   
+*RETURNING MAPS*
+- Grid
+
+**>BALANCE**    
+*Stevens 620*
+- Increased damage to 18x7 (previously 16x7)
 
 **>QOL & BUG FIXES**   
+- All snipers now have higher auto-switch weight compared to shotguns, making them always the equipped weapon when spawning in the Shotty Snipers gamemode
+
+- Updated the Jacket player model
+
 - Fixed all known instances of weapons spawning unloaded
+
+- Fixed some weapons from spawning with attachments that were not previously equipped by the player
+
+- Fixed the selected melee weapon not having save file corruption mitigation
+
+- Fixed the fiesta timer counting down during intermission
+
+- Fixed the grappling hook being usable during intermission
+
+- Fixed many match time related interface values being one second ahead of actual match time
+
+- Fixed fiesta timer interface being 500ms behind of actual fieata time
+
+- Fixed being unable to open weapon attachment menu when sprinting
 
 
 

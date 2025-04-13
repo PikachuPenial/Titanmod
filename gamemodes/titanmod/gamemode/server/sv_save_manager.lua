@@ -2,11 +2,13 @@ hook.Add("Initialize", "InitPlayerNetworking", function() sql.Query("CREATE TABL
 
 local modelFiles = {}
 local cardFiles = {}
+local meleeFiles = {}
 local tempCMD = nil
 local tempNewCMD = nil
 
 for i = 1, #modelArray do table.insert(modelFiles, modelArray[i][1]) end
 for i = 1, #cardArray do table.insert(cardFiles, cardArray[i][1]) end
+for i = 1, #gearArray do table.insert(meleeFiles, gearArray[i][1]) end
 
 -- NETWORKING
 local function InitializeNetworkInt(ply, query, key, value)
@@ -104,6 +106,7 @@ function SetupPlayerData(ply)
 	-- checks for potential save file corruption and will fix it accordingly
 	if not table.HasValue(modelFiles, ply:GetNWString("chosenPlayermodel")) then ply:SetNWString("chosenPlayermodel", "models/player/Group03/male_02.mdl") end
 	if not table.HasValue(cardFiles, ply:GetNWString("chosenPlayercard")) then ply:SetNWString("chosenPlayercard", "cards/default/construct.png") end
+	if not table.HasValue(meleeFiles, ply:GetNWString("chosenMelee")) then ply:SetNWString("chosenMelee", "tfa_km2000_knife") end
 end
 
 function SavePlayerData(ply)

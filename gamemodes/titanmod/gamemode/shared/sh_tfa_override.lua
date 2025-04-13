@@ -334,6 +334,20 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 		self:SetLastVelocity(vellen)
 	end
 
+	function SWEP:ToggleInspect()
+		if self:GetOwner():IsNPC() then return false end -- NPCs can't look at guns silly
+
+		local self2 = self:GetTable()
+
+		if (self:GetIronSights() or self:GetStatus() ~= TFA.Enum.STATUS_IDLE) and not self:GetCustomizing() then return end
+
+		self:SetCustomizing(not self:GetCustomizing())
+		self2.Inspecting = self:GetCustomizing()
+		self:SetCustomizeUpdated(true)
+
+		return self:GetCustomizing()
+	end
+
 	local l_CT = CurTime
 	function SWEP:IronSights()
 		local self2 = self:GetTable()
