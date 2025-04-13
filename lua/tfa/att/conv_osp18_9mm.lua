@@ -7,7 +7,6 @@ ATTACHMENT.Name = "9mm"
 ATTACHMENT.ShortName = "9mm" --Abbreviation, 5 chars or less please
 ATTACHMENT.Description = {
 	TFA.AttachmentColors["="], "9mm Conversion",
-	TFA.AttachmentColors["+"], "+4 bullets in magazine",
 	TFA.AttachmentColors["-"], "30% less recoil",
 	TFA.AttachmentColors["-"], "15% less damage",
 }
@@ -15,9 +14,6 @@ ATTACHMENT.Icon = "attachments/conversion.png" --Revers to label, please give it
 
 ATTACHMENT.WeaponTable = {
 	["Primary"] = {
-		["ClipSize"] = function(wep, val)
-			return 12
-		end,
 		["Damage"] = function(wep, stat) return stat * 0.85 end,
 		["RPM"] = function(wep, stat) return 600 end,
 		["KickUp"] = function( wep, stat ) return stat * 0.7 end,
@@ -26,10 +22,6 @@ ATTACHMENT.WeaponTable = {
 		["Sound"] = function( wep, stat ) return Sound("TFA_L4D2.OSP18.1.CONV") end,
 	},
 }
-
-function ATTACHMENT:Detach(wep)
-	wep:Unload()
-end
 
 if not TFA_ATTACHMENT_ISUPDATING then
 	TFAUpdateAttachments()

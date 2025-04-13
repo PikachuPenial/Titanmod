@@ -558,6 +558,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		SetGlobal2Int("VotesOnModeTwo", 0)
 		SetGlobal2Int("VotesOnMapOne", 0)
 		SetGlobal2Int("VotesOnMapTwo", 0)
+		SetGlobal2Int("VotesOnMapThree", 0)
 		SetGlobal2Bool("tm_matchended", true)
 		timer.Remove("matchStatusCheck")
 
@@ -569,6 +570,7 @@ if table.HasValue(availableMaps, game.GetMap()) then
 				return true, false
 			end
 		end )
+
 		net.Receive("ReceivePostGameMute", function(len, ply)
 			ply:SetNWBool("PostGameMute", net.ReadBool())
 		end )
@@ -631,6 +633,8 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		firstMap = mapPool[1]
 		table.RemoveByValue(mapPoolSecondary, firstMap) -- make sure that the same map isnt on both votes
 		secondMap = mapPoolSecondary[1]
+		table.RemoveByValue(mapPoolSecondary, secondMap) -- you'd never guess
+		thirdMap = mapPoolSecondary[1]
 
 		firstMode = modePool[1]
 		secondMode = modePoolSecondary[2]
@@ -652,10 +656,12 @@ if table.HasValue(availableMaps, game.GetMap()) then
 		-- failsafe in case map votes are just not generated
 		if firstMap == nil then firstMap = "tm_arctic" end
 		if secondMap == nil then secondMap = "tm_mall" end
+		if thirdMap == nil then thirdMap = "tm_station" end
 
 		net.Start("EndOfGame")
 		net.WriteString(firstMap)
 		net.WriteString(secondMap)
+		net.WriteString(thirdMap)
 		net.WriteInt(firstMode, 5)
 		net.WriteInt(secondMode, 5)
 		net.Broadcast()
@@ -766,7 +772,9 @@ if table.HasValue(availableMaps, game.GetMap()) then
 
 		local votedMap = net.ReadString()
 		local unvotedMap = net.ReadString()
-		local mapIndex = net.ReadUInt(2)
+		local mapIndex = net.ReadUInt(3)
+		local unvotedMapIndex = net.ReadUInt(3)
+		local unvotedMapInt = ""
 		local revote = false
 
 		if playersVoted != nil then
@@ -780,19 +788,23 @@ if table.HasValue(availableMaps, game.GetMap()) then
 				if v == votedMap then
 					mapVotes[k] = mapVotes[k] + 1
 					table.insert(playersVoted, ply)
-					if mapIndex	== 1 then SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) end
+					if mapIndex	== 1 then SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0) elseif mapIndex == 2 then SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) elseif mapIndex == 3 then SetGlobal2Int("VotesOnMapThree", GetGlobal2Int("VotesOnMapThree", 0) + 1, 0) end
 				end
 			end
 		else
+			if unvotedMapIndex == 1 then unvotedMapInt = "VotesOnMapOne" elseif unvotedMapIndex == 2 then unvotedMapInt = "VotesOnMapTwo" elseif unvotedMapIndex == 3 then unvotedMapInt = "VotesOnMapThree" end
 			for k, v in ipairs(availableMaps) do
 				if v == votedMap then
 					mapVotes[k] = mapVotes[k] + 1
 					if mapIndex	== 1 then
 						SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) + 1, 0)
-						SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) - 1, 0) 
+						SetGlobal2Int(unvotedMapInt, GetGlobal2Int(unvotedMapInt, 0) - 1, 0)
 					elseif mapIndex == 2 then
-						SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0) 
-						SetGlobal2Int("VotesOnMapOne", GetGlobal2Int("VotesOnMapOne", 0) - 1, 0)
+						SetGlobal2Int("VotesOnMapTwo", GetGlobal2Int("VotesOnMapTwo", 0) + 1, 0)
+						SetGlobal2Int(unvotedMapInt, GetGlobal2Int(unvotedMapInt, 0) - 1, 0)
+					elseif mapIndex == 3 then
+						SetGlobal2Int("VotesOnMapThree", GetGlobal2Int("VotesOnMapThree", 0) + 1, 0)
+						SetGlobal2Int(unvotedMapInt, GetGlobal2Int(unvotedMapInt, 0) - 1, 0)
 					end
 				end
 

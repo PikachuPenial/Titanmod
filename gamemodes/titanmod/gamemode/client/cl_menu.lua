@@ -2651,7 +2651,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockModelsStats = vgui.Create("DPanel", CustomizeScroller)
                     DockModelsStats:Dock(TOP)
-                    DockModelsStats:SetSize(0, TM.MenuScale(930))
+                    DockModelsStats:SetSize(0, TM.MenuScale(1240))
 
                     -- accolade models
                     local TextAccolade = vgui.Create("DPanel", CustomizeScroller)
@@ -3517,7 +3517,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             accoladeModelsUnlocked = 0
                             FillModelListsAll()
                             DockModels:SetSize(0, TM.MenuScale(310))
-                            DockModelsStats:SetSize(0, TM.MenuScale(930))
+                            DockModelsStats:SetSize(0, TM.MenuScale(1240))
                             DockModelsAccolade:SetSize(0, TM.MenuScale(1080))
                         end
                     end

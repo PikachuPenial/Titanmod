@@ -1182,7 +1182,8 @@ net.Receive("EndOfGame", function(len, ply)
     DeleteHUDHook()
     local winningPlayer
     local wonMatch = false
-    local mapPicked
+    local mapPicked = 0
+    local mapPickedName = ""
     local gamemodePicked
     local mapDecided = false
     local gamemodeDecided = false
@@ -1214,6 +1215,7 @@ net.Receive("EndOfGame", function(len, ply)
 
     local firstMap = net.ReadString()
     local secondMap = net.ReadString()
+    local thirdMap = net.ReadString()
     local firstMode = net.ReadInt(5)
     local secondMode = net.ReadInt(5)
 
@@ -1221,6 +1223,8 @@ net.Receive("EndOfGame", function(len, ply)
     local firstMapThumb
     local secondMapName
     local secondMapThumb
+    local thirdMapName
+    local thirdMapThumb
     local decidedMapName
     local decidedMapThumb
     local firstModeName
@@ -1240,6 +1244,11 @@ net.Receive("EndOfGame", function(len, ply)
         if secondMap == t[1] then
             secondMapName = t[2]
             secondMapThumb = t[3]
+        end
+
+        if thirdMap == t[1] then
+            thirdMapName = t[2]
+            thirdMapThumb = t[3]
         end
     end
 
@@ -1426,9 +1435,10 @@ net.Receive("EndOfGame", function(len, ply)
         BlurPanel(EndOfGameUI, 10)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50, 225))
         if timeUntilNextMatch > 10 then
-            draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(35), white, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Voting ends in " .. timeUntilNextMatch - 10 .. "s", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(55), white, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(30), white, TEXT_ALIGN_LEFT)
         else
-            draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(55), white, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Match begins in " .. timeUntilNextMatch .. "s", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(30), white, TEXT_ALIGN_LEFT)
         end
         if VOIPActive == true then draw.DrawText("MIC ENABLED", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(235), Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MIC DISABLED", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(235), Color(255, 0, 0), TEXT_ALIGN_LEFT) end
         if MuteActive == false then draw.DrawText("NOT MUTED", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(260), Color(0, 255, 0), TEXT_ALIGN_LEFT) else draw.DrawText("MUTED", "MainMenuLoadoutWeapons", TM.MenuScale(485), scrH - TM.MenuScale(260), Color(255, 0, 0), TEXT_ALIGN_LEFT) end
@@ -1469,26 +1479,30 @@ net.Receive("EndOfGame", function(len, ply)
         local modeTwoVotes = 0
         local mapOneVotes = 0
         local mapTwoVotes = 0
+        local mapThreeVotes = 0
         local VotingPanel = vgui.Create("DPanel", EndOfGamePanel)
         VotingPanel:Dock(BOTTOM)
-        VotingPanel:SetSize(0, TM.MenuScale(275))
+        VotingPanel:SetSize(0, TM.MenuScale(290))
         VotingPanel.Paint = function(self, w, h)
             draw.RoundedBox(0, 0, 0, w, h, Color(25, 25, 25, 100))
             if mapDecided == false then
-                if GetGlobal2Int("VotesOnMapOne", 0) != 0 or GetGlobal2Int("VotesOnMapTwo", 0) != 0 then
-                    mapOneVotes = math.Round(GetGlobal2Int("VotesOnMapOne", 0) / (GetGlobal2Int("VotesOnMapOne", 0) + GetGlobal2Int("VotesOnMapTwo", 0)) * 100)
-                    mapTwoVotes = math.Round(GetGlobal2Int("VotesOnMapTwo") / (GetGlobal2Int("VotesOnMapTwo", 0) + GetGlobal2Int("VotesOnMapOne", 0)) * 100)
+                if GetGlobal2Int("VotesOnMapOne", 0) != 0 or GetGlobal2Int("VotesOnMapTwo", 0) != 0 or GetGlobal2Int("VotesOnMapThree", 0) != 0 then
+                    mapOneVotes = math.Round(GetGlobal2Int("VotesOnMapOne", 0) / (GetGlobal2Int("VotesOnMapOne", 0) + GetGlobal2Int("VotesOnMapTwo", 0) + GetGlobal2Int("VotesOnMapThree", 0)) * 100)
+                    mapTwoVotes = math.Round(GetGlobal2Int("VotesOnMapTwo") / (GetGlobal2Int("VotesOnMapTwo", 0) + GetGlobal2Int("VotesOnMapOne", 0) + GetGlobal2Int("VotesOnMapThree", 0)) * 100)
+                    mapThreeVotes = math.Round(GetGlobal2Int("VotesOnMapThree") / (GetGlobal2Int("VotesOnMapThree", 0) + GetGlobal2Int("VotesOnMapOne", 0) + GetGlobal2Int("VotesOnMapTwo", 0)) * 100)
                 end
-                if mapPicked == 1 then draw.RoundedBox(0, TM.MenuScale(10), TM.MenuScale(70), TM.MenuScale(175), TM.MenuScale(175), Color(50, 125, 50, 75)) end
-                if mapPicked == 2 then draw.RoundedBox(0, TM.MenuScale(290), TM.MenuScale(70), TM.MenuScale(175), TM.MenuScale(175), Color(50, 125, 50, 75)) end
+                if mapPicked == 1 then draw.RoundedBox(0, TM.MenuScale(10), TM.MenuScale(80), TM.MenuScale(145), TM.MenuScale(5), Color(50, 125, 50, 75)) end
+                if mapPicked == 2 then draw.RoundedBox(0, TM.MenuScale(165), TM.MenuScale(80), TM.MenuScale(145), TM.MenuScale(5), Color(50, 125, 50, 75)) end
+                if mapPicked == 3 then draw.RoundedBox(0, TM.MenuScale(320), TM.MenuScale(80), TM.MenuScale(145), TM.MenuScale(5), Color(50, 125, 50, 75)) end
                 draw.SimpleText("MAP VOTE", "GunPrintName", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
 
-                draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", TM.MenuScale(10), TM.MenuScale(245), white, TEXT_ALIGN_LEFT)
-                draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", TM.MenuScale(465), TM.MenuScale(245), white, TEXT_ALIGN_RIGHT)
-                draw.SimpleText(mapOneVotes .. "% | " .. mapTwoVotes .. "%", "StreakText", w / 2, TM.MenuScale(245), white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(firstMapName, "MainMenuLoadoutWeapons", TM.MenuScale(10), TM.MenuScale(260), white, TEXT_ALIGN_LEFT)
+                draw.SimpleText(secondMapName, "MainMenuLoadoutWeapons", w / 2, TM.MenuScale(260), white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(thirdMapName, "MainMenuLoadoutWeapons", TM.MenuScale(465), TM.MenuScale(260), white, TEXT_ALIGN_RIGHT)
+                draw.SimpleText(mapOneVotes .. "% | " .. mapTwoVotes .. "% | " .. mapThreeVotes .. "%", "StreakText", w / 2, TM.MenuScale(55), white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MAP", "GunPrintName", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
-                draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, TM.MenuScale(245), white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(decidedMapName, "MainMenuLoadoutWeapons", w / 2, TM.MenuScale(255), white, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -1505,7 +1519,7 @@ net.Receive("EndOfGame", function(len, ply)
                 if gamemodePicked == 1 then draw.RoundedBox(0, TM.MenuScale(10), TM.MenuScale(62.5), TM.MenuScale(175), TM.MenuScale(9), Color(50, 125, 50, 75)) end
                 if gamemodePicked == 2 then draw.RoundedBox(0, TM.MenuScale(290), TM.MenuScale(62.5), TM.MenuScale(175), TM.MenuScale(9), Color(50, 125, 50, 75)) end
                 draw.SimpleText("GAMEMODE VOTE", "GunPrintName", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
-                draw.SimpleText(modeOneVotes .. "% | " .. modeTwoVotes .. "%", "StreakText", w / 2, TM.MenuScale(70), white, TEXT_ALIGN_CENTER)
+                draw.SimpleText(modeOneVotes .. "% | " .. modeTwoVotes .. "%", "StreakText", w / 2, TM.MenuScale(72), white, TEXT_ALIGN_CENTER)
             else
                 draw.SimpleText("NEXT MODE", "GunPrintName", w / 2, TM.MenuScale(5), white, TEXT_ALIGN_CENTER)
                 draw.SimpleText(decidedModeName, "MainMenuLoadoutWeapons", w / 2, TM.MenuScale(65), white, TEXT_ALIGN_CENTER)
@@ -1514,45 +1528,71 @@ net.Receive("EndOfGame", function(len, ply)
 
         local MapChoice = vgui.Create("DImageButton", VotingPanel)
         local MapChoiceTwo = vgui.Create("DImageButton", VotingPanel)
+        local MapChoiceThree = vgui.Create("DImageButton", VotingPanel)
         local ModeChoice = vgui.Create("DButton", GamemodePanel)
         local ModeChoiceTwo = vgui.Create("DButton", GamemodePanel)
 
-        MapChoice:SetPos(TM.MenuScale(10), TM.MenuScale(70))
+        MapChoice:SetPos(TM.MenuScale(10), TM.MenuScale(85))
         MapChoice:SetText("")
-        MapChoice:SetSize(TM.MenuScale(175), TM.MenuScale(175))
+        MapChoice:SetSize(TM.MenuScale(145), TM.MenuScale(175))
         MapChoice:SetImage(firstMapThumb)
+        MapChoice:SetDepressImage(false)
         MapChoice.DoClick = function()
             net.Start("ReceiveMapVote")
             net.WriteString(firstMap)
-            net.WriteString(secondMap)
-            net.WriteUInt(1, 2)
+            net.WriteString(mapPickedName)
+            net.WriteUInt(1, 3)
+            net.WriteUInt(mapPicked, 3)
             net.SendToServer()
             mapPicked = 1
+            mapPickedName = firstMap
             surface.PlaySound("buttons/button15.wav")
 
-            MapChoice:SetPos(TM.MenuScale(20), TM.MenuScale(80))
-            MapChoice:SetSize(TM.MenuScale(155), TM.MenuScale(155))
             MapChoice:SetEnabled(false)
             MapChoiceTwo:SetEnabled(true)
+            MapChoiceThree:SetEnabled(true)
         end
 
-        MapChoiceTwo:SetPos(TM.MenuScale(290), TM.MenuScale(70))
+        MapChoiceTwo:SetPos(TM.MenuScale(165), TM.MenuScale(85))
         MapChoiceTwo:SetText("")
-        MapChoiceTwo:SetSize(TM.MenuScale(175), TM.MenuScale(175))
+        MapChoiceTwo:SetSize(TM.MenuScale(145), TM.MenuScale(175))
         MapChoiceTwo:SetImage(secondMapThumb)
+        MapChoiceTwo:SetDepressImage(false)
         MapChoiceTwo.DoClick = function()
             net.Start("ReceiveMapVote")
             net.WriteString(secondMap)
-            net.WriteString(firstMap)
-            net.WriteUInt(2, 2)
+            net.WriteString(mapPickedName)
+            net.WriteUInt(2, 3)
+            net.WriteUInt(mapPicked, 3)
             net.SendToServer()
             mapPicked = 2
+            mapPickedName = secondMap
             surface.PlaySound("buttons/button15.wav")
 
-            MapChoiceTwo:SetPos(TM.MenuScale(300), TM.MenuScale(80))
-            MapChoiceTwo:SetSize(TM.MenuScale(155), TM.MenuScale(155))
             MapChoice:SetEnabled(true)
             MapChoiceTwo:SetEnabled(false)
+            MapChoiceThree:SetEnabled(true)
+        end
+
+        MapChoiceThree:SetPos(TM.MenuScale(320), TM.MenuScale(85))
+        MapChoiceThree:SetText("")
+        MapChoiceThree:SetSize(TM.MenuScale(145), TM.MenuScale(175))
+        MapChoiceThree:SetImage(thirdMapThumb)
+        MapChoiceThree:SetDepressImage(false)
+        MapChoiceThree.DoClick = function()
+            net.Start("ReceiveMapVote")
+            net.WriteString(thirdMap)
+            net.WriteString(mapPickedName)
+            net.WriteUInt(3, 3)
+            net.WriteUInt(mapPicked, 3)
+            net.SendToServer()
+            mapPicked = 3
+            mapPickedName = thirdMap
+            surface.PlaySound("buttons/button15.wav")
+
+            MapChoice:SetEnabled(true)
+            MapChoiceTwo:SetEnabled(true)
+            MapChoiceThree:SetEnabled(false)
         end
 
         ModeChoice:SetPos(TM.MenuScale(10), TM.MenuScale(70))
@@ -1607,6 +1647,7 @@ net.Receive("EndOfGame", function(len, ply)
             gamemodeDecided = true
             MapChoice:Remove()
             MapChoiceTwo:Remove()
+            MapChoiceThree:Remove()
             ModeChoice:Remove()
             ModeChoiceTwo:Remove()
 

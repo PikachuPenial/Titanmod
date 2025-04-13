@@ -1,4 +1,20 @@
 # Unreleased
+**>GAMEPLAY**   
+*END OF MATCH ADJUSTMENTS*
+- Three maps are now available in the map voting pool instead of two
+
+**>MAPS**   
+
+**>QOL & BUG FIXES**   
+- Fixed all known instances of weapons spawning unloaded
+
+
+
+# April 12th, 2025 (4/12/25)
+**>GAMEPLAY**   
+*CUSTOMIZATION*
+- Added 8 new player models
+
 **>MAPS**   
 *RETURNING MAPS*
 - Station
@@ -18,7 +34,7 @@
 
 - Fixed leveling panel on the scoreboard from not displaying when 6 or more players are connected on a server
 
-- Removed "Bones" playermodel and replaced it with the "Security" playermodel
+- "Bones" player model is now changed to be more visible
 
 
 

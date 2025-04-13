@@ -7,7 +7,6 @@ ATTACHMENT.Name = "5.56"
 ATTACHMENT.ShortName = "5.56" --Abbreviation, 5 chars or less please
 ATTACHMENT.Description = {
 	TFA.AttachmentColors["="], "5.56×45mm Conversion",
-	TFA.AttachmentColors["+"], "+10 bullets in magazine",
 	TFA.AttachmentColors["+"], "30% more RPM",
 	TFA.AttachmentColors["+"], "40% less recoil",
 	TFA.AttachmentColors["-"], "30% less damage",
@@ -16,7 +15,6 @@ ATTACHMENT.Icon = "attachments/conversion.png" --Revers to label, please give it
 
 ATTACHMENT.WeaponTable = {
 	["Primary"] = {
-		["ClipSize"] = function(wep, stat) return 30 end,
 		["Damage"] = function(wep, stat) return stat * 0.7 end,
 		["RPM"] = function(wep, stat) return 650 end,
 		["KickUp"] = function(wep, stat) return stat * 0.6 end,
@@ -35,10 +33,6 @@ ATTACHMENT.WeaponTable = {
 		["iron_fire_f"] = 160 / 32,
 	}
 }
-
-function ATTACHMENT:Detach(wep)
-	wep:Unload()
-end
 
 if not TFA_ATTACHMENT_ISUPDATING then
 	TFAUpdateAttachments()

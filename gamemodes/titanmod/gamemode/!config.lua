@@ -541,6 +541,10 @@ if CLIENT then
 
     RunConsoleCommand("cl_vmanip_voicechat", "0")
 
+    RunConsoleCommand("tpf_sv_light_forward_offset", "-20")
+    RunConsoleCommand("tpf_sv_max_bright", "255")
+    RunConsoleCommand("tpf_sv_max_farz", "750")
+    RunConsoleCommand("tpf_sv_max_fov", "75")
     RunConsoleCommand("tpf_should_load_defaults", "0")
     RunConsoleCommand("tpf_cl_bright", "255")
     RunConsoleCommand("tpf_cl_farz", "750")
