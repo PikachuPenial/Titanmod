@@ -161,7 +161,7 @@ KOTHPos.tm_disequilibrium = {
     Origin = Vector(-280, 1940, 1064),
     BrushSize = Vector(96, 100, 72)
 }
-KOTHPos.tm_grid = {
+KOTHPos.tm_grid = { 
     Origin = Vector(0, -1408, -560),
     BrushSize = Vector(128, 256, 112)
 }

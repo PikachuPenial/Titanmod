@@ -1447,7 +1447,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPrideCards = vgui.Create("DPanel", CardScroller)
                     DockPrideCards:Dock(TOP)
-                    DockPrideCards:SetSize(0, TM.MenuScale(335))
+                    DockPrideCards:SetSize(0, TM.MenuScale(1785))
 
                     -- creating playercard lists
                     local DefaultCardList = vgui.Create("DIconLayout", DockDefaultCards)
@@ -2409,7 +2409,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockLevelCards:SetSize(0, (levelCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
                             DockMasteryCards:SetSize(0, (masteryCardsUnlocked * TM.MenuScale(28.33)) + TM.MenuScale(28.33))
                             DockColorCards:SetSize(0, TM.MenuScale(340))
-                            DockPrideCards:SetSize(0, TM.MenuScale(355))
+                            DockPrideCards:SetSize(0, TM.MenuScale(1785))
                         else
                             DefaultCardList:Clear()
                             StatCardList:Clear()
@@ -2440,7 +2440,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockLevelCards:SetSize(0, TM.MenuScale(1360))
                             DockMasteryCards:SetSize(0, TM.MenuScale(4345))
                             DockColorCards:SetSize(0, TM.MenuScale(340))
-                            DockPrideCards:SetSize(0, TM.MenuScale(335))
+                            DockPrideCards:SetSize(0, TM.MenuScale(1785))
                         end
                     end
 

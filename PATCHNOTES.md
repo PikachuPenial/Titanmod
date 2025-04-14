@@ -8,6 +8,14 @@
 - Grid
 
 **>BALANCE**    
+*M14*
+- Increased damage to 50 (previosuly 40)
+- Reduced vertical recoil to 50 (previously 80)
+
+*MK 14 EBR*
+- Now fires in Full Auto with 600 RPM
+- Reduced vertical recoil to 40 (previously 50)
+
 *Stevens 620*
 - Increased damage to 18x7 (previously 16x7)
 
@@ -15,6 +23,10 @@
 - All snipers now have higher auto-switch weight compared to shotguns, making them always the equipped weapon when spawning in the Shotty Snipers gamemode
 
 - Updated the Jacket player model
+
+- Added 51 new pride calling cards (assorted countries)
+
+- Added new gamemode main menu backgrounds
 
 - Fixed all known instances of weapons spawning unloaded
 
@@ -31,6 +43,8 @@
 - Fixed fiesta timer interface being 500ms behind of actual fieata time
 
 - Fixed being unable to open weapon attachment menu when sprinting
+
+- Fixed weapons being able to switch fire modes and go into safety
 
 
 

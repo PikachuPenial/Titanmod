@@ -460,6 +460,11 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 
 		return userstatus, issighting
 	end
+
+	-- disable fire mode/safety toggling
+	function SWEP:ProcessFireMode()
+		return
+	end
 end )
 
 if CLIENT then

@@ -1,9 +1,9 @@
 
 # Titanmod | PvP Movement Shooter
-![Titanmod Banner](https://imgur.com/X6Lndd4.png)
+![Titanmod Banner](https://i.imgur.com/1LCOfVQ.png)
 
 Titanmod is a [Garry's Mod](https://store.steampowered.com/app/4000/Garrys_Mod/) gamemode centered around tense FFA PvP fights consisting of snappy gunplay and fluid movement.  
-With over 10 gamemodes, 150+ unique weapons, and 18+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
+With over 10 gamemodes, 150+ unique weapons, and 20+ maps, Titanmod is one of the most ambitious Garry's Mod PvP gamemodes.
 
 > Join the official [Titanmod Discord Server](https://discord.gg/GRfvt27uGF)  
 > Check out [Titanmod on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3002938569)  
@@ -15,7 +15,7 @@ Here are a few of Titanmods features:
 - Responsive and skill-based gunplay w/ an assortment of attachments
 - Simple and complex movement mechanics to master  
 - Map and Gamemode voting (FFA, Cranked, Gun Game, Shotty Snipers, Fiesta, Quickdraw, King of the Hill, VIP, Overkill and Fisticuffs)  
-- Deep player customization and unlocks (60+ player models, 260+ player cards, 10+ melee weapons)  
+- Deep player customization and unlocks (60+ player models, 340+ player cards, 10+ melee weapons)  
 - Endless player progression (60 levels w/ prestiging, no prestige cap)  
 - In-depth settings  
 - HUD Editor w/ code sharing  
@@ -36,7 +36,8 @@ Almost every aspect of Titanmod is configurable. Not only does it boast a wide a
 [Arctic](https://steamcommunity.com/sharedfiles/filedetails/?id=378091855) by Danny Judas   
 [Bridge](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by nyko_18   
 [Corrugated](https://steamcommunity.com/sharedfiles/filedetails/?id=104841792) by heyo  
-[Disequilibrium](http://steamcommunity.com/profiles/76561198313962855) by Zedorfska  
+[Disequilibrium](https://steamcommunity.com/profiles/76561198313962855) by Zedorfska  
+[Grid](https://steamcommunity.com/sharedfiles/filedetails/?id=2878541974) by Tareyu  
 [Initial](https://steamcommunity.com/sharedfiles/filedetails/?id=2847368960) by wittepizza  
 [Legacy](https://steamcommunity.com/sharedfiles/filedetails/?id=2475123859) by Portanator  
 [Liminal Pool](https://steamcommunity.com/sharedfiles/filedetails/?id=2870622328) by Poldex   
@@ -47,6 +48,7 @@ Almost every aspect of Titanmod is configurable. Not only does it boast a wide a
 [Rig](https://steamcommunity.com/sharedfiles/filedetails/?id=1814169158) by Doxx Mulder & Sam  
 [Shipment](https://steamcommunity.com/sharedfiles/filedetails/?id=2682557992) by snake eyes  
 [Shoot House](https://steamcommunity.com/sharedfiles/filedetails/?id=2970548573) by Winston7  
+[Station](https://steamcommunity.com/sharedfiles/filedetails/?id=482214902) by Exho  
 [Villa](https://steamcommunity.com/sharedfiles/filedetails/?id=1623087187) by BallFondler06  
 [Wreck](https://steamcommunity.com/sharedfiles/filedetails/?id=442985393) by slipi & Pyroquantre    
 
