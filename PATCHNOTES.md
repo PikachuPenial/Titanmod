@@ -1,5 +1,8 @@
 # Unreleased
 **>GAMEPLAY**   
+*AMMO CONVERSIONS*
+- Added new attachment types to the **ASh-12** and **OTs-33 Pernach** that rework their gun stats
+
 *END OF MATCH ADJUSTMENTS*
 - Three maps are now available in the map voting pool instead of two
 
@@ -12,9 +15,22 @@
 - Increased damage to 50 (previosuly 40)
 - Reduced vertical recoil to 50 (previously 80)
 
+*M79*
+- Increased draw and holster speed significantly
+- Increased reload speed significantly
+- Reduced animation lock time after firing a grenade
+
 *MK 14 EBR*
 - Now fires in Full Auto with 600 RPM
 - Reduced vertical recoil to 40 (previously 50)
+
+*OTs-33 Pernach*
+- Increased magazine capacity to 33 (previously 27)
+
+*RPG-7*
+- Rocket projectile now slows down during flight and proceeds to drop after being in the air for too long
+- Increased draw and holster speed significantly
+- Increased reload speed significantly
 
 *Stevens 620*
 - Increased damage to 18x7 (previously 16x7)
@@ -45,6 +61,8 @@
 - Fixed being unable to open weapon attachment menu when sprinting
 
 - Fixed weapons being able to switch fire modes and go into safety
+
+- Fixed some weapons still having damage fall off at extremely long ranges
 
 
 

@@ -9,7 +9,7 @@ ATTACHMENT.Description = {
 	TFA.AttachmentColors["="], "9x39mm Conversion",
 	TFA.AttachmentColors["+"], "100% more damage",
 	TFA.AttachmentColors["-"], "66% less RPM",
-	TFA.AttachmentColors["-"], "200% more recoil",
+	TFA.AttachmentColors["-"], "100% more recoil",
 	TFA.AttachmentColors["-"], "10% less mobility",
 }
 ATTACHMENT.Icon = "attachments/conversion.png" --Revers to label, please give it an icon though!  This should be the path to a png, like "entities/tfa_ammo_match.png"
