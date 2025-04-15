@@ -38,6 +38,8 @@
 **>QOL & BUG FIXES**   
 - All snipers now have higher auto-switch weight compared to shotguns, making them always the equipped weapon when spawning in the Shotty Snipers gamemode
 
+- Player POV in the death camera now shows your own FOV instead of the other players
+
 - Updated the Jacket player model
 
 - Added 51 new pride calling cards (assorted countries)
@@ -47,6 +49,8 @@
 - Fixed all known instances of weapons spawning unloaded
 
 - Fixed some weapons from spawning with attachments that were not previously equipped by the player
+
+- Fixed death camera flickering when the spectated player performed specific actions
 
 - Fixed the selected melee weapon not having save file corruption mitigation
 
@@ -63,6 +67,12 @@
 - Fixed weapons being able to switch fire modes and go into safety
 
 - Fixed some weapons still having damage fall off at extremely long ranges
+
+- Fixed dynamic crosshair spread not taking sliding into account
+
+- Fixed dyanmic crosshair still taking hip fire spread into account while using the point firing attachment and ADSing
+
+- Fixed dynamic crosshair still taking player velocity into account while crouching and sliding
 
 
 

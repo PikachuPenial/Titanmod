@@ -346,14 +346,18 @@ local function CrosshairStateUpdate(client, wep)
     local velocity = tostring(math.Round(client:GetVelocity():Length()))
 
     if wep != NULL and type(wep.Primary.Spread) == "number" then
-        gap = gap + wep.Primary.Spread * 300
-        if ply:KeyDown(IN_ATTACK) then gap = gap + 5 end
+        if wep:GetIronSights() and wep:GetStat("PointFiring") == true then
+            return 0
+        else
+            gap = gap + wep:GetStat("Primary.Spread") * 300
+            if ply:KeyDown(IN_ATTACK) then gap = gap + 5 end
+        end
     end
-    if client:Crouching() or client:IsWalking() then gap = gap - 5 end
+    if client:OnGround() and client:Crouching() or client:GetSliding() then return math.Clamp(math.Round(gap - 5), 0, 100) end
     if !client:OnGround() then gap = gap + 7 end
     gap = gap + velocity / 55
 
-    return math.Clamp(gap, 0, 100)
+    return math.Clamp(math.Round(gap), 0, 100)
 end
 
 function HUDAlways(client)

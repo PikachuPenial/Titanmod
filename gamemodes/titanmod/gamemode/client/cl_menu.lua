@@ -464,7 +464,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 MainMenu:SetMouseInputEnabled(false)
                 TutorialPanel:AlphaTo(255, 0.1, 0)
                 TutorialPanel.Paint = function(self, w, h)
-                    DrawBokehDOF(4, 1, 12)
+                    BlurPanel(self, 10)
                     draw.RoundedBox(0, 0, 0, w, h, Color(30, 30, 30, 100))
                 end
                 TutorialPanel.OnClose = function()
@@ -481,7 +481,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 sbar:SetHideButtons(true)
                 sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 50))
                 end
                 function sbar.btnGrip:Paint(w, h)
                     draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))
@@ -512,7 +512,7 @@ net.Receive("OpenMainMenu", function(len, ply)
                 WeaponryLabel:SetPos(TM.MenuScale(280), TM.MenuScale(40))
                 WeaponryLabel:SetSize(TM.MenuScale(554), TM.MenuScale(230))
                 WeaponryLabel:SetFont("Menu_GModNotify")
-                WeaponryLabel:SetText([[There are 130+ unique weapons to master in Titanmod!
+                WeaponryLabel:SetText([[There are 150+ unique weapons to master in Titanmod!
 You can use your Context Menu key []] .. string.upper(ContextBind) .. [[] to adjust attachments on your weapons, and to view weapon statistics. Attachments that you select are saved throughout play sessions, so you only have to customize a gun to your liking once.
 Each weapon has its own unique recoil pattern to learn.
 Bullets are hitscan and can penetrate through surfaces.
@@ -559,11 +559,11 @@ Rocket Jumping      Grappling
                 end
 
                 local PersonalizeLabel = vgui.Create("DLabel", PersonalizeSection)
-                PersonalizeLabel:SetPos(TM.MenuScale(280), TM.MenuScale(40))
+                PersonalizeLabel:SetPos(TM.MenuScale(280), TM.MenuScale(50))
                 PersonalizeLabel:SetSize(TM.MenuScale(554), TM.MenuScale(230))
                 PersonalizeLabel:SetFont("Menu_GModNotify")
-                PersonalizeLabel:SetText([[There are over 300+ items to unlock in Titanmod!
-There are an assortment of player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
+                PersonalizeLabel:SetText([[There are over 400+ items to unlock in Titanmod!
+You have an assortment of melee weapons, player models and calling cards to express yourself with. Some are unlocked for you already, while some require you to complete specific challenges.
 Check out the CUSTOMIZE page to see what is on offer.
 Head to the OPTIONS page to tailor the experience to your needs. There is an extensive list of settings to change, and well as a robust HUD editor.
 ]])
@@ -588,7 +588,6 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 DiscordButton:SetPos(TM.MenuScale(15), TM.MenuScale(8))
                 DiscordButton:SetImage("icons/discordicon.png")
                 DiscordButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
-                DiscordButton:SetTooltip("Discord")
                 DiscordButton.DoClick = function()
                     TriggerSound("click")
                     gui.OpenURL("https://discord.gg/GRfvt27uGF")
@@ -3799,11 +3798,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("INPUT", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Auto Sprint", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Auto Sprint Interaction Delay", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("1x ADS Sensitivity", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("2x ADS Sensitivity", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("4x ADS Sensitivity", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("6x ADS Sensitivity", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Sensitivity Transition Style", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Compensate Sensitivity w/ FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Main Menu Bind", "SettingsLabel", TM.MenuScale(135), TM.MenuScale(385), white, TEXT_ALIGN_LEFT)
@@ -3968,8 +3967,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("GAMEPLAY", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Increase FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("FOV Value", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Gun Viewmodel", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("FOV Value", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Viewmodel", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Death Camera", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Optic Reticle Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
                     end
@@ -4107,7 +4106,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("AUDIO", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Menu SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Music Volume", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Music Volume", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Kill SFX", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hitmarker SFX Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
@@ -4194,9 +4193,9 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Show When Sprinting", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Style", "SettingsLabel", TM.MenuScale(125), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Center Dot", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Color/Opacity", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Outline", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(465), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Outline Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(505), white, TEXT_ALIGN_LEFT)
@@ -4205,7 +4204,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Left", "SettingsLabel", TM.MenuScale(300), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Right", "SettingsLabel", TM.MenuScale(395), TM.MenuScale(625), white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Click to cycle image", "QuoteText", TM.MenuScale(475), TM.MenuScale(265), white, TEXT_ALIGN_CENTER)
+                        draw.SimpleText("Click to cycle image", "QuoteText", TM.MenuScale(485), TM.MenuScale(225), white, TEXT_ALIGN_CENTER)
                     end
 
                     local crosshairToggle = DockCrosshair:Add("DCheckBox")
@@ -4313,12 +4312,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     function crosshairRight:OnChange() TriggerSound("click") end
 
                     local previewOpacitySlider = DockCrosshair:Add("DSlider")
-                    previewOpacitySlider:SetPos(TM.MenuScale(400), TM.MenuScale(250))
+                    previewOpacitySlider:SetPos(TM.MenuScale(410), TM.MenuScale(210))
                     previewOpacitySlider:SetSize(TM.MenuScale(150), TM.MenuScale(20))
                     previewOpacitySlider:SetSlideX(1)
 
                     local crosshairPreviewImage = DockCrosshair:Add("DImageButton")
-                    crosshairPreviewImage:SetPos(TM.MenuScale(375), TM.MenuScale(10))
+                    crosshairPreviewImage:SetPos(TM.MenuScale(385), TM.MenuScale(10))
                     crosshairPreviewImage:SetSize(TM.MenuScale(200), TM.MenuScale(200))
                     crosshairPreviewImage:SetImage(previewImg)
                     crosshairPreviewImage.DoClick = function()
@@ -4371,12 +4370,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     end
 
                     timer.Create("CrosshairDynamicPreview", 0.5, 0, function()
-                        if crosshair["style"] == 1 then dyn = math.Rand(0, 10) else dyn = 0 end
+                        if crosshair["style"] == 1 then dyn = math.random(0, 10) else dyn = 0 end
                     end)
 
                     CrosshairPreview = vgui.Create("DPanel", DockCrosshair)
                     CrosshairPreview:SetSize(TM.MenuScale(200), TM.MenuScale(200))
-                    CrosshairPreview:SetPos(TM.MenuScale(375), TM.MenuScale(10))
+                    CrosshairPreview:SetPos(TM.MenuScale(385), TM.MenuScale(10))
                     CrosshairPreview:SetMouseInputEnabled(false)
                     CrosshairPreview.Paint = function(self, w, h)
                         UpdateCrosshair()
@@ -4402,11 +4401,11 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("HITMARKER", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
                         draw.SimpleText("Enable", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Opacity", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Duration", "SettingsLabel", TM.MenuScale(165), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Length", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Thickness", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Gap", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Opacity", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Duration", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Hit Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Headshot Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(425), white, TEXT_ALIGN_LEFT)
 
@@ -4796,7 +4795,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 sbar:SetHideButtons(true)
                 sbar:SetSize(TM.MenuScale(15), TM.MenuScale(15))
                 function sbar:Paint(w, h)
-                    draw.RoundedBox(0, 0, 0, w, h, gray)
+                    draw.RoundedBox(0, 0, 0, w, h, Color(10, 10, 10, 160))
                 end
                 function sbar.btnGrip:Paint(w, h)
                     draw.RoundedBox(0, TM.MenuScale(5), TM.MenuScale(8), TM.MenuScale(5), h - TM.MenuScale(16), Color(255, 255, 255, 175))

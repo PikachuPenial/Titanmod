@@ -465,9 +465,57 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 	function SWEP:ProcessFireMode()
 		return
 	end
+
+	function SWEP:TranslateFOV(fov)
+		local self2 = self:GetTable()
+
+		self2.LastTranslatedFOV = fov
+
+		local retVal = hook.Run("TFA_PreTranslateFOV", self, fov)
+
+		if retVal then return retVal end
+
+		self2.CorrectScopeFOV(self)
+
+		local ironprog = self2.IronSightsProgressPredicted or self2.GetIronSightsProgress(self)
+		if self2.GetStatL(self, "Secondary.OwnerFOVUseThreshold", self2.GetStatL(self, "Scoped")) then
+			local threshold = math.min(self2.GetStatL(self, "Secondary.OwnerFOVThreshold", self2.GetStatL(self, "ScopeOverlayThreshold")), 0.999999)
+
+			ironprog = ironprog < threshold and 0 or math.max(ironprog - threshold, 0) / (1 - threshold)
+		end
+
+		local nfov = l_Lerp(ironprog, fov, fov * math.min(self2.GetStatL(self, "Secondary.OwnerFOV") / 90, 1))
+
+		local ret = nfov
+		local cv_fov_sprintmult = GetConVar("tm_customfov_sprint")
+		if cv_fov_sprintmult:GetBool() then
+			ret = l_Lerp(self2.SprintProgressPredicted or self2.GetSprintProgress(self), nfov, nfov + self2.GetStatL(self, "SprintFOVOffset", 5))
+		end
+
+		if self2.OwnerIsValid(self) and not self2.IsMelee then
+			local vpa = self:GetOwner():GetViewPunchAngles()
+
+			ret = ret + math.abs(vpa.p) / 4 + math.abs(vpa.y) / 4 + math.abs(vpa.r) / 4
+		end
+
+		ret = hook.Run("TFA_TranslateFOV", self, ret) or ret
+
+		return ret
+	end
 end )
 
 if CLIENT then
     -- forcefully disable the use of the TFA crosshair
     hook.Add("TFA_DrawCrosshair", "DisableTFACrosshair", function(ply) return true end)
+
+	-- force users selected FOV when spectating
+	hook.Add("TFA_TranslateFOV", "DisableClientFOVChange", function(ply)
+		localPly = LocalPlayer()
+		if localPly:Alive() then return end
+		if localPly:GetInfoNum("tm_customfov", 0) == 1 then
+			return localPly:GetInfoNum("tm_customfov_value", 100)
+		else
+			return localPly:GetInfoNum("fov_desired", 75)
+		end
+	end)
 end

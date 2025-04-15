@@ -42,7 +42,6 @@ util.AddNetworkString("PlayerPrestige")
 util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("SendChatMessage")
-util.AddNetworkString("FOVUpdate")
 
 RunConsoleCommand("mp_friendlyfire", "1")
 
@@ -287,11 +286,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Broadcast()
 
 		if victim:GetInfoNum("tm_deathcam", 1) == 1 and deathCamera == true then
-			victim:SpectateEntity(attacker)
-			victim:SetupHands(attacker)
-			victim:Spectate(OBS_MODE_DEATHCAM)
-
 			timer.Simple(0.75, function()
+				victim:SpectateEntity(attacker)
+				victim:SetupHands(attacker)
+
 				if not IsValid(victim) or not IsValid(attacker) then return end
 				victim:SetObserverMode(OBS_MODE_FREEZECAM)
 
