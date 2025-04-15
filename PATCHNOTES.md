@@ -6,6 +6,10 @@
 *END OF MATCH ADJUSTMENTS*
 - Three maps are now available in the map voting pool instead of two
 
+*NEW SETTINGS*  
+- Sprinting FOV Increase
+- Lens Flare
+
 **>MAPS**   
 *RETURNING MAPS*
 - Grid
@@ -36,6 +40,8 @@
 - Increased damage to 18x7 (previously 16x7)
 
 **>QOL & BUG FIXES**   
+- Player ragdolls are now synced across clients and will look the same for all players
+
 - All snipers now have higher auto-switch weight compared to shotguns, making them always the equipped weapon when spawning in the Shotty Snipers gamemode
 
 - Player POV in the death camera now shows your own FOV instead of the other players

@@ -510,7 +510,7 @@ if CLIENT then
 
 	-- force users selected FOV when spectating
 	hook.Add("TFA_TranslateFOV", "DisableClientFOVChange", function(ply)
-		localPly = LocalPlayer()
+		local localPly = LocalPlayer()
 		if localPly:Alive() then return end
 		if localPly:GetInfoNum("tm_customfov", 0) == 1 then
 			return localPly:GetInfoNum("tm_customfov_value", 100)

@@ -60,6 +60,7 @@ if CLIENT then
     CreateClientConVar("tm_meleebind", KEY_3, true, true, "Determines the keybind that will quick switch to your melee")
     CreateClientConVar("tm_hidestatsfromothers", 0, true, true, "Determines if other players can see and/or compare your stats", 0, 1)
     CreateClientConVar("tm_screenflashes", 1, true, false, "Enable/disable sudden screen flashes on certain occasions (mainly dying and leveling up)", 0, 1)
+    CreateClientConVar("tm_lensflare", 1, true, false, "Enable/disable lens flare effects", 0, 1)
     CreateClientConVar("tm_deathcam", 1, true, true, "Enable/disable the custom death camera when killed by another player", 0, 1)
     CreateClientConVar("tm_customfov", 0, true, true, "Enable/disable Titanmod's custom FOV system", 0, 1)
     CreateClientConVar("tm_customfov_value", 100, true, true, "Adjust the players FOV while using Titanmod's custom FOV system", 100, 144)

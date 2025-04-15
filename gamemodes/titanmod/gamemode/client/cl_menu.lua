@@ -3659,7 +3659,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockGameplay = vgui.Create("DPanel", OptionsScroller)
                     DockGameplay:Dock(TOP)
-                    DockGameplay:SetSize(0, TM.MenuScale(355))
+                    DockGameplay:SetSize(0, TM.MenuScale(395))
 
                     local DockUI = vgui.Create("DPanel", OptionsScroller)
                     DockUI:Dock(TOP)
@@ -3679,7 +3679,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, TM.MenuScale(360))
+                    DockPerformance:SetSize(0, TM.MenuScale(400))
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(TM.MenuScale(12), TM.MenuScale(12))
@@ -3966,11 +3966,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("GAMEPLAY", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Increase FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Override FOV", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("FOV Value", "SettingsLabel", TM.MenuScale(170), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Centered Viewmodel", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Death Camera", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Sprinting FOV Increase", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Centered Viewmodel", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Death Camera", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Optic Reticle Color", "SettingsLabel", TM.MenuScale(245), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
                     end
 
                     local customFOV = DockGameplay:Add("DCheckBox")
@@ -3987,38 +3988,44 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     customFOVSlider:SetMax(144)
                     customFOVSlider:SetDecimals(0)
 
+                    local sprintingFOV = DockGameplay:Add("DCheckBox")
+                    sprintingFOV:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    sprintingFOV:SetConVar("tm_customfov_sprint")
+                    sprintingFOV:SetSize(TM.MenuScale(30), TM.MenuScale(30))
+                    function sprintingFOV:OnChange() TriggerSound("click") end
+
                     local centeredVM = DockGameplay:Add("DCheckBox")
-                    centeredVM:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    centeredVM:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     centeredVM:SetConVar("cl_tfa_viewmodel_centered")
                     centeredVM:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function centeredVM:OnChange() TriggerSound("click") end
 
                     local deathCam = DockGameplay:Add("DCheckBox")
-                    deathCam:SetPos(TM.MenuScale(20), TM.MenuScale(190))
+                    deathCam:SetPos(TM.MenuScale(20), TM.MenuScale(230))
                     deathCam:SetConVar("tm_deathcam")
                     deathCam:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function deathCam:OnChange() TriggerSound("click") end
 
                     local EotechPreview = vgui.Create("DImage", DockGameplay)
-                    EotechPreview:SetPos(TM.MenuScale(245), TM.MenuScale(270))
+                    EotechPreview:SetPos(TM.MenuScale(245), TM.MenuScale(310))
                     EotechPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     EotechPreview:SetImage("images/reticles/eotech.png")
                     EotechPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local KobraPreview = vgui.Create("DImage", DockGameplay)
-                    KobraPreview:SetPos(TM.MenuScale(289), TM.MenuScale(270))
+                    KobraPreview:SetPos(TM.MenuScale(289), TM.MenuScale(310))
                     KobraPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     KobraPreview:SetImage("images/reticles/kobra.png")
                     KobraPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local AimpointPreview = vgui.Create("DImage", DockGameplay)
-                    AimpointPreview:SetPos(TM.MenuScale(333), TM.MenuScale(270))
+                    AimpointPreview:SetPos(TM.MenuScale(333), TM.MenuScale(310))
                     AimpointPreview:SetSize(TM.MenuScale(48), TM.MenuScale(48))
                     AimpointPreview:SetImage("images/reticles/aimpoint.png")
                     AimpointPreview:SetImageColor(Color(GetConVar("cl_tfa_reticule_color_r"):GetInt(), GetConVar("cl_tfa_reticule_color_g"):GetInt(), GetConVar("cl_tfa_reticule_color_b"):GetInt(), 200))
 
                     local reticleMixer = vgui.Create("DColorMixer", DockGameplay)
-                    reticleMixer:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                    reticleMixer:SetPos(TM.MenuScale(20), TM.MenuScale(270))
                     reticleMixer:SetSize(TM.MenuScale(215), TM.MenuScale(110))
                     reticleMixer:SetConVarR("cl_tfa_reticule_color_r")
                     reticleMixer:SetConVarG("cl_tfa_reticule_color_g")
@@ -4044,7 +4051,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.SimpleText("Kill Tracker", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Keypress Overlay", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(305), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Velocity Counter", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(345), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Voice Chat Indicator", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(385), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("VOIP Indicator", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(385), white, TEXT_ALIGN_LEFT)
                     end
 
                     local HUDtoggle = DockUI:Add("DCheckBox")
@@ -4540,9 +4547,10 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                         draw.SimpleText("Precache Gamemode Files", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
                         draw.SimpleText("Render Hands", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS DOF", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection DOF", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Lens Flare", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
                     end
 
                     local precacheGamemodeFiles = DockPerformance:Add("DCheckBox")
@@ -4558,26 +4566,32 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                     renderHands:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function renderHands:OnChange() TriggerSound("click") end
 
+                    local lensFlare = DockPerformance:Add("DCheckBox")
+                    lensFlare:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    lensFlare:SetConVar("tm_lensflare")
+                    lensFlare:SetSize(TM.MenuScale(30), TM.MenuScale(30))
+                    function lensFlare:OnChange() TriggerSound("click") end
+
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    ironSightDOF:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(TM.MenuScale(20), TM.MenuScale(190))
+                    inspectionDOF:SetPos(TM.MenuScale(20), TM.MenuScale(230))
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                    screenFlashing:SetPos(TM.MenuScale(20), TM.MenuScale(270))
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(TM.MenuScale(17.5), TM.MenuScale(310))
+                    WipeAccountButton:SetPos(TM.MenuScale(17.5), TM.MenuScale(350))
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(TM.MenuScale(500), TM.MenuScale(40))
                     local textAnim = 0
