@@ -1,4 +1,6 @@
 hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
+	if SWEP.Base != "tfa_gun_base" and SWEP.Base != "tm_knife_base" and SWEP.Base != "rust_throwable_melee_base" then return end
+
 	-- bobbing
 	local vector_origin = Vector()
 	SWEP.ti = 0
@@ -487,9 +489,10 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 		local nfov = l_Lerp(ironprog, fov, fov * math.min(self2.GetStatL(self, "Secondary.OwnerFOV") / 90, 1))
 
 		local ret = nfov
-		local cv_fov_sprintmult = GetConVar("tm_customfov_sprint")
-		if cv_fov_sprintmult:GetBool() then
-			ret = l_Lerp(self2.SprintProgressPredicted or self2.GetSprintProgress(self), nfov, nfov + self2.GetStatL(self, "SprintFOVOffset", 5))
+		if CLIENT then
+			if GetConVar("tm_customfov_sprint"):GetInt() == 1 then
+				ret = l_Lerp(self2.SprintProgressPredicted or self2.GetSprintProgress(self), nfov, nfov + self2.GetStatL(self, "SprintFOVOffset", 5))
+			end
 		end
 
 		if self2.OwnerIsValid(self) and not self2.IsMelee then

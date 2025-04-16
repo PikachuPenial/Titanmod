@@ -1,4 +1,12 @@
-# Unreleased
+# April 16th, 2025 (4/16/25)
+**>QOL & BUG FIXES**   
+- Overhauled file precaching system
+
+- Fixed console errors when using certain weapons (notably Riot Shield)
+
+
+
+# April 15th, 2025 (4/15/25)
 **>GAMEPLAY**   
 *AMMO CONVERSIONS*
 - Added new attachment types to the **ASh-12** and **OTs-33 Pernach** that rework their gun stats
@@ -16,7 +24,7 @@
 
 **>BALANCE**    
 *M14*
-- Increased damage to 50 (previosuly 40)
+- Increased damage to 50 (previously 40)
 - Reduced vertical recoil to 50 (previously 80)
 
 *M79*
@@ -66,7 +74,7 @@
 
 - Fixed many match time related interface values being one second ahead of actual match time
 
-- Fixed fiesta timer interface being 500ms behind of actual fieata time
+- Fixed fiesta timer interface being 500ms behind of actual fiesta time
 
 - Fixed being unable to open weapon attachment menu when sprinting
 
@@ -76,7 +84,7 @@
 
 - Fixed dynamic crosshair spread not taking sliding into account
 
-- Fixed dyanmic crosshair still taking hip fire spread into account while using the point firing attachment and ADSing
+- Fixed dynamic crosshair still taking hip fire spread into account while using the point firing attachment and ADSing
 
 - Fixed dynamic crosshair still taking player velocity into account while crouching and sliding
 

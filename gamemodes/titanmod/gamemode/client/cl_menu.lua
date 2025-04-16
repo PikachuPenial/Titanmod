@@ -4545,53 +4545,45 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         draw.RoundedBox(0, 0, 0, w, h, gray)
                         draw.SimpleText("PERFORMANCE", "OptionsHeader", TM.MenuScale(20), 0, white, TEXT_ALIGN_LEFT)
 
-                        draw.SimpleText("Precache Gamemode Files", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Render Hands", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Lens Flare", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("ADS Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Inspection Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
-                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(265), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Render Hands", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(65), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Lens Flare", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(105), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("ADS Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(145), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Inspection Depth Of Field", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(185), white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Screen Flashing Effects", "SettingsLabel", TM.MenuScale(55), TM.MenuScale(225), white, TEXT_ALIGN_LEFT)
                     end
 
-                    local precacheGamemodeFiles = DockPerformance:Add("DCheckBox")
-                    precacheGamemodeFiles:SetPos(TM.MenuScale(20), TM.MenuScale(70))
-                    precacheGamemodeFiles:SetConVar("tm_precachefiles")
-                    precacheGamemodeFiles:SetSize(TM.MenuScale(30), TM.MenuScale(30))
-                    precacheGamemodeFiles:SetTooltip("Recommended when your game is installed on a SSD/solid state drive, disable if you are encountering CVEngineServer overflows")
-                    function precacheGamemodeFiles:OnChange() TriggerSound("click") end
-
                     local renderHands = DockPerformance:Add("DCheckBox")
-                    renderHands:SetPos(TM.MenuScale(20), TM.MenuScale(110))
+                    renderHands:SetPos(TM.MenuScale(20), TM.MenuScale(70))
                     renderHands:SetConVar("tm_renderhands")
                     renderHands:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function renderHands:OnChange() TriggerSound("click") end
 
                     local lensFlare = DockPerformance:Add("DCheckBox")
-                    lensFlare:SetPos(TM.MenuScale(20), TM.MenuScale(150))
+                    lensFlare:SetPos(TM.MenuScale(20), TM.MenuScale(110))
                     lensFlare:SetConVar("tm_lensflare")
                     lensFlare:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function lensFlare:OnChange() TriggerSound("click") end
 
                     local ironSightDOF = DockPerformance:Add("DCheckBox")
-                    ironSightDOF:SetPos(TM.MenuScale(20), TM.MenuScale(190))
+                    ironSightDOF:SetPos(TM.MenuScale(20), TM.MenuScale(150))
                     ironSightDOF:SetConVar("cl_tfa_fx_ads_dof")
                     ironSightDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function ironSightDOF:OnChange() TriggerSound("click") end
 
                     local inspectionDOF = DockPerformance:Add("DCheckBox")
-                    inspectionDOF:SetPos(TM.MenuScale(20), TM.MenuScale(230))
+                    inspectionDOF:SetPos(TM.MenuScale(20), TM.MenuScale(190))
                     inspectionDOF:SetConVar("cl_tfa_inspection_bokeh")
                     inspectionDOF:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function inspectionDOF:OnChange() TriggerSound("click") end
 
                     local screenFlashing = DockPerformance:Add("DCheckBox")
-                    screenFlashing:SetPos(TM.MenuScale(20), TM.MenuScale(270))
+                    screenFlashing:SetPos(TM.MenuScale(20), TM.MenuScale(230))
                     screenFlashing:SetConVar("tm_screenflashes")
                     screenFlashing:SetSize(TM.MenuScale(30), TM.MenuScale(30))
                     function screenFlashing:OnChange() TriggerSound("click") end
 
                     local WipeAccountButton = vgui.Create("DButton", DockPerformance)
-                    WipeAccountButton:SetPos(TM.MenuScale(17.5), TM.MenuScale(350))
+                    WipeAccountButton:SetPos(TM.MenuScale(17.5), TM.MenuScale(310))
                     WipeAccountButton:SetText("")
                     WipeAccountButton:SetSize(TM.MenuScale(500), TM.MenuScale(40))
                     local textAnim = 0
