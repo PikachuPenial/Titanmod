@@ -1117,6 +1117,7 @@ net.Receive("NotifyDeath", function(len, ply)
 
     table.Empty(multiArray)
 
+    
 
     timer.Create("respawnTimeHideHud", 4, 1, function()
         DeathNotif:Remove()

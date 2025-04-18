@@ -1,3 +1,15 @@
+# Unreleased
+**>GAMEPLAY**   
+*SIGHTS & SCOPES*
+- Added the RUSAK sight
+- Reworked most sight and scope reticles to improve clarity
+- Heavily reduced scope edge shadows across all scopes
+
+**>QOL & BUG FIXES**   
+- Fixed numerous errors based on models, materials and particles
+
+
+
 # April 16th, 2025 (4/16/25)
 **>QOL & BUG FIXES**   
 - Overhauled file precaching system
