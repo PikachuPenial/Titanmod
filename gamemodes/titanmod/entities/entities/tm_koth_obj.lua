@@ -1,8 +1,8 @@
-local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
-if activeGamemode ~= "KOTH" then return end
-
 ENT.Base = "base_brush"
 ENT.Type = "brush"
+
+local activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
+if activeGamemode ~= "KOTH" then return end
 
 local KOTHCords = KOTHPos[game.GetMap()]
 if KOTHCords == nil then return end

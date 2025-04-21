@@ -507,6 +507,9 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 	end
 end )
 
+-- fuck particle precaching ong
+function TFA.Particles.Initialize() return end
+
 if CLIENT then
     -- forcefully disable the use of the TFA crosshair
     hook.Add("TFA_DrawCrosshair", "DisableTFACrosshair", function(ply) return true end)

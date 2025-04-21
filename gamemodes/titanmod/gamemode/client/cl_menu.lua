@@ -407,28 +407,14 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectatePanel:SetSize(TM.MenuScale(170), 0)
             SpectatePanel:SetPos(TM.MenuScale(10), TM.MenuScale(100))
             SpectatePanel.Paint = function(self, w, h)
-                draw.RoundedBox(0, 0, 0, w, h, gray)
+                draw.RoundedBox(0, 0, 0, w, h, white)
             end
 
             local SpectateTextHeader = vgui.Create("DPanel", SpectatePanel)
             SpectateTextHeader:Dock(TOP)
             SpectateTextHeader:SetSize(0, TM.MenuScale(70))
             SpectateTextHeader.Paint = function(self, w, h)
-                draw.SimpleText("SPECTATE", "MainMenuDescription", w / 2, TM.MenuScale(8), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
-            end
-
-            local SpectatePicker = SpectateTextHeader:Add("DComboBox")
-            SpectatePicker:SetPos(0, TM.MenuScale(40))
-            SpectatePicker:SetSize(TM.MenuScale(170), TM.MenuScale(30))
-            SpectatePicker:SetValue("Spectate...")
-            SpectatePicker:AddChoice("Freecam")
-            SpectatePicker.OnSelect = function(_, _, value, id)
-                if timer.Exists("respawnTimeLeft") then return end
-                if GetGlobal2Bool("tm_intermission") then return end
-                net.Start("BeginSpectate")
-                net.SendToServer()
-                MainMenu:Remove(false)
-                gui.EnableScreenClicker(false)
+                draw.SimpleText("SPECTATE", "MainMenuDescription", w / 2, TM.MenuScale(8), Color(0, 0, 0), TEXT_ALIGN_CENTER)
             end
 
             local SpectateButton = vgui.Create("DImageButton", MainPanel)
@@ -436,16 +422,14 @@ net.Receive("OpenMainMenu", function(len, ply)
             SpectateButton:SetImage("icons/spectateicon.png")
             SpectateButton:SetSize(TM.MenuScale(80), TM.MenuScale(80))
             SpectateButton:SetTooltip("Spectate")
-            local spectatePanelOpen = 0
             SpectateButton.DoClick = function()
                 TriggerSound("click")
-                if (spectatePanelOpen == 0) then
-                    spectatePanelOpen = 1
-                    SpectatePanel:SizeTo(TM.MenuScale(80), TM.MenuScale(70), 0.75, 0, 0.1)
-                else
-                    spectatePanelOpen = 0
-                    SpectatePanel:SizeTo(TM.MenuScale(80), 0, 0.75, 0, 0.1)
-                end
+                if timer.Exists("respawnTimeLeft") then return end
+                if GetGlobal2Bool("tm_intermission") then return end
+                net.Start("BeginSpectate")
+                net.SendToServer()
+                MainMenu:Remove(false)
+                gui.EnableScreenClicker(false)
             end
 
             local function ShowTutorial()

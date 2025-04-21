@@ -69,6 +69,11 @@ function GM:ScoreboardShow()
 		LevelingPanel.Paint = function(self, w, h)
 			surface.SetDrawColor(35, 35, 35, 100)
 			surface.DrawRect(0, TM.MenuScale(20), TM.MenuScale(630), TM.MenuScale(10))
+			surface.SetDrawColor(Color(255, 255, 255, 25))
+			surface.DrawRect(0, TM.MenuScale(20), w, TM.MenuScale(1))
+			surface.DrawRect(0, h - TM.MenuScale(1), w, TM.MenuScale(1))
+			surface.DrawRect(0, TM.MenuScale(20), TM.MenuScale(1), TM.MenuScale(10))
+			surface.DrawRect(w - TM.MenuScale(1), TM.MenuScale(20), TM.MenuScale(1), TM.MenuScale(10))
 
 			surface.SetDrawColor(255, 255, 0, 50)
 			if LocalPlayer:GetNWInt("playerLevel") != 60 then

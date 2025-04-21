@@ -1,12 +1,20 @@
 # Unreleased
 **>GAMEPLAY**   
 *SIGHTS & SCOPES*
-- Added the RUSAK sight
+- Added the RUSAK, Coyote and HD-33 sights
 - Reworked most sight and scope reticles to improve clarity
+- Reworked reticle rendering to improve visibility throughout different lighting situations
+- All optics now take the players "Optic Reticle Setting" into account
 - Heavily reduced scope edge shadows across all scopes
+- Optic and scope shortnames are now the sights magnification
+- Fixed all instances of sights varying in height across different weapons
 
 **>QOL & BUG FIXES**   
+- Replaced "SAS" and "Winter SAS" models with "Elite" and "Cloaker" models due to height differences between other models 
+
 - Fixed numerous errors based on models, materials and particles
+
+- Fixed all instances of error textures
 
 
 
