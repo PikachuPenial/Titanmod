@@ -15,7 +15,7 @@ Here are a few of Titanmods features:
 - Responsive and skill-based gunplay w/ an assortment of attachments
 - Simple and complex movement mechanics to master  
 - Map and Gamemode voting (FFA, Cranked, Gun Game, Shotty Snipers, Fiesta, Quickdraw, King of the Hill, VIP, Overkill and Fisticuffs)  
-- Deep player customization and unlocks (60+ player models, 340+ player cards, 10+ melee weapons)  
+- Deep player customization and unlocks (60+ player models, 350+ player cards, 10+ melee weapons)  
 - Endless player progression (60 levels w/ prestiging, no prestige cap)  
 - In-depth settings  
 - HUD Editor w/ code sharing  

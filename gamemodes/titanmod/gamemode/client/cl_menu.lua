@@ -1385,7 +1385,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockLevelCards = vgui.Create("DPanel", CardScroller)
                     DockLevelCards:Dock(TOP)
-                    DockLevelCards:SetSize(0, TM.MenuScale(1360))
+                    DockLevelCards:SetSize(0, TM.MenuScale(1700))
 
                     -- kill related cards
                     local TextStats = vgui.Create("DPanel", CardScroller)
@@ -2420,7 +2420,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockDefaultCards:SetSize(0, TM.MenuScale(340))
                             DockStatCards:SetSize(0, TM.MenuScale(680))
                             DockAccoladeCards:SetSize(0, TM.MenuScale(850))
-                            DockLevelCards:SetSize(0, TM.MenuScale(1360))
+                            DockLevelCards:SetSize(0, TM.MenuScale(1700))
                             DockMasteryCards:SetSize(0, TM.MenuScale(4345))
                             DockColorCards:SetSize(0, TM.MenuScale(340))
                             DockPrideCards:SetSize(0, TM.MenuScale(1785))

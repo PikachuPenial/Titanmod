@@ -1,7 +1,3 @@
-timer.Create("cleanMap", 15, 0, function()
-	RunConsoleCommand("r_cleardecals")
-end)
-
 function GM:InitPostEntity()
 	activeGamemode = GetGlobal2String("ActiveGamemode", "FFA")
 	net.Start("PlayerInitialSpawn")

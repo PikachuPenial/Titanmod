@@ -311,6 +311,7 @@ local function MatchStartPopup(ply)
 end
 
 net.Receive("PlayerSpawn", function(len, pl)
+    RunConsoleCommand("r_cleardecals")
     if convars["hud_enable"] == 0 then return end
     if activeGamemode != "Gun Game" and activeGamemode != "Fisticuffs" then ShowLoadoutOnSpawn(LocalPly) end
     if matchStartPopupSeen == false then MatchStartPopup(LocalPly) end

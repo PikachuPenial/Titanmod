@@ -1,4 +1,32 @@
-# Unreleased
+# April 23rd, 2025 (4/23/25)
+**>GAMEPLAY**   
+*RECOIL OVERHAUL*
+- Recoil across all weapons are now seeded and pattern based
+- Each weapon now has a unique recoil pattern
+- Weapons are now either left-drifting or right-drifting, meaning recoil will mainly drift to the left or right instead of picking a left or right direction at random
+
+**>BALANCE**    
+*FN 2000*
+- Reduced vertical recoil to 25 (previously 40)
+- Reduced horizontal recoil to 10 (previously 25)
+
+*Honey Badger*
+- Reduced horizontal recoil to 14 (previously 20)
+
+*P90*
+- Reduced vertical recoil to 20 (previously 25)
+- Reduced horizontal recoil to 10 (previously 20)
+
+*SR-2M*
+- Reduced vertical recoil to 24 (previously 30)
+- Reduced horizontal recoil to 12 (previously 20)
+
+**>QOL & BUG FIXES**   
+- Fixed over 100+ instances of specific weapon sights being misaligned from a weapons point of fire
+
+
+
+# April 21st, 2025 (4/21/25)
 **>GAMEPLAY**   
 *SIGHTS & SCOPES*
 - Added the RUSAK, Coyote and HD-33 sights
@@ -10,7 +38,11 @@
 - Fixed all instances of sights varying in height across different weapons
 
 **>QOL & BUG FIXES**   
-- Replaced "SAS" and "Winter SAS" models with "Elite" and "Cloaker" models due to height differences between other models 
+- Replaced "SAS" and "Winter SAS" models with "Elite" and "Cloaker" models due to height differences between other models
+
+- Added 12 new leveling calling cards (every 5 levels of prestige 4)
+
+- Decals are now cleared on player spawn instead of every 15 seconds
 
 - Fixed numerous errors based on models, materials and particles
 

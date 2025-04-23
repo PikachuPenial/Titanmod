@@ -42,6 +42,8 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 	SWEP.footstepTotalTarget = 0
 	local upVec, riVec, fwVec = Vector(0, 0, 1), Vector(1, 0, 0), Vector(0, 1, 0)
 
+	local sp = game.SinglePlayer()
+
 	local function l_Lerp(t, a, b)
 		if t <= 0 then return a end
 		if t >= 1 then return b end
@@ -59,6 +61,16 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 			return l_mathMax(a - l_ABS(delta), b)
 		end
 	end
+
+	local l_mathClamp = math.Clamp
+	local Lerp = Lerp
+
+	local cv_knockbackmult = GetConVar("sv_tfa_knockback_multiplier")
+	local sv_tfa_recoil_mul_p = GetConVar("sv_tfa_recoil_mul_p")
+	local sv_tfa_recoil_mul_y = GetConVar("sv_tfa_recoil_mul_y")
+	local sv_tfa_recoil_viewpunch_mul = GetConVar("sv_tfa_recoil_viewpunch_mul")
+	local sv_tfa_recoil_legacy = GetConVar("sv_tfa_recoil_legacy")
+	local sv_tfa_recoil_eyeangles_mul = GetConVar("sv_tfa_recoil_eyeangles_mul")
 
 	function SWEP:WalkBob(pos, ang, breathIntensity, walkIntensity, rate, ftv)
 		local self2 = self:GetTable()
@@ -504,6 +516,220 @@ hook.Add("PreRegisterSWEP", "TFAOverride", function(swep, class)
 		ret = hook.Run("TFA_TranslateFOV", self, ret) or ret
 
 		return ret
+	end
+
+	SWEP.RecoilShot = 0
+	function SWEP:CalculateRatios()
+		local owent = self:GetOwner()
+		if not IsValid(owent) then return end
+
+		local self2 = self:GetTable()
+
+		if self2.ratios_calc == nil then
+			self2.ratios_calc = true
+		end
+
+		local ft = FrameTime()
+		local time = CurTime()
+
+		if ft <= 0 then return end
+
+		local is = self2.GetIronSights(self)
+		local spr = self2.GetSprinting(self)
+		local walk = self2.GetWalking(self)
+
+		local ist = is and 1 or 0
+		local sprt = spr and 1 or 0
+
+		local adstransitionspeed
+		if is then
+			adstransitionspeed = 12.5 / (self:GetStatL("IronSightTime") / 0.3)
+		elseif spr or walk then
+			adstransitionspeed = 7.5
+		else
+			adstransitionspeed = 12.5
+		end
+		adstransitionspeed = math.min(adstransitionspeed, 1000)
+
+		if not owent:IsPlayer() then
+			self:TFAFinishMove(owent, owent:GetVelocity())
+		end
+
+		local lastshoottime = self2.GetLastGunFire(self, -1)
+
+		if lastshoottime < 0 or time >= (lastshoottime + self2.GetStatL(self, "Primary.SpreadRecoveryDelay")) then
+			self:SetSpreadRatio(l_mathClamp(self:GetSpreadRatio() - self2.GetStatL(self, "Primary.SpreadRecovery") * ft, 1, self2.GetStatL(self, "Primary.SpreadMultiplierMax")))
+		end
+
+		if (lastshoottime < 0 or time >= (lastshoottime + self2.GetStatL(self, "Primary.RecoilResetTime"))) and self.RecoilShot ~= 0 then
+			self.RecoilShot = 0
+		end
+
+		self:SetIronSightsProgress(l_mathApproach(self:GetIronSightsProgress(), ist, (ist - self:GetIronSightsProgress()) * ft * adstransitionspeed))
+		self:SetProceduralHolsterProgress(l_mathApproach(self:GetProceduralHolsterProgress(), sprt, (sprt - self:GetSprintProgress()) * ft * self2.ProceduralHolsterTime * 15))
+		self:SetInspectingProgress(l_mathApproach(self:GetInspectingProgress(), self:GetCustomizing() and 1 or 0, ((self:GetCustomizing() and 1 or 0) - self:GetInspectingProgress()) * ft * 10))
+
+		if self:GetRecoilThink() then
+			if self:GetRecoilLoop() then
+				-- loop or after loop
+
+				if self:GetRecoilLoopWait() < time then
+					self:SetRecoilOutProgress(l_mathMin(1, self:GetRecoilOutProgress() + ft / self2.Primary_TFA.RecoilLUT["out"].cooldown_speed))
+
+					if self:GetRecoilOutProgress() == 1 then
+						self:SetRecoilThink(false)
+						self:SetRecoilLoop(false)
+						self:SetRecoilLoopProgress(0)
+						self:SetRecoilInProgress(0)
+						self:SetRecoilOutProgress(0)
+					end
+				end
+			else
+				-- IN only
+
+				if self:GetRecoilInWait() < time then
+					self:SetRecoilInProgress(l_mathMax(0, self:GetRecoilInProgress() - ft / self2.Primary_TFA.RecoilLUT["in"].cooldown_speed))
+
+					if self:GetRecoilInProgress() == 0 then
+						self:SetRecoilThink(false)
+					end
+				end
+			end
+		end
+
+		if not sv_tfa_recoil_legacy:GetBool() then
+			ft = l_mathClamp(ft, 0, 1)
+			self:SetViewPunchBuild(l_mathMax(0, self:GetViewPunchBuild() - self:GetViewPunchBuild() * ft))
+			local build = l_mathMax(0, 4.5 - self:GetViewPunchBuild())
+			ft = ft * build * build
+			self:SetViewPunchP(self:GetViewPunchP() - self:GetViewPunchP() * ft)
+			self:SetViewPunchY(self:GetViewPunchY() - self:GetViewPunchY() * ft)
+		end
+
+		self2.SpreadRatio = self:GetSpreadRatio()
+		self2.IronSightsProgress = self:GetIronSightsProgress()
+		self2.SprintProgress = self:GetSprintProgress()
+		self2.WalkProgress = self:GetWalkProgress()
+		self2.ProceduralHolsterProgress = self:GetProceduralHolsterProgress()
+		self2.InspectingProgress = self:GetInspectingProgress()
+
+		if sp and CLIENT then
+			self2.Inspecting = self:GetCustomizing() --compatibility
+		end
+
+		self2.CLIronSightsProgress = self:GetIronSightsProgress() --compatibility
+	end
+
+	function SWEP:GetSeed()
+		local seed = self:GetClass()
+		local numseed = 0
+
+		for _, i in ipairs(string.ToTable(seed)) do
+			numseed = numseed + string.byte(i)
+		end
+
+		numseed = numseed % 16777216
+
+		return tonumber(numseed)
+	end
+
+	function SWEP:Recoil(recoil, ifp)
+		if sp and type(recoil) == "string" then
+			local _, CurrentRecoil = self:CalculateConeRecoil()
+			self:Recoil(CurrentRecoil, true)
+
+			return
+		end
+
+		local owner = self:GetOwner()
+		local isplayer = owner:IsPlayer()
+
+		self:SetSpreadRatio(l_mathClamp(self:GetSpreadRatio() + self:GetStatL("Primary.SpreadIncrement"), 1, self:GetStatL("Primary.SpreadMultiplierMax")))
+		self:QueueRecoil(-owner:GetAimVector() * self:GetStatL("Primary.Knockback") * cv_knockbackmult:GetFloat() * recoil / 5)
+
+		self.RecoilShot = self.RecoilShot + 1
+
+		local seed = self:GetSeed() + self.RecoilShot
+		local horizontalSide = self:GetSeed() % 2
+
+		math.randomseed(seed)
+
+		local kickP = math.Rand(self:GetStatL("Primary.KickDown"), self:GetStatL("Primary.KickUp")) * recoil * -1
+		local kickY
+
+		if horizontalSide == 0 then
+			kickY = math.Rand(-self:GetStatL("Primary.KickHorizontal") / 4, self:GetStatL("Primary.KickHorizontal")) * recoil
+		elseif horizontalSide == 1 then
+			kickY = math.Rand(-self:GetStatL("Primary.KickHorizontal"), self:GetStatL("Primary.KickHorizontal") / 4) * recoil
+		else
+			kickY = math.Rand(-self:GetStatL("Primary.KickHorizontal"), self:GetStatL("Primary.KickHorizontal")) * recoil
+		end
+
+		math.randomseed(CurTime() + self:EntIndex())
+
+		if isplayer then
+			kickP, kickY = kickP * sv_tfa_recoil_mul_p:GetFloat(), kickY * sv_tfa_recoil_mul_y:GetFloat()
+		else
+			kickP, kickY = kickP * sv_tfa_recoil_mul_p_npc:GetFloat(), kickY * sv_tfa_recoil_mul_y_npc:GetFloat()
+		end
+
+		local factor = 1 - self:GetStatL("Primary.StaticRecoilFactor")
+
+		if self:GetIronSights() then
+			factor = factor * Lerp(self:GetIronSightsProgress(), 1, self:GetStatL("Primary.IronRecoilMultiplier", 0.5))
+		end
+
+		factor = factor * Lerp(self:GetCrouchingRatio(), 1, self:GetStatL("CrouchAccuracyMultiplier", 0.5))
+
+		local punchY = kickY * factor
+		local deltaP = 0
+		local deltaY = 0
+
+		if self:HasRecoilLUT() then
+			local ang = self:GetRecoilLUTAngle()
+
+			if self:GetPrevRecoilAngleTime() < CurTime() then
+				self:SetPrevRecoilAngleTime(CurTime() + 0.1)
+				self:SetPrevRecoilAngle(ang)
+			end
+
+			local prev_recoil_angle = self:GetPrevRecoilAngle()
+			deltaP = ang.p - prev_recoil_angle.p
+			deltaY = ang.y - prev_recoil_angle.y
+			self:SetPrevRecoilAngle(ang)
+		end
+
+		if isplayer then
+			local maxdist = math.min(math.max(0, 89 + owner:EyeAngles().p - math.abs(owner:GetViewPunchAngles().p * 2)), 88.5)
+			local punchP = l_mathClamp((kickP + deltaP * self:GetStatL("Primary.RecoilLUT_ViewPunchMult")) * factor, -maxdist, maxdist)
+
+			owner:ViewPunch(Angle(punchP * sv_tfa_recoil_viewpunch_mul:GetFloat(), (punchY + deltaY * self:GetStatL("Primary.RecoilLUT_ViewPunchMult")) * sv_tfa_recoil_viewpunch_mul:GetFloat()))
+		end
+
+		if (not isplayer or not sv_tfa_recoil_legacy:GetBool()) and not self:HasRecoilLUT() then
+			local maxdist2 = l_mathClamp(30 - math.abs(self:GetViewPunchP()), 0, 30)
+			local punchP2 = l_mathClamp(kickP, -maxdist2, maxdist2) * factor
+
+			self:SetViewPunchP(self:GetViewPunchP() + punchP2 * 1.5)
+			self:SetViewPunchY(self:GetViewPunchY() + punchY * 1.5)
+			self:SetViewPunchBuild(math.min(3, self:GetViewPunchBuild() + math.sqrt(math.pow(punchP2, 2) + math.pow(punchY, 2)) / 3) + 0.2)
+		end
+
+		if isplayer and ((game.SinglePlayer() and SERVER) or (CLIENT and ifp)) then
+			local neweyeang = owner:EyeAngles()
+
+			local ap, ay = (kickP + deltaP * self:GetStatL("Primary.RecoilLUT_AnglePunchMult")) * self:GetStatL("Primary.StaticRecoilFactor") * sv_tfa_recoil_eyeangles_mul:GetFloat(),
+							(kickY + deltaY * self:GetStatL("Primary.RecoilLUT_AnglePunchMult")) * self:GetStatL("Primary.StaticRecoilFactor") * sv_tfa_recoil_eyeangles_mul:GetFloat()
+
+			neweyeang.p = neweyeang.p + ap
+			neweyeang.y = neweyeang.y + ay
+			--neweyeang.p = l_mathClamp(neweyeang.p, -90 + math.abs(owner:GetViewPunchAngles().p), 90 - math.abs(owner:GetViewPunchAngles().p))
+			owner:SetEyeAngles(neweyeang)
+		end
+	end
+
+	function SWEP:ResetRecoil()
+
 	end
 end )
 
