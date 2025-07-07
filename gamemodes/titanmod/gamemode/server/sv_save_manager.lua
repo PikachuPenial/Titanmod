@@ -155,7 +155,6 @@ function SavePlayerData(ply)
 	tempCMD = nil
 	tempNewCMD = nil
 end
-concommand.Add("sqlrework", SavePlayerData)
 
 function GM:PlayerDisconnected(ply) SavePlayerData(ply) end
 function GM:ShutDown() for k, v in pairs(player.GetHumans()) do SavePlayerData(v) end end

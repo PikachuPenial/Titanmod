@@ -1,3 +1,10 @@
+# wahhh
+**>GAMEPLAY**   
+*NEW WEAPONS*
+- **Stoner LMG A1** (Primary, LMG)
+
+
+
 # April 23rd, 2025 (4/23/25)
 **>GAMEPLAY**   
 *RECOIL OVERHAUL*
