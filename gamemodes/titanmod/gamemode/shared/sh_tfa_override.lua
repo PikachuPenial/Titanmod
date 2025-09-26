@@ -751,3 +751,96 @@ if CLIENT then
 		end
 	end)
 end
+
+-- custom viewmodel inertia
+if CLIENT then
+    local lastEyeAng = Angle(0, 0, 0)
+    local lastAngDiff = Angle(0, 0, 0)
+    local currentOffset = Angle(0, 0, 0)
+    local moveOffset = Angle(0, 0, 0)
+    local overshootDecay = 0
+
+    local function ApplyAllOffsets(ply, pos, ang)
+		local isAiming = (IsValid(weapon) and (type(weapon.GetIronSights) == "function" and weapon:GetIronSights())) or ply:KeyDown(IN_ATTACK2)
+
+        if not IsValid(ply) or not ply:Alive() or isAiming then return pos, ang end
+
+        local ft = FrameTime()
+
+        local inertiaSpeed = 6
+        local baseTilt     = 2.5
+        local strafeTilt   = 3
+        local overshootStr = 1.2
+
+        local curEye = ply:EyeAngles()
+        if lastEyeAng.p == 0 and lastEyeAng.y == 0 and lastEyeAng.r == 0 then
+            lastEyeAng = curEye
+            lastAngDiff = Angle(0, 0, 0)
+        end
+
+        local angDiff = curEye - lastEyeAng
+        angDiff:Normalize()
+
+        local targetCamOffset = Angle(-angDiff.p * baseTilt, 0, angDiff.y * baseTilt)
+
+        local lastSpeed = math.max(math.abs(lastAngDiff.p), math.abs(lastAngDiff.y))
+        local curSpeed  = math.max(math.abs(angDiff.p), math.abs(angDiff.y))
+        local decel = lastSpeed - curSpeed
+
+        if decel > 0.08 then
+            local overshootP = -lastAngDiff.p * (overshootStr * 0.12)
+            local overshootR =  lastAngDiff.y * (overshootStr * 0.12)
+            overshootDecay = math.min(1, overshootDecay + decel * 4)
+            targetCamOffset = targetCamOffset + Angle(overshootP * overshootDecay, 0, overshootR * overshootDecay)
+        end
+
+        if overshootDecay > 0 then
+            overshootDecay = Lerp(ft * 4, overshootDecay, 0)
+        end
+
+        local safeSpeed = math.Clamp(ft * inertiaSpeed, 0, 100)
+        currentOffset = LerpAngle(safeSpeed, currentOffset, targetCamOffset)
+
+        lastEyeAng = curEye
+        lastAngDiff = angDiff
+
+        local mvRight = ply:KeyDown(IN_MOVERIGHT)
+        local mvLeft  = ply:KeyDown(IN_MOVELEFT)
+
+        local targetMoveRoll = 0
+
+        if mvRight then
+            targetMoveRoll = strafeTilt
+        elseif mvLeft then
+            targetMoveRoll = -strafeTilt
+        else
+            targetMoveRoll = 0
+        end
+
+        local vel = ply:GetVelocity()
+        local speed2d = vel:Length2D()
+        if speed2d > 5 and (mvRight or mvLeft) then
+            local rightDir = ply:EyeAngles():Right()
+            local rightDot = vel:Dot(rightDir) / speed2d
+            targetMoveRoll = Lerp(0.5, targetMoveRoll, rightDot * strafeTilt)
+        end
+
+        moveOffset.r = Lerp(ft * 4, moveOffset.r, targetMoveRoll)
+
+        ang:RotateAroundAxis(ang:Right(), currentOffset.p)
+        local wep = ply:GetActiveWeapon()
+        local rollOffset = currentOffset.r + moveOffset.r
+        if IsValid(wep) and wep.ViewModelFlip then
+            rollOffset = -rollOffset
+        end
+        ang:RotateAroundAxis(ang:Forward(), rollOffset)
+
+        return pos, ang
+    end
+
+	hook.Add("CalcViewModelView", "ViewmodelInertia", function(weapon, vm, oldPos, oldAng, pos, ang)
+		local ply = LocalPlayer()
+		if not IsValid(ply) or not ply:Alive() then return end
+		ApplyAllOffsets(ply, pos, ang)
+	end)
+end

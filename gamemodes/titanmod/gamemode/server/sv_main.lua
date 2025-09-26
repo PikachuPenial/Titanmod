@@ -43,8 +43,6 @@ util.AddNetworkString("GrabLeaderboardData")
 util.AddNetworkString("SendLeaderboardData")
 util.AddNetworkString("SendChatMessage")
 
-RunConsoleCommand("mp_friendlyfire", "1")
-
 function OpenMainMenu(ply)
 	net.Start("OpenMainMenu")
 	if timer.Exists(ply:SteamID() .. "respawnTime") then net.WriteFloat(timer.TimeLeft(ply:SteamID() .. "respawnTime")) else net.WriteFloat(0) end

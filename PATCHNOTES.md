@@ -3,6 +3,9 @@
 *NEW WEAPONS*
 - **Stoner LMG A1** (Primary, LMG)
 
+*WEAPON FEEL*
+- Added a new viewmodel inertia system (does not take effect when ADSing)
+
 
 
 # April 23rd, 2025 (4/23/25)
