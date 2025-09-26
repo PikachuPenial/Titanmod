@@ -1,6 +1,7 @@
 # wahhh
 **>GAMEPLAY**   
 *NEW WEAPONS*
+- **Flamethrower** (Primary, Special)
 - **Stoner LMG A1** (Primary, LMG)
 
 *WEAPON FEEL*

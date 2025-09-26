@@ -1412,7 +1412,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, TM.MenuScale(4345))
+                    DockMasteryCards:SetSize(0, TM.MenuScale(4430))
 
                     -- color related cards
                     local TextColor = vgui.Create("DPanel", CardScroller)

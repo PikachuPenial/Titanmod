@@ -560,7 +560,7 @@ function HUDAlive(client)
             end
             ammoColor = Color(convars["text_r"], convars["text_g"], convars["text_b"])
             ammoText = weapon:Clip1()
-        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
+        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or weapon:GetPrintName() == "Flamethrower" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
             ammoColor = Color(convars["text_r"], convars["text_g"], convars["text_b"])
             ammoText = "∞"
         else
@@ -588,7 +588,7 @@ function HUDAlive(client)
             LerpAmmo()
             surface.DrawRect(scrW - TM.HUDScale(400) - weaponHUD["x"], scrH - TM.HUDScale(30) - weaponHUD["y"], TM.HUDScale(400) * (math.Clamp(math.max(0, smoothAmmo) / weapon:GetMaxClip1(), 0, 1)), TM.HUDScale(30))
             draw.SimpleText(weapon:Clip1(), "HUD_Health", scrW - TM.HUDScale(390) - weaponHUD["x"], scrH - TM.HUDScale(30) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT)
-        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
+        elseif weapon:GetPrintName() == "M134 Minigun" or weapon:GetPrintName() == "Fists" or weapon:GetPrintName() == "Riot Shield" or weapon:GetPrintName() == "Flamethrower" or activeGamemode == "Gun Game" or activeGamemode == "Fisticuffs" then
             surface.DrawRect(scrW - TM.HUDScale(400) - weaponHUD["x"], scrH - TM.HUDScale(30) - weaponHUD["y"], TM.HUDScale(400), TM.HUDScale(30))
             draw.SimpleText("∞", "HUD_Health", scrW - TM.HUDScale(390) - weaponHUD["x"], scrH - TM.HUDScale(32) - weaponHUD["y"], Color(convars["text_r"], convars["text_g"], convars["text_b"]), TEXT_ALIGN_LEFT)
         else
