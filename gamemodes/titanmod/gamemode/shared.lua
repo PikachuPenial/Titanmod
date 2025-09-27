@@ -9,6 +9,7 @@ if GetConVar("tm_gamemode"):GetInt() <= 0 then SetGlobal2String("ActiveGamemode"
 if !ConVarExists("tm_matchlengthtimer") then CreateConVar("tm_matchlengthtimer", "600", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the matches length to the selected value in seconds", 0, 3600) end
 if !ConVarExists("tm_intermissiontimer") then CreateConVar("tm_intermissiontimer", "30", FCVAR_REPLICATED + FCVAR_NOTIFY, "Changes the intermission length to the selected value in seconds", 0, 600) end
 if !ConVarExists("tm_developermode") then CreateConVar("tm_developermode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables Sandbox features on server start and enables certain debugging tools, having this enabled will disable progression for all players", 0, 1) end
+if !ConVarExists("tm_unlockall") then CreateConVar("tm_unlockall", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Allows all players to equip any cosmetic item, even while not meeting the unlock requirments", 0, 1) end
 
 if !ConVarExists("sv_tm_player_health") then CreateConVar("sv_tm_player_health", "100", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The max health of the player (100 by default)") end
 if !ConVarExists("sv_tm_player_speed_multi") then CreateConVar("sv_tm_player_speed_multi", "1", FCVAR_REPLICATED + FCVAR_NOTIFY + FCVAR_ARCHIVE, "The multiplier for the speed of the player (affects walking, sprinting, crouching, sliding, and ladder climbing speeds) (1 by default)") end

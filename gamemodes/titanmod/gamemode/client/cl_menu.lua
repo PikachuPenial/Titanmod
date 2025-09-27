@@ -50,10 +50,6 @@ net.Receive("OpenMainMenu", function(len, ply)
     local canPrestige
     if LocalPly:GetNWInt("playerLevel") != 60 then canPrestige = false else canPrestige = true end
 
-    local hintList = hintArray
-    table.Shuffle(hintList)
-    local hintText = table.concat(hintList, "                ")
-
     local mouseX = 0
     local mouseY = 0
 
@@ -137,11 +133,6 @@ net.Receive("OpenMainMenu", function(len, ply)
                 end
 
                 if mapID == nil then draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. game.GetMap()), "StreakText", TM.MenuScale(5 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) else draw.SimpleText(string.FormattedTime(math.Round(GetGlobal2Int("tm_matchtime", 0) - CurTime() + 1), "%2i:%02i" .. " / " .. activeGamemode .. ", " .. mapName), "StreakText", TM.MenuScale(10 + spawnTextAnim), scrH / 2 - TM.MenuScale(60) - TM.MenuScale(pushSpawnItems), white, TEXT_ALIGN_LEFT) end
-
-                hintTextAnim = math.Clamp(hintTextAnim + 50 * RealFrameTime(), 0, 10000)
-                surface.SetDrawColor(30, 30, 30, 125)
-                surface.DrawRect(0, scrH - TM.MenuScale(24), scrW, TM.MenuScale(24))
-                draw.SimpleText(hintText, "StreakText", TM.MenuScale(5) - TM.MenuScale(hintTextAnim), scrH - TM.MenuScale(13), white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             if canPrestige == true then
@@ -588,7 +579,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             if LocalPly:GetNWInt("playerDeaths") == 0 then ShowTutorial() end -- force shows the Tutorial is a player joins for the first time
 
             local TutorialButton = vgui.Create("DImageButton", MainPanel)
-            TutorialButton:SetPos(TM.MenuScale(8), scrH - TM.MenuScale(96))
+            TutorialButton:SetPos(TM.MenuScale(8), scrH - TM.MenuScale(74))
             TutorialButton:SetImage("icons/tutorialicon.png")
             TutorialButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             TutorialButton:SetTooltip("Tutorial")
@@ -598,7 +589,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local DiscordButton = vgui.Create("DImageButton", MainPanel)
-            DiscordButton:SetPos(TM.MenuScale(108), scrH - TM.MenuScale(96))
+            DiscordButton:SetPos(TM.MenuScale(108), scrH - TM.MenuScale(74))
             DiscordButton:SetImage("icons/discordicon.png")
             DiscordButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             DiscordButton:SetTooltip("Discord")
@@ -615,7 +606,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local WorkshopButton = vgui.Create("DImageButton", MainPanel)
-            WorkshopButton:SetPos(TM.MenuScale(180), scrH - TM.MenuScale(96))
+            WorkshopButton:SetPos(TM.MenuScale(180), scrH - TM.MenuScale(74))
             WorkshopButton:SetImage("icons/workshopicon.png")
             WorkshopButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             WorkshopButton:SetTooltip("Steam Workshop")
@@ -631,25 +622,8 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                 end
             end
 
-            local YouTubeButton = vgui.Create("DImageButton", MainPanel)
-            YouTubeButton:SetPos(TM.MenuScale(252), scrH - TM.MenuScale(96))
-            YouTubeButton:SetImage("icons/youtubeicon.png")
-            YouTubeButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
-            YouTubeButton:SetTooltip("YouTube")
-            YouTubeButton.DoClick = function()
-                TriggerSound("click")
-                gui.OpenURL("https://youtu.be/MyBYoh2shmo?si=H6bU6E9xKseb4YuH")
-            end
-            YouTubeButton.Paint = function()
-                if YouTubeButton:IsHovered() then
-                    YouTubeButton:SetColor(Color(255, 0, 0))
-                else
-                    YouTubeButton:SetColor(Color(255, 255, 255))
-                end
-            end
-
             local GithubButton = vgui.Create("DImageButton", MainPanel)
-            GithubButton:SetPos(TM.MenuScale(324), scrH - TM.MenuScale(96))
+            GithubButton:SetPos(TM.MenuScale(252), scrH - TM.MenuScale(74))
             GithubButton:SetImage("icons/githubicon.png")
             GithubButton:SetSize(TM.MenuScale(64), TM.MenuScale(64))
             GithubButton:SetTooltip("GitHub")
@@ -1009,7 +983,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                         elseif gearArray[i][4] == "melee" then
                             progressionGearTotal = progressionGearTotal + 1
 
-                            if gearArray[i][4] == "melee" and LocalPly:GetNWInt("playerAccoladeSmackdown") < gearArray[i][5] and gearArray[i][4] == "melee" and playerTotalLevel < gearArray[i][6] then
+                            if (gearArray[i][4] == "melee" and LocalPly:GetNWInt("playerAccoladeSmackdown") < gearArray[i][5] and gearArray[i][4] == "melee" and playerTotalLevel < gearArray[i][6]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                 table.insert(lockedGear, gearArray[i])
                             else
                                 local gear = vgui.Create("DButton", DockProgressionGear)
@@ -1412,7 +1386,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockMasteryCards = vgui.Create("DPanel", CardScroller)
                     DockMasteryCards:Dock(TOP)
-                    DockMasteryCards:SetSize(0, TM.MenuScale(4430))
+                    DockMasteryCards:SetSize(0, TM.MenuScale(4510))
 
                     -- color related cards
                     local TextColor = vgui.Create("DPanel", CardScroller)
@@ -1709,7 +1683,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "kills" or cardArray[i][4] == "streak" or cardArray[i][4] == "matches" or cardArray[i][4] == "wins" then
                                 statCardsTotal = statCardsTotal + 1
 
-                                if cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") < cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") < cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") < cardArray[i][5] then
+                                if (cardArray[i][4] == "kills" and LocalPly:GetNWInt("playerKills") < cardArray[i][5] or cardArray[i][4] == "streak" and LocalPly:GetNWInt("highestKillStreak") < cardArray[i][5] or cardArray[i][4] == "matches" and LocalPly:GetNWInt("matchesPlayed") < cardArray[i][5] or cardArray[i][4] == "wins" and LocalPly:GetNWInt("matchesWon") < cardArray[i][5]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockStatCards)
@@ -1742,7 +1716,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "headshot" or cardArray[i][4] == "smackdown" or cardArray[i][4] == "clutch" or cardArray[i][4] == "longshot" or cardArray[i][4] == "pointblank" or cardArray[i][4] == "killstreaks" or cardArray[i][4] == "buzzkills" then
                                 accoladeCardsTotal = accoladeCardsTotal + 1
 
-                                if cardArray[i][4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < cardArray[i][5] or cardArray[i][4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < cardArray[i][5] or cardArray[i][4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < cardArray[i][5] or cardArray[i][4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < cardArray[i][5] or cardArray[i][4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < cardArray[i][5] or cardArray[i][4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < cardArray[i][5] or cardArray[i][4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < cardArray[i][5] then
+                                if (cardArray[i][4] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < cardArray[i][5] or cardArray[i][4] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < cardArray[i][5] or cardArray[i][4] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < cardArray[i][5] or cardArray[i][4] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < cardArray[i][5] or cardArray[i][4] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < cardArray[i][5] or cardArray[i][4] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < cardArray[i][5] or cardArray[i][4] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < cardArray[i][5]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockAccoladeCards)
@@ -1833,7 +1807,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "level" then
                                 levelCardsTotal = levelCardsTotal + 1
 
-                                if cardArray[i][4] == "level" and playerTotalLevel < cardArray[i][5] then
+                                if (cardArray[i][4] == "level" and playerTotalLevel < cardArray[i][5]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockLevelCards)
@@ -1866,7 +1840,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif cardArray[i][4] == "mastery" then
                                 masteryCardsTotal = masteryCardsTotal + 1
 
-                                if cardArray[i][4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. cardArray[i][5]) < 50 then
+                                if (cardArray[i][4] == "mastery" and LocalPly:GetNWInt("killsWith_" .. cardArray[i][5]) < 50) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedCards, cardArray[i])
                                 else
                                     local card = vgui.Create("DImageButton", DockMasteryCards)
@@ -2421,7 +2395,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             DockStatCards:SetSize(0, TM.MenuScale(680))
                             DockAccoladeCards:SetSize(0, TM.MenuScale(850))
                             DockLevelCards:SetSize(0, TM.MenuScale(1700))
-                            DockMasteryCards:SetSize(0, TM.MenuScale(4345))
+                            DockMasteryCards:SetSize(0, TM.MenuScale(4430))
                             DockColorCards:SetSize(0, TM.MenuScale(340))
                             DockPrideCards:SetSize(0, TM.MenuScale(1785))
                         end
@@ -2811,7 +2785,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif modelArray[i][3] == "kills" or modelArray[i][3] == "streak" or modelArray[i][3] == "matches" or modelArray[i][3] == "wins" then
                                 statModelsTotal = statModelsTotal + 1
 
-                                if modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") < modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") < modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") < modelArray[i][4] then
+                                if (modelArray[i][3] == "kills" and LocalPly:GetNWInt("playerKills") < modelArray[i][4] or modelArray[i][3] == "streak" and LocalPly:GetNWInt("highestKillStreak") < modelArray[i][4] or modelArray[i][3] == "matches" and LocalPly:GetNWInt("matchesPlayed") < modelArray[i][4] or modelArray[i][3] == "wins" and LocalPly:GetNWInt("matchesWon") < modelArray[i][4]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedModels, modelArray[i])
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsStats)
@@ -2901,7 +2875,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
                             elseif modelArray[i][3] == "headshot" or modelArray[i][3] == "smackdown" or modelArray[i][3] == "clutch" or modelArray[i][3] == "longshot" or modelArray[i][3] == "pointblank" or modelArray[i][3] == "killstreaks" or modelArray[i][3] == "buzzkills" then
                                 accoladeModelsTotal = accoladeModelsTotal + 1
 
-                                if modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < modelArray[i][4] then
+                                if (modelArray[i][3] == "headshot" and LocalPly:GetNWInt("playerAccoladeHeadshot") < modelArray[i][4] or modelArray[i][3] == "smackdown" and LocalPly:GetNWInt("playerAccoladeSmackdown") < modelArray[i][4] or modelArray[i][3] == "clutch" and LocalPly:GetNWInt("playerAccoladeClutch") < modelArray[i][4] or modelArray[i][3] == "longshot" and LocalPly:GetNWInt("playerAccoladeLongshot") < modelArray[i][4] or modelArray[i][3] == "pointblank" and LocalPly:GetNWInt("playerAccoladePointblank") < modelArray[i][4] or modelArray[i][3] == "killstreaks" and LocalPly:GetNWInt("playerAccoladeOnStreak") < modelArray[i][4] or modelArray[i][3] == "buzzkills" and LocalPly:GetNWInt("playerAccoladeBuzzkill") < modelArray[i][4]) and GetConVar("tm_unlockall"):GetInt() == 0 then
                                     table.insert(lockedModels, modelArray[i])
                                 else
                                     local icon = vgui.Create("SpawnIcon", DockModelsAccolade)
@@ -5478,12 +5452,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local CreditsButton = vgui.Create("DButton", MainPanel)
-            CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(84))
+            CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(58))
             CreditsButton:SetText("")
             CreditsButton:SetSize(TM.MenuScale(110), TM.MenuScale(32))
             local textAnim = 20
             CreditsButton.Paint = function()
-                CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(84))
+                CreditsButton:SetPos(scrW - TM.MenuScale(110), scrH - TM.MenuScale(58))
                 if CreditsButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else
@@ -5497,12 +5471,12 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
             end
 
             local PatchNotesButton = vgui.Create("DButton", MainPanel)
-            PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(84))
+            PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(32))
             PatchNotesButton:SetText("")
             PatchNotesButton:SetSize(TM.MenuScale(150), TM.MenuScale(32))
             local textAnim = 20
             PatchNotesButton.Paint = function()
-                PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(52))
+                PatchNotesButton:SetPos(scrW - TM.MenuScale(150), scrH - TM.MenuScale(32))
                 if PatchNotesButton:IsHovered() then
                     textAnim = math.Clamp(textAnim - 200 * RealFrameTime(), 0, 20)
                 else

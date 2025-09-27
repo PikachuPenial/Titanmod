@@ -1,11 +1,17 @@
 # wahhh
 **>GAMEPLAY**   
 *NEW WEAPONS*
+- **Coonan .357** (Secondary, Pistol)
 - **Flamethrower** (Primary, Special)
+- **G3A3** (Primary, Rifle)
+- **HK416** (Primary, Rifle)
 - **Stoner LMG A1** (Primary, LMG)
 
 *WEAPON FEEL*
 - Added a new viewmodel inertia system (does not take effect when ADSing)
+
+**>QOL & BUG FIXES**   
+- Added the "tm_unlockall" ConVar that allows players to equip cosmetic items (models/cards/melees) that they do not meet the unlock req. for
 
 
 

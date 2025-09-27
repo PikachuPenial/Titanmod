@@ -398,6 +398,14 @@ net.Receive("PlayerGearChange", function(len, ply)
 			local gearLevel = gearArray[i][6]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
 
+			if GetConVar("tm_unlockall"):GetInt() == 1 then
+				ply:SetNWString("chosenMelee", gearID)
+
+				if activeGamemode != "Gun Game" and activeGamemode != "Fiesta" then
+					ply:SetNWString("loadoutMelee", gearID)
+				end
+			end
+
 			if gearUnlock == "default" then
 				ply:SetNWString("chosenMelee", gearID)
 
@@ -428,6 +436,8 @@ net.Receive("PlayerModelChange", function(len, ply)
 			local modelID = modelArray[i][1]
 			local modelUnlock = modelArray[i][3]
 			local modelValue = modelArray[i][4]
+
+			if GetConVar("tm_unlockall"):GetInt() == 1 then ply:SetNWString("chosenPlayermodel", modelID) end
 
 			if modelUnlock == "default" then
 				ply:SetNWString("chosenPlayermodel", modelID)
@@ -467,6 +477,8 @@ net.Receive("PlayerCardChange", function(len, ply)
 			local cardUnlock = cardArray[i][4]
 			local cardValue = cardArray[i][5]
 			local playerTotalLevel = (ply:GetNWInt("playerPrestige") * 60) + ply:GetNWInt("playerLevel")
+
+			if GetConVar("tm_unlockall"):GetInt() == 1 then ply:SetNWString("chosenPlayercard", cardID) end
 
 			if cardUnlock == "default" or cardUnlock == "color" or cardUnlock == "pride" then
 				ply:SetNWString("chosenPlayercard", cardID)
