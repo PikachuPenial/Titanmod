@@ -844,3 +844,89 @@ if CLIENT then
 		ApplyAllOffsets(ply, pos, ang)
 	end)
 end
+
+-- custom screen shake
+local lastExtraRecoilTime = 0
+local shakeMult = 0.33
+local shakeSpeed = 0.67
+
+if CLIENT then
+	local lastMagCapacity = 0
+    local lastWeapon = nil
+
+    local ExtraScreenShakeTime = 0
+    local ExtraScreenShakeDuration = 0
+    local ExtraScreenShakeStrength = 0
+    local ExtraScreenShakeViewOffset = Angle(0, 0, 0)
+
+    local function ApplyExtraRecoil(weapon)
+        if not IsValid(weapon) or not weapon.IsTFAWeapon then return end
+
+        local currentTime = CurTime()
+        if currentTime - lastExtraRecoilTime < 0.05 then return end
+
+        lastExtraRecoilTime = currentTime
+
+        local kickUp = weapon.Primary.KickUp or 0
+        local kickDown = weapon.Primary.KickDown or 0
+        local kickHorizontal = weapon.Primary.KickHorizontal or 0
+        local staticRecoilFactor = weapon.Primary.StaticRecoilFactor or 0
+        local extraRecoilAmount = (kickUp + kickDown + kickHorizontal + staticRecoilFactor) * 2
+
+		local rpm = weapon.Primary.RPM or 600
+		local RPMDuration = math.min((60 / rpm) + 0.1, 0.2)
+
+		ExtraScreenShakeDuration = RPMDuration * shakeSpeed
+		ExtraScreenShakeStrength = (extraRecoilAmount / 2) * shakeMult
+
+		ExtraScreenShakeTime = ExtraScreenShakeDuration
+		ExtraScreenShakeViewOffset = Angle(0, 0, 0)
+    end
+
+    local function DetectExtraRecoilFiring()
+		local ply = LocalPlayer()
+		if not IsValid(ply) then return end
+
+		local weapon = ply:GetActiveWeapon()
+
+        if not IsValid(weapon) or not weapon.IsTFAWeapon then
+            lastMagCapacity = 0
+            lastWeapon = nil
+            return
+        end
+
+        local currentMagCapacity = weapon:Clip1() or 0
+
+        if weapon ~= lastWeapon then
+            lastMagCapacity = currentMagCapacity
+            lastWeapon = weapon
+            return
+        end
+
+        if currentMagCapacity < lastMagCapacity then
+            ApplyExtraRecoil(weapon)
+            lastMagCapacity = currentMagCapacity
+        else
+            lastMagCapacity = currentMagCapacity
+        end
+
+        if ExtraScreenShakeTime > 0 then
+            ExtraScreenShakeTime = math.max(0, ExtraScreenShakeTime - FrameTime())
+
+            local timeProgress = ExtraScreenShakeTime / ExtraScreenShakeDuration
+            local rollAngle = math.sin(timeProgress * math.pi * 4) * ExtraScreenShakeStrength * timeProgress
+
+            ExtraScreenShakeViewOffset = Angle(0, 0, rollAngle)
+        else
+            ExtraScreenShakeViewOffset = Angle(0, 0, 0)
+        end
+    end
+
+    hook.Add("CalcView", "TFA_ExtraScreenShake_View", function(ply, origin, angles, fov, znear, zfar)
+        if ExtraScreenShakeViewOffset.roll ~= 0 then
+            angles:Add(ExtraScreenShakeViewOffset)
+        end
+    end)
+
+    timer.Create("ExtraRecoilFireDetectionLoop", 0.001, 0, DetectExtraRecoilFiring)
+end 
