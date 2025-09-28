@@ -1,4 +1,4 @@
-# wahhh
+# September 27th, 2025 (9/27/25)
 **>GAMEPLAY**   
 *NEW WEAPONS*
 - **Coonan .357** (Secondary, Pistol)
@@ -6,6 +6,9 @@
 - **G3A3** (Primary, Rifle)
 - **HK416** (Primary, Rifle)
 - **Stoner LMG A1** (Primary, LMG)
+
+*AMMO CONVERSIONS*
+- Added new attachment types to the **AR-57** and **HK416** that rework their gun stats
 
 *WEAPON FEEL*
 - Added a new viewmodel inertia system (does not take effect when ADSing)
