@@ -2,18 +2,6 @@ if !game.SinglePlayer() then
     if GetGlobal2String("ActiveGamemode", "FFA") != "Gun Game" then
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
-                -- weapon quick switching
-                if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
-                if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
-                end
-                if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutSecondary"))
-                end
-                if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
-                end
-
                 -- menu
                 if button == ply:GetInfoNum("tm_mainmenubind", KEY_M) then
                     if GetGlobal2Int("tm_matchtime", 0) - CurTime() > GetGlobal2Int("tm_matchtime", 0) - GetConVar("tm_intermissiontimer"):GetInt() then
@@ -29,8 +17,25 @@ if !game.SinglePlayer() then
                     ply:SetNWBool("mainmenu", true)
                 end
             end
-            if CLIENT then
+            if CLIENT and IsFirstTimePredicted() then
                 if GetGlobal2Bool("tm_intermission") then return end
+
+                -- weapon quick switching
+                if ply:GetInfoNum("tm_quickswitching", 1) == 1 then
+                    if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                        local weapon = ply:GetWeapon(ply:GetNWString("loadoutPrimary"))
+                        if weapon != NULL then input.SelectWeapon(weapon) end
+                    end
+                    if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                        local weapon = ply:GetWeapon(ply:GetNWString("loadoutSecondary"))
+                        if weapon != NULL then input.SelectWeapon(weapon) end
+                    end
+                    if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                        local weapon = ply:GetWeapon(ply:GetNWString("loadoutMelee"))
+                        if weapon != NULL then input.SelectWeapon(weapon) end
+                    end
+                end
+
                 -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
                 hook.Add("PlayerButtonUp", "NadeThrow", function(ply, button)
@@ -42,17 +47,21 @@ if !game.SinglePlayer() then
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
                 -- weapon quick switching
-                if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
-                if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
-                    ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
-                end
-
-                if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then
-                    if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
-                        ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                if ply:GetInfoNum("tm_quickswitching", 1) == 1 then
+                    if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                        local weapon = ply:GetWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
+                        if weapon != NULL then input.SelectWeapon(weapon) end
                     end
-                    if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
-                        ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+
+                    if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then
+                        if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                            local weapon = ply:GetWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                            if weapon != NULL then input.SelectWeapon(weapon) end
+                        end
+                        if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                            local weapon = ply:GetWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                            if weapon != NULL then input.SelectWeapon(weapon) end
+                        end
                     end
                 end
 
@@ -71,7 +80,7 @@ if !game.SinglePlayer() then
                     ply:SetNWBool("mainmenu", true)
                 end
             end
-            if CLIENT then
+            if CLIENT and IsFirstTimePredicted() then
                 if GetGlobal2Bool("tm_intermission") then return end
                 -- grenade
                 if button == ply:GetInfoNum("tm_nadebind", KEY_4) then ply:ConCommand("+quicknade") end
@@ -87,15 +96,16 @@ else
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
                 -- weapon quick switching
-                if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
-                if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
-                end
-                if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutSecondary"))
-                end
-                if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
-                    ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
+                if ply:GetInfoNum("tm_quickswitching", 1) == 1 then
+                    if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                        ply:SelectWeapon(ply:GetNWString("loadoutPrimary"))
+                    end
+                    if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                        ply:SelectWeapon(ply:GetNWString("loadoutSecondary"))
+                    end
+                    if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                        ply:SelectWeapon(ply:GetNWString("loadoutMelee"))
+                    end
                 end
 
                 -- menu
@@ -125,16 +135,17 @@ else
         hook.Add("PlayerButtonDown", "TitanmodKeybindings", function(ply, button)
             if SERVER then
                 -- weapon quick switching
-                if ply:GetInfoNum("tm_quickswitching", 1) == 0 then return end
-                if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
-                    ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
-                end
-                if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then
-                    if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
-                        ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                if ply:GetInfoNum("tm_quickswitching", 1) == 1 then
+                    if button == ply:GetInfoNum("tm_primarybind", KEY_1) then
+                        ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][1])
                     end
-                    if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
-                        ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                    if (ply:GetNWInt("ladderPosition") == (ggLadderSize - 1)) == false then
+                        if button == ply:GetInfoNum("tm_secondarybind", KEY_2) then
+                            ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                        end
+                        if button == ply:GetInfoNum("tm_meleebind", KEY_3) then
+                            ply:SelectWeapon(ggLadder[ply:GetNWInt("ladderPosition") + 1][2])
+                        end
                     end
                 end
 

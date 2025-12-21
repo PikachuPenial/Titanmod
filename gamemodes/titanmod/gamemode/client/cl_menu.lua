@@ -3637,7 +3637,7 @@ Head to the OPTIONS page to tailor the experience to your needs. There is an ext
 
                     local DockPerformance = vgui.Create("DPanel", OptionsScroller)
                     DockPerformance:Dock(TOP)
-                    DockPerformance:SetSize(0, TM.MenuScale(400))
+                    DockPerformance:SetSize(0, TM.MenuScale(360))
 
                     local SettingsCog = vgui.Create("DImage", OptionsQuickjumpHolder)
                     SettingsCog:SetPos(TM.MenuScale(12), TM.MenuScale(12))

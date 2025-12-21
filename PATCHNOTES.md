@@ -1,3 +1,17 @@
+# December 21st, 2025 (12/21/25)
+**>QOL & BUG FIXES**   
+- Quick weapon switching is now properly client sided and players will no longer experience a delay when switching between weapons because of their ping
+
+- Lens Flare no longer renders through viewmodels
+
+- Fixed broken prediction on client sided keybinds
+
+- Fixed the menu keybind not working if weapon quick switching was disabled
+
+- Fixed lua errors caused by lens flare
+
+
+
 # September 27th, 2025 (9/27/25)
 **>GAMEPLAY**   
 *NEW WEAPONS*

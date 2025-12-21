@@ -915,6 +915,8 @@ end
 
 local micIcon = Material("icons/microphoneicon.png", "noclamp smooth")
 local function VoiceIcon()
+    surface.SetDrawColor(Color(255, 255, 255, 155))
+    surface.DrawRect(scrW / 2 - TM.HUDScale(21), TM.HUDScale(115) + matchHUD["y"], TM.HUDScale(42), TM.HUDScale(1))
     surface.SetDrawColor(65, 155, 80, 115)
     surface.SetMaterial(micIcon)
     surface.DrawTexturedRect(scrW / 2 - TM.HUDScale(21), TM.HUDScale(115) + matchHUD["y"], TM.HUDScale(42), TM.HUDScale(42))
