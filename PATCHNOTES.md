@@ -1,3 +1,9 @@
+# December 29th, 2025 (12/29/25)
+**>QOL & BUG FIXES**   
+- Fixed non-Titanmod maps with different spawn entities from base sandbox maps not working as intended
+
+
+
 # December 21st, 2025 (12/21/25)
 **>QOL & BUG FIXES**   
 - Quick weapon switching is now properly client sided and players will no longer experience a delay when switching between weapons because of their ping
